@@ -130,6 +130,7 @@ export default {
   designCaseId: '/designCase/{0}', // 作品案例
   designCaseCompanyId: '/designCase/designCompany/{0}', // GET 通过公司ID查看案例
   designCaseOpenLists: '/designCase/openLists', // GET 案例列表
+  designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
 
   // 添加作品
   work: 'works',

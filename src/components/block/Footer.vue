@@ -10,7 +10,7 @@
           <router-link :to="{name: 'contact'}">设计案例</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">设计服务商入住</router-link>
+          <router-link :to="{name: 'contact'}">设计服务商入驻</router-link>
         </p>
         <p>
           <router-link :to="{name: 'contact'}">创新指数</router-link>
@@ -291,7 +291,7 @@
     color: #999;
   }
   .copy-right p {
-    line-height: 1;
+    line-height: 20px;
     font-size: 12px;
   }
   .qrcode {

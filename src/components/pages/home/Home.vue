@@ -153,7 +153,7 @@
           <div class="solve-datail" v-show="solveType === 1">
             <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+顶尖设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
             <div class="solve-img-round pad-top-60">
-              <el-row>
+              <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
                   <div class="solve-img">
                     <div class="solve-img1"></div>
@@ -189,7 +189,7 @@
             <div class="solve-datail-text">汲取太火鸟多年产品创新和投资孵化经验</div>
             <div class="solve-datail-text">帮助众创空间里初创企业、创业团队构建产品创新体系。</div>
             <div class="solve-img-round pad-top-60">
-              <el-row :gutter="10">
+              <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
                   <div class="solve-img">
                     <div class="solve2-img1"></div>
@@ -205,14 +205,14 @@
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve2-img3"></div>
                     <div class="solve-img-title">产品定义</div>
                     <div class="solve-img-text">基于销售大数据 洞察消费市场 重新定义创新产品及品类</div>
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve2-img4"></div>
                     <div class="solve-img-title">营销推广</div>
                     <div class="solve-img-text">营销赋能创新产品及品牌 精准化社群及精选电商分销</div>
@@ -224,7 +224,7 @@
           <div class="solve-datail" v-show="solveType === 3">
             <div class="solve-datail-text">联合精准零售渠道进行联合加速，对于相对成熟的创新项目，将以股权投资以及交易聚集的模式，生成具有爆品潜质的创新产品，并逐渐形成爆款单品集群，建立以“设计+投资+销售”为核心驱动的涵盖各品类的创新产品平台。</div>
             <div class="solve-img-round pad-top-60">
-              <el-row :gutter="10">
+              <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
                   <div class="solve-img">
                     <div class="solve3-img1"></div>
@@ -240,14 +240,14 @@
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve3-img3"></div>
                     <div class="solve-img-title">联合开发</div>
                     <div class="solve-img-text">根据平台大数据与设计公司、太火鸟联合开发产品。</div>
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve3-img4"></div>
                     <div class="solve-img-title">投资孵化</div>
                     <div class="solve-img-text">联合投资孵化创业团队 打造平台产品生态链</div>
@@ -259,7 +259,7 @@
           <div class="solve-datail" v-show="solveType === 4">
             <div class="solve-datail-text">太火鸟联合京东云，通过设计创新实现“资源共享、能力互补、供需对接”，构建完善的“产品设计-生产制造-终端销售”全产业链条。助力地方产业转型升级与创新要素聚集。</div>
             <div class="solve-img-round pad-top-60">
-              <el-row :gutter="10">
+              <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
                   <div class="solve-img">
                     <div class="solve4-img1"></div>
@@ -275,14 +275,14 @@
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve4-img3"></div>
                     <div class="solve-img-title">品牌打造</div>
                     <div class="solve-img-text">持续传播产业创新要素、创新人才产品等，打造区域产业品牌。</div>
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="6">
-                  <div class="solve-img">
+                  <div class="solve-img phone-pad-20">
                     <div class="solve4-img4"></div>
                     <div class="solve-img-title">人才培养</div>
                     <div class="solve-img-text">组建创业导师和专家团队，引入行业创新资源，培养优秀创新人才。</div>
@@ -298,33 +298,15 @@
       <div class="case-title">设计案例</div>
       <div class="case-border-round">
         <el-row :gutter="20" class="case-row">
-          <el-col :xs="24" :sm="8">
+          <el-col :xs="24" :sm="8" v-for="(item, index) in caseList" :key="index">
             <div class="case-border">
-              <div class="case-header">智能硬件 <span class="case-span">></span></div>
-              <div class="case-center"></div>
-              <div class="case-center-round">
-                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
+              <div class="case-header">{{item.field_val}} <span class="case-span">></span></div>
+              <div class="case-center text-a-center" @click="caseDetail(item.id)">
+                <img :src="item.cover.file" width="auto" height="100%" class="max-width-100">
               </div>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <div class="case-border">
-              <div class="case-header">智能硬件 <span class="case-span">></span></div>
-              <div class="case-center"></div>
               <div class="case-center-round">
-                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <div class="case-border">
-              <div class="case-header">智能硬件 <span class="case-span">></span></div>
-              <div class="case-center"></div>
-              <div class="case-center-round">
-                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
+                <div class="case-center-title">{{item.title}}</div>
+                <div class="case-center-text">{{item.profile}}</div>
               </div>
             </div>
           </el-col>
@@ -406,7 +388,7 @@
             <div class="carry-img pad-top-10">
               <div class="carry-img2"></div>
               <div class="carry-img-title">智能匹配设计服务商</div>
-              <div class="carry-img-text">在24小时内为你智能匹配推荐设计服务商。比较出价，评分和之前的设计案例。选择最合适您的服务商。</div>
+              <div class="carry-img-text">在24小时内为你智能匹配推荐设计服务商。比较出价，评分和之前的设计案例。选择最合适您的设计服务商。</div>
             </div>
           </el-col>
           <el-col :xs="12" :sm="6">
@@ -420,14 +402,14 @@
             <div class="carry-img pad-top-10">
               <div class="carry-img4"></div>
               <div class="carry-img-title">项目评价</div>
-              <div class="carry-img-text">分阶段确认项目，直到项目结束。针对服务商在项目过程中的服务做出评价。</div>
+              <div class="carry-img-text">分阶段确认项目，直到项目结束。针对设计服务商在项目过程中的服务做出评价。</div>
             </div>
           </el-col>
         </el-row>
       </div>
     </div>
     <div class="in">
-      <div class="in-title">入驻设计服务供应商</div>
+      <div class="in-title">入驻设计服务商</div>
       <div class="in-round pad-top-60">
         <el-row>
           <el-col :xs="8" :sm="4">
@@ -525,22 +507,22 @@
     </div>
     <div class="new">
       <div class="new-title pad-top-60">太火鸟产品创新</div>
-      <div class="pad-top-80">
+      <div class="pad-top-80 phone-pad-top-30">
         <el-row>
-          <el-col :span="8">
-            <div class="new-round">
+          <el-col :xs="24" :sm="8">
+            <div class="new-round mar-auto">
               <div class="new-img1"></div>
               <div class="new-text pad-top-15">专业设计服务商</div>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div class="new-round mar-auto">
+          <el-col :xs="24" :sm="8">
+            <div class="new-round mar-auto phone-pad-20">
               <div class="new-img2"></div>
               <div class="new-text pad-top-15">成交项目</div>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div class="new-round fr">
+          <el-col :xs="24" :sm="8">
+            <div class="new-round mar-auto phone-pad-20">
               <div class="new-img3"></div>
               <div class="new-text pad-top-15">成交金额</div>
             </div>
@@ -556,21 +538,21 @@
             <div class="security-img mar-auto mar-top-10">
               <div class="security-img1"></div>
               <div class="carry-img-title">保证交易完成</div>
-              <div class="carry-img-text">服务商未在约定工期内完成工作时，雇主有权发起维权并申请赔付，若判定成立，雇主将获得赔付（赔付由服务商的保证金赔付和服务商需退还的交易款项两部分共同构成）</div>
+              <div class="carry-img-text">设计服务商未在约定工期内完成工作时，客户有权发起维权并申请赔付，若判定成立，客户将获得赔付（赔付由设计服务商的保证金赔付和设计服务商需退还的交易款项两部分共同构成）</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="security-img mar-auto mar-top-10">
               <div class="security-img2"></div>
               <div class="carry-img-title">保证原创</div>
-              <div class="carry-img-text">太火鸟平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</div>
+              <div class="carry-img-text">太火鸟平台担保版权。交易完成一年内，如设计客户发现交易产品非原创，有权发起维权。经判定非原创事实，客户将获得赔付。</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="security-img mar-auto mar-top-10">
               <div class="security-img3"></div>
               <div class="carry-img-title">版权保护</div>
-              <div class="carry-img-text">太火鸟保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</div>
+              <div class="carry-img-text">太火鸟保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</div>
             </div>
           </el-col>
         </el-row>
@@ -617,11 +599,13 @@
 </template>
 <script>
   import { calcImgSize } from 'assets/js/common'
+  import api from '@/api/api'
   export default {
     data() {
       return {
         calcHeight: '',
         solveType: 1,
+        caseList: [],
         swiperOption: {
           pagination: '.swiper-pagination',
           paginationClickable: true,
@@ -678,6 +662,24 @@
       },
       release() {
         this.$router.push({name: 'itemSubmitOne'})
+      },
+      getDesignCaseRandomIndex() {
+        this.$http.get(api.designCaseRandomIndex)
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            let caseList = res.data.data
+            if (!caseList) {
+              caseList = []
+            }
+            this.caseList = caseList
+          }
+        })
+        .catch(err => {
+          this.$message.error (err.message)
+        })
+      },
+      caseDetail(id) {
+        this.$router.push({name: 'vcenterDesignCaseShow', params: {id: id}})
       }
     },
     mounted() {
@@ -697,6 +699,7 @@
     },
     created() {
       this.solveType = 1
+      this.getDesignCaseRandomIndex()
     },
     computed: {
       uType() {
@@ -1166,9 +1169,10 @@
   }
   .case-center {
     height: 320px;
-    background: rgba(255,255,255,1);
-    border:1px solid  rgba(230,230,230,1);
+    background: #fff;
+    border:1px solid rgba(230,230,230,1);
     margin-top: 30px;
+    cursor: pointer;
   }
   .case-center-round {
     max-width:380px;
@@ -1598,21 +1602,21 @@
     max-width: 126px;
   }
   .new-img1 {
-    width: 106px;
+    width: 130px;
     height: 60px;
     background: url("../../../assets/images/new_home/home/new/200@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-img2 {
-    width: 106px;
+    width: 130px;
     height: 60px;
     background: url("../../../assets/images/new_home/home/new/130@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-img3 {
-    width: 106px;
+    width: 160px;
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/1200@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/new/1200w.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-text {
@@ -1757,6 +1761,12 @@
   .swiper-container-horizontal > .swiper-pagination-bullets {
     width: 100%;
   }
+  .row-width-100 {
+    width: 100%;
+  }
+  .solve-img {
+    margin: 0 auto;
+  }
   
   
 
@@ -1767,6 +1777,12 @@
 
   .mar-auto {
     margin: 0 auto;
+  }
+  .max-width-100 {
+    max-width: 100%;
+  }
+  .text-a-center {
+    text-align: center;
   }
   .mar-top-10 {
     margin-top: 10px;
@@ -1935,6 +1951,9 @@
     }
     .phone-pad-rig-5 {
       padding-right: 5px;
+    }
+    .phone-pad-top-30 {
+      padding-top: 30px
     }
   }
 </style>
