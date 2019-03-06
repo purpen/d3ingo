@@ -4,13 +4,13 @@
     <div class="meun-hid">
       <div class="menu-round">
         <div class="menu">
-          <div class="menu-text pad-left-20" :class="{'color-red': type === 0}" @click="loadList(0)">全部</div>
-          <div class="menu-text" :class="{'color-red': type === 1}" @click="loadList(1)">产品设计</div>
-          <div class="menu-text" :class="{'color-red': type === 3}" @click="loadList(3)">平面设计</div>
-          <div class="menu-text" :class="{'color-red': type === 5}" @click="loadList(5)">包装设计</div>
-          <div class="menu-text" :class="{'color-red': type === 2}" @click="loadList(2)">UI/UX设计</div>
-          <div class="menu-text" :class="{'color-red': type === 6}" @click="loadList(6)">插画设计</div>
-          <div class="menu-text" :class="{'color-red': type === 4}" @click="loadList(4)">H5</div>
+          <div class="menu-text pad-left-20" :class="{'color-red': type === 0}" @click="clickLoad(0)">全部</div>
+          <div class="menu-text" :class="{'color-red': type === 1}" @click="clickLoad(1)">产品设计</div>
+          <div class="menu-text" :class="{'color-red': type === 3}" @click="clickLoad(3)">平面设计</div>
+          <div class="menu-text" :class="{'color-red': type === 5}" @click="clickLoad(5)">包装设计</div>
+          <div class="menu-text" :class="{'color-red': type === 2}" @click="clickLoad(2)">UI/UX设计</div>
+          <div class="menu-text" :class="{'color-red': type === 6}" @click="clickLoad(6)">插画设计</div>
+          <div class="menu-text" :class="{'color-red': type === 4}" @click="clickLoad(4)">H5</div>
         </div>
       </div>
     </div>
@@ -73,8 +73,12 @@ export default {
   methods: {
     handleCurrentChange(page) {
       this.query.page = page
-      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
-      this.loadList()
+      this.$router.push({name: this.$route.name, query: {page: this.query.page, type: this.type}})
+      this.loadList(this.$route.query.type)
+    },
+    clickLoad(type) {
+      this.$router.push({name: this.$route.name, query: {page: 1, type: type}})
+      this.loadList(this.$route.query.type)
     },
     loadList(type) {
       const self = this
@@ -102,9 +106,8 @@ export default {
     }
   },
   created: function() {
+    this.loadList(this.$route.query.type = 0)
     this.query.page = Number(this.$route.query.page) || 1
-    this.type = 0
-    this.loadList(0)
   },
   computed: {
     isMob() {
