@@ -744,8 +744,8 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
-                          <region-picker :provinceProp="clientForm.province" 
-                                :cityProp="clientForm.city" propStyle="margin:0;"
+                          <region-picker :provinceProp="projectForm.item_province" 
+                                :cityProp="projectForm.item_city" propStyle="margin:0;"
                                 :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                 @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
@@ -1267,7 +1267,7 @@ export default {
     },
     isUpdatedStatus(val) {
       if (!this.currentId) return
-      if (val !== this.baseInfo.status) {
+      if (val !== this.baseInfo.new_status) {
         this.updatedBaseInfo()
       }
     },
@@ -1321,6 +1321,7 @@ export default {
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
           this.$router.push({name: 'adminPotentialUserList'})
+          return
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
@@ -1356,7 +1357,7 @@ export default {
           const {new_source, rank, new_status, execute_user_id, new_call_status} = res.data.data
           this.baseInfo = {
             rank,
-            source: new_source,
+            new_source,
             new_status,
             execute_user_id,
             new_call_status
@@ -1366,8 +1367,8 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            new_source: data.new_source || '',
-            son_source: data.son_source || '',
+            new_source: data.new_source,
+            son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
