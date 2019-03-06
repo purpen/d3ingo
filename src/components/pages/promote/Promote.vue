@@ -245,7 +245,7 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="isLoadingBtn" @click="submit2('ruleForm2')">免费发布需求</el-button>
+          <el-button type="primary" :loading="isLoadingBtn" @click="submit2('ruleForm2')">提交</el-button>
         </span>
       </el-dialog>
     </div>
@@ -915,10 +915,10 @@
   .logo {
     height: 120px;
     width: 120px;
-    background: url("../../../assets/images/new_promote/pc/logo.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/logo.png") no-repeat center / contain;
     margin: 0 auto;
     position: relative;
+    margin-top: 25px;
   }
   .logo:after {
     content: '';
@@ -956,8 +956,7 @@
   .spectrum-img {
     height: 110px;
     width: 858px;
-    background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .header-text-two {
@@ -974,6 +973,7 @@
     background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat center / contain #ff5a5f;
     margin: 0 auto;
     margin-top: 20px;
+    border-radius: 4px;
   }
   .logo-btn:hover {
     background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat center / contain #ff6f80;
@@ -1065,8 +1065,8 @@
   }
   .six-img1-1 {
     height: 36px;
-    width: 60px;
-    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
+    width: 65px;
+    background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img2 {
@@ -1109,8 +1109,8 @@
   }
   .six-img1-5 {
     height: 36px;
-    width: 60px;
-    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
+    width: 65px;
+    background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img6 {
@@ -1536,7 +1536,7 @@
     line-height: 20px;
   }
   .border-2 {
-    border: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
     margin: 0 60px;
   }
   .pc-call-btn {
