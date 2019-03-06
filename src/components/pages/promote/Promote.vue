@@ -10,9 +10,20 @@
         <div class="logo-btn" @click="sendReq = true">
         </div>
         <div class="header-two-img">
-          <div class="two-img1"></div>
-          <div class="two-img2"></div>
-          <div class="two-img3"></div>
+          <div class="three-num-round">
+            <div>
+              <div class="one-thn1"></div>
+              <div class="three-num-text">设计公司随时待命</div>
+            </div>
+            <div>
+              <div class="one-thn2"></div>
+              <div class="three-num-text">原创设计项目落地销售额</div>
+            </div>
+            <div>
+              <div class="one-thn3"></div>
+              <div class="three-num-text">人工智能系统自动匹配</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="header-title">太火鸟设计服务的项目</div>
@@ -955,7 +966,7 @@
   }
   .spectrum-img {
     height: 110px;
-    width: 858px;
+    max-width: 858px;
     background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
@@ -985,8 +996,7 @@
     position: relative;
     margin-top: 10px;
     height: 244px;
-    background: url("../../../assets/images/new_promote/pc/IllustrationHead.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/IllustrationHead.png") no-repeat center;
     display: flex;
     flex-direction: row;
   }
@@ -1639,6 +1649,38 @@
   }
   .dialog-code-text:active {
     color: #fff;
+  }
+  .three-num-round {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  .one-thn1 {
+    height: 60px;
+    width: 140px;
+    background: url("../../../assets/images/new_promote/pc/header/1000+@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .one-thn2 {
+    height: 60px;
+    width: 143px;
+    background: url("../../../assets/images/new_promote/pc/header/20+@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .one-thn3 {
+    height: 60px;
+    width: 140px;
+    background: url("../../../assets/images/new_promote/pc/header/24h@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .three-num-text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
   }
 
 
