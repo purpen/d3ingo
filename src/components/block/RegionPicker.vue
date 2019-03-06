@@ -1,7 +1,6 @@
 <template>
 
     <el-form-item :label="titleProp" prop="chinaCity" :style="propStyle">
-      aaa{{provinceProp}} ccc {{province}}bbb
       <el-row :gutter="gutter">
         <el-col :xs="24" :sm="twoSelect ? 12 : 8" :md="twoSelect ? 12 : 8" :lg="twoSelect ? 12 : 8">
           <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
