@@ -10,9 +10,20 @@
         <div class="logo-btn" @click="sendReq = true">
         </div>
         <div class="header-two-img">
-          <div class="two-img1"></div>
-          <div class="two-img2"></div>
-          <div class="two-img3"></div>
+          <div class="three-num-round">
+            <div>
+              <div class="one-thn1"></div>
+              <div class="three-num-text">设计公司随时待命</div>
+            </div>
+            <div>
+              <div class="one-thn2"></div>
+              <div class="three-num-text">原创设计项目落地销售额</div>
+            </div>
+            <div>
+              <div class="one-thn3"></div>
+              <div class="three-num-text">人工智能系统自动匹配</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="header-title">太火鸟设计服务的项目</div>
@@ -245,7 +256,7 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="isLoadingBtn" @click="submit2('ruleForm2')">免费发布需求</el-button>
+          <el-button type="primary" :loading="isLoadingBtn" @click="submit2('ruleForm2')">提交</el-button>
         </span>
       </el-dialog>
     </div>
@@ -915,10 +926,10 @@
   .logo {
     height: 120px;
     width: 120px;
-    background: url("../../../assets/images/new_promote/pc/logo.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/logo.png") no-repeat center / contain;
     margin: 0 auto;
     position: relative;
+    margin-top: 25px;
   }
   .logo:after {
     content: '';
@@ -955,9 +966,8 @@
   }
   .spectrum-img {
     height: 110px;
-    width: 858px;
-    background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat;
-    background-size: 100% 100%;
+    max-width: 858px;
+    background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .header-text-two {
@@ -974,6 +984,7 @@
     background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat center / contain #ff5a5f;
     margin: 0 auto;
     margin-top: 20px;
+    border-radius: 4px;
   }
   .logo-btn:hover {
     background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat center / contain #ff6f80;
@@ -985,8 +996,7 @@
     position: relative;
     margin-top: 10px;
     height: 244px;
-    background: url("../../../assets/images/new_promote/pc/IllustrationHead.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/IllustrationHead.png") no-repeat center;
     display: flex;
     flex-direction: row;
   }
@@ -1065,8 +1075,8 @@
   }
   .six-img1-1 {
     height: 36px;
-    width: 60px;
-    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
+    width: 65px;
+    background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img2 {
@@ -1109,8 +1119,8 @@
   }
   .six-img1-5 {
     height: 36px;
-    width: 60px;
-    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
+    width: 65px;
+    background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img6 {
@@ -1536,7 +1546,7 @@
     line-height: 20px;
   }
   .border-2 {
-    border: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
     margin: 0 60px;
   }
   .pc-call-btn {
@@ -1639,6 +1649,38 @@
   }
   .dialog-code-text:active {
     color: #fff;
+  }
+  .three-num-round {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  .one-thn1 {
+    height: 60px;
+    width: 140px;
+    background: url("../../../assets/images/new_promote/pc/header/1000+@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .one-thn2 {
+    height: 60px;
+    width: 143px;
+    background: url("../../../assets/images/new_promote/pc/header/20+@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .one-thn3 {
+    height: 60px;
+    width: 140px;
+    background: url("../../../assets/images/new_promote/pc/header/24h@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .three-num-text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
   }
 
 

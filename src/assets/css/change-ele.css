@@ -938,6 +938,10 @@
   .dl-body-center .el-dialog__body{
     text-align: center;
   }
+  .dig-send-code .el-dialog__headerbtn {
+    font-size: 20px;
+    top: 13px;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
