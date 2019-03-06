@@ -32,7 +32,8 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="角色" prop="title">
-                    
+                      <el-radio v-model="form.son_type" :label="1" @change="updateRadio">客户</el-radio>
+                      <el-radio v-model="form.son_type" :label="2" @change="updateRadio">设计服务商</el-radio>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -100,6 +101,7 @@ export default {
       isLoading: false,
       isLoadingBtn: false,
       categoryOptions: [],
+      categoryOptions2: [],
       content_file: [],
       uploadUrl: '',
       uploadParam: {
@@ -120,7 +122,8 @@ export default {
         sort: '',
         label: [],
         intro: '',
-        content: ''
+        content: '',
+        son_type: 1
       },
       ruleForm: {
         category_id: [
@@ -138,6 +141,10 @@ export default {
     }
   },
   methods: {
+    // 监听变化
+    updateRadio(val) {
+      [this.categoryOptions2, this.categoryOptions] = [this.categoryOptions, this.categoryOptions2]
+    },
     submit(formName) {
       const that = this
       that.$refs[formName].validate(valid => {
@@ -336,7 +343,6 @@ export default {
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             that.form = response.data.data
-
             if (response.data.data) {
               var files = []
               var obj = response.data.data
@@ -351,6 +357,41 @@ export default {
               files.push(item)
               that.fileList = files
             }
+            // 获取分类列表
+            that.$http
+              .get(api.adminCategoryShowList, { params: { type: 1 } })
+              .then(function(response) {
+                if (response.data.meta.status_code === 200) {
+                  let arr1 = []
+                  let arr2 = []
+                  if (response.data.data) {
+                    for (var i = 0; i < response.data.data.length; i++) {
+                      var row = {}
+                      row.value = response.data.data[i].id
+                      row.label = response.data.data[i].name
+                      if (response.data.data[i].son_type === 1) {
+                        arr1.push(row)
+                      } else {
+                        arr2.push(row)
+                      }
+                    }
+                    if (that.form.category.son_type === 1) {
+                      that.categoryOptions = arr1
+                      that.categoryOptions2 = arr2
+                      that.form.son_type = 1
+                    } else {
+                      that.categoryOptions = arr2
+                      that.categoryOptions2 = arr1
+                      that.form.son_type = 2
+                    }
+                  }
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function(error) {
+                that.$message.error(error.message)
+              })
           } else {
             that.$message.error(response.data.meta.message)
           }
@@ -361,28 +402,35 @@ export default {
         })
     } else {
       that.itemId = null
-    }
-
-    // 获取分类列表
-    that.$http
-      .get(api.adminCategoryShowList, { params: { type: 1 } })
-      .then(function(response) {
-        if (response.data.meta.status_code === 200) {
-          if (response.data.data) {
-            for (var i = 0; i < response.data.data.length; i++) {
-              var row = {}
-              row.value = response.data.data[i].id
-              row.label = response.data.data[i].name
-              that.categoryOptions.push(row)
+      // 获取分类列表
+      that.$http
+        .get(api.adminCategoryShowList, { params: { type: 1 } })
+        .then(function(response) {
+          if (response.data.meta.status_code === 200) {
+            let arr1 = []
+            let arr2 = []
+            if (response.data.data) {
+              for (var i = 0; i < response.data.data.length; i++) {
+                var row = {}
+                row.value = response.data.data[i].id
+                row.label = response.data.data[i].name
+                if (response.data.data[i].son_type === 1) {
+                  arr1.push(row)
+                } else {
+                  arr2.push(row)
+                }
+              }
+              that.categoryOptions = arr1
+              that.categoryOptions2 = arr2
             }
+          } else {
+            that.$message.error(response.data.meta.message)
           }
-        } else {
-          that.$message.error(response.data.meta.message)
-        }
-      })
-      .catch(function(error) {
-        that.$message.error(error.message)
-      })
+        })
+        .catch(function(error) {
+          that.$message.error(error.message)
+        })
+    }
 
     // 获取图片token
     that.$http

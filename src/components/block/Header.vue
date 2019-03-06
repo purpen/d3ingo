@@ -17,6 +17,7 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <el-menu-item index="/content_manage" :route="menu.content_manage">帮助</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -114,6 +115,9 @@
             </li>
             <li @click="closeMenu">
               <router-link :to="menu.mobile_login">交易会</router-link>
+            </li>
+            <li @click="closeMenu">
+              <router-link :route="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
@@ -251,6 +255,9 @@
             <li>
               <router-link :to="menu.mobile_login">交易会</router-link>
             </li>
+            <li>
+              <router-link :route="menu.content_manage">帮助</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -311,7 +318,8 @@
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
-          identity: {path: '/identity'}
+          identity: {path: '/identity'},
+          content_manage: {path: '/content_manage/list'}
         },
         menuHide: true,
         msgHide: true,
