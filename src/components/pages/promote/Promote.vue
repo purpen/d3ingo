@@ -165,13 +165,13 @@
                 <el-form-item prop="account">
                   <input type="text" class="pc-wait-input-round2" placeholder="手机号码" v-model="form3.account" ref="account">
                 </el-form-item>
-                <el-form-item prop="smsCode">
+                <!-- <el-form-item prop="smsCode">
                   <div class="pc-code-90-round">
                     <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
                   <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
                   <div class="pc-code-90-send" @click="fetchCode3" v-else>{{ codeMsg }}</div>
                   </div>
-                </el-form-item>
+                </el-form-item> -->
               </div>
               <div class="pc-send-btn-2 cursor-wait" v-if="btn3">
                 <div class="pc-send-btn-text2">立即发布需求</div>
@@ -232,7 +232,7 @@
             <el-form-item prop="account">
               <input type="text" class="dialog-input" placeholder="请输入您的手机号" v-model="form2.account" ref="account">
             </el-form-item>
-            <div class="dialog-req">验证码</div>
+            <!-- <div class="dialog-req">验证码</div>
             <div class="dialog-code-round">
               <el-form-item prop="smsCode">
                 <input type="text" class="dialog-code" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
@@ -241,7 +241,7 @@
                 <div class="dialog-code-text" v-if="time > 0">{{ codeMsg }}</div>
                 <div class="dialog-code-text" @click="fetchCode2" v-else>{{ codeMsg }}</div>
               </div>
-            </div>
+            </div> -->
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -272,13 +272,13 @@
               <input type="text" class="release-form" placeholder="手机号码" v-model="form.account" ref="account">
             </div>
           </el-form-item>
-          <el-form-item prop="smsCode">
+          <!-- <el-form-item prop="smsCode">
             <div class="code1-send">
               <input type="text" placeholder="验证码" class="code-input-phone mar-left-5 border-none" v-model="form.smsCode" name="smsCode">
               <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
               <div class="send-code" @click="fetchCode" v-else>{{ codeMsg }}</div>
             </div>
-          </el-form-item>
+          </el-form-item> -->
         </div>
       </el-form>
       <div class="round-btn">
@@ -435,13 +435,13 @@
           <el-form-item prop="account">
             <input type="text" placeholder="手机号码" class="input-style margin-top-10" v-model="form1.account" ref="account">
           </el-form-item>
-          <el-form-item prop="smsCode">
+          <!-- <el-form-item prop="smsCode">
             <div class="code-round margin-top-10">
               <input type="text" placeholder="验证码" class="code-input border-none" v-model="form1.smsCode" name="smsCode">
               <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
               <div class="send-code" @click="fetchCode1" v-else>{{ codeMsg }}</div>
             </div>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <div class="send-code-btn color-666" v-if="appBtn2">
           <div class="send-code-text">立即发布需求</div>
@@ -692,8 +692,8 @@
               phone: this.form3.account, // 手机号
               item_name: this.form3.demand, // 需求
               source: this.query.from,
-              son_source: this.query.mark,
-              sms_code: this.form3.smsCode
+              son_source: this.query.mark
+              // sms_code: this.form3.smsCode
             }
             this.btn3 = true
             this.$http.post(api.pcAdd, row)
@@ -723,8 +723,8 @@
               phone: this.form2.account, // 手机号
               item_name: this.form2.demand, // 需求
               source: this.query.from,
-              son_source: this.query.mark,
-              sms_code: this.form2.smsCode
+              son_source: this.query.mark
+              // sms_code: this.form2.smsCode
             }
             this.isLoadingBtn = true
             this.$http.post(api.pcAdd, row)
@@ -757,8 +757,8 @@
               phone: this.form.account, // 手机号
               item_name: this.form.demand, // 需求
               source: this.query.from,
-              son_source: this.query.mark,
-              sms_code: this.form.smsCode
+              son_source: this.query.mark
+              // sms_code: this.form.smsCode
             }
             if (this.isMob) {
               row.from = 4
@@ -793,8 +793,8 @@
               phone: this.form1.account, // 手机号
               item_name: this.form1.demand, // 需求
               source: this.query.from,
-              son_source: this.query.mark,
-              sms_code: this.form1.smsCode
+              son_source: this.query.mark
+              // sms_code: this.form1.smsCode
             }
             this.appBtn2 = true
             this.$http.post(api.pcAdd, row)
@@ -1454,7 +1454,7 @@
     margin-top: 20px;
   }
   .pc-wait-input-round2 {
-    width: 310px;
+    width: 500px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;
