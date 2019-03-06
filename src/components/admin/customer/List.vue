@@ -676,10 +676,31 @@ export default {
       // return isXLSX && isLt2M
     },
     handleAvatarSuccess(res, file, fileList) {
+      let message = ''
       if (res.meta.status_code === 200) {
-        this.$message.success('导入成功')
+        const {count, err, success} = res.data
+        if (count) {
+          message = '共上传条数' + count
+        } else {
+          message = '共上传条数 0'
+        }
+        if (err) {
+          message += '  重复条数' + err
+        } else {
+          message += '  重复条数0'
+        }
+        if (success) {
+          message += '  成功条数 ' + success
+        } else {
+          message += '  成功条数 0'
+        }
+        this.$message.success(message)
         this.getClueList()
       }
+      if (res.meta.status_code === 403) {
+        this.$message.error(res.meta.message)
+      }
+      console.log(res)
     },
     uploadError(err, file, fileList) {
       console.error(err)
