@@ -684,16 +684,19 @@ button.is-custom.is-outlined.is-loading:after {
 
 .footer .item {
   float: left;
-  text-align: center;
+  text-align: left;
 }
 
 .footer p {
-  margin: 10px;
+  margin: 10px 10px 10x 0;
   line-height: 2;
 }
 
 .footer p a {
   color: #999999;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
 }
 
 .fshare-box {
@@ -741,7 +744,9 @@ button.is-custom.is-outlined.is-loading:after {
 }
 
 .footer p.title {
-  font-size: 1.4rem;
+  font-size: 18px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
   margin: 20px 20px 10px 0;
   color: #ffffff;
 }

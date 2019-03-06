@@ -938,6 +938,9 @@
   .dl-body-center .el-dialog__body{
     text-align: center;
   }
+  .nav-header .cursor-def {
+    cursor: default;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
@@ -1044,6 +1047,10 @@
   /* 合同阶段选择按钮 */
   .el-form-item__content .el-radio-group {
     width: 100%;
+  }
+
+  .three-serve .el-row--flex.is-align-middle {
+    justify-content: center;
   }
 
 }

@@ -2,35 +2,56 @@
   <div class="footer clear" v-if="!hideFooter">
     <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">{{prod.info}}</p>
+        <p class="title">关于{{prod.info}}设计交易</p>
         <p>
-          <router-link :to="{name: 'about'}">关于我们</router-link>
+          <router-link :to="{name: 'home'}">首页</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">联系我们</router-link>
+          <router-link :to="{name: 'contact'}">设计案例</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'contact'}">设计服务商入驻</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'contact'}">创新指数</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'contact'}">成果交易会</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'contact'}">数据洞察</router-link>
         </p>
       </el-col>
 
       <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">服务</p>
-        <p v-if="isDesignCompany === 1 || isDesignCompany === true">
-          <router-link :to="{name: 'server'}" class="">发布需求</router-link>
+        <p class="title">帮助/服务</p>
+        <p>
+          <router-link :to="{name: 'server'}" class="">帮助中心</router-link>
         </p>
-        <p v-show="prod.name === ''">
-          <router-link :to="{name: 'serverDesign'}" class="">申请入驻</router-link>
+        <p>
+          <router-link :to="{name: 'serverDesign'}" class="">交易保障</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'serverDesign'}" class="">服务条款</router-link>
         </p>
       </el-col>
 
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">帮助</p>
+        <p class="title">更多太火鸟产品/服务</p>
         <p>
-          <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
+          <router-link :to="{name: 'trade'}" class="">设计交易</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'question'}" class="">常见问题</router-link>
+          <router-link :to="{name: 'question'}" class="">铟果</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+          <router-link :to="{name: 'terms'}" class="">铟果集</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'terms'}" class="">D³IN铟立方</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'terms'}" class="">增值服务</router-link>
         </p>
       </el-col>
 
@@ -247,7 +268,7 @@
 
   .footer .fllow .title {
     white-space: nowrap;
-    margin: 20px 20px 10px 0;
+    margin: 20px 20px 16px 0;
   }
 
   .call {
@@ -270,7 +291,7 @@
     color: #999;
   }
   .copy-right p {
-    line-height: 1;
+    line-height: 20px;
     font-size: 12px;
   }
   .qrcode {
@@ -285,7 +306,7 @@
 
   @media screen and (max-width: 767px) {
     .footer .fllow .title {
-      margin: 20px 20px 10px 0;
+      margin: 20px 20px 16px 0;
     }
 
     .call span {
