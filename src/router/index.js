@@ -96,6 +96,22 @@ let routes = [
     component: require('@/components/pages/home/ServerDesign')
   },
   {
+    path: '/spread_design',
+    name: 'spreadDesign',
+    meta: {
+      title: '推广-设计服务商'
+    },
+    component: require('@/components/pages/home/spread_design/SpreadDesign')
+  },
+  {
+    path: '/m_spread_design',
+    name: 'mSpreadDesign',
+    meta: {
+      title: '推广-设计服务商'
+    },
+    component: require('@/components/pages/home/spread_design/MSpread')
+  },
+  {
     path: '/stuff',
     name: 'stuff',
     redirect: '/design_case/general_list'
