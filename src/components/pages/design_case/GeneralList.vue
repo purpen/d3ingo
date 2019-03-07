@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <div class="blank20"></div>
     <div class="meun-hid">
       <div class="menu-round">
         <div class="menu">
@@ -136,20 +135,21 @@ a {
   min-height: 350px;
 }
 .meun-hid {
-  height: 20px;
+  height: 60px;
   overflow: hidden;
 }
 .menu-round {
   width: 100%;
-  height: 30px;
+  height: 60px;
 }
 .menu {
   display: flex;
-  padding-bottom: 20px;
+  height: 60px;
   max-width: 500px;
   margin: 0 auto;
   justify-content: space-between;
   white-space: nowrap;
+  align-items: center;
 }
 .menu-text {
   cursor: pointer;
@@ -158,7 +158,7 @@ a {
   font-weight: 400;
   color: #666666;
   line-height: 14px;
-  padding-right: 20px;
+  padding-right: 10px;
 }
 .pad-left-20 {
   padding-left: 20px;
