@@ -124,6 +124,10 @@
 .line-height1_5 {
   line-height: 1.5
 }
+.line-height1_4 {
+  line-height: 1.4;
+}
+
 .height30 {
   height: 30px;
 }
@@ -182,6 +186,9 @@
 }
 .padding26 {
   padding-bottom: 26px;
+}
+.padding-b15 {
+  padding-bottom: 15px;
 }
 .text-center {
   text-align: center
