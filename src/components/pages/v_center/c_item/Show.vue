@@ -250,7 +250,7 @@
 
                           <p v-if="d.confirm === 0" class="flex-1">
                             <el-upload
-                              class=""
+                              ref="upload"
                               :action="uploadUrl"
                               :on-change="handleChange"
                               :on-progress="stageUploadProgress"
@@ -261,7 +261,8 @@
                               :on-error="uploadStageError"
                               :on-success="uploadStageSuccess"
                               :before-upload="beforeStageUpload"
-                              list-type="text">
+                              list-type="text"
+                              :auto-upload="false">
                               <el-button
                                   size="small"
                                   class="is-custom upload_btn"
@@ -640,6 +641,7 @@
     },
     data () {
       return {
+        currentStageId: '', // 阶段id
         isClose: false,
         showStickCompanyBtn: true,
         comfirmLoadingBtn: false,
@@ -730,6 +732,9 @@
       }
     },
     methods: {
+      asyncFn() {
+
+      },
       changePriceStyle(evt) {
         if (evt === 1) {
           this.takingPriceForm.price = this.takingPriceForm.o_price
@@ -1193,6 +1198,7 @@
       // 上传阶段附件
       uplaodStageBtn(event) {
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
+        this.currentStageId = stageId
         let index = parseInt(event.currentTarget.getAttribute('index'))
         this.currentStageIndex = index
         this.uploadParam['x:type'] = 8
@@ -1214,8 +1220,6 @@
           this.$message.error('上传文件大小不能超过 50MB!')
           return false
         }
-        document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
-        this.isReady = false
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1239,6 +1243,17 @@
       handlePreview(file) {
       },
       handleChange(file) {
+        this.$http.get(api.confirmItemDelete, {params: {item_stage_id: this.currentStageId}}).then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$refs.upload.submit()
+            document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
+            this.isReady = false
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
       },
       sliceImgName(params) {
         return sliceImgName(params)
