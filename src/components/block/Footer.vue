@@ -7,7 +7,7 @@
           <router-link :to="{name: 'home'}">首页</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">设计案例</router-link>
+          <router-link :to="{name: 'design_case'}">设计案例</router-link>
         </p>
         <p>
           <router-link v-if="!isMob" :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
