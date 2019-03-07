@@ -77,9 +77,12 @@
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
+              ref="upload"
               :on-preview="handlePreview"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
+              :on-change="changeFile"
+              :auto-upload="false"
               :on-error="uploadError"
               :data="{'token': token}"
               accept=".xlsx"
@@ -663,15 +666,30 @@ export default {
     handlePreview(file) {
       console.log(file)
     },
+    changeFile(file) {
+      if (file.status === 'ready') {
+        this.$confirm('是否确认上传', '确认信息', {
+          distinguishCancelAndClose: true,
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$refs.upload.submit()
+        }).catch(() => {
+          this.$refs.upload.clearFiles()
+          this.$message.info('取消上传')
+        })
+      }
+    },
     beforeAvatarUpload(file) {
-      // const isXLSX = file.type === 'xlsx'
       console.log(file)
+      // const isXLSX = file.type === 'xlsx'
       // const isLt2M = file.size / 1024 / 1024 < 2
       // if (!isXLSX) {
-      //   this.$message.error('上传头像图片只能是 XLSX 格式!')
+        //   this.$message.error('上传头像图片只能是 XLSX 格式!')
       // }
       // if (!isLt2M) {
-      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+        //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
     },
@@ -694,13 +712,20 @@ export default {
         } else {
           message += '  成功条数 0'
         }
-        this.$message.success(message)
+        this.$message({
+          duration: 5000,
+          type: 'success',
+          message
+        })
         this.getClueList()
       }
       if (res.meta.status_code === 403) {
-        this.$message.error(res.meta.message)
+        this.$message({
+          type: 'error',
+          duration: 5000,
+          message: res.meta.message
+        })
       }
-      console.log(res)
     },
     uploadError(err, file, fileList) {
       console.error(err)

@@ -20,22 +20,22 @@
         <div class="header-bot-left">受到500+企业信赖</div>
         <div class="header-bot-right">
           <el-row align="middle" class="header-row" type="flex">
-            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
+            <el-col :xs="8" :sm="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img1"></div>
             </el-col>
-            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
+            <el-col :xs="8" :sm="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img2"></div>
             </el-col>
-            <el-col :xs="8" :md="4">
+            <el-col :xs="8" :sm="8" :md="4">
               <div class="bot-right-img3"></div>
             </el-col>
-            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
+            <el-col :xs="8" :sm="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img4"></div>
             </el-col>
-            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
+            <el-col :xs="8" :sm="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img5"></div>
             </el-col>
-            <el-col :xs="8" :md="4">
+            <el-col :xs="8" :sm="8" :md="4">
               <div class="bot-right-img6"></div>
             </el-col>
           </el-row>
@@ -484,14 +484,14 @@
             <div class="slide-content container">
               <div class="slide-left">
                 <div class="slide-left_c">
-                  <p :class="['slide-company', 'slide' + index]"><img v-lazy="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
+                  <p :class="['slide-company', 'slide' + index]"><img :src="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
                   <h4 class="slide-title">{{ele.title}}</h4>
                   <p class="slide-sales">{{ele.sales}}</p>
                   <p class="slide-intro">{{ele.intro}}</p>
                 </div>
               </div>
-              <a class="slide-right" :href="ele.clickUrl">
-                <img v-lazy="ele.image" :alt="ele.title">
+              <a class="slide-right">
+                <img :src="ele.image" :alt="ele.title">
               </a>
             </div>
           </swiper-slide>
@@ -910,6 +910,8 @@
     box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
     border-radius: 6px;
     height: 434px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .level-top {
     height: 144px;
@@ -1348,7 +1350,7 @@
     font-weight: 400;
     color: rgba(102,102,102,1);
     line-height: 20px;
-    padding-top: 14px;
+    padding: 14px 5px 0 5px;
   }
   .in {
     padding-top: 60px;
@@ -1824,11 +1826,42 @@
     .slide h3 {
       font-size: 4rem
     }
+
+    .header-bot {
+      display: block;
+    }
+    .header-bot-left {
+      text-align: center;
+      width: 100%;
+      line-height: 16px;
+      padding-top: 20px;
+    }
+    .header-bot-right {
+      margin: 0 auto;
+    }
+    .header-row {
+      padding: 10px;
+    }
+    .header-bot-round {
+      min-height: 90px;
+    }
+    .bot-right-img4 {
+      margin-top: 10px;
+    }
+    .bot-right-img5 {
+      margin-top: 10px;
+    }
+    .bot-right-img6 {
+      margin-top: 10px;
+    }
   }
 
   @media screen and (max-width: 767px) {
     .container {
       padding: 0 10px
+    }
+    .header-bot-right {
+      width: 100%;
     }
     .slide .container {
       display: block;
@@ -1876,24 +1909,6 @@
       display: flex;
       flex-direction: column-reverse;
     }
-    .header-bot {
-      display: block;
-    }
-    .header-bot-left {
-      text-align: center;
-      width: 100%;
-      line-height: 16px;
-      padding-top: 20px;
-    }
-    .header-bot-right {
-      width: 100%;
-    }
-    .header-row {
-      padding: 10px;
-    }
-    .header-bot-round {
-      min-height: 90px;
-    }
     .three-serve-row {
       justify-content: center;
     }
@@ -1934,6 +1949,7 @@
       padding: 20px 10px 10px 10px;
     }
     .innovation-border {
+      margin: 0 auto;
       margin-top: 10px;
     }
     .serve-level {
