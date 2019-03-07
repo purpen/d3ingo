@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="top-main">
-        <a class="enter">立即入驻</a>
+        <a class="enter" @click="dialogVisible = true">立即入驻</a>
         <img :src="require('assets/images/home/spread/pc/m_top.png')" alt="">
     </div>
     <div class="advantage contant">
@@ -232,16 +232,51 @@
     <footer class="">
       <img :src="require('assets/images/home/spread/pc/m_foot.png')" alt="">
       <h5 class="sub-text">还在等什么，快来加入我们吧!</h5>
-      <a class="enter">立即入驻</a>
+      <a class="enter" @click="dialogVisible = true">立即入驻</a>
     </footer>
+    <el-dialog
+      title="立即入驻"
+      center
+      :visible.sync="dialogVisible"
+      width="80%">
+      <p class="tc-6 line-height1_5 fw-4 fz-16 text-center">请复制以下链接到PC端进行操作</p>
+      <p class="blank5 is-exception fz-14 line-height1_5 text-center">{{link}}</p>
+      <span slot="footer" class="dialog-footer">
+      <el-button type="primary" class="btn-link" @click="copyLink">复制链接</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 <script>
+import Clipboard from 'clipboard'
 export default {
   name: 'm_spread_design',
   data() {
     return {
-
+      dialogVisible: false,
+      link: 'https://saas.taihuoniao.com/register'
+    }
+  },
+  methods: {
+    copyLink() {
+      let clipboard = null
+      if (this.link) {
+        clipboard = new Clipboard('.btn-link', {
+          text: () => this.link
+        })
+        // this.$message.success('复制成功')
+      }
+      console.log(clipboard)
+    }
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    }
+  },
+  created() {
+    if (!this.isMob) {
+      this.$router.push({name: 'spreadDesign'})
     }
   }
 }
@@ -400,7 +435,7 @@ export default {
 }
 footer {
   position: relative;
-  margin-bottom: -50px;
+  margin-bottom: -51px;
 }
 footer > img {
   width: 100%;
