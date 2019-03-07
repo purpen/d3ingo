@@ -24,11 +24,11 @@
             <div class="user-info-top clearfix">
               <div class="fl clearfix flex-a-c">
                 <div class="user-name fl margin-r20">
-                  <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" max-length="20"></el-input>
+                  <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" maxlength="20"></el-input>
                   <span v-else>{{userForm.name}}</span>
                 </div>
                 <div class="user-phone fl margin-r20">
-                  <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                  <el-input v-if="!currentId" v-model.trim="userForm.phone" maxlength="11" placeholder="请填写用户手机号" size="small"></el-input>
                   <span v-else>{{userForm.phone}}</span>
                 </div>
                 <div class="">
@@ -1170,7 +1170,8 @@ export default {
 
       boolClueStatus: false,
       currentStatus: '',
-      ClueStatusRemarks: '' // 更改状态备注
+      ClueStatusRemarks: '', // 更改状态备注
+      isOpen: true
     }
   },
   methods: {
@@ -1335,8 +1336,9 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.option = 'followLog'
-          this.getUserInfo(this.currentId)
-          this.getUserProject()
+          this.getUserInfo()
+          this.getLogList()
+          // this.getUserProject()
         }
       }
     },
@@ -1351,8 +1353,9 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
           this.option = 'followLog'
-          this.getUserInfo(this.currentId)
-          this.getUserProject()
+          this.getUserInfo()
+          this.getLogList()
+          // this.getUserProject()
         }
       }
     },
@@ -1415,7 +1418,6 @@ export default {
         this.$message.error(error.message)
         this.userLoading = false
       })
-      this.getLogList()
     },
     showClueDialog(status) {
       this.boolClueStatus = true
@@ -1431,22 +1433,26 @@ export default {
         this.$message.error('请填写备注')
         return
       }
+      if (!this.isOpen) return
+      this.isOpen = false
       let row = {
         new_status: this.currentStatus,
         clue_ids: [this.currentId],
         log: this.followVal
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        this.isOpen = true
         if (res.data.meta.status_code === 200) {
+          this.boolClueStatus = false
           this.$message.success('标记成功')
           this.followVal = ''
-          this.boolClueStatus = false
           this.getUserInfo()
           this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        this.isOpen = true
         this.$message.error(error.message)
       })
     },
@@ -1748,6 +1754,7 @@ export default {
           this.boolFollowLog = false
           this.followTime = ''
           this.getLogList()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
           this.boolFollowLog = false
@@ -2175,6 +2182,7 @@ export default {
         this.option = 'followLog'
       }
       this.getUserInfo()
+      this.getLogList()
     } else {
       this.userForm.execute_user_id = this.userId
     }
