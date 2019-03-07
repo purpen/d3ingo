@@ -38,7 +38,7 @@
                       <template slot-scope="scope">
                         <div v-if="scope.row.name === '相关附件'">
                           <p v-for="(d, index) in scope.row.image" :key="index">
-                            <a :href="d.file" target="_blank">{{ d.name }}</a>
+                            <a :href="d.file" target="_blank">{{ d.name | sliceImgName }}</a>
                           </p>
                         </div>
                         <div v-else>
@@ -56,7 +56,7 @@
                           <i v-if="!ele.image" class="fr">{{ele.title}}</i>
                           <div v-if="ele.name === '相关附件'" class="fr">
                             <p v-for="(d, index) in ele.image" :key="index">
-                              <a :href="d.file" target="_blank">{{ d.name }}</a>
+                              <a :href="d.file" target="_blank">{{ d.name | sliceImgName }}</a>
                             </p>
                           </div>
                         </li>
@@ -286,7 +286,7 @@
                           <div class="contract-left">
                             <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
                             <div class="contract-content">
-                              <p>{{ asset.name }}</p>
+                              <p>{{ asset.name | sliceImgName }}</p>
                               <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                             </div>
                           </div>
@@ -548,6 +548,7 @@
 <script>
 import api from '@/api/api'
 import vItemProgress from '@/components/block/ItemProgress'
+import { sliceImgName } from '@/assets/js/common'
 const vQuoteView = () => import('@/components/block/QuoteView')
 export default {
   name: 'vcenter_item_show',
@@ -1394,6 +1395,11 @@ export default {
   },
   updated: function() {
     // this.anchor
+  },
+  filters: {
+    sliceImgName(val) {
+      return sliceImgName(val)
+    }
   }
 }
 </script>
