@@ -566,8 +566,8 @@ module.exports = [
     path: '/content_manage/list',
     name: 'contentManageList',
     meta: {
-      title: '帮助中心列表',
-      requireAuth: true
+      title: '帮助中心列表'
+      // requireAuth: true
     },
     component: require('@/components/pages/content_manage/List')
   },
@@ -575,8 +575,8 @@ module.exports = [
     path: '/content_manage/AssistShow',
     name: 'contentManageAssistShow',
     meta: {
-      title: '帮助中心查看',
-      requireAuth: true
+      title: '帮助中心查看'
+      // requireAuth: true
     },
     component: require('@/components/pages/content_manage/AssistShow')
   }
