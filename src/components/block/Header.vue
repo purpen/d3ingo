@@ -127,9 +127,6 @@
             <li @click="closeMenu">
               <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
-            <li @click="closeMenu">
-              <router-link :route="menu.content_manage">帮助</router-link>
-            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
@@ -140,7 +137,7 @@
               <router-link :to="menu.mobile_login">成果交易会</router-link>
             </li>
             <li @click="closeMenu">
-              <router-link :to="menu.mobile_login">帮助</router-link>
+              <router-link :to="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" class="m-Sign">
             <span @click="closeMenu" v-if="!isLogin">
