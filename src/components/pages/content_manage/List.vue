@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div class="header-img">
-      <span v-if="!isMob">太火鸟设计交易 帮助中心</span>
-      <div v-else>
+    <div class="header-img" v-if="!isMob">
+      <span>太火鸟设计交易 帮助中心</span>
+    </div>
+    <div class="header-isMobImg" v-else>
+      <img src="../../../assets/images/works/HelpMob.png" alt="">
+      <div>
         <p>太火鸟设计交易</p>
         <p>帮助中心</p>
       </div>
@@ -97,12 +100,24 @@
     font-size: 40px;
     background: url('../../../assets/images/works/HelpBG.png') no-repeat center/ 100% 100%;
   }
-  .header-img div {
-    padding-top: 60px;
-  }
-  .header-img p {
-    line-height: 90px;
+  .header-isMobImg {
+    text-align: center;
+    color: #fff;
     font-size: 40px;
+    position: relative;
+  }
+  .header-isMobImg img {
+    width: 100%;
+  }
+  .header-isMobImg div {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: 0;
+    width: 100%;
+  }
+  .header-isMobImg p {
+    font-size: 40px;
+    line-height: 60px;
   }
   .tabs {
     text-align: center;
@@ -117,6 +132,7 @@
     color: #666;
     border: 1px solid #e6e6e6;
     cursor: pointer;
+    border-radius: 4px;
   }
   .tabs span:first-child {
     margin-right: 20px;
@@ -127,6 +143,7 @@
   .help-content h3 {
     font-size: 24px;
     margin: 30px 0 20px 0;
+    color: #222;
   }
   .help-title {
     font-size: 16px;
@@ -173,5 +190,10 @@
   }
   .border-mob {
     border: none;
+  }
+  @media screen and (max-width: 400px) {
+    .tabs span {
+      width: 120px;
+    }
   }
 </style>
