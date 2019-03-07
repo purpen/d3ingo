@@ -23,11 +23,11 @@
               </a>
               <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="/commonly_sites" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计服务商入驻</el-menu-item>
+              <el-menu-item index="/spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
-              <el-menu-item index="/innovation_index" :route="menu.innovation_index">帮助</el-menu-item>
+              <el-menu-item index="/content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
             </el-menu>
           </hgroup>
@@ -127,8 +127,11 @@
             <li @click="closeMenu">
               <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
+            <li @click="closeMenu">
+              <router-link :route="menu.content_manage">帮助</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
-              <router-link :to="menu.design">设计服务商入驻</router-link>
+              <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
@@ -270,7 +273,7 @@
               <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
-              <router-link :to="menu.design">设计服务商入驻</router-link>
+              <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
@@ -278,8 +281,11 @@
             <li>
               <router-link :to="menu.mobile_login">成果交易会</router-link>
             </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.mobile_login">帮助</router-link>
+            <li>
+              <router-link :route="menu.content_manage">帮助</router-link>
+            </li>
+            <li @click="closeMenu" v-show="!isLogin">
+              <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
             <li @click="closeMenu" class="m-Sign">
             <span @click="closeMenu" v-if="!isLogin">
@@ -327,6 +333,8 @@
           home: {path: '/home'},
           // server: {path: '/server'},
           design: {path: '/server_design'},
+          spread_design: {path: '/spread_design'},
+          m_spread_design: {path: '/m_spread_design'},
           // article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
           demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登录后首页
@@ -339,7 +347,8 @@
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
-          identity: {path: '/identity'}
+          identity: {path: '/identity'},
+          content_manage: {path: '/content_manage/list'}
         },
         menuHide: true,
         msgHide: true,

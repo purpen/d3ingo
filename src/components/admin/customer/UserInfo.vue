@@ -313,9 +313,9 @@
                 <div class="project-form-table">
                   <ul>
                     <li v-for="(item, index) in projectList" :key="index" class="project-li">
-                      <el-form label-position="top" :model="projectForm" 
+                      <el-form label-position="top" :model="projectForm"
                           :rules="ruleProjectForm"
-                          :ref="'ruleProjectForm'+ index" 
+                          :ref="'ruleProjectForm'+ index"
                           label-width="80px">
                         <div class="project-header clearfix">
                             <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
@@ -325,7 +325,7 @@
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
                                 <span class="link-item-name">{{item.item_name}}
-                                  <i v-if="isHasPower" class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                  <i v-if="isHasPower" class="close-icon-solid"></i>
                                 </span>
                               </p>
                               <div v-else>
@@ -497,7 +497,7 @@
                                 <el-col :xs="24" :sm="20" :md="16" :lg="16">
                                   <div class="flex-a-c margin-b22">
                                       <span class="font14">对接设计服务商 </span>{{i + 1}}
-                                    <div>
+                                    <!-- <div>
                                       <el-popover
                                         placement="right"
                                         width="100"
@@ -505,7 +505,7 @@
                                       <img :src="QRCode2" alt="正在生成二维码" class="qrcode">
                                       <el-button slot="reference" v-if="item.failure !== 1" type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
                                       </el-popover>
-                                    </div>
+                                    </div> -->
                                   </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -774,7 +774,7 @@
                 </div>
 
               </div>
-              
+            
               <div class="card-body-center" v-if="option === 'progress'">
                 <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
                 <ul class="progress-p-content">
@@ -1116,7 +1116,10 @@ export default {
       boolAddProject: false,
       boolEditProject: false,
       currentProjectId: '',
-      projectForm: {},
+      projectForm: {
+        item_province: '',
+        item_city: ''
+      },
       failureCause: '', // 项目失败原因
       itemId: '',
 
@@ -1542,8 +1545,8 @@ export default {
       })
     },
     createdProject() { // 点击添加按钮
-      this.boolAddProject = true
       this.projectForm = {}
+      this.boolAddProject = true
     },
     createProjectForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -1771,6 +1774,7 @@ export default {
         this.$message.error('请先保存项目')
         return
       }
+      this.projectForm = {}
       const id = d.item_id
       if (d && id) {
         this.currentProjectId = id
@@ -1781,13 +1785,15 @@ export default {
             this.$set(this.projectForm, 'type', d.type)
             this.$set(this.projectForm, 'cycle', d.cycle)
             this.$set(this.projectForm, 'design_cost', d.design_cost)
-            this.$set(this.projectForm, 'item_province', d.item_province)
-            this.$set(this.projectForm, 'item_city', d.item_city)
             this.$set(this.projectForm, 'summary', d.summary)
             this.$set(this.projectForm, 'industry', d.industry)
           }
         })
         this.boolEditProject = true
+        this.$nextTick(_ => {
+          this.projectForm.item_province = d.item_province
+          this.projectForm.item_city = d.item_city
+        })
       }
     },
     markProjectFailure(id) { // 标记项目失败
@@ -2571,11 +2577,11 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-.link-item-name:hover i {
+/* .link-item-name:hover i {
   background: rgba(0,0,0,.6);
   color: #ffffff;
   opacity: 1;
-}
+} */
 
 .p-t-summary {
   line-height: 1.5;

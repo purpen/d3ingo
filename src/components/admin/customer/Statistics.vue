@@ -954,8 +954,9 @@ export default {
         color: ['#FFCDCF'],
         tooltip: {
           trigger: 'axis',
+          // backgroundColor: '#FF5A5F',
           axisPointer: {
-            type: 'shadow'
+            type: 'none'
           }
         },
         grid: {
@@ -984,7 +985,12 @@ export default {
           {
             name: '客户总数',
             type: 'bar',
-            barWidth: '60%',
+            barWidth: '80%',
+            emphasis: {
+              itemStyle: {
+                color: '#FF5A5F'
+              }
+            },
             data: [0, 0, 0, 0, 0, 0, 0],
             tooltip: {
               formatter: '{b}<br />潜在用户: 123<br />对接设计: 123<br />签订合作: 222'
@@ -1549,7 +1555,6 @@ export default {
           }
         }
       }
-      console.log('this.polar6.series', this.polar6.series)
     },
     // 筛选客户
     updatecustomer(val) {
@@ -1736,7 +1741,7 @@ export default {
             end_time: '',
             source: 0
           },
-          times: '',
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
           show: false
         }
       } else if (form === 'customerNumber') {
@@ -1748,7 +1753,7 @@ export default {
             source: '0'
           },
           count: 0,
-          times: '',
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
           show: false
         }
       } else if (form === 'place') {
@@ -1759,7 +1764,7 @@ export default {
             start_time: '',
             end_time: ''
           },
-          times: '',
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
           show: false
         }
       } else if (form === 'itemType') {
@@ -1769,7 +1774,7 @@ export default {
             start_time: '',
             end_time: ''
           },
-          times: '', // 项目类型时间
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
           show: false
         }
       } else if (form === 'area') {
@@ -1779,7 +1784,7 @@ export default {
             start_time: '',
             end_time: ''
           },
-          times: '', // 地区时间
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
           show: false
         }
       } else if (form === 'itemBudget') {
@@ -1790,7 +1795,7 @@ export default {
             start_time: '',
             end_time: ''
           },
-          times: '',
+          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
           show: false
         }
       }
@@ -1813,7 +1818,6 @@ export default {
           res
           if (type === 1) {
             // 商机转化
-            console.log('res111', res)
             let arr = [
               {name: '潜在用户', value: 90, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
               {name: '对接设计', value: 60, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
@@ -1939,7 +1943,6 @@ export default {
             // 项目预算
             this.budgetList = res
             if (this.itemBudget.data.source) {
-              console.log(this.itemBudget.data.source)
               this.updateBudget(this.itemBudget.data.source)
             } else {
               let headlines6 = []
