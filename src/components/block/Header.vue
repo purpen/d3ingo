@@ -27,7 +27,7 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
-              <el-menu-item index="/innovation_index" :route="menu.innovation_index">帮助</el-menu-item>
+              <el-menu-item index="/content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
             </el-menu>
           </hgroup>
@@ -126,6 +126,9 @@
             </li> -->
             <li @click="closeMenu">
               <router-link :to="menu.design_general_list">设计案例</router-link>
+            </li>
+            <li @click="closeMenu">
+              <router-link :route="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
@@ -278,8 +281,11 @@
             <li>
               <router-link :to="menu.mobile_login">成果交易会</router-link>
             </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.mobile_login">帮助</router-link>
+            <li>
+              <router-link :route="menu.content_manage">帮助</router-link>
+            </li>
+            <li @click="closeMenu" v-show="!isLogin">
+              <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
             <li @click="closeMenu" class="m-Sign">
             <span @click="closeMenu" v-if="!isLogin">
@@ -341,7 +347,8 @@
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
-          identity: {path: '/identity'}
+          identity: {path: '/identity'},
+          content_manage: {path: '/content_manage/list'}
         },
         menuHide: true,
         msgHide: true,

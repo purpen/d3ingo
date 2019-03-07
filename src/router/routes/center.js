@@ -561,5 +561,23 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/v_center/design_case/UploadWork')
+  },
+  {
+    path: '/content_manage/list',
+    name: 'contentManageList',
+    meta: {
+      title: '帮助中心列表',
+      requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/List')
+  },
+  {
+    path: '/content_manage/AssistShow',
+    name: 'contentManageAssistShow',
+    meta: {
+      title: '帮助中心查看',
+      requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/AssistShow')
   }
 ]
