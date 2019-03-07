@@ -13,14 +13,14 @@
               </div>
               <div class="advantage-title">
                 <p class="sub-title2">商机推送</p>
-                <p class="caption-txt text-center">入驻平台设计公司, </p>
-                <p  class="caption-txt text-center">一年节省X万推广预算</p>
+                <p class="caption-txt text-center">入驻平台设计公司，</p>
+                <p  class="caption-txt text-center">一年节省X万推广预算。</p>
               </div>
             </el-col>
             
             <el-col :span="12">
               <div class="img-box">
-                <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                <img :src="require('assets/images/home/spread/pc/PreciseDemand@2x.png')" alt="">
               </div>
               <div class="advantage-title">
                 <p class="sub-title2">精准需求</p>
@@ -31,7 +31,7 @@
             
             <el-col :span="12">
               <div class="img-box">
-                <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                <img :src="require('assets/images/home/spread/pc/IncomeProtection@2x.png')" alt="">
               </div>
               <div class="advantage-title">
                 <p class="sub-title2">收益保障</p>
@@ -42,7 +42,7 @@
             
             <el-col :span="12">
               <div class="img-box">
-                <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                <img :src="require('assets/images/home/spread/pc/IntegratedPackaging@2x.png')" alt="">
               </div>
               <div class="advantage-title">
                 <p class="sub-title2">一体化包装</p>
@@ -131,7 +131,7 @@
           <el-row :gutter="20">
               <el-col :xs="12" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/CollaborativeSoftware@2x.png')" alt="">
                 </div>
                 <div class="advantage-title padding-b20">
                   <p class="sub-title2">设计专属协作软件</p>
@@ -141,11 +141,11 @@
               
               <el-col :xs="12" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/DesignResources@2x.png')" alt="">
                 </div>
                 <div class="advantage-title padding-b20">
                   <p class="sub-title2">全网设计资源</p>
-                    <p class="caption-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="caption-txt">收录全网设计资源，行业趋势报告、各大奖项获奖案例展示、创意灵感网站等为您提供全球设计创意库。</p>
                 </div>
               </el-col>
               
@@ -155,17 +155,17 @@
                 </div>
                 <div class="advantage-title padding-b20">
                   <p class="sub-title2">企业名片推广</p>
-                    <p class="caption-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="caption-txt">为您的公司提供整体介绍、设计案例、创始人专访等全方位包装，并通过太火鸟全媒体平台推广。</p>
                 </div>
               </el-col>
               
               <el-col :xs="12" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/DesignAssistant@2x.png')" alt="">
                 </div>
                 <div class="advantage-title padding-b20">
                   <p class="sub-title2">智能设计助手</p>
-                    <p class="caption-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="caption-txt">从设计需求智能匹配开始，快速响应双方反馈，帮助您第一时间解决客户问题，高效完成项目。</p>
                 </div>
               </el-col>
           </el-row>
@@ -185,7 +185,7 @@
               
               <el-col :xs="8" :sm="8" :md="8" :lg="8">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/copyrightProtection@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/deliver@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="sub-title2">保证款项交付</p>
