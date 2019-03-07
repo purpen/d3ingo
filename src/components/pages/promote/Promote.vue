@@ -1020,7 +1020,7 @@
     text-align: center;
   }
   .six-img-round {
-    width: 1180px;
+    max-width: 1180px;
     padding-top: 30px;
     margin: 0 auto;
   }
@@ -1159,7 +1159,7 @@
   }
   .pc-can-round {
     height: 293px;
-    width: 1180px;
+    max-width: 1180px;
     padding-top: 30px;
     display: flex;
     flex-direction: row;
@@ -1226,7 +1226,7 @@
   }
   .pc-trust-three {
     display: flex;
-    width: 1180px;
+    max-width: 1180px;
     margin: 0 auto;
     height: 275px;
   }
@@ -1275,7 +1275,7 @@
     padding: 40px 0;
   }
   .pc-customer-imgs {
-    width: 1180px;
+    max-width: 1180px;
     display: flex;
     margin: 0 auto;
     height: 60px;
