@@ -1,29 +1,34 @@
 <template>
   <div>
     <div class="header-img">
-      太火鸟设计交易 帮助中心
+      <span v-if="!isMob">太火鸟设计交易 帮助中心</span>
+      <div v-else>
+        <p>太火鸟设计交易</p>
+        <p>帮助中心</p>
+      </div>
     </div>
     <div class="tabs">
       <span @click="updateType(1)" :class="{'bg-red': sonType === 1}">客户</span>
       <span @click="updateType(2)" :class="{'bg-red': sonType === 2}">设计服务商</span>
     </div>
-    <el-row>
-      <el-col :span="18" :offset="3">
-        <div>
-          <el-row class="card-list">
-            <el-col :span="8" v-for="(c, index) in categoryList" :key="index">
+    <el-row v-loading="isLoading">
+      <el-col :span="18" :offset="3" class="min-box">
+        <div v-if="!isLoading">
+          <el-row :class="['card-list', {'border-mob': isMob}]">
+            <el-col :span="isMob?24: 8" v-for="(c, index) in categoryList" :key="index">
               <div class="help-content">
-                <div class="hr" v-if="index%3 === 0">
+                <div class="hr" v-if="index%3 === 0&& !isMob">
                 </div>
                 <h3>
-                  <router-link :to="{name: 'contentManageAssistShow', params: {categoryId: c.id}}">{{c.name}}</router-link>
+                  <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" v-if="!isMob">{{c.name}}</router-link>
+                  <span v-else>{{c.name}}</span>
                 </h3>
                 <div>
                   <p class="help-title" v-for="(a, indexa) in c.assist" :key="indexa">
-                    <router-link :to="{name: 'contentManageAssistShow', params: {scrollTop: a.id, categoryId: c.id}}">{{a.title}}</router-link>
+                    <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}, params: {scrollTop: a.id}}">{{a.title}}</router-link>
                   </p>
                 </div>
-                <p class="help-go"><router-link :to="{name: 'contentManageAssistShow', params: {categoryId: c.id}}" class="tc-red">进一步了解
+                <p class="help-go" v-if="!isMob"><router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" class="tc-red">进一步了解
                   <i></i>
                   </router-link></p>
               </div>
@@ -41,7 +46,13 @@
     data() {
       return {
         sonType: 1,
-        categoryList: []
+        categoryList: [],
+        isLoading: false
+      }
+    },
+    computed: {
+      isMob() {
+        return this.$store.state.event.isMob
       }
     },
     methods: {
@@ -56,11 +67,13 @@
         if (type) {
           this.sonType = type
         }
+        this.isLoading = true
         this.$http.get(api.assistCategoryList, {params: {son_type: this.sonType}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
               this.categoryList = response.data.data
             }
+            this.isLoading = false
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -83,6 +96,13 @@
     color: #fff;
     font-size: 40px;
     background: url('../../../assets/images/works/HelpBG.png') no-repeat center/ 100% 100%;
+  }
+  .header-img div {
+    padding-top: 60px;
+  }
+  .header-img p {
+    line-height: 90px;
+    font-size: 40px;
   }
   .tabs {
     text-align: center;
@@ -147,5 +167,11 @@
     top: 6px;
     right: -20px;
     background: url('../../../assets/images/icon/More.png') no-repeat center/ 14px 8px;
+  }
+  .min-box {
+    min-height: 200px;
+  }
+  .border-mob {
+    border: none;
   }
 </style>

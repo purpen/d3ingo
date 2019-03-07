@@ -1,33 +1,39 @@
 <template>
-  <div class="assist-box">
-    <p class="go-list">
-      <router-link :to="{name: 'contentManageList'}">返回帮助中心</router-link>
+  <div :class="[{'assist-box': !isMob}, {'assist-boxMob': isMob}]">
+    <p :class="['go-list', {'go-listMob': isMob}]">
+      <router-link :to="{name: 'contentManageList'}">{{isMob?'':'返回'}}帮助中心</router-link>
     </p>
-    <el-row :gutter="80">
-      <el-col :span="4">
-        <div class="aside">
-          <h3>客户</h3>
-          <ul>
-            <li v-for="(c, indexc) in customerList" :key="indexc" :class="{'tc-red': parseInt(categoryId) === c.id}" @click="getAssistList(c.id)">{{c.name}}</li>
-          </ul>
-          <h3>设计服务商</h3>
-          <ul>
-            <li v-for="(d, indexd) in designList" :key="indexd" :class="{'tc-red': parseInt(categoryId) === d.id}" @click="getAssistList(d.id)">
-              {{d.name}}
-            </li>
-          </ul>
-        </div>
-      </el-col>
-      <el-col :span="20">
-        <div>
-          <div v-for="(a, indexa) in assistList" :key="indexa" :ref="a.id+'top'"  class="assist-list">
-            <p class="assist-title">{{a.title}}</p>
-            <p v-html="a.content">
-            </p>
+    <div v-loading="isLoadingAll">
+      <div class="aside-right" v-if="!isMob">
+          <div class="aside" v-show="!isLoadingAll">
+            <h3>客户</h3>
+            <ul>
+              <li v-for="(c, indexc) in customerList" :key="indexc" :class="{'tc-red': parseInt(categoryId) === c.id}" @click="getAssistList(c.id)">{{c.name}}</li>
+            </ul>
+            <h3>设计服务商</h3>
+            <ul>
+              <li v-for="(d, indexd) in designList" :key="indexd" :class="{'tc-red': parseInt(categoryId) === d.id}" @click="getAssistList(d.id)">
+                {{d.name}}
+              </li>
+            </ul>
           </div>
-        </div>
-      </el-col>
-    </el-row>
+      </div>
+      <div class="assist-center" ref="center">
+          <div v-show="!isLoadingAll">
+            <div v-for="(a, indexa) in assistList" :key="indexa" :ref="a.id+'top'"  class="assist-list">
+              <p class="assist-title">{{a.title}}</p>
+              <p v-html="a.content">
+              </p>
+            </div>
+          </div>
+      </div>
+      <!-- <el-row class="min-box" :gutter="80">
+        <el-col :span="isMob?0:4">
+        </el-col>
+        <el-col :span="isMob?24:20">
+        </el-col>
+      </el-row> -->
+    </div>
   </div>
 </template>
 <script>
@@ -39,7 +45,21 @@
         categoryId: 0, // 当前id数
         assistList: [], // 主体部分
         customerList: [], // 客户
+        isLoadingAll: false, // 所有加载中
+        isloading: false, // 内容主体加载中
         designList: [] // 设计服务商
+      }
+    },
+    computed: {
+      isMob() {
+        return this.$store.state.event.isMob
+      }
+    },
+    watch: {
+      categoryId(val) {
+        if (val) {
+          this.$route.query.categoryId = this.categoryId
+        }
       }
     },
     methods: {
@@ -53,6 +73,7 @@
         })
       },
       getAssistList(id, first) {
+        this.isLoadingAll = true
         this.categoryId = id
         this.$http.get(api.assistAssistList, {params: {category_id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -64,6 +85,7 @@
             } else {
               this.assistList = []
             }
+            this.isLoadingAll = false
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -76,6 +98,7 @@
         if (type) {
           this.sonType = type
         }
+        this.isLoadingAll = true
         this.$http.get(api.assistCategoryList).then((response) => {
           if (response.data.meta.status_code === 200) {
             let customer = []
@@ -87,9 +110,9 @@
                 design.push(ele)
               }
             })
-            console.log('res', response.data.data)
             this.customerList = customer
             this.designList = design
+            this.isLoadingAll = false
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -100,8 +123,7 @@
       }
     },
     created() {
-      console.log(this.$route.params.categoryId)
-      this.categoryId = this.$route.params.categoryId
+      this.categoryId = this.$route.query.categoryId
       this.getAssistList(this.categoryId, 1)
       this.getCategory()
     }
@@ -114,12 +136,20 @@
   .assist-box {
     margin: 0 120px;
   }
+  .assist-boxMob {
+    margin: 0 30px;
+  }
   .go-list {
     position: relative;
     padding-left: 20px;
     color: #666;
     line-height: 20px;
     margin-top: 20px;
+  }
+  .go-listMob {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 18px;
   }
   .go-list::before {
     content: '';
@@ -142,6 +172,9 @@
     color: #222;
     margin: 15px 0 5px 0;
   }
+  .aside {
+    height: 100vh;
+  }
   .aside ul li {
     line-height: 34px;
     font-size: 14px;
@@ -154,5 +187,15 @@
   .assist-list p {
     color: #666;
     line-height: 30px;
+  }
+  .aside-right {
+    width: 230px;
+    float: left;
+    min-height: 100vh;
+  }
+  .assist-center {
+    width: calc(100% - 230px);
+    float: left;
+    min-height: 100vh;
   }
 </style>
