@@ -495,7 +495,7 @@
                                 <el-col :xs="24" :sm="20" :md="16" :lg="16">
                                   <div class="flex-a-c margin-b22">
                                       <span class="font14">对接设计服务商 </span>{{i + 1}}
-                                    <div>
+                                    <!-- <div>
                                       <el-popover
                                         placement="right"
                                         width="100"
@@ -503,7 +503,7 @@
                                       <img :src="QRCode2" alt="正在生成二维码" class="qrcode">
                                       <el-button slot="reference" v-if="item.failure !== 1" type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
                                       </el-popover>
-                                    </div>
+                                    </div> -->
                                   </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
