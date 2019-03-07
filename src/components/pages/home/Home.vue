@@ -470,7 +470,10 @@
       </div>
     </div>
     <div class="intro-round pad-top-70">
-      <div class="intro-btn" @click="toServer">
+      <div class="intro-btn" @click="toServer" v-if="!isMob">
+        <div class="intro-text">立即入驻</div>
+      </div>
+      <div class="intro-btn" @click="toPrompt" v-else>
         <div class="intro-text">立即入驻</div>
       </div>
     </div>
@@ -595,6 +598,18 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      :visible.sync="prompt"
+      top="35vh"
+      width="270px"
+      class="prompt-style">
+      <div class="prompt-title">立即入驻</div>
+      <div class="prompt-text">请复制以下链接到PC端进行操作</div>
+      <div class="prompt-url" ref="url">https://saas.taihuoniao.com/register</div>
+      <div class="prompt-btn">
+        <div class="prompt-btn-text" @click="copyArticle">复制链接</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -606,6 +621,7 @@
         calcHeight: '',
         solveType: 1,
         caseList: [],
+        prompt: false,
         swiperOption: {
           pagination: '.swiper-pagination',
           paginationClickable: true,
@@ -657,8 +673,25 @@
       }
     },
     methods: {
+      copyArticle() {
+        const range = document.createRange()
+        range.selectNode(this.$refs.url)
+
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) selection.removeAllRanges()
+        selection.addRange(range)
+        document.execCommand('copy')
+        this.$message({
+          message: '复制成功',
+          type: 'success',
+          customClass: 'prompt-suc'
+        })
+      },
       toServer() {
-        this.$router.push({name: 'serverDesign'})
+        this.$router.push({name: 'register', params: {type: 2}})
+      },
+      toPrompt() {
+        this.prompt = true
       },
       release() {
         this.$router.push({name: 'itemSubmitOne'})
@@ -1768,6 +1801,45 @@
   }
   .solve-img {
     margin: 0 auto;
+  }
+  .prompt-style {
+    text-align: center;
+  }
+  .prompt-title {
+    font-size: 17px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    padding-bottom: 20px;
+  }
+  .prompt-text {
+    font-size: 15px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-bottom: 10px;
+  }
+  .prompt-url {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+    padding-bottom: 20px;
+  }
+  .prompt-btn {
+    width: 142px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    border-radius: 10px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .prompt-btn-text {
+    font-size: 15px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 40px;
   }
   
   

@@ -27,7 +27,7 @@
       <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">帮助/服务</p>
         <p>
-          <router-link :to="{name: 'server'}" class="">帮助中心</router-link>
+          <router-link :to="{name: 'contentManageList'}" class="">帮助中心</router-link>
         </p>
         <p>
           <router-link :to="{name: 'serverDesign'}" class="">交易保障</router-link>
