@@ -102,6 +102,7 @@ export default {
   designItemStartId: '/design/itemStart/{0}', // POST 确认项目开始设计
   designItemDoneId: '/design/itemDone/{0}', // POST 确认项目完成
   itemStageSend: '/itemStage/ok/status', // PUT 项目阶段发送
+  confirmItemDelete: '/itemStage/delete/isOk', // GET 判断附件是否可以删除
 
   // 合同
   contract: '/contract', // POST 保存合同

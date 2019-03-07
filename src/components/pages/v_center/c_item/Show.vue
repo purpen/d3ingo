@@ -283,7 +283,7 @@
                           </div>
                         </div>
                         <div class="contract-right">
-                          <p><a href="javascript:void(0);" @click="removeStageAsset" :asset_id="asset.id"
+                          <p><a href="javascript:void(0);" @click="removeStageAsset(asset.id, index, asset_index, d.id)" :asset_id="asset.id"
                                 :stage_index="index" :asset_index="asset_index" v-if="d.confirm === 0"><i
                             class="fa fa-times" aria-hidden="true"></i> 删除</a></p>
                           <p><a :href="asset.file + '?attname=' + asset.name" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
@@ -1159,24 +1159,36 @@
         this.comfirmLoadingBtn = false
       },
       // 删除阶段附件
-      removeStageAsset(event) {
-        let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
-        let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
-        let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
-        this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+      removeStageAsset(assetId, stageIndex, assetIndex, fileId) {
+        // let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
+        // let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
+        // let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
         const that = this
-        that.$http.delete(api.asset.format(assetId), {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              that.$message.success('删除成功')
-            } else {
-              that.$message.error(response.data.meta.message)
-            }
-          })
-          .catch(function (error) {
-            that.$message.error(error.message)
+        that.$http.get(api.confirmItemDelete, {params: {item_stage_id: fileId}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            that.$http.delete(api.asset.format(assetId), {})
+              .then(function (response) {
+                if (response.data.meta.status_code === 200) {
+                  that.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+                  that.$message.success('删除成功')
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function (error) {
+                that.$message.error(error.message)
+                return false
+              })
+          } else {
+            that.$message.error(res.data.meta.message)
             return false
-          })
+          }
+        })
+        .catch(function (error) {
+          that.$message.error(error.message)
+          return false
+        })
       },
       // 上传阶段附件
       uplaodStageBtn(event) {
