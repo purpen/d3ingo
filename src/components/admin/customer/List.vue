@@ -315,7 +315,8 @@ export default {
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: '',
-      followVal: ''
+      followVal: '',
+      isOpen: true
     }
   },
   methods: {
@@ -495,24 +496,29 @@ export default {
         this.$message.error('请填写备注原因')
         return
       }
-      let idArr = this.arrayExportIds()
-      let row = {
-        new_status: 3,
-        clue_ids: idArr,
-        log: this.followVal
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success('标记成功')
-          this.boolClueStatus = false
-          this.followVal = ''
-          this.getClueList()
-        } else {
-          this.$message.error(res.data.meta.message)
+      if (this.isOpen) {
+        this.isOpen = false
+        let idArr = this.arrayExportIds()
+        let row = {
+          new_status: 3,
+          clue_ids: idArr,
+          log: this.followVal
         }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          this.isOpen = true
+          if (res.data.meta.status_code === 200) {
+            this.$message.success('标记成功')
+            this.boolClueStatus = false
+            this.followVal = ''
+            this.getClueList()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.isOpen = true
+          this.$message.error(error.message)
+        })
+      }
     },
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
