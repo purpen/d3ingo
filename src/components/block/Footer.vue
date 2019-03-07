@@ -14,10 +14,11 @@
           <router-link v-else :to="{name: 'mSpreadDesign'}">设计服务商入驻</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">创新指数</router-link>
+          <router-link :to="{name: 'innovationHome'}">创新指数</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">成果交易会</router-link>
+          <router-link :to="{name: 'trade_fairs'}" v-if="!token">成果交易会</router-link>
+          <router-link :to="{name: 'demand_login'}" v-else>成果交易会</router-link>
         </p>
         <p>
           <router-link :to="{name: 'contact'}">数据洞察</router-link>
@@ -40,16 +41,16 @@
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">更多太火鸟产品/服务</p>
         <p>
-          <router-link :to="{name: 'trade'}" class="">设计交易</router-link>
+          <a href="https://saas.taihuoniao.com">设计交易</a>
         </p>
         <p>
-          <router-link :to="{name: 'question'}" class="">铟果</router-link>
+          <a href="https://saas.d3ingo.com">铟果</a>
         </p>
         <p>
-          <router-link :to="{name: 'terms'}" class="">铟果集</router-link>
+          <a href="https://www.taihuoniao.com/ingoset">铟果集</a>
         </p>
         <p>
-          <router-link :to="{name: 'terms'}" class="">D³IN铟立方</router-link>
+          <a href="http://d3in.taihuoniao.com">D³IN铟立方</a>
         </p>
         <p>
           <router-link :to="{name: 'terms'}" class="">增值服务</router-link>
@@ -269,7 +270,7 @@
 
   .footer .fllow .title {
     white-space: nowrap;
-    margin: 20px 20px 16px 0;
+    margin: 30px 20px 16px 0;
   }
 
   .call {

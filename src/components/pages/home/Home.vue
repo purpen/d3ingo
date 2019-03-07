@@ -250,7 +250,7 @@
                   <div class="solve-img phone-pad-20">
                     <div class="solve3-img4"></div>
                     <div class="solve-img-title">投资孵化</div>
-                    <div class="solve-img-text">联合投资孵化创业团队 打造平台产品生态链</div>
+                    <div class="solve-img-text">联合投资孵化创业团队 打造平台产品生态链。</div>
                   </div>
                 </el-col>
               </el-row>
@@ -300,7 +300,10 @@
         <el-row :gutter="20" class="case-row">
           <el-col :xs="24" :sm="8" v-for="(item, index) in caseList" :key="index">
             <div class="case-border">
-              <div class="case-header">{{item.field_val}} <span class="case-span">></span></div>
+              <div class="arrow-flex">
+                <div class="case-header">{{item.field_val}}</div>
+                <div class="case-header-arrow"></div>
+              </div>
               <div class="case-center text-a-center" @click="caseDetail(item.id)">
                 <img :src="item.cover.file" width="auto" height="100%" class="max-width-100">
               </div>
@@ -410,66 +413,66 @@
     </div>
     <div class="in">
       <div class="in-title">入驻设计服务商</div>
-      <div class="in-round pad-top-60">
-        <el-row>
-          <el-col :xs="8" :sm="4">
+      <div class="in-round pad-top-10">
+        <div class="in-flex-round">
+          <div class="in-flex-11">
             <div class="in-img1"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img2"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img3"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img4"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img5"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img6"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img7"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img8"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img9"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img10"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img12"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img13"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img14"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img15"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img16"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img17"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img18"></div>
-          </el-col>
-          <el-col :xs="8" :sm="4">
+          </div>
+          <div class="in-flex-11">
             <div class="in-img19"></div>
-          </el-col>
-        </el-row>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="intro-round pad-top-70">
+    <div class="intro-round pad-top-60">
       <div class="intro-btn" @click="toServer" v-if="!isMob">
         <div class="intro-text">立即入驻</div>
       </div>
@@ -541,7 +544,7 @@
             <div class="security-img mar-auto mar-top-10">
               <div class="security-img1"></div>
               <div class="carry-img-title">保证交易完成</div>
-              <div class="carry-img-text">设计服务商未在约定工期内完成工作时，客户有权发起维权并申请赔付，若判定成立，客户将获得赔付（赔付由设计服务商的保证金赔付和设计服务商需退还的交易款项两部分共同构成）</div>
+              <div class="carry-img-text">设计服务商未在约定工期内完成工作时，客户有权发起维权并申请赔付，若判定成立，客户将获得赔付（赔付由设计服务商的保证金赔付和设计服务商需退还的交易款项两部分共同构成）。</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
@@ -1193,14 +1196,21 @@
     padding-top: 40px;
     margin: 0 auto;
   }
+  .arrow-flex {
+    display: flex;
+  }
   .case-header {
     font-size: 18px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(34,34,34,1);
   }
-  .case-span {
-    color: #D2D2D2;
+  .case-header-arrow {
+    height: 16px;
+    width: 16px;
+    background: url("../../../assets/images/new_home/home/arrow.png") no-repeat center / contain;
+    margin-left: 5px;
+    margin-top: 1px;
   }
   .case-center {
     height: 320px;
@@ -1404,126 +1414,126 @@
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/01@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img2{
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/02@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img3 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/03@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img4 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/04@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img5 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/05@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img6 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/06@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img7 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/07@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img8 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/08@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img9 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/09@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img10 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/10@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img12 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/12@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img13 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/13@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img14 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/14@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img15 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/15@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img16 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/16@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img17 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/17@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img18 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/18@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .in-img19 {
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/19@2x.png") no-repeat center / contain;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 40px;
   }
   .anli-round {
     min-height: 610px;
@@ -1841,6 +1851,14 @@
     color: rgba(255,255,255,1);
     line-height: 40px;
   }
+  .in-flex-round {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .in-flex-11 {
+    width: 11%
+  }
   
   
 
@@ -1871,7 +1889,7 @@
     padding-top: 60px;
   }
   .pad-top-50 {
-    padding-top: 60px;
+    padding-top: 50px;
   }
   .pad-top-40 {
     padding-top: 40px;
@@ -1934,6 +1952,9 @@
     }
     .header-bot-right {
       width: 100%;
+    }
+    .in-flex-11 {
+      width: 33%;
     }
     .slide .container {
       display: block;
