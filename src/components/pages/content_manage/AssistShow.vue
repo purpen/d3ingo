@@ -18,7 +18,7 @@
             </ul>
           </div>
       </div>
-      <div class="assist-center" ref="center">
+      <div :class="['assist-center', {'assist-mob': isMob}]"  ref="center">
           <div v-show="!isLoadingAll">
             <div v-for="(a, indexa) in assistList" :key="indexa" :ref="a.id+'top'"  class="assist-list">
               <p class="assist-title">{{a.title}}</p>
@@ -197,5 +197,8 @@
     width: calc(100% - 230px);
     float: left;
     min-height: 100vh;
+  }
+  .assist-mob {
+    width: 100%;
   }
 </style>
