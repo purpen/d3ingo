@@ -718,13 +718,14 @@ export default {
           message
         })
         this.getClueList()
-      }
-      if (res.meta.status_code === 403) {
+      } else if (res.meta.status_code === 403) {
         this.$message({
           type: 'error',
           duration: 5000,
           message: res.meta.message
         })
+      } else {
+        this.$message.error(res.meta.message)
       }
     },
     uploadError(err, file, fileList) {
