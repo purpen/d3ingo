@@ -2,7 +2,7 @@
   <div>
     <main>
       <div class="top-main">
-        <a class="enter">立即入驻</a>
+        <a @click="goRegister" class="enter">立即入驻</a>
         <el-row type="flex" justify="center">
             <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="3">
               <div class="t-m-contant">
@@ -241,7 +241,7 @@
         <div class="container">
           <h3 class="title">轻松入驻</h3>
           <el-row :gutter="20">
-            <el-col :xs="24" :sm="24" :md="7" :lg="7"  :offset="1">
+            <el-col :xs="7" :sm="7" :md="7" :lg="7"  :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <!-- <img :src="require('assets/images/home/spread/1@2x.png')"  alt=""> -->
@@ -253,7 +253,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="24" :sm="24" :md="8" :lg="8" :offset="1">
+            <el-col :xs="8" :sm="8" :md="8" :lg="8" :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips2">完善信息及上传案例</p>
@@ -262,7 +262,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="24" :sm="24" :md="7" :lg="7">
+            <el-col :xs="7" :sm="7" :md="7" :lg="7">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips3">接收需求</p>
@@ -282,6 +282,21 @@ export default {
   data() {
     return {
 
+    }
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    }
+  },
+  methods: {
+    goRegister() {
+      this.$router.push({name: 'register', params: {type: 2}})
+    }
+  },
+  created() {
+    if (this.isMob) {
+      this.$router.push({name: 'mSpreadDesign'})
     }
   }
 }
