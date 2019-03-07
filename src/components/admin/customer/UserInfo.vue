@@ -11,7 +11,7 @@
           </el-breadcrumb>
 
         </div>
-        <div class="card-box">
+        <div class="card-box" v-loading="userLoading">
           <div class="padding10" v-if="currentId">
             <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
             <el-button type="danger" size="mini" @click="showClueDialog(4)">流失</el-button>
@@ -304,7 +304,7 @@
 
 
 
-              <div class="card-body-center" v-show="option === 'project'">
+              <div class="card-body-center" v-show="option === 'project'" v-loading="userProjectLoading">
                 <p class="add-project clearfix">
                   <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
                   <el-button type="primary" :disabled="!isHasPower || (boolEditProject || boolAddProject)" size="small" class="fr" @click="createdProject">添加项目</el-button>
@@ -656,7 +656,7 @@
                             </el-row>
 
                             <p class="design-btn clearfix margin-b22">
-                              <el-button type="primary" class="fr" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
+                              <el-button type="primary" class="fr" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
                               </el-button>
                               <el-button class="fr" @click="boolDesignCompany = false">取消</el-button>
                             </p>
@@ -763,7 +763,7 @@
                       </el-row>
 
                     <p class="add-project-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" :loading="boolCreateProject" @click="createProjectForm('ruleProjectForm')">保存
+                      <el-button type="primary" class="fr" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保存
                       </el-button>
                       <el-button class="fr" @click="boolAddProject = false">取消</el-button>
                     </p>
@@ -773,7 +773,7 @@
 
               </div>
             
-              <div class="card-body-center" v-if="option === 'progress'">
+              <!-- <div class="card-body-center" v-if="option === 'progress'">
                 <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
                 <ul class="progress-p-content">
                   <li v-for="(item, i) in this.projectSchedule" :key="i">
@@ -812,9 +812,9 @@
                     </div>
                   </li>
                 </ul>
-              </div>
+              </div> -->
 
-              <div class="card-body-center padding20" v-show="option === 'followLog'">
+              <div class="card-body-center padding20" v-show="option === 'followLog'" v-loading="userLogLoading">
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
                     <div>
@@ -978,6 +978,10 @@ export default {
       query: {},
       currentUser: '新建客户',
       currentId: '',
+      userLoading: false,
+      userProjectLoading: false,
+      userLogLoading: false,
+      submitDesignLoading: false,
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
       option: 'user',
@@ -985,7 +989,7 @@ export default {
       focusHeight: false,
       BoolmarkFailure: false,
       boolFollowLog: false,
-      boolCreateProject: false,
+      createProjectLoading: false,
       boolCreateUser: false,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
@@ -1354,6 +1358,7 @@ export default {
       let row = {
         clue_id: this.currentId
       }
+      this.userLoading = true
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
@@ -1399,11 +1404,14 @@ export default {
             position: data.position
           }
           this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+          this.userLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userLoading = false
       })
       this.getLogList()
     },
@@ -1561,7 +1569,7 @@ export default {
             this.$message.error('请选择项目需求类边')
             return
           }
-          this.boolCreateProject = true
+          this.createProjectLoading = true
           let row = { // 传空字段
             summary: this.projectForm.summary || '',
             type: this.projectForm.type || '',
@@ -1611,13 +1619,15 @@ export default {
           this.getUserProject()
           this.getUserInfo()
           this.boolAddProject = false
-          this.boolCreateProject = false
+          this.createProjectLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.createProjectLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
         console.log(error.message)
+        this.createProjectLoading = false
       })
     },
     submitDesignCompanyForm(formName) {
@@ -1639,30 +1649,38 @@ export default {
           Object.assign(row, this.designCompanyForm)
           row.clue_id = this.currentId
           row.crm_item_id = this.currentDesignId
+          this.submitDesignLoading = true
           this.$http.post(api.adminClueAddCrmDesign, row).then(res => {
             if (res.data.meta.status_code === 200) {
               this.boolDesignCompany = false
+              this.submitDesignLoading = false
               this.getUserProject()
               this.getUserInfo()
             } else {
               this.$message.error(res.data.meta.message)
+              this.submitDesignLoading = false
             }
           }).catch(error => {
             this.$message.error(error.message)
+            this.submitDesignLoading = false
             console.log(error.message)
           })
         }
       })
     },
     getUserProject() { // 项目列表
+      this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
+          this.userProjectLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userProjectLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userProjectLoading = false
       })
     },
     addDesignCompany(id) {
@@ -1730,24 +1748,31 @@ export default {
           this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
+          this.boolFollowLog = false
         }
       }).catch(error => {
         this.$message.error(error.message)
-        console.log(error.message)
+        this.boolFollowLog = false
       })
     },
     getLogList() { // 跟进记录列表
+      if (this.userLoading === false) {
+        this.userLogLoading = true
+      }
       this.$http.get(api.adminClueShowTrackLog, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.followLogList = res.data.data
           this.followLogList.forEach(item => {
             item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
           })
+          this.userLogLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userLogLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userLogLoading = false
       })
     },
     deleteProject(itemId) {
