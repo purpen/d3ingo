@@ -317,7 +317,7 @@
                                         class="is-custom"> 立即支付
                               </el-button>
                             </p>
-                            <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
+                            <p class="capital-des">项目第{{ d.no }}阶段已确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
                             <!--<p class="capital-des">太火鸟收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
                           </div>
                           <div v-else>
