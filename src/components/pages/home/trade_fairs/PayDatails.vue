@@ -375,7 +375,7 @@ export default {
     },
     // 评价设计服务商
     evaluateSubmit() {
-      if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+      if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.serve_attitude === 0) {
         this.$message.error('每项分数至少为一星')
         return
       }
