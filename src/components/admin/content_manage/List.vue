@@ -3,7 +3,7 @@
   <div class="container company-verify">
     <div class="blank20"></div>
     <el-row :gutter="20">
-      <v-menu selectedName="companyList"></v-menu>
+      <v-menu selectedName="adminContentList"></v-menu>
       <el-col :span="20">
         <div class="content">
           <div class="admin-menu-sub">
