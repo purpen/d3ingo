@@ -57,6 +57,7 @@
         </el-submenu>
         <el-submenu index="15">
           <template slot="title"><i class="fa fa-window-maximize" aria-hidden="true"></i> 内容管理</template>
+            <el-menu-item index="/admin/content_manage/list" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
             <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
             <el-menu-item index="blockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
             <el-menu-item index="articleList" :route="{name: 'adminArticleList'}">文章列表</el-menu-item>
