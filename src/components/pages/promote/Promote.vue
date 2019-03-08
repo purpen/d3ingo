@@ -26,6 +26,43 @@
           </div>
         </div>
       </div>
+      <div class="fiexd-logo" v-if="fiexdHeight > 690">
+        <div class="fiexd-logo-round">
+          <div class="fiexd-logo-img"></div>
+          <div class="fiexd-logo-btn" @click="sendReq = true">
+            <div class="fiexd-logo-text">发布项目需求</div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-prod-mar">
+        <div class="pc-prod-tit">太火鸟提供的设计服务</div>
+        <div class="pc-prod-round">
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img1"></div>
+            <div class="pc-prod-tt">产品设计</div>
+          </div>
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img2"></div>
+            <div class="pc-prod-tt">品牌设计</div>
+          </div>
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img3"></div>
+            <div class="pc-prod-tt">包装设计</div>
+          </div>
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img4"></div>
+            <div class="pc-prod-tt">平面设计</div>
+          </div>
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img5"></div>
+            <div class="pc-prod-tt">UI/UX设计</div>
+          </div>
+          <div class="pc-prod-bd">
+            <div class="pc-prod-img6"></div>
+            <div class="pc-prod-tt">插画设计</div>
+          </div>
+        </div>
+      </div>
       <div class="header-title">太火鸟设计服务的项目</div>
       <div class="six-img-round">
         <div class="six-one-round">
@@ -183,6 +220,21 @@
         </div>
       </div>
       <div class="pc-customer-title text-align-cen">服务客户</div>
+      <div class="pc-sever-swipe-round">
+        <div class="pc-sever-swipe">
+          <el-carousel indicator-position="outside" arrow="never">
+            <el-carousel-item>
+              <div class="pc-sever-swipe-out">
+                <div class="pc-sever-swipe-tt">创意药贴</div>
+                <div class="pc-sever-swipe-bd"></div>
+                <div class="pc-sever-swipe-text"><div class="pc-left"></div>富有创新性（innovative）- 创新的机会总是存在，科技进步总是为创新设计提供新机会。两者总是一前一后。让产品有用（Makes a product useful）- 产品必须有用，需要满足一定标准，这些标准不仅包。<div class="pc-right"></div></div>
+                <div class="pc-sever-swipe-bt-tt">刘征</div>
+                <div class="pc-sever-swipe-bt">北京妥妥得生物科技</div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>
       <div class="pc-customer-imgs">
         <div class="pc-customer-img1"></div>
         <div class="pc-customer-img2"></div>
@@ -362,82 +414,145 @@
         <div class="release-btn color-666" v-if="appBtn">免费发布项目需求</div>
         <div class="release-btn" @click="submit_app('ruleForm')" v-else>免费发布项目需求</div>
       </div>
-      <div class="img-round-text">太火鸟设计服务的项目</div>
-      <div class="img-round">
-        <div class="border-round">
-          <div class="border mar-right-10">
-            <div class="in-border">
-              <div class="img1"></div>
-              <div class="img-text">
-                <div class="img1-1"></div>
-                <div class="img-jian">件</div>
-                <div class="img-sales">销售量</div>
+      <div class="pc-prod-mar">
+        <div class="phone-prod-tit">太火鸟提供的设计服务</div>
+        <div class="pc-prod-round phone-prod-round">
+          <div class="pc-prod-bd phone-mar-rig-5">
+            <div class="pc-prod-img1"></div>
+            <div class="pc-prod-tt">产品设计</div>
+          </div>
+          <div class="pc-prod-bd phone-mar-lf-5">
+            <div class="pc-prod-img2"></div>
+            <div class="pc-prod-tt">品牌设计</div>
+          </div>
+          <div class="pc-prod-bd phone-mar-rig-5">
+            <div class="pc-prod-img3"></div>
+            <div class="pc-prod-tt">包装设计</div>
+          </div>
+          <div class="pc-prod-bd phone-mar-lf-5">
+            <div class="pc-prod-img4"></div>
+            <div class="pc-prod-tt">平面设计</div>
+          </div>
+          <div class="pc-prod-bd phone-mar-rig-5">
+            <div class="pc-prod-img5"></div>
+            <div class="pc-prod-tt">UI/UX设计</div>
+          </div>
+          <div class="pc-prod-bd phone-mar-lf-5">
+            <div class="pc-prod-img6"></div>
+            <div class="pc-prod-tt">插画设计</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-serv-round">
+        <div class="img-round-text">太火鸟设计服务的项目</div>
+        <div class="img-round">
+          <div class="border-round">
+            <div class="border mar-right-10">
+              <div class="in-border">
+                <div class="img1"></div>
+                <div class="img-text">
+                  <div class="img1-1"></div>
+                  <div class="img-jian">件</div>
+                  <div class="img-sales">销售量</div>
+                </div>
+                <div class="img-bot-text">飞行鱼 FIFISH P3</div>
               </div>
-              <div class="img-bot-text">飞行鱼 FIFISH P3</div>
+            </div>
+            <div class="border">
+              <div class="in-border">
+                <div class="img2"></div>
+                <div class="img-text">
+                  <div class="img2-1"></div>
+                  <div class="img-jian">亿</div>
+                  <div class="img-sales">2018年销售额</div>
+                </div>
+                <div class="img-bot-text">素士声波电动牙刷</div>
+              </div>
             </div>
           </div>
-          <div class="border">
-            <div class="in-border">
-              <div class="img2"></div>
-              <div class="img-text">
-                <div class="img2-1"></div>
-                <div class="img-jian">亿</div>
-                <div class="img-sales">2018年销售额</div>
+        </div>
+        <div class="img-round margin-top-10">
+          <div class="border-round">
+            <div class="border mar-right-10">
+              <div class="in-border">
+                <div class="img3"></div>
+                <div class="img-text">
+                  <div class="img3-1"></div>
+                  <div class="img-jian">万</div>
+                  <div class="img-sales">销售额</div>
+                </div>
+                <div class="img-bot-text">美妆镜 Amiro</div>
               </div>
-              <div class="img-bot-text">素士声波电动牙刷</div>
+            </div>
+            <div class="border">
+              <div class="in-border">
+                <div class="img4"></div>
+                <div class="img-text">
+                  <div class="img4-1"></div>
+                  <div class="img-jian">万</div>
+                  <div class="img-sales">众筹</div>
+                </div>
+                <div class="img-bot-text">云马智能电单车</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="img-round margin-top-10">
+          <div class="border-round">
+            <div class="border mar-right-10">
+              <div class="in-border">
+                <div class="img5"></div>
+                <div class="img-text">
+                  <div class="img5-1"></div>
+                  <div class="img-jian">件</div>
+                  <div class="img-sales">月销</div>
+                </div>
+                <div class="img-bot-text">FIU优雅不倒杯</div>
+              </div>
+            </div>
+            <div class="border">
+              <div class="in-border">
+                <div class="img6"></div>
+                <div class="img-text">
+                  <div class="img6-1"></div>
+                  <div class="img-jian">件</div>
+                  <div class="img-sales">日单</div>
+                </div>
+                <div class="img-bot-text">洒哇地卡无线手持电动擦地机</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="img-round margin-top-10">
-        <div class="border-round">
-          <div class="border mar-right-10">
-            <div class="in-border">
-              <div class="img3"></div>
-              <div class="img-text">
-                <div class="img3-1"></div>
-                <div class="img-jian">万</div>
-                <div class="img-sales">销售额</div>
-              </div>
-              <div class="img-bot-text">美妆镜 Amiro</div>
+      <div class="why-can">
+        <div class="can-text pad-top-0">为什么选择太火鸟</div>
+        <div class="can-img">
+          <div class="can-border">
+            <div class="phone-choose-img1"></div>
+            <div class="can-text1-1">更多</div>
+            <div class="phone-choose-bot">
+              <div class="phone-choose1"></div>
+              <div class="phone-can-text1">家顶尖设计</div>
             </div>
+            <div class="phone-can-text1">公司资源随时待命</div>
           </div>
-          <div class="border">
-            <div class="in-border">
-              <div class="img4"></div>
-              <div class="img-text">
-                <div class="img4-1"></div>
-                <div class="img-jian">万</div>
-                <div class="img-sales">众筹</div>
-              </div>
-              <div class="img-bot-text">云马智能电单车</div>
+          <div class="can-border">
+            <div class="phone-choose-img2"></div>
+            <div class="can-text1-1">更准</div>
+            <div class="phone-choose-bot">
+              <div class="phone-choose2"></div>
+              <div class="phone-can-text1">人工智能系统</div>
             </div>
+            <div class="phone-can-text1">自动匹配设计公司</div>
           </div>
-        </div>
-      </div>
-      <div class="img-round margin-top-10">
-        <div class="border-round">
-          <div class="border mar-right-10">
-            <div class="in-border">
-              <div class="img5"></div>
-              <div class="img-text">
-                <div class="img5-1"></div>
-                <div class="img-jian">件</div>
-                <div class="img-sales">月销</div>
-              </div>
-              <div class="img-bot-text">FIU优雅不倒杯</div>
+          <div class="can-border">
+            <div class="phone-choose-img3"></div>
+            <div class="can-text1-1">更快</div>
+            <div class="phone-choose-bot">
+              <div class="phone-choose3"></div>
+              <div class="phone-can-text1">打造真正个</div>
             </div>
-          </div>
-          <div class="border">
-            <div class="in-border">
-              <div class="img6"></div>
-              <div class="img-text">
-                <div class="img6-1"></div>
-                <div class="img-jian">件</div>
-                <div class="img-sales">日单</div>
-              </div>
-              <div class="img-bot-text">洒哇地卡无线手持电动擦地机</div>
-            </div>
+            <div class="phone-can-text1">性化原创设计方案</div>
           </div>
         </div>
       </div>
@@ -469,21 +584,29 @@
         <div class="trust-text">顺德第二季创新设计成果交易会</div>
         <div class="trust-img3"></div>
       </div>
+      <div class="serve-text">服务客户</div>
+      <div class="serve-flex">
+        <div class="serve-img1"></div>
+        <div class="serve-img2"></div>
+        <div class="serve-img3"></div>
+        <div class="serve-img4"></div>
+      </div>
+      <div class="serve-flex margin-top-10">
+        <div class="serve-img5"></div>
+        <div class="serve-img6"></div>
+        <div class="serve-img7"></div>
+        <div class="serve-img8"></div>
+      </div>
       <div class="serve-customer">
-        <div class="serve-text">服务过的客户</div>
-        <div class="serve-flex">
-          <div class="serve-img1"></div>
-          <div class="serve-img2"></div>
-          <div class="serve-img3"></div>
-          <div class="serve-img4"></div>
-        </div>
-        <div class="serve-flex margin-top-10">
-          <div class="serve-img5"></div>
-          <div class="serve-img6"></div>
-          <div class="serve-img7"></div>
-          <div class="serve-img8"></div>
-        </div>
         <div class="serve-text">明星投资方</div>
+        <div class="phone-invest-round">
+          <div class="phone-investors-img1"></div>
+          <div class="phone-investors-img2"></div>
+          <div class="phone-investors-img5"></div>
+          <div class="phone-investors-img3 mar-top-10"></div>
+          <div class="phone-investors-img4 mar-top-10"></div>
+          <div class="phone-investors-img5 mar-top-10"></div>
+        </div>
         <div class="serve-flex">
           <div class="invest-img1"></div>
           <div class="invest-img2"></div>
@@ -589,6 +712,7 @@
       return {
         sendReq: false, // 弹窗
         quantity: '', // 数量
+        fiexdHeight: '',
         phone: '', // 底部联系电话
         time: 0,
         calcHeight: '',
@@ -681,6 +805,10 @@
       }
     },
     methods: {
+      handleScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        this.fiexdHeight = scrollTop
+      },
       direct(path) {
         if (!this.user || this.user.type === 1) {
           this.$router.push({name: path})
@@ -936,6 +1064,7 @@
       } else {
         this.calcHeight = calcImgSize (500, 1440)
       }
+      window.addEventListener('scroll', this.handleScroll)
       // 人员数量
       this.$http.get(api.usersCount)
         .then(res => {
@@ -1879,6 +2008,192 @@
     color: rgba(255,255,255,1);
     padding: 15px 0;
   }
+  .fiexd-logo {
+    height: 70px;
+    background: rgba(27,25,95,0.6);
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  .fiexd-logo-round {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    max-width: 1180px;
+    margin: 0 auto;
+    justify-content: space-between;
+  }
+  .fiexd-logo-btn {
+    cursor: pointer;
+    width: 140px;
+    height: 42px;
+    background: rgba(250,105,113,1);
+    border-radius: 4px;
+    margin-right: 50px;
+  }
+  .fiexd-logo-img {
+    width: 156px;
+    height: 51px;
+    background: url("../../../assets/images/new_promote/pc/LogoWhite@2x.png") no-repeat center / contain;
+    margin-left: 50px;
+  }
+  .fiexd-logo-text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+    text-align: center;
+  }
+  .fiexd-logo-btn:hover {
+    background: #d23c46;
+    border-radius: 4px;
+  }
+  .pc-sever-swipe-round {
+    padding-bottom: 30px;
+    height: 300px;
+  }
+  .pc-sever-swipe {
+    max-width: 880px;
+    height: 240px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    margin: 0 auto;
+  }
+  .pc-sever-swipe-out {
+    position: relative;
+    height: 240px;
+  }
+  .pc-sever-swipe-tt {
+    font-size: 18px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(48,82,172,1);
+    text-align: center;
+    padding-top: 20px;
+  }
+  .pc-sever-swipe-text {
+    max-width: 600px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 24px;
+    margin: 0 auto;
+  }
+  .pc-sever-swipe-bd {
+    width:30px;
+    margin: 14px auto;
+    border: 2px solid #3052AC;
+  }
+  .pc-left {
+    display: inline-block;
+    width: 11px;
+    height: 20px;
+    background: url("../../../assets/images/new_promote/pc/QuotationMarks01@2x.png") no-repeat center / contain;
+  }
+  .pc-right {
+    display: inline-block;
+    width: 11px;
+    height: 20px;
+    background: url("../../../assets/images/new_promote/pc/QuotationMarks02@2x.png") no-repeat center / contain;
+  }
+  .pc-sever-swipe-bt-tt {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    position: absolute;
+    bottom: 46px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  .pc-sever-swipe-bt {
+    position: absolute;
+    bottom: 23px;
+    left: 0;
+    right: 0;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    text-align: center;
+  }
+  .pc-prod-mar {
+    margin: 0 auto;
+    max-width: 1180px;
+    text-align: center;
+  }
+  .pc-prod-tit {
+    padding: 50px 0 30px 0;
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+  }
+  .pc-prod-round {
+    display: flex;
+    justify-content: space-between;
+  }
+  .pc-prod-bd {
+    flex: 1;
+    max-width: 185px;
+    height: 180px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+  }
+  .pc-prod-img1 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/product@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-img2 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/brand@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-img3 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/Packing@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-img4 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/plane@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-img5 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/UI@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-img6 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/provide/Illustration@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .pc-prod-tt {
+    text-align: center;
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(48,82,172,1);
+    padding-top: 10px;
+  }
 
 
 
@@ -1944,7 +2259,7 @@
     background-color: #c8c8c8;
   }
   .img-round-text {
-    margin-top: 30px;
+    padding-top: 30px;
     height: 28px;
     font-size: 20px;
     font-family: PingFangSC-Medium;
@@ -1965,6 +2280,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    padding-top: 30px;
   }
   .border {
     width: 50%;
@@ -2006,6 +2322,11 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .ph-serv-round {
+    background:rgba(255,255,255,0.1);
+    min-height: 600px;
+    margin-top: 30px;
   }
   .img1 {
     height: 110px;
@@ -2088,7 +2409,7 @@
     line-height: 28px;
   }
   .can-img {
-    margin: 15px 15px;
+    margin: 15px 10px;
     height: 140px;
     display: flex;
     flex-direction: row;
@@ -2103,22 +2424,19 @@
   .border-img1 {
     height: 77px;
     width: 85px;
-    background: url("../../../assets/images/new_promote/1MarketingIncubation.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/1MarketingIncubation.png") center / contain;
     margin: 0 auto;
   }
   .border-img2 {
     height: 77px;
     width: 85px;
-    background: url("../../../assets/images/new_promote/2ChannelSales.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/2ChannelSales.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .border-img3 {
     height: 77px;
     width: 85px;
-    background: url("../../../assets/images/new_promote/3MarketingPromotion.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/3MarketingPromotion.png") center / contain;
     margin: 0 auto;
   }
   .can-text1-1 {
@@ -2413,6 +2731,109 @@
     background: url("../../../assets/images/new_promote/phone/H5Foot@2x.png") no-repeat;
     background-size: 100% 100%;
   }
+  .phone-prod-tit {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    padding: 30px 0 20px 0;
+  }
+  .phone-prod-round {
+    flex-wrap: wrap;
+  }
+  .phone-choose-img1 {
+    margin: 0 auto;
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/pc/choose/More@2x.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .phone-choose-img2 {
+    margin: 0 auto;
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/pc/choose/MoreAccurate@2x.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .phone-choose-img3 {
+    margin: 0 auto;
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/pc/choose/Faster@2x.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .why-can {
+    margin-top: 30px;
+    height: 210px;
+  }
+  .phone-choose1 {
+    width: 36px;
+    height: 18px;
+    background: url("../../../assets/images/new_promote/pc/choose/1000+@2x.png") no-repeat center / contain;
+  }
+  .phone-choose2 {
+    width: 24px;
+    height: 18px;
+    background: url("../../../assets/images/new_promote/pc/choose/24H@2x.png") no-repeat center / contain;
+  }
+  .phone-choose3 {
+    width: 30px;
+    height: 18px;
+    background: url("../../../assets/images/new_promote/pc/choose/30day@2x.png") no-repeat center / contain;
+  }
+  .phone-can-text1 {
+    font-size: 9px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 14px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 5px;
+  }
+  .phone-choose-bot {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    max-width: 96px;
+    margin: 0 auto;
+  }
+  .phone-invest-round {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .phone-investors-img1 {
+    height: 80px;
+    width: 33%;
+    background: url("../../../assets/images/new_promote/pc/photo/01@2x.png") no-repeat center / contain;
+  }
+  .phone-investors-img2 {
+    height: 80px;
+    width: 33%;
+    background: url("../../../assets/images/new_promote/pc/photo/02@2x.png") no-repeat center / contain;
+  }
+  .phone-investors-img3 {
+    height: 80px;
+    width: 33%;
+    background: url("../../../assets/images/new_promote/pc/photo/03@2x.png") no-repeat center / contain;
+  }
+  .phone-investors-img4 {
+    height: 80px;
+    width: 33%;
+    background: url("../../../assets/images/new_promote/pc/photo/04@2x.png") no-repeat center / contain;
+  }
+  .phone-investors-img5 {
+    height: 80px;
+    width: 33%;
+    background: url("../../../assets/images/new_promote/pc/photo/05@2x.png") no-repeat center / contain;
+  }
+
+
+
+
+
   .mar-left-5 {
     margin-left: 5px;
   }
@@ -2450,6 +2871,12 @@
   .pc-person .wip-style {
     width: 350px
   }
+  .phone-mar-rig-5 {
+    margin: 5px 5px 5px 10px;
+  }
+  .phone-mar-lf-5 {
+    margin: 5px 10px 5px 5px;
+  }
   .bot-0 {
     padding-bottom: 0;
   }
@@ -2458,6 +2885,12 @@
   }
   .color-666 {
     background-color: #c8c8c8;
+  }
+  .pad-top-0 {
+    padding-top: 0;
+  }
+  .mar-top-10 {
+    margin-top: 10px;
   }
 </style>
 
