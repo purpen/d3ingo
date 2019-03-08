@@ -195,6 +195,7 @@ export default {
   adminClueUpdate: '/admin/clue/update', // POST 更新基本信息
   adminClueCreate: '/admin/clue/create', // POST 添加用户档案
   adminClueShow: '/admin/clue/show', // GET 查看用户档案
+  adminClueImportWeb: '/admin/clue/importWeb', // GET 导入社区
   adminClueSlueUpdate: '/admin/clue/clueUpdate', // POST 更改用户档案
   adminClueShowCrmItem: '/admin/clue/showCrmItem', // GET 查看项目
   adminClueAddCrmItem: '/admin/clue/addCrmItem', // POST 添加项目
