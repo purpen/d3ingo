@@ -12,10 +12,11 @@
 
         </div>
         <div class="card-box" v-loading="userLoading">
-          <div class="padding10" v-if="currentId">
+          <div class="padding10 fz-0" v-if="currentId">
             <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
-            <el-button type="danger" size="mini" @click="showClueDialog(4)">流失</el-button>
-            <div class="fr line-height30">
+            <el-button type="danger" class="margin-r-15" size="mini" @click="showClueDialog(4)">流失</el-button>
+            <el-button size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
+            <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
               <a class="pointer border-t10" @click="getNextUser">下一条</a>
             </div>
@@ -831,8 +832,8 @@
                                   :class="['log-next-time', {'carry-out': item.status === 2 }]">
                                   次回跟进时间 :
                                 <span>{{item.next_time}}</span>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                                <!-- <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a> -->
                               </p>
                               <!-- <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
@@ -1025,7 +1026,8 @@ export default {
         tag: [],
         execute_user_id: '',
         son_source: '',
-        execute: []
+        execute: [],
+        is_thn: 0
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
@@ -1245,6 +1247,23 @@ export default {
     //     this.$message.error(error.message)
     //   })
     // },
+    importWeb() { // 导入社区
+      if (this.userForm.is_thn) {
+        this.$message.error('已导入到社区,无需重复操作')
+        return
+      }
+      this.$http.get(api.adminClueImportWeb, {params: {clue_id: this.currentId}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('导入成功')
+          this.userForm.is_thn = 1
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
     getAdminVoIpList() { // 业务人员列表
       this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1384,7 +1403,8 @@ export default {
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || ''
+            new_call_status: data.new_call_status || '',
+            is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           // if (data.tag.length === 1 && data.tag[0] === '') {
