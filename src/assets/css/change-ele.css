@@ -955,6 +955,12 @@
     font-size: 20px;
     top: 13px;
   }
+  .phone-form-round .el-form-item {
+    margin-bottom: 11px;
+  }
+  .phone-el-pad-bot .el-form-item {
+    margin-bottom: 0;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;

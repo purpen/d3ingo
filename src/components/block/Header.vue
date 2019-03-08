@@ -18,8 +18,7 @@
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
               <a class="el-menu-item logo cursor-def">
-                <img :src="custom.logo" :alt="custom.info">
-                <span class="logo-text">设计交易</span>
+                <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
               </a>
               <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="/commonly_sites" :route="menu.design_general_list">设计案例</el-menu-item>
@@ -762,7 +761,7 @@
   } */
   .el-menu-item.logo img {
     width: auto;
-    height: 74px;
+    height: 52px;
     margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {

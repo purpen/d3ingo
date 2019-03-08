@@ -59,6 +59,7 @@
       categoryId(val) {
         if (val) {
           this.$route.query.categoryId = this.categoryId
+          console.log(this.$route.query.categoryId)
         }
       }
     },
@@ -79,6 +80,35 @@
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
               this.assistList = response.data.data
+              let markdownConfig = {
+                html: true, // Enable HTML tags in source
+                xhtmlOut: true, // Use '/' to close single tags (<br />).
+                breaks: true, // Convert '\n' in paragraphs into <br>
+                langPrefix: 'language-markdown', // CSS language prefix for fenced blocks. Can be
+                linkify: false, // 自动识别url
+                typographer: true,
+                quotes: '“”‘’',
+                highlight: function(str, lang) {
+                  return (
+                    '<pre class="hljs"><code class="' +
+                    lang +
+                    '">' +
+                    markdown.utils.escapeHtml(str) +
+                    '</code></pre>'
+                  )
+                }
+              }
+
+              let markdown = require('markdown-it')(markdownConfig)
+              let container = require('markdown-it-container')
+              markdown
+                .use(container)
+                .use(container, 'hljs-left') /* align left */
+                .use(container, 'hljs-center') /* align center */
+                .use(container, 'hljs-right') /* align right */
+              this.assistList.forEach(item => {
+                item['content'] = markdown.render(item.content)
+              })
               if (first) {
                 this.goTop()
               }
@@ -179,6 +209,10 @@
     line-height: 34px;
     font-size: 14px;
     cursor: pointer;
+    color: #666;
+  }
+  .aside .tc-red {
+    color: #FF5A5F;
   }
   .aside ul li:hover {
     background-color: #f7f7f7;
@@ -189,12 +223,14 @@
     line-height: 30px;
   }
   .aside-right {
-    width: 230px;
+    width: 200px;
     float: left;
     min-height: 100vh;
+    margin-right: 30px;
   }
   .assist-center {
     width: calc(100% - 230px);
+    max-width: 880px;
     float: left;
     min-height: 100vh;
   }
