@@ -2,7 +2,9 @@
 .fl {
   float: left;
 }
-
+.ics-icon {
+  background-repeat: no-repeat
+}
 .fr {
   float: right;
 }
