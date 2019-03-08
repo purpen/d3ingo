@@ -1220,7 +1220,7 @@ const COMPANY_PROPERTY_TYPE = [
 const DESIGN_COST_OPTIONS = [
   {
     id: 1,
-    name: '1万-5万之间'
+    name: '1万-5万'
   },
   {
     id: 2,
@@ -1248,8 +1248,24 @@ const DESIGN_COST_OPTIONS = [
 // 设计费用预算
 const DESIGN_COST_OPTIONS2 = [
   {
+    id: 7,
+    name: '1千以下'
+  },
+  {
+    id: 8,
+    name: '1千-3千'
+  },
+  {
+    id: 9,
+    name: '3千-5千'
+  },
+  {
+    id: 10,
+    name: '5千-1万'
+  },
+  {
     id: 1,
-    name: '1万-5万之间'
+    name: '1万-5万'
   },
   {
     id: 2,
@@ -1270,24 +1286,7 @@ const DESIGN_COST_OPTIONS2 = [
   {
     id: 6,
     name: '50万以上'
-  },
-  {
-    id: 7,
-    name: '1千以下'
-  },
-  {
-    id: 8,
-    name: '1千-3千'
-  },
-  {
-    id: 9,
-    name: '3千-5千'
-  },
-  {
-    id: 10,
-    name: '5千-1万'
   }
-
 ]
 // 公司规模
 const COMPANY_SIZE = [

@@ -27,7 +27,7 @@
                   <span v-else>{{c.name}}</span>
                 </h3>
                 <div>
-                  <p class="help-title" v-for="(a, indexa) in c.assist" :key="indexa">
+                  <p class="help-title" v-for="(a, indexa) in c.assist" :key="indexa" v-if="a.status === 2">
                     <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}, params: {scrollTop: a.id}}">{{a.title}}</router-link>
                   </p>
                 </div>

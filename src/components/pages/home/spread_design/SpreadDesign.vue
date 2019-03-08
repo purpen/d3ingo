@@ -273,6 +273,12 @@
           </el-row>
         </div>
       </div>
+      <div class="bg-box">
+        <div class="footer-box container">
+          <span class="sub-text">还在等什么，快来加入我们吧!</span>
+          <a @click="goRegister" class="enter2">立即入驻</a>
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -498,5 +504,53 @@ export default {
   text-align: left;
 }
 
-
+.bg-box {
+  position: relative;
+  height: 140px;
+  margin-bottom: -50px;
+  background: url('../../../../assets/images/home/spread/pc/Left@2x.png') no-repeat  left 0 top 10px/368px,
+            url('../../../../assets/images/home/spread/pc/right@2x.png') no-repeat right 0 top 10px/328px,
+            #291A57;
+}
+.footer-box {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.sub-text {
+  position: absolute;
+  bottom: 58px;
+  left: 310px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+}
+.footer-box > a {
+  position: absolute;
+  right: 310px;
+  bottom: 44px;
+}
+.footer-box .enter2:active {
+  position: absolute;
+  bottom: 43px;
+  box-shadow: 0px 4px 0px #D63A3F;
+}
+.enter2 {
+  width: 200px;
+  height: 50px;
+  line-height: 46px;
+  display: block;
+  border-radius: 25px;
+  font-size: 26px;
+  font-weight: 500;
+  text-align: center;
+  background: #FF5A5F;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #D63A3F;
+  transition: all 0.1s;
+  user-select:none;
+}
 </style>
