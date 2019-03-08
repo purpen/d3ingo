@@ -24,6 +24,9 @@
       <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">帮助/服务</p>
         <p>
+          <router-link :to="{name: 'promote'}" class="">发布需求</router-link>
+        </p>
+        <p>
           <router-link v-if="!isMob" :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
           <router-link v-else :to="{name: 'mSpreadDesign'}">设计服务商入驻</router-link>
         </p>
