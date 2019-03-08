@@ -46,7 +46,7 @@
               <div class="six-text1">
                 <div class="six-img1-2"></div>
                 <div class="six-img1-jian pad-6-10">亿</div>
-                <div class="six-img1-sales">2018年销售额</div>
+                <div class="six-img1-sales">销售额</div>
               </div>
               <div class="six-text2">素士声波电动牙刷</div>
             </div>
@@ -94,9 +94,40 @@
               <div class="six-text1">
                 <div class="six-img1-6"></div>
                 <div class="six-img1-jian pad-5-10">件</div>
-                <div class="six-img1-sales">日单</div>
+                <div class="six-img1-sales pad-rig-5">自媒体</div>
+                <div class="six-img1-sales pad-rig-5">单篇文章</div>
+                <div class="six-img1-sales">日销售</div>
               </div>
               <div class="six-text2">洒哇地卡无线手持电动擦地机</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-can">
+        <div class="pc-can-text">为什么选择太火鸟</div>
+        <div class="pc-can-round">
+          <div class="pc-can-border">
+            <div class="pc-choose-img1"></div>
+            <div class="pc-can-text1">更多</div>
+            <div class="pc-choose-bot">
+              <div class="pc-choose1"></div>
+              <div class="pc-can-text2 line-hei-28">家顶尖设计公司资源随时待命</div>
+            </div>
+          </div>
+          <div class="pc-can-border">
+            <div class="pc-choose-img2"></div>
+            <div class="pc-can-text1">更准</div>
+            <div class="pc-choose-bot">
+              <div class="pc-choose2"></div>
+              <div class="pc-can-text2 line-hei-28">人工智能系统自动匹配设计公司</div>
+            </div>
+          </div>
+          <div class="pc-can-border">
+            <div class="pc-choose-img3"></div>
+            <div class="pc-can-text1">更快</div>
+            <div class="pc-choose-bot">
+              <div class="pc-choose3"></div>
+              <div class="pc-can-text2 line-hei-28">打造真正个性化原创设计方案</div>
             </div>
           </div>
         </div>
@@ -138,18 +169,53 @@
           </div>
         </div>
       </div>
-      <div class="pc-customer">
-        <div class="pc-customer-title">服务过的客户</div>
-        <div class="pc-customer-imgs">
-          <div class="pc-customer-img1"></div>
-          <div class="pc-customer-img2"></div>
-          <div class="pc-customer-img3"></div>
-          <div class="pc-customer-img4"></div>
-          <div class="pc-customer-img5"></div>
-          <div class="pc-customer-img6"></div>
-          <div class="pc-customer-img7"></div>
+      <div class="pc-prize">
+        <div class="pc-customer-title pc-pad-bot-10">所获奖项</div>
+        <div class="pc-prize-get">3000+ 全球设计大奖</div>
+        <div class="pc-customer-imgs pc-hei-80">
+          <div class="pc-prize-img1"></div>
+          <div class="pc-prize-img2"></div>
+          <div class="pc-prize-img3"></div>
+          <div class="pc-prize-img4"></div>
+          <div class="pc-prize-img5"></div>
+          <div class="pc-prize-img6"></div>
+          <div class="pc-prize-img7"></div>
         </div>
+      </div>
+      <div class="pc-customer-title text-align-cen">服务客户</div>
+      <div class="pc-customer-imgs">
+        <div class="pc-customer-img1"></div>
+        <div class="pc-customer-img2"></div>
+        <div class="pc-customer-img3"></div>
+        <div class="pc-customer-img4"></div>
+        <div class="pc-customer-img5"></div>
+        <div class="pc-customer-img6"></div>
+        <div class="pc-customer-img7"></div>
+      </div>
+      <div class="pc-customer">
         <div class="pc-customer-title">明星投资方</div>
+        <div class="pc-investors-round">
+          <div>
+            <div class="pc-investors-img1"></div>
+            <div class="pc-investors-text">小米</div>
+          </div>
+          <div>
+            <div class="pc-investors-img2"></div>
+            <div class="pc-investors-text">创新工场</div>
+          </div>
+          <div>
+            <div class="pc-investors-img3"></div>
+            <div class="pc-investors-text">合影</div>
+          </div>
+          <div>
+            <div class="pc-investors-img4"></div>
+            <div class="pc-investors-text">真格基金</div>
+          </div>
+          <div>
+            <div class="pc-investors-img5"></div>
+            <div class="pc-investors-text">真格基金</div>
+          </div>
+        </div>
         <div class="pc-customer-imgs">
           <div class="pc-invest-img1"></div>
           <div class="pc-invest-img2"></div>
@@ -1044,7 +1110,7 @@
     padding-top: 7px;
     display: flex;
     flex-direction: row;
-    align-items: flex-end
+    align-items: flex-end;
   }
   .six-img1-jian {
     font-size: 22px;
@@ -1086,8 +1152,8 @@
   }
   .six-img1-2 {
     height: 36px;
-    width: 17px;
-    background: url("../../../assets/images/new_promote/pc/product/number/6@2x.png") no-repeat;
+    width: 28px;
+    background: url("../../../assets/images/new_promote/pc/header/10@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img3 {
@@ -1108,8 +1174,8 @@
   }
   .six-img1-4 {
     height: 36px;
-    width: 65px;
-    background: url("../../../assets/images/new_promote/pc/product/number/3000@2x.png") no-repeat;
+    width: 80px;
+    background: url("../../../assets/images/new_promote/number/3000+@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .six-img5 {
@@ -1130,8 +1196,8 @@
   }
   .six-img1-6 {
     height: 36px;
-    width: 50px;
-    background: url("../../../assets/images/new_promote/pc/product/number/500@2x.png") no-repeat;
+    width: 80px;
+    background: url("../../../assets/images/new_promote/pc/header/5000+@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .pad-5-10 {
@@ -1142,6 +1208,9 @@
   }
   .pad-10-10 {
     padding: 0 10px;
+  }
+  .pad-rig-5 {
+    padding-right: 5px;
   }
   .pc-can {
     height: 443px;
@@ -1177,24 +1246,42 @@
     margin: 0 auto;
     height: 180px;
     width: 200px;
-    background: url("../../../assets/images/new_promote/pc/can/1MarketingIncubation.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/can/1MarketingIncubation.png") no-repeat center / contain;
     padding-top: 14px;
   }
   .pc-can-img2 {
     margin: 0 auto;
     height: 180px;
     width: 200px;
-    background: url("../../../assets/images/new_promote/pc/can/2ChannelSales.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/can/2ChannelSales.png") no-repeat center / contain;
     padding-top: 14px;
   }
   .pc-can-img3 {
     margin: 0 auto;
     height: 180px;
     width: 200px;
-    background: url("../../../assets/images/new_promote/pc/can/3MarketingPromotion.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/can/3MarketingPromotion.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .pc-choose-img1 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/choose/More@2x.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .pc-choose-img2 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/choose/MoreAccurate@2x.png") no-repeat center / contain;
+    padding-top: 14px;
+  }
+  .pc-choose-img3 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/choose/Faster@2x.png") no-repeat center / contain;
     padding-top: 14px;
   }
   .pc-can-text1 {
@@ -1280,89 +1367,112 @@
     margin: 0 auto;
     height: 60px;
   }
+  .pc-hei-80 {
+    height: 80px;
+  }
+  .pc-prize-img1 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize01@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img2 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize02@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img3 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize03@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img4 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize04@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img5 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize05@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img6 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize06@2x.png") no-repeat center / contain;
+  }
+  .pc-prize-img7 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/prize/prize07@2x.png") no-repeat center / contain;
+  }
   .pc-customer-img1 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/01@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/01@2x.png") no-repeat center / contain;
   }
   .pc-customer-img2 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/02@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/02@2x.png") no-repeat center / contain;
   }
   .pc-customer-img3{
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/03@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/03@2x.png") no-repeat center / contain;
   }
   .pc-customer-img4 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/04@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/04@2x.png") no-repeat center / contain;
   }
   .pc-customer-img5 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/05@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/05@2x.png") no-repeat center / contain;
   }
   .pc-customer-img6 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/06@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/06@2x.png") no-repeat center / contain;
   }
   .pc-customer-img7 {
     flex: 1;
     margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/customer/07@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/customer/07@2x.png") no-repeat center / contain;
   }
   .pc-invest-img1 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T01@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T01@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img2 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T02@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T02@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img3{
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T03@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T03@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img4 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T04@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T04@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img5 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T05@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T05@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img6 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T06@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T06@2x.png") no-repeat center / contain;
+    margin-right: 22px;
   }
   .pc-invest-img7 {
     flex: 1;
-    margin: 0 11px;
-    background: url("../../../assets/images/new_promote/pc/invest/T07@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/invest/T07@2x.png") no-repeat center / contain;
   }
   .z-index-5 {
     z-index: 5;
@@ -1681,6 +1791,93 @@
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,255,255,1);
+  }
+  .pc-prize-get {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    padding-bottom: 20px;
+  }
+  .pc-prize {
+    margin-top: 40px;
+    min-height: 240px;
+    background: rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  .pc-pad-bot-10 {
+    padding-bottom: 10px;
+  }
+  .pc-choose-bot {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .pc-choose1 {
+    width: 76px;
+    height: 36px;
+    background: url("../../../assets/images/new_promote/pc/choose/1000+@2x.png") no-repeat center / contain;
+    margin-right: 3px;
+  }
+  .pc-choose2 {
+    width: 47px;
+    height: 36px;
+    background: url("../../../assets/images/new_promote/pc/choose/24H@2x.png") no-repeat center / contain;
+    margin-right: 3px;
+  }
+  .pc-choose3 {
+    width: 60px;
+    height: 36px;
+    background: url("../../../assets/images/new_promote/pc/choose/30day@2x.png") no-repeat center / contain;
+    margin-right: 3px;
+  }
+  .line-hei-28 {
+    line-height: 28px;
+  }
+  .line-hei-24 {
+    line-height: 24px;
+  }
+  .text-align-cen {
+    text-align: center;
+  }
+  .pc-investors-round {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1180px;
+    justify-content: space-between;
+  }
+  .pc-investors-img1 {
+    height: 160px;
+    width: 224px;
+    background: url("../../../assets/images/new_promote/pc/photo/01@2x.png") no-repeat center / contain;
+  }
+  .pc-investors-img2 {
+    height: 160px;
+    width: 224px;
+    background: url("../../../assets/images/new_promote/pc/photo/02@2x.png") no-repeat center / contain;
+  }
+  .pc-investors-img3 {
+    height: 160px;
+    width: 224px;
+    background: url("../../../assets/images/new_promote/pc/photo/03@2x.png") no-repeat center / contain;
+  }
+  .pc-investors-img4 {
+    height: 160px;
+    width: 224px;
+    background: url("../../../assets/images/new_promote/pc/photo/04@2x.png") no-repeat center / contain;
+  }
+  .pc-investors-img5 {
+    height: 160px;
+    width: 224px;
+    background: url("../../../assets/images/new_promote/pc/photo/05@2x.png") no-repeat center / contain;
+  }
+  .pc-investors-text {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    padding: 15px 0;
   }
 
 
