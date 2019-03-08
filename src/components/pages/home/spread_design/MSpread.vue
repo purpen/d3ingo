@@ -172,7 +172,7 @@
     </div>
     <div class="aegis contant bg7">
           <h3 class="title">我们为您提供全面保障</h3>
-          <el-row :gutter="40">
+          <el-row :gutter="20">
               <el-col :xs="8" :sm="8" :md="8" :lg="8">
                 <div class="img-box">
                   <img :src="require('assets/images/home/spread/pc/ProjectProgress@2x.png')" alt="">
