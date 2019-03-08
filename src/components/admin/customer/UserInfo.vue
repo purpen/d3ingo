@@ -831,8 +831,8 @@
                                   :class="['log-next-time', {'carry-out': item.status === 2 }]">
                                   次回跟进时间 :
                                 <span>{{item.next_time}}</span>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                                <!-- <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a> -->
                               </p>
                               <!-- <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
