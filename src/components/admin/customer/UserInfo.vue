@@ -291,13 +291,13 @@
                     </el-col>
                   </el-row>
                 </div>
-                <p class="user-btn clearfix padding20" v-show="option === 'user'">
+                <p class="user-btn clearfix padding20 fz-0" v-show="option === 'user'">
                   <el-button v-if="!currentId" type="primary" class="fr" :loading="boolCreateUser" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
-                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" :disabled="!isHasPower" @click="editUserInfo">编辑
+                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr margin-r-15" :disabled="!isHasPower" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
-                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
+                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr margin-r-15" @click="comeBack">取消</el-button>
                 </p>
               </div>
 
@@ -460,8 +460,6 @@
                               <span>项目工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
                             </p>
                             <div v-if="boolEditProject && currentProjectId === item.item_id">
-                              item_province{{projectForm.item_province}}
-                              item_city{{projectForm.item_city}}
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
                                   :isFirstProp="isFirstRegion" titleProp="项目工作地点"
@@ -485,10 +483,10 @@
                             </el-form-item>
                           </el-col>
                         </el-row>
-                        <p class="edit-project-btn clearfix margin-b22" v-if="boolEditProject && currentProjectId === item.item_id">
+                        <p class="edit-project-btn clearfix margin-b22 fz-0" v-if="boolEditProject && currentProjectId === item.item_id">
                           <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm' + index, item.item_id)">保存
                           </el-button>
-                          <el-button class="fr" @click="boolEditProject = false">取消</el-button>
+                          <el-button class="fr margin-r-15" @click="boolEditProject = false">取消</el-button>
                         </p>
                         <ul class="margin-t10">
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
@@ -598,10 +596,10 @@
                                   </el-col>
                                 </el-row>
 
-                                <p class="edit-design-btn clearfix margin-b22">
+                                <p class="edit-design-btn clearfix margin-b22 fz-0">
                                   <el-button type="primary" class="fr" @click="submitEditDesignCompanyForm('EditRuleDesignCompanyForm')">保存
                                   </el-button>
-                                  <el-button class="fr" @click="boolEditDesignCompany = false">取消</el-button>
+                                  <el-button class="fr margin-r-15" @click="boolEditDesignCompany = false">取消</el-button>
                                 </p>
                               </el-form>
                             </div>
@@ -657,10 +655,10 @@
                               </el-col>
                             </el-row>
 
-                            <p class="design-btn clearfix margin-b22">
+                            <p class="design-btn clearfix margin-b22 fz-0">
                               <el-button type="primary" class="fr" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
                               </el-button>
-                              <el-button class="fr" @click="boolDesignCompany = false">取消</el-button>
+                              <el-button class="fr margin-r-15" @click="boolDesignCompany = false">取消</el-button>
                             </p>
                           </el-form>
                         </div>
@@ -764,10 +762,10 @@
                         </el-col>
                       </el-row>
 
-                    <p class="add-project-btn clearfix margin-b22">
+                    <p class="add-project-btn clearfix margin-b22 fz-0">
                       <el-button type="primary" class="fr" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保存
                       </el-button>
-                      <el-button class="fr" @click="boolAddProject = false">取消</el-button>
+                      <el-button class="fr margin-r-15" @click="boolAddProject = false">取消</el-button>
                     </p>
                   </el-form>
 
@@ -2121,7 +2119,7 @@ export default {
     },
     designCostOptions() {
       if (typeData) {
-        return typeData.DESIGN_COST_OPTIONS
+        return typeData.DESIGN_COST_OPTIONS2
       } else {
         return {}
       }

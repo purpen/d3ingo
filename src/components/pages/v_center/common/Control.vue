@@ -461,7 +461,7 @@
             }
             switch (verifyStatus) {
               case 0:
-                item.verify_label = '未认证'
+                item.verify_label = '去认证'
                 break
               case 1:
                 item.verify_label = '已通过'
