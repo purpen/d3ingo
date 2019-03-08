@@ -26,8 +26,8 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" min-width="180">
             </el-table-column>
-            <el-table-column prop="page_view" label="浏览量" width="60">
-            </el-table-column>
+            <!-- <el-table-column prop="page_view" label="浏览量" width="60">
+            </el-table-column> -->
             <el-table-column prop="created_at" width="100" label="创建时间">
             </el-table-column>
             <el-table-column width="100" label="操作">
@@ -38,7 +38,7 @@
                 </p>
                 <p>
                   <router-link :to="{name: 'adminContentSubmit', query: {id: scope.row.id}}">编辑</router-link>
-                  <a href="javascript:void(0);" @click="showDelete(scope.$index, scope.row.id)">删除</a>
+                  <a href="javascript:void(0);" @click="showDelete(scope.$index, scope.row.id,scope.row.title)">删除</a>
                 </p>
               </template>
             </el-table-column>
@@ -49,7 +49,7 @@
             title="删除"
             :visible.sync="deleteShow"
             width="30%">
-            <span>确定删除帮助吗</span>
+            <span>确定删除 <span class="tc-red">{{deleteName}}</span> 帮助吗</span>
             <span slot="footer" class="dialog-footer">
               <el-button @click="deleteShow = false">取 消</el-button>
               <el-button type="primary" @click="deleteHelp">确 定</el-button>
@@ -72,6 +72,7 @@ export default {
   data() {
     return {
       menuType: 0,
+      deleteName: '',
       itemList: [],
       deleteIndex: '',
       deleteId: '',
@@ -90,9 +91,10 @@ export default {
     }
   },
   methods: {
-    showDelete(index, id) {
+    showDelete(index, id, name) {
       this.deleteIndex = index
       this.deleteId = id
+      this.deleteName = name
       this.deleteShow = true
     },
     // 删除文件

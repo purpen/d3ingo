@@ -20,13 +20,13 @@
               <a class="el-menu-item logo cursor-def">
                 <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
               </a>
-              <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="/commonly_sites" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item index="/spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
-              <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
-              <el-menu-item index="/content_manage" :route="menu.content_manage">帮助</el-menu-item>
+              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
+              <el-menu-item index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
+              <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
             </el-menu>
           </hgroup>
