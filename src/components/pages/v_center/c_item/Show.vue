@@ -37,7 +37,7 @@
                     <el-table-column>
                       <template slot-scope="scope">
                         <div v-if="scope.row.name === '相关附件'">
-                          <p v-for="(d, index) in scope.row.image" :key="d.name + index"><a :href="d.file" target="_blank">{{ d.name }}</a>
+                          <p v-for="(d, index) in scope.row.image" :key="d.name + index"><a :href="d.file" target="_blank">{{ sliceImgName(d.name) }}</a>
                           </p>
                         </div>
                         <div v-else>
