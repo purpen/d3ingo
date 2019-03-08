@@ -290,7 +290,7 @@
       var ratio = (rule, value, callback) => {
         if (!value) {
           callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value > 100 || value < 0) {
+        } else if (isNaN(value) || value > 100 || value <= 0) {
           callback(new Error('请输入1~100的比例'))
         } else {
           callback()
@@ -424,7 +424,7 @@
           this.$message.error ('请输入1~100的比例!')
           return
         }
-        if (val > 100 || val < 0) {
+        if (val > 100 || val <= 0) {
           this.$message.error ('请输入1~100的比例!')
           return
         }

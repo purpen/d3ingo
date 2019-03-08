@@ -38,7 +38,7 @@
                       <template slot-scope="scope">
                         <div v-if="scope.row.name === '相关附件'">
                           <p v-for="(d, index) in scope.row.image" :key="index">
-                            <a :href="d.file" target="_blank">{{ d.name }}</a>
+                            <a :href="d.file" target="_blank">{{ d.name | sliceImgName }}</a>
                           </p>
                         </div>
                         <div v-else>
@@ -56,7 +56,7 @@
                           <i v-if="!ele.image" class="fr">{{ele.title}}</i>
                           <div v-if="ele.name === '相关附件'" class="fr">
                             <p v-for="(d, index) in ele.image" :key="index">
-                              <a :href="d.file" target="_blank">{{ d.name }}</a>
+                              <a :href="d.file" target="_blank">{{ d.name | sliceImgName }}</a>
                             </p>
                           </div>
                         </li>
@@ -131,7 +131,7 @@
                     <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
-                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
+                    <p class="tc-2 protrude">项目目标及报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
@@ -195,7 +195,7 @@
                     <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(cooperateCompany.quotation)">详情>></a></span></p>
-                    <p>报价说明:  {{ cooperateCompany.quotation.summary }}</p>
+                    <p>项目目标及报价说明:  {{ cooperateCompany.quotation.summary }}</p>
                   </div>
 
                 </div>
@@ -286,7 +286,7 @@
                           <div class="contract-left">
                             <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
                             <div class="contract-content">
-                              <p>{{ asset.name }}</p>
+                              <p>{{ asset.name | sliceImgName }}</p>
                               <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                             </div>
                           </div>
@@ -317,7 +317,7 @@
                                         class="is-custom"> 立即支付
                               </el-button>
                             </p>
-                            <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
+                            <p class="capital-des">项目第{{ d.no }}阶段已确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
                             <!--<p class="capital-des">太火鸟收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
                           </div>
                           <div v-else>
@@ -548,6 +548,7 @@
 <script>
 import api from '@/api/api'
 import vItemProgress from '@/components/block/ItemProgress'
+import { sliceImgName } from '@/assets/js/common'
 const vQuoteView = () => import('@/components/block/QuoteView')
 export default {
   name: 'vcenter_item_show',
@@ -1324,11 +1325,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1336,11 +1337,11 @@ export default {
                 title: self.item.product_features
               },
               {
-                name: '产品领域',
+                name: '产品类别',
                 title: self.item.field_value
               },
               {
-                name: '所属行业',
+                name: '行业领域',
                 title: self.item.industry_value
               }
             ]
@@ -1351,11 +1352,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1374,7 +1375,7 @@ export default {
               title: self.item.cycle_value
             },
             {
-              name: '工作地点',
+              name: '项目工作地点',
               title: self.item.province_value + ', ' + self.item.city_value
             },
             {
@@ -1394,6 +1395,11 @@ export default {
   },
   updated: function() {
     // this.anchor
+  },
+  filters: {
+    sliceImgName(val) {
+      return sliceImgName(val)
+    }
   }
 }
 </script>

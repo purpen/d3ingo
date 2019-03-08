@@ -12,7 +12,7 @@ module.exports = [
     path: '/shunde/trade_fairs/home_page',
     name: 'trade_fairs',
     meta: {
-      title: '交易会',
+      title: '成果交易会',
       requireAuth: false
     },
     component: require('@/components/pages/home/trade_fairs/HomePage')

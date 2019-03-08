@@ -3,7 +3,7 @@
     <div class="container">
       <div class="top-menu-list">
         <router-link :to="{name: 'terms'}" class="item is-active">服务条款</router-link>
-        <router-link :to="{name: 'question'}" class="item">常见问题</router-link>
+        <!-- <router-link :to="{name: 'question'}" class="item">常见问题</router-link> -->
         <router-link :to="{name: 'trade'}" class="item">交易保障</router-link>
       </div>
     </div>
@@ -37,7 +37,7 @@
               <p>平台有权根据具体需要修订服务条款或各类规则，届时会以系统通知的形式告知所有用户。</p>
 
               <h3>3.知识产权</h3>
-              <p>{{custom.info}}平台为项目需求方与设计服务供应商提供合作平台，对所有用户提供必需的服务，在服务过程中遵守国家关于版权和知识产权的相关法律法规。</p>
+              <p>{{custom.info}}平台为项目需求方与设计服务商提供合作平台，对所有用户提供必需的服务，在服务过程中遵守国家关于版权和知识产权的相关法律法规。</p>
 
               <h3>4.隐私保护</h3>
               <p>{{custom.info}}承诺不对外公开或向第三方提供单个用户的注册资料及用户在使用网络服务时存储在平台的非公开内容；</p>

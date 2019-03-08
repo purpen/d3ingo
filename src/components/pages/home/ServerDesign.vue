@@ -50,7 +50,7 @@
     </div>
 
     <div class="container">
-      <div class="pub-title">入驻设计服务供应商</div>
+      <div class="pub-title">入驻设计服务商</div>
       <div class="design-company">
         <img src="../../../assets/images/company_logo/logo_pinwu.jpg"/>
         <img src="../../../assets/images/company_logo/logo_muma.jpg"/>

@@ -776,7 +776,17 @@
     border-color: transparent;
     color: #ffffff;
   }
-
+  .prompt-style .el-dialog__header {
+    display: none;
+  }
+  .prompt-style .el-dialog__body {
+    padding-top: 18px;
+    padding-bottom: 15px;
+  }
+  .prompt-suc {
+    min-width: 160px;
+    max-width: 200px;
+  }
 
   /* 升级后样式 */
   .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu__title.is-active {
@@ -894,7 +904,12 @@
     box-shadow: none;
     border: 1px solid #d2d2d2;
   }
-
+  .dig-send-code .el-dialog__header {
+    padding: 15px 20px;
+  }
+  .dig-send-code .el-dialog__body {
+    padding: 20px 20px 0 20px;
+  }
   .inner-place .el-input__inner {
     line-height: 0;
     padding: 15px;
@@ -929,6 +944,22 @@
     border-left: 1px solid #d2d2d2;
     border-top: 1px solid #d2d2d2;
     border-bottom: 1px solid #d2d2d2;
+  }
+  .dl-body-center .el-dialog__body{
+    text-align: center;
+  }
+  .nav-header .cursor-def {
+    cursor: default;
+  }
+  .dig-send-code .el-dialog__headerbtn {
+    font-size: 20px;
+    top: 13px;
+  }
+  .phone-form-round .el-form-item {
+    margin-bottom: 11px;
+  }
+  .phone-el-pad-bot .el-form-item {
+    margin-bottom: 0;
   }
   /*推广页*/
   .input-phone input {
@@ -1013,6 +1044,19 @@
   .receipt-form .el-dialog__body {
     padding: 0;
   }
+  .select-opt2 .el-select .el-input__inner {
+    padding-right: 25px;
+  }
+  .chart-block .el-date-editor .el-range-separator {
+    padding: 0 0;
+  }
+  .chart .el-input--suffix .el-input__inner {
+    padding-right: 25px;
+    color: #999;
+  }
+  .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
+    color: #ff5a5f;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -1023,6 +1067,10 @@
   /* 合同阶段选择按钮 */
   .el-form-item__content .el-radio-group {
     width: 100%;
+  }
+
+  .three-serve .el-row--flex.is-align-middle {
+    justify-content: center;
   }
 
 }

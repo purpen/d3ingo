@@ -96,6 +96,22 @@ let routes = [
     component: require('@/components/pages/home/ServerDesign')
   },
   {
+    path: '/spread_design',
+    name: 'spreadDesign',
+    meta: {
+      title: '设计服务商入驻'
+    },
+    component: require('@/components/pages/home/spread_design/SpreadDesign')
+  },
+  {
+    path: '/m_spread_design',
+    name: 'mSpreadDesign',
+    meta: {
+      title: '设计服务商入驻'
+    },
+    component: require('@/components/pages/home/spread_design/MSpread')
+  },
+  {
     path: '/stuff',
     name: 'stuff',
     redirect: '/design_case/general_list'
@@ -109,7 +125,7 @@ let routes = [
     path: '/design_case/general_list',
     name: 'designGeneralList',
     meta: {
-      title: '作品案例',
+      title: '设计案例',
       requireAuth: false
     },
     component: require('@/components/pages/design_case/GeneralList')
@@ -744,18 +760,10 @@ let routes = [
     component: require('@/components/pages/promote/Promote')
   },
   {
-    path: '/promote2',
-    name: 'promote2',
-    meta: {
-      title: '铟果推广'
-    },
-    component: require('@/components/pages/promote/Promote2')
-  },
-  {
     path: '/promote/youke',
     name: 'youke',
     meta: {
-      title: '优鲜集'
+      title: '优客工场'
     },
     component: require('@/components/pages/promote/Promote3')
   },

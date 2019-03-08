@@ -201,23 +201,23 @@
 
           <div class="form mtop_40">
             <el-form :model="form" :rules="ruleForm" ref="ruleForm">
+              <el-form-item prop="appItem" label="需求描述">
+                <el-input v-model="form.appItem" ref="appItem" placeholder="请输入您的需求"></el-input>
+              </el-form-item>
               <el-form-item prop="name" label="姓名">
                 <el-input v-model="form.name" name="username" placeholder="请输入您的姓名"></el-input>
               </el-form-item>
-              <el-form-item prop="appCompany" label="公司名称">
-                <el-input v-model="form.appCompany" ref="appCompany" placeholder="公司名称"></el-input>
+              <el-form-item prop="account" label="电话">
+                <el-input :maxlength="11" v-model="form.account" ref="account" placeholder="请输入电话"></el-input>
               </el-form-item>
-              <el-form-item prop="account" label="联系方式">
-                <el-input :maxlength="11" v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
-              </el-form-item>
-              <!-- <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
+              <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                     </el-button>
                   </template>
                 </el-input>
-              </el-form-item> -->
+              </el-form-item>
             </el-form>
           </div>
           <button class="btn_class mtop_40 fs_20" @click="submit_app('ruleForm')">立即提交</button>
@@ -248,7 +248,6 @@
 </template>
 
 <script>
-  import { calcImgSize } from 'assets/js/common'
   import api from '@/api/api'
   export default {
     props: {
@@ -283,15 +282,13 @@
         quantity: '', // 数量
         phone: '', // 底部联系电话
         time: 0,
-        calcHeight: '',
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          demand: '',   // 需求
           account: '',  // 手机号
-          contact: '',   // 联系人
           name: '',      // app 联系人
-          appCompany: '' // app 公司
+          appItem: '', // app 需求
+          smsCode: ''
         },
         // swiper
         swiperOption: {
@@ -316,21 +313,14 @@
           account: [
             {validator: checkNumber, trigger: 'blur'}
           ],
-          demand: [
-            { required: true, message: '请输入您的需求', trigger: 'blur' }
-          ],
-          contact: [
-            {required: true, message: '请输入联系人', trigger: 'blur'}
-          ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
           ],
-          // app
           name: [
             { required: true, message: '请输入您的姓名', trigger: 'blur' }
           ],
-          appCompany: [
-            { required: true, message: '请输入公司名称', trigger: 'blur' }
+          appItem: [
+            { required: true, message: '请输入您的需求', trigger: 'blur' }
           ]
         },
         query: {
@@ -351,44 +341,7 @@
           this.$message.error('请使用需求公司账号登录')
         }
       },
-      // 底部联系
-      footerContact () {
-        if (!this.phone) {
-          this.$message.error('请填写手机号')
-        } else {
-          if (!Number.isInteger(Number(this.phone))) {
-            this.$message.error('手机号只能为数字')
-          } else {
-            let len = this.phone.toString().length
-            if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(this.phone)) {
-                this.contact()
-              } else {
-                this.$message.error('手机号格式不正确')
-              }
-            } else {
-              this.$message.error('手机号长度应为11位')
-            }
-          }
-        }
-      },
-      // pc 右下角
-      contact () {
-        if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
-            .then(res => {
-              if (res.data.meta.status_code === 200) {
-                this.$message.success('提交成功')
-              } else {
-                this.$message.error(res.data.meta.message)
-              }
-            })
-            .catch(error => {
-              this.$message.error(error)
-            })
-        }
-      },
-      // 点击发送验证码
+      // 点击获取验证码
       fetchCode() {
         if (!this.form.account) {
           this.$message.error('请输入手机号')
@@ -412,10 +365,10 @@
             let row = {
               user_name: this.form.name,
               phone: this.form.account,
-              company_name: this.form.appCompany,
-              // new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              // device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 7
+              item_name: this.form.appItem,
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -432,29 +385,25 @@
               })
           }
         })
+      },
+      generalize(query) {
+        this.$http.post(api.generalize, {
+          url: location.href,
+          son_source: '优客',
+          device: 2,
+          new_from: 0
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
       }
     },
     created () {
-      // let that = this
-      // if (!that.$route.query || !that.$route.query.from) {
-      //   that.$router.push({name: 'youke', query: {from: 2}})
-      // }
       Object.assign(this.query, this.$route.query)
+      this.generalize(this.query)
     },
     mounted () {
-      let that = this
-      window.addEventListener ('resize', () => {
-        if (that.isMob) {
-          that.calcHeight = calcImgSize (180, 320)
-        } else {
-          that.calcHeight = calcImgSize (500, 1440)
-        }
-      })
-      if (that.isMob) {
-        that.calcHeight = calcImgSize (180, 320)
-      } else {
-        this.calcHeight = calcImgSize (500, 1440)
-      }
       // 人员数量
       this.$http.get(api.usersCount)
         .then(res => {
@@ -487,7 +436,7 @@
         return user
       },
       codeMsg() {
-        return this.time > 0 ? '重新发送' + this.time + 's' : '发送验证码'
+        return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
       },
       isMob() {
         return this.$store.state.event.isMob

@@ -102,6 +102,7 @@ export default {
   designItemStartId: '/design/itemStart/{0}', // POST 确认项目开始设计
   designItemDoneId: '/design/itemDone/{0}', // POST 确认项目完成
   itemStageSend: '/itemStage/ok/status', // PUT 项目阶段发送
+  confirmItemDelete: '/itemStage/delete/isOk', // GET 判断附件是否可以删除
 
   // 合同
   contract: '/contract', // POST 保存合同
@@ -129,6 +130,7 @@ export default {
   designCaseId: '/designCase/{0}', // 作品案例
   designCaseCompanyId: '/designCase/designCompany/{0}', // GET 通过公司ID查看案例
   designCaseOpenLists: '/designCase/openLists', // GET 案例列表
+  designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
 
   // 添加作品
   work: 'works',
@@ -180,6 +182,24 @@ export default {
   adminUserSetRole: '/admin/user/changeRole', // POST 修改用户角色
   adminUserChangeSourceAdmin: '/admin/user/changeSourceAdmin', // POST 修改来源管理员
 
+  // 帮助中心后台
+  adminCategoryShowList: '/admin/category/showList', // GET 帮助中心分类列表
+  adminAssistUpdate: '/admin/assist/update', // POST 帮助中心修改帮助
+  adminAssistDelAssist: '/admin/assist/delAssist', // POST 帮助中心删除帮助
+  adminAssistChangeStatus: '/admin/assist/changeStatus', // POST 帮助中心变更状态
+  adminAssistShowList: '/admin/assist/showList', // GET 帮助中心帮助列表
+  adminAssistCreate: '/admin/assist/create', // POST 帮助中心添加帮助
+  adminCategoryDelCategory: '/admin/category/delCategory', // DELETE 帮助中心删除分类
+  adminCategoryCreate: '/admin/category/create', // POST 帮助中心添加分类
+  adminAssistShowInfo: '/admin/assist/showInfo', // GET 帮助中心查看详情
+
+  // 帮助中心
+  assistAssistSearch: '/assist/assistSearch', // GET 帮助中心搜索
+  assistAssistInfo: '/assist/assistInfo', // GET 帮助中心文章详情
+  assistAssistList: '/assist/assistList', // GET 帮助中心类别下文章列表
+  assistCategoryList: '/assist/categoryList', // GET 帮助中心类别列表
+  assistAllList: '/assist/allList', // GET 帮助中心全部列表
+
   // 潜在客户
   adminClueClueList: '/admin/clue/clueList', // GET 潜在客户列表
   adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
@@ -195,6 +215,7 @@ export default {
   adminClueUpdate: '/admin/clue/update', // POST 更新基本信息
   adminClueCreate: '/admin/clue/create', // POST 添加用户档案
   adminClueShow: '/admin/clue/show', // GET 查看用户档案
+  adminClueImportWeb: '/admin/clue/importWeb', // GET 导入社区
   adminClueSlueUpdate: '/admin/clue/clueUpdate', // POST 更改用户档案
   adminClueShowCrmItem: '/admin/clue/showCrmItem', // GET 查看项目
   adminClueAddCrmItem: '/admin/clue/addCrmItem', // POST 添加项目
@@ -215,6 +236,10 @@ export default {
   adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
   AdminCueGetUrl: '/admin/clue/getUrl', // GET 潜在客户-根据客户/项目id生成url
   adminClueShowFeedback: '/admin/clue/showFeedback', // 潜在客户-查看项目进度
+  adminClueSetClueStatus: 'admin/clue/setClueStatus', // POST 潜在客户状态标记失败
+  adminClueStatistics: '/admin/clue/statistics', // GET 潜在客户-统计列表上方
+  adminClueSearchStatistics: '/admin/clue/searchStatistics', // GET 搜索/统计列表
+  adminGeneralizeLists: '/admin/generalize/lists', // GET 落地页点击统计表
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
@@ -496,6 +521,7 @@ export default {
   designNoticeLists: '/designNotice/lists', // GET 列表
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
+  trueAllRead: '/message/trueAllRead', // PUT 一键已读
 
   // jd账号
   jdAccount: '/jd/jdAccount', // GET 获取京东account
@@ -586,6 +612,7 @@ export default {
   appAdd: '/wechat/demand/userAdd',   // POST APP
   userMessage: '/wechat/demand/users',   // POST APP消息滚动
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量
+  generalize: '/generalize/create', // POST 推广统计
   // 服务号
   fwhUser: '/fwh/user' // GET 获取服务号用户信息
 }

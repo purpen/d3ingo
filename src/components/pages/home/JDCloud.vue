@@ -659,7 +659,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/2.png'),
-          title: '集成零售流量需求方与设计服务供应商，以及背后的制造业生态链'
+          title: '集成零售流量需求方与设计服务商，以及背后的制造业生态链'
         },
         {
           img: require('assets/images/home/jd/3.png'),
@@ -708,7 +708,7 @@ export default {
       colList2: [
         {
           img: require('assets/images/home/jd/7.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性'
         },
         {
@@ -729,7 +729,7 @@ export default {
       colList2_yw: [
         {
           img: require('assets/images/home/jd/7-yw.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
@@ -771,7 +771,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16.png'),
@@ -799,7 +799,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15-yw.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16-yw.png'),
@@ -967,18 +967,17 @@ export default {
       return this.$store.state.event.prod
     },
     codeMsg() {
-      return this.time > 0 ? '重新发送' + this.time + 's' : '发送验证码'
+      return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
     }
   },
   created() {
     let that = this
     if (that.$store.state.event.prod.id === 0) {
       that.$router.replace({name: 'home'})
+      return
     }
-    Object.assign(this.query, this.$route.query)
-    // if (!that.$route.query || !that.$route.query.from) {
-    //   that.$router.push({name: 'SaaSIndex', query: {from: 2}})
-    // }
+    this.formatQuery(this.$route.query)
+    this.generalize(this.query)
   },
   mounted () {
     let that = this
@@ -1063,7 +1062,7 @@ export default {
           })
       }
     },
-    // 点击发送验证码
+    // 点击获取验证码
     fetchCode() {
       if (!this.form.account) {
         this.$message.error('请输入手机号')
@@ -1151,6 +1150,27 @@ export default {
       if (this.user.type === 1) {
       } else {
         this.$message.error('请使用需求公司账号登录')
+      }
+    },
+    generalize(query) {
+      this.$http.post(api.generalize, {
+        url: location.href,
+        son_source: query.mark,
+        device: this.isMob ? 2 : 1,
+        new_from: query.from
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    formatQuery(query) {
+      Object.assign(this.query, query)
+      if (typeof this.query.from !== 'number') {
+        this.query.from = 0
+      }
+      if (this.query.from < 0) {
+        this.query.from = 0
       }
     }
   },

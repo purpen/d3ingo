@@ -97,7 +97,7 @@ export default {
       if (user.design_company_logo_image) {
         user.logo_url = user.design_company_logo_image.logo
       } else {
-        if (user.logo_url) {
+        if (user.avatar) {
           user.logo_url = user.avatar.logo
         }
       }
@@ -142,7 +142,7 @@ export default {
     align-items: center
   }
   .logo img {
-    height: 50px;
+    height: 70px;
   }
   .yw img {
     height: 30px;

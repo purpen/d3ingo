@@ -83,7 +83,7 @@
                         size="small"
                         @keyup.enter.native="handleInputConfirm"
                         @blur="handleInputConfirm">
-                      </el-input>
+                    </el-input>
                       <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
                     <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
                   </el-form-item>

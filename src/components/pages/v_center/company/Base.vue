@@ -552,7 +552,7 @@
               <el-col :span="isMob ? 24 : 19" class="content">
                 <div v-if="element.own_brand">
                   <el-row :gutter="10">
-                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="margin-bottom10 line-hei-42">
+                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="line-hei-42">
                       <el-switch
                         @change="changeBrand"
                         v-model="hasBrand"
@@ -563,7 +563,7 @@
                     <el-col :xs="24" :sm="3" :md="3" :lg="3" class="brand-style" v-if="hasBrand">
                       <p class="line-hei-42">品牌名称:</p>
                     </el-col>
-                    <el-col class="input-brand margin-bottom10 line-hei-20 border-rad-input" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
+                    <el-col class="input-brand line-hei-20 border-rad-input" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
                       <el-input v-model.trim="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
@@ -777,7 +777,7 @@
               <p>&nbsp;</p>
               <p class="a-title">第一条 相关定义及解释</p>
               <p>1.关于{{custom.info}}</p>
-              <p>{{custom.info}}，基于大数据和智能匹配技术的创意交易平台，致力重新定义创新，为制造企业和设计服务供应商服务。</p>
+              <p>{{custom.info}}，基于大数据和智能匹配技术的创意交易平台，致力重新定义创新，为制造企业和设计服务商服务。</p>
               <p>
                 {{custom.info}}平台同意按照本协议规定发布的操作规则提供基于互联网以及移动网相关服务（以下称"网络服务"），为获得网络服务，平台所有用户应当同意本协议的全部条款并按照页面上的提示完成全部的注册程序。用户在使用过程中完成全部流程即表示完全接受本协议项下的全部条款以及公示于{{custom.info}}开放平台的各项规则。</p>
               <p>平台有权根据具体需要修订服务条款或各类规则，届时会以系统通知的形式告知所有用户。</p>
@@ -803,7 +803,7 @@
               <p>1.甲方根据本平台相关条款为经过实名认证的乙方服务，乙方自认可{{custom.info}}平台所有条款并完成企业实名认证后，可以在{{custom.info}}平台承接设计项目，与项目需求方订立合同并获得相应收益。</p>
               <p>2.乙方可享受甲方提供的相应服务与保障，包括知识产权保护、隐私保护等</p>
               <p>2（1）.	知识产权</p>
-              <p>{{custom.info}}平台为项目需求方与设计服务供应商提供合作平台，对所有用户提供必需的服务，在服务过程中遵守国家关于版权和知识产权的相关法律法规。</p>
+              <p>{{custom.info}}平台为项目需求方与设计服务商提供合作平台，对所有用户提供必需的服务，在服务过程中遵守国家关于版权和知识产权的相关法律法规。</p>
               <p>2（2）.	隐私保护</p>
               <p>{{custom.info}}承诺不对外公开或向第三方提供单个用户的注册资料及用户在使用网络服务时存储在平台的非公开内容；</p>
               <p>为保证平台正常运转，平台会对用户提交的资料进行审核，如发现不妥之处，有权要求用户更改或完善；</p>
@@ -1033,6 +1033,7 @@
           city: '',
           area: ''
         },
+        beforeAddress: {},
         dialogLicense: false,
         dialogLicenseImageUrl: ''
       }
@@ -1684,6 +1685,11 @@
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$set(that.form, 'verify_status', 3)
                   that.$message.success('提交成功,等待审核')
+                  that.beforeAddress = {
+                    province: row.province,
+                    area: row.area,
+                    city: row.city
+                  }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
                 } else {
@@ -1826,7 +1832,12 @@
         })
       },
       showLegalizeDialog() {
-        const d = this.currentAddress
+        let d = {}
+        if (Object.keys(this.beforeAddress).length === 0) {
+          d = this.currentAddress
+        } else {
+          d = this.beforeAddress
+        }
         this.dialogVisible = true
         this.$nextTick(_ => {
           this.$set(this.form, 'province', d.province === 0 ? '' : d.province)
@@ -2224,7 +2235,7 @@
     color: #fff
   }
   .brand-style {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     margin-left: 35px;
   }
   /* .white-button:hover {
