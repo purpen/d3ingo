@@ -211,8 +211,8 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="所属行业" prop="industry">
-                    <el-select v-model.number="form.industry" placeholder="所属行业">
+                  <el-form-item label="行业领域" prop="industry">
+                    <el-select v-model.number="form.industry" placeholder="行业领域">
                       <el-option
                         v-for="item in industryOptions"
                         :label="item.label"

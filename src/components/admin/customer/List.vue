@@ -72,14 +72,17 @@
           <div class="btn-list">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
-              class="">添加客户</el-button>
+              class="white-to-red-button">添加客户</el-button>
             <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
+              ref="upload"
               :on-preview="handlePreview"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
+              :on-change="changeFile"
+              :auto-upload="false"
               :on-error="uploadError"
               :data="{'token': token}"
               accept=".xlsx"
@@ -88,7 +91,6 @@
               <!-- <span class="upload-file">批量导入</span> -->
               <el-button size="small" >批量导入</el-button>
             </el-upload>
-            <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
@@ -313,7 +315,8 @@ export default {
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: '',
-      followVal: ''
+      followVal: '',
+      isOpen: true
     }
   },
   methods: {
@@ -493,24 +496,29 @@ export default {
         this.$message.error('请填写备注原因')
         return
       }
-      let idArr = this.arrayExportIds()
-      let row = {
-        new_status: 3,
-        clue_ids: idArr,
-        log: this.followVal
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success('标记成功')
-          this.boolClueStatus = false
-          this.followVal = ''
-          this.getClueList()
-        } else {
-          this.$message.error(res.data.meta.message)
+      if (this.isOpen) {
+        this.isOpen = false
+        let idArr = this.arrayExportIds()
+        let row = {
+          new_status: 3,
+          clue_ids: idArr,
+          log: this.followVal
         }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          this.isOpen = true
+          if (res.data.meta.status_code === 200) {
+            this.$message.success('标记成功')
+            this.boolClueStatus = false
+            this.followVal = ''
+            this.getClueList()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.isOpen = true
+          this.$message.error(error.message)
+        })
+      }
     },
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
@@ -664,22 +672,66 @@ export default {
     handlePreview(file) {
       console.log(file)
     },
+    changeFile(file) {
+      if (file.status === 'ready') {
+        this.$confirm('是否确认上传', '确认信息', {
+          distinguishCancelAndClose: true,
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$refs.upload.submit()
+        }).catch(() => {
+          this.$refs.upload.clearFiles()
+          this.$message.info('取消上传')
+        })
+      }
+    },
     beforeAvatarUpload(file) {
-      // const isXLSX = file.type === 'xlsx'
       console.log(file)
+      // const isXLSX = file.type === 'xlsx'
       // const isLt2M = file.size / 1024 / 1024 < 2
       // if (!isXLSX) {
-      //   this.$message.error('上传头像图片只能是 XLSX 格式!')
+        //   this.$message.error('上传头像图片只能是 XLSX 格式!')
       // }
       // if (!isLt2M) {
-      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+        //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
     },
     handleAvatarSuccess(res, file, fileList) {
+      let message = ''
       if (res.meta.status_code === 200) {
-        this.$message.success('导入成功')
+        const {count, err, success} = res.data
+        if (count) {
+          message = '共上传条数' + count
+        } else {
+          message = '共上传条数 0'
+        }
+        if (err) {
+          message += '  重复条数' + err
+        } else {
+          message += '  重复条数0'
+        }
+        if (success) {
+          message += '  成功条数 ' + success
+        } else {
+          message += '  成功条数 0'
+        }
+        this.$message({
+          duration: 5000,
+          type: 'success',
+          message
+        })
         this.getClueList()
+      } else if (res.meta.status_code === 403) {
+        this.$message({
+          type: 'error',
+          duration: 5000,
+          message: res.meta.message
+        })
+      } else {
+        this.$message.error(res.meta.message)
       }
     },
     uploadError(err, file, fileList) {

@@ -1,7 +1,18 @@
 <template>
   <div class="container">
-    <div class="blank20"></div>
-    <menuSub></menuSub>
+    <div class="meun-hid">
+      <div class="menu-round">
+        <div class="menu">
+          <div class="menu-text pad-left-20" :class="{'color-red': type === 0}" @click="clickLoad(0)">全部</div>
+          <div class="menu-text" :class="{'color-red': type === 1}" @click="clickLoad(1)">产品设计</div>
+          <div class="menu-text" :class="{'color-red': type === 3}" @click="clickLoad(3)">平面设计</div>
+          <div class="menu-text" :class="{'color-red': type === 5}" @click="clickLoad(5)">包装设计</div>
+          <div class="menu-text" :class="{'color-red': type === 2}" @click="clickLoad(2)">UI/UX设计</div>
+          <div class="menu-text" :class="{'color-red': type === 6}" @click="clickLoad(6)">插画设计</div>
+          <!-- <div class="menu-text" :class="{'color-red': type === 4}" @click="clickLoad(4)">H5</div> -->
+        </div>
+      </div>
+    </div>
     <div class="case-list" v-loading="isLoading">
       <el-row :gutter="20" class="anli-elrow">
         <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
@@ -41,12 +52,12 @@
 
 <script>
 import api from '@/api/api'
-import menuSub from './MenuSub'
 export default {
   name: 'designGeneralList',
   data() {
     return {
       itemList: [],
+      type: 0,
       isLoading: false,
       query: {
         page: 1,
@@ -58,22 +69,25 @@ export default {
       test: ''
     }
   },
-  components: {
-    menuSub
-  },
   methods: {
     handleCurrentChange(page) {
       this.query.page = page
-      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
-      this.loadList()
+      this.$router.push({name: this.$route.name, query: {page: this.query.page, type: this.type}})
+      this.loadList(this.$route.query.type)
     },
-    loadList() {
+    clickLoad(type) {
+      this.query.page = 1
+      this.$router.push({name: this.$route.name, query: {page: 1, type: type}})
+      this.loadList(this.$route.query.type)
+    },
+    loadList(type) {
       const self = this
+      self.type = type
       self.isLoading = true
       self.query.sort = this.$route.query.sort || 5
       self.$http
         .get(api.designCaseOpenLists, {
-          params: { page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort }
+          params: { page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: type }
         })
         .then(function(response) {
           self.isLoading = false
@@ -92,8 +106,8 @@ export default {
     }
   },
   created: function() {
+    this.loadList(this.$route.query.type = 0)
     this.query.page = Number(this.$route.query.page) || 1
-    this.loadList()
   },
   computed: {
     isMob() {
@@ -105,6 +119,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container {
+  width: 100%;
+  max-width: 1180px;
+}
 a {
   color: #222;
 }
@@ -116,7 +134,41 @@ a {
 .case-list {
   min-height: 350px;
 }
-
+.meun-hid {
+  height: 60px;
+  overflow: hidden;
+}
+.menu-round {
+  width: 100%;
+  height: 60px;
+}
+.menu {
+  display: flex;
+  height: 60px;
+  max-width: 450px;
+  margin: 0 auto;
+  justify-content: space-between;
+  white-space: nowrap;
+  align-items: center;
+}
+.menu-text {
+  cursor: pointer;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #666666;
+  line-height: 14px;
+  padding-right: 10px;
+}
+.pad-left-20 {
+  padding-left: 20px;
+}
+.menu-text:hover {
+  color: #FF5A5F;
+}
+.color-red {
+  color: #FF5A5F;
+}
 .image-box {
     height: 220px;
     overflow: hidden;
@@ -134,11 +186,13 @@ a {
 
 .content a {
   font-size: 1.8rem;
+  font-family:PingFangSC-Regular;
   display: block;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;
   color: #222;
+  font-weight:400;
 }
 
 .des {
@@ -150,9 +204,10 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  font-family: PingFangSC-Regular;
   height: 42px;
+  font-weight: 400;
 }
-
 .company {
   color: #666;
   display: block;
@@ -161,6 +216,8 @@ a {
 
 .company span {
   font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
 }
 
 .company img {
@@ -190,10 +247,15 @@ a {
     display: block;
     width: 100%;
   }
+  .menu-round {
+    display: -webkit-box;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 @media screen and ( max-width: 480px) {
   .container {
-    width: 375px;
     overflow-x: hidden;
   }
 }

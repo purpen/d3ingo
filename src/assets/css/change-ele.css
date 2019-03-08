@@ -776,7 +776,17 @@
     border-color: transparent;
     color: #ffffff;
   }
-
+  .prompt-style .el-dialog__header {
+    display: none;
+  }
+  .prompt-style .el-dialog__body {
+    padding-top: 18px;
+    padding-bottom: 15px;
+  }
+  .prompt-suc {
+    min-width: 160px;
+    max-width: 200px;
+  }
 
   /* 升级后样式 */
   .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu__title.is-active {
@@ -938,6 +948,9 @@
   .dl-body-center .el-dialog__body{
     text-align: center;
   }
+  .nav-header .cursor-def {
+    cursor: default;
+  }
   .dig-send-code .el-dialog__headerbtn {
     font-size: 20px;
     top: 13px;
@@ -1054,6 +1067,10 @@
   /* 合同阶段选择按钮 */
   .el-form-item__content .el-radio-group {
     width: 100%;
+  }
+
+  .three-serve .el-row--flex.is-align-middle {
+    justify-content: center;
   }
 
 }

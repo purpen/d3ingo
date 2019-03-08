@@ -37,11 +37,11 @@
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <template v-if="eventUser.type === 1">
-                <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
               <template v-else>
-                <img class="avatar2" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
               <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
@@ -62,11 +62,11 @@
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <template v-if="eventUser.type === 1">
-                <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
               <template v-else>
-                <img class="avatar2" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
               <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
@@ -85,11 +85,11 @@
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
           <template v-if="eventUser.type === 1">
-            <span v-if="eventUser.avatar" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
+            <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.logo_url}) no-repeat center / contain`}"></span>
             <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
           </template>
           <template v-else>
-            <span v-if="eventUser.design_company_logo_image" class="avatar" :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / contain`}"></span>
+            <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.logo_url}) no-repeat center / contain`}"></span>
             <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
           </template>
         </router-link>
@@ -130,9 +130,9 @@
                   v-if="eventUser.company"
                   :content="eventUser.company.company_name || eventUser.account" placement="right">
                   <div class="computer-btn"
-                    v-if="isCompany && !isMob && eventUser.design_company_logo_image"
+                    v-if="isCompany && !isMob && eventUser.logo_url"
                     @click="redirectCompany"> 
-                    <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
+                    <span :style="{background: `url(${eventUser.logo_url}) no-repeat center / cover #222`}"></span>
                   </div>
               </el-tooltip>
               
@@ -220,9 +220,9 @@
                 v-if="eventUser.company"
                 :content="eventUser.company.company_name || eventUser.account" placement="right">
                 <div class="computer-btn"
-                  v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
+                  v-if="isCompany && !isMob && eventUser.company &&eventUser.logo_url"
                   @click="redirectCompany">
-                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
+                  <span :style="{background: `url(${eventUser.logo_url}) no-repeat center / cover #222`}"></span>
                   {{eventUser.company.company_name || eventUser.account}}
                 </div>
               </el-tooltip>
@@ -478,13 +478,13 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        // if (user.design_company_logo_image) {
-        //   user.logo_url = user.design_company_logo_image.logo
-        // } else {
-        //   if (user.avatar) {
-        //     user.logo_url = user.avatar.logo
-        //   }
-        // }
+        if (user.design_company_logo_image) {
+          user.logo_url = user.design_company_logo_image.logo
+        } else {
+          if (user.avatar) {
+            user.logo_url = user.avatar.logo
+          }
+        }
         return user
       },
       isthirdParty() {
@@ -714,7 +714,6 @@
   .logo-icon img {
     width: auto;
     height: 74px;
-    margin-top: -7px;
   }
   .other .logo-icon img {
     width: auto;
