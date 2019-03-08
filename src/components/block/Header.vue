@@ -88,8 +88,12 @@
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
             </div> -->
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/register" :route="menu.register" class="fc-red">注册</el-menu-item>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="fc-red">
+                <span class="login-btn">
+                  注册
+                </span>
+              </el-menu-item>
             </el-menu>
           </div>
 
@@ -762,7 +766,7 @@
   .el-menu-item.logo img {
     width: auto;
     height: 52px;
-    /* margin-top: -7px; */
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
@@ -1036,5 +1040,15 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
     line-height: 20px;
+  }
+  .login-btn {
+    padding: 6px 20px;
+    box-shadow: 0 0 0 2px #f36 inset!important;
+    border-radius: 4px;
+    color: #ff5a5f;
+  }
+  .login-btn:hover {
+    color: #fff;
+    background-color: #ff5a5f;
   }
 </style>
