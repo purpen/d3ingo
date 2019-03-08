@@ -236,15 +236,17 @@
     </footer>
     <el-dialog
       title="立即入驻"
+      class="dialog-Entering"
       center
+      top="26vh"
       :visible.sync="dialogVisible"
       width="80%">
       <p class="tc-6 line-height1_5 fw-4 fz-16 text-center">请复制以下链接到PC端进行操作</p>
       <p class="blank5 is-exception fz-14 line-height1_5 text-center">{{link}}</p>
       <span slot="footer" class="dialog-footer">
-      <el-button type="primary" class="btn-link" @click="copyLink">复制链接</el-button>
-  </span>
-</el-dialog>
+        <el-button type="primary" class="btn-link" @click="copyLink">复制链接</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -460,3 +462,9 @@ footer > .enter:active {
   bottom: 57px;
 }
 </style>
+<style>
+.dialog-Entering .dialog-footer .el-button:first-child {
+  margin-right: 0;
+}
+</style>
+

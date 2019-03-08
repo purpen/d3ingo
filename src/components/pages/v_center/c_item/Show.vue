@@ -1245,7 +1245,7 @@
       handleChange(file) {
         this.$http.get(api.confirmItemDelete, {params: {item_stage_id: this.currentStageId}}).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
-            this.$refs.upload.submit()
+            this.$refs.upload[0].submit()
             document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
             this.isReady = false
           } else {
