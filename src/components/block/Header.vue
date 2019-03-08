@@ -762,7 +762,7 @@
   .el-menu-item.logo img {
     width: auto;
     height: 52px;
-    margin-top: -7px;
+    /* margin-top: -7px; */
   }
   .jdc .el-menu-item.logo img {
     width: auto;
