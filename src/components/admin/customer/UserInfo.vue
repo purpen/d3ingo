@@ -1255,6 +1255,7 @@ export default {
       this.$http.get(api.adminClueImportWeb, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success('导入成功')
+          this.userForm.is_thn = 1
         } else {
           this.$message.error(res.data.meta.message)
         }
