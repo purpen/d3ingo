@@ -1220,6 +1220,7 @@
           this.$message.error('上传文件大小不能超过 50MB!')
           return false
         }
+        document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1245,8 +1246,8 @@
       handleChange(file) {
         this.$http.get(api.confirmItemDelete, {params: {item_stage_id: this.currentStageId}}).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
+            document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传附件'
             this.$refs.upload[0].submit()
-            document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
             this.isReady = false
           } else {
             this.$message.error(res.data.meta.message)
