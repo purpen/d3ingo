@@ -584,6 +584,20 @@
         <div class="trust-text">顺德第二季创新设计成果交易会</div>
         <div class="trust-img3"></div>
       </div>
+      <div class="phone-prize">
+        <div class="serve-text pc-pad-bot-10">所获奖项</div>
+        <div class="phone-prize-get">3000+ 全球设计大奖</div>
+        <div class="phone-customer-imgs">
+          <div class="phone-prize-img1"></div>
+          <div class="phone-prize-img2"></div>
+          <div class="phone-prize-img3"></div>
+          <div class="phone-prize-img4"></div>
+          <div class="phone-prize-img5"></div>
+          <div class="phone-prize-img6"></div>
+          <div class="phone-prize-img7"></div>
+          <div class="phone-prize-img8"></div>
+        </div>
+      </div>
       <div class="serve-text">服务客户</div>
       <div class="serve-flex">
         <div class="serve-img1"></div>
@@ -2497,7 +2511,7 @@
     line-height: 20px;
   }
   .serve-customer {
-    height: 325px;
+    min-height: 365px;
     background: rgba(255,255,255,0.1);
     text-align: center;
     margin-top: 30px;
@@ -2509,12 +2523,13 @@
     color: rgba(255,255,255,1);
     line-height: 28px;
     padding-top: 30px;
+    text-align: center;
   }
   .serve-flex {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 20px 15px 0 15px;
+    margin: 20px 10px 0 10px;
   }
   .margin-top-10 {
     margin-top: 10px;
@@ -2803,6 +2818,8 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    padding: 0 10px;
+    padding-top: 15px;
   }
   .phone-investors-img1 {
     height: 80px;
@@ -2828,6 +2845,74 @@
     height: 80px;
     width: 33%;
     background: url("../../../assets/images/new_promote/pc/photo/05@2x.png") no-repeat center / contain;
+  }
+  .phone-prize-img1 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize01@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img2 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize02@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img3 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize03@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img4 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize04@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img5 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize05@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img6 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize06@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img7 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize07@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-prize-img8 {
+    width: 25%;
+    height: 35px;
+    background: url("../../../assets/images/new_promote/phone/prize/prize08@2x.png") no-repeat center / contain;
+    margin-top: 10px;
+  }
+  .phone-customer-imgs {
+    max-width: 1180px;
+    display: flex;
+    margin: 0 auto;
+    min-height: 70px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+  }
+  .phone-prize {
+    margin-top: 20px;
+    min-height: 220px;
+    background: rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  .phone-prize-get {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
   }
 
 
