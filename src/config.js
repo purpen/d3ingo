@@ -1220,23 +1220,23 @@ const COMPANY_PROPERTY_TYPE = [
 const DESIGN_COST_OPTIONS = [
   {
     id: 1,
-    name: '5万以内'
+    name: '1万-5万之间'
   },
   {
     id: 2,
-    name: '5-10万'
+    name: '5万-10万'
   },
   {
     id: 3,
-    name: '10-20万'
+    name: '10万-20万'
   },
   {
     id: 4,
-    name: '20-30万'
+    name: '20万-30万'
   },
   {
     id: 5,
-    name: '30-50万'
+    name: '30万-50万'
   },
   {
     id: 6,
@@ -1245,6 +1245,50 @@ const DESIGN_COST_OPTIONS = [
 
 ]
 
+// 设计费用预算
+const DESIGN_COST_OPTIONS2 = [
+  {
+    id: 1,
+    name: '1万-5万之间'
+  },
+  {
+    id: 2,
+    name: '5万-10万'
+  },
+  {
+    id: 3,
+    name: '10万-20万'
+  },
+  {
+    id: 4,
+    name: '20万-30万'
+  },
+  {
+    id: 5,
+    name: '30万-50万'
+  },
+  {
+    id: 6,
+    name: '50万以上'
+  },
+  {
+    id: 7,
+    name: '1千以下'
+  },
+  {
+    id: 8,
+    name: '1千-3千'
+  },
+  {
+    id: 9,
+    name: '3千-5千'
+  },
+  {
+    id: 10,
+    name: '5千-1万'
+  }
+
+]
 // 公司规模
 const COMPANY_SIZE = [
   {
@@ -1776,6 +1820,7 @@ module.exports = {
   DESIGN_CASE_SALE_OPTIONS,
   CYCLE_OPTIONS,
   DESIGN_COST_OPTIONS,
+  DESIGN_COST_OPTIONS2,
   COMPANY_SIZE,
   COMPANY_REVENUE,
   VERIFY_STATUS,
