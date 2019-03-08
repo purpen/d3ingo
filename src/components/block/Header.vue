@@ -22,12 +22,18 @@
               </a>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item v-if="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
               <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
+              <el-menu-item v-if="!isLogin" index="reg" :route="menu.register" style="margin-left: 126px" class="fc-red">
+                <span class="login-btn">
+                  注册
+                </span>
+              </el-menu-item>
+              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" >登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -83,10 +89,10 @@
             </el-menu>
           </div>
 
-          <div class="nav-right" v-else>
-            <!-- <div class="server-in-btn">
+          <!-- <div class="nav-right" v-else>
+            <div class="server-in-btn">
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-            </div> -->
+            </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
               <el-menu-item index="" :route="menu.register" class="fc-red">
@@ -95,7 +101,7 @@
                 </span>
               </el-menu-item>
             </el-menu>
-          </div>
+          </div> -->
 
         </div>
       </div>
