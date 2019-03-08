@@ -9,7 +9,7 @@
           <div class="menu-text" :class="{'color-red': type === 5}" @click="clickLoad(5)">包装设计</div>
           <div class="menu-text" :class="{'color-red': type === 2}" @click="clickLoad(2)">UI/UX设计</div>
           <div class="menu-text" :class="{'color-red': type === 6}" @click="clickLoad(6)">插画设计</div>
-          <div class="menu-text" :class="{'color-red': type === 4}" @click="clickLoad(4)">H5</div>
+          <!-- <div class="menu-text" :class="{'color-red': type === 4}" @click="clickLoad(4)">H5</div> -->
         </div>
       </div>
     </div>
@@ -145,7 +145,7 @@ a {
 .menu {
   display: flex;
   height: 60px;
-  max-width: 500px;
+  max-width: 450px;
   margin: 0 auto;
   justify-content: space-between;
   white-space: nowrap;
@@ -153,7 +153,7 @@ a {
 }
 .menu-text {
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #666666;
