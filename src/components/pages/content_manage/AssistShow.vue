@@ -59,6 +59,7 @@
       categoryId(val) {
         if (val) {
           this.$route.query.categoryId = this.categoryId
+          console.log(this.$route.query.categoryId)
         }
       }
     },
@@ -208,6 +209,10 @@
     line-height: 34px;
     font-size: 14px;
     cursor: pointer;
+    color: #666;
+  }
+  .aside .tc-red {
+    color: #FF5A5F;
   }
   .aside ul li:hover {
     background-color: #f7f7f7;
@@ -218,12 +223,14 @@
     line-height: 30px;
   }
   .aside-right {
-    width: 230px;
+    width: 200px;
     float: left;
     min-height: 100vh;
+    margin-right: 30px;
   }
   .assist-center {
     width: calc(100% - 230px);
+    max-width: 880px;
     float: left;
     min-height: 100vh;
   }

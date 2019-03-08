@@ -711,6 +711,15 @@
       }
     },
     mounted() {
+      // /* eslint-disable */
+      // const oScript = document.createElement('script')
+      // oScript.type = 'text/javascript'
+      // // oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+      // oScript.src = '../../../assets/js/ics-web-sdk-js'
+      // document.body.appendChild(oScript)
+      // console.log(IcsWebSdkJs)
+      // // IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+      // /* eslint-disable */
       let that = this
       window.addEventListener ('resize', () => {
         if (that.isMob) {

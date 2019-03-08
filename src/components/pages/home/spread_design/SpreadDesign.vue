@@ -51,14 +51,14 @@
                 </div>
                 <div class="advantage-title">
                   <p class="">商机推送</p>
-                  <p class="advantage-txt">入驻平台设计公司, </p>
-                  <p  class="advantage-txt">一年节省X万推广预算</p>
+                  <p class="advantage-txt">入驻平台设计公司，</p>
+                  <p  class="advantage-txt">一年节省X万推广预算。</p>
                 </div>
               </el-col>
               
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/PreciseDemand@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">精准需求</p>
@@ -69,7 +69,7 @@
               
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/IncomeProtection@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">收益保障</p>
@@ -80,7 +80,7 @@
               
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/Push@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/IntegratedPackaging@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">一体化包装</p>
@@ -161,7 +161,7 @@
           <el-row :gutter="40">
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/CollaborativeSoftware@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">设计专属协作软件</p>
@@ -171,11 +171,11 @@
               
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/DesignResources@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">全网设计资源</p>
-                    <p class="server-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="server-txt">收录全网设计资源，行业趋势报告、各大奖项获奖案例展示、创意灵感网站等为您提供全球设计创意库。</p>
                 </div>
               </el-col>
               
@@ -185,17 +185,17 @@
                 </div>
                 <div class="advantage-title">
                   <p class="">企业名片推广</p>
-                    <p class="server-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="server-txt">为您的公司提供整体介绍、设计案例、创始人专访等全方位包装，并通过太火鸟全媒体平台推广。</p>
                 </div>
               </el-col>
               
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/DesignAssistant@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">智能设计助手</p>
-                    <p class="server-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
+                    <p class="server-txt">从设计需求智能匹配开始，快速响应双方反馈，帮助您第一时间解决客户问题，高效完成项目。</p>
                 </div>
               </el-col>
           </el-row>
@@ -217,7 +217,7 @@
               
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
                 <div class="img-box">
-                  <img :src="require('assets/images/home/spread/pc/copyrightProtection@2x.png')" alt="">
+                  <img :src="require('assets/images/home/spread/pc/deliver@2x.png')" alt="">
                 </div>
                 <div class="advantage-title">
                   <p class="">保证款项交付</p>
@@ -241,7 +241,7 @@
         <div class="container">
           <h3 class="title">轻松入驻</h3>
           <el-row :gutter="20">
-            <el-col :xs="7" :sm="7" :md="7" :lg="7"  :offset="1">
+            <el-col :xs="6" :sm="6" :md="6" :lg="6"  :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <!-- <img :src="require('assets/images/home/spread/1@2x.png')"  alt=""> -->
@@ -253,7 +253,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :offset="1">
+            <el-col :xs="9" :sm="9" :md="9" :lg="9" :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips2">完善信息及上传案例</p>
@@ -262,7 +262,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="7" :sm="7" :md="7" :lg="7">
+            <el-col :xs="6" :sm="6" :md="6" :lg="6" :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips3">接收需求</p>
@@ -311,7 +311,7 @@ export default {
 .top-main {
   padding: 50px 0;
   height: 500px;
-  background: url('../../../../assets/images/home/spread/pc/bannerWord.png') no-repeat center 88px/60%,
+  background: url('../../../../assets/images/home/spread/pc/bannerWord.png') no-repeat center 88px/880px,
               url('../../../../assets/images/home/spread/pc/bgCloud.png') no-repeat 106px 190px/56px,
               url('../../../../assets/images/home/spread/pc/bgCloud.png') no-repeat right 106px top 190px/56px,
               url('../../../../assets/images/home/spread/pc/bgLeft.png') no-repeat left bottom/320px,
@@ -426,6 +426,7 @@ export default {
 .sort {
   width: 180px;
   height: 68px;
+  margin-bottom: 10px;
   padding-bottom: 12px;
   line-height: 60px;
   background: url('../../../../assets/images/home/spread/pc/sort@2x.png') no-repeat top/cover;
@@ -468,7 +469,8 @@ export default {
   font-weight:400;
   line-height: 40px;
   margin-bottom: 20px;
-  background: url('../../../../assets/images/home/spread/pc/1@2x.png') no-repeat left/40px;
+  background: url('../../../../assets/images/home/spread/pc/1@2x.png') no-repeat left/40px,
+              url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px;
 }
 .word-tips2 {
   padding-left: 55px;
@@ -477,7 +479,8 @@ export default {
   font-weight:400;
   line-height: 40px;
   margin-bottom: 20px;
-  background: url('../../../../assets/images/home/spread/pc/2@2x.png') no-repeat left/40px;
+  background: url('../../../../assets/images/home/spread/pc/2@2x.png') no-repeat left/40px,
+               url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px;
 }
 .word-tips3 {
   padding-left: 55px;
