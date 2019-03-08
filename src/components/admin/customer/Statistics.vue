@@ -30,8 +30,9 @@
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24">{{bigStatistics.rising_proportion}}<span class="fz-16">%</span></p>
-                          <p class="tc-6">上涨</p>
+                          <p class="fz-24">{{bigStatistics.rising_proportion > 0?bigStatistics.rising_proportion: -bigStatistics.rising_proportion}}<span class="fz-16">%</span></p>
+                          <p class="tc-6" v-if="bigStatistics.rising_proportion >0">上涨</p>
+                          <p class="tc-6" v-else>下降</p>
                         </div>
                       </el-col>
                     </el-row>
@@ -1053,6 +1054,7 @@ export default {
         },
         legend: {
           bottom: 10,
+          type: 'scroll',
           data: []
         },
         series: [
@@ -1060,7 +1062,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
-            center: ['50%', '50%'],
+            center: ['50%', '55%'],
             data: [
             ],
             tooltip: {
