@@ -1026,7 +1026,8 @@ export default {
         tag: [],
         execute_user_id: '',
         son_source: '',
-        execute: []
+        execute: [],
+        is_thn: 0
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
@@ -1247,9 +1248,14 @@ export default {
     //   })
     // },
     importWeb() { // 导入社区
+      if (this.userForm.is_thn) {
+        this.$message.error('已导入到社区,无需重复操作')
+        return
+      }
       this.$http.get(api.adminClueImportWeb, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success('导入成功')
+          this.userForm.is_thn = 1
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1397,7 +1403,8 @@ export default {
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || ''
+            new_call_status: data.new_call_status || '',
+            is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           // if (data.tag.length === 1 && data.tag[0] === '') {
