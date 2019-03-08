@@ -89,7 +89,7 @@
             </div> -->
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
-              <el-menu-item index="/register2" :route="menu.register" class="fc-red">
+              <el-menu-item index="" :route="menu.register" class="fc-red">
                 <span class="login-btn">
                   注册
                 </span>
