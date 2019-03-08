@@ -716,13 +716,13 @@
         if (that.isMob) {
           that.calcHeight = calcImgSize (180, 320)
         } else {
-          that.calcHeight = calcImgSize (500, 1440)
+          that.calcHeight = calcImgSize (500, 1440, 500)
         }
       })
       if (that.isMob) {
         that.calcHeight = calcImgSize (180, 320)
       } else {
-        this.calcHeight = calcImgSize (500, 1440)
+        this.calcHeight = calcImgSize (500, 1440, 500)
       }
     },
     created() {
@@ -794,7 +794,7 @@
   }
   .slide .left a {
     border-radius: 30px;
-    background: #FE5B84;
+    background: #ff5a5f;
     display: block;
     width: 180px;
     height: 50px;
@@ -805,7 +805,7 @@
     margin-top: 15px;
   }
   .slide .left a:hover {
-    background: #ff5a5f;
+    background-color: #d23c46;
   }
   .slide .draw {
     height: 100%;
@@ -1032,11 +1032,11 @@
   }
   .solve-border:hover {
     color:rgba(255,255,255,1);
-    background:rgba(254,91,132,1);
+    background:#ff5a5f;
   }
   .solve-bg {
     color:rgba(255,255,255,1);
-    background:rgba(254,91,132,1);
+    background:#ff5a5f;
   }
   .solve-datail {
     min-height: 300px;
@@ -1313,7 +1313,7 @@
     cursor: pointer;
     width: 200px;
     height: 50px;
-    background: rgba(254,91,132,1);
+    background: #ff5a5f;
     border-radius: 4px;
     margin: 0 auto;
     line-height: 50px;
@@ -1326,7 +1326,7 @@
     color: rgba(255,255,255,1);
   }
   .intro-btn:hover {
-    background: #ff5a5f;
+    background-color: #d23c46;
   }
   .carry {
     min-height: 500px;
