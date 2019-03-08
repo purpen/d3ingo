@@ -240,7 +240,7 @@
       <div class="entering">
         <div class="container">
           <h3 class="title">轻松入驻</h3>
-          <el-row :gutter="20">
+          <el-row>
             <el-col :xs="6" :sm="6" :md="6" :lg="6"  :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
@@ -253,7 +253,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="9" :sm="9" :md="9" :lg="9" :offset="1">
+            <el-col :xs="9" :sm="9" :md="9" :lg="9" :offset="1" class="border-l50">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips2">完善信息及上传案例</p>
@@ -262,7 +262,7 @@
               </div>
             </el-col>
             
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :offset="1">
+            <el-col :xs="6" :sm="6" :md="6" :lg="5" :offset="2">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips3">接收需求</p>
@@ -304,6 +304,9 @@ export default {
 <style scoped>
 .bg-f7 {
   background-color: #f7f7f7;
+}
+.border-l50 {
+  border-left: 50px solid transparent;
 }
 .aegis {
   padding: 50px 0;
