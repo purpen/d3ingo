@@ -99,7 +99,7 @@ let routes = [
     path: '/spread_design',
     name: 'spreadDesign',
     meta: {
-      title: '推广-设计服务商'
+      title: '设计服务商入驻'
     },
     component: require('@/components/pages/home/spread_design/SpreadDesign')
   },
@@ -107,7 +107,7 @@ let routes = [
     path: '/m_spread_design',
     name: 'mSpreadDesign',
     meta: {
-      title: '推广-设计服务商'
+      title: '设计服务商入驻'
     },
     component: require('@/components/pages/home/spread_design/MSpread')
   },
@@ -125,7 +125,7 @@ let routes = [
     path: '/design_case/general_list',
     name: 'designGeneralList',
     meta: {
-      title: '作品案例',
+      title: '设计案例',
       requireAuth: false
     },
     component: require('@/components/pages/design_case/GeneralList')
