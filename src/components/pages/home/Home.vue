@@ -765,6 +765,9 @@
     max-height: 500px;
     overflow: hidden;
   }
+  .slide {
+    max-height: 500px
+  }
   .slide h3 {
     font-size: 3rem;
     color: #FFFFFF;

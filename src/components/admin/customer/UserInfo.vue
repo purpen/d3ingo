@@ -460,7 +460,7 @@
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
                               <span>项目工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
                             </p>
-                            <div v-if="boolEditProject && currentProjectId === item.item_id">
+                            <div v-show="boolEditProject && currentProjectId === item.item_id">
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
                                   :isFirstProp="isFirstRegion" titleProp="项目工作地点"
