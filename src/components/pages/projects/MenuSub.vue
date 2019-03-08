@@ -142,7 +142,7 @@ export default {
     align-items: center
   }
   .logo img {
-    height: 50px;
+    height: 70px;
   }
   .yw img {
     height: 30px;

@@ -5,9 +5,9 @@
         <div class="container clearfix" style="height:100%;">
           <div class="left">
             <h3 :class="{'m-h3' : isMob}">太火鸟</h3>
-            <p :class="{'m-p' : isMob}">工业设计和产品创新SaaS平台</p>
+            <p :class="{'m-p' : isMob}">中国领先的工业设计和产品创新SaaS平台</p>
             <p :class="{'m-p' : isMob}">为创新者提供高效的设计交易服务</p>
-            <router-link to="/item/submit_one">免费发布项目需求</router-link>
+            <router-link to="/item/submit_one">发布项目需求</router-link>
           </div>
           <div class="draw">
             <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="100%" height="auto" alt="">
@@ -72,6 +72,58 @@
           </el-row>
         </el-col>
       </el-row>
+    </div>
+    <div class="innovation">
+      <div class="innovation-title">为创新者提供高效的设计交易服务</div>
+      <div class="innovation-round">
+        <div class="innovation-flex">
+          <div class="innovation-flex-img phone-pad-rig-10">
+            <div class="innovation-border">
+              <div class="pad-top-15">
+                <div class="innovation-img1"></div>
+                <div class="innovation-text">产品设计</div>
+              </div>
+            </div>
+          </div>
+          <div class="innovation-flex-img">
+            <div class="innovation-border">
+              <div class="pad-top-15">
+                <div class="innovation-img2"></div>
+                <div class="innovation-text">平面设计</div>
+              </div>
+            </div>
+          </div>
+          <div class="innovation-flex-img phone-pad-rig-10">
+            <div class="innovation-border">
+              <div class="pad-top-15">
+                <div class="innovation-img3"></div>
+                <div class="innovation-text">UI/UX设计</div>
+              </div>
+            </div>
+          </div>
+          <div class="innovation-flex-img">
+            <div class="innovation-border">
+              <div class="pad-top-15">
+                <div class="innovation-img5"></div>
+                <div class="innovation-text">包装设计</div>
+              </div>
+            </div>
+          </div>
+          <div class="innovation-flex-img phone-pad-rig-10">
+            <div class="innovation-border">
+              <div class="pad-top-15">
+                <div class="innovation-img6"></div>
+                <div class="innovation-text">插画设计</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="intro-round">
+      <div class="intro-btn" @click="release">
+        <div class="intro-text">发布项目需求</div>
+      </div>
     </div>
     <div class="search">
       <div class="search-title">找到适合您的设计服务级别</div>
@@ -305,7 +357,7 @@
                 <div class="case-header-arrow"></div>
               </div>
               <div class="case-center text-a-center" @click="caseDetail(item.id)">
-                <img :src="item.cover.file" width="auto" height="100%" class="max-width-100">
+                <img :src="item.cover.middle" width="auto" height="100%" class="max-width-100">
               </div>
               <div class="case-center-round">
                 <div class="case-center-title">{{item.title}}</div>
@@ -314,66 +366,6 @@
             </div>
           </el-col>
         </el-row>
-      </div>
-    </div>
-    <div class="innovation">
-      <div class="innovation-title">为创新者提供高效的设计交易服务</div>
-      <div class="innovation-round">
-        <el-row :gutter="10">
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img1"></div>
-                <div class="innovation-text">产品设计</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img2"></div>
-                <div class="innovation-text">平面设计</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img3"></div>
-                <div class="innovation-text">UI/UX设计</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img4"></div>
-                <div class="innovation-text">H5设计</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img5"></div>
-                <div class="innovation-text">包装设计</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="4">
-            <div class="innovation-border">
-              <div class="pad-top-15">
-                <div class="innovation-img6"></div>
-                <div class="innovation-text">插画设计</div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
-    <div class="intro-round">
-      <div class="intro-btn" @click="release">
-        <div class="intro-text">发布项目需求</div>
       </div>
     </div>
     <div class="carry">
@@ -1249,7 +1241,7 @@
     margin-top: 10px;
   }
   .innovation {
-    padding-top: 100px;
+    padding-top: 70px;
   }
   .innovation-title {
     font-size: 30px;
@@ -1859,6 +1851,14 @@
   .in-flex-11 {
     width: 11%
   }
+  .innovation-flex {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .innovation-flex-img {
+    width: 20%;
+  }
   
   
 
@@ -1949,6 +1949,9 @@
   @media screen and (max-width: 767px) {
     .container {
       padding: 0 10px
+    }
+    .innovation-flex-img {
+      width: 50%;
     }
     .header-bot-right {
       width: 100%;
@@ -2060,6 +2063,9 @@
     }
     .phone-pad-rig-5 {
       padding-right: 5px;
+    }
+    .phone-pad-rig-10 {
+      padding-right: 10px;
     }
     .phone-pad-top-30 {
       padding-top: 30px

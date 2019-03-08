@@ -112,7 +112,7 @@ function showProd() {
         url: 'JDCloud.com',
         fullurl: 'https://www.jdcloud.com',
         license: '京东云【京ICP备11041704号-31】',
-        copyright: 'Copyright © 2012-2018',
+        copyright: 'Copyright © 2012-2019',
         business: '经营许可证:【京ICP证070359号】'
       }
     case 'yw':
@@ -127,7 +127,7 @@ function showProd() {
         url: 'zjbdos.com',
         fullurl: 'http://www.zjbdos.com',
         license: '万博大数据【浙ICP备18008501号-1】',
-        copyright: 'Copyright © 2017'
+        copyright: 'Copyright © 2019'
       }
     default:
       return {
@@ -137,10 +137,10 @@ function showProd() {
         login: '太火鸟',
         info: '太火鸟',
         title: '太火鸟-中国领先的产品创新SaaS平台',
-        url: 'saas.d3ingo.com',
-        fullurl: 'https://saas.d3ingo.com',
+        url: 'saas.taihuoniao.com',
+        fullurl: 'https://saas.taihuoniao.com',
         license: '太火鸟【京ICP备14025430号-2】',
-        copyright: 'Copyright © 2018',
+        copyright: 'Copyright © 2019',
         business: '经营许可证:【京ICP证150139号】'
       }
   }
