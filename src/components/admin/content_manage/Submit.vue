@@ -25,7 +25,7 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
+                    <el-input v-model="form.title" :maxlength="30" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -49,7 +49,7 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="排序值" prop="sort">
-                    <el-input v-model="form.sort" placeholder=""></el-input>
+                    <el-input v-model="form.sort" :maxlength="5" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -95,6 +95,20 @@ export default {
     mavonEditor
   },
   data() {
+    let checkAge = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('排序值不能为空'))
+      }
+      if (value) {
+        if (isNaN(value)) {
+          return callback(new Error('请输入数字'))
+        } else if (value <= 0) {
+          return callback(new Error('请填写大于0的数字'))
+        } else {
+          return callback()
+        }
+      }
+    }
     return {
       menuType: 0,
       itemMode: '添加说明',
@@ -130,7 +144,8 @@ export default {
           { type: 'number', message: '请选择分类', trigger: 'change' }
         ],
         title: [{ required: true, message: '请填写标题', trigger: 'blur' }],
-        content: [{ required: true, message: '请填写内容', trigger: 'blur' }]
+        content: [{ required: true, message: '请填写内容', trigger: 'blur' }],
+        sort: [{validator: checkAge, trigger: 'blur'}]
       },
       // 上一页信息
       beforeRoute: {
@@ -144,6 +159,7 @@ export default {
     // 监听变化
     updateRadio(val) {
       [this.categoryOptions2, this.categoryOptions] = [this.categoryOptions, this.categoryOptions2]
+      this.form.category_id = ''
     },
     submit(formName) {
       const that = this
