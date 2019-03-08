@@ -137,9 +137,9 @@ function showProd() {
         login: '太火鸟',
         info: '太火鸟',
         title: '太火鸟-中国领先的产品创新SaaS平台',
-        url: 'saas.taihuoniao.com',
-        fullurl: 'https://saas.taihuoniao.com',
-        license: '太火鸟【京ICP备14025430号-2】',
+        url: 'taihuoniao.com',
+        fullurl: 'https://taihuoniao.com',
+        license: '太火鸟【京ICP备14025430号】',
         copyright: 'Copyright © 2019',
         business: '经营许可证:【京ICP证150139号】'
       }

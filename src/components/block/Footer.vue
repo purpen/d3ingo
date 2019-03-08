@@ -75,11 +75,11 @@
       </el-col>
     </el-row>
     <div class="copy-right" v-if="!isMob">
-      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a> 版权所有.All rights reserved.</p>
+      <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
       <p>{{prod.license}}{{prod.business}}</p>
     </div>
     <div class="copy-right" v-if="isMob">
-      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a></p>
+      <p>{{prod.copyright}} {{prod.url}}</p>
       <p>版权所有.All rights reserved.</p>
       <p>{{prod.license}}</p>
       <p>{{prod.business}}</p>
