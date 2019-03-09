@@ -1723,75 +1723,80 @@ export default {
     },
     // 刷新数据
     updateAll(form) {
-      let type = 0
-      type = this[form].data.type
-      if (form === 'chance') {
-        this[form] = {
-          data: {
-            type: 1,
-            start_time: '',
-            end_time: '',
-            source: 0
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
+      if (form === 'all') {
+        this.all.show = false
+        this.getClueStatistics()
+      } else {
+        let type = 0
+        type = this[form].data.type
+        if (form === 'chance') {
+          this[form] = {
+            data: {
+              type: 1,
+              start_time: '',
+              end_time: '',
+              source: 0
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'customerNumber') {
+          this[form] = {
+            data: {
+              type: 2,
+              start_time: '',
+              end_time: '',
+              source: '0'
+            },
+            count: 0,
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'place') {
+          this[form] = {
+            data: {
+              type: 3,
+              time: 0,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'itemType') {
+          this[form] = {
+            data: {
+              type: 4,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
+            show: false
+          }
+        } else if (form === 'area') {
+          this[form] = {
+            data: {
+              type: 5,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
+            show: false
+          }
+        } else if (form === 'itemBudget') {
+          this[form] = {
+            data: {
+              type: 6,
+              source: '0',
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
         }
-      } else if (form === 'customerNumber') {
-        this[form] = {
-          data: {
-            type: 2,
-            start_time: '',
-            end_time: '',
-            source: '0'
-          },
-          count: 0,
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
-      } else if (form === 'place') {
-        this[form] = {
-          data: {
-            type: 3,
-            time: 0,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
-      } else if (form === 'itemType') {
-        this[form] = {
-          data: {
-            type: 4,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
-          show: false
-        }
-      } else if (form === 'area') {
-        this[form] = {
-          data: {
-            type: 5,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
-          show: false
-        }
-      } else if (form === 'itemBudget') {
-        this[form] = {
-          data: {
-            type: 6,
-            source: '0',
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
+        this.getClueSearchStatistics(type)
       }
-      this.getClueSearchStatistics(type)
     },
     // 获取下方数据
     getClueSearchStatistics(type, from) {
@@ -2317,6 +2322,7 @@ export default {
   }
   .edit-btn li {
     padding-left: 10px;
+    cursor: pointer;
   }
   .edit-btn li:hover {
     background: #f7f7f7;
