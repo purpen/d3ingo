@@ -1,16 +1,29 @@
 <template>
   <div class="container company-verify">
     <div class="blank20"></div>
-    <el-row :gutter="20">
+    <el-row>
       <v-menu selectedName="customerStatistics"></v-menu>
 
       <el-col :span="20">
         <div class="content">
-          <div>
-            <el-row :gutter="20">
-              <el-col :span="10">
-                <div class="s_header">
-                  <div class="header-title">
+          <div class="chart chart-survey">
+            <div class="chart-header">
+              <span class="chart-title">商机概况</span>
+              <div class="fr edit-btn" @blur="hideEcharts('all')" tabindex="-1">
+                <i @click="onOff('all')"></i>
+                <ul v-if="all.show">
+                  <li @click="updateAll('all')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="pt-20">
+            <el-row>
+              <el-col :span="12">
+                <div class="s_header pr-30 pl-30">
+                  <div class="header-title2">
                     <p class="tc-red fz-30">{{bigStatistics.total_customer}}</p>
                     <p class="tc-6">潜在客户</p>
                   </div>
@@ -30,8 +43,8 @@
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24">{{bigStatistics.rising_proportion > 0?bigStatistics.rising_proportion: -bigStatistics.rising_proportion}}<span class="fz-16">%</span></p>
-                          <p class="tc-6" v-if="bigStatistics.rising_proportion >0">上涨</p>
+                          <p class="fz-24 trend">{{bigStatistics.rising_proportion > 0?bigStatistics.rising_proportion: -bigStatistics.rising_proportion}}<span class="fz-16">%</span><i class="up" v-show="bigStatistics.rising_proportion >= 0"></i><i class="down" v-show="bigStatistics.rising_proportion < 0"></i></p>
+                          <p class="tc-6" v-if="bigStatistics.rising_proportion >=0">上涨</p>
                           <p class="tc-6" v-else>下降</p>
                         </div>
                       </el-col>
@@ -40,48 +53,26 @@
                 </div>
               </el-col>
 
-              <el-col :span="14">
-                <div class="s_header">
-                  <el-row>
-                    <el-col :span="8">
-                      <div class="header-title">
-                        <p class="fz-30 tc-red">{{bigStatistics.total_maintain}}</p>
-                        <p class="tc-6">维护客户</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="header-title">
-                        <p class="fz-30 tc-green">{{bigStatistics.total_loss}}</p>
-                        <p class="tc-6">流失客户</p>
-                      </div>
-                    </el-col>
-                      <el-col :span="8">
-                      <div class="header-title">
-                        <p class="fz-30">{{bigStatistics.total_invalid}}</p>
-                        <p class="tc-6">无效客户</p>
-                      </div>
-                    </el-col>
-                  </el-row>
+              <el-col :span="12">
+                <div class="s_header pl-30 pr-30">
+                  <div class="header-title2">
+                    <p class="fz-30 tc-red">{{bigStatistics.total_follow_up}}</p>
+                    <p class="tc-6">已跟进客户</p>
+                  </div>
                    <el-row>
-                      <el-col :span="6">
-                        <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.total_follow_up}}</p>
-                          <p class="tc-6 bd-right">已跟进</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="6">
+                      <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24 bd-right">{{bigStatistics.total_three_days}}</p>
                           <p class="tc-6 bd-right">3天内未跟进</p>
                         </div>
                       </el-col>
-                       <el-col :span="6">
+                       <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24 bd-right">{{bigStatistics.total_sever_days}}</p>
                           <p class="tc-6 bd-right">7天内未跟进</p>
                         </div>
                       </el-col>
-                      <el-col :span="6">
+                      <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24">{{bigStatistics.total_thirty_days}}</p>
                           <p class="tc-6">30天内未跟进</p>
@@ -92,7 +83,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="chart">
+          <div class="chart chart-fun">
             <div class="chart-header">
               <span class="chart-title">商机转化</span>
               <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
@@ -244,7 +235,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_customer.conversion}}
+                        {{chanceList.total_customer.conversion}}%
                       </p>
                     </el-col>
                     <el-col :span="6">
@@ -266,7 +257,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_maintain.conversion}}
+                        {{chanceList.total_maintain.conversion}}%
                       </p>
                     </el-col>
                     <el-col :span="6">
@@ -288,7 +279,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.cooperation.conversion}}
+                        {{chanceList.cooperation.conversion}}%
                       </p>
                     </el-col>
                     <el-col :span="6">
@@ -301,7 +292,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="chart">
+          <div class="chart chart-line">
             <div class="chart-header">
               <span class="chart-title">客户数量</span>
               <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
@@ -352,7 +343,7 @@
               </ECharts>
             </div>
           </div>
-          <div class="chart">
+          <div class="chart chart-columnar">
             <div class="chart-header">
               <span class="chart-title">来源渠道</span>
               <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
@@ -393,7 +384,7 @@
               </ECharts>
             </div>
           </div>
-          <div class="chart">
+          <div class="chart chart-circle">
             <el-row :gutter="20">
               <el-col :span="12">
                 <div class="chart-header">
@@ -459,7 +450,7 @@
             <div>
             </div>
           </div>
-          <div class="chart">
+          <div class="chart chart-budget">
             <div class="chart-header">
               <span class="chart-title">项目预算</span>
               <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
@@ -500,7 +491,7 @@
               </ECharts>
             </div>
           </div>
-          <div class="chart">
+          <div class="chart pb-0 chart-all">
             <div class="chart-header">
               <span class="chart-title">全部客户分析</span>
               <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
@@ -630,7 +621,7 @@
                 落地页点击统计列表
               </div>
             </div>
-            <div>
+            <div class="promotion">
               <el-table
                 :data="tableData4"
                 border
@@ -698,6 +689,9 @@ export default {
   data () {
     let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B']
     return {
+      all: {
+        show: false
+      },
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
         today_add: 0, // 今日新增客户
@@ -843,7 +837,7 @@ export default {
               lineHeight: 24,
               rich: {
                 big: {
-                  fontSize: 20,
+                  fontSize: 18,
                   color: '#fff'
                 },
                 normal: {
@@ -886,7 +880,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          bottom: '0',
+          bottom: '-5',
           data: ['累计客户', '新增客户', '无效客户', '流失客户']
         }, // 图标中显示标签
         grid: {
@@ -1012,22 +1006,21 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 10,
-          data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX', 'H5']
+          bottom: 0,
+          data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX']
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '55%',
+            radius: '70%',
             center: ['50%', '50%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
               {value: 0, name: '包装设计'},
               {value: 0, name: '插画设计'},
-              {value: 0, name: 'UI/UX'},
-              {value: 0, name: 'H5'}
+              {value: 0, name: 'UI/UX'}
             ],
             tooltip: {
               formatter: '{b}<br />项目数量: {c}<br />项目占比: {d}%'
@@ -1053,7 +1046,7 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 10,
+          bottom: 0,
           type: 'scroll',
           data: []
         },
@@ -1061,8 +1054,8 @@ export default {
           {
             name: '访问来源',
             type: 'pie',
-            radius: '55%',
-            center: ['50%', '55%'],
+            radius: '70%',
+            center: ['50%', '50%'],
             data: [
             ],
             tooltip: {
@@ -1168,12 +1161,6 @@ export default {
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
-          // {
-          //   name: '合计',
-          //   type: 'bar',
-          //   stack: '总量',
-          //   data: [0, 0, 0, 0, 0, 0, 0]
-          // }
         ]
       },
       polar7: {
@@ -2076,22 +2063,23 @@ export default {
 
 <style scoped>
   .content {
-    background-color: #f7f7f7; 
+    background-color: #f7f7f7;
+    /* padding: 20px; */
   }
   .s_header {
-    border: 1px solid #e6e6e6;
-    height: 180px;
+    height: 210px;
     text-align: center;
-    padding-top: 15px;
+    /* padding-top: 15px; */
     background-color: #fff;
   }
+  .pl-30 {
+    padding-left: 30px;
+  }
+  .pr-30 {
+    padding-right: 30px;
+  }
   .header-title {
-    padding: 15px 0 15px 0px;
-    /* height: 90px; */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
+    padding-top: 25px;
   }
   .fz-30 {
     font-size: 30px;
@@ -2111,10 +2099,11 @@ export default {
   .chart {
     margin-top: 20px;
     background-color: #fff;
+    padding: 0 0px 10px 0px;
   }
   .chart-header {
     height: 70px;
-    padding: 15px 0;
+    padding: 15px 0px 15px 20px;
   }
   .chart-header2::after {
     content: '';
@@ -2133,7 +2122,7 @@ export default {
     vertical-align: -webkit-baseline-middle;
   }
   .chart-block .el-date-editor {
-    width: 230px;
+    width: 240px;
   }
   .select-opt {
     width: 120px;
@@ -2146,16 +2135,30 @@ export default {
   .select-opt3 {
     width: 140px;
     margin-left: 15px;
-  } 
+  }
+  .chart-header2 {
+    margin-bottom: 30px;
+  }
+  .chart-header2 .chart-block {
+    margin-right: 15px;
+  }
+  .chart-header2 .select-opt3, .chart-header2 .select-opt {
+    margin-right: 15px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+  }
   .line-echarts {
     width: 100%;
     height: 350px;
   }
+  .chart-budget .line-echarts {
+    height:630px;
+  }
   .up-details {
     text-align: center;
     color: #FF7575;
-    margin-top: 15px;
-    padding-top: 15px;
+    margin-top: 30px;
+    padding: 15px 0;
     border-top: 1px solid #e6e6e6;
     position: relative;
     cursor: pointer;
@@ -2174,7 +2177,8 @@ export default {
     transform: rotate(90deg);
   }
   .tables {
-    padding-top: 20px;
+    padding-right: 10px;
+    padding-bottom: 30px;
   }
   .select-chance {
     width: 100px;
@@ -2187,6 +2191,8 @@ export default {
     margin-left: 15px;
     padding-left: 10px;
     color: #999;
+    cursor: pointer;
+    user-select:none;
   }
   .select-chance i {
     display: inline-block;
@@ -2297,6 +2303,7 @@ export default {
     border-left: 1px solid #e6e6e6;
     text-align: center;
     color: #333;
+    margin-right: 30px;
   }
   .table-header p {
     background-color: #f7f7f7;
@@ -2305,13 +2312,22 @@ export default {
     border-right: 1px solid #e6e6e6;
   }
   .table-content p {
-    height: 83px;
-    line-height: 82px;
+    height: 90px;
+    line-height: 89px;
     border-right: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
   }
+  .header-title p {
+    line-height: 20px;
+  }
+  .header-title2>p {
+    line-height: 20px;
+  }
+  .header-title2>p:first-child {
+    line-height: 42px;
+  }
   .header-title>p:first-child {
-    margin-bottom: 5px;
+    line-height: 33px;
   }
   .bg-f7 {
     background-color: #f7f7f7;
@@ -2322,5 +2338,75 @@ export default {
   }
   .reset-btn:hover {
     color: #FF7575;
+  }
+  .pb-0 {
+    padding-bottom: 0px;
+  }
+  .chart-budget {
+    height: 700px;
+    padding-bottom: 0px;
+  }
+  .chart-circle {
+    height: 500px;
+  }
+ .chart-line .line-echarts, .chart-circle .line-echarts {
+    height: 400px;
+  }
+  /* .chart-line .line-echarts {
+    height: 380px;
+  } */
+  .chart-line, .chart-columnar {
+    height: 550px;
+    padding-bottom: 0px;
+  }
+  .chart-columnar .line-echarts {
+    height: 455px;
+  }
+  .chart-line .chart-header, .chart-columnar .chart-header {
+    margin-bottom: 30px;
+  }
+  .promotion {
+    padding-right: 10px;
+  }
+  .chart-all .line-echarts {
+    height: 380px;
+  }
+  .trend {
+    position: relative;
+  }
+  .trend .up {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    right: 10px;
+    top: 7px;
+    background: url('../../../assets/images/icon/Up@2x.png') no-repeat center/ 16px 16px;
+  }
+  .trend .down {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    right: 10px;
+    top: 7px;
+    background: url('../../../assets/images/icon/Down@2x.png') no-repeat center/ 16px 16px;
+  }
+  .chart-fun {
+    height: 520px;
+  }
+  .chart-fun .chart-header {
+    margin-bottom: 30px;
+  }
+  .chart-fun .line-echarts {
+    height: 400px;
+  }
+  .chart-survey {
+    margin-top: 0;
+    padding: 0 10px 0px 0px;
+  }
+  .pt-20 {
+    padding-top: 20px;
+    background: #fff;
   }
 </style>
