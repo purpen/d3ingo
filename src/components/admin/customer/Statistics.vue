@@ -63,19 +63,19 @@
                       <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24 bd-right">{{bigStatistics.total_three_days}}</p>
-                          <p class="tc-6 bd-right">3天内未跟进</p>
+                          <p class="tc-6 bd-right">3天未跟进</p>
                         </div>
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24 bd-right">{{bigStatistics.total_sever_days}}</p>
-                          <p class="tc-6 bd-right">7天内未跟进</p>
+                          <p class="tc-6 bd-right">7天未跟进</p>
                         </div>
                       </el-col>
                       <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24">{{bigStatistics.total_thirty_days}}</p>
-                          <p class="tc-6">30天内未跟进</p>
+                          <p class="tc-6">30天未跟进</p>
                         </div>
                       </el-col>
                     </el-row>
