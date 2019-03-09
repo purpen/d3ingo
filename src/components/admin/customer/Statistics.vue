@@ -687,7 +687,7 @@ export default {
     COMPANY_TYPE
   },
   data () {
-    let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B']
+    let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84']
     return {
       all: {
         show: false
@@ -1014,7 +1014,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '70%',
-            center: ['50%', '50%'],
+            center: ['50%', '55%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -1055,7 +1055,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '70%',
-            center: ['50%', '50%'],
+            center: ['50%', '55%'],
             data: [
             ],
             tooltip: {
@@ -1889,12 +1889,24 @@ export default {
             let arr = []
             for (let kk in res) {
               res[kk].name = object[kk]
-              arr.push({
-                name: object[kk],
-                value: res[kk].num
-              })
+              if (res[kk].value !== 0) {
+                arr.push({
+                  name: object[kk],
+                  value: res[kk].num
+                })
+              }
             }
+            arr.forEach((item, index) => {
+              if (item.name === 'H5') {
+                arr.splice(index, 1)
+              }
+            })
+            let add = arr.map(m => {
+              return m.name
+            })
+            this.polar4.legend.data = add
             this.polar4.series[0].data = arr
+            console.log(arr)
           } else if (type === 5) {
             // 地区
             let cityArr = []
@@ -1926,6 +1938,14 @@ export default {
               cityArr.push(cityOther.name)
               seriesData.push(cityOther)
             }
+            seriesData.forEach((oth, indexo) => {
+              if (indexo >= 9 && oth.name !== '其他') {
+                cityOther.value += oth.value
+              }
+            })
+            seriesData.splice(9)
+            seriesData.push(cityOther)
+            console.log(seriesData)
             this.polar5.series[0].data = seriesData
             this.polar5.legend.data = cityArr
           } else if (type === 6) {
@@ -2218,7 +2238,7 @@ export default {
     background-color: #fff;
     z-index: 2;
     padding: 20px 40px;
-    box-shadow:0px 0px 4px 0px rgba(0,0,0,0.5)
+    box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.1);
   }
   .chance-content .th {
     border-bottom: 1px solid #e6e6e6;
@@ -2289,7 +2309,7 @@ export default {
     margin-top: 30px;
     color: #333;
     font-size: 14px;
-    box-shadow:0px 0px 4px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background: #fff;
   }
   .edit-btn li {
