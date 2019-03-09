@@ -579,7 +579,10 @@
               </ECharts>
             </div>
             <div class="up-details">
-              <span @click="allCustomer.isTable = !allCustomer.isTable">展开详细数据<i :class="{'transform': allCustomer.isTable}"></i></span>
+              <span @click="allCustomer.isTable = !allCustomer.isTable">
+                <span v-if="allCustomer.isTable">收起详细数据</span>
+                <span v-else>展开详细数据</span>
+                <i :class="{'transform': allCustomer.isTable}"></i></span>
             </div>
             <div v-if="allCustomer.isTable" class="tables">
               <el-table
@@ -837,7 +840,7 @@ export default {
               lineHeight: 24,
               rich: {
                 big: {
-                  fontSize: 18,
+                  fontSize: 22,
                   color: '#fff'
                 },
                 normal: {
@@ -1833,7 +1836,7 @@ export default {
               par = arr.find(item => {
                 return item.name === params.name
               })
-              return '{big|' + par.name + '}\n{normal|' + par.number + '}'
+              return '{big|' + par.number + '}\n{normal|' + par.name + '}'
             }
             this.polar.series[0].tooltip.formatter = function(params) {
               let par2 = {}
@@ -2302,7 +2305,7 @@ export default {
   .edit-btn ul {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 15px;
     z-index: 2;
     width: 130px;
     line-height: 30px;
