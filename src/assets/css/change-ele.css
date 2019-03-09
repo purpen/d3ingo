@@ -1063,6 +1063,9 @@
   .el-date-table td.in-range div, .el-date-table td.in-range div:hover, .el-date-table.is-week-mode .el-date-table__row.current div, .el-date-table.is-week-mode .el-date-table__row:hover div {
     background-color: #fafafa;
   }
+  .el-range-editor.is-active, .el-range-editor.is-active:hover {
+    border-color: #e6e6e6;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
