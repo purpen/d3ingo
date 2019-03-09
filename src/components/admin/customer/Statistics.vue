@@ -579,7 +579,10 @@
               </ECharts>
             </div>
             <div class="up-details">
-              <span @click="allCustomer.isTable = !allCustomer.isTable">展开详细数据<i :class="{'transform': allCustomer.isTable}"></i></span>
+              <span @click="allCustomer.isTable = !allCustomer.isTable">
+                <span v-if="allCustomer.isTable">收起详细数据</span>
+                <span v-else>展开详细数据</span>
+                <i :class="{'transform': allCustomer.isTable}"></i></span>
             </div>
             <div v-if="allCustomer.isTable" class="tables">
               <el-table
@@ -837,7 +840,7 @@ export default {
               lineHeight: 24,
               rich: {
                 big: {
-                  fontSize: 18,
+                  fontSize: 22,
                   color: '#fff'
                 },
                 normal: {
@@ -1720,75 +1723,80 @@ export default {
     },
     // 刷新数据
     updateAll(form) {
-      let type = 0
-      type = this[form].data.type
-      if (form === 'chance') {
-        this[form] = {
-          data: {
-            type: 1,
-            start_time: '',
-            end_time: '',
-            source: 0
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
+      if (form === 'all') {
+        this.all.show = false
+        this.getClueStatistics()
+      } else {
+        let type = 0
+        type = this[form].data.type
+        if (form === 'chance') {
+          this[form] = {
+            data: {
+              type: 1,
+              start_time: '',
+              end_time: '',
+              source: 0
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'customerNumber') {
+          this[form] = {
+            data: {
+              type: 2,
+              start_time: '',
+              end_time: '',
+              source: '0'
+            },
+            count: 0,
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'place') {
+          this[form] = {
+            data: {
+              type: 3,
+              time: 0,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
+        } else if (form === 'itemType') {
+          this[form] = {
+            data: {
+              type: 4,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
+            show: false
+          }
+        } else if (form === 'area') {
+          this[form] = {
+            data: {
+              type: 5,
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
+            show: false
+          }
+        } else if (form === 'itemBudget') {
+          this[form] = {
+            data: {
+              type: 6,
+              source: '0',
+              start_time: '',
+              end_time: ''
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            show: false
+          }
         }
-      } else if (form === 'customerNumber') {
-        this[form] = {
-          data: {
-            type: 2,
-            start_time: '',
-            end_time: '',
-            source: '0'
-          },
-          count: 0,
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
-      } else if (form === 'place') {
-        this[form] = {
-          data: {
-            type: 3,
-            time: 0,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
-      } else if (form === 'itemType') {
-        this[form] = {
-          data: {
-            type: 4,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
-          show: false
-        }
-      } else if (form === 'area') {
-        this[form] = {
-          data: {
-            type: 5,
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
-          show: false
-        }
-      } else if (form === 'itemBudget') {
-        this[form] = {
-          data: {
-            type: 6,
-            source: '0',
-            start_time: '',
-            end_time: ''
-          },
-          times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
-          show: false
-        }
+        this.getClueSearchStatistics(type)
       }
-      this.getClueSearchStatistics(type)
     },
     // 获取下方数据
     getClueSearchStatistics(type, from) {
@@ -1833,7 +1841,7 @@ export default {
               par = arr.find(item => {
                 return item.name === params.name
               })
-              return '{big|' + par.name + '}\n{normal|' + par.number + '}'
+              return '{big|' + par.number + '}\n{normal|' + par.name + '}'
             }
             this.polar.series[0].tooltip.formatter = function(params) {
               let par2 = {}
@@ -2302,7 +2310,7 @@ export default {
   .edit-btn ul {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 15px;
     z-index: 2;
     width: 130px;
     line-height: 30px;
@@ -2314,6 +2322,7 @@ export default {
   }
   .edit-btn li {
     padding-left: 10px;
+    cursor: pointer;
   }
   .edit-btn li:hover {
     background: #f7f7f7;
