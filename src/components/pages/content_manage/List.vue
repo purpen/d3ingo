@@ -10,36 +10,38 @@
         <p>帮助中心</p>
       </div>
     </div>
-    <div class="tabs">
-      <span @click="updateType(1)" :class="{'bg-red': sonType === 1}">客户</span>
-      <span @click="updateType(2)" :class="{'bg-red': sonType === 2}">设计服务商</span>
+    <div class="max-w">
+      <div class="tabs">
+        <span @click="updateType(1)" :class="{'bg-red': sonType === 1}">客户</span>
+        <span @click="updateType(2)" :class="{'bg-red': sonType === 2}">设计服务商</span>
+      </div>
+      <el-row v-loading="isLoading">
+        <el-col :span="24" class="min-box">
+          <div v-if="!isLoading">
+            <el-row :class="['card-list', {'border-mob': isMob}]">
+              <el-col :span="isMob?24: 8" v-for="(c, index) in categoryList" :key="index">
+                <div class="help-content">
+                  <div class="hr" v-if="index%3 === 0&& !isMob">
+                  </div>
+                  <h3>
+                    <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" v-if="!isMob">{{c.name}}</router-link>
+                    <span v-else>{{c.name}}</span>
+                  </h3>
+                  <div>
+                    <p class="help-title" v-for="(a, indexa) in c.assist" :key="indexa" v-if="a.status === 2">
+                      <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}, params: {scrollTop: a.id}}">{{a.title}}</router-link>
+                    </p>
+                  </div>
+                  <p class="help-go" v-if="!isMob"><router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" class="tc-red">进一步了解
+                    <i></i>
+                    </router-link></p>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+      </el-row>
     </div>
-    <el-row v-loading="isLoading">
-      <el-col :span="18" :offset="3" class="min-box">
-        <div v-if="!isLoading">
-          <el-row :class="['card-list', {'border-mob': isMob}]">
-            <el-col :span="isMob?24: 8" v-for="(c, index) in categoryList" :key="index">
-              <div class="help-content">
-                <div class="hr" v-if="index%3 === 0&& !isMob">
-                </div>
-                <h3>
-                  <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" v-if="!isMob">{{c.name}}</router-link>
-                  <span v-else>{{c.name}}</span>
-                </h3>
-                <div>
-                  <p class="help-title" v-for="(a, indexa) in c.assist" :key="indexa" v-if="a.status === 2">
-                    <router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}, params: {scrollTop: a.id}}">{{a.title}}</router-link>
-                  </p>
-                </div>
-                <p class="help-go" v-if="!isMob"><router-link :to="{name: 'contentManageAssistShow', query: {categoryId: c.id}}" class="tc-red">进一步了解
-                  <i></i>
-                  </router-link></p>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-col>
-    </el-row>
   </div>
 </template>
 <script>
@@ -191,9 +193,18 @@
   .border-mob {
     border: none;
   }
+  .max-w {
+    margin: 0 auto;
+    padding: 0 20px;
+  }
   @media screen and (max-width: 400px) {
     .tabs span {
       width: 120px;
+    }
+  }
+  @media screen and (min-width: 1180px) {
+    .max-w {
+      width: 1180px;
     }
   }
 </style>

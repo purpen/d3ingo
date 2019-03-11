@@ -1032,9 +1032,6 @@
               son_source: this.query.mark
               // sms_code: this.form.smsCode
             }
-            if (this.isMob) {
-              row.from = 4
-            }
             this.appBtn = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -2081,6 +2078,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 99;
   }
   .fiexd-logo-round {
     height: 70px;
