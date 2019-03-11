@@ -133,7 +133,7 @@ function showProd() {
       return {
         id: 0,
         name: '',
-        logo: require('assets/images/logo.png'),
+        logo: require('assets/images/new_home/logo@2x.png'),
         login: '太火鸟',
         info: '太火鸟',
         title: '太火鸟-中国领先的产品创新SaaS平台',
