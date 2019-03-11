@@ -100,6 +100,7 @@
           <el-table
             :data="tableData"
             border
+            v-loading="tableLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
@@ -289,6 +290,7 @@ export default {
     return {
       uploadUrl: '',
       file: [],
+      tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
       boolClueStatus: false,
@@ -462,7 +464,9 @@ export default {
       let row = {}
       Object.assign(row, this.query)
       row.valueDate = [...this.dateArr]
+      this.tableLoading = true
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
+        this.tableLoading = false
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
@@ -481,6 +485,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        this.tableLoading = false
         this.$message.error(error.message)
       })
     },
