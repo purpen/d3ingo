@@ -321,8 +321,8 @@
       float: left;
     }  
     .copy-right {
-     text-align: left;
-     margin-right: 40px;
+     text-align: center;
+     /* margin-right: 40px; */
     }
     .copy-right p {
       line-height: 1.5;
