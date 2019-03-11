@@ -90,7 +90,7 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
               <el-menu-item index="" :route="menu.register" class="fc-red">
-                <span class="login-btn">
+                <span class="login-shadow">
                   注册
                 </span>
               </el-menu-item>
@@ -1041,13 +1041,13 @@
     color: rgba(34,34,34,1);
     line-height: 20px;
   }
-  .login-btn {
+  .login-shadow {
     padding: 6px 20px;
-    box-shadow: 0 0 0 2px #f36 inset!important;
+    box-shadow: 0 0 0 2px #f36 inset;
     border-radius: 4px;
     color: #ff5a5f;
   }
-  .login-btn:hover {
+  .login-shadow:hover {
     color: #fff;
     background-color: #ff5a5f;
   }
