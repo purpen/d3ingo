@@ -1970,7 +1970,7 @@
   .one-thn2 {
     height: 60px;
     width: 143px;
-    background: url("../../../assets/images/new_promote/pc/header/20+@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_promote/pc/header/100+@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .one-thn3 {
