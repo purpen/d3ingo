@@ -1334,7 +1334,7 @@
   }
   .six-img1-1 {
     height: 36px;
-    width: 65px;
+    width: 76px;
     background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1378,7 +1378,7 @@
   }
   .six-img1-5 {
     height: 36px;
-    width: 65px;
+    width: 76px;
     background: url("../../../assets/images/new_promote/pc/product/number/10000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1458,22 +1458,22 @@
   }
   .pc-choose-img1 {
     margin: 0 auto;
-    height: 180px;
-    width: 200px;
+    height: 160px;
+    width: 160px;
     background: url("../../../assets/images/new_promote/pc/choose/More@2x.png") no-repeat center / contain;
     padding-top: 14px;
   }
   .pc-choose-img2 {
     margin: 0 auto;
-    height: 180px;
-    width: 200px;
+    height: 160px;
+    width: 160px;
     background: url("../../../assets/images/new_promote/pc/choose/MoreAccurate@2x.png") no-repeat center / contain;
     padding-top: 14px;
   }
   .pc-choose-img3 {
     margin: 0 auto;
-    height: 180px;
-    width: 200px;
+    height: 160px;
+    width: 160px;
     background: url("../../../assets/images/new_promote/pc/choose/Faster@2x.png") no-repeat center / contain;
     padding-top: 14px;
   }
@@ -1739,7 +1739,7 @@
   .pc-wait-border-title:after {
     content: '';
     height: 28px;
-    width: 121px;
+    width: 120px;
     position: absolute;
     background: url("../../../assets/images/new_promote/pc/header/clouds02@2x.png") no-repeat;
     background-size: 100% 100%;
@@ -1969,7 +1969,7 @@
   }
   .one-thn2 {
     height: 60px;
-    width: 143px;
+    width: 160px;
     background: url("../../../assets/images/new_promote/pc/header/100+@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
@@ -2020,7 +2020,7 @@
     margin-right: 3px;
   }
   .pc-choose3 {
-    width: 60px;
+    width: 58px;
     height: 36px;
     background: url("../../../assets/images/new_promote/pc/choose/30day@2x.png") no-repeat center / contain;
     margin-right: 3px;
