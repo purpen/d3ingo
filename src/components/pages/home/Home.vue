@@ -7,7 +7,8 @@
             <h3 :class="{'m-h3' : isMob}">太火鸟</h3>
             <p :class="{'m-p' : isMob}">中国领先的工业设计和产品创新SaaS平台</p>
             <p :class="{'m-p' : isMob}">为创新者提供高效的设计交易服务</p>
-            <router-link to="/item/submit_one">发布项目需求</router-link>
+            <router-link to="/login" v-if="!token">发布项目需求</router-link>
+            <router-link to="/item/submit_one" v-if="user.type === 1 && token">发布项目需求</router-link>
           </div>
           <div class="draw">
             <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="100%" height="auto" alt="">
@@ -120,8 +121,11 @@
         </div>
       </div>
     </div>
-    <div class="intro-round">
-      <div class="intro-btn" @click="release">
+    <div class="intro-round" v-if="user.type === 1 || !token">
+      <div class="intro-btn" @click="release" v-if="token">
+        <div class="intro-text">发布项目需求</div>
+      </div>
+      <div class="intro-btn" @click="toLogin" v-if="!token">
         <div class="intro-text">发布项目需求</div>
       </div>
     </div>
@@ -464,7 +468,7 @@
         </div>
       </div>
     </div>
-    <div class="intro-round pad-top-60">
+    <div class="intro-round pad-top-60" v-if="!token">
       <div class="intro-btn" @click="toServer" v-if="!isMob">
         <div class="intro-text">立即入驻</div>
       </div>
@@ -668,6 +672,9 @@
       }
     },
     methods: {
+      toLogin() {
+        this.$router.push({name: 'login'})
+      },
       copyArticle() {
         const range = document.createRange()
         range.selectNode(this.$refs.url)
@@ -764,6 +771,9 @@
   .home_banner {
     max-height: 500px;
     overflow: hidden;
+  }
+  .slide {
+    max-height: 500px
   }
   .slide h3 {
     font-size: 3rem;

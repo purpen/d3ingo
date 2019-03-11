@@ -962,6 +962,9 @@
     margin-bottom: 0;
   }
   /*推广页*/
+  .phone-sever-swipe .el-carousel__container {
+    height: 320px;
+  }
   .input-phone input {
     height: 50px;
   }
@@ -1065,6 +1068,9 @@
   }
   .el-range-editor.is-active, .el-range-editor.is-active:hover {
     border-color: #e6e6e6;
+  }
+  .el-carousel__container {
+    height: 260px;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
