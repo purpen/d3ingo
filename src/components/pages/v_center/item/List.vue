@@ -490,6 +490,8 @@
             if (response.data.meta.status_code === 200) {
               that.itemList = []
               that.itemIngList = []
+              document.body.scrollTop = 0
+              document.documentElement.scrollTop = 0
               if (response.data && response.data.data && response.data.data.length) {
                 that.query.totalPages = 0
                 that.query.total = 0
