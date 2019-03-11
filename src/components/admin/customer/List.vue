@@ -183,7 +183,7 @@
             <el-table-column
               prop="new_status"
               width="90"
-              label="状态"
+              :label="statusValue"
               :filters="[
                 {text: '潜在客户', value: '1' },
                 { text: '对接设计', value: '2' },
@@ -290,6 +290,7 @@ export default {
     return {
       uploadUrl: '',
       file: [],
+      statusValue: '状态',
       tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
@@ -353,21 +354,27 @@ export default {
       switch (value) {
         case '1':
           this.query.status = 1
+          this.statusValue = '潜在客户'
           break
         case '2':
           this.query.status = 2
+          this.statusValue = '对接设计'
           break
         case '3':
           this.query.status = 3
+          this.statusValue = '无效客户'
           break
         case '4':
           this.query.status = 4
+          this.statusValue = '流失客户'
           break
         case '5':
           this.query.status = 5
+          this.statusValue = '签约合作'
           break
         default:
           this.query.status = 6
+          this.statusValue = '状态'
       }
       this.query.page = 1
       this.getClueList()
