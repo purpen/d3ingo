@@ -962,6 +962,9 @@
     margin-bottom: 0;
   }
   /*推广页*/
+  .phone-sever-swipe .el-carousel__container {
+    height: 320px;
+  }
   .input-phone input {
     height: 50px;
   }
