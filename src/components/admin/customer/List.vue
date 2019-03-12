@@ -169,8 +169,15 @@
             <el-table-column
               width="125"
               sortable="custom"
-              label="沟通状态"
-              prop="call_status_value">
+              label="沟通状态">
+              <template slot-scope="scope">
+                <p v-if="scope.row.new_call_status === 13">
+                  <span v-if="scope.row.son_status === 1">无效商机</span>
+                  <span v-if="scope.row.son_status === 2">低价客户</span>
+                  <span v-if="scope.row.son_status === 3">流失客户</span>
+                </p>
+                <p v-else>{{scope.row.call_status_value}}</p>
+              </template>
             </el-table-column>
             <el-table-column
               width="105"
@@ -185,19 +192,17 @@
               width="90"
               :label="statusValue"
               :filters="[
-                {text: '潜在客户', value: '1' },
-                { text: '对接设计', value: '2' },
-                { text: '签约合作', value: '5' },
-                { text: '无效客户', value: '3' },
-                { text: '流失客户', value: '4' }
+                {text: '商机', value: '1' },
+                { text: '潜在客户', value: '2' },
+                { text: '对接设计', value: '3' },
+                { text: '签约合作', value: '4' }
               ]"
               :filter-multiple="false"
               filter-placement="bottom-end">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.new_status === 1">潜在客户</p>
-                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">对接设计</p>
-                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">无效客户</p>
-                  <p class="status4 status"  v-else-if="scope.row.new_status === 4">流失客户</p>
+                  <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
+                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
                   <p class="status5 status"  v-else>签约合作</p>
                 </template>
             </el-table-column>
@@ -302,7 +307,7 @@ export default {
         evt: '',
         sort: 2,
         // new_status: 6,
-        status: 6,
+        status: 5,
         // totalCount: 0,
         search: '',
         valueDate: []
@@ -354,26 +359,22 @@ export default {
       switch (value) {
         case '1':
           this.query.status = 1
-          this.statusValue = '潜在客户'
+          this.statusValue = '商机'
           break
         case '2':
           this.query.status = 2
-          this.statusValue = '对接设计'
+          this.statusValue = '潜在客户'
           break
         case '3':
           this.query.status = 3
-          this.statusValue = '无效客户'
+          this.statusValue = '对接设计'
           break
         case '4':
           this.query.status = 4
-          this.statusValue = '流失客户'
-          break
-        case '5':
-          this.query.status = 5
-          this.statusValue = '签约合作'
+          this.statusValue = '签订合作'
           break
         default:
-          this.query.status = 6
+          this.query.status = 5
           this.statusValue = '状态'
       }
       this.query.page = 1
