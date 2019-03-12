@@ -105,7 +105,7 @@ export default {
     // /* eslint-disable */
     // console.log('app created')
     let loading = document.getElementById('loading')
-    let classVal = 'animated fadeOutUp'
+    let classVal = 'loading-out'
     loading.setAttribute('class', classVal)
   },
   created() {
