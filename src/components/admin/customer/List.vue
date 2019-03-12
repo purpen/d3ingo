@@ -100,6 +100,7 @@
           <el-table
             :data="tableData"
             border
+            v-loading="tableLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
@@ -182,7 +183,7 @@
             <el-table-column
               prop="new_status"
               width="90"
-              label="状态"
+              :label="statusValue"
               :filters="[
                 {text: '潜在客户', value: '1' },
                 { text: '对接设计', value: '2' },
@@ -289,6 +290,8 @@ export default {
     return {
       uploadUrl: '',
       file: [],
+      statusValue: '状态',
+      tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
       boolClueStatus: false,
@@ -351,21 +354,27 @@ export default {
       switch (value) {
         case '1':
           this.query.status = 1
+          this.statusValue = '潜在客户'
           break
         case '2':
           this.query.status = 2
+          this.statusValue = '对接设计'
           break
         case '3':
           this.query.status = 3
+          this.statusValue = '无效客户'
           break
         case '4':
           this.query.status = 4
+          this.statusValue = '流失客户'
           break
         case '5':
           this.query.status = 5
+          this.statusValue = '签约合作'
           break
         default:
           this.query.status = 6
+          this.statusValue = '状态'
       }
       this.query.page = 1
       this.getClueList()
@@ -462,7 +471,9 @@ export default {
       let row = {}
       Object.assign(row, this.query)
       row.valueDate = [...this.dateArr]
+      this.tableLoading = true
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
+        this.tableLoading = false
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
@@ -481,6 +492,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        this.tableLoading = false
         this.$message.error(error.message)
       })
     },

@@ -1048,7 +1048,7 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, from: 5})
+        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from, son_source: this.query.mark ? this.query.mark : '艺火'})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1097,7 +1097,8 @@ export default {
           let row = {
             user_name: this.form1.name,
             phone: this.form1.account,
-            from: 4
+            source: this.query.from,
+            son_source: this.query.mark ? this.query.mark : '艺火'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1122,10 +1123,8 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
-            from: 5   // 小程序or网页
-          }
-          if (this.isMob) {
-            row.from = 4
+            source: this.query.from,
+            son_source: this.query.mark ? this.query.mark : '艺火'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {

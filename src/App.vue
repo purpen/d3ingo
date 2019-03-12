@@ -73,24 +73,40 @@ export default {
       if (oldVal && !val) {
         this.postMessage2()
       }
+    },
+    hideCustomer(val, oldVal) {
+      let ics = []
+      if (document.getElementsByClassName('ics-icon') && document.getElementsByClassName('ics-icon').length > 0) {
+        ics = document.getElementsByClassName('ics-icon')
+      }
+      if (val.hideCustomer) {
+        if (ics) {
+          this.removeTags()
+        }
+      } else if (ics.length <= 0) {
+        this.customerService()
+      }
     }
   },
   mounted() {
-    /* eslint-disable */
-    const oScript = document.createElement('script')
-    oScript.type = 'text/javascript'
-    oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
-    document.body.appendChild(oScript)
-    oScript.onload = function() {
-      IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
-    }
-    /* eslint-disable */
+    // /* eslint-disable */
+    // const oScript = document.createElement('script')
+    // oScript.type = 'text/javascript'
+    // oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+    // document.body.appendChild(oScript)
+    // oScript.onload = function() {
+    //   IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+    // }
+    // /* eslint-disable */
     // console.log('app created')
     let loading = document.getElementById('loading')
-    let classVal = 'animated fadeOutUp'
+    let classVal = 'loading-out'
     loading.setAttribute('class', classVal)
   },
   created() {
+    if (!this.hideCustomer.hideCustomer) {
+      this.customerService()
+    }
     if (this.prod.name === '') {
       if (ENV === 'prod') {
         let list = []
@@ -117,6 +133,29 @@ export default {
     }
   },
   methods: {
+    customerService() {
+      /* eslint-disable */
+      const oScript = document.createElement('script')
+      oScript.type = 'text/javascript'
+      oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+      document.body.appendChild(oScript)
+      oScript.onload = function() {
+        IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+      }
+      /* eslint-disable */
+    },
+    removeTags(){
+      let array = document.getElementsByTagName("body")[0].childNodes
+      array.forEach(item => {
+        if (item.nodeName === 'DIV') {
+          item.childNodes.forEach(child => {
+            if (child.className === 'ics-icon') {
+              item.removeChild(child)
+            }
+          })
+        }
+      })
+    },
     fetchUser() {
       let that = this
       let ticket = phenix.getCookie('ticket')
@@ -314,6 +353,9 @@ export default {
     },
     prod() {
       return this.$store.state.event.prod
+    },
+    hideCustomer() {
+      return this.$route.meta
     }
   }
 }

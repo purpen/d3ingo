@@ -1,9 +1,9 @@
 <template>
-  <div :class="[{'assist-box': !isMob}, {'assist-boxMob': isMob}]">
+  <div class="assist-box">
     <p :class="['go-list', {'go-listMob': isMob}]">
       <router-link :to="{name: 'contentManageList'}">{{isMob?'':'返回'}}帮助中心</router-link>
     </p>
-    <div v-loading="isLoadingAll">
+    <div v-loading="isLoadingAll" class="min-h">
       <div class="aside-right" v-if="!isMob">
           <div class="aside" v-show="!isLoadingAll">
             <h3>客户</h3>
@@ -18,7 +18,7 @@
             </ul>
           </div>
       </div>
-      <div :class="['assist-center', {'assist-mob': isMob}]"  ref="center">
+      <div :class="['assist-center', {'assist-mob': isMob}]" ref="center">
           <div v-show="!isLoadingAll">
             <div v-for="(a, indexa) in assistList" :key="indexa" :ref="a.id+'top'"  class="assist-list">
               <p class="assist-title">{{a.title}}</p>
@@ -164,11 +164,12 @@
 </script>
 <style scoped>
   .assist-box {
-    margin: 0 120px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
-  .assist-boxMob {
+  /* .assist-boxMob {
     margin: 0 30px;
-  }
+  } */
   .go-list {
     position: relative;
     padding-left: 20px;
@@ -236,5 +237,19 @@
   }
   .assist-mob {
     width: 100%;
+  }
+  .min-h {
+    min-height: 80vh;
+  }
+  @media screen and (min-width: 1180px) {
+    .assist-box {
+      width: 1180px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .assist-box {
+      overflow-x: auto;
+      width: 100vw;
+    }
   }
 </style>

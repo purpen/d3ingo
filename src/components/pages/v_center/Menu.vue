@@ -713,7 +713,7 @@
   } */
   .logo-icon img {
     width: auto;
-    height: 74px;
+    height: 50px;
   }
   .other .logo-icon img {
     width: auto;
