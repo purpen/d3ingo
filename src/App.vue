@@ -62,7 +62,12 @@ export default {
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
       ],
-      fwh: FWH
+      fwh: FWH,
+      tradeFairs: {
+        home_page: '/shunde/trade_fairs/home_page', // 交易会未登录首页
+        demand_login: '/shunde/trade_fairs/demand_login', // 交易会登录后首页
+        mobile_login: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login' // 交易会移动端首页
+      }
     }
   },
   watch: {
@@ -73,24 +78,38 @@ export default {
       if (oldVal && !val) {
         this.postMessage2()
       }
+    },
+    tradePath(val, oldVal) {
+      let ics = []
+      if (document.getElementsByClassName('ics-icon') && document.getElementsByClassName('ics-icon').length > 0) {
+        ics = document.getElementsByClassName('ics-icon')
+      }
+      if (val === this.tradeFairs.home_page || val === this.tradeFairs.demand_login || val === this.tradeFairs.mobile_login) {
+        if (ics) {
+          this.removeTags()
+        }
+      } else if (ics.length <= 0) {
+        this.customerService()
+      }
     }
   },
   mounted() {
-    /* eslint-disable */
-    const oScript = document.createElement('script')
-    oScript.type = 'text/javascript'
-    oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
-    document.body.appendChild(oScript)
-    oScript.onload = function() {
-      IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
-    }
-    /* eslint-disable */
+    // /* eslint-disable */
+    // const oScript = document.createElement('script')
+    // oScript.type = 'text/javascript'
+    // oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+    // document.body.appendChild(oScript)
+    // oScript.onload = function() {
+    //   IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+    // }
+    // /* eslint-disable */
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'animated fadeOutUp'
     loading.setAttribute('class', classVal)
   },
   created() {
+    this.customerService()
     if (this.prod.name === '') {
       if (ENV === 'prod') {
         let list = []
@@ -117,6 +136,31 @@ export default {
     }
   },
   methods: {
+    customerService() {
+      /* eslint-disable */
+      const oScript = document.createElement('script')
+      oScript.type = 'text/javascript'
+      oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+      document.body.appendChild(oScript)
+      oScript.onload = function() {
+        IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+      }
+      /* eslint-disable */
+    },
+    removeTags(){
+      // console.log(document.body.childNodes)
+      let array = document.body.childNodes
+      array.forEach(item => {
+        if (item.nodeName === 'DIV') {
+          item.childNodes.forEach(child => {
+            if (child.className === 'ics-icon') {
+              item.removeChild(child)
+            }
+          })
+        }
+      })
+      // console.log(icsIcon)
+    },
     fetchUser() {
       let that = this
       let ticket = phenix.getCookie('ticket')
@@ -314,6 +358,9 @@ export default {
     },
     prod() {
       return this.$store.state.event.prod
+    },
+    tradePath() {
+      return this.$route.fullPath
     }
   }
 }
