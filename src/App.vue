@@ -62,12 +62,7 @@ export default {
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
       ],
-      fwh: FWH,
-      tradeFairs: {
-        home_page: '/shunde/trade_fairs/home_page', // 交易会未登录首页
-        demand_login: '/shunde/trade_fairs/demand_login', // 交易会登录后首页
-        mobile_login: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login' // 交易会移动端首页
-      }
+      fwh: FWH
     }
   },
   watch: {
@@ -79,12 +74,12 @@ export default {
         this.postMessage2()
       }
     },
-    tradePath(val, oldVal) {
+    hideCustomer(val, oldVal) {
       let ics = []
       if (document.getElementsByClassName('ics-icon') && document.getElementsByClassName('ics-icon').length > 0) {
         ics = document.getElementsByClassName('ics-icon')
       }
-      if (val === this.tradeFairs.home_page || val === this.tradeFairs.demand_login || val === this.tradeFairs.mobile_login) {
+      if (val.hideCustomer) {
         if (ics) {
           this.removeTags()
         }
@@ -109,7 +104,9 @@ export default {
     loading.setAttribute('class', classVal)
   },
   created() {
-    this.customerService()
+    if (!this.hideCustomer.hideCustomer) {
+      this.customerService()
+    }
     if (this.prod.name === '') {
       if (ENV === 'prod') {
         let list = []
@@ -148,8 +145,7 @@ export default {
       /* eslint-disable */
     },
     removeTags(){
-      // console.log(document.body.childNodes)
-      let array = document.body.childNodes
+      let array = document.getElementsByTagName("body")[0].childNodes
       array.forEach(item => {
         if (item.nodeName === 'DIV') {
           item.childNodes.forEach(child => {
@@ -159,7 +155,6 @@ export default {
           })
         }
       })
-      // console.log(icsIcon)
     },
     fetchUser() {
       let that = this
@@ -359,8 +354,8 @@ export default {
     prod() {
       return this.$store.state.event.prod
     },
-    tradePath() {
-      return this.$route.fullPath
+    hideCustomer() {
+      return this.$route.meta
     }
   }
 }
