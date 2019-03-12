@@ -14,7 +14,8 @@
         <div class="card-box" v-loading="userLoading">
           <div class="padding10 fz-0" v-if="currentId">
             <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
-            <el-button type="danger" class="margin-r-15" size="mini" @click="showClueDialog(4)">流失</el-button>
+            <el-button type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
+            <el-button type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
             <el-button size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
             <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
@@ -63,13 +64,12 @@
                 </el-select>
               </div> -->
               <div class="fr line-height30 fz-14 tc-red">
-                  <span v-if="!currentId">潜在客户</span>
+                  <span v-if="!currentId">商机</span>
                   <div v-else>
-                    <span v-if="userForm.new_status === 1">潜在客户</span>
-                    <span v-if="userForm.new_status === 2">对接设计</span>
-                    <span v-if="userForm.new_status === 3">无效客户</span>
-                    <span v-if="userForm.new_status === 4">流失客户</span>
-                    <span v-if="userForm.new_status === 5">签约合作</span>
+                    <span v-if="userForm.new_status === 1">商机</span>
+                    <span v-if="userForm.new_status === 2">潜在客户</span>
+                    <span v-if="userForm.new_status === 3">对接设计</span>
+                    <span v-if="userForm.new_status === 4">签约合作</span>
                   </div>
               </div>
             </div>
@@ -87,16 +87,29 @@
                   <el-option
                     v-for="(item, i) in sourceArr"
                     :key="i"
-                    :label="item.label"
-                    :value="item.value">
+                    :label="item.name"
+                    :value="item.id">
                   </el-option>
                 </el-select>
               </div>
-              <div class="fl flex-a-c height30 son-source fz-14">
+              <div class="fl flex-a-c height30 son-source fz-14" v-if="userForm.new_source">
                 <span>子来源: </span>
-                <span v-if="currentId">{{userForm.son_source}}</span>
-                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input>
+                <el-select v-model="userForm.son_source"
+                  size="small"
+                  @change="isUpdatedSonSource"
+                  no-data-text="无数据" placeholder="请选择">
+                  <el-option
+                    v-for="td in sonSource"
+                    :key="td.key"
+                    :label="td.name"
+                    :value="td.key">
+                  </el-option>
+                </el-select>
+                <!-- <span v-if="currentId">{{userForm.son_source}}</span>
+                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input> -->
               </div>
+
+
               <div class="belong fl">
                 <span class="fz-14">负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
@@ -128,6 +141,9 @@
               </el-popover> -->
 
             </div>
+
+
+
             <!-- <p class="p-label">
               <span>标签</span>
               <el-tag
@@ -943,11 +959,20 @@
         </el-dialog>
         
         <el-dialog 
-          title="确认"
+          :title="ClueStatusRemarks"
           :visible.sync="boolClueStatus"
           width="380px">
-            <p class="line-height30">{{ClueStatusRemarks}}</p>
-            <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+            <!-- <p class="line-height30 padding-b15">{{ClueStatusRemarks}}</p> -->
+            <el-radio-group v-model="label_cause" v-if="boolClueStatus2">
+              <el-radio :label="0">虚假商机</el-radio>
+              <el-radio :label="1" fill="#FF5A5F">设计需求无法满足</el-radio>
+            </el-radio-group>
+            
+            <el-radio-group v-model="label_cause" v-else>
+              <el-radio :label="4">因竞争丢失 </el-radio>
+              <el-radio :label="5" fill="#FF5A5F">其他</el-radio>
+            </el-radio-group>
+            <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
             <span slot="footer" class="dialog-footer">
               <el-button @click="boolClueStatus = false">取 消</el-button>
               <el-button type="primary" @click="setClueStatus">确 定</el-button>
@@ -1033,38 +1058,123 @@ export default {
       createdTime: '',
       sourceArr: [
         {
-          value: 1,
-          label: '今日头条'
+          id: 1,
+          name: '网络广告',
+          son_source: [
+            {
+              key: 'a',
+              name: '百度'
+            },
+            {
+              key: 'b',
+              name: '360'
+            },
+            {
+              key: 'c',
+              name: '知乎'
+            },
+            {
+              key: 'd',
+              name: '今日头条'
+            }
+          ]
         },
         {
-          value: 2,
-          label: '京东'
+          id: 2,
+          name: '官⽅',
+          son_source: [
+            {
+              key: 'a',
+              name: 'PC/WAP官网'
+            },
+            {
+              key: 'b',
+              name: '小程序'
+            },
+            {
+              key: 'c',
+              name: 'App'
+            }
+          ]
         },
         {
-          value: 3,
-          label: '360'
+          id: 3,
+          name: '合作伙伴',
+          son_source: [
+            {
+              key: 'a',
+              name: '京东'
+            },
+            {
+              key: 'b',
+              name: '优客工场'
+            }
+          ]
         },
         {
-          value: 4,
-          label: '百度'
+          id: 4,
+          name: '内部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '雷总/公司员工推荐的熟人客户'
+            }
+          ]
         },
         {
-          value: 5,
-          label: '官网'
+          id: 5,
+          name: '外部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '朋友/其他公司推荐的客户'
+            }
+          ]
         },
         {
-          value: 6,
-          label: '知乎'
+          id: 6,
+          name: '新媒体',
+          son_source: [
+            {
+              key: 'a',
+              name: '微信公众号'
+            },
+            {
+              key: 'b',
+              name: '头条号'
+            },
+            {
+              key: 'c',
+              name: '百家号'
+            }
+          ]
         },
         {
-          value: 7,
-          label: '自媒体'
+          id: 7,
+          name: '展销会',
+          son_source: [
+            {
+              key: 'a',
+              name: '参展'
+            },
+            {
+              key: 'b',
+              name: '业界活动、论坛 '
+            }
+          ]
         },
         {
-          value: 0,
-          label: '其他'
+          id: 8,
+          name: '其他',
+          son_source: [
+            {
+              key: 'a',
+              name: '⽆法归类的小群体'
+            }
+          ]
         }
       ],
+      sonSource: [],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1171,6 +1281,8 @@ export default {
       boolClueStatus: false,
       currentStatus: '',
       ClueStatusRemarks: '', // 更改状态备注
+      label_cause: '',
+      boolClueStatus2: true, // 显示无效后者流失
       isOpen: true
     }
   },
@@ -1284,13 +1396,18 @@ export default {
       }
     },
     isUpdatedSource(val) {
+      this.sonSource = []
+      this.userForm.son_source = ''
+      let index = val - 1
+      this.sonSource = this.sourceArr[index].son_source
       if (!this.currentId) return
       if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
-        if (!this.isExistArray(val, this.sourceArr)) {
-          // this.getTypeList()
-        }
       }
+    },
+    isUpdatedSonSource(val) {
+      if (!this.currentId) return
+      this.updatedBaseInfo()
     },
     isUpdatedStatus(val) {
       if (!this.currentId) return
@@ -1397,7 +1514,7 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            new_source: data.new_source,
+            new_source: data.new_source || '',
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
@@ -1407,6 +1524,10 @@ export default {
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          if (this.userForm.new_source) {
+            let index = this.userForm.new_source - 1
+            this.sonSource = this.sourceArr[index].son_source
+          }
           // if (data.tag.length === 1 && data.tag[0] === '') {
           //   this.dynamicTags.length = 0
           // } else {
@@ -1442,27 +1563,31 @@ export default {
       this.currentStatus = status
       if (status === 3) {
         this.ClueStatusRemarks = '无效客户备注'
+        this.boolClueStatus2 = true
       } else {
         this.ClueStatusRemarks = '流失客户备注'
+        this.boolClueStatus2 = false
       }
     },
     setClueStatus(status) { // 标记客户状态
-      if (!this.followVal) {
-        this.$message.error('请填写备注')
-        return
-      }
       if (!this.isOpen) return
       this.isOpen = false
       let row = {
         new_status: this.currentStatus,
         clue_ids: [this.currentId],
-        log: this.followVal
+        label_cause: this.label_cause
+      }
+      if (status) {
+        row.new_status = status
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
         this.isOpen = true
         if (res.data.meta.status_code === 200) {
           this.boolClueStatus = false
           this.$message.success('标记成功')
+          if (status === 1) {
+            this.$message.success('成功转化为潜在客户')
+          }
           this.followVal = ''
           this.getUserInfo()
           this.getLogList()
@@ -2796,7 +2921,7 @@ export default {
 .user-info-center .el-select {
   width: 150px;
 }
-.source .el-select {
+.source .el-select, .son-source .el-select {
   width: 150px;
 }
 .user-status > .el-select > .el-input > input {
@@ -2831,7 +2956,7 @@ export default {
   width: 136px;
 }
 .son-source .el-input--small .el-input__inner {
-  width: 136px;
+  /* width: 136px; */
 }
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;
