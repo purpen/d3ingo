@@ -31,20 +31,20 @@
                     <el-row>
                       <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.yesterday_add}}</p>
-                          <p class="tc-6 bd-right">昨日新增</p>
+                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.last_month_add}}</p>
+                          <p class="tc-6 bd-right">上月新增</p>
                         </div>
                       </el-col>
                       <el-col :span="8">
                         <div class="header-title">
                           <p class="fz-24 bd-right">{{bigStatistics.today_add}}</p>
-                          <p class="tc-6 bd-right">今日新增</p>
+                          <p class="tc-6 bd-right">本月新增</p>
                         </div>
-                      </el-col>
+                      </el-col> 
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 trend">{{bigStatistics.rising_proportion > 0?bigStatistics.rising_proportion: -bigStatistics.rising_proportion}}<span class="fz-16">%</span><i class="up" v-show="bigStatistics.rising_proportion >= 0"></i><i class="down" v-show="bigStatistics.rising_proportion < 0"></i></p>
-                          <p class="tc-6" v-if="bigStatistics.rising_proportion >=0">上涨</p>
+                          <p class="fz-24 trend">{{bigStatistics.increase >= 0?bigStatistics.increase: -bigStatistics.increase}}<span class="fz-16">%</span><i class="up" v-show="bigStatistics.increase >= 0"></i><i class="down" v-show="bigStatistics.increase < 0"></i></p>
+                          <p class="tc-6" v-if="bigStatistics.increase >=0">上涨</p>
                           <p class="tc-6" v-else>下降</p>
                         </div>
                       </el-col>
@@ -83,6 +83,79 @@
               </el-col>
             </el-row>
           </div>
+          <div class="table-overview">
+            <div class="chart-header">
+              <span class="chart-title">客户概况</span>
+              <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
+                <i @click="onOff('chance')"></i>
+                <ul v-if="chance.show">
+                  <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="overview-center">
+              <div class="overview-th">
+                <el-row>
+                  <el-col :span="3">
+                    &nbsp;
+                  </el-col>
+                  <el-col :span="3">
+                    商机
+                  </el-col>
+                  <el-col :span="3">
+                    潜在客户
+                  </el-col>
+                  <el-col :span="3">
+                    对接设计
+                  </el-col>
+                  <el-col :span="3">
+                    客户
+                  </el-col>
+                  <el-col :span="3">
+                    无效商机
+                  </el-col>
+                  <el-col :span="3">
+                    流失客户
+                  </el-col>
+                  <el-col :span="3">
+                    流失率
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="overview-td">
+                <el-row v-for="(table, indext) in tableClue" :key="indext">
+                  <el-col :span="3">
+                    <div class="head">
+                      <p>全部</p>
+                    </div>
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.customer}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.potential}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.maintain}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.cooperation}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.loss}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.invalid}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.loss_rate}}%
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div>
           <div class="chart chart-fun">
             <div class="chart-header">
               <span class="chart-title">商机转化</span>
@@ -90,7 +163,7 @@
                 <i @click="onOff('chance')"></i>
                 <ul v-if="chance.show">
                   <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
+                  <!-- <li>导出图表</li> 
                   <li>不看此项</li> -->
                 </ul>
               </div>
@@ -199,7 +272,7 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row>
+            <el-row :gutter="20">
               <el-col :span="12">
                 <div>
                   <ECharts :options="polar" class="line-echarts">
@@ -224,6 +297,26 @@
                   </el-row>
                 </div>
                 <div class="table-content">
+                  <el-row>
+                    <el-col :span="6">
+                      <p>商机</p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        0
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        0%
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                       0%
+                      </p>
+                    </el-col>
+                  </el-row>
                   <el-row>
                     <el-col :span="6">
                       <p>潜在客户</p>
@@ -268,22 +361,22 @@
                   </el-row>
                   <el-row>
                     <el-col :span="6">
-                      <p>
+                      <p class="fz-18">
                         签订合作
                       </p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
+                      <p class="fz-18">
                         {{chanceList.cooperation.number}}
                       </p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
+                      <p class="fz-18">
                         {{chanceList.cooperation.conversion}}%
                       </p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
+                      <p class="fz-18">
                         {{chanceList.cooperation.total_conversion}}%
                       </p>
                     </el-col>
@@ -695,6 +788,7 @@ export default {
       all: {
         show: false
       },
+      tableClue: [],
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
         today_add: 0, // 今日新增客户
@@ -806,7 +900,7 @@ export default {
         show: false
       }, // 项目预算
       polar: {
-        color: ['#FFCDCF', '#FF9C9F', '#FF5A5F'],
+        color: ['#FFCDCF', '#FFB4B7', '#FF9C9F', '#FF5A5F'],
         title: {
           text: '',
           subtext: ''
@@ -815,18 +909,18 @@ export default {
           // show: false
         },
         legend: {
-          bottom: 10,
-          data: ['潜在用户', '对接设计', '签订合作']
+          bottom: -5,
+          data: ['商机', '潜在用户', '对接设计', '签订合作']
         },
         calculable: true,
         series: [
           {
             name: '商机转化',
             type: 'funnel',
-            left: '10%',
+            left: '0%',
             top: 0,
             bottom: 60,
-            width: '80%',
+            width: '100%',
             min: 0,
             max: 100,
             minSize: '0%',
@@ -867,9 +961,6 @@ export default {
               }
             },
             data: [
-              // {value: 60, name: '潜在用户', total_conversion: '0%'},
-              // {value: 40, name: '对接设计', total_conversion: '0%'},
-              // {value: 20, name: '签订合作', total_conversion: '0%'}
             ],
             tooltip: {
               formatter: '{b}<br />&nbsp;&nbsp;&nbsp;客户数量: {c}<br />&nbsp;&nbsp;&nbsp;转化率: {d}%'
@@ -1157,10 +1248,18 @@ export default {
             name: '京东',
             type: 'bar',
             stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '总项目数',
+            type: 'bar',
+            z: -1,
+            barGap: '-100%',
             label: {
               show: true,
               position: 'right',
-              formatter: ''
+              color: '#333',
+              fontSize: 14
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
@@ -1450,6 +1549,7 @@ export default {
       let zhihu6 = []
       let selfMedia6 = []
       let other6 = []
+      let sum = []
       for (let k in this.budgetList) {
         headlines6.push(this.budgetList[k].headlines)
         jd6.push(this.budgetList[k].jd)
@@ -1459,8 +1559,9 @@ export default {
         zhihu6.push(this.budgetList[k].zhihu)
         selfMedia6.push(this.budgetList[k].self_media)
         other6.push(this.budgetList[k].other)
+        sum.push(this.budgetList[k].headlines + this.budgetList[k].jd + this.budgetList[k].qihoo360 + this.budgetList[k].baidu + this.budgetList[k].too_firebird + this.budgetList[k].zhihu + this.budgetList[k].self_media + this.budgetList[k].other)
       }
-      let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6]
+      let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6, sum]
       if (parseInt(val) === 0) {
         this.polar6.series = [
           {
@@ -1521,10 +1622,18 @@ export default {
             name: '京东',
             type: 'bar',
             stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '总项目数',
+            type: 'bar',
+            z: -1,
+            barGap: '-100%',
             label: {
               show: true,
               position: 'right',
-              formatter: ''
+              color: '#333',
+              fontSize: 14
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
@@ -1537,12 +1646,19 @@ export default {
         this.polar6.series[5].data = selfMedia6
         this.polar6.series[6].data = other6
         this.polar6.series[7].data = jd6
+        this.polar6.series[8].data = sum
       } else {
         let types = ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
         for (let p = 1; p < 9; p++) {
           if (p === parseInt(val)) {
             this.polar6.series[0].name = types[p - 1]
             this.polar6.series[0].data = dataList[p - 1]
+            this.polar6.series[0].label = {
+              show: true,
+              position: 'right',
+              color: '#333',
+              fontSize: 14
+            }
             this.polar6.series.splice(1)
           }
         }
@@ -1690,6 +1806,19 @@ export default {
         })
       }
     },
+    // 潜在客户-客户概况
+    getCustomerProfile() {
+      this.$http.get(api.adminClueCustomerProfile).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.tableClue = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function (error) {
+        this.$message.error(error.message)
+      })
+    },
     // 获取统计列表上方数据
     getClueStatistics() {
       this.$http.get(api.adminClueStatistics).then((response) => {
@@ -1816,9 +1945,12 @@ export default {
           if (type === 1) {
             // 商机转化
             let arr = [
-              {name: '潜在用户', value: 90, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
-              {name: '对接设计', value: 60, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
-              {name: '签订合作', value: 30, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
+              {
+                name: '商机', value: 80, number: 0, total_maintain: 0, total_conversion: 0
+              },
+              {name: '潜在用户', value: 60, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
+              {name: '对接设计', value: 40, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
+              {name: '签订合作', value: 20, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
             ]
             let sum = 0
             let percentALL = 100
@@ -1896,13 +2028,15 @@ export default {
             }
             let arr = []
             for (let kk in res) {
-              res[kk].name = object[kk]
-              if (res[kk].value !== 0) {
-                arr.push({
-                  name: object[kk],
-                  value: res[kk].num
-                })
+              console.log(res[kk])
+              if (res[kk].num === 0) {
+                break
               }
+              res[kk].name = object[kk]
+              arr.push({
+                name: object[kk],
+                value: res[kk].num
+              })
             }
             arr.forEach((item, index) => {
               if (item.name === 'H5') {
@@ -1914,7 +2048,6 @@ export default {
             })
             this.polar4.legend.data = add
             this.polar4.series[0].data = arr
-            console.log(arr)
           } else if (type === 5) {
             // 地区
             let cityArr = []
@@ -1970,7 +2103,7 @@ export default {
               let zhihu6 = []
               let selfMedia6 = []
               let other6 = []
-              // let alls = 0
+              let alls = []
               for (let k in res) {
                 headlines6.push(res[k].headlines)
                 jd6.push(res[k].jd)
@@ -1980,7 +2113,7 @@ export default {
                 zhihu6.push(res[k].zhihu)
                 selfMedia6.push(res[k].self_media)
                 other6.push(res[k].other)
-                // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+                alls.push(res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
               }
               this.polar6.series[0].data = headlines6
               this.polar6.series[1].data = zhihu6
@@ -1990,6 +2123,7 @@ export default {
               this.polar6.series[5].data = selfMedia6
               this.polar6.series[6].data = other6
               this.polar6.series[7].data = jd6
+              this.polar6.series[8].data = alls
               // this.polar6.series[7].label.formatter = alls + ''
             }
           } else if (type === 0) {
@@ -2082,6 +2216,7 @@ export default {
   created: function() {
     this.getList()
     this.getClueStatistics()
+    this.getCustomerProfile()
     for (let i = 0; i < 7; i++) {
       this.getClueSearchStatistics(i)
     }
@@ -2332,12 +2467,11 @@ export default {
     border-left: 1px solid #e6e6e6;
     text-align: center;
     color: #333;
-    margin-right: 30px;
   }
   .table-header p {
     background-color: #f7f7f7;
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    line-height: 60px;
     border-right: 1px solid #e6e6e6;
   }
   .table-content p {
@@ -2345,6 +2479,10 @@ export default {
     line-height: 89px;
     border-right: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
+    font-size: 16px;
+  }
+  .table-content .fz-18 {
+    font-size: 18px;
   }
   .header-title p {
     line-height: 20px;
@@ -2422,13 +2560,13 @@ export default {
     background: url('../../../assets/images/icon/Down@2x.png') no-repeat center/ 16px 16px;
   }
   .chart-fun {
-    height: 520px;
+    height: 600px;
   }
   .chart-fun .chart-header {
     margin-bottom: 30px;
   }
   .chart-fun .line-echarts {
-    height: 400px;
+    height: 450px;
   }
   .chart-survey {
     margin-top: 0;
@@ -2437,5 +2575,39 @@ export default {
   .pt-20 {
     padding-top: 20px;
     background: #fff;
+  }
+  .table-overview {
+    height: 340px;
+    background-color: #fff;
+    margin-top: 20px;
+  }
+  .overview-th {
+    height: 40px;
+    line-height: 40px;
+    background-color: #f7f7f7;
+    font-size: 14px;
+  }
+  .overview-td {
+    line-height: 70px;
+    font-size: 16px;
+  }
+  .overview-center {
+    text-align: center;
+    margin: 0 40px;
+  }
+  .overview-td>.el-row:not(:first-child) {
+    border-top: 1px solid #e6e6e6;
+  }
+  .overview-td .head {
+    padding-top: 10px;
+  }
+  .head p {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #FF7575;
+    margin: 0 auto;
   }
 </style>
