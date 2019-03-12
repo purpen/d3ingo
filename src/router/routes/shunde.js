@@ -33,7 +33,8 @@ module.exports = [
     name: 'demand_login',
     meta: {
       title: '活动简介',
-      requireAuth: true
+      requireAuth: true,
+      hideCustomer: true
     },
     component: require('@/components/pages/home/trade_fairs/DemandLogin')
   },
@@ -211,6 +212,7 @@ module.exports = [
     meta: {
       title: '首页',
       requireAuth: false,
+      hideCustomer: true,
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/MobileLogin')

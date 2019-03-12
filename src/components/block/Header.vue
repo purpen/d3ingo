@@ -28,12 +28,12 @@
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
               <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
-              <el-menu-item v-if="!isLogin" index="reg" :route="menu.register" style="margin-left: 126px" class="fc-red">
-                <span class="login-btn">
+              <el-menu-item v-if="!isLogin" index="" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
+                <span class="login-shadow">
                   注册
                 </span>
               </el-menu-item>
-              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" >登录</el-menu-item>
+              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -772,7 +772,6 @@
   .el-menu-item.logo img {
     width: auto;
     height: 52px;
-    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
@@ -1056,5 +1055,14 @@
   .login-shadow:hover {
     color: #fff;
     background-color: #ff5a5f;
+  }
+  .nav-header .el-menu-header .mr-15 {
+    margin-right: 15px;
+  }
+  .nav-header .el-menu-header .ml-0 {
+    margin-left: 0;
+  }
+  .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
+    border-bottom: none;
   }
 </style>
