@@ -964,8 +964,8 @@
           width="380px">
             <!-- <p class="line-height30 padding-b15">{{ClueStatusRemarks}}</p> -->
             <el-radio-group v-model="label_cause" v-if="boolClueStatus2">
-              <el-radio :label="0">虚假商机</el-radio>
-              <el-radio :label="1" fill="#FF5A5F">设计需求无法满足</el-radio>
+              <el-radio :label="1">虚假商机</el-radio>
+              <el-radio :label="2" fill="#FF5A5F">设计需求无法满足</el-radio>
             </el-radio-group>
             
             <el-radio-group v-model="label_cause" v-else>
@@ -1564,9 +1564,11 @@ export default {
       if (status === 3) {
         this.ClueStatusRemarks = '无效客户备注'
         this.boolClueStatus2 = true
+        this.label_cause = 1
       } else {
         this.ClueStatusRemarks = '流失客户备注'
         this.boolClueStatus2 = false
+        this.label_cause = 4
       }
     },
     setClueStatus(status) { // 标记客户状态
@@ -1577,7 +1579,7 @@ export default {
         clue_ids: [this.currentId],
         label_cause: this.label_cause
       }
-      if (status) {
+      if (status === 1) {
         row.new_status = status
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
