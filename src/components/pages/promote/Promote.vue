@@ -621,7 +621,7 @@
       <div class="serve-text">服务客户</div>
       <div class="phone-sever-swipe-round">
         <div class="phone-sever-swipe">
-          <el-carousel indicator-position="outside" trigger="click">
+          <el-carousel indicator-position="outside" trigger="click" arrow="never">
             <el-carousel-item v-for="(item, index) in serverList" :key="index">
               <div class="phone-sever-swipe-out">
                 <div class="phone-sever-swipe-tt">{{item.item}}</div>
@@ -3115,6 +3115,11 @@
     }
     .pc-round-inves {
       margin: 0 5px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .phone-prod-round {
+      margin: 0;
     }
   }
 </style>
