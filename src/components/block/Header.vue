@@ -770,8 +770,9 @@
     background: url(../../assets/images/logo.svg) no-repeat center / contain;
   } */
   .el-menu-item.logo img {
-    width: auto;
-    height: 52px;
+    width: 153px;
+    height: 50px;
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;

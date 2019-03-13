@@ -107,6 +107,27 @@
             </article>
           </article>
         </section>
+        <section class="lists design-awards" v-if="designMaterial.length">
+          <h2><span class="fx-5 fx-icon-material"></span>设计素材</h2>
+          <article>
+            <article>
+              <el-row :gutter="isMob ? 10 : 20">
+                <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in designMaterial" :key="index">
+                  <div class="item clearfix" @click="aClick(ele.url)" :title="ele.summary">
+                    <div class="left fl"
+                          :style="{background: 'url('+ele.cover.logo+')', backgroundSize :'contain'}">
+                      {{ele.cover.name}}
+                    </div>
+                    <div class="right fl">
+                      <p class="title">{{ele.title}}</p>
+                      <p class="summary">{{ele.summary}}</p>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </article>
+          </article>
+        </section>
       </div>
     </div>
   </div>
@@ -126,7 +147,8 @@
         originality: [],
         crowdFunding: [],
         businessConsult: [],
-        designAwards: []
+        designAwards: [],
+        designMaterial: []
       }
     },
     created () {
@@ -151,6 +173,9 @@
               case 5:
                 this.designAwards.push(i)
                 break
+              case 6:
+                this.designMaterial.push(i)
+                break
             }
           }
         } else {
@@ -168,6 +193,7 @@
         this.crowdFunding = []
         this.businessConsult = []
         this.designAwards = []
+        this.designMaterial = []
       },
       aClick (link) {
         let reg = /^(http)/

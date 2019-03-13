@@ -1302,6 +1302,7 @@
     height: 200px;
     background: linear-gradient(180deg,rgba(140,39,205,0.75) 0%,rgba(58,17,185,0.75) 100%);
     border-radius: 6px;
+    margin: 0 auto;
   }
   .innovation-img1 {
     height: 120px;
