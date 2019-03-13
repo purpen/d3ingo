@@ -168,7 +168,7 @@
                     <span v-if="!scope.row.son_source">合作伙伴</span>
                   </p>
                   <p v-if="scope.row.new_source === 4">
-                    <span v-if="scope.row.son_source === 'a'">雷雷总/公司员⼯工推荐的熟⼈人客户</span>
+                    <span v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</span>
                     <span v-if="!scope.row.son_source">内部推荐</span>
                   </p>
                   <p v-if="scope.row.new_source === 5">
