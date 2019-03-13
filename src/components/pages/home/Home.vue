@@ -1743,6 +1743,9 @@
     background: url("../../../assets/images/new_home/home/serve/copyright@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
+  .friend {
+    padding: 0 10px;
+  }
   .friend-title {
     text-align: center;
     font-size: 30px;
@@ -1767,7 +1770,7 @@
     width: 20%
   }
   .friend-img-style {
-    margin: 20px 10px 0 10px;
+    margin-top: 20px;
   }
   .friend-img1 {
     height: 60px;
