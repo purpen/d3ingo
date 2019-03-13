@@ -148,14 +148,52 @@
               sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
-                <p v-if="scope.row.new_source === 1">今日头条</p>
-                <p v-if="scope.row.new_source === 2">京东</p>
-                <p v-if="scope.row.new_source === 3">360</p>
-                <p v-if="scope.row.new_source === 4">百度</p>
-                <p v-if="scope.row.new_source === 5">官网</p>
-                <p v-if="scope.row.new_source === 6">知乎</p>
-                <p v-if="scope.row.new_source === 7">自媒体</p>
-                <p v-if="scope.row.new_source === 0">其他</p>
+                <div v-if="scope.row.new_source">
+                  <p v-if="scope.row.new_source === 1">
+                    <span v-if="scope.row.son_source === 'a'">百度</span>
+                    <span v-if="scope.row.son_source === 'b'">360</span>
+                    <span v-if="scope.row.son_source === 'c'">知乎</span>
+                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                    <span v-if="!scope.row.son_source">网络广告</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 2">
+                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
+                    <span v-if="scope.row.son_source === 'b'">小程序</span>
+                    <span v-if="scope.row.son_source === 'c'">App</span>
+                    <span v-if="!scope.row.son_source">官方</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 3">
+                    <span v-if="scope.row.son_source === 'a'">京东</span>
+                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
+                    <span v-if="!scope.row.son_source">合作伙伴</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 4">
+                    <span v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</span>
+                    <span v-if="!scope.row.son_source">内部推荐</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 5">
+                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
+                    <span v-if="!scope.row.son_source">外部推荐</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 6">
+                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
+                    <span v-if="scope.row.son_source === 'b'">头条号</span>
+                    <span v-if="scope.row.son_source === 'c'">百家号</span>
+                    <span v-if="!scope.row.son_source">新媒体</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 7">
+                    <span v-if="scope.row.son_source === 'a'">参展</span>
+                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
+                    <span v-if="!scope.row.son_source">展销会</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 8">
+                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
+                    <span v-if="!scope.row.son_source">其他</span>
+                  </p>
+                </div>
+                <div v-else>
+                  <p>{{scope.row.son_source}}</p>
+                </div>
               </template>
             </el-table-column>
             
@@ -228,12 +266,16 @@
       title="确认"
       :visible.sync="boolClueStatus"
       width="380px">
-        <p class="line-height30">无效客户备注原因</p>
-        <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+        <el-radio-group v-model="label_cause">
+          <el-radio :label="1">虚假商机</el-radio>
+          <el-radio :label="2" fill="#FF5A5F">设计需求无法满足</el-radio>
+        </el-radio-group>
+        <!-- <p class="line-height30">无效客户备注原因</p> -->
+        <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
           <el-button type="primary" @click="setClueStatus">确 定</el-button>
-      </span>
+        </span>
     </el-dialog>
 
     <el-dialog
@@ -323,7 +365,8 @@ export default {
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: '',
-      followVal: '',
+      // followVal: '',
+      label_cause: 1,
       isOpen: true
     }
   },
@@ -505,24 +548,20 @@ export default {
       this.boolClueStatus = true
     },
     setClueStatus() { // 多选标记无效
-      if (!this.followVal) {
-        this.$message.error('请填写备注原因')
-        return
-      }
       if (this.isOpen) {
         this.isOpen = false
         let idArr = this.arrayExportIds()
         let row = {
           new_status: 3,
           clue_ids: idArr,
-          log: this.followVal
+          label_cause: this.label_cause
         }
+        console.log(this.label_cause)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
             this.$message.success('标记成功')
             this.boolClueStatus = false
-            this.followVal = ''
             this.getClueList()
           } else {
             this.$message.error(res.data.meta.message)
