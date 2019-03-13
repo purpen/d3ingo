@@ -1656,8 +1656,8 @@ export default {
         this.$message.error('请输入有效的手机号')
         return
       }
-      if (this.userForm.son_source.length > 10) {
-        this.$message.error('子来源最多10个字符')
+      if (!this.userForm.new_source || !this.userForm.son_source) {
+        this.$message.error('请选择来源渠道和子来源渠道')
         return
       }
       this.boolCreateUser = true
