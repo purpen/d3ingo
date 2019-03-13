@@ -13,10 +13,10 @@
         </div>
         <div class="card-box" v-loading="userLoading">
           <div class="padding10 fz-0" v-if="currentId">
-            <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
-            <el-button type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
-            <el-button type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
-            <el-button size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
+            <el-button v-if="userForm.new_status === 1" type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
+            <el-button v-if="userForm.new_status === 3"  type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
+            <el-button v-if="userForm.new_status === 1" type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
+            <el-button v-if="userForm.new_status !== 4" size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
             <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
               <a class="pointer border-t10" @click="getNextUser">下一条</a>
@@ -341,9 +341,8 @@
                             <div v-else class="fl">
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
-                                <span class="link-item-name">{{item.item_name}}
-                                  <i v-if="isHasPower" class="close-icon-solid"></i>
-                                </span>
+                                <span class="link-item-name">{{item.item_name}}</span>
+                                  <!-- <i v-if="isHasPower" class="close-icon-solid"></i> -->
                               </p>
                               <div v-else>
                                 <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>

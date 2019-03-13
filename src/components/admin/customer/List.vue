@@ -5,10 +5,10 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="admin-header clearfix">
+          <div class="admin-header fz-0 clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
-                <span class="fl line-height30 fz-12 margin-r-15">选择日期</span>
+                <!-- <span class="fl line-height30 fz-12 margin-r-15">选择日期</span> -->
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -69,7 +69,7 @@
               <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
-          <div class="btn-list">
+          <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="white-to-red-button">添加客户</el-button>
@@ -841,6 +841,9 @@ export default {
 .select-query {
   width: 70%;
 }
+.select-query .el-form-item {
+  margin-right: 15px;
+}
 .select-info {
   width: 16%;
 }
@@ -978,7 +981,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-
+.dialog-footer button {
+  margin-right: 0;
+}
 </style>
 
 <style>
