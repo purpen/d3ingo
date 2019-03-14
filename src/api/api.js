@@ -241,6 +241,7 @@ export default {
   adminClueSearchStatistics: '/admin/clue/searchStatistics', // GET 搜索/统计列表
   adminGeneralizeLists: '/admin/generalize/lists', // GET 落地页点击统计表
   adminClueCustomerProfile: '/admin/clue/customerProfile', // GET 潜在客户-客户概况
+  adminClueSearch: '/admin/clue/search', // GET 潜在客户-统计搜索
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
