@@ -908,8 +908,14 @@ export default {
                   color: '#fff'
                 },
                 lastClass: {
+                  fontSize: 22,
                   color: '#fff',
                   padding: [30, 0, 0, 0]
+                },
+                lastNormal: {
+                  fontSize: 14,
+                  color: '#fff',
+                  padding: [33, 0, 0, 0]
                 }
               }
             },
@@ -2014,7 +2020,11 @@ export default {
               par = arr.find(item => {
                 return item.name === params.name
               })
-              return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              if (params.name === '签订合作') {
+                return '{lastClass|' + par.number + '}\n{lastNormal|' + par.name + '}'
+              } else {
+                return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              }
             }
             this.polar.series[0].tooltip.formatter = function(params) {
               let par2 = {}
