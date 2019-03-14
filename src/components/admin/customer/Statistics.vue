@@ -280,9 +280,9 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row :gutter="20">
+            <el-row :gutter="40">
               <el-col :span="12">
-                <div>
+                <div class="funnel-box">
                   <ECharts :options="polar" class="line-echarts">
                   </ECharts>
                 </div>
@@ -621,7 +621,7 @@
                 <span v-else>展开详细数据</span>
                 <i :class="{'transform': allCustomer.isTable}"></i></span>
             </div>
-            <div v-if="allCustomer.isTable" class="tables">
+            <div v-if="allCustomer.isTable" class="tables fz-16">
               <el-table
                 :data="tableData3"
                 border
@@ -879,10 +879,10 @@ export default {
           {
             name: '商机转化',
             type: 'funnel',
-            left: '0%',
+            left: '-10%',
             top: 0,
             bottom: 60,
-            width: '100%',
+            width: '120%',
             min: 0,
             max: 100,
             minSize: '0%',
@@ -1460,7 +1460,7 @@ export default {
             }
           },
           {
-            text: '过去30月',
+            text: '过去30天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1469,7 +1469,7 @@ export default {
             }
           },
           {
-            text: '过去90月',
+            text: '过去90天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -2724,5 +2724,8 @@ export default {
   .page-block {
     text-align: center;
     margin-top: 23px;
+  }
+  .funnel-box {
+    margin-left: 20px;
   }
 </style>
