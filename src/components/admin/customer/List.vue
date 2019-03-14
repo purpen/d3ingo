@@ -5,10 +5,10 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="admin-header clearfix">
+          <div class="admin-header fz-0 clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
-                <span class="fl line-height30 fz-12 margin-r-15">选择日期</span>
+                <!-- <span class="fl line-height30 fz-12 margin-r-15">选择日期</span> -->
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -69,7 +69,7 @@
               <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
-          <div class="btn-list">
+          <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="white-to-red-button">添加客户</el-button>
@@ -186,7 +186,7 @@
                     <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
                     <span v-if="!scope.row.son_source">展销会</span>
                   </p>
-                  <p v-if="scope.row.new_source === 8">
+                  <p v-if="scope.row.new_source === 0">
                     <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
                     <span v-if="!scope.row.son_source">其他</span>
                   </p>
@@ -207,7 +207,7 @@
             <el-table-column
               width="125"
               sortable="custom"
-              label="沟通状态">
+              label="状态">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_call_status === 13">
                   <span v-if="scope.row.son_status === 1">无效商机</span>
@@ -257,7 +257,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
-
+          <p v-else class="tc-2 pagination">共{{tableData.length}}条</p>
         </div>
       </el-col>
     </el-row>
@@ -337,7 +337,7 @@ export default {
     return {
       uploadUrl: '',
       file: [],
-      statusValue: '状态',
+      statusValue: '阶段',
       tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
@@ -418,7 +418,7 @@ export default {
           break
         default:
           this.query.status = 5
-          this.statusValue = '状态'
+          this.statusValue = '阶段'
       }
       this.query.page = 1
       this.getClueList()
@@ -841,6 +841,9 @@ export default {
 .select-query {
   width: 70%;
 }
+.select-query .el-form-item {
+  margin-right: 15px;
+}
 .select-info {
   width: 16%;
 }
@@ -978,7 +981,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-
+.dialog-footer button {
+  margin-right: 0;
+}
 </style>
 
 <style>
