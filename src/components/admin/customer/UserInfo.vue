@@ -96,6 +96,7 @@
                 <span>子来源: </span>
                 <el-select v-model="userForm.son_source"
                   size="small"
+                  :disabled="!isHasPower"
                   @change="isUpdatedSonSource"
                   no-data-text="无数据" placeholder="请选择">
                   <el-option
