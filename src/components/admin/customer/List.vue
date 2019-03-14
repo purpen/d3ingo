@@ -148,7 +148,7 @@
               sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
-                <div v-if="scope.row.new_source">
+                <div v-if="scope.row.new_source || scope.row.new_source === 0">
                   <p v-if="scope.row.new_source === 1">
                     <span v-if="scope.row.son_source === 'a'">百度</span>
                     <span v-if="scope.row.son_source === 'b'">360</span>
