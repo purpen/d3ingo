@@ -15,7 +15,7 @@
           <div class="padding10 fz-0" v-if="currentId">
             <el-button v-if="userForm.new_status === 1" type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
             <el-button v-if="userForm.new_status === 3"  type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
-            <el-button v-if="userForm.new_status === 1" type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
+            <el-button v-if="userForm.new_status === 1" type="danger" class="margin-r-15" size="small" @click="setClueStatus(1)">转化为潜在客户</el-button>
             <el-button v-if="userForm.new_status !== 4" size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
             <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
@@ -930,7 +930,7 @@
           :visible.sync="BoolmarkFailure"
           width="380px">
           <p class="dialog-c-p">是否确认项目对接失败？</p>
-          <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
+          <el-input v-model.trim="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
             <el-button @click="BoolmarkFailure = false">取 消</el-button>
             <el-button type="primary" @click="goProjectFailure">确 定</el-button>
@@ -1992,8 +1992,9 @@ export default {
     },
     markProjectFailure(id) { // 标记项目失败
       if (id) {
-        this.BoolmarkFailure = true
+        this.failureCause = ''
         this.itemId = id
+        this.BoolmarkFailure = true
       }
     },
     goProjectFailure() {
