@@ -257,7 +257,9 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
-          <p v-else class="tc-2 pagination">共{{tableData.length}}条</p>
+          <div v-else>
+            <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
+          </div>
         </div>
       </el-col>
     </el-row>
