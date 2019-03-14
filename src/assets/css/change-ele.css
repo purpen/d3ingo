@@ -225,7 +225,7 @@
     background-color: #ff5a5f;
   }
   .el-select-dropdown__item {
-    color: #666;
+    color: #999;
     transition: 268ms all ease
   }
   .el-select-dropdown__item.selected.hover {
