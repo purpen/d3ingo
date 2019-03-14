@@ -6,7 +6,7 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">客户列表</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
@@ -201,7 +201,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="联系人" prop="name" v-if="BoolEditUserInfo">
-                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="20"></el-input>
+                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -218,12 +218,12 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="微信号" prop="wx">
-                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="20"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="QQ号" prop="qq">
-                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="15"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -237,6 +237,7 @@
                       <el-form-item label="备注" prop="summary">
                         <el-input v-model.trim="clientForm.summary" 
                                   type="textarea"
+                                  :maxlength="500"
                                   :autosize="{ minRows: 2, maxRows: 4}"
                                   placeholder="备注">
                         </el-input>
@@ -344,7 +345,7 @@
                                 <span class="link-item-name">{{item.item_name}}</span>
                                   <!-- <i v-if="isHasPower" class="close-icon-solid"></i> -->
                               </p>
-                              <div v-else>
+                              <!-- <div v-else>
                                 <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
@@ -368,7 +369,7 @@
                                     </el-option>
                                   </el-select>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
 
                             <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
@@ -385,7 +386,7 @@
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span class="inline">项目名称: </span>{{item.name}}</p>
                             <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目名称" prop="name">
-                              <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                             </el-form-item>
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -586,20 +587,20 @@
 
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                                    <el-form-item label="联系人名称" prop="contact_name">
-                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    <el-form-item label="联系人姓名" prop="contact_name">
+                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人姓名"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="联系人电话" prop="phone">
-                                      <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="微信号" prop="wx">
-                                      <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写微信号"></el-input>
                                     </el-form-item>
                                   </el-col>
                                 </el-row>
@@ -646,19 +647,19 @@
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人名称" prop="contact_name">
-                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写联系人名称"></el-input>
+                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人名称"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人电话" prop="phone">
-                                  <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写联系人电话"></el-input>
+                                  <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="微信号" prop="wx">
-                                  <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写联系人微信号"></el-input>
+                                  <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写联系人微信号"></el-input>
                                 </el-form-item>
                               </el-col>
                             </el-row>
@@ -690,7 +691,7 @@
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
                           <el-form-item label="项目名称" prop="name">
-                            <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                            <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -1163,7 +1164,7 @@ export default {
           ]
         },
         {
-          id: 8,
+          id: 0,
           name: '其他',
           son_source: [
             {
@@ -1397,8 +1398,11 @@ export default {
     isUpdatedSource(val) {
       this.sonSource = []
       this.userForm.son_source = ''
-      let index = val - 1
-      this.sonSource = this.sourceArr[index].son_source
+      this.sourceArr.forEach(item => {
+        if (item.id === val) {
+          this.sonSource = item.son_source
+        }
+      })
       if (!this.currentId) return
       if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
@@ -1524,8 +1528,12 @@ export default {
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           if (this.userForm.new_source) {
-            let index = this.userForm.new_source - 1
-            this.sonSource = this.sourceArr[index].son_source
+            let id = this.userForm.new_source
+            this.sourceArr.forEach(item => {
+              if (item.id === id) {
+                this.sonSource = item.son_source
+              }
+            })
           }
           // if (data.tag.length === 1 && data.tag[0] === '') {
           //   this.dynamicTags.length = 0

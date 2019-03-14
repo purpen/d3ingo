@@ -106,8 +106,8 @@
               </el-form-item>
 
               <div class="form-btn">
-                  <el-button @click="returnList">取消</el-button>
-                  <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+                  <el-button @click="returnList" class="margin-r-15">取消</el-button>
+                  <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
             </el-form>
@@ -412,6 +412,9 @@ export default {
 
   .set-role-name {
     margin-bottom: 20px;
+  }
+  .form-btn {
+    font-size: 0;
   }
 
 </style>

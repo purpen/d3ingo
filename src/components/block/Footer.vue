@@ -44,9 +44,6 @@
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">更多太火鸟产品/服务</p>
         <p>
-          <a href="https://saas.taihuoniao.com" target="_blank">设计交易</a>
-        </p>
-        <p>
           <a href="https://saas.d3ingo.com" target="_blank">铟果</a>
         </p>
         <p>
@@ -321,8 +318,8 @@
       float: left;
     }  
     .copy-right {
-     text-align: left;
-     margin-right: 40px;
+     text-align: center;
+     /* margin-right: 40px; */
     }
     .copy-right p {
       line-height: 1.5;

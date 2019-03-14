@@ -7,7 +7,8 @@
             <h3 :class="{'m-h3' : isMob}">太火鸟</h3>
             <p :class="{'m-p' : isMob}">中国领先的工业设计和产品创新SaaS平台</p>
             <p :class="{'m-p' : isMob}">为创新者提供高效的设计交易服务</p>
-            <router-link to="/item/submit_one">发布项目需求</router-link>
+            <router-link to="/login" v-if="!token">发布项目需求</router-link>
+            <router-link to="/item/submit_one" v-if="user.type === 1 && token">发布项目需求</router-link>
           </div>
           <div class="draw">
             <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="100%" height="auto" alt="">
@@ -120,8 +121,11 @@
         </div>
       </div>
     </div>
-    <div class="intro-round">
-      <div class="intro-btn" @click="release">
+    <div class="intro-round" v-if="user.type === 1 || !token">
+      <div class="intro-btn" @click="release" v-if="token">
+        <div class="intro-text">发布项目需求</div>
+      </div>
+      <div class="intro-btn" @click="toLogin" v-if="!token">
         <div class="intro-text">发布项目需求</div>
       </div>
     </div>
@@ -408,63 +412,63 @@
       <div class="in-round pad-top-10">
         <div class="in-flex-round">
           <div class="in-flex-11">
-            <div class="in-img1"></div>
+            <div class="in-img1 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img2"></div>
+            <div class="in-img2 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img3"></div>
+            <div class="in-img3 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img4"></div>
+            <div class="in-img4 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img5"></div>
+            <div class="in-img5 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img6"></div>
+            <div class="in-img6 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img7"></div>
+            <div class="in-img7 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img8"></div>
+            <div class="in-img8 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img9"></div>
+            <div class="in-img9 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img10"></div>
+            <div class="in-img10 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img12"></div>
+            <div class="in-img12 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img13"></div>
+            <div class="in-img13 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img14"></div>
+            <div class="in-img14 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img15"></div>
+            <div class="in-img15 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img16"></div>
+            <div class="in-img16 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img17"></div>
+            <div class="in-img17 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img18"></div>
+            <div class="in-img18 phone-mar-top-20"></div>
           </div>
           <div class="in-flex-11">
-            <div class="in-img19"></div>
+            <div class="in-img19 phone-mar-top-20"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="intro-round pad-top-60">
+    <div class="intro-round pad-top-60" v-if="!token">
       <div class="intro-btn" @click="toServer" v-if="!isMob">
         <div class="intro-text">立即入驻</div>
       </div>
@@ -556,10 +560,10 @@
         </el-row>
       </div>
     </div>
-    <div class="friend">
+    <div>
       <div class="friend-title">合作伙伴</div>
       <div class="friend-round pad-top-40">
-        <div class="friend-img">
+        <!-- <div class="friend-img">
           <div class="fri-img-round">
             <div class="friend-img1"></div>
           </div>
@@ -590,6 +594,36 @@
           <div class="fri-img-round">
             <div class="friend-img10"></div>
           </div>
+        </div> -->
+        <div class="fl friend ">
+          <img src="../../../assets/images/new_home/home/friend/01@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/02@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/03@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/04@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/05@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/06@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/07@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/08@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/09@2x.png" width="auto" height="60px" class="friend-img-style">
+        </div>
+        <div class="fl friend">
+          <img src="../../../assets/images/new_home/home/friend/10@2x.png" width="auto" height="60px" class="friend-img-style">
         </div>
       </div>
     </div>
@@ -668,6 +702,9 @@
       }
     },
     methods: {
+      toLogin() {
+        this.$router.push({name: 'login'})
+      },
       copyArticle() {
         const range = document.createRange()
         range.selectNode(this.$refs.url)
@@ -707,7 +744,8 @@
         })
       },
       caseDetail(id) {
-        this.$router.push({name: 'vcenterDesignCaseShow', params: {id: id}})
+        let routeData = this.$router.resolve({name: 'vcenterDesignCaseShow', params: {id: id}})
+        window.open(routeData.href, '_blank')
       }
     },
     mounted() {
@@ -1264,6 +1302,7 @@
     height: 200px;
     background: linear-gradient(180deg,rgba(140,39,205,0.75) 0%,rgba(58,17,185,0.75) 100%);
     border-radius: 6px;
+    margin: 0 auto;
   }
   .innovation-img1 {
     height: 120px;
@@ -1705,9 +1744,10 @@
     margin: 0 auto;
   }
   .friend {
-    text-align: center;
+    padding: 0 10px;
   }
   .friend-title {
+    text-align: center;
     font-size: 30px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1718,6 +1758,9 @@
     max-width: 1180px;
     margin: 0 auto;
   }
+  .pc-friend-roun {
+    margin: 0 auto;
+  }
   .friend-img {
     display: flex;
     justify-content: space-between;
@@ -1725,6 +1768,9 @@
   }
   .fri-img-round {
     width: 20%
+  }
+  .friend-img-style {
+    margin-top: 20px;
   }
   .friend-img1 {
     height: 60px;
@@ -2021,7 +2067,7 @@
       margin: 30px 0;
     }
     .solve-img-round {
-      padding-top: 30px;
+      padding: 30px 0;
     }
     .phone-pad-20 {
       padding-top: 20px;
@@ -2055,11 +2101,7 @@
       padding: 0 10px;
     }
     .carry-round {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-    .in-round {
-      padding-top: 50px;
+      padding: 30px 10px 20px 10px;
     }
     .fri-img-round {
       width: 50%
@@ -2072,6 +2114,31 @@
     }
     .phone-pad-top-30 {
       padding-top: 30px
+    }
+    .friend {
+      width: 50%;
+      text-align: center;
+    }
+    .solve-title, .carry-title, .in, .anli, .new-title, .friend-title {
+      padding-top: 30px;
+    }
+    .case {
+      padding-top: 0;
+    }
+    .phone-mar-top-20 {
+      margin-top: 20px;
+    }
+    .anli-round, .security-round {
+      margin-top: 30px;
+    }
+    .security-text {
+      padding: 30px 0;
+    }
+    .security {
+      padding-bottom: 20px;
+    }
+    .friend-round {
+      padding-top: 20px;
     }
   }
 </style>
