@@ -6,7 +6,7 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">客户列表</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
@@ -1163,7 +1163,7 @@ export default {
           ]
         },
         {
-          id: 8,
+          id: 0,
           name: '其他',
           son_source: [
             {
@@ -1397,8 +1397,11 @@ export default {
     isUpdatedSource(val) {
       this.sonSource = []
       this.userForm.son_source = ''
-      let index = val - 1
-      this.sonSource = this.sourceArr[index].son_source
+      this.sourceArr.forEach(item => {
+        if (item.id === val) {
+          this.sonSource = item.son_source
+        }
+      })
       if (!this.currentId) return
       if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
@@ -1524,8 +1527,12 @@ export default {
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           if (this.userForm.new_source) {
-            let index = this.userForm.new_source - 1
-            this.sonSource = this.sourceArr[index].son_source
+            let id = this.userForm.new_source
+            this.sourceArr.forEach(item => {
+              if (item.id === id) {
+                this.sonSource = item.son_source
+              }
+            })
           }
           // if (data.tag.length === 1 && data.tag[0] === '') {
           //   this.dynamicTags.length = 0

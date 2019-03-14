@@ -186,7 +186,7 @@
                     <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
                     <span v-if="!scope.row.son_source">展销会</span>
                   </p>
-                  <p v-if="scope.row.new_source === 8">
+                  <p v-if="scope.row.new_source === 0">
                     <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
                     <span v-if="!scope.row.son_source">其他</span>
                   </p>
@@ -207,7 +207,7 @@
             <el-table-column
               width="125"
               sortable="custom"
-              label="沟通状态">
+              label="状态">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_call_status === 13">
                   <span v-if="scope.row.son_status === 1">无效商机</span>
@@ -257,7 +257,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
-
+          <p v-else class="tc-2 pagination">共{{tableData.length}}条</p>
         </div>
       </el-col>
     </el-row>
@@ -337,7 +337,7 @@ export default {
     return {
       uploadUrl: '',
       file: [],
-      statusValue: '状态',
+      statusValue: '阶段',
       tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
@@ -418,7 +418,7 @@ export default {
           break
         default:
           this.query.status = 5
-          this.statusValue = '状态'
+          this.statusValue = '阶段'
       }
       this.query.page = 1
       this.getClueList()
