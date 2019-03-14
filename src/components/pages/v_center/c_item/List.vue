@@ -619,6 +619,7 @@
             self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
+            window.scroll(0, 0)
             if (response.data.data && response.data.data.length) {
               let designItems2 = response.data.data
               for (let i = 0; i < designItems2.length; i++) {
@@ -669,6 +670,7 @@
             self.designItems2 = []
             self.query.totalPages = response.data.meta.pagination.total_pages
             self.query.total = response.data.meta.pagination.total
+            window.scroll(0, 0)
             if (response.data.data && response.data.data.length) {
               self.isEmpty = false
               let designItems = response.data.data

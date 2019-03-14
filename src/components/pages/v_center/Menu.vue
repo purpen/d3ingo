@@ -712,8 +712,8 @@
     text-indent: -9999px;
   } */
   .logo-icon img {
-    width: auto;
-    height: 74px;
+    width: 153px;
+    height: 50px;
   }
   .other .logo-icon img {
     width: auto;

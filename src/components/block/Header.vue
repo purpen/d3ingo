@@ -17,17 +17,23 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
-              <a class="el-menu-item logo cursor-def">
+              <a class="el-menu-item logo cursor-def margin-left-0">
                 <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
               </a>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item v-if="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
               <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
+              <el-menu-item v-if="!isLogin" index="" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
+                <span class="login-shadow">
+                  注册
+                </span>
+              </el-menu-item>
+              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -83,19 +89,19 @@
             </el-menu>
           </div>
 
-          <div class="nav-right" v-else>
-            <!-- <div class="server-in-btn">
+          <!-- <div class="nav-right" v-else>
+            <div class="server-in-btn">
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-            </div> -->
+            </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
               <el-menu-item index="" :route="menu.register" class="fc-red">
-                <span class="login-btn">
+                <span class="login-shadow">
                   注册
                 </span>
               </el-menu-item>
             </el-menu>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -764,8 +770,8 @@
     background: url(../../assets/images/logo.svg) no-repeat center / contain;
   } */
   .el-menu-item.logo img {
-    width: auto;
-    height: 52px;
+    width: 153px;
+    height: 50px;
     margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
@@ -1041,14 +1047,23 @@
     color: rgba(34,34,34,1);
     line-height: 20px;
   }
-  .login-btn {
+  .login-shadow {
     padding: 6px 20px;
-    box-shadow: 0 0 0 2px #f36 inset!important;
+    box-shadow: 0 0 0 2px #f36 inset;
     border-radius: 4px;
     color: #ff5a5f;
   }
-  .login-btn:hover {
+  .login-shadow:hover {
     color: #fff;
     background-color: #ff5a5f;
+  }
+  .nav-header .el-menu-header .mr-15 {
+    margin-right: 15px;
+  }
+  .nav-header .el-menu-header .ml-0 {
+    margin-left: 0;
+  }
+  .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
+    border-bottom: none;
   }
 </style>
