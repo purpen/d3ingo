@@ -69,7 +69,7 @@
               <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
-          <div class="btn-list fz-0">
+          <!-- <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="white-to-red-button">添加客户</el-button>
@@ -88,14 +88,13 @@
               accept=".xlsx"
               :show-file-list="false"
               :file-list="file">
-              <!-- <span class="upload-file">批量导入</span> -->
               <el-button size="small" >批量导入</el-button>
             </el-upload>
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
-          </div>
+          </div> -->
 
           <el-table
             :data="tableData"
@@ -112,98 +111,18 @@
               type="selection"
               width="40">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="编号"
               sortable="custom"
               prop="number"
               width="121">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="name"
               sortable="custom"
               label="姓名"
               width="80">
             </el-table-column>
-            <el-table-column
-              width="105"
-              sortable="custom"
-              label="客户级别">
-                 <template slot-scope="scope">
-                  <el-rate
-                    v-model="scope.row.rank"
-                    disabled
-                    text-color="#ff9900">
-                  </el-rate>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              sortable="custom"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            
-            <el-table-column
-              width="95"
-              sortable="custom"
-              label="来源渠道">
-              <template slot-scope="scope">
-                <div v-if="scope.row.new_source || scope.row.new_source === 0">
-                  <p v-if="scope.row.new_source === 1">
-                    <span v-if="scope.row.son_source === 'a'">百度</span>
-                    <span v-if="scope.row.son_source === 'b'">360</span>
-                    <span v-if="scope.row.son_source === 'c'">知乎</span>
-                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
-                    <span v-if="!scope.row.son_source">网络广告</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 2">
-                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
-                    <span v-if="scope.row.son_source === 'b'">小程序</span>
-                    <span v-if="scope.row.son_source === 'c'">App</span>
-                    <span v-if="!scope.row.son_source">官方</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 3">
-                    <span v-if="scope.row.son_source === 'a'">京东</span>
-                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
-                    <span v-if="!scope.row.son_source">合作伙伴</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 4">
-                    <span v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</span>
-                    <span v-if="!scope.row.son_source">内部推荐</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 5">
-                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
-                    <span v-if="!scope.row.son_source">外部推荐</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 6">
-                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
-                    <span v-if="scope.row.son_source === 'b'">头条号</span>
-                    <span v-if="scope.row.son_source === 'c'">百家号</span>
-                    <span v-if="!scope.row.son_source">新媒体</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 7">
-                    <span v-if="scope.row.son_source === 'a'">参展</span>
-                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
-                    <span v-if="!scope.row.son_source">展销会</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 0">
-                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
-                    <span v-if="!scope.row.son_source">其他</span>
-                  </p>
-                </div>
-                <div v-else>
-                  <p>{{scope.row.son_source}}</p>
-                </div>
-              </template>
-            </el-table-column>
-            
-            <el-table-column
-              width="118"
-              sortable="custom"
-              prop="execute_user_name"
-              label="负责人">
-            </el-table-column>
-            
             <el-table-column
               width="125"
               sortable="custom"
@@ -217,6 +136,88 @@
                 <p v-else>{{scope.row.call_status_value}}</p>
               </template>
             </el-table-column>
+            <el-table-column
+              width="105"
+              sortable="custom"
+              label="客户级别">
+                 <template slot-scope="scope">
+                  <el-rate
+                    v-model="scope.row.rank"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
+                </template>
+            </el-table-column>
+            
+            <el-table-column
+              width="175"
+              sortable="custom"
+              label="来源渠道">
+              <template slot-scope="scope">
+                <div v-if="scope.row.new_source || scope.row.new_source === 0" class="row-source">
+                  <div v-if="scope.row.new_source === 1">
+                    <span class="tc-6">网络广告</span>
+                    <p v-if="scope.row.son_source === 'a'">百度</p>
+                    <p v-if="scope.row.son_source === 'b'">360</p>
+                    <p v-if="scope.row.son_source === 'c'">知乎</p>
+                    <p v-if="scope.row.son_source === 'd'">今日头条</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 2">
+                    <span class="tc-6">官方</span>
+                    <p v-if="scope.row.son_source === 'a'">PC/WAP官网</p>
+                    <p v-if="scope.row.son_source === 'b'">小程序</p>
+                    <p v-if="scope.row.son_source === 'c'">App</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 3">
+                    <span class="tc-6">合作伙伴</span>
+                    <p v-if="scope.row.son_source === 'a'">京东</p>
+                    <p v-if="scope.row.son_source === 'b'">优客工场</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 4">
+                    <span class="tc-6">内部推荐</span>
+                    <p v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 5">
+                    <span class="tc-6">合作伙伴</span>
+                    <p v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 6">
+                    <span class="tc-6">新媒体</span>
+                    <p v-if="scope.row.son_source === 'a'">微信公众号</p>
+                    <p v-if="scope.row.son_source === 'b'">头条号</p>
+                    <p v-if="scope.row.son_source === 'c'">百家号</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 7">
+                    <span class="tc-6">展销会</span>
+                    <p v-if="scope.row.son_source === 'a'">参展</p>
+                    <p v-if="scope.row.son_source === 'b'">业界活动、论坛</p>
+                  </div>
+                  <div v-if="scope.row.new_source === 0">
+                    <span class="tc-6">其他</span>
+                    <p v-if="scope.row.son_source === 'a'">无法归类的⼩群体</p>
+                  </div>
+                </div>
+                <div v-else>
+                  <p>{{scope.row.son_source}}</p>
+                </div>
+              </template>
+            </el-table-column>
+            
+            <el-table-column
+              prop="created_at"
+              sortable="custom"
+              width="100"
+              label="创建时间">
+            </el-table-column>
+            
+            <el-table-column
+              width="118"
+              sortable="custom"
+              prop="execute_user_name"
+              label="商机所有人">
+            </el-table-column>
+            
+
             <el-table-column
               width="105"
               sortable="custom"
@@ -985,6 +986,9 @@ export default {
 }
 .dialog-footer button {
   margin-right: 0;
+}
+.row-source > div > p {
+  font-size: 14px;
 }
 </style>
 
