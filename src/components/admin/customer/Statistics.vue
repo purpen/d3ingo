@@ -152,10 +152,10 @@
                     {{table.cooperation}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.loss}}
+                    {{table.invalid}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.invalid}}
+                    {{table.loss}}
                   </el-col>
                   <el-col :span="3">
                     {{table.loss_rate}}%
