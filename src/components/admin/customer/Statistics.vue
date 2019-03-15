@@ -2222,7 +2222,8 @@ export default {
                   probability: res[c].probability
                 }
                 res.splice(c, 1)
-              } else {
+              }
+              if (res[c].province_value) {
                 cityArr.push(res[c].province_value)
                 seriesData.push({
                   name: res[c].province_value,
