@@ -1261,7 +1261,7 @@ const DESIGN_COST_OPTIONS2 = [
   },
   {
     id: 10,
-    name: '5-1万'
+    name: '5千-1万'
   },
   {
     id: 1,
