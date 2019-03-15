@@ -761,6 +761,7 @@ export default {
   data () {
     let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84']
     return {
+      color2: ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84'],
       page: {
         total: 1,
         size: 10,
@@ -1693,7 +1694,7 @@ export default {
         this.polar6.series[7].data = other
         this.polar6.series[8].data = alls
       } else {
-        let types = ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他']
+        let types = ['其他', '网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会']
         for (let p = 1; p < 9; p++) {
           if (p === parseInt(val)) {
             this.polar6.series[0].name = types[p - 1]
@@ -1703,6 +1704,15 @@ export default {
               position: 'right',
               color: '#333',
               fontSize: 14
+            }
+            if (p === 1) {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[7]
+              }
+            } else {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[p - 2]
+              }
             }
             this.polar6.series.splice(1)
           }
