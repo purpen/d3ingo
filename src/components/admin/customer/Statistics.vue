@@ -25,26 +25,30 @@
                 <div class="s_header pr-30 pl-30">
                   <div class="header-title2">
                     <p class="tc-red fz-30">{{bigStatistics.total_customer}}</p>
-                    <p class="tc-6">潜在客户</p>
+                    <p class="tc-6">全部商机</p>
                   </div>
                   <div>
                     <el-row>
                       <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.yesterday_add}}</p>
-                          <p class="tc-6 bd-right">昨日新增</p>
+                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.last_month_add||0}}</p>
+                          <p class="tc-6 bd-right">上月新增</p>
                         </div>
                       </el-col>
                       <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 bd-right">{{bigStatistics.today_add}}</p>
-                          <p class="tc-6 bd-right">今日新增</p>
+                          <p class="fz-24 bd-right">{{bigStatistics.today_add||0}}</p>
+                          <p class="tc-6 bd-right">本月新增</p>
                         </div>
-                      </el-col>
+                      </el-col> 
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 trend">{{bigStatistics.rising_proportion > 0?bigStatistics.rising_proportion: -bigStatistics.rising_proportion}}<span class="fz-16">%</span><i class="up" v-show="bigStatistics.rising_proportion >= 0"></i><i class="down" v-show="bigStatistics.rising_proportion < 0"></i></p>
-                          <p class="tc-6" v-if="bigStatistics.rising_proportion >=0">上涨</p>
+                          <p class="fz-24 trend">
+                            {{bigStatistics.increase?(bigStatistics.increase >= 0?bigStatistics.increase: -bigStatistics.increase): 0}}<span class="fz-16">%</span>
+                            <i class="up" v-show="bigStatistics.increase >= 0"></i>
+                            <i class="down" v-show="bigStatistics.increase < 0"></i>
+                          </p>
+                          <p class="tc-6" v-if="bigStatistics.increase >=0">上涨</p>
                           <p class="tc-6" v-else>下降</p>
                         </div>
                       </el-col>
@@ -83,6 +87,83 @@
               </el-col>
             </el-row>
           </div>
+          <div class="table-overview">
+            <div class="chart-header">
+              <span class="chart-title">客户概况</span>
+              <div class="fr edit-btn" @blur="hideEcharts('overview')" tabindex="-1">
+                <i @click="onOff('overview')"></i>
+                <ul v-if="overview.show">
+                  <li @click="updateAll('overview')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="overview-center">
+              <div class="overview-th">
+                <el-row>
+                  <el-col :span="3">
+                    &nbsp;
+                  </el-col>
+                  <el-col :span="3">
+                    商机
+                  </el-col>
+                  <el-col :span="3">
+                    潜在客户
+                  </el-col>
+                  <el-col :span="3">
+                    对接设计
+                  </el-col>
+                  <el-col :span="3">
+                    客户
+                  </el-col>
+                  <el-col :span="3">
+                    无效商机
+                  </el-col>
+                  <el-col :span="3">
+                    流失客户
+                  </el-col>
+                  <el-col :span="3">
+                    流失率
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="overview-td">
+                <el-row v-for="(table, indext) in tableClue" :key="indext">
+                  <el-col :span="3">
+                    <div class="head">
+                      <p :class="[{
+                        'bc-3': indext === 'whole',
+                        'bc-red': indext === 'this',
+                        'bc-blue': indext === 'last'
+                      }]">{{indext| weekFormat}}</p>
+                    </div>
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.customer}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.potential}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.maintain}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.cooperation}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.loss}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.invalid}}
+                  </el-col>
+                  <el-col :span="3">
+                    {{table.loss_rate}}%
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div>
           <div class="chart chart-fun">
             <div class="chart-header">
               <span class="chart-title">商机转化</span>
@@ -90,7 +171,7 @@
                 <i @click="onOff('chance')"></i>
                 <ul v-if="chance.show">
                   <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
+                  <!-- <li>导出图表</li> 
                   <li>不看此项</li> -->
                 </ul>
               </div>
@@ -199,9 +280,9 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row>
+            <el-row :gutter="40">
               <el-col :span="12">
-                <div>
+                <div class="funnel-box">
                   <ECharts :options="polar" class="line-echarts">
                   </ECharts>
                 </div>
@@ -224,67 +305,23 @@
                   </el-row>
                 </div>
                 <div class="table-content">
-                  <el-row>
+                  <el-row v-for="(c,indexc) in chanceList" :key="indexc">
                     <el-col :span="6">
-                      <p>潜在客户</p>
+                      <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
-                        {{chanceList.total_customer.number}}
+                      <p :class="{'fz-18': indexc === 'cooperation'}">
+                        {{c.number}}
                       </p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
-                        {{chanceList.total_customer.conversion}}%
+                      <p :class="{'fz-18': indexc === 'cooperation'}">
+                        {{c.conversion}}%
                       </p>
                     </el-col>
                     <el-col :span="6">
-                      <p>
-                        {{chanceList.total_customer.total_conversion}}%
-                      </p>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="6">
-                      <p>
-                        对接设计
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.total_maintain.number}}
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.total_maintain.conversion}}%
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.total_maintain.total_conversion}}%
-                      </p>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="6">
-                      <p>
-                        签订合作
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.cooperation.number}}
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.cooperation.conversion}}%
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>
-                        {{chanceList.cooperation.total_conversion}}%
+                      <p :class="{'fz-18': indexc === 'cooperation'}">
+                       {{c.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -386,7 +423,7 @@
           </div>
           <div class="chart chart-circle">
             <el-row :gutter="20">
-              <el-col :span="12">
+              <el-col :span="12" class="chart-type">
                 <div class="chart-header">
                   <span class="chart-title">项目类型</span>
                   <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
@@ -584,7 +621,7 @@
                 <span v-else>展开详细数据</span>
                 <i :class="{'transform': allCustomer.isTable}"></i></span>
             </div>
-            <div v-if="allCustomer.isTable" class="tables">
+            <div v-if="allCustomer.isTable" class="tables fz-16">
               <el-table
                 :data="tableData3"
                 border
@@ -596,26 +633,55 @@
                 </el-table-column>
                 <el-table-column
                   prop="cumulative"
-                  label="累计客户"
+                  label="商机"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="add"
-                  label="新增客户">
+                  prop="potential"
+                  label="潜在客户"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="docking"
+                  label="对接设计"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="sign"
+                  label="签订合作"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="invalid"
-                  label="无效客户">
+                  label="无效商机"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="low_price"
+                  label="低价客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="loss"
-                  label="流失客户">
+                  label="流失客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="wastage_rate"
                   label="流失率">
                 </el-table-column>
               </el-table>
+              <div class="page-block">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="page.currentPage"
+                  :page-sizes="[10, 20, 50, 100]"
+                  :page-size="page.size"
+                  layout="sizes, prev, pager, next"
+                  :total="page.total">
+                </el-pagination>
+              </div>
             </div>
           </div>
           <div class="chart">
@@ -677,7 +743,7 @@
 
 <script>
 import api from '@/api/api'
-import {COMPANY_TYPE} from '@/config'
+import {COMPANY_TYPE, DESIGN_COST_OPTIONS2} from '@/config'
 import REGION_DATA from 'china-area-data' // 地区数据库
 import ECharts from 'vue-echarts'
 import vMenu from '@/components/admin/Menu'
@@ -687,14 +753,22 @@ export default {
   components: {
     vMenu,
     ECharts,
-    COMPANY_TYPE
+    COMPANY_TYPE,
+    DESIGN_COST_OPTIONS2
   },
   data () {
     let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84']
     return {
+      page: {
+        total: 1,
+        size: 10,
+        currentPage: 1
+      },
+      tableAll: [], // 全部客户分析列表
       all: {
         show: false
       },
+      tableClue: [],
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
         today_add: 0, // 今日新增客户
@@ -710,6 +784,9 @@ export default {
       }, // 上方总统计
       chanceData: [], // 商机列表
       budgetList: [], // 项目预算
+      overview: {
+        show: false
+      },
       chanceList: {
         cooperation: {
           conversion: 0,
@@ -806,7 +883,7 @@ export default {
         show: false
       }, // 项目预算
       polar: {
-        color: ['#FFCDCF', '#FF9C9F', '#FF5A5F'],
+        color: ['#FFCDCF', '#FFB4B7', '#FF9C9F', '#FF5A5F'],
         title: {
           text: '',
           subtext: ''
@@ -815,18 +892,18 @@ export default {
           // show: false
         },
         legend: {
-          bottom: 10,
-          data: ['潜在用户', '对接设计', '签订合作']
+          bottom: -5,
+          data: ['商机', '潜在用户', '对接设计', '签订合作']
         },
         calculable: true,
         series: [
           {
             name: '商机转化',
             type: 'funnel',
-            left: '10%',
+            left: '-10%',
             top: 0,
             bottom: 60,
-            width: '80%',
+            width: '120%',
             min: 0,
             max: 100,
             minSize: '0%',
@@ -842,10 +919,21 @@ export default {
                 big: {
                   fontSize: 22,
                   color: '#fff'
+                  // padding: [0, 0, 30, 0]
                 },
                 normal: {
                   fontSize: 14,
                   color: '#fff'
+                },
+                lastClass: {
+                  fontSize: 22,
+                  color: '#fff',
+                  padding: [30, 0, 0, 0]
+                },
+                lastNormal: {
+                  fontSize: 14,
+                  color: '#fff',
+                  padding: [33, 0, 0, 0]
                 }
               }
             },
@@ -867,9 +955,6 @@ export default {
               }
             },
             data: [
-              // {value: 60, name: '潜在用户', total_conversion: '0%'},
-              // {value: 40, name: '对接设计', total_conversion: '0%'},
-              // {value: 20, name: '签订合作', total_conversion: '0%'}
             ],
             tooltip: {
               formatter: '{b}<br />&nbsp;&nbsp;&nbsp;客户数量: {c}<br />&nbsp;&nbsp;&nbsp;转化率: {d}%'
@@ -949,12 +1034,12 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#FFCDCF'],
+        color: ['#FF5A5F'],
         tooltip: {
-          trigger: 'axis',
+          trigger: 'item',
           // backgroundColor: '#FF5A5F',
           axisPointer: {
-            type: 'none'
+            type: 'shadow'
           }
         },
         grid: {
@@ -963,7 +1048,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东'],
+            data: ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他'],
             axisTick: {
               inside: true
             }
@@ -986,10 +1071,10 @@ export default {
             barWidth: '80%',
             emphasis: {
               itemStyle: {
-                color: '#FF5A5F'
+                color: '#FF8286'
               }
             },
-            data: [0, 0, 0, 0, 0, 0, 0],
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
             tooltip: {
               formatter: '{b}<br />潜在用户: 123<br />对接设计: 123<br />签订合作: 222'
             },
@@ -1009,15 +1094,15 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
+          bottom: 17,
           data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX']
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -1049,16 +1134,16 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
-          type: 'scroll',
+          bottom: -5,
+          type: 'plain',
           data: []
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
             ],
             tooltip: {
@@ -1078,7 +1163,8 @@ export default {
         legend: {
           orient: 'vertical',
           x: 'right',
-          data: ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
+          data: ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他'],
+          selectedMode: false
         },
         grid: {
           top: 20
@@ -1091,11 +1177,11 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['无明确预算', '5万以下', '5-10万', '10万-20万', '20万-30万', '30万-50万', '50万以上']
+          data: ['无明确预算', '1万以下', '1-5万以下', '5-10万', '10-20万', '20-30万', '30-50万', '50万以上']
         },
         series: [
           {
-            name: '今日头条',
+            name: '网络广告',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1103,7 +1189,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '知乎',
+            name: '官方',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1111,7 +1197,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '360',
+            name: '合作伙伴',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1119,7 +1205,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '百度',
+            name: '内部推荐',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1127,7 +1213,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '官网',
+            name: '外部推荐',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1135,7 +1221,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '自媒体',
+            name: '新媒体',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1143,7 +1229,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '第三方推荐',
+            name: '展销会',
             type: 'bar',
             stack: '总量',
             // label: {
@@ -1154,13 +1240,21 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '京东',
+            name: '其他',
             type: 'bar',
             stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '总项目数',
+            type: 'bar',
+            z: -1,
+            barGap: '-100%',
             label: {
               show: true,
               position: 'right',
-              formatter: ''
+              color: '#333',
+              fontSize: 14
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
@@ -1244,36 +1338,36 @@ export default {
           label: '全部地区'
         }
       ],
-      optionsBudget: [
-        {
-          value: 0,
-          label: '全部项目预算'
-        },
-        {
-          value: 1,
-          label: '5万以下'
-        },
-        {
-          value: 2,
-          label: '5-10万'
-        },
-        {
-          value: 3,
-          label: '10-20万'
-        },
-        {
-          value: 4,
-          label: '20-30万'
-        },
-        {
-          value: 5,
-          label: '30-50万'
-        },
-        {
-          value: 6,
-          label: '50万以上'
-        }
-      ], // 预算
+      // optionsBudget: [
+      //   {
+      //     value: 0,
+      //     label: '全部项目预算'
+      //   },
+      //   {
+      //     value: 1,
+      //     label: '5万以下'
+      //   },
+      //   {
+      //     value: 2,
+      //     label: '5-10万'
+      //   },
+      //   {
+      //     value: 3,
+      //     label: '10-20万'
+      //   },
+      //   {
+      //     value: 4,
+      //     label: '20-30万'
+      //   },
+      //   {
+      //     value: 5,
+      //     label: '30-50万'
+      //   },
+      //   {
+      //     value: 6,
+      //     label: '50万以上'
+      //   }
+      // ], // 预算
       optionsDate: [
         {
           value: 0,
@@ -1314,36 +1408,36 @@ export default {
           label: '全部来源'
         },
         {
-          value: '1',
-          label: '今日头条'
-        },
-        {
           value: '2',
-          label: '知乎'
+          label: '网络广告'
         },
         {
           value: '3',
-          label: '360'
+          label: '官方'
         },
         {
           value: '4',
-          label: '百度'
+          label: '合作伙伴'
         },
         {
           value: '5',
-          label: '官网'
+          label: '内部推荐'
         },
         {
           value: '6',
-          label: '自媒体'
+          label: '外部推荐'
         },
         {
           value: '7',
-          label: '第三方推荐'
+          label: '新媒体'
         },
         {
           value: '8',
-          label: '京东'
+          label: '展销会'
+        },
+        {
+          value: '1',
+          label: '其他'
         }
       ], // 客户来源
       optionsCustomer: [
@@ -1397,7 +1491,7 @@ export default {
             }
           },
           {
-            text: '过去30月',
+            text: '过去30天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1406,7 +1500,7 @@ export default {
             }
           },
           {
-            text: '过去90月',
+            text: '过去90天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1439,32 +1533,82 @@ export default {
     }
   },
   directives: {Clickoutside},
+  filters: {
+    weekFormat(val) {
+      if (val) {
+        if (val === 'whole') {
+          return '全部'
+        } else if (val === 'this') {
+          return '本周'
+        } else if (val === 'last') {
+          return '上周'
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    },
+    titleName(val) {
+      if (val) {
+        if (val === 'business_users') {
+          return '商机'
+        } else if (val === 'cooperation') {
+          return '签订合作'
+        } else if (val === 'total_customer') {
+          return '潜在客户'
+        } else if (val === 'total_maintain') {
+          return '对接设计'
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    }
+  },
   methods: {
+    // 分页
+    handleSizeChange(val) {
+      this.page.size = val
+      this.page.currentPage = 1
+      this.handleCurrentChange(1)
+    },
+    // 分页
+    handleCurrentChange(val) {
+      if (this.tableAll.length > this.page.size * val) {
+        this.tableData3 = this.tableAll.slice(this.page.size * (val - 1), this.page.size * val)
+      } else {
+        this.tableData3 = this.tableAll.slice(this.page.size * (val - 1))
+      }
+    },
     // 筛选预算
     updateBudget(val) {
-      let headlines6 = []
-      let jd6 = []
-      let qihoo3606 = []
-      let baidu6 = []
-      let tooFirebird6 = []
-      let zhihu6 = []
-      let selfMedia6 = []
-      let other6 = []
+      let advertising = []
+      let cooperation = []
+      let exhibition = []
+      let externalPush = []
+      let internalPush = []
+      let newMedia = []
+      let official = []
+      let other = []
+      let alls = []
       for (let k in this.budgetList) {
-        headlines6.push(this.budgetList[k].headlines)
-        jd6.push(this.budgetList[k].jd)
-        qihoo3606.push(this.budgetList[k].qihoo360)
-        baidu6.push(this.budgetList[k].baidu)
-        tooFirebird6.push(this.budgetList[k].too_firebird)
-        zhihu6.push(this.budgetList[k].zhihu)
-        selfMedia6.push(this.budgetList[k].self_media)
-        other6.push(this.budgetList[k].other)
+        advertising.push(this.budgetList[k].advertising)
+        cooperation.push(this.budgetList[k].cooperation)
+        exhibition.push(this.budgetList[k].exhibition)
+        externalPush.push(this.budgetList[k].external_push)
+        internalPush.push(this.budgetList[k].internal_push)
+        newMedia.push(this.budgetList[k].new_media)
+        official.push(this.budgetList[k].official)
+        other.push(this.budgetList[k].other)
+        alls.push(this.budgetList[k].advertising + this.budgetList[k].cooperation + this.budgetList[k].exhibition + this.budgetList[k].external_push + this.budgetList[k].internal_push + this.budgetList[k].new_media + this.budgetList[k].official + this.budgetList[k].other)
       }
-      let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6]
+      let dataList = [advertising, cooperation, exhibition, externalPush, internalPush, newMedia, official, other, alls]
       if (parseInt(val) === 0) {
         this.polar6.series = [
           {
-            name: '今日头条',
+            name: '网络广告',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1472,7 +1616,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '知乎',
+            name: '官方',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1480,7 +1624,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '360',
+            name: '合作伙伴',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1488,7 +1632,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '百度',
+            name: '内部推荐',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1496,7 +1640,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '官网',
+            name: '外部推荐',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1504,7 +1648,7 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '自媒体',
+            name: '新媒体',
             type: 'bar',
             stack: '总量',
             label: {
@@ -1512,40 +1656,64 @@ export default {
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '第三方推荐',
+            name: '展销会',
             type: 'bar',
             stack: '总量',
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '京东',
+            name: '其他',
             type: 'bar',
             stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '总项目数',
+            type: 'bar',
+            z: -1,
+            barGap: '-100%',
             label: {
               show: true,
               position: 'right',
-              formatter: ''
+              color: '#333',
+              fontSize: 14
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
         ]
-        this.polar6.series[0].data = headlines6
-        this.polar6.series[1].data = zhihu6
-        this.polar6.series[2].data = qihoo3606
-        this.polar6.series[3].data = baidu6
-        this.polar6.series[4].data = tooFirebird6
-        this.polar6.series[5].data = selfMedia6
-        this.polar6.series[6].data = other6
-        this.polar6.series[7].data = jd6
+        this.polar6.series[0].data = advertising
+        this.polar6.series[1].data = cooperation
+        this.polar6.series[2].data = exhibition
+        this.polar6.series[3].data = externalPush
+        this.polar6.series[4].data = internalPush
+        this.polar6.series[5].data = newMedia
+        this.polar6.series[6].data = official
+        this.polar6.series[7].data = other
+        this.polar6.series[8].data = alls
       } else {
-        let types = ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
+        let types = ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他']
         for (let p = 1; p < 9; p++) {
           if (p === parseInt(val)) {
             this.polar6.series[0].name = types[p - 1]
             this.polar6.series[0].data = dataList[p - 1]
+            this.polar6.series[0].label = {
+              show: true,
+              position: 'right',
+              color: '#333',
+              fontSize: 14
+            }
             this.polar6.series.splice(1)
           }
         }
+      }
+      this.polar6.tooltip.formatter = function (params) {
+        let ret = ''
+        params.forEach(item => {
+          if (item.data > 0) {
+            ret += item.marker + item.seriesName + ': ' + item.data + '<br />'
+          }
+        })
+        return params[0].axisValue + '<br />' + ret
       }
     },
     // 筛选客户
@@ -1690,6 +1858,19 @@ export default {
         })
       }
     },
+    // 潜在客户-客户概况
+    getCustomerProfile() {
+      this.$http.get(api.adminClueCustomerProfile).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.tableClue = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function (error) {
+        this.$message.error(error.message)
+      })
+    },
     // 获取统计列表上方数据
     getClueStatistics() {
       this.$http.get(api.adminClueStatistics).then((response) => {
@@ -1726,6 +1907,9 @@ export default {
       if (form === 'all') {
         this.all.show = false
         this.getClueStatistics()
+      } else if (form === 'overview') {
+        this.overview.show = false
+        this.getCustomerProfile()
       } else {
         let type = 0
         type = this[form].data.type
@@ -1794,6 +1978,22 @@ export default {
             times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
             show: false
           }
+        } else if (form === 'allCustomer') {
+          this[form] = {
+            data: {
+              type: 0,
+              start_time: '', // 时间范围
+              end_time: '', // 时间范围
+              time: 0, // 时段
+              region: 0, // 城市
+              source: '0', // 来自
+              project_type: 0, // 类型
+              project_budget: 0 // 预算
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            isTable: false,
+            show: false
+          }
         }
         this.getClueSearchStatistics(type)
       }
@@ -1807,18 +2007,24 @@ export default {
         row = {...from}
         if (row.source === '0') {
           delete row.source
+        } else if (row.source) {
+          row.source -= 1
         }
       }
-      this.$http.get(api.adminClueSearchStatistics, {params: row}).then((response) => {
+      // api.adminClueSearchStatistics
+      this.$http.get(api.adminClueSearch, {params: row}).then((response) => {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
           res
           if (type === 1) {
             // 商机转化
             let arr = [
-              {name: '潜在用户', value: 90, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
-              {name: '对接设计', value: 60, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
-              {name: '签订合作', value: 30, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
+              {
+                name: '商机', value: 80, number: res.business_users.number, total_maintain: res.business_users.conversion, total_conversion: res.business_users.total_conversion
+              },
+              {name: '潜在用户', value: 60, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
+              {name: '对接设计', value: 40, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
+              {name: '签订合作', value: 20, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
             ]
             let sum = 0
             let percentALL = 100
@@ -1832,7 +2038,7 @@ export default {
                 s.percentSum = percentALL
               } else {
                 s.percentSum = (s.number / sum * 100).toFixed(2)
-                percentALL -= s.percentSum
+                percentALL = ((percentALL * 100) - (s.percentSum * 100)) / 100
               }
             })
             this.polar.series[0].data = arr
@@ -1841,7 +2047,11 @@ export default {
               par = arr.find(item => {
                 return item.name === params.name
               })
-              return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              if (params.name === '签订合作') {
+                return '{lastClass|' + par.number + '}\n{lastNormal|' + par.name + '}'
+              } else {
+                return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              }
             }
             this.polar.series[0].tooltip.formatter = function(params) {
               let par2 = {}
@@ -1883,7 +2093,78 @@ export default {
             this.chanceData = res
           } else if (type === 3) {
             // 来源渠道
-            this.polar3.series[0].data = [res.headlines, res.zhihu, res.qihoo360, res.baidu, res.too_firebird, res.self_media, res.other, res.jd]
+            this.polar3.series[0].data = [res.advertising.number, res.cooperation.number, res.exhibition.number, res.external_push.number, res.internal_push.number, res.new_media.number, res.official.number, res.other.number]
+            let channel = {
+              advertising: {
+                'a': '百度',
+                'b': '360',
+                'c': '知乎',
+                'd': '今日头条',
+                'name': '网络广告'
+              },
+              official: {
+                'a': 'Pc/Wap官网',
+                'b': '小程序',
+                'c': 'App',
+                'name': '官方'
+              },
+              cooperation: {
+                'a': '京东',
+                'b': '优客工场',
+                'name': '合作伙伴'
+              },
+              internal_push: {
+                'a': '雷总/公司员工推荐的熟人客户',
+                'name': '内部推荐'
+              },
+              external_push: {
+                'a': '朋友/其他公司推荐的客户',
+                'name': '外部推荐'
+              },
+              new_media: {
+                'a': '微信公众号',
+                'b': '头条号',
+                'c': '百家号',
+                'name': '新媒体'
+              },
+              exhibition: {
+                'a': '参展',
+                'b': '业界活动、论坛',
+                'name': '展销会'
+              },
+              other: {
+                'a': '无法归类的小群体',
+                'name': '其他'
+              }
+            }
+            for (let k in res) {
+              res[k].name = channel[k].name
+              for (let kk in res[k]) {
+                if (kk !== 'number' && kk !== 'name') {
+                  res[k][kk + '_name'] = channel[k][kk]
+                }
+              }
+            }
+            this.polar3.series[0].tooltip.formatter = function(params) {
+              let ret = {}
+              for (let val in res) {
+                if (res[val].name === params.name) {
+                  ret = res[val]
+                }
+              }
+              let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
+              let par = ''
+              if (params.name === '内部推荐' || params.name === '外部推荐' || params.name === '其他') {
+                return radius1 + ret.name + ': ' + ret['a']
+              } else {
+                for (let p in ret) {
+                  if (p.length === 1 && ret[p] !== 0) {
+                    par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+                  }
+                }
+                return ret.name + '<br />' + par
+              }
+            }
           } else if (type === 4) {
             // 项目类型
             let object = {
@@ -1896,13 +2177,14 @@ export default {
             }
             let arr = []
             for (let kk in res) {
-              res[kk].name = object[kk]
-              if (res[kk].value !== 0) {
-                arr.push({
-                  name: object[kk],
-                  value: res[kk].num
-                })
+              if (res[kk].num === 0) {
+                break
               }
+              res[kk].name = object[kk]
+              arr.push({
+                name: object[kk],
+                value: res[kk].num
+              })
             }
             arr.forEach((item, index) => {
               if (item.name === 'H5') {
@@ -1914,7 +2196,6 @@ export default {
             })
             this.polar4.legend.data = add
             this.polar4.series[0].data = arr
-            console.log(arr)
           } else if (type === 5) {
             // 地区
             let cityArr = []
@@ -1922,38 +2203,40 @@ export default {
             let cityOther = {}
             let option = []
             for (let c in res) {
-              if (!res[c].city_value) {
+              if (!res[c].province_value) {
                 cityOther = {
                   value: res[c].value,
                   name: '其他',
                   probability: res[c].probability
                 }
-              }
-              if (res[c].city_value) {
-                cityArr.push(res[c].city_value)
+                res.splice(c, 1)
+              } else {
+                cityArr.push(res[c].province_value)
                 seriesData.push({
-                  name: res[c].city_value,
+                  name: res[c].province_value,
                   value: res[c].value
                 })
                 option.push({
-                  'value': res[c].city,
-                  'label': res[c].city_value
+                  'value': res[c].province,
+                  'label': res[c].province_value
                 })
               }
             }
-            this.optionsCity = option
-            if (JSON.stringify(cityOther) !== '{}') {
-              cityArr.push(cityOther.name)
-              seriesData.push(cityOther)
-            }
-            seriesData.forEach((oth, indexo) => {
-              if (indexo >= 9 && oth.name !== '其他') {
-                cityOther.value += oth.value
-              }
+            option.unshift({
+              'value': 0,
+              'label': '全部地区'
             })
-            seriesData.splice(9)
+            this.optionsCity = option
+            if (seriesData.length > 10) {
+              seriesData.forEach((oth, indexo) => {
+                if (indexo >= 9 && oth.name !== '其他') {
+                  cityOther.value += oth.value
+                }
+              })
+              seriesData.splice(9)
+            }
             seriesData.push(cityOther)
-            console.log(seriesData)
+            cityArr.push(cityOther.name)
             this.polar5.series[0].data = seriesData
             this.polar5.legend.data = cityArr
           } else if (type === 6) {
@@ -1962,35 +2245,35 @@ export default {
             if (this.itemBudget.data.source) {
               this.updateBudget(this.itemBudget.data.source)
             } else {
-              let headlines6 = []
-              let jd6 = []
-              let qihoo3606 = []
-              let baidu6 = []
-              let tooFirebird6 = []
-              let zhihu6 = []
-              let selfMedia6 = []
-              let other6 = []
-              // let alls = 0
+              let advertising = []
+              let cooperation = []
+              let exhibition = []
+              let externalPush = []
+              let internalPush = []
+              let newMedia = []
+              let official = []
+              let other = []
+              let alls = []
               for (let k in res) {
-                headlines6.push(res[k].headlines)
-                jd6.push(res[k].jd)
-                qihoo3606.push(res[k].qihoo360)
-                baidu6.push(res[k].baidu)
-                tooFirebird6.push(res[k].too_firebird)
-                zhihu6.push(res[k].zhihu)
-                selfMedia6.push(res[k].self_media)
-                other6.push(res[k].other)
-                // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+                advertising.push(res[k].advertising)
+                cooperation.push(res[k].cooperation)
+                exhibition.push(res[k].exhibition)
+                externalPush.push(res[k].external_push)
+                internalPush.push(res[k].internal_push)
+                newMedia.push(res[k].new_media)
+                official.push(res[k].official)
+                other.push(res[k].other)
+                alls.push(res[k].advertising + res[k].cooperation + res[k].exhibition + res[k].externalPush + res[k].internalPush + res[k].newMedia + res[k].official + res[k].other)
               }
-              this.polar6.series[0].data = headlines6
-              this.polar6.series[1].data = zhihu6
-              this.polar6.series[2].data = qihoo3606
-              this.polar6.series[3].data = baidu6
-              this.polar6.series[4].data = tooFirebird6
-              this.polar6.series[5].data = selfMedia6
-              this.polar6.series[6].data = other6
-              this.polar6.series[7].data = jd6
-              // this.polar6.series[7].label.formatter = alls + ''
+              this.polar6.series[0].data = advertising
+              this.polar6.series[1].data = cooperation
+              this.polar6.series[2].data = exhibition
+              this.polar6.series[3].data = externalPush
+              this.polar6.series[4].data = internalPush
+              this.polar6.series[5].data = newMedia
+              this.polar6.series[6].data = official
+              this.polar6.series[7].data = other
+              this.polar6.series[8].data = alls
             }
           } else if (type === 0) {
             let cumulativeList = []
@@ -2009,11 +2292,22 @@ export default {
                 'invalid': res.invalid[i].value,
                 'loss': res.loss[i].value,
                 'wastage_rate': res.wastage_rate[i].value + '%',
-                'date': res.add[i].date
+                'date': res.add[i].date,
+                'potential': res.potential[i].value,
+                'docking': res.docking[i].value,
+                'sign': res.sign[i].value,
+                'low_price': res.low_price[i].value
               }
               table.push(row)
             }
-            this.tableData3 = table
+            // 分页
+            this.tableAll = table
+            if (table.length > this.page.size) {
+              this.tableData3 = table.slice(0, this.page.size)
+            } else {
+              this.tableData3 = table
+            }
+            this.page.total = this.tableAll.length
           }
         } else {
           this.$message.error(response.data.meta.message)
@@ -2071,10 +2365,26 @@ export default {
     companyTypes() {
       let arr = []
       COMPANY_TYPE.forEach(item => {
+        if (item.name !== 'H5') {
+          arr.push({
+            value: item.id,
+            label: item.name
+          })
+        }
+      })
+      return arr
+    },
+    optionsBudget() {
+      let arr = []
+      DESIGN_COST_OPTIONS2.forEach(item => {
         arr.push({
           value: item.id,
           label: item.name
         })
+      })
+      arr.unshift({
+        value: 0,
+        label: '全部项目预算'
       })
       return arr
     }
@@ -2082,6 +2392,7 @@ export default {
   created: function() {
     this.getList()
     this.getClueStatistics()
+    this.getCustomerProfile()
     for (let i = 0; i < 7; i++) {
       this.getClueSearchStatistics(i)
     }
@@ -2332,12 +2643,11 @@ export default {
     border-left: 1px solid #e6e6e6;
     text-align: center;
     color: #333;
-    margin-right: 30px;
   }
   .table-header p {
     background-color: #f7f7f7;
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    line-height: 60px;
     border-right: 1px solid #e6e6e6;
   }
   .table-content p {
@@ -2345,6 +2655,10 @@ export default {
     line-height: 89px;
     border-right: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
+    font-size: 16px;
+  }
+  .table-content .fz-18 {
+    font-size: 18px;
   }
   .header-title p {
     line-height: 20px;
@@ -2376,10 +2690,17 @@ export default {
     padding-bottom: 0px;
   }
   .chart-circle {
-    height: 500px;
+    height: 550px;
+    padding-bottom: 15px;
   }
- .chart-line .line-echarts, .chart-circle .line-echarts {
+ .chart-line .line-echarts {
     height: 400px;
+  }
+  .chart-circle .chart-type .line-echarts {
+    height: 460px;
+  }
+  .chart-circle .line-echarts {
+    height: 460px;
   }
   /* .chart-line .line-echarts {
     height: 380px;
@@ -2422,13 +2743,13 @@ export default {
     background: url('../../../assets/images/icon/Down@2x.png') no-repeat center/ 16px 16px;
   }
   .chart-fun {
-    height: 520px;
+    height: 600px;
   }
   .chart-fun .chart-header {
     margin-bottom: 30px;
   }
   .chart-fun .line-echarts {
-    height: 400px;
+    height: 450px;
   }
   .chart-survey {
     margin-top: 0;
@@ -2437,5 +2758,54 @@ export default {
   .pt-20 {
     padding-top: 20px;
     background: #fff;
+  }
+  .table-overview {
+    height: 340px;
+    background-color: #fff;
+    margin-top: 20px;
+  }
+  .overview-th {
+    height: 40px;
+    line-height: 40px;
+    background-color: #f7f7f7;
+    font-size: 14px;
+  }
+  .overview-td {
+    line-height: 70px;
+    font-size: 16px;
+  }
+  .overview-center {
+    text-align: center;
+    margin: 0 40px;
+  }
+  .overview-td>.el-row:not(:first-child) {
+    border-top: 1px solid #e6e6e6;
+  }
+  .overview-td .head {
+    padding-top: 10px;
+  }
+  .head p {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    margin: 0 auto;
+  }
+  .bc-3 {
+    background-color: #333; 
+  }
+  .bc-red {
+    background-color: #FF7575;
+  }
+  .bc-blue {
+    background-color: #41A9FF;
+  }
+  .page-block {
+    text-align: center;
+    margin-top: 23px;
+  }
+  .funnel-box {
+    margin-left: 20px;
   }
 </style>

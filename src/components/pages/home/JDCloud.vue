@@ -120,7 +120,7 @@
                   </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      免费发布项目需求
+                      发布项目需求
                     </button>
                   </el-col>
                 </el-form>
@@ -268,7 +268,7 @@
                 <p class="desigb-about-p">立即发布需求</p>
                 <span class="desigb-about-span">注册并发布项目需求</span>
                 <div>
-                  <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
+                  <a @click="direct('projectCreate')"><button class="design-btn">发布项目需求</button></a>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -336,7 +336,7 @@
           </el-row> -->
           <el-row>
             <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
-              免费发布项目需求
+              发布项目需求
             </button>
           </el-row>
         </el-form>
