@@ -22,18 +22,18 @@
               </a>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item v-if="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item v-show="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
               <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
-              <el-menu-item v-if="!isLogin" index="" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
+              <el-menu-item v-show="!isLogin" index="/register123" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
                 <span class="login-shadow">
                   注册
                 </span>
               </el-menu-item>
-              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
+              <el-menu-item v-show="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
