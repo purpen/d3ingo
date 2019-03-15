@@ -17,7 +17,7 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
-              <a class="el-menu-item logo cursor-def">
+              <a class="el-menu-item logo cursor-def margin-left-0">
                 <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
               </a>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
@@ -770,8 +770,9 @@
     background: url(../../assets/images/logo.svg) no-repeat center / contain;
   } */
   .el-menu-item.logo img {
-    width: auto;
-    height: 52px;
+    width: 153px;
+    height: 50px;
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
