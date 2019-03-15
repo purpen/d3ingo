@@ -2021,7 +2021,8 @@ export default {
         row = {...from}
         if (row.source === '0' || row.source === 0) {
           delete row.source
-        } else if (row.source) {
+        }
+        if (row.source) {
           row.source -= 1
         }
       }
