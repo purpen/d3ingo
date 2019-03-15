@@ -633,20 +633,38 @@
                 </el-table-column>
                 <el-table-column
                   prop="cumulative"
-                  label="累计客户"
+                  label="商机"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="add"
-                  label="新增客户">
+                  prop="potential"
+                  label="潜在客户"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="docking"
+                  label="对接设计"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="sign"
+                  label="签订合作"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="invalid"
-                  label="无效客户">
+                  label="无效商机"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="low_price"
+                  label="低价客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="loss"
-                  label="流失客户">
+                  label="流失客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="wastage_rate"
@@ -1016,12 +1034,12 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#FFCDCF'],
+        color: ['#FF5A5F'],
         tooltip: {
-          // trigger: 'axis',
+          trigger: 'item',
           // backgroundColor: '#FF5A5F',
           axisPointer: {
-            type: 'none'
+            type: 'shadow'
           }
         },
         grid: {
@@ -1053,7 +1071,7 @@ export default {
             barWidth: '80%',
             emphasis: {
               itemStyle: {
-                color: '#FF5A5F'
+                opacity: 0.8
               }
             },
             data: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -1076,15 +1094,15 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
+          bottom: 17,
           data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX']
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -1124,8 +1142,8 @@ export default {
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '50%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
             ],
             tooltip: {
@@ -1390,35 +1408,35 @@ export default {
           label: '全部来源'
         },
         {
-          value: '1',
+          value: '2',
           label: '网络广告'
         },
         {
-          value: '2',
+          value: '3',
           label: '官方'
         },
         {
-          value: '3',
+          value: '4',
           label: '合作伙伴'
         },
         {
-          value: '4',
+          value: '5',
           label: '内部推荐'
         },
         {
-          value: '5',
+          value: '6',
           label: '外部推荐'
         },
         {
-          value: '6',
+          value: '7',
           label: '新媒体'
         },
         {
-          value: '7',
+          value: '8',
           label: '展销会'
         },
         {
-          value: '8',
+          value: '1',
           label: '其他'
         }
       ], // 客户来源
@@ -1687,6 +1705,15 @@ export default {
             this.polar6.series.splice(1)
           }
         }
+      }
+      this.polar6.tooltip.formatter = function (params) {
+        let ret = ''
+        params.forEach(item => {
+          if (item.data > 0) {
+            ret += item.marker + item.seriesName + ': ' + item.data + '<br />'
+          }
+        })
+        return params[0].axisValue + '<br />' + ret
       }
     },
     // 筛选客户
@@ -2127,12 +2154,16 @@ export default {
               }
               let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
               let par = ''
-              for (let p in ret) {
-                if (p.length === 1) {
-                  par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+              if (params.name === '内部推荐' || params.name === '外部推荐' || params.name === '其他') {
+                return radius1 + ret.name + ': ' + ret['a']
+              } else {
+                for (let p in ret) {
+                  if (p.length === 1 && ret[p] !== 0) {
+                    par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+                  }
                 }
+                return ret.name + '<br />' + par
               }
-              return ret.name + '<br />' + par
             }
           } else if (type === 4) {
             // 项目类型
@@ -2261,7 +2292,11 @@ export default {
                 'invalid': res.invalid[i].value,
                 'loss': res.loss[i].value,
                 'wastage_rate': res.wastage_rate[i].value + '%',
-                'date': res.add[i].date
+                'date': res.add[i].date,
+                'potential': res.potential[i].value,
+                'docking': res.docking[i].value,
+                'sign': res.sign[i].value,
+                'low_price': res.low_price[i].value
               }
               table.push(row)
             }
@@ -2655,16 +2690,17 @@ export default {
     padding-bottom: 0px;
   }
   .chart-circle {
-    height: 500px;
+    height: 550px;
+    padding-bottom: 15px;
   }
  .chart-line .line-echarts {
     height: 400px;
   }
   .chart-circle .chart-type .line-echarts {
-    height: 400px;
+    height: 460px;
   }
   .chart-circle .line-echarts {
-    height: 420px;
+    height: 460px;
   }
   /* .chart-line .line-echarts {
     height: 380px;
