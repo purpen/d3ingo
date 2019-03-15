@@ -1660,8 +1660,12 @@ export default {
         this.$message.error('请填写联系人电话')
         return
       }
-      if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
-        this.$message.error('请输入有效的手机号')
+      if (this.userForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.userForm.phone)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
       if (!this.userForm.new_source || !this.userForm.son_source) {
