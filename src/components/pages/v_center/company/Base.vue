@@ -598,7 +598,9 @@
               <el-col :span="isMob ? 24 : 14">
                 <el-form-item label="企业名称" prop="company_name" class="line-hei-20">
                   <el-input v-model="form.company_name"
-                            placeholder="请输入完整的公司名称"></el-input>
+                    placeholder="请输入完整的公司名称"
+                    @focus="saveOldName(form.company_name)"
+                    @blur="checkouName(form.company_name)"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -906,6 +908,7 @@
         }, 1000)
       }
       return {
+        oldName: '',
         prizeArr: [], // 奖项
         editTag: false, // input标签
         oldVal: {},
@@ -1152,6 +1155,25 @@
       }
     },
     methods: {
+      saveOldName(name) {
+        this.oldName = name
+      },
+      checkouName(name) {
+        if (this.oldName === name) {
+          return
+        }
+        this.$http.get(api.checkDesignCompany, {params: {company_name: name}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$message.error(res.data.meta.message)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
+      },
       // 删除奖项
       deletePrize(index) {
         if (this.form.prizes && this.form.prizes.length > 0) {

@@ -209,7 +209,9 @@
                 <el-col :span="isMob ? 24 : 14">
                   <el-form-item label="企业名称" prop="company_name">
                     <el-input v-model="form.company_name"
-                              placeholder="请输入完整的公司名称"></el-input>
+                    placeholder="请输入完整的公司名称"
+                    @focus="saveOldName(form.company_name)"
+                    @blur="checkouName(form.company_name)"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -395,6 +397,7 @@
         }, 1000)
       }
       return {
+        oldName: '',
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
         contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
@@ -556,6 +559,25 @@
       }
     },
     methods: {
+      saveOldName(name) {
+        this.oldName = name
+      },
+      checkouName(name) {
+        if (this.oldName === name) {
+          return
+        }
+        this.$http.get(api.checkDesmandCompany, {params: {company_name: name}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$message.error(res.data.meta.message)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
+      },
       editBtn(mark) {
         if (!mark) {
           return false
