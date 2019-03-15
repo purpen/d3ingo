@@ -1104,7 +1104,7 @@
         if (typeof (this.query.from - 0) !== 'number') {
           this.query.from = 0
         }
-        if (this.query.from < 0) {
+        if (this.query.from < 0 || this.query.from > 7) {
           this.query.from = 0
         }
       }
