@@ -2019,7 +2019,7 @@ export default {
       }
       if (from) {
         row = {...from}
-        if (row.source === '0') {
+        if (row.source === '0' || row.source === 0) {
           delete row.source
         } else if (row.source) {
           row.source -= 1
@@ -2074,7 +2074,7 @@ export default {
               })
               let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
               let radius2 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FF5A5F;"></span>'
-              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.percentSum + '%'
+              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.total_conversion + '%'
             }
             this.chanceList = res
             this.updatecustomer(this.chance.count)
