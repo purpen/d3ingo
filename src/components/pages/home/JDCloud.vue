@@ -1173,6 +1173,7 @@ export default {
       }
       if (!this.query.mark) {
         this.query.mark = 'a'
+          this.query.from = 0
       }
     }
   },
