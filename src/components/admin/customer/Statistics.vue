@@ -698,12 +698,12 @@
                 border
                 style="width: 100%">
                 <el-table-column
-                  prop="new_from"
+                  prop="new_from_value"
                   label="来源"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="son_source"
+                  prop="son_source_value"
                   label="子来源">
                 </el-table-column>
                 <el-table-column
@@ -1329,6 +1329,8 @@ export default {
           pc_count: 0,
           new_from: 0,
           son_source: 0,
+          new_from_value: '',
+          son_source_value: '',
           url: '',
           wap_count: 0,
           device: 0,
@@ -2222,7 +2224,8 @@ export default {
                   probability: res[c].probability
                 }
                 res.splice(c, 1)
-              } else {
+              }
+              if (res[c].province_value) {
                 cityArr.push(res[c].province_value)
                 seriesData.push({
                   name: res[c].province_value,
