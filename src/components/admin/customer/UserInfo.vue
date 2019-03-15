@@ -92,10 +92,11 @@
                   </el-option>
                 </el-select>
               </div>
-              <div class="fl flex-a-c height30 son-source fz-14" v-if="userForm.new_source">
+              <div class="fl flex-a-c height30 son-source fz-14" v-if="userForm.new_source || userForm.new_source === 0">
                 <span>子来源: </span>
                 <el-select v-model="userForm.son_source"
                   size="small"
+                  :disabled="!isHasPower"
                   @change="isUpdatedSonSource"
                   no-data-text="无数据" placeholder="请选择">
                   <el-option
@@ -685,7 +686,7 @@
                 </div>
 
 
-                <div class="project-form padding20" v-if="boolAddProject">
+                <div class="project-form padding20" v-show="boolAddProject">
                   <p class="margin-b22">基本信息</p>
                   <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" ref="ruleProjectForm" label-width="80px">
                       <el-row :gutter="20">
@@ -1713,6 +1714,15 @@ export default {
     createdProject() { // 点击添加按钮
       this.projectForm = {}
       this.boolAddProject = true
+      const {province, city} = this.clientForm
+      if (province) {
+        this.$nextTick(_ => {
+          this.projectForm.item_province = province
+          if (city) {
+            this.projectForm.item_city = city
+          }
+        })
+      }
     },
     createProjectForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -2306,6 +2316,7 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
+        this.boolAddProject = false
       } else if (val === 'followLog') {
         this.getLogList()
         this.boolLinkItem = true
@@ -2930,8 +2941,11 @@ export default {
 .user-info-center .el-select {
   width: 150px;
 }
-.source .el-select, .son-source .el-select {
+.source .el-select {
   width: 150px;
+}
+.son-source .el-select {
+  max-width: 200px;
 }
 .user-status > .el-select > .el-input > input {
   padding-left: 40px;
@@ -2960,7 +2974,10 @@ export default {
   width: 136px;
 }
 .son-source .el-input--small .el-input__inner {
-  /* width: 136px; */
+  overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
 }
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;

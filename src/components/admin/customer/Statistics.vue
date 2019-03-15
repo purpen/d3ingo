@@ -90,10 +90,10 @@
           <div class="table-overview">
             <div class="chart-header">
               <span class="chart-title">客户概况</span>
-              <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
-                <i @click="onOff('chance')"></i>
-                <ul v-if="chance.show">
-                  <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+              <div class="fr edit-btn" @blur="hideEcharts('overview')" tabindex="-1">
+                <i @click="onOff('overview')"></i>
+                <ul v-if="overview.show">
+                  <li @click="updateAll('overview')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
@@ -280,9 +280,9 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row :gutter="20">
+            <el-row :gutter="40">
               <el-col :span="12">
-                <div>
+                <div class="funnel-box">
                   <ECharts :options="polar" class="line-echarts">
                   </ECharts>
                 </div>
@@ -423,7 +423,7 @@
           </div>
           <div class="chart chart-circle">
             <el-row :gutter="20">
-              <el-col :span="12">
+              <el-col :span="12" class="chart-type">
                 <div class="chart-header">
                   <span class="chart-title">项目类型</span>
                   <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
@@ -621,7 +621,7 @@
                 <span v-else>展开详细数据</span>
                 <i :class="{'transform': allCustomer.isTable}"></i></span>
             </div>
-            <div v-if="allCustomer.isTable" class="tables">
+            <div v-if="allCustomer.isTable" class="tables fz-16">
               <el-table
                 :data="tableData3"
                 border
@@ -633,20 +633,38 @@
                 </el-table-column>
                 <el-table-column
                   prop="cumulative"
-                  label="累计客户"
+                  label="商机"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="add"
-                  label="新增客户">
+                  prop="potential"
+                  label="潜在客户"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="docking"
+                  label="对接设计"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="sign"
+                  label="签订合作"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="invalid"
-                  label="无效客户">
+                  label="无效商机"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="low_price"
+                  label="低价客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="loss"
-                  label="流失客户">
+                  label="流失客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="wastage_rate"
@@ -766,6 +784,9 @@ export default {
       }, // 上方总统计
       chanceData: [], // 商机列表
       budgetList: [], // 项目预算
+      overview: {
+        show: false
+      },
       chanceList: {
         cooperation: {
           conversion: 0,
@@ -879,10 +900,10 @@ export default {
           {
             name: '商机转化',
             type: 'funnel',
-            left: '0%',
+            left: '-10%',
             top: 0,
             bottom: 60,
-            width: '100%',
+            width: '120%',
             min: 0,
             max: 100,
             minSize: '0%',
@@ -903,6 +924,16 @@ export default {
                 normal: {
                   fontSize: 14,
                   color: '#fff'
+                },
+                lastClass: {
+                  fontSize: 22,
+                  color: '#fff',
+                  padding: [30, 0, 0, 0]
+                },
+                lastNormal: {
+                  fontSize: 14,
+                  color: '#fff',
+                  padding: [33, 0, 0, 0]
                 }
               }
             },
@@ -1003,12 +1034,12 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#FFCDCF'],
+        color: ['#FF5A5F'],
         tooltip: {
-          // trigger: 'axis',
+          trigger: 'item',
           // backgroundColor: '#FF5A5F',
           axisPointer: {
-            type: 'none'
+            type: 'shadow'
           }
         },
         grid: {
@@ -1040,7 +1071,7 @@ export default {
             barWidth: '80%',
             emphasis: {
               itemStyle: {
-                color: '#FF5A5F'
+                color: '#FF8286'
               }
             },
             data: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -1063,15 +1094,15 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
+          bottom: 17,
           data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX']
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -1103,16 +1134,16 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
-          type: 'scroll',
+          bottom: -5,
+          type: 'plain',
           data: []
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
             ],
             tooltip: {
@@ -1146,7 +1177,7 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['无明确预算', '1万以下', '5万以下', '5-10万', '10万-20万', '20万-30万', '30万-50万', '50万以上']
+          data: ['无明确预算', '1万以下', '1-5万以下', '5-10万', '10-20万', '20-30万', '30-50万', '50万以上']
         },
         series: [
           {
@@ -1377,35 +1408,35 @@ export default {
           label: '全部来源'
         },
         {
-          value: '1',
+          value: '2',
           label: '网络广告'
         },
         {
-          value: '2',
+          value: '3',
           label: '官方'
         },
         {
-          value: '3',
+          value: '4',
           label: '合作伙伴'
         },
         {
-          value: '4',
+          value: '5',
           label: '内部推荐'
         },
         {
-          value: '5',
+          value: '6',
           label: '外部推荐'
         },
         {
-          value: '6',
+          value: '7',
           label: '新媒体'
         },
         {
-          value: '7',
+          value: '8',
           label: '展销会'
         },
         {
-          value: '8',
+          value: '1',
           label: '其他'
         }
       ], // 客户来源
@@ -1460,7 +1491,7 @@ export default {
             }
           },
           {
-            text: '过去30月',
+            text: '过去30天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1469,7 +1500,7 @@ export default {
             }
           },
           {
-            text: '过去90月',
+            text: '过去90天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1537,11 +1568,13 @@ export default {
     }
   },
   methods: {
+    // 分页
     handleSizeChange(val) {
       this.page.size = val
       this.page.currentPage = 1
       this.handleCurrentChange(1)
     },
+    // 分页
     handleCurrentChange(val) {
       if (this.tableAll.length > this.page.size * val) {
         this.tableData3 = this.tableAll.slice(this.page.size * (val - 1), this.page.size * val)
@@ -1672,6 +1705,15 @@ export default {
             this.polar6.series.splice(1)
           }
         }
+      }
+      this.polar6.tooltip.formatter = function (params) {
+        let ret = ''
+        params.forEach(item => {
+          if (item.data > 0) {
+            ret += item.marker + item.seriesName + ': ' + item.data + '<br />'
+          }
+        })
+        return params[0].axisValue + '<br />' + ret
       }
     },
     // 筛选客户
@@ -1865,6 +1907,9 @@ export default {
       if (form === 'all') {
         this.all.show = false
         this.getClueStatistics()
+      } else if (form === 'overview') {
+        this.overview.show = false
+        this.getCustomerProfile()
       } else {
         let type = 0
         type = this[form].data.type
@@ -1933,6 +1978,22 @@ export default {
             times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
             show: false
           }
+        } else if (form === 'allCustomer') {
+          this[form] = {
+            data: {
+              type: 0,
+              start_time: '', // 时间范围
+              end_time: '', // 时间范围
+              time: 0, // 时段
+              region: 0, // 城市
+              source: '0', // 来自
+              project_type: 0, // 类型
+              project_budget: 0 // 预算
+            },
+            times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
+            isTable: false,
+            show: false
+          }
         }
         this.getClueSearchStatistics(type)
       }
@@ -1986,7 +2047,11 @@ export default {
               par = arr.find(item => {
                 return item.name === params.name
               })
-              return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              if (params.name === '签订合作') {
+                return '{lastClass|' + par.number + '}\n{lastNormal|' + par.name + '}'
+              } else {
+                return '{big|' + par.number + '}\n{normal|' + par.name + '}'
+              }
             }
             this.polar.series[0].tooltip.formatter = function(params) {
               let par2 = {}
@@ -2089,12 +2154,16 @@ export default {
               }
               let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
               let par = ''
-              for (let p in ret) {
-                if (p.length === 1) {
-                  par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+              if (params.name === '内部推荐' || params.name === '外部推荐' || params.name === '其他') {
+                return radius1 + ret.name + ': ' + ret['a']
+              } else {
+                for (let p in ret) {
+                  if (p.length === 1 && ret[p] !== 0) {
+                    par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+                  }
                 }
+                return ret.name + '<br />' + par
               }
-              return ret.name + '<br />' + par
             }
           } else if (type === 4) {
             // 项目类型
@@ -2223,7 +2292,11 @@ export default {
                 'invalid': res.invalid[i].value,
                 'loss': res.loss[i].value,
                 'wastage_rate': res.wastage_rate[i].value + '%',
-                'date': res.add[i].date
+                'date': res.add[i].date,
+                'potential': res.potential[i].value,
+                'docking': res.docking[i].value,
+                'sign': res.sign[i].value,
+                'low_price': res.low_price[i].value
               }
               table.push(row)
             }
@@ -2617,10 +2690,17 @@ export default {
     padding-bottom: 0px;
   }
   .chart-circle {
-    height: 500px;
+    height: 550px;
+    padding-bottom: 15px;
   }
- .chart-line .line-echarts, .chart-circle .line-echarts {
+ .chart-line .line-echarts {
     height: 400px;
+  }
+  .chart-circle .chart-type .line-echarts {
+    height: 460px;
+  }
+  .chart-circle .line-echarts {
+    height: 460px;
   }
   /* .chart-line .line-echarts {
     height: 380px;
@@ -2724,5 +2804,8 @@ export default {
   .page-block {
     text-align: center;
     margin-top: 23px;
+  }
+  .funnel-box {
+    margin-left: 20px;
   }
 </style>
