@@ -570,7 +570,7 @@
             if (that.form.design_types && that.form.design_types.length !== 0) {
               row.design_types = JSON.stringify(that.form.design_types)
             } else row.design_types = ''
-            if (this.prizes && this.prizes.length !== 0) {
+            if (this.prizes && this.prizes.length) {
               for (var i = 0; i < this.prizes.length; i++) {
                 if (this.prizes[i].time === '' || this.prizes[i].type === '') {
                   this.prizes.splice(i, 1)
@@ -581,7 +581,7 @@
             } else {
               row.prizes = null
             }
-            if (this.patents && this.patents.length !== 0) {
+            if (this.patents && this.patents.length) {
               for (var c = 0; c < this.patents.length; c++) {
                 if (this.patents[c].time === '' || this.patents[c].type === '') {
                   this.patents.splice(c, 1)
@@ -590,7 +590,7 @@
               }
               row.patent = JSON.stringify(this.patents)
             } else {
-              row.prizes = null
+              row.patents = null
             }
             // if (that.is_apply && that.form.patent_time) {
             //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
@@ -611,6 +611,7 @@
               }
             }
             that.isLoadingBtn = true
+            console.log('row', row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
