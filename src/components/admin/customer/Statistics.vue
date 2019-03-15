@@ -2019,7 +2019,7 @@ export default {
       }
       if (from) {
         row = {...from}
-        if (row.source === '0') {
+        if (row.source === '0' || row.source === 0) {
           delete row.source
         } else if (row.source) {
           row.source -= 1
