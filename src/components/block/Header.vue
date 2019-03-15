@@ -787,8 +787,8 @@
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
-    height: 60px;
-    line-height: 63px;
+    height: 70px;
+    line-height: 73px;
     border-bottom: 3px solid transparent;
     color: #666;
     padding: 0 3px;
@@ -1017,8 +1017,8 @@
   }
   
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
-    height: 60px;
-    line-height: 60px;
+    height: 70px;
+    line-height: 70px;
     border: none;
     background: #ffffff;
     color: #666;
