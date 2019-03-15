@@ -245,6 +245,10 @@
     color: #ff5a5f;
     background: none
   }
+  .el-tag--info {
+    background-color: #fafafa;
+    color: #999;
+  }
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
     color: #222
   }
