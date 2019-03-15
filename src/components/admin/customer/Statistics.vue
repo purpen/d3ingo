@@ -280,54 +280,56 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row :gutter="40">
-              <el-col :span="12">
-                <div class="funnel-box">
-                  <ECharts :options="polar" class="line-echarts">
-                  </ECharts>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="table-header">
-                  <el-row>
-                    <el-col :span="6">
-                      <p>转化环节</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>客户数量</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>上一步转化率</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>整体转化率</p>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="table-content">
-                  <el-row v-for="(c,indexc) in chanceList" :key="indexc">
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.number}}
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.conversion}}%
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                       {{c.total_conversion}}%
-                      </p>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-col>
-            </el-row>
+            <div class="funnel-margin">
+              <el-row :gutter="40">
+                <el-col :span="12">
+                  <div class="funnel-box">
+                    <ECharts :options="polar" class="line-echarts">
+                    </ECharts>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="table-header">
+                    <el-row>
+                      <el-col :span="6">
+                        <p>转化环节</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>客户数量</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>上一步转化率</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>整体转化率</p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="table-content">
+                    <el-row v-for="(c,indexc) in chanceList" :key="indexc">
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.number}}
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.conversion}}%
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                        {{c.total_conversion}}%
+                        </p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
           </div>
           <div class="chart chart-line">
             <div class="chart-header">
@@ -2807,5 +2809,8 @@ export default {
   }
   .funnel-box {
     margin-left: 20px;
+  }
+  .funnel-margin {
+    padding: 0 40px 0 20px;
   }
 </style>
