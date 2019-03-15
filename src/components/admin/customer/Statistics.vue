@@ -152,10 +152,10 @@
                     {{table.cooperation}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.loss}}
+                    {{table.invalid}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.invalid}}
+                    {{table.loss}}
                   </el-col>
                   <el-col :span="3">
                     {{table.loss_rate}}%
@@ -280,54 +280,56 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row :gutter="40">
-              <el-col :span="12">
-                <div class="funnel-box">
-                  <ECharts :options="polar" class="line-echarts">
-                  </ECharts>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="table-header">
-                  <el-row>
-                    <el-col :span="6">
-                      <p>转化环节</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>客户数量</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>上一步转化率</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>整体转化率</p>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="table-content">
-                  <el-row v-for="(c,indexc) in chanceList" :key="indexc">
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.number}}
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.conversion}}%
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                       {{c.total_conversion}}%
-                      </p>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-col>
-            </el-row>
+            <div class="funnel-margin">
+              <el-row :gutter="40">
+                <el-col :span="12">
+                  <div class="funnel-box">
+                    <ECharts :options="polar" class="line-echarts">
+                    </ECharts>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="table-header">
+                    <el-row>
+                      <el-col :span="6">
+                        <p>转化环节</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>客户数量</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>上一步转化率</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>整体转化率</p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="table-content">
+                    <el-row v-for="(c,indexc) in chanceList" :key="indexc">
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.number}}
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.conversion}}%
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                        {{c.total_conversion}}%
+                        </p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
           </div>
           <div class="chart chart-line">
             <div class="chart-header">
@@ -759,6 +761,7 @@ export default {
   data () {
     let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84']
     return {
+      color2: ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84'],
       page: {
         total: 1,
         size: 10,
@@ -1691,7 +1694,7 @@ export default {
         this.polar6.series[7].data = other
         this.polar6.series[8].data = alls
       } else {
-        let types = ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他']
+        let types = ['其他', '网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会']
         for (let p = 1; p < 9; p++) {
           if (p === parseInt(val)) {
             this.polar6.series[0].name = types[p - 1]
@@ -1701,6 +1704,15 @@ export default {
               position: 'right',
               color: '#333',
               fontSize: 14
+            }
+            if (p === 1) {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[7]
+              }
+            } else {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[p - 2]
+              }
             }
             this.polar6.series.splice(1)
           }
@@ -2807,5 +2819,8 @@ export default {
   }
   .funnel-box {
     margin-left: 20px;
+  }
+  .funnel-margin {
+    padding: 0 40px 0 20px;
   }
 </style>
