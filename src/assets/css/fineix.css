@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?r3k0da');
-  src:  url('../fonts/icomoon.eot?r3k0da#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?r3k0da') format('truetype'),
-    url('../fonts/icomoon.woff?r3k0da') format('woff'),
-    url('../fonts/icomoon.svg?r3k0da#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?r3k0db');
+  src:  url('../fonts/icomoon.eot?r3k0db#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?r3k0db') format('truetype'),
+    url('../fonts/icomoon.woff?r3k0db') format('woff'),
+    url('../fonts/icomoon.svg?r3k0db#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -38,6 +38,9 @@
 }
 .fx-icon-sound-loudly:before {
   content: "\e904";
+}
+.fx-icon-sound-mute:before {
+  content: "\e905";
 }
 .fx-icon-suspend:before {
   content: "\e906";
@@ -106,6 +109,9 @@
   content: "\e919";
   margin-left: -1em;
   color: rgb(53, 54, 53);
+}
+.fx-icon-rotate:before {
+  content: "\e91a";
 }
 .fx-icon-red-packets:before {
   content: "\e91b";
@@ -233,6 +239,9 @@
 .fx-icon-paypal:before {
   content: "\e93e";
 }
+.fx-icon-nothing-plus:before {
+  content: "\e93f";
+}
 .fx-icon-nothing-right:before {
   content: "\e940";
 }
@@ -285,7 +294,6 @@
 }
 .fx-icon-logout:before {
   content: "\e94f";
-  color: #999
 }
 .fx-icon-lower:before {
   content: "\e950";
@@ -355,25 +363,6 @@
 }
 .fx-icon-full-screen:before {
   content: "\e966";
-}
-.fx-icon-coupon .path1:before {
-  content: "\e98a";
-  color: rgb(60, 60, 60);
-}
-.fx-icon-coupon .path2:before {
-  content: "\e98b";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
-}
-.fx-icon-coupon .path3:before {
-  content: "\e98c";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
-}
-.fx-icon-coupon .path4:before {
-  content: "\e98d";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
 }
 .fx-icon-general-expression:before {
   content: "\e967";
@@ -490,6 +479,25 @@
 }
 .fx-icon-copyright:before {
   content: "\e989";
+}
+.fx-icon-coupon .path1:before {
+  content: "\e98a";
+  color: rgb(60, 60, 60);
+}
+.fx-icon-coupon .path2:before {
+  content: "\e98b";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
+}
+.fx-icon-coupon .path3:before {
+  content: "\e98c";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
+}
+.fx-icon-coupon .path4:before {
+  content: "\e98d";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
 }
 .fx-icon-cover:before {
   content: "\e98e";
@@ -976,7 +984,34 @@
   content: "\ea05";
   color: #999;
 }
-.fx-icon-red-packets1:before {
-  content: "\e905";
-  color: #666;
+.fx-icon-preference-setting .path1:before {
+  content: "\ea0b";
+  color: rgb(151, 151, 151);
+}
+.fx-icon-preference-setting .path2:before {
+  content: "\ea0c";
+  margin-left: -1em;
+  color: rgb(153, 153, 153);
+}
+.fx-icon-preference-setting .path3:before {
+  content: "\ea0d";
+  margin-left: -1em;
+  color: rgb(153, 153, 153);
+}
+.fx-icon-preference-setting .path4:before {
+  content: "\ea0e";
+  margin-left: -1em;
+  color: rgb(151, 151, 151);
+}
+.fx-icon-preference-setting .path5:before {
+  content: "\ea0f";
+  margin-left: -1em;
+  color: rgb(151, 151, 151);
+}
+.fx-icon-preference-setting-hover:before {
+  content: "\ea10";
+  color: #ff5a5f;
+}
+.fx-icon-material:before {
+  content: "\ea11";
 }

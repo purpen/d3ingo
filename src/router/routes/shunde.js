@@ -12,7 +12,7 @@ module.exports = [
     path: '/shunde/trade_fairs/home_page',
     name: 'trade_fairs',
     meta: {
-      title: '交易会',
+      title: '成果交易会',
       requireAuth: false
     },
     component: require('@/components/pages/home/trade_fairs/HomePage')
@@ -33,7 +33,8 @@ module.exports = [
     name: 'demand_login',
     meta: {
       title: '活动简介',
-      requireAuth: true
+      requireAuth: true,
+      hideCustomer: true
     },
     component: require('@/components/pages/home/trade_fairs/DemandLogin')
   },
@@ -211,6 +212,7 @@ module.exports = [
     meta: {
       title: '首页',
       requireAuth: false,
+      hideCustomer: true,
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/MobileLogin')

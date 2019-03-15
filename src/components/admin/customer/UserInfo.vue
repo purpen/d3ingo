@@ -6,16 +6,18 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">客户列表</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
         </div>
-        <div class="card-box">
-          <div class="padding10" v-if="currentId">
-            <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
-            <el-button type="danger" size="mini" @click="showClueDialog(4)">流失</el-button>
-            <div class="fr line-height30">
+        <div class="card-box" v-loading="userLoading">
+          <div class="padding10 fz-0" v-if="currentId">
+            <el-button v-if="userForm.new_status === 1" type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
+            <el-button v-if="userForm.new_status === 3"  type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
+            <el-button v-if="userForm.new_status === 1" type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
+            <el-button v-if="userForm.new_status !== 4" size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
+            <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
               <a class="pointer border-t10" @click="getNextUser">下一条</a>
             </div>
@@ -24,7 +26,7 @@
             <div class="user-info-top clearfix">
               <div class="fl clearfix flex-a-c">
                 <div class="user-name fl margin-r20">
-                  <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" max-length="20"></el-input>
+                  <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" maxlength="20"></el-input>
                   <span v-else>{{userForm.name}}</span>
                 </div>
                 <div class="user-phone fl margin-r20">
@@ -62,13 +64,12 @@
                 </el-select>
               </div> -->
               <div class="fr line-height30 fz-14 tc-red">
-                  <span v-if="!currentId">潜在客户</span>
+                  <span v-if="!currentId">商机</span>
                   <div v-else>
-                    <span v-if="userForm.new_status === 1">潜在客户</span>
-                    <span v-if="userForm.new_status === 2">对接设计</span>
-                    <span v-if="userForm.new_status === 3">无效客户</span>
-                    <span v-if="userForm.new_status === 4">流失客户</span>
-                    <span v-if="userForm.new_status === 5">签约合作</span>
+                    <span v-if="userForm.new_status === 1">商机</span>
+                    <span v-if="userForm.new_status === 2">潜在客户</span>
+                    <span v-if="userForm.new_status === 3">对接设计</span>
+                    <span v-if="userForm.new_status === 4">签约合作</span>
                   </div>
               </div>
             </div>
@@ -86,16 +87,30 @@
                   <el-option
                     v-for="(item, i) in sourceArr"
                     :key="i"
-                    :label="item.label"
-                    :value="item.value">
+                    :label="item.name"
+                    :value="item.id">
                   </el-option>
                 </el-select>
               </div>
-              <div class="fl flex-a-c height30 son-source fz-14">
+              <div class="fl flex-a-c height30 son-source fz-14" v-if="userForm.new_source || userForm.new_source === 0">
                 <span>子来源: </span>
-                <span v-if="currentId">{{userForm.son_source}}</span>
-                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input>
+                <el-select v-model="userForm.son_source"
+                  size="small"
+                  :disabled="!isHasPower"
+                  @change="isUpdatedSonSource"
+                  no-data-text="无数据" placeholder="请选择">
+                  <el-option
+                    v-for="td in sonSource"
+                    :key="td.key"
+                    :label="td.name"
+                    :value="td.key">
+                  </el-option>
+                </el-select>
+                <!-- <span v-if="currentId">{{userForm.son_source}}</span>
+                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input> -->
               </div>
+
+
               <div class="belong fl">
                 <span class="fz-14">负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
@@ -127,6 +142,9 @@
               </el-popover> -->
 
             </div>
+
+
+
             <!-- <p class="p-label">
               <span>标签</span>
               <el-tag
@@ -184,7 +202,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="联系人" prop="name" v-if="BoolEditUserInfo">
-                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="20"></el-input>
+                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -201,12 +219,12 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="微信号" prop="wx">
-                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="20"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="QQ号" prop="qq">
-                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="15"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -220,6 +238,7 @@
                       <el-form-item label="备注" prop="summary">
                         <el-input v-model.trim="clientForm.summary" 
                                   type="textarea"
+                                  :maxlength="500"
                                   :autosize="{ minRows: 2, maxRows: 4}"
                                   placeholder="备注">
                         </el-input>
@@ -291,20 +310,20 @@
                     </el-col>
                   </el-row>
                 </div>
-                <p class="user-btn clearfix padding20" v-show="option === 'user'">
+                <p class="user-btn clearfix padding20 fz-0" v-show="option === 'user'">
                   <el-button v-if="!currentId" type="primary" class="fr" :loading="boolCreateUser" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
-                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" :disabled="!isHasPower" @click="editUserInfo">编辑
+                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr margin-r-15" :disabled="!isHasPower" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
-                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
+                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr margin-r-15" @click="comeBack">取消</el-button>
                 </p>
               </div>
 
 
 
 
-              <div class="card-body-center" v-show="option === 'project'">
+              <div class="card-body-center" v-show="option === 'project'" v-loading="userProjectLoading">
                 <p class="add-project clearfix">
                   <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
                   <el-button type="primary" :disabled="!isHasPower || (boolEditProject || boolAddProject)" size="small" class="fr" @click="createdProject">添加项目</el-button>
@@ -313,9 +332,9 @@
                 <div class="project-form-table">
                   <ul>
                     <li v-for="(item, index) in projectList" :key="index" class="project-li">
-                      <el-form label-position="top" :model="projectForm" 
+                      <el-form label-position="top" :model="projectForm"
                           :rules="ruleProjectForm"
-                          :ref="'ruleProjectForm'+ index" 
+                          :ref="'ruleProjectForm'+ index"
                           label-width="80px">
                         <div class="project-header clearfix">
                             <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
@@ -324,11 +343,10 @@
                             <div v-else class="fl">
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
-                                <span class="link-item-name">{{item.item_name}}
-                                  <i v-if="isHasPower" class="close-icon-solid" @click="deleteLinkProject(item)"></i>
-                                </span>
+                                <span class="link-item-name">{{item.item_name}}</span>
+                                  <!-- <i v-if="isHasPower" class="close-icon-solid"></i> -->
                               </p>
-                              <div v-else>
+                              <!-- <div v-else>
                                 <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
@@ -352,7 +370,7 @@
                                     </el-option>
                                   </el-select>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
 
                             <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
@@ -369,7 +387,7 @@
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span class="inline">项目名称: </span>{{item.name}}</p>
                             <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目名称" prop="name">
-                              <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                             </el-form-item>
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -483,10 +501,10 @@
                             </el-form-item>
                           </el-col>
                         </el-row>
-                        <p class="edit-project-btn clearfix margin-b22" v-if="boolEditProject && currentProjectId === item.item_id">
+                        <p class="edit-project-btn clearfix margin-b22 fz-0" v-if="boolEditProject && currentProjectId === item.item_id">
                           <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm' + index, item.item_id)">保存
                           </el-button>
-                          <el-button class="fr" @click="boolEditProject = false">取消</el-button>
+                          <el-button class="fr margin-r-15" @click="boolEditProject = false">取消</el-button>
                         </p>
                         <ul class="margin-t10">
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
@@ -495,7 +513,7 @@
                                 <el-col :xs="24" :sm="20" :md="16" :lg="16">
                                   <div class="flex-a-c margin-b22">
                                       <span class="font14">对接设计服务商 </span>{{i + 1}}
-                                    <div>
+                                    <!-- <div>
                                       <el-popover
                                         placement="right"
                                         width="100"
@@ -503,7 +521,7 @@
                                       <img :src="QRCode2" alt="正在生成二维码" class="qrcode">
                                       <el-button slot="reference" v-if="item.failure !== 1" type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
                                       </el-popover>
-                                    </div>
+                                    </div> -->
                                   </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -570,20 +588,20 @@
 
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                                    <el-form-item label="联系人名称" prop="contact_name">
-                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    <el-form-item label="联系人姓名" prop="contact_name">
+                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人姓名"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="联系人电话" prop="phone">
-                                      <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="微信号" prop="wx">
-                                      <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写微信号"></el-input>
                                     </el-form-item>
                                   </el-col>
                                 </el-row>
@@ -596,10 +614,10 @@
                                   </el-col>
                                 </el-row>
 
-                                <p class="edit-design-btn clearfix margin-b22">
+                                <p class="edit-design-btn clearfix margin-b22 fz-0">
                                   <el-button type="primary" class="fr" @click="submitEditDesignCompanyForm('EditRuleDesignCompanyForm')">保存
                                   </el-button>
-                                  <el-button class="fr" @click="boolEditDesignCompany = false">取消</el-button>
+                                  <el-button class="fr margin-r-15" @click="boolEditDesignCompany = false">取消</el-button>
                                 </p>
                               </el-form>
                             </div>
@@ -630,19 +648,19 @@
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人名称" prop="contact_name">
-                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写联系人名称"></el-input>
+                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人名称"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人电话" prop="phone">
-                                  <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写联系人电话"></el-input>
+                                  <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="微信号" prop="wx">
-                                  <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写联系人微信号"></el-input>
+                                  <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写联系人微信号"></el-input>
                                 </el-form-item>
                               </el-col>
                             </el-row>
@@ -655,10 +673,10 @@
                               </el-col>
                             </el-row>
 
-                            <p class="design-btn clearfix margin-b22">
-                              <el-button type="primary" class="fr" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
+                            <p class="design-btn clearfix margin-b22 fz-0">
+                              <el-button type="primary" class="fr" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
                               </el-button>
-                              <el-button class="fr" @click="boolDesignCompany = false">取消</el-button>
+                              <el-button class="fr margin-r-15" @click="boolDesignCompany = false">取消</el-button>
                             </p>
                           </el-form>
                         </div>
@@ -668,13 +686,13 @@
                 </div>
 
 
-                <div class="project-form padding20" v-if="boolAddProject">
+                <div class="project-form padding20" v-show="boolAddProject">
                   <p class="margin-b22">基本信息</p>
                   <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" ref="ruleProjectForm" label-width="80px">
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
                           <el-form-item label="项目名称" prop="name">
-                            <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                            <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -762,18 +780,18 @@
                         </el-col>
                       </el-row>
 
-                    <p class="add-project-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" :loading="boolCreateProject" @click="createProjectForm('ruleProjectForm')">保存
+                    <p class="add-project-btn clearfix margin-b22 fz-0">
+                      <el-button type="primary" class="fr" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保存
                       </el-button>
-                      <el-button class="fr" @click="boolAddProject = false">取消</el-button>
+                      <el-button class="fr margin-r-15" @click="boolAddProject = false">取消</el-button>
                     </p>
                   </el-form>
 
                 </div>
 
               </div>
-              
-              <div class="card-body-center" v-if="option === 'progress'">
+            
+              <!-- <div class="card-body-center" v-if="option === 'progress'">
                 <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
                 <ul class="progress-p-content">
                   <li v-for="(item, i) in this.projectSchedule" :key="i">
@@ -812,9 +830,9 @@
                     </div>
                   </li>
                 </ul>
-              </div>
+              </div> -->
 
-              <div class="card-body-center padding20" v-show="option === 'followLog'">
+              <div class="card-body-center padding20" v-show="option === 'followLog'" v-loading="userLogLoading">
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
                     <div>
@@ -831,8 +849,8 @@
                                   :class="['log-next-time', {'carry-out': item.status === 2 }]">
                                   次回跟进时间 :
                                 <span>{{item.next_time}}</span>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
-                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                                <!-- <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a> -->
                               </p>
                               <!-- <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
@@ -942,11 +960,20 @@
         </el-dialog>
         
         <el-dialog 
-          title="确认"
+          :title="ClueStatusRemarks"
           :visible.sync="boolClueStatus"
           width="380px">
-            <p class="line-height30">{{ClueStatusRemarks}}</p>
-            <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+            <!-- <p class="line-height30 padding-b15">{{ClueStatusRemarks}}</p> -->
+            <el-radio-group v-model="label_cause" v-if="boolClueStatus2">
+              <el-radio :label="1">虚假商机</el-radio>
+              <el-radio :label="2" fill="#FF5A5F">设计需求无法满足</el-radio>
+            </el-radio-group>
+            
+            <el-radio-group v-model="label_cause" v-else>
+              <el-radio :label="4">因竞争丢失 </el-radio>
+              <el-radio :label="5" fill="#FF5A5F">其他</el-radio>
+            </el-radio-group>
+            <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
             <span slot="footer" class="dialog-footer">
               <el-button @click="boolClueStatus = false">取 消</el-button>
               <el-button type="primary" @click="setClueStatus">确 定</el-button>
@@ -978,6 +1005,10 @@ export default {
       query: {},
       currentUser: '新建客户',
       currentId: '',
+      userLoading: false,
+      userProjectLoading: false,
+      userLogLoading: false,
+      submitDesignLoading: false,
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
       option: 'user',
@@ -985,7 +1016,7 @@ export default {
       focusHeight: false,
       BoolmarkFailure: false,
       boolFollowLog: false,
-      boolCreateProject: false,
+      createProjectLoading: false,
       boolCreateUser: false,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
@@ -1021,44 +1052,130 @@ export default {
         tag: [],
         execute_user_id: '',
         son_source: '',
-        execute: []
+        execute: [],
+        is_thn: 0
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
       sourceArr: [
         {
-          value: 1,
-          label: '今日头条'
+          id: 1,
+          name: '网络广告',
+          son_source: [
+            {
+              key: 'a',
+              name: '百度'
+            },
+            {
+              key: 'b',
+              name: '360'
+            },
+            {
+              key: 'c',
+              name: '知乎'
+            },
+            {
+              key: 'd',
+              name: '今日头条'
+            }
+          ]
         },
         {
-          value: 2,
-          label: '京东'
+          id: 2,
+          name: '官⽅',
+          son_source: [
+            {
+              key: 'a',
+              name: 'PC/WAP官网'
+            },
+            {
+              key: 'b',
+              name: '小程序'
+            },
+            {
+              key: 'c',
+              name: 'App'
+            }
+          ]
         },
         {
-          value: 3,
-          label: '360'
+          id: 3,
+          name: '合作伙伴',
+          son_source: [
+            {
+              key: 'a',
+              name: '京东'
+            },
+            {
+              key: 'b',
+              name: '优客工场'
+            }
+          ]
         },
         {
-          value: 4,
-          label: '百度'
+          id: 4,
+          name: '内部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '雷总/公司员工推荐的熟人客户'
+            }
+          ]
         },
         {
-          value: 5,
-          label: '官网'
+          id: 5,
+          name: '外部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '朋友/其他公司推荐的客户'
+            }
+          ]
         },
         {
-          value: 6,
-          label: '知乎'
+          id: 6,
+          name: '新媒体',
+          son_source: [
+            {
+              key: 'a',
+              name: '微信公众号'
+            },
+            {
+              key: 'b',
+              name: '头条号'
+            },
+            {
+              key: 'c',
+              name: '百家号'
+            }
+          ]
         },
         {
-          value: 7,
-          label: '自媒体'
+          id: 7,
+          name: '展销会',
+          son_source: [
+            {
+              key: 'a',
+              name: '参展'
+            },
+            {
+              key: 'b',
+              name: '业界活动、论坛 '
+            }
+          ]
         },
         {
-          value: 0,
-          label: '其他'
+          id: 0,
+          name: '其他',
+          son_source: [
+            {
+              key: 'a',
+              name: '⽆法归类的小群体'
+            }
+          ]
         }
       ],
+      sonSource: [],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1114,7 +1231,10 @@ export default {
       boolAddProject: false,
       boolEditProject: false,
       currentProjectId: '',
-      projectForm: {},
+      projectForm: {
+        item_province: '',
+        item_city: ''
+      },
       failureCause: '', // 项目失败原因
       itemId: '',
 
@@ -1161,7 +1281,10 @@ export default {
 
       boolClueStatus: false,
       currentStatus: '',
-      ClueStatusRemarks: '' // 更改状态备注
+      ClueStatusRemarks: '', // 更改状态备注
+      label_cause: '',
+      boolClueStatus2: true, // 显示无效后者流失
+      isOpen: true
     }
   },
   methods: {
@@ -1237,6 +1360,23 @@ export default {
     //     this.$message.error(error.message)
     //   })
     // },
+    importWeb() { // 导入社区
+      if (this.userForm.is_thn) {
+        this.$message.error('已导入到社区,无需重复操作')
+        return
+      }
+      this.$http.get(api.adminClueImportWeb, {params: {clue_id: this.currentId}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('导入成功')
+          this.userForm.is_thn = 1
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
     getAdminVoIpList() { // 业务人员列表
       this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1257,13 +1397,21 @@ export default {
       }
     },
     isUpdatedSource(val) {
+      this.sonSource = []
+      this.userForm.son_source = ''
+      this.sourceArr.forEach(item => {
+        if (item.id === val) {
+          this.sonSource = item.son_source
+        }
+      })
       if (!this.currentId) return
       if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
-        if (!this.isExistArray(val, this.sourceArr)) {
-          // this.getTypeList()
-        }
       }
+    },
+    isUpdatedSonSource(val) {
+      if (!this.currentId) return
+      this.updatedBaseInfo()
     },
     isUpdatedStatus(val) {
       if (!this.currentId) return
@@ -1326,8 +1474,9 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.option = 'followLog'
-          this.getUserInfo(this.currentId)
-          this.getUserProject()
+          this.getUserInfo()
+          this.getLogList()
+          // this.getUserProject()
         }
       }
     },
@@ -1342,8 +1491,9 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
           this.option = 'followLog'
-          this.getUserInfo(this.currentId)
-          this.getUserProject()
+          this.getUserInfo()
+          this.getLogList()
+          // this.getUserProject()
         }
       }
     },
@@ -1351,6 +1501,7 @@ export default {
       let row = {
         clue_id: this.currentId
       }
+      this.userLoading = true
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
@@ -1367,15 +1518,24 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            new_source: data.new_source,
+            new_source: data.new_source || '',
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || ''
+            new_call_status: data.new_call_status || '',
+            is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          if (this.userForm.new_source) {
+            let id = this.userForm.new_source
+            this.sourceArr.forEach(item => {
+              if (item.id === id) {
+                this.sonSource = item.son_source
+              }
+            })
+          }
           // if (data.tag.length === 1 && data.tag[0] === '') {
           //   this.dynamicTags.length = 0
           // } else {
@@ -1396,44 +1556,56 @@ export default {
             position: data.position
           }
           this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+          this.userLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userLoading = false
       })
-      this.getLogList()
     },
     showClueDialog(status) {
       this.boolClueStatus = true
       this.currentStatus = status
       if (status === 3) {
         this.ClueStatusRemarks = '无效客户备注'
+        this.boolClueStatus2 = true
+        this.label_cause = 1
       } else {
         this.ClueStatusRemarks = '流失客户备注'
+        this.boolClueStatus2 = false
+        this.label_cause = 4
       }
     },
     setClueStatus(status) { // 标记客户状态
-      if (!this.followVal) {
-        this.$message.error('请填写备注')
-        return
-      }
+      if (!this.isOpen) return
+      this.isOpen = false
       let row = {
         new_status: this.currentStatus,
         clue_ids: [this.currentId],
-        log: this.followVal
+        label_cause: this.label_cause
+      }
+      if (status === 1) {
+        row.new_status = status
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        this.isOpen = true
         if (res.data.meta.status_code === 200) {
-          this.$message.success('标记成功')
-          this.followVal = ''
           this.boolClueStatus = false
+          this.$message.success('标记成功')
+          if (status === 1) {
+            this.$message.success('成功转化为潜在客户')
+          }
+          this.followVal = ''
           this.getUserInfo()
           this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        this.isOpen = true
         this.$message.error(error.message)
       })
     },
@@ -1488,12 +1660,16 @@ export default {
         this.$message.error('请填写联系人电话')
         return
       }
-      if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
-        this.$message.error('请输入有效的手机号')
+      if (this.userForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.userForm.phone)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
-      if (this.userForm.son_source.length > 10) {
-        this.$message.error('子来源最多10个字符')
+      if (!this.userForm.new_source || !this.userForm.son_source) {
+        this.$message.error('请选择来源渠道和子来源渠道')
         return
       }
       this.boolCreateUser = true
@@ -1540,8 +1716,17 @@ export default {
       })
     },
     createdProject() { // 点击添加按钮
-      this.boolAddProject = true
       this.projectForm = {}
+      this.boolAddProject = true
+      const {province, city} = this.clientForm
+      if (province) {
+        this.$nextTick(_ => {
+          this.projectForm.item_province = province
+          if (city) {
+            this.projectForm.item_city = city
+          }
+        })
+      }
     },
     createProjectForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -1558,7 +1743,7 @@ export default {
             this.$message.error('请选择项目需求类边')
             return
           }
-          this.boolCreateProject = true
+          this.createProjectLoading = true
           let row = { // 传空字段
             summary: this.projectForm.summary || '',
             type: this.projectForm.type || '',
@@ -1608,13 +1793,15 @@ export default {
           this.getUserProject()
           this.getUserInfo()
           this.boolAddProject = false
-          this.boolCreateProject = false
+          this.createProjectLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.createProjectLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
         console.log(error.message)
+        this.createProjectLoading = false
       })
     },
     submitDesignCompanyForm(formName) {
@@ -1636,30 +1823,38 @@ export default {
           Object.assign(row, this.designCompanyForm)
           row.clue_id = this.currentId
           row.crm_item_id = this.currentDesignId
+          this.submitDesignLoading = true
           this.$http.post(api.adminClueAddCrmDesign, row).then(res => {
             if (res.data.meta.status_code === 200) {
               this.boolDesignCompany = false
+              this.submitDesignLoading = false
               this.getUserProject()
               this.getUserInfo()
             } else {
               this.$message.error(res.data.meta.message)
+              this.submitDesignLoading = false
             }
           }).catch(error => {
             this.$message.error(error.message)
+            this.submitDesignLoading = false
             console.log(error.message)
           })
         }
       })
     },
     getUserProject() { // 项目列表
+      this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
+          this.userProjectLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userProjectLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userProjectLoading = false
       })
     },
     addDesignCompany(id) {
@@ -1725,26 +1920,34 @@ export default {
           this.boolFollowLog = false
           this.followTime = ''
           this.getLogList()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
+          this.boolFollowLog = false
         }
       }).catch(error => {
         this.$message.error(error.message)
-        console.log(error.message)
+        this.boolFollowLog = false
       })
     },
     getLogList() { // 跟进记录列表
+      if (this.userLoading === false) {
+        this.userLogLoading = true
+      }
       this.$http.get(api.adminClueShowTrackLog, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.followLogList = res.data.data
           this.followLogList.forEach(item => {
             item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
           })
+          this.userLogLoading = false
         } else {
           this.$message.error(res.data.meta.message)
+          this.userLogLoading = false
         }
       }).catch(error => {
         this.$message.error(error.message)
+        this.userLogLoading = false
       })
     },
     deleteProject(itemId) {
@@ -1769,9 +1972,9 @@ export default {
         this.$message.error('请先保存项目')
         return
       }
+      this.projectForm = {}
       const id = d.item_id
       if (d && id) {
-        this.boolEditProject = true
         this.currentProjectId = id
         this.projectList.forEach(item => {
           if (item.item_id === id) {
@@ -1780,11 +1983,14 @@ export default {
             this.$set(this.projectForm, 'type', d.type)
             this.$set(this.projectForm, 'cycle', d.cycle)
             this.$set(this.projectForm, 'design_cost', d.design_cost)
-            this.$set(this.projectForm, 'item_province', d.item_province)
-            this.$set(this.projectForm, 'item_city', d.item_city)
             this.$set(this.projectForm, 'summary', d.summary)
             this.$set(this.projectForm, 'industry', d.industry)
           }
+        })
+        this.boolEditProject = true
+        this.$nextTick(_ => {
+          this.projectForm.item_province = d.item_province
+          this.projectForm.item_city = d.item_city
         })
       }
     },
@@ -2081,7 +2287,7 @@ export default {
     },
     designCostOptions() {
       if (typeData) {
-        return typeData.DESIGN_COST_OPTIONS
+        return typeData.DESIGN_COST_OPTIONS2
       } else {
         return {}
       }
@@ -2114,6 +2320,7 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
+        this.boolAddProject = false
       } else if (val === 'followLog') {
         this.getLogList()
         this.boolLinkItem = true
@@ -2142,6 +2349,7 @@ export default {
         this.option = 'followLog'
       }
       this.getUserInfo()
+      this.getLogList()
     } else {
       this.userForm.execute_user_id = this.userId
     }
@@ -2569,11 +2777,11 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-.link-item-name:hover i {
+/* .link-item-name:hover i {
   background: rgba(0,0,0,.6);
   color: #ffffff;
   opacity: 1;
-}
+} */
 
 .p-t-summary {
   line-height: 1.5;
@@ -2740,6 +2948,9 @@ export default {
 .source .el-select {
   width: 150px;
 }
+.son-source .el-select {
+  max-width: 200px;
+}
 .user-status > .el-select > .el-input > input {
   padding-left: 40px;
 }
@@ -2772,7 +2983,10 @@ export default {
   width: 136px;
 }
 .son-source .el-input--small .el-input__inner {
-  width: 136px;
+  overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
 }
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;

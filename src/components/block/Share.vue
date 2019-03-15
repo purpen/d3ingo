@@ -103,6 +103,11 @@ export default {
 .share-box {
   margin: 20px;
 }
+.share-box > span:first-child {
+  display: inline-block;
+  vertical-align: -5px;
+	font-size: 16px;
+}
 
 .share-box a {
   margin: 10px 10px;

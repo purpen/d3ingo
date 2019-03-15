@@ -48,7 +48,7 @@
                   </el-row>
                   <el-row>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      免费发布项目需求
+                      发布项目需求
                     </button>
                   </el-row>
                 </el-form>
@@ -249,7 +249,7 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">免费发布需求</el-button>
+          <el-button type="primary" @click="dialogVisible = false">发布需求</el-button>
         </span>
       </el-dialog>
     </div>
@@ -295,7 +295,7 @@
         </el-row>
         <el-row>
           <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
-            免费发布项目需求
+            发布项目需求
           </button>
         </el-row>
       </el-form>
@@ -326,7 +326,7 @@
         </div>
       </el-form>
       <div class="round-btn">
-        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">免费发布项目需求</div>
+        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">发布项目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
@@ -758,10 +758,10 @@
       formatQuery(query) {
         Object.assign(this.query, query)
         if (typeof this.query.from !== 'number') {
-          this.query.from = 5
+          this.query.from = 0
         }
-        if (this.query.from < 1) {
-          this.query.from = 5
+        if (this.query.from < 0) {
+          this.query.from = 0
         }
       }
     },

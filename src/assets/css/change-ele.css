@@ -776,8 +776,20 @@
     border-color: transparent;
     color: #ffffff;
   }
-
-
+  .prompt-style .el-dialog__header {
+    display: none;
+  }
+  .prompt-style .el-dialog__body {
+    padding-top: 18px;
+    padding-bottom: 15px;
+  }
+  .prompt-suc {
+    min-width: 160px;
+    max-width: 200px;
+  }
+  .container .margin-left-0.el-menu-item {
+    margin-left: 0
+  }
   /* 升级后样式 */
   .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu__title.is-active {
     height: 50px;
@@ -938,7 +950,23 @@
   .dl-body-center .el-dialog__body{
     text-align: center;
   }
+  .nav-header .cursor-def {
+    cursor: default;
+  }
+  .dig-send-code .el-dialog__headerbtn {
+    font-size: 20px;
+    top: 13px;
+  }
+  .phone-form-round .el-form-item {
+    margin-bottom: 11px;
+  }
+  .phone-el-pad-bot .el-form-item {
+    margin-bottom: 0;
+  }
   /*推广页*/
+  .phone-sever-swipe .el-carousel__container {
+    height: 320px;
+  }
   .input-phone input {
     height: 50px;
   }
@@ -1034,6 +1062,18 @@
   .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
     color: #ff5a5f;
   }
+  .el-date-table td.start-date span, .el-date-table td.end-date span {
+    background-color: #ff5a5f;
+  }
+  .el-date-table td.in-range div, .el-date-table td.in-range div:hover, .el-date-table.is-week-mode .el-date-table__row.current div, .el-date-table.is-week-mode .el-date-table__row:hover div {
+    background-color: #fafafa;
+  }
+  .el-range-editor.is-active, .el-range-editor.is-active:hover {
+    border-color: #e6e6e6;
+  }
+  .el-carousel__container {
+    height: 260px;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -1044,6 +1084,10 @@
   /* 合同阶段选择按钮 */
   .el-form-item__content .el-radio-group {
     width: 100%;
+  }
+
+  .three-serve .el-row--flex.is-align-middle {
+    justify-content: center;
   }
 
 }

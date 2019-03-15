@@ -52,6 +52,29 @@ module.exports = [
     },
     component: require('@/components/admin/customer/UserInfo')
   },
+  // 说明列表
+  {
+    path: '/admin/content_manage/list',
+    name: 'adminContentList',
+    meta: {
+      title: '说明列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/content_manage/List')
+  },
+  // 编辑说明
+  {
+    path: '/admin/content_manage/submit',
+    name: 'adminContentSubmit',
+    meta: {
+      title: '编辑说明',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/admin/content_manage/Submit'], resolve)
+    }
+  },
   // 添加栏目
   {
     path: '/admin/column/add',

@@ -5,10 +5,10 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="admin-header clearfix">
+          <div class="admin-header fz-0 clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
-                <span class="fl line-height30 fz-12 margin-r-15">选择日期</span>
+                <!-- <span class="fl line-height30 fz-12 margin-r-15">选择日期</span> -->
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -69,7 +69,7 @@
               <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
-          <div class="btn-list">
+          <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="white-to-red-button">添加客户</el-button>
@@ -77,9 +77,12 @@
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
+              ref="upload"
               :on-preview="handlePreview"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
+              :on-change="changeFile"
+              :auto-upload="false"
               :on-error="uploadError"
               :data="{'token': token}"
               accept=".xlsx"
@@ -97,6 +100,7 @@
           <el-table
             :data="tableData"
             border
+            v-loading="tableLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
@@ -144,14 +148,52 @@
               sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
-                <p v-if="scope.row.new_source === 1">今日头条</p>
-                <p v-if="scope.row.new_source === 2">京东</p>
-                <p v-if="scope.row.new_source === 3">360</p>
-                <p v-if="scope.row.new_source === 4">百度</p>
-                <p v-if="scope.row.new_source === 5">官网</p>
-                <p v-if="scope.row.new_source === 6">知乎</p>
-                <p v-if="scope.row.new_source === 7">自媒体</p>
-                <p v-if="scope.row.new_source === 0">其他</p>
+                <div v-if="scope.row.new_source || scope.row.new_source === 0">
+                  <p v-if="scope.row.new_source === 1">
+                    <span v-if="scope.row.son_source === 'a'">百度</span>
+                    <span v-if="scope.row.son_source === 'b'">360</span>
+                    <span v-if="scope.row.son_source === 'c'">知乎</span>
+                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                    <span v-if="!scope.row.son_source">网络广告</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 2">
+                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
+                    <span v-if="scope.row.son_source === 'b'">小程序</span>
+                    <span v-if="scope.row.son_source === 'c'">App</span>
+                    <span v-if="!scope.row.son_source">官方</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 3">
+                    <span v-if="scope.row.son_source === 'a'">京东</span>
+                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
+                    <span v-if="!scope.row.son_source">合作伙伴</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 4">
+                    <span v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</span>
+                    <span v-if="!scope.row.son_source">内部推荐</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 5">
+                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
+                    <span v-if="!scope.row.son_source">外部推荐</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 6">
+                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
+                    <span v-if="scope.row.son_source === 'b'">头条号</span>
+                    <span v-if="scope.row.son_source === 'c'">百家号</span>
+                    <span v-if="!scope.row.son_source">新媒体</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 7">
+                    <span v-if="scope.row.son_source === 'a'">参展</span>
+                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
+                    <span v-if="!scope.row.son_source">展销会</span>
+                  </p>
+                  <p v-if="scope.row.new_source === 0">
+                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
+                    <span v-if="!scope.row.son_source">其他</span>
+                  </p>
+                </div>
+                <div v-else>
+                  <p>{{scope.row.son_source}}</p>
+                </div>
               </template>
             </el-table-column>
             
@@ -165,8 +207,15 @@
             <el-table-column
               width="125"
               sortable="custom"
-              label="沟通状态"
-              prop="call_status_value">
+              label="状态">
+              <template slot-scope="scope">
+                <p v-if="scope.row.new_call_status === 13">
+                  <span v-if="scope.row.son_status === 1">无效商机</span>
+                  <span v-if="scope.row.son_status === 2">低价客户</span>
+                  <span v-if="scope.row.son_status === 3">流失客户</span>
+                </p>
+                <p v-else>{{scope.row.call_status_value}}</p>
+              </template>
             </el-table-column>
             <el-table-column
               width="105"
@@ -179,21 +228,19 @@
             <el-table-column
               prop="new_status"
               width="90"
-              label="状态"
+              :label="statusValue"
               :filters="[
-                {text: '潜在客户', value: '1' },
-                { text: '对接设计', value: '2' },
-                { text: '签约合作', value: '5' },
-                { text: '无效客户', value: '3' },
-                { text: '流失客户', value: '4' }
+                {text: '商机', value: '1' },
+                { text: '潜在客户', value: '2' },
+                { text: '对接设计', value: '3' },
+                { text: '签约合作', value: '4' }
               ]"
               :filter-multiple="false"
               filter-placement="bottom-end">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.new_status === 1">潜在客户</p>
-                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">对接设计</p>
-                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">无效客户</p>
-                  <p class="status4 status"  v-else-if="scope.row.new_status === 4">流失客户</p>
+                  <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
+                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
                   <p class="status5 status"  v-else>签约合作</p>
                 </template>
             </el-table-column>
@@ -210,7 +257,9 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
-
+          <div v-else>
+            <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -219,12 +268,16 @@
       title="确认"
       :visible.sync="boolClueStatus"
       width="380px">
-        <p class="line-height30">无效客户备注原因</p>
-        <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+        <el-radio-group v-model="label_cause">
+          <el-radio :label="1">虚假商机</el-radio>
+          <el-radio :label="2" fill="#FF5A5F">设计需求无法满足</el-radio>
+        </el-radio-group>
+        <!-- <p class="line-height30">无效客户备注原因</p> -->
+        <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
           <el-button type="primary" @click="setClueStatus">确 定</el-button>
-      </span>
+        </span>
     </el-dialog>
 
     <el-dialog
@@ -286,6 +339,8 @@ export default {
     return {
       uploadUrl: '',
       file: [],
+      statusValue: '阶段',
+      tableLoading: false,
       randomAssign: false,
       BoolAddVoIpUser: false,
       boolClueStatus: false,
@@ -296,7 +351,7 @@ export default {
         evt: '',
         sort: 2,
         // new_status: 6,
-        status: 6,
+        status: 5,
         // totalCount: 0,
         search: '',
         valueDate: []
@@ -312,7 +367,9 @@ export default {
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: '',
-      followVal: ''
+      // followVal: '',
+      label_cause: 1,
+      isOpen: true
     }
   },
   methods: {
@@ -347,21 +404,23 @@ export default {
       switch (value) {
         case '1':
           this.query.status = 1
+          this.statusValue = '商机'
           break
         case '2':
           this.query.status = 2
+          this.statusValue = '潜在客户'
           break
         case '3':
           this.query.status = 3
+          this.statusValue = '对接设计'
           break
         case '4':
           this.query.status = 4
-          break
-        case '5':
-          this.query.status = 5
+          this.statusValue = '签订合作'
           break
         default:
-          this.query.status = 6
+          this.query.status = 5
+          this.statusValue = '阶段'
       }
       this.query.page = 1
       this.getClueList()
@@ -458,7 +517,9 @@ export default {
       let row = {}
       Object.assign(row, this.query)
       row.valueDate = [...this.dateArr]
+      this.tableLoading = true
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
+        this.tableLoading = false
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
@@ -477,6 +538,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        this.tableLoading = false
         this.$message.error(error.message)
       })
     },
@@ -488,28 +550,29 @@ export default {
       this.boolClueStatus = true
     },
     setClueStatus() { // 多选标记无效
-      if (!this.followVal) {
-        this.$message.error('请填写备注原因')
-        return
-      }
-      let idArr = this.arrayExportIds()
-      let row = {
-        new_status: 3,
-        clue_ids: idArr,
-        log: this.followVal
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success('标记成功')
-          this.boolClueStatus = false
-          this.followVal = ''
-          this.getClueList()
-        } else {
-          this.$message.error(res.data.meta.message)
+      if (this.isOpen) {
+        this.isOpen = false
+        let idArr = this.arrayExportIds()
+        let row = {
+          new_status: 3,
+          clue_ids: idArr,
+          label_cause: this.label_cause
         }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
+        console.log(this.label_cause)
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          this.isOpen = true
+          if (res.data.meta.status_code === 200) {
+            this.$message.success('标记成功')
+            this.boolClueStatus = false
+            this.getClueList()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.isOpen = true
+          this.$message.error(error.message)
+        })
+      }
     },
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
@@ -663,15 +726,30 @@ export default {
     handlePreview(file) {
       console.log(file)
     },
+    changeFile(file) {
+      if (file.status === 'ready') {
+        this.$confirm('是否确认上传', '确认信息', {
+          distinguishCancelAndClose: true,
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$refs.upload.submit()
+        }).catch(() => {
+          this.$refs.upload.clearFiles()
+          this.$message.info('取消上传')
+        })
+      }
+    },
     beforeAvatarUpload(file) {
-      // const isXLSX = file.type === 'xlsx'
       console.log(file)
+      // const isXLSX = file.type === 'xlsx'
       // const isLt2M = file.size / 1024 / 1024 < 2
       // if (!isXLSX) {
-      //   this.$message.error('上传头像图片只能是 XLSX 格式!')
+        //   this.$message.error('上传头像图片只能是 XLSX 格式!')
       // }
       // if (!isLt2M) {
-      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+        //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
     },
@@ -694,13 +772,21 @@ export default {
         } else {
           message += '  成功条数 0'
         }
-        this.$message.success(message)
+        this.$message({
+          duration: 5000,
+          type: 'success',
+          message
+        })
         this.getClueList()
-      }
-      if (res.meta.status_code === 403) {
+      } else if (res.meta.status_code === 403) {
+        this.$message({
+          type: 'error',
+          duration: 5000,
+          message: res.meta.message
+        })
+      } else {
         this.$message.error(res.meta.message)
       }
-      console.log(res)
     },
     uploadError(err, file, fileList) {
       console.error(err)
@@ -756,6 +842,9 @@ export default {
 }
 .select-query {
   width: 70%;
+}
+.select-query .el-form-item {
+  margin-right: 15px;
 }
 .select-info {
   width: 16%;
@@ -894,7 +983,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-
+.dialog-footer button {
+  margin-right: 0;
+}
 </style>
 
 <style>

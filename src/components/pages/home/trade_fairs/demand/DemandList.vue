@@ -497,12 +497,10 @@
                           <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
                             删除
                           </button>
-                          <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
-                            <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
-                              target="_blank" class="router-pay">
+                          <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank"  class="router-pay mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
                               评价
-                            </router-link>
-                          </button>
+                          </router-link>
                         </el-col>
                       </el-row>
                     </div>
@@ -1445,7 +1443,9 @@
   }
   .router-pay {
     display: block;
-    color: #666;
+    color: #999;
+    width: 120px;
+    text-align: center;
   }
   .uid {
     padding-right: 10px;

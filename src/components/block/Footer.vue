@@ -2,35 +2,61 @@
   <div class="footer clear" v-if="!hideFooter">
     <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">{{prod.info}}</p>
+        <p class="title">关于{{prod.info}}设计交易</p>
         <p>
-          <router-link :to="{name: 'about'}">关于我们</router-link>
+          <router-link :to="{name: 'home'}">首页</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'contact'}">联系我们</router-link>
+          <router-link :to="{name: 'design_case'}">设计案例</router-link>
         </p>
+        <p>
+          <router-link :to="{name: 'innovationHome'}">创新指数</router-link>
+        </p>
+        <p>
+          <router-link :to="{name: 'trade_fairs'}" v-if="!token">成果交易会</router-link>
+          <router-link :to="{name: 'demand_login'}" v-else>成果交易会</router-link>
+        </p>
+        <!-- <p>
+          <router-link :to="{name: 'contact'}">数据洞察</router-link>
+        </p> -->
       </el-col>
 
       <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">服务</p>
-        <p v-if="isDesignCompany === 1 || isDesignCompany === true">
-          <router-link :to="{name: 'server'}" class="">发布需求</router-link>
+        <p class="title">帮助/服务</p>
+        <p>
+          <router-link :to="{name: 'promote'}" class="">发布需求</router-link>
         </p>
-        <p v-show="prod.name === ''">
-          <router-link :to="{name: 'serverDesign'}" class="">申请入驻</router-link>
+        <p>
+          <router-link v-if="!isMob" :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
+          <router-link v-else :to="{name: 'mSpreadDesign'}">设计服务商入驻</router-link>
         </p>
-      </el-col>
-
-      <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">帮助</p>
+        <p>
+          <router-link :to="{name: 'contentManageList'}" class="">帮助中心</router-link>
+        </p>
         <p>
           <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'question'}" class="">常见问题</router-link>
+          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+        </p>
+      </el-col>
+
+      <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
+        <p class="title">更多太火鸟产品/服务</p>
+        <p>
+          <a href="https://saas.d3ingo.com" target="_blank">铟果</a>
         </p>
         <p>
-          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+          <a href="https://www.taihuoniao.com/ingoset" target="_blank">铟果集</a>
+        </p>
+        <p>
+          <a href="http://d3in.taihuoniao.com" target="_blank">D³IN铟立方</a>
+        </p>
+        <p>
+          <a href="https://www.taihuoniao.com/topic" target="_blank">社区</a>
+        </p>
+        <p>
+          <a href="https://www.taihuoniao.com/service" target="_blank">增值服务</a>
         </p>
       </el-col>
 
@@ -46,11 +72,11 @@
       </el-col>
     </el-row>
     <div class="copy-right" v-if="!isMob">
-      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a> 版权所有.All rights reserved.</p>
+      <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
       <p>{{prod.license}}{{prod.business}}</p>
     </div>
     <div class="copy-right" v-if="isMob">
-      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a></p>
+      <p>{{prod.copyright}} {{prod.url}}</p>
       <p>版权所有.All rights reserved.</p>
       <p>{{prod.license}}</p>
       <p>{{prod.business}}</p>
@@ -247,7 +273,7 @@
 
   .footer .fllow .title {
     white-space: nowrap;
-    margin: 20px 20px 10px 0;
+    margin: 30px 20px 16px 0;
   }
 
   .call {
@@ -270,7 +296,7 @@
     color: #999;
   }
   .copy-right p {
-    line-height: 1;
+    line-height: 20px;
     font-size: 12px;
   }
   .qrcode {
@@ -285,15 +311,15 @@
 
   @media screen and (max-width: 767px) {
     .footer .fllow .title {
-      margin: 20px 20px 10px 0;
+      margin: 20px 20px 16px 0;
     }
 
     .call span {
       float: left;
     }  
     .copy-right {
-     text-align: left;
-     margin-right: 40px;
+     text-align: center;
+     /* margin-right: 40px; */
     }
     .copy-right p {
       line-height: 1.5;

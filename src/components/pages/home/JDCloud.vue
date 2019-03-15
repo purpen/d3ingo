@@ -120,7 +120,7 @@
                   </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      免费发布项目需求
+                      发布项目需求
                     </button>
                   </el-col>
                 </el-form>
@@ -268,7 +268,7 @@
                 <p class="desigb-about-p">立即发布需求</p>
                 <span class="desigb-about-span">注册并发布项目需求</span>
                 <div>
-                  <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
+                  <a @click="direct('projectCreate')"><button class="design-btn">发布项目需求</button></a>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -336,7 +336,7 @@
           </el-row> -->
           <el-row>
             <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
-              免费发布项目需求
+              发布项目需求
             </button>
           </el-row>
         </el-form>
@@ -1048,7 +1048,7 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, from: 5})
+        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from, son_source: this.query.mark ? this.query.mark : '艺火'})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1097,7 +1097,8 @@ export default {
           let row = {
             user_name: this.form1.name,
             phone: this.form1.account,
-            from: 4
+            source: this.query.from,
+            son_source: this.query.mark ? this.query.mark : '艺火'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1122,10 +1123,8 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
-            from: 5   // 小程序or网页
-          }
-          if (this.isMob) {
-            row.from = 4
+            source: this.query.from,
+            son_source: this.query.mark ? this.query.mark : '艺火'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1167,10 +1166,10 @@ export default {
     formatQuery(query) {
       Object.assign(this.query, query)
       if (typeof this.query.from !== 'number') {
-        this.query.from = 2
+        this.query.from = 0
       }
-      if (this.query.from < 1) {
-        this.query.from = 2
+      if (this.query.from < 0) {
+        this.query.from = 0
       }
     }
   },

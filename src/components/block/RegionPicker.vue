@@ -131,6 +131,45 @@
     },
 
     computed: {
+      // province: {
+      //   get() {
+      //     return this.provinceProp
+      //   },
+      //   set(val) {
+      //     console.log('province', val)
+      //     this.$emit('onchange', {
+      //       province: val,
+      //       city: this.city,
+      //       district: this.district
+      //     })
+      //   }
+      // },
+      // city: {
+      //   get() {
+      //     return this.cityProp
+      //   },
+      //   set(val) {
+      //     console.log('city', val)
+      //     this.$emit('onchange', {
+      //       province: this.province,
+      //       city: val,
+      //       district: this.district
+      //     })
+      //   }
+      // },
+      // district: {
+      //   get() {
+      //     return this.districtProp
+      //   },
+      //   set(val) {
+      //     console.log('district', val)
+      //     this.$emit('onchange', {
+      //       province: this.province,
+      //       city: this.city,
+      //       district: val
+      //     })
+      //   }
+      // },
       provinces () {
         return this._filter(this.rootCode)
       },
@@ -146,6 +185,7 @@
     watch: {
       provinceProp(d) {
         this.province = d
+        console.log('picker', d, this.province)
         if (this.isFirst) {
           this.city = ''
           this.district = ''

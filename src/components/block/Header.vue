@@ -6,17 +6,34 @@
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <!---->
-              <router-link :to="{name: 'home'}" class="el-menu-item logo">
+              <!-- <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img :src="custom.logo" :alt="custom.info">
-              </router-link>
-              <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
+              </router-link> -->
+              <!-- <el-menu-item index="/home" :route="menu.home">首页</el-menu-item> -->
+              <!-- <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
               <el-menu-item index="/article" :route="menu.article">铟果说</el-menu-item>
-              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item>
-              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
+              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item> -->
+              <!-- <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
+              <a class="el-menu-item logo cursor-def margin-left-0">
+                <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
+              </a>
+              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
+              <el-menu-item v-if="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
+              <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
+
+              <el-menu-item v-if="!isLogin" index="" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
+                <span class="login-shadow">
+                  注册
+                </span>
+              </el-menu-item>
+              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -72,15 +89,19 @@
             </el-menu>
           </div>
 
-          <div class="nav-right" v-else>
+          <!-- <div class="nav-right" v-else>
             <div class="server-in-btn">
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
             </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/register" :route="menu.register" class="fc-red">注册</el-menu-item>
               <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
+              <el-menu-item index="" :route="menu.register" class="fc-red">
+                <span class="login-shadow">
+                  注册
+                </span>
+              </el-menu-item>
             </el-menu>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -97,7 +118,7 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <li @click="closeMenu">
+            <!-- <li @click="closeMenu">
               <router-link :to="menu.server">服务</router-link>
             </li>
             <li @click="closeMenu">
@@ -111,12 +132,21 @@
             </li>
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
-            </li>
+            </li> -->
             <li @click="closeMenu">
-              <router-link :to="menu.mobile_login">交易会</router-link>
+              <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
-              <router-link :to="menu.design">设计服务商入驻</router-link>
+              <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
+            </li>
+            <li @click="closeMenu" v-if="isAdmin">
+              <router-link :to="menu.innovation_index">创新指数</router-link>
+            </li>
+            <li @click="closeMenu">
+              <router-link :to="menu.mobile_login">成果交易会</router-link>
+            </li>
+            <li @click="closeMenu">
+              <router-link :to="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" class="m-Sign">
             <span @click="closeMenu" v-if="!isLogin">
@@ -233,7 +263,7 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <li @click="closeMenu">
+            <!-- <li @click="closeMenu">
               <router-link :to="menu.server">服务</router-link>
             </li>
             <li @click="closeMenu">
@@ -244,12 +274,21 @@
             </li>
             <li @click="closeMenu">
               <router-link :to="menu.commonly_sites">设计工具</router-link>
+            </li> -->
+            <li @click="closeMenu">
+              <router-link :to="menu.design_general_list">设计案例</router-link>
+            </li>
+            <li @click="closeMenu" v-show="!isLogin">
+              <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
             <li>
-              <router-link :to="menu.mobile_login">交易会</router-link>
+              <router-link :to="menu.mobile_login">成果交易会</router-link>
+            </li>
+            <li>
+              <router-link :route="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
@@ -298,20 +337,24 @@
         requestMessageTask: null,
         menu: {
           home: {path: '/home'},
-          server: {path: '/server'},
+          // server: {path: '/server'},
           design: {path: '/server_design'},
-          article: {path: '/article/list'},
+          spread_design: {path: '/spread_design'},
+          m_spread_design: {path: '/m_spread_design'},
+          // article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
           demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登录后首页
           mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login'}, // 交易会移动端首页
+          design_general_list: {path: '/design_case/general_list'},
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
-          design_case: {path: '/design_case/general_list'},
-          commonly_sites: {path: '/vcenter/commonly_sites'},
+          // design_case: {path: '/design_case/general_list'},
+          // commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
-          identity: {path: '/identity'}
+          identity: {path: '/identity'},
+          content_manage: {path: '/content_manage/list'}
         },
         menuHide: true,
         msgHide: true,
@@ -727,8 +770,8 @@
     background: url(../../assets/images/logo.svg) no-repeat center / contain;
   } */
   .el-menu-item.logo img {
-    width: auto;
-    height: 74px;
+    width: 153px;
+    height: 50px;
     margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
@@ -745,12 +788,14 @@
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
     height: 60px;
-    line-height: 60px;
+    line-height: 63px;
     border-bottom: 3px solid transparent;
     color: #666;
-    font-size: 1.6rem;
     padding: 0 3px;
     margin: 0 22px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
   }
 
   .nav-header .el-menu--horizontal.el-menu-header .el-submenu .el-submenu__title, .m-nav-header .el-menu--horizontal.el-menu-header .el-submenu .el-submenu__title {
@@ -995,5 +1040,30 @@
     background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
     color: #fff;
   }
-
+  .logo-text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 20px;
+  }
+  .login-shadow {
+    padding: 6px 20px;
+    box-shadow: 0 0 0 2px #f36 inset;
+    border-radius: 4px;
+    color: #ff5a5f;
+  }
+  .login-shadow:hover {
+    color: #fff;
+    background-color: #ff5a5f;
+  }
+  .nav-header .el-menu-header .mr-15 {
+    margin-right: 15px;
+  }
+  .nav-header .el-menu-header .ml-0 {
+    margin-left: 0;
+  }
+  .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
+    border-bottom: none;
+  }
 </style>

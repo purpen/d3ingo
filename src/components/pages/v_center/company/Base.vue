@@ -552,7 +552,7 @@
               <el-col :span="isMob ? 24 : 19" class="content">
                 <div v-if="element.own_brand">
                   <el-row :gutter="10">
-                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="margin-bottom10 line-hei-42">
+                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="line-hei-42">
                       <el-switch
                         @change="changeBrand"
                         v-model="hasBrand"
@@ -563,7 +563,7 @@
                     <el-col :xs="24" :sm="3" :md="3" :lg="3" class="brand-style" v-if="hasBrand">
                       <p class="line-hei-42">品牌名称:</p>
                     </el-col>
-                    <el-col class="input-brand margin-bottom10 line-hei-20 border-rad-input" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
+                    <el-col class="input-brand line-hei-20 border-rad-input" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
                       <el-input v-model.trim="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
@@ -2235,7 +2235,7 @@
     color: #fff
   }
   .brand-style {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     margin-left: 35px;
   }
   /* .white-button:hover {

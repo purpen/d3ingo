@@ -37,7 +37,7 @@
                     <el-table-column>
                       <template slot-scope="scope">
                         <div v-if="scope.row.name === '相关附件'">
-                          <p v-for="(d, index) in scope.row.image" :key="d.name + index"><a :href="d.file" target="_blank">{{ d.name }}</a>
+                          <p v-for="(d, index) in scope.row.image" :key="d.name + index"><a :href="d.file" target="_blank">{{ sliceImgName(d.name) }}</a>
                           </p>
                         </div>
                         <div v-else>
@@ -250,7 +250,7 @@
 
                           <p v-if="d.confirm === 0" class="flex-1">
                             <el-upload
-                              class=""
+                              ref="upload"
                               :action="uploadUrl"
                               :on-change="handleChange"
                               :on-progress="stageUploadProgress"
@@ -261,7 +261,8 @@
                               :on-error="uploadStageError"
                               :on-success="uploadStageSuccess"
                               :before-upload="beforeStageUpload"
-                              list-type="text">
+                              list-type="text"
+                              :auto-upload="false">
                               <el-button
                                   size="small"
                                   class="is-custom upload_btn"
@@ -283,7 +284,7 @@
                           </div>
                         </div>
                         <div class="contract-right">
-                          <p><a href="javascript:void(0);" @click="removeStageAsset" :asset_id="asset.id"
+                          <p><a href="javascript:void(0);" @click="removeStageAsset(asset.id, index, asset_index, d.id)" :asset_id="asset.id"
                                 :stage_index="index" :asset_index="asset_index" v-if="d.confirm === 0"><i
                             class="fa fa-times" aria-hidden="true"></i> 删除</a></p>
                           <p><a :href="asset.file + '?attname=' + asset.name" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
@@ -640,6 +641,7 @@
     },
     data () {
       return {
+        currentStageId: '', // 阶段id
         isClose: false,
         showStickCompanyBtn: true,
         comfirmLoadingBtn: false,
@@ -730,6 +732,9 @@
       }
     },
     methods: {
+      asyncFn() {
+
+      },
       changePriceStyle(evt) {
         if (evt === 1) {
           this.takingPriceForm.price = this.takingPriceForm.o_price
@@ -1159,28 +1164,41 @@
         this.comfirmLoadingBtn = false
       },
       // 删除阶段附件
-      removeStageAsset(event) {
-        let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
-        let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
-        let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
-        this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+      removeStageAsset(assetId, stageIndex, assetIndex, fileId) {
+        // let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
+        // let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
+        // let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
         const that = this
-        that.$http.delete(api.asset.format(assetId), {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              that.$message.success('删除成功')
-            } else {
-              that.$message.error(response.data.meta.message)
-            }
-          })
-          .catch(function (error) {
-            that.$message.error(error.message)
+        that.$http.get(api.confirmItemDelete, {params: {item_stage_id: fileId}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            that.$http.delete(api.asset.format(assetId), {})
+              .then(function (response) {
+                if (response.data.meta.status_code === 200) {
+                  that.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+                  that.$message.success('删除成功')
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function (error) {
+                that.$message.error(error.message)
+                return false
+              })
+          } else {
+            that.$message.error(res.data.meta.message)
             return false
-          })
+          }
+        })
+        .catch(function (error) {
+          that.$message.error(error.message)
+          return false
+        })
       },
       // 上传阶段附件
       uplaodStageBtn(event) {
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
+        this.currentStageId = stageId
         let index = parseInt(event.currentTarget.getAttribute('index'))
         this.currentStageIndex = index
         this.uploadParam['x:type'] = 8
@@ -1203,7 +1221,6 @@
           return false
         }
         document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
-        this.isReady = false
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1227,6 +1244,17 @@
       handlePreview(file) {
       },
       handleChange(file) {
+        this.$http.get(api.confirmItemDelete, {params: {item_stage_id: this.currentStageId}}).then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传附件'
+            this.$refs.upload[0].submit()
+            this.isReady = false
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
       },
       sliceImgName(params) {
         return sliceImgName(params)
