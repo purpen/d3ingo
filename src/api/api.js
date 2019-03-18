@@ -131,7 +131,7 @@ export default {
   designCaseCompanyId: '/designCase/designCompany/{0}', // GET 通过公司ID查看案例
   designCaseOpenLists: '/designCase/openLists', // GET 案例列表
   designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
-
+  designCaseLabel: '/designCaseLabel/lists', // GET 设计案例标签列表
   // 添加作品
   work: 'works',
   workid: 'works/{0}',
@@ -415,7 +415,8 @@ export default {
   addGroup: '/group/addUser', // PUT 向群组添加用户（设计服务商管理员)
   removeGroupMember: '/group/removeUser', // PUT 群组移除用户
   createGroup: '/group/create', // POST 创建群组 设计服务商管理员
-
+  checkDesignCompany: '/designCompany/isCompanyName', // GET 判断设计公司名称是否存在
+  checkDesmandCompany: '/demandCompany/isCompanyName', // GET 判断需求公司名称是否存在
   // 邀请码
   inviteKey: '/urlKey', // 生成邀请字符串
   inviteValue: '/urlValue', // 解析邀请字符串

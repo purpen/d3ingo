@@ -454,12 +454,15 @@
 .disabled-button:focus {
   font-size: 14px;
   cursor: not-allowed;
-  background: #e6e6e6;
+  background: #d2d2d2;
   color: #fff;
-  border: 1px solid #c8c8c8;
+  border: 1px solid transparent;
   border-radius: 4px;
 }
-
+.el-button--primary.el-button--small.is-disabled {
+  font-size: 12px;
+}
+/* 改了边框和字体大小 */
 .el-input.is-disabled .el-input__inner {
   background: #fafafa;
   color: #c8c8c8;

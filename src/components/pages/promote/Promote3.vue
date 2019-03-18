@@ -366,8 +366,8 @@
               user_name: this.form.name,
               phone: this.form.account,
               item_name: this.form.appItem,
-              source: this.query.from,
-              son_source: this.query.mark,
+              source: 3,
+              son_source: 'b',
               sms_code: this.form.smsCode
             }
             this.$http.post(api.pcAdd, row)
@@ -389,9 +389,9 @@
       generalize(query) {
         this.$http.post(api.generalize, {
           url: location.href,
-          son_source: '优客',
+          son_source: 'b',
           device: 2,
-          new_from: 0
+          new_from: 3
         }).then(res => {
           console.log(res)
         }).catch(err => {

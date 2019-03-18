@@ -263,9 +263,7 @@
                 </el-row>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                    <el-button class="red-button" @click="getPrize()">
-                      +&nbsp;&nbsp;添加奖项
-                    </el-button>
+                    <el-button class="red-button" @click="getPrize()">添加奖项</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -308,9 +306,7 @@
                 </el-row>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                    <el-button class="red-button" @click="getPatent()">
-                      +&nbsp;&nbsp;添加专利
-                    </el-button>
+                    <el-button class="red-button" @click="getPatent()">添加专利</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -337,15 +333,18 @@
               </el-form-item>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标签" prop="label"   class="label-tag"
-                  >
+                  <el-form-item label="标签" prop="label"   class="label-tag">
                     <vue-input-tag
                       placeholder="Enter添加新标签,上限10个"
                       :tags.sync="form.label"
                       :limit="10"
-                      :add-tag-on-blur="true"
-                      >
+                      :add-tag-on-blur="true">
                     </vue-input-tag>
+                  <div v-if="LabelList.length">
+                    <h3 class="label-title">历史标签：</h3>
+                    <span class="label" v-for="(ele, index) in LabelList" :key="index"
+                    @click="addLabel(ele.label)">{{ele.label}}</span>
+                  </div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -353,7 +352,7 @@
                 <el-col>
                   <div class="form-footer">
                     <div class="form-btn">
-                      <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
+                      <el-button  @click.prevent="returnList" class="middle-button white-button margin-r-15">取消</el-button>
                       <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
                     </div>
                     <div class="clear"></div>
@@ -390,6 +389,7 @@
       //   }
       // }
       return {
+        LabelList: [],
         userId: this.$store.state.event.user.id,
         itemId: null,
         isLoadingBtn: false,
@@ -476,6 +476,25 @@
       }
     },
     methods: {
+      addLabel(label) {
+        if (!this.form.label) this.form.label = []
+        if (this.form.label.indexOf(label + '') === -1) {
+          this.form.label.push(label + '')
+        }
+      },
+      getTags() {
+        this.$http.get(api.designCaseLabel, {params: {design_company_id: this.user.company_id}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.LabelList = this.LabelList.concat(res.data.data)
+            console.log(this.LabelList)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      },
       // 获得奖项
       getPrize() {
         if (this.prizes && this.prizes.length > 0) {
@@ -534,10 +553,8 @@
           return false
         }
         that.$refs[formName].validate ((valid) => {
-          console.log('1111')
           // 验证通过，提交
           if (valid) {
-            console.log('22222')
             let row = {
               type: that.form.type,
               field: that.form.field,
@@ -583,7 +600,6 @@
             // }
             let apiUrl = null
             let method = null
-            console.log('333333')
             if (that.itemId) {
               method = 'put'
               apiUrl = api.designCaseId.format (that.itemId)
@@ -872,6 +888,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      user() {
+        return this.$store.state.event.user
       }
     },
     watch: {
@@ -893,6 +912,7 @@
       }
     },
     created: function () {
+      this.getTags()
       const that = this
       let id = this.$route.params.id
       if (id) {
@@ -950,7 +970,6 @@
                 that.patents = response.data.data.patent
               }
               that.form.design_types = response.data.data.design_types
-              console.log(response.data.data.design_types)
               // if (des_types && des_types.length !== 0) {
               //   that.form.design_types = des_types
               // }
@@ -1003,10 +1022,6 @@
 
   .form-btn button {
     width: 120px;
-  }
-
-  .form-btn button:first-child {
-    margin-right: 10px;
   }
 
   .avatar-uploader .el-upload {
@@ -1100,6 +1115,30 @@
   }
   .form-btn>.el-button + .el-button {
     margin-right: 0px;
+  }
+  .label-title {
+    color: #666;
+    line-height: 30px;
+  }
+  .label {
+    padding: 0 10px;
+    display: inline-block;
+    max-width: 80px;
+    height: 30px;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+  }
+  .label:hover {
+    background: #f7f7f7
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {

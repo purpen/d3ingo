@@ -120,7 +120,7 @@
                   </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      免费发布项目需求
+                      发布项目需求
                     </button>
                   </el-col>
                 </el-form>
@@ -268,7 +268,7 @@
                 <p class="desigb-about-p">立即发布需求</p>
                 <span class="desigb-about-span">注册并发布项目需求</span>
                 <div>
-                  <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
+                  <a @click="direct('projectCreate')"><button class="design-btn">发布项目需求</button></a>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -336,7 +336,7 @@
           </el-row> -->
           <el-row>
             <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
-              免费发布项目需求
+              发布项目需求
             </button>
           </el-row>
         </el-form>
@@ -1048,7 +1048,7 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from})
+        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from || 3, son_source: this.query.mark || 'b'})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1097,8 +1097,8 @@ export default {
           let row = {
             user_name: this.form1.name,
             phone: this.form1.account,
-            source: this.query.from,
-            son_source: this.query.mark
+            source: this.query.from || 3,
+            son_source: this.query.mark || 'b'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1123,8 +1123,8 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
-            source: this.query.from,
-            son_source: this.query.mark
+            source: this.query.from || 3,
+            son_source: this.query.mark || 'b'
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1154,9 +1154,9 @@ export default {
     generalize(query) {
       this.$http.post(api.generalize, {
         url: location.href,
-        son_source: query.mark,
+        son_source: this.query.mark || 'b',
         device: this.isMob ? 2 : 1,
-        new_from: query.from
+        new_from: this.query.from || 3
       }).then(res => {
         console.log(res)
       }).catch(err => {
@@ -1165,11 +1165,14 @@ export default {
     },
     formatQuery(query) {
       Object.assign(this.query, query)
-      if (typeof this.query.from !== 'number') {
-        this.query.from = 0
+      if (typeof (this.query.from - 0) !== 'number') {
+        this.query.from = 3
       }
-      if (this.query.from < 0) {
-        this.query.from = 0
+      if (this.query.from < 0 || this.query.from > 7) {
+        this.query.from = 3
+      }
+      if (!this.query.mark) {
+        this.query.mark = 'a'
       }
     }
   },

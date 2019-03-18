@@ -28,7 +28,9 @@
   background: url(../../../../d3ingo/src/assets/images/tools/cloud_drive/status/loading.gif) no-repeat center / contain;
   /* animation: rotate 1s linear infinite */
 }
-
+.loading-out {
+  display: none
+}
 html {
   font-size: 62.5%;
   /* 10÷16=62.5% */

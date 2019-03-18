@@ -63,79 +63,81 @@
           </div>
         </div>
       </div>
-      <div class="header-title">太火鸟设计服务的项目</div>
-      <div class="six-img-round">
-        <div class="six-one-round">
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img1"></div>
-              <div class="six-text1">
-                <div class="six-img1-1"></div>
-                <div class="six-img1-jian">件</div>
-                <div class="six-img1-sales">销售量</div>
+      <div class="six-img-bg-color">
+        <div class="header-title">太火鸟设计服务的项目</div>
+        <div class="six-img-round">
+          <div class="six-one-round">
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img1"></div>
+                <div class="six-text1">
+                  <div class="six-img1-1"></div>
+                  <div class="six-img1-jian">件</div>
+                  <div class="six-img1-sales">销售量</div>
+                </div>
+                <div class="six-text2">飞行鱼 FIFISH P3</div>
               </div>
-              <div class="six-text2">飞行鱼 FIFISH P3</div>
             </div>
-          </div>
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img2"></div>
-              <div class="six-text1">
-                <div class="six-img1-2"></div>
-                <div class="six-img1-jian pad-6-10">亿</div>
-                <div class="six-img1-sales">销售额</div>
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img2"></div>
+                <div class="six-text1">
+                  <div class="six-img1-2"></div>
+                  <div class="six-img1-jian pad-6-10">亿</div>
+                  <div class="six-img1-sales">销售额</div>
+                </div>
+                <div class="six-text2">素士声波电动牙刷</div>
               </div>
-              <div class="six-text2">素士声波电动牙刷</div>
             </div>
-          </div>
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img3"></div>
-              <div class="six-text1">
-                <div class="six-img1-3"></div>
-                <div class="six-img1-jian pad-10-10">万</div>
-                <div class="six-img1-sales">销售额</div>
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img3"></div>
+                <div class="six-text1">
+                  <div class="six-img1-3"></div>
+                  <div class="six-img1-jian pad-10-10">万</div>
+                  <div class="six-img1-sales">销售额</div>
+                </div>
+                <div class="six-text2">美妆镜 Amiro</div>
               </div>
-              <div class="six-text2">美妆镜 Amiro</div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="six-img-round">
-        <div class="six-one-round">
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img4"></div>
-              <div class="six-text1">
-                <div class="six-img1-4"></div>
-                <div class="six-img1-jian pad-6-10">万</div>
-                <div class="six-img1-sales">众筹</div>
+        <div class="six-img-round">
+          <div class="six-one-round">
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img4"></div>
+                <div class="six-text1">
+                  <div class="six-img1-4"></div>
+                  <div class="six-img1-jian pad-6-10">万</div>
+                  <div class="six-img1-sales">众筹</div>
+                </div>
+                <div class="six-text2">云马智能电单车</div>
               </div>
-              <div class="six-text2">云马智能电单车</div>
             </div>
-          </div>
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img5"></div>
-              <div class="six-text1">
-                <div class="six-img1-5"></div>
-                <div class="six-img1-jian">件</div>
-                <div class="six-img1-sales">月销</div>
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img5"></div>
+                <div class="six-text1">
+                  <div class="six-img1-5"></div>
+                  <div class="six-img1-jian">件</div>
+                  <div class="six-img1-sales">月销</div>
+                </div>
+                <div class="six-text2">FIU优雅不倒杯</div>
               </div>
-              <div class="six-text2">FIU优雅不倒杯</div>
             </div>
-          </div>
-          <div class="six-border">
-            <div class="border-pad">
-              <div class="six-img6"></div>
-              <div class="six-text1">
-                <div class="six-img1-6"></div>
-                <div class="six-img1-jian pad-5-10">件</div>
-                <div class="six-img1-sales pad-rig-5">自媒体</div>
-                <div class="six-img1-sales pad-rig-5">单篇文章</div>
-                <div class="six-img1-sales">日销售</div>
+            <div class="six-border">
+              <div class="border-pad">
+                <div class="six-img6"></div>
+                <div class="six-text1">
+                  <div class="six-img1-6"></div>
+                  <div class="six-img1-jian pad-5-10">件</div>
+                  <div class="six-img1-sales pad-rig-5">自媒体</div>
+                  <div class="six-img1-sales pad-rig-5">单篇文章</div>
+                  <div class="six-img1-sales">日销售</div>
+                </div>
+                <div class="six-text2">洒哇地卡无线手持电动擦地机</div>
               </div>
-              <div class="six-text2">洒哇地卡无线手持电动擦地机</div>
             </div>
           </div>
         </div>
@@ -169,7 +171,7 @@
           </div>
         </div>
       </div>
-      <div class="pc-can">
+      <div class="pc-can bg-color">
         <div class="pc-can-text">太火鸟赋能</div>
         <div class="pc-can-round">
           <div class="pc-can-border">
@@ -222,7 +224,7 @@
       <div class="pc-customer-title text-align-cen">服务客户</div>
       <div class="pc-sever-swipe-round">
         <div class="pc-sever-swipe">
-          <el-carousel indicator-position="outside" arrow="hover">
+          <el-carousel indicator-position="outside" arrow="never" >
             <el-carousel-item v-for="(item, index) in serverList" :key="index">
               <div class="pc-sever-swipe-out">
                 <div class="pc-sever-swipe-tt">{{item.item}}</div>
@@ -411,8 +413,8 @@
         </div>
       </el-form>
       <div class="round-btn">
-        <div class="release-btn color-666" v-if="appBtn">免费发布项目需求</div>
-        <div class="release-btn" @click="submit_app('ruleForm')" v-else>免费发布项目需求</div>
+        <div class="release-btn color-666" v-if="appBtn">发布项目需求</div>
+        <div class="release-btn" @click="submit_app('ruleForm')" v-else>发布项目需求</div>
       </div>
       <div class="pc-prod-mar">
         <div class="phone-prod-tit">太火鸟提供的设计服务</div>
@@ -619,7 +621,7 @@
       <div class="serve-text">服务客户</div>
       <div class="phone-sever-swipe-round">
         <div class="phone-sever-swipe">
-          <el-carousel indicator-position="outside" trigger="click">
+          <el-carousel indicator-position="outside" trigger="click" arrow="never">
             <el-carousel-item v-for="(item, index) in serverList" :key="index">
               <div class="phone-sever-swipe-out">
                 <div class="phone-sever-swipe-tt">{{item.item}}</div>
@@ -1099,11 +1101,14 @@
       },
       formatQuery(query) {
         Object.assign(this.query, query)
-        if (typeof this.query.from !== 'number') {
-          this.query.from = 0
+        if (typeof (this.query.from - 0) !== 'number') {
+          this.query.from = 2
         }
-        if (this.query.from < 0) {
-          this.query.from = 0
+        if (this.query.from < 0 || this.query.from > 7) {
+          this.query.from = 2
+        }
+        if (!this.query.mark) {
+          this.query.mark = 'a'
         }
       }
     },
@@ -1275,7 +1280,7 @@
     font-weight: 500;
     color: rgba(255,255,255,1);
     line-height: 42px;
-    margin-top: 30px;
+    padding-top: 60px;
     text-align: center;
   }
   .six-img-round {
@@ -1407,12 +1412,11 @@
   }
   .pc-can {
     height: 443px;
-    background: rgba(255,255,255,0.1);
-    margin-top: 40px;
+    margin-top: 20px;
     text-align: center;
   }
   .pc-can-text {
-    padding-top: 40px;
+    padding-top: 50px;
     font-size: 30px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
@@ -1497,7 +1501,7 @@
     text-align: center;
   }
   .pc-trust {
-    padding: 40px 0 30px 0;
+    padding: 50px 0 20px 0;
     font-size: 30px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
@@ -1559,43 +1563,44 @@
     display: flex;
     margin: 0 auto;
     height: 60px;
+    padding: 0 10px;
   }
   .pc-hei-80 {
     height: 80px;
   }
   .pc-prize-img1 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize01@2x.png") no-repeat center / contain;
   }
   .pc-prize-img2 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize02@2x.png") no-repeat center / contain;
   }
   .pc-prize-img3 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize03@2x.png") no-repeat center / contain;
   }
   .pc-prize-img4 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize04@2x.png") no-repeat center / contain;
   }
   .pc-prize-img5 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize05@2x.png") no-repeat center / contain;
   }
   .pc-prize-img6 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize06@2x.png") no-repeat center / contain;
   }
   .pc-prize-img7 {
     flex: 1;
-    margin: 0 11px;
+    padding: 0 11px;
     background: url("../../../assets/images/new_promote/pc/prize/prize07@2x.png") no-repeat center / contain;
   }
   .pc-customer-img1 {
@@ -2039,6 +2044,7 @@
     margin: 0 auto;
     max-width: 1180px;
     justify-content: space-between;
+    padding: 0 10px;
   }
   .pc-investors-img1 {
     height: 160px;
@@ -2121,7 +2127,6 @@
   .pc-sever-swipe {
     max-width: 880px;
     height: 240px;
-    background: rgba(255,255,255,1);
     border-radius: 4px;
     margin: 0 auto;
   }
@@ -2133,23 +2138,23 @@
     font-size: 18px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
-    color: rgba(48,82,172,1);
+    color: #FFFFFF;
     text-align: center;
     padding-top: 20px;
   }
   .pc-sever-swipe-text {
-    max-width: 600px;
+    max-width: 800px;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(102,102,102,1);
+    color: #FFFFFF;
     line-height: 24px;
     margin: 0 auto;
   }
   .pc-sever-swipe-bd {
     width:30px;
     margin: 14px auto;
-    border: 2px solid #3052AC;
+    border: 2px solid #FFFFFF;
   }
   .pc-left {
     display: inline-block;
@@ -2167,7 +2172,7 @@
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(102,102,102,1);
+    color: #FFFFFF;
     position: absolute;
     bottom: 46px;
     left: 0;
@@ -2182,7 +2187,7 @@
     font-size: 12px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(153,153,153,1);
+    color: #FFFFFF;
     text-align: center;
   }
   .pc-prod-mar {
@@ -2200,6 +2205,7 @@
   .pc-prod-round {
     display: flex;
     justify-content: space-between;
+    padding: 0 10px;
   }
   .pc-prod-bd {
     width: 16%;
@@ -2584,6 +2590,11 @@
   }
   .margin-top-10 {
     margin-top: 10px;
+  }
+  .six-img-bg-color {
+    background: rgba(255,255,255,0.1);
+    margin-top: 30px;
+    padding-bottom: 30px;
   }
   .serve-img1 {
     width: 22%;
@@ -2975,18 +2986,17 @@
   .phone-sever-swipe {
     /* max-width: 320px; */
     height: 310px;
-    background: rgba(255,255,255,1);
     border-radius: 4px;
     margin: 0 10px;
     margin-top: 15px;
   }
   .phone-sever-swipe-text {
-    max-width: 280px;
+    max-width: 300px;
     height: 179px;
     font-size: 15px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(102,102,102,1);
+    color: #fff;
     line-height: 24px;
     margin: 0 auto;
   }
@@ -2994,7 +3004,7 @@
     font-size: 17px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(102,102,102,1);
+    color: #fff;
     position: absolute;
     bottom: 39px;
     left: 0;
@@ -3005,14 +3015,14 @@
     font-size: 18px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
-    color: rgba(48,82,172,1);
+    color: #fff;
     text-align: center;
     padding-top: 15px;
   }
   .phone-sever-swipe-bd {
     width: 34px;
-    margin: 7px auto;
-    border-top: 5px solid #3052AC;
+    margin: 8px auto;
+    border-top: 5px solid #fff;
   }
   .phone-sever-swipe-bt {
     position: absolute;
@@ -3022,7 +3032,7 @@
     font-size: 12px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(153,153,153,1);
+    color: #fff;
     text-align: center;
   }
   .phone-sever-swipe-out {
@@ -3041,7 +3051,9 @@
 
 
 
-
+  .bg-color {
+    background: rgba(255,255,255,0.1);
+  }
   .mar-left-5 {
     margin-left: 5px;
   }
@@ -3106,6 +3118,11 @@
     }
     .pc-round-inves {
       margin: 0 5px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .phone-prod-round {
+      margin: 0;
     }
   }
 </style>

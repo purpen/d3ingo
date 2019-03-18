@@ -6,16 +6,17 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">客户列表</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
         </div>
         <div class="card-box" v-loading="userLoading">
           <div class="padding10 fz-0" v-if="currentId">
-            <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
-            <el-button type="danger" class="margin-r-15" size="mini" @click="showClueDialog(4)">流失</el-button>
-            <el-button size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
+            <el-button v-if="userForm.new_status === 1" type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
+            <el-button v-if="userForm.new_status === 3"  type="danger" class="margin-r-15" size="mini" @click="showClueDialog(2)">流失</el-button>
+            <el-button v-if="userForm.new_status === 1" type="danger" class="margin-r-15" size="mini" @click="setClueStatus(1)">转化</el-button>
+            <el-button v-if="userForm.new_status !== 4" size="mini" class="margin-r-15" @click="importWeb">导入社区</el-button>
             <div class="fr line-height30 fz-14">
               <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
               <a class="pointer border-t10" @click="getNextUser">下一条</a>
@@ -63,13 +64,12 @@
                 </el-select>
               </div> -->
               <div class="fr line-height30 fz-14 tc-red">
-                  <span v-if="!currentId">潜在客户</span>
+                  <span v-if="!currentId">商机</span>
                   <div v-else>
-                    <span v-if="userForm.new_status === 1">潜在客户</span>
-                    <span v-if="userForm.new_status === 2">对接设计</span>
-                    <span v-if="userForm.new_status === 3">无效客户</span>
-                    <span v-if="userForm.new_status === 4">流失客户</span>
-                    <span v-if="userForm.new_status === 5">签约合作</span>
+                    <span v-if="userForm.new_status === 1">商机</span>
+                    <span v-if="userForm.new_status === 2">潜在客户</span>
+                    <span v-if="userForm.new_status === 3">对接设计</span>
+                    <span v-if="userForm.new_status === 4">签约合作</span>
                   </div>
               </div>
             </div>
@@ -87,16 +87,30 @@
                   <el-option
                     v-for="(item, i) in sourceArr"
                     :key="i"
-                    :label="item.label"
-                    :value="item.value">
+                    :label="item.name"
+                    :value="item.id">
                   </el-option>
                 </el-select>
               </div>
-              <div class="fl flex-a-c height30 son-source fz-14">
+              <div class="fl flex-a-c height30 son-source fz-14" v-if="userForm.new_source || userForm.new_source === 0">
                 <span>子来源: </span>
-                <span v-if="currentId">{{userForm.son_source}}</span>
-                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input>
+                <el-select v-model="userForm.son_source"
+                  size="small"
+                  :disabled="!isHasPower"
+                  @change="isUpdatedSonSource"
+                  no-data-text="无数据" placeholder="请选择">
+                  <el-option
+                    v-for="td in sonSource"
+                    :key="td.key"
+                    :label="td.name"
+                    :value="td.key">
+                  </el-option>
+                </el-select>
+                <!-- <span v-if="currentId">{{userForm.son_source}}</span>
+                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input> -->
               </div>
+
+
               <div class="belong fl">
                 <span class="fz-14">负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
@@ -128,6 +142,9 @@
               </el-popover> -->
 
             </div>
+
+
+
             <!-- <p class="p-label">
               <span>标签</span>
               <el-tag
@@ -185,7 +202,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="联系人" prop="name" v-if="BoolEditUserInfo">
-                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="20"></el-input>
+                        <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -202,12 +219,12 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="微信号" prop="wx">
-                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="20"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="QQ号" prop="qq">
-                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="40"></el-input>
+                        <el-input v-model.trim="clientForm.qq" placeholder="QQ号" :maxlength="15"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -221,6 +238,7 @@
                       <el-form-item label="备注" prop="summary">
                         <el-input v-model.trim="clientForm.summary" 
                                   type="textarea"
+                                  :maxlength="500"
                                   :autosize="{ minRows: 2, maxRows: 4}"
                                   placeholder="备注">
                         </el-input>
@@ -325,11 +343,10 @@
                             <div v-else class="fl">
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
-                                <span class="link-item-name">{{item.item_name}}
-                                  <i v-if="isHasPower" class="close-icon-solid"></i>
-                                </span>
+                                <span class="link-item-name">{{item.item_name}}</span>
+                                  <!-- <i v-if="isHasPower" class="close-icon-solid"></i> -->
                               </p>
-                              <div v-else>
+                              <!-- <div v-else>
                                 <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
@@ -353,7 +370,7 @@
                                     </el-option>
                                   </el-select>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
 
                             <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
@@ -370,7 +387,7 @@
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span class="inline">项目名称: </span>{{item.name}}</p>
                             <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目名称" prop="name">
-                              <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                             </el-form-item>
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -571,20 +588,20 @@
 
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                                    <el-form-item label="联系人名称" prop="contact_name">
-                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    <el-form-item label="联系人姓名" prop="contact_name">
+                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人姓名"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="联系人电话" prop="phone">
-                                      <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                     </el-form-item>
                                   </el-col>
                                   
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="微信号" prop="wx">
-                                      <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                      <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写微信号"></el-input>
                                     </el-form-item>
                                   </el-col>
                                 </el-row>
@@ -631,19 +648,19 @@
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人名称" prop="contact_name">
-                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写联系人名称"></el-input>
+                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人名称"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人电话" prop="phone">
-                                  <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写联系人电话"></el-input>
+                                  <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="微信号" prop="wx">
-                                  <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写联系人微信号"></el-input>
+                                  <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写联系人微信号"></el-input>
                                 </el-form-item>
                               </el-col>
                             </el-row>
@@ -669,13 +686,13 @@
                 </div>
 
 
-                <div class="project-form padding20" v-if="boolAddProject">
+                <div class="project-form padding20" v-show="boolAddProject">
                   <p class="margin-b22">基本信息</p>
                   <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" ref="ruleProjectForm" label-width="80px">
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
                           <el-form-item label="项目名称" prop="name">
-                            <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                            <el-input v-model="projectForm.name" :maxlength="20" placeholder="请填写项目名称"></el-input>
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -943,11 +960,20 @@
         </el-dialog>
         
         <el-dialog 
-          title="确认"
+          :title="ClueStatusRemarks"
           :visible.sync="boolClueStatus"
           width="380px">
-            <p class="line-height30">{{ClueStatusRemarks}}</p>
-            <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+            <!-- <p class="line-height30 padding-b15">{{ClueStatusRemarks}}</p> -->
+            <el-radio-group v-model="label_cause" v-if="boolClueStatus2">
+              <el-radio :label="1">虚假商机</el-radio>
+              <el-radio :label="2" fill="#FF5A5F">设计需求无法满足</el-radio>
+            </el-radio-group>
+            
+            <el-radio-group v-model="label_cause" v-else>
+              <el-radio :label="4">因竞争丢失 </el-radio>
+              <el-radio :label="5" fill="#FF5A5F">其他</el-radio>
+            </el-radio-group>
+            <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
             <span slot="footer" class="dialog-footer">
               <el-button @click="boolClueStatus = false">取 消</el-button>
               <el-button type="primary" @click="setClueStatus">确 定</el-button>
@@ -1033,38 +1059,123 @@ export default {
       createdTime: '',
       sourceArr: [
         {
-          value: 1,
-          label: '今日头条'
+          id: 1,
+          name: '网络广告',
+          son_source: [
+            {
+              key: 'a',
+              name: '百度'
+            },
+            {
+              key: 'b',
+              name: '360'
+            },
+            {
+              key: 'c',
+              name: '知乎'
+            },
+            {
+              key: 'd',
+              name: '今日头条'
+            }
+          ]
         },
         {
-          value: 2,
-          label: '京东'
+          id: 2,
+          name: '官⽅',
+          son_source: [
+            {
+              key: 'a',
+              name: 'PC/WAP官网'
+            },
+            {
+              key: 'b',
+              name: '小程序'
+            },
+            {
+              key: 'c',
+              name: 'App'
+            }
+          ]
         },
         {
-          value: 3,
-          label: '360'
+          id: 3,
+          name: '合作伙伴',
+          son_source: [
+            {
+              key: 'a',
+              name: '京东'
+            },
+            {
+              key: 'b',
+              name: '优客工场'
+            }
+          ]
         },
         {
-          value: 4,
-          label: '百度'
+          id: 4,
+          name: '内部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '雷总/公司员工推荐的熟人客户'
+            }
+          ]
         },
         {
-          value: 5,
-          label: '官网'
+          id: 5,
+          name: '外部推荐',
+          son_source: [
+            {
+              key: 'a',
+              name: '朋友/其他公司推荐的客户'
+            }
+          ]
         },
         {
-          value: 6,
-          label: '知乎'
+          id: 6,
+          name: '新媒体',
+          son_source: [
+            {
+              key: 'a',
+              name: '微信公众号'
+            },
+            {
+              key: 'b',
+              name: '头条号'
+            },
+            {
+              key: 'c',
+              name: '百家号'
+            }
+          ]
         },
         {
-          value: 7,
-          label: '自媒体'
+          id: 7,
+          name: '展销会',
+          son_source: [
+            {
+              key: 'a',
+              name: '参展'
+            },
+            {
+              key: 'b',
+              name: '业界活动、论坛 '
+            }
+          ]
         },
         {
-          value: 0,
-          label: '其他'
+          id: 0,
+          name: '其他',
+          son_source: [
+            {
+              key: 'a',
+              name: '⽆法归类的小群体'
+            }
+          ]
         }
       ],
+      sonSource: [],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1171,6 +1282,8 @@ export default {
       boolClueStatus: false,
       currentStatus: '',
       ClueStatusRemarks: '', // 更改状态备注
+      label_cause: '',
+      boolClueStatus2: true, // 显示无效后者流失
       isOpen: true
     }
   },
@@ -1284,13 +1397,21 @@ export default {
       }
     },
     isUpdatedSource(val) {
+      this.sonSource = []
+      this.userForm.son_source = ''
+      this.sourceArr.forEach(item => {
+        if (item.id === val) {
+          this.sonSource = item.son_source
+        }
+      })
       if (!this.currentId) return
       if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
-        if (!this.isExistArray(val, this.sourceArr)) {
-          // this.getTypeList()
-        }
       }
+    },
+    isUpdatedSonSource(val) {
+      if (!this.currentId) return
+      this.updatedBaseInfo()
     },
     isUpdatedStatus(val) {
       if (!this.currentId) return
@@ -1397,7 +1518,7 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            new_source: data.new_source,
+            new_source: data.new_source || '',
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
@@ -1407,6 +1528,14 @@ export default {
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          if (this.userForm.new_source) {
+            let id = this.userForm.new_source
+            this.sourceArr.forEach(item => {
+              if (item.id === id) {
+                this.sonSource = item.son_source
+              }
+            })
+          }
           // if (data.tag.length === 1 && data.tag[0] === '') {
           //   this.dynamicTags.length = 0
           // } else {
@@ -1442,27 +1571,33 @@ export default {
       this.currentStatus = status
       if (status === 3) {
         this.ClueStatusRemarks = '无效客户备注'
+        this.boolClueStatus2 = true
+        this.label_cause = 1
       } else {
         this.ClueStatusRemarks = '流失客户备注'
+        this.boolClueStatus2 = false
+        this.label_cause = 4
       }
     },
     setClueStatus(status) { // 标记客户状态
-      if (!this.followVal) {
-        this.$message.error('请填写备注')
-        return
-      }
       if (!this.isOpen) return
       this.isOpen = false
       let row = {
         new_status: this.currentStatus,
         clue_ids: [this.currentId],
-        log: this.followVal
+        label_cause: this.label_cause
+      }
+      if (status === 1) {
+        row.new_status = status
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
         this.isOpen = true
         if (res.data.meta.status_code === 200) {
           this.boolClueStatus = false
           this.$message.success('标记成功')
+          if (status === 1) {
+            this.$message.success('成功转化为潜在客户')
+          }
           this.followVal = ''
           this.getUserInfo()
           this.getLogList()
@@ -1525,12 +1660,16 @@ export default {
         this.$message.error('请填写联系人电话')
         return
       }
-      if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
-        this.$message.error('请输入有效的手机号')
+      if (this.userForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.userForm.phone)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
-      if (this.userForm.son_source.length > 10) {
-        this.$message.error('子来源最多10个字符')
+      if (!this.userForm.new_source || !this.userForm.son_source) {
+        this.$message.error('请选择来源渠道和子来源渠道')
         return
       }
       this.boolCreateUser = true
@@ -1579,6 +1718,15 @@ export default {
     createdProject() { // 点击添加按钮
       this.projectForm = {}
       this.boolAddProject = true
+      const {province, city} = this.clientForm
+      if (province) {
+        this.$nextTick(_ => {
+          this.projectForm.item_province = province
+          if (city) {
+            this.projectForm.item_city = city
+          }
+        })
+      }
     },
     createProjectForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -2172,6 +2320,7 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
+        this.boolAddProject = false
       } else if (val === 'followLog') {
         this.getLogList()
         this.boolLinkItem = true
@@ -2799,6 +2948,9 @@ export default {
 .source .el-select {
   width: 150px;
 }
+.son-source .el-select {
+  max-width: 200px;
+}
 .user-status > .el-select > .el-input > input {
   padding-left: 40px;
 }
@@ -2806,12 +2958,7 @@ export default {
   border: none;
   padding-left: 0px;
 }
-.user-status .el-select:hover .el-input__inner,
-.el-select .el-input__inner:focus {
-  border: none;
-  border-color: transparent;
-  box-shadow: none;
-}
+
 .user-status.status1 input {
   background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
 }
@@ -2831,7 +2978,10 @@ export default {
   width: 136px;
 }
 .son-source .el-input--small .el-input__inner {
-  width: 136px;
+  overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
 }
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;
