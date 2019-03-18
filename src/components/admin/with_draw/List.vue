@@ -1,115 +1,107 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="withDrawList"></v-menu>
+  <div>
+    <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
-
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminWithDrawList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">待审核</router-link>
-            <router-link :to="{name: 'adminWithDrawList', query: {status: 1}}" active-class="false" :class="{'item': true, 'is-active': menuType === 1}">已通过</router-link>
-          </div>
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminWithDrawList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">待审核</router-link>
+          <router-link :to="{name: 'adminWithDrawList', query: {status: 1}}" active-class="false" :class="{'item': true, 'is-active': menuType === 1}">已通过</router-link>
         </div>
+      </div>
 
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="公司银行账户信息"
-              min-width="200">
-                <template slot-scope="scope">
-                  <p>
-                    类型：{{ scope.row.account_bank_value }}
-                  </p>
-                  <p>
-                    卡号：{{ scope.row.account_number }}
-                  </p>
-                  <p>
-                    姓名：{{ scope.row.account_name }}
-                  </p>
-                  <p>
-                    开户行：{{ scope.row.branch_name }}
-                  </p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="amount"
-              label="提现金额"
-              width="80">
-            </el-table-column>
-            <el-table-column
-              width="60"
-              label="创建人">
-                <template slot-scope="scope">
-                  <p>
-                    {{ scope.row.user_id }}
-                  </p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="type_label"
-              label="支付类型"
-              width="100">
-            </el-table-column>
-            <el-table-column
-              prop="summary"
-              label="备注"
-              min-width="150">
-            </el-table-column>
-            <el-table-column
-              prop="status_label"
-              width="80"
-              label="状态">
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-show="scope.row.status === 0" @click="sureTransfer(scope.$index, scope.row)">确认打款</a>
-                  </p>
-                  <p>
-                  </p>
-                </template>
-            </el-table-column>
-          </el-table>
+      <el-table
+        :data="tableData"
+        border
+        v-loading="isLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          label="公司银行账户信息"
+          min-width="200">
+            <template slot-scope="scope">
+              <p>
+                类型：{{ scope.row.account_bank_value }}
+              </p>
+              <p>
+                卡号：{{ scope.row.account_number }}
+              </p>
+              <p>
+                姓名：{{ scope.row.account_name }}
+              </p>
+              <p>
+                开户行：{{ scope.row.branch_name }}
+              </p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          prop="amount"
+          label="提现金额"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          width="60"
+          label="创建人">
+            <template slot-scope="scope">
+              <p>
+                {{ scope.row.user_id }}
+              </p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          prop="type_label"
+          label="支付类型"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="summary"
+          label="备注"
+          min-width="150">
+        </el-table-column>
+        <el-table-column
+          prop="status_label"
+          width="80"
+          label="状态">
+        </el-table-column>
+        <el-table-column
+          prop="created_at"
+          width="100"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="操作">
+            <template slot-scope="scope">
+              <p>
+                <a href="javascript:void(0);" v-show="scope.row.status === 0" @click="sureTransfer(scope.$index, scope.row)">确认打款</a>
+              </p>
+              <p>
+              </p>
+            </template>
+        </el-table-column>
+      </el-table>
 
-          <el-pagination
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
+      <el-pagination
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[50, 100, 500]"
+        :page-size="query.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.totalCount">
+      </el-pagination>
 
-        </div>
-      </el-col>
-    </el-row>
-
+    </div>
     <el-dialog title="确认线下已打款" :visible.sync="sureTransferDialog">
       <el-form label-position="top">
         <el-form-item label="户名" label-width="200px">
@@ -137,12 +129,8 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_with_draw_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

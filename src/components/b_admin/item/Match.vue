@@ -1,27 +1,13 @@
 <template>
-  <div class="container">
-
-    <el-row :gutter="24">
-      <v-menu selectedName="itemList"></v-menu>
-
-      <el-col :span="20">
-        <div class="content">
-          <h1>ddd</h1>
-        </div>
-      </el-col>
-    </el-row>
-
+  <div class="content">
+    <h1>ddd</h1>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/b_admin/Menu'
 export default {
   name: 'admin_item_match',
-  components: {
-    vMenu
-  },
   data () {
     return {
       msg: ''

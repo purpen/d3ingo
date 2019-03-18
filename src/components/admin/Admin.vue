@@ -84,7 +84,7 @@
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
           <el-tooltip class="item" content="控制台" placement="right">
             <el-menu-item index="1" :route="{name: 'adminDashBoard'}">
-                <i class="fa fa-tachometer"></i>
+                <i class="fa fx-2 fa-tachometer"></i>
               </el-menu-item>
           </el-tooltip>
 
@@ -95,62 +95,62 @@
           </el-tooltip>
           <el-tooltip class="item" content="项目管理" placement="right">
           <el-menu-item index="itemList" :route="{name:'adminItemList'}">
-            <i class="fa fa-file-text"></i>
+            <i class="fa fx-2 fa-file-text"></i>
           </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="设计服务商管理" placement="right">
           <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}"> 
-            <i class="fa fa-product-hunt"></i>
+            <i class="fa fx-2 fa-product-hunt"></i>
           </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="需求公司管理" placement="right">
           <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">
-            <i class="fa fa-product-hunt"></i>
+            <i class="fa fx-2 fa-product-hunt"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="德交易会" placement="right">
           <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">
-            <i class="fa fa-product-hunt"></i>
+            <i class="fa fx-2 fa-product-hunt"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="订单管理" placement="right">
           <el-menu-item index="orderList" :route="{name:'adminOrderList'}">
-            <i class="fa fa-file-text"></i>
+            <i class="fa fx-2 fa-file-text"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="推荐配置" placement="right">
           <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">
-            <i class="fa fa-file-text"></i>
+            <i class="fa fx-2 fa-file-text"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="提现管理" placement="right">
           <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">
-            <i class="fa fa-money"></i>
+            <i class="fa fx-2 fa-money"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="发票管理" placement="right">
           <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">
-            <i class="fa fa-money"></i>
+            <i class="fa fx-2 fa-money"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="案例管理" placement="right">
           <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">
-            <i class="fa fa-clipboard"></i>
+            <i class="fa fx-2 fa-clipboard"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="内容管
             理" placement="right">
           <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">
-            <i class="fa fa-window-maximize" aria-hidden="true"></i></el-menu-item>
+            <i class="fa fx-2 fa-window-maximize" aria-hidden="true"></i></el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="系统管理" placement="right">
           <el-menu-item index="categoryList" :route="{name: 'adminCategoryList'}">
-            <i class="fa fa-cogs"></i>
+            <i class="fa fx-2 fa-cogs"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="用户管理" placement="right">
           <el-menu-item index="userList" :route="{name: 'adminUserList'}">
-            <i class="fa fa-user"></i>
+            <i class="fa fx-2 fa-user"></i>
             </el-menu-item>
           </el-tooltip>
         </el-menu>
@@ -162,7 +162,7 @@
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
           <el-submenu index="1">
-          <template slot="title"><i class="fa fa-tachometer"></i> 控制台</template>
+          <template slot="title"><i class="fa fx-2 fa-tachometer"></i> 控制台</template>
             <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
           </el-submenu>
           <el-submenu index="10">
@@ -171,48 +171,48 @@
             <el-menu-item index="customerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
+            <template slot="title"><i class="fa fx-2 fa-file-text"></i> 项目管理</template>
               <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
               <el-menu-item index="itemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
-            <template slot="title"><i class="fa fa-product-hunt"></i> 设计服务商管理</template>
+            <template slot="title"><i class="fa fx-2 fa-product-hunt"></i> 设计服务商管理</template>
               <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
-            <template slot="title"><i class="fa fa-product-hunt"></i> 需求公司管理</template>
+            <template slot="title"><i class="fa fx-2 fa-product-hunt"></i> 需求公司管理</template>
               <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="30">
-            <template slot="title"><i class="fa fa-product-hunt"></i> 顺德交易会</template>
+            <template slot="title"><i class="fa fx-2 fa-product-hunt"></i> 顺德交易会</template>
               <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
               <el-menu-item index="demandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
               <el-menu-item index="sdOrderList" :route="{name:'adminSdOrderList'}">订单列表</el-menu-item>
           </el-submenu>
           <el-submenu index="5">
-            <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>
+            <template slot="title"><i class="fa fx-2 fa-file-text"></i> 订单管理</template>
               <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="21">
-            <template slot="title"><i class="fa fa-file-text"></i> 推荐配置</template>
+            <template slot="title"><i class="fa fx-2 fa-file-text"></i> 推荐配置</template>
               <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
               <el-menu-item index="recommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
           </el-submenu>
           <el-submenu index="6">
-            <template slot="title"><i class="fa fa-money"></i> 提现管理</template>
+            <template slot="title"><i class="fa fx-2 fa-money"></i> 提现管理</template>
               <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="7">
-            <template slot="title"><i class="fa fa-money"></i> 发票管理</template>
+            <template slot="title"><i class="fa fx-2 fa-money"></i> 发票管理</template>
               <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
               <el-menu-item index="adminIssueInvoicetList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
           </el-submenu>
           <el-submenu index="8">
-            <template slot="title"><i class="fa fa-clipboard"></i> 案例管理</template>
+            <template slot="title"><i class="fa fx-2 fa-clipboard"></i> 案例管理</template>
               <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="15">
-            <template slot="title"><i class="fa fa-window-maximize" aria-hidden="true"></i> 内容管理</template>
+            <template slot="title"><i class="fa fx-2 fa-window-maximize" aria-hidden="true"></i> 内容管理</template>
               <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
               <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
               <el-menu-item index="blockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
@@ -224,12 +224,12 @@
               <el-menu-item index="awardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
           </el-submenu>
           <el-submenu index="18">
-            <template slot="title"><i class="fa fa-cogs"></i> 系统管理</template>
+            <template slot="title"><i class="fa fx-2 fa-cogs"></i> 系统管理</template>
               <el-menu-item index="categoryList" :route="{name: 'adminCategoryList'}">分类列表</el-menu-item>
               <el-menu-item index="noticeList" :route="{name: 'adminNoticeList'}">通知列表</el-menu-item>
           </el-submenu>
           <el-submenu index="20">
-            <template slot="title"><i class="fa fa-user"></i> 用户管理</template>
+            <template slot="title"><i class="fa fx-2 fa-user"></i> 用户管理</template>
               <el-menu-item index="userList" :route="{name: 'adminUserList'}">列表</el-menu-item>
           </el-submenu>
         </el-menu>
@@ -457,7 +457,7 @@
     z-index: 1;
     left: 0;
     top: 60px;
-    width: 200px;
+    width: 240px;
     height: calc(100% - 60px);
     /* overflow-y: auto; */
     overflow-x: hidden;
@@ -629,7 +629,7 @@
   .admin-container {
     transition: 268ms all ease;
     padding: 20px;
-    padding-left: 220px;
+    padding-left: 260px;
   }
   .container-mini {
     padding-left: 80px;

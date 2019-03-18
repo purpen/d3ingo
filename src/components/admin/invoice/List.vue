@@ -1,257 +1,246 @@
-<template>
-  <div class="container company-verify1">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu :selectedName="putReceiptList"></v-menu>
+<template>    
+  <div class="content company-verify1">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: $route.name}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: $route.name, query: {status: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">未开发票</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: $route.name, query: {status: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">已开发票</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: $route.name, query: {status: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">收到发票</router-link>
+      </div>
+    </div>
 
-          <div class="admin-menu-sub">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: $route.name}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: $route.name, query: {status: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">未开发票</router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: $route.name, query: {status: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">已开发票</router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: $route.name, query: {status: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">收到发票</router-link>
-            </div>
-          </div>
+    <el-table
+      :data="tableData"
+      border
+      v-loading.body="isLoading"
+      class="admin-table"
+      @selection-change="handleSelectionChange"
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        label="公司信息"
+        min-width="140">
+        <template slot-scope="scope">
+          <p>全称：{{ scope.row.company_name }}</p>
+          <p>收发类型: {{ scope.row.type_value }}</p>
+          <p>公司类型: {{ scope.row.companyType }}</p>
+          <p v-if="scope.row.company_type === 2">纳税类型: {{ scope.row.taxable_type }}</p>
+          <p v-if="scope.row.company_type === 2">发票类型: {{ scope.row.invoice_type }}</p>
+          <p>公司ID: {{ scope.row.target_id }}</p>
+          <p>税号: {{ scope.row.duty_number }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="项目信息"
+        min-width="105">
+        <template slot-scope="scope">
+          <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
+          <p>项目阶段：{{ scope.row.item_stage_name }}</p>
+          <p>项目ID：{{ scope.row.item_id }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="支付详情">
+        <template slot-scope="scope">
+          <p>金额：{{ scope.row.price }}</p>
+          <p>支付类型：{{ scope.row.pay_type }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="物流信息"
+        min-width="120">
+        <template slot-scope="scope">
+          <p>名称：{{ scope.row.logistics_name }}</p>
+          <p>物流ID：{{ scope.row.logistics_id }}</p>
+          <p>单号：{{ scope.row.logistics_number }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="user_id"
+        label="操作用户"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="状态">
+        <template slot-scope="scope">
+          <p v-if="scope.row.status === 1">未开发票</p>
+          <p v-if="scope.row.status === 2">已开发票</p>
+          <p v-if="scope.row.status === 3">收到发票</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="summary"
+        label="备注">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="created_at"
+        width="100"
+        label="创建时间">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        width="100"
+        label="操作">
+        <template slot-scope="scope">
+          <!--是设计设计服务商&&已开发票&&是收发票-->
+          <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
+          <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="OpenReceipt(scope.row, scope.$index)">确认开出发票</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-          <el-table
-            :data="tableData"
-            border
-            v-loading.body="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="50">
-            </el-table-column>
-            <el-table-column
-              label="公司信息"
-              min-width="140">
-              <template slot-scope="scope">
-                <p>全称：{{ scope.row.company_name }}</p>
-                <p>收发类型: {{ scope.row.type_value }}</p>
-                <p>公司类型: {{ scope.row.companyType }}</p>
-                <p v-if="scope.row.company_type === 2">纳税类型: {{ scope.row.taxable_type }}</p>
-                <p v-if="scope.row.company_type === 2">发票类型: {{ scope.row.invoice_type }}</p>
-                <p>公司ID: {{ scope.row.target_id }}</p>
-                <p>税号: {{ scope.row.duty_number }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="项目信息"
-              min-width="105">
-              <template slot-scope="scope">
-                <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
-                <p>项目阶段：{{ scope.row.item_stage_name }}</p>
-                <p>项目ID：{{ scope.row.item_id }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="支付详情">
-              <template slot-scope="scope">
-                <p>金额：{{ scope.row.price }}</p>
-                <p>支付类型：{{ scope.row.pay_type }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="物流信息"
-              min-width="120">
-              <template slot-scope="scope">
-                <p>名称：{{ scope.row.logistics_name }}</p>
-                <p>物流ID：{{ scope.row.logistics_id }}</p>
-                <p>单号：{{ scope.row.logistics_number }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="user_id"
-              label="操作用户"
-              width="50">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="状态">
-              <template slot-scope="scope">
-                <p v-if="scope.row.status === 1">未开发票</p>
-                <p v-if="scope.row.status === 2">已开发票</p>
-                <p v-if="scope.row.status === 3">收到发票</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="summary"
-              label="备注">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              width="100"
-              label="操作">
-              <template slot-scope="scope">
-                <!--是设计设计服务商&&已开发票&&是收发票-->
-                <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
-                <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="OpenReceipt(scope.row, scope.$index)">确认开出发票</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+    <el-dialog title="发票备注" :visible.sync="dialogVisible" width="380px">
+      <el-input type="textarea" v-model="verify.refuseRease"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
+      <div>
+        <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+          <h3>需求公司发票信息</h3>
+          <el-row>
+            <el-col :span="4">
+              名称
+            </el-col>
+            <el-col :span="20">
+              <el-form-item class="fullwidth">
+                <el-input v-model="invoiceForm.company_name" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              注册地址
+            </el-col>
+            <el-col :span="20">
+              <el-form-item class="fullwidth">
+                <el-input v-model="invoiceForm.company_address" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              税号
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="duty_number" class="fullwidth">
+                <el-input v-model="invoiceForm.duty_number"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              开户银行
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="bank_name" class="fullwidth">
+                <el-input v-model="invoiceForm.bank_name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              银行账户
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="account_number" class="fullwidth">
+                <el-input v-model="invoiceForm.account_number"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <h3>
+            发票快递地址
+          </h3>
+          <el-row>
+            <el-col :span="4">
+              收件人姓名
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="contact_name" class="fullwidth">
+                <el-input v-model="invoiceForm.contact_name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              收件人电话
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="phone" class="fullwidth">
+                <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              收件人地址
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="address" class="fullwidth">
+                <el-input  v-model="invoiceForm.address"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <h3>
+            邮寄信息
+          </h3>
+          <el-row>
+            <el-col :span="4">
+              快递公司
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="logistics_id" class="fullwidth">
+                <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
+                  <el-option
+                    v-for="(d, index) in logisticsOptions"
+                    :label="d.label"
+                    :key="index"
+                    :value="d.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4">
+              快递单号
+            </el-col>
+            <el-col :span="20">
+              <el-form-item prop="logistics_number">
+                <el-input v-model="invoiceForm.logistics_number"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-          <el-dialog title="发票备注" :visible.sync="dialogVisible" width="380px">
-            <el-input type="textarea" v-model="verify.refuseRease"></el-input>
-            <span slot="footer" class="dialog-footer">
-              <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-              <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
-            </span>
-          </el-dialog>
-          <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
-            <div>
-              <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
-                <h3>需求公司发票信息</h3>
-                <el-row>
-                  <el-col :span="4">
-                    名称
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item class="fullwidth">
-                      <el-input v-model="invoiceForm.company_name" :disabled="true"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    注册地址
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item class="fullwidth">
-                      <el-input v-model="invoiceForm.company_address" :disabled="true"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    税号
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="duty_number" class="fullwidth">
-                      <el-input v-model="invoiceForm.duty_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    开户银行
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="bank_name" class="fullwidth">
-                      <el-input v-model="invoiceForm.bank_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    银行账户
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="account_number" class="fullwidth">
-                      <el-input v-model="invoiceForm.account_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <h3>
-                  发票快递地址
-                </h3>
-                <el-row>
-                  <el-col :span="4">
-                    收件人姓名
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="contact_name" class="fullwidth">
-                      <el-input v-model="invoiceForm.contact_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    收件人电话
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="phone" class="fullwidth">
-                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    收件人地址
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="address" class="fullwidth">
-                      <el-input  v-model="invoiceForm.address"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <h3>
-                  邮寄信息
-                </h3>
-                <el-row>
-                  <el-col :span="4">
-                    快递公司
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="logistics_id" class="fullwidth">
-                      <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
-                        <el-option
-                          v-for="(d, index) in logisticsOptions"
-                          :label="d.label"
-                          :key="index"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="4">
-                    快递单号
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="logistics_number">
-                      <el-input v-model="invoiceForm.logistics_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-              </el-form>
-            </div>
-            
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="receiptDialog = false">取消</el-button>
-              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
-            </div>
-          </el-dialog>
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
-        </div>
-      </el-col>
-    </el-row>
-
+        </el-form>
+      </div>
+      
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="receiptDialog = false">取消</el-button>
+        <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-pagination
+      v-if="tableData.length && query.totalCount > query.pageSize"
+      class="pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="query.page"
+      :page-sizes="[50, 100, 500]"
+      :page-size="query.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="query.totalCount">
+    </el-pagination>
 
   </div>
 </template>
