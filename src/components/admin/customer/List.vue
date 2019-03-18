@@ -30,6 +30,7 @@
                   <el-option label="按负责人" value="3"></el-option>
                   <el-option label="来源渠道" value="4"></el-option>
                   <el-option label="客户级别" value="5"></el-option>
+                  <el-option label="低价客户" value="6"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
