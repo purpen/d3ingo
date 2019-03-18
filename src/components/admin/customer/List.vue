@@ -24,7 +24,7 @@
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
-                <el-select v-model="query.search" placeholder="选择条件..." size="small">
+                <el-select v-model="query.search" placeholder="选择条件..." size="small" @change="query.val = ''">
                   <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按负责人" value="3"></el-option>
