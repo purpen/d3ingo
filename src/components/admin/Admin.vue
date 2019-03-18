@@ -9,14 +9,13 @@
           </router-link>
         </p>
       </div>
-      <div v-if="!isMob" class="menu-right">
+      <div class="menu-right">
         <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
           <span class="icon active">
             <i class="fx-4 fx-icon-notice">
               <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
             </i>
           </span>
-          <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
           <div class="view-msg">
             <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
               <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
@@ -30,9 +29,6 @@
             </a>
           </div>
         </a>
-        <!-- <div v-if="isCompany" @click="showMine()" class="mine no-select">
-          <span>我的</span>
-        </div> -->
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
@@ -48,9 +44,6 @@
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-            <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
-            <!-- <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
             <el-menu-item  index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
             <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
             <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
@@ -81,240 +74,199 @@
           </el-submenu>
         </el-menu>
       </div>
-
-      <div v-if="isMob" class="menu-right">
-        <router-link :to="{name: 'vcenterControl'}">
-          <template v-if="eventUser.type === 1">
-            <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.logo_url}) no-repeat center / contain`}"></span>
-            <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
-          </template>
-          <template v-else>
-            <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.logo_url}) no-repeat center / contain`}"></span>
-            <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
-          </template>
-        </router-link>
-      </div>
     </header>
-    <el-col v-if="leftWidth === leftValue" :span="isMob ? 24 : leftValue">
-      <section :class="['menuHide', 'scroll-bar2', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
-        <div v-if="leftWidth === 2">
-          <div v-if="isCompany">
-            <!-- mini 设计服务商(子账号) -->
-            <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
-              <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
-                <a @click="alick" :to="'/vcenter/child_control'"
-                  :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                  控制面板
-                </a>
-              </el-tooltip>
-              <el-tooltip
-                v-if="eventUser.company"
-                class="item" :effect="DarkorLight"
-                :content="eventUser.company.company_name || eventUser.account"
-                placement="right">
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
-                v-if="isMob">
-                {{eventUser.company.company_name || eventUser.account}}
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
-                <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
-                  :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
-                  交易会
-                </a>
-              </el-tooltip>
-            </div>
-            <!-- mini 设计服务商账号 -->
-            <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-                <el-tooltip :effect="DarkorLight"
-                  v-if="eventUser.company"
-                  :content="eventUser.company.company_name || eventUser.account" placement="right">
-                  <div class="computer-btn"
-                    v-if="isCompany && !isMob && eventUser.logo_url"
-                    @click="redirectCompany"> 
-                    <span :style="{background: `url(${eventUser.logo_url}) no-repeat center / cover #222`}"></span>
-                  </div>
-              </el-tooltip>
-              
-              <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
-              <a @click="alick" :to="'/vcenter/control'"
-                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
-              <a @click="alick" :to="'/vcenter/citem/list'"
-                :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
-                项目订单
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
-              <a @click="alick" :to="'/vcenter/design_case'"
-                :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
-                作品案例
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
-                我的钱包
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
-                <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
-                  :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
-                  交易会
-                </a>
-              </el-tooltip>
-              <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
-                v-if="isMob && eventUser.company">
-                {{eventUser.company.company_name || eventUser.account}}
-              </a>
-            </div>
-          </div>
-          <!-- mini 需求方 -->
-          <div v-else>
-            <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
-              <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
-              <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="我的项目" placement="right">
-              <a @click="alick" :to="'/vcenter/item/list'"
-                :class="['item', 'project-order', {'is-active': currentName === 'item'}]">
-                我的项目
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
-                我的钱包
-              </a>
-              </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
-              <a v-if="!isMob" @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
-                交易会
-              </a>
-              </el-tooltip>
-            </div>
-          </div>
-        </div>
-        <div v-if="leftWidth === 4">
-          <div v-if="isCompany">
-            <!-- 默认设计服务商(子账号) -->
-            <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
-              <a @click="alick" :to="'/vcenter/child_control'"
-                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
-                v-if="isMob && eventUser.company">
-                {{eventUser.company.company_name || eventUser.account}}
-              </a>
-            </div>
-            <!-- 默认设计服务商 -->
-            <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-              <el-tooltip :effect="DarkorLight"
-                v-if="eventUser.company"
-                :content="eventUser.company.company_name || eventUser.account" placement="right">
-                <div class="computer-btn"
-                  v-if="isCompany && !isMob && eventUser.company &&eventUser.logo_url"
-                  @click="redirectCompany">
-                  <span :style="{background: `url(${eventUser.logo_url}) no-repeat center / cover #222`}"></span>
-                  {{eventUser.company.company_name || eventUser.account}}
-                </div>
-              </el-tooltip>
-              <a @click="alick" :to="'/vcenter/control'"
-                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
-              <a @click="alick" :to="'/vcenter/citem/list'"
-                :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
-                项目订单
-              </a>
-              <a @click="alick" :to="'/vcenter/design_case'"
-                :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
-                作品案例
-              </a>
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
-                我的钱包
-              </a>
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
-                v-if="isMob">
-                查看公司主页
-              </a>
-              <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
-                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]" 
-                v-if="prod.name === ''"
-                >
-                交易会
-              </a>
-            </div>
-          </div>
-          <!-- 默认需求方 -->
-          <div v-else>
-            <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
+    <section :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+      <div v-if="leftWidth === 2">
+        <el-menu
+          class="admin-menu"
+          :default-active="selectedName" 
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
+          <el-tooltip class="item" content="控制台" placement="right">
+            <el-menu-item index="1" :route="{name: 'adminDashBoard'}">
+                <i class="fa fa-tachometer"></i>
+              </el-menu-item>
+          </el-tooltip>
 
-              <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
-              <a @click="alick" :to="'/vcenter/item/list'"
-                :class="['item', 'project-order', {'is-active': currentName === 'item'}]">
-                我的项目
-              </a>
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
-                我的钱包
-              </a>
-              <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]"
-                v-if="prod.name === '' && !isMob">
-                交易会
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </el-col>
+          <el-tooltip class="item" content="客户管理" placement="right">
+          <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">
+            <i class="fx-icon-red-packets1"></i>
+          </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="项目管理" placement="right">
+          <el-menu-item index="itemList" :route="{name:'adminItemList'}">
+            <i class="fa fa-file-text"></i>
+          </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="设计服务商管理" placement="right">
+          <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}"> 
+            <i class="fa fa-product-hunt"></i>
+          </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="需求公司管理" placement="right">
+          <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">
+            <i class="fa fa-product-hunt"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="德交易会" placement="right">
+          <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">
+            <i class="fa fa-product-hunt"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="订单管理" placement="right">
+          <el-menu-item index="orderList" :route="{name:'adminOrderList'}">
+            <i class="fa fa-file-text"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="推荐配置" placement="right">
+          <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">
+            <i class="fa fa-file-text"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="提现管理" placement="right">
+          <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">
+            <i class="fa fa-money"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="发票管理" placement="right">
+          <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">
+            <i class="fa fa-money"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="案例管理" placement="right">
+          <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">
+            <i class="fa fa-clipboard"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="内容管
+            理" placement="right">
+          <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">
+            <i class="fa fa-window-maximize" aria-hidden="true"></i></el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="系统管理" placement="right">
+          <el-menu-item index="categoryList" :route="{name: 'adminCategoryList'}">
+            <i class="fa fa-cogs"></i>
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="用户管理" placement="right">
+          <el-menu-item index="userList" :route="{name: 'adminUserList'}">
+            <i class="fa fa-user"></i>
+            </el-menu-item>
+          </el-tooltip>
+        </el-menu>
+      </div>
+      <div v-if="leftWidth === 4">
+        <el-menu
+          class="admin-menu"
+          :default-active="selectedName" 
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
+          <el-submenu index="1">
+          <template slot="title"><i class="fa fa-tachometer"></i> 控制台</template>
+            <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
+          </el-submenu>
+          <el-submenu index="10">
+            <template slot="title"><i class="fx-icon-red-packets1"></i>客户管理</template>
+            <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">客户列表</el-menu-item>
+            <el-menu-item index="customerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
+              <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
+              <el-menu-item index="itemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title"><i class="fa fa-product-hunt"></i> 设计服务商管理</template>
+              <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title"><i class="fa fa-product-hunt"></i> 需求公司管理</template>
+              <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="30">
+            <template slot="title"><i class="fa fa-product-hunt"></i> 顺德交易会</template>
+              <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
+              <el-menu-item index="demandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
+              <el-menu-item index="sdOrderList" :route="{name:'adminSdOrderList'}">订单列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="5">
+            <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>
+              <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="21">
+            <template slot="title"><i class="fa fa-file-text"></i> 推荐配置</template>
+              <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
+              <el-menu-item index="recommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
+          </el-submenu>
+          <el-submenu index="6">
+            <template slot="title"><i class="fa fa-money"></i> 提现管理</template>
+              <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="7">
+            <template slot="title"><i class="fa fa-money"></i> 发票管理</template>
+              <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
+              <el-menu-item index="adminIssueInvoicetList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
+          </el-submenu>
+          <el-submenu index="8">
+            <template slot="title"><i class="fa fa-clipboard"></i> 案例管理</template>
+              <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="15">
+            <template slot="title"><i class="fa fa-window-maximize" aria-hidden="true"></i> 内容管理</template>
+              <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
+              <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
+              <el-menu-item index="blockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
+              <el-menu-item index="articleList" :route="{name: 'adminArticleList'}">文章列表</el-menu-item>
+              <el-menu-item index="worksList" :route="{name: 'adminWorksList'}">作品列表</el-menu-item>
+              <el-menu-item index="awardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
+              <el-menu-item index="trendReportList" :route="{name: 'adminTrendReportList'}">趋势/报告列表</el-menu-item>
+              <el-menu-item index="commonlySiteList" :route="{name: 'adminCommonlySiteList'}">常用网站列表</el-menu-item>
+              <el-menu-item index="awardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="18">
+            <template slot="title"><i class="fa fa-cogs"></i> 系统管理</template>
+              <el-menu-item index="categoryList" :route="{name: 'adminCategoryList'}">分类列表</el-menu-item>
+              <el-menu-item index="noticeList" :route="{name: 'adminNoticeList'}">通知列表</el-menu-item>
+          </el-submenu>
+          <el-submenu index="20">
+            <template slot="title"><i class="fa fa-user"></i> 用户管理</template>
+              <el-menu-item index="userList" :route="{name: 'adminUserList'}">列表</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </div>
+    </section>
+    <section :class="['admin-container full-height', {'container-mini': leftWidth === 2}]">
+      <router-view></router-view>
+    </section>
     <div>
       <message-components></message-components>
     </div>
     <div>
-      <mine-view></mine-view>
+    <mine-view></mine-view>
     </div>
   </section>
 </template>
 
 <script>
-  import api from '@/api/api'
+  // import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
   export default {
-    name: 'vcenter_menu',
+    name: 'Admin',
     props: {
       currentName: {}
     },
     data () {
       return {
+        selectedName: 'dashBoard',
         isEmpty: false,
         leftValue: 2,
         designItems: [] // 订单提醒
       }
     },
     methods: {
-      redirectCompany(e) {
-        let companyId = this.$store.state.event.user.company_id
-        if (!companyId || companyId === 0) {
-          // this.$message.error('请先申请公司认证!')
-        } else {
-          this.$router.push({name: 'companyShow', params: {id: companyId}})
-        }
-      },
       alick(e) {
         sessionStorage.setItem('MENU_BAR', e.target.offsetLeft)
         this.$router.push(e.target.getAttribute('to'))
@@ -370,53 +322,20 @@
           }
         }
       },
-      getOrder() {
-        this.$http.get(api.designItemList)
-        .then((response) => {
-          if (response.data.meta.status_code === 200) {
-            this.isLoading = false
-            if (!response.data.data.length) {
-              this.isEmpty = true
-            } else {
-              this.isEmpty = false
-              this.waitCount = response.data.meta.pagination.total
-              let designItems = response.data.data
-              for (let i = 0; i < designItems.length; i++) {
-                let item = designItems[i]
-                let typeLabel = ''
-                if (item.item.type === 1) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
-                } else if (item.item.type === 2) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
-                }
-                designItems[i].item.type_label = typeLabel
-                designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-              } // endfor
-              this.designItems = designItems
-            }
-          } else {
-            this.$message.error(response.data.meta.message)
-            this.isLoading = false
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false
-          this.$message.error(error.message)
-          return false
-        })
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath)
       }
     },
     created() {
       this.leftValue = this.leftWidth
     },
-    mounted() {
-      let menu = sessionStorage.getItem('MENU_BAR')
-      this.$refs.Mmenulist.scrollLeft = menu - document.documentElement.clientWidth / 2 + 38
-    },
     computed: {
-      isMob() {
-        return this.$store.state.event.isMob
-      },
       isCompany() {
         return this.$store.state.event.user.type === 2
       },
@@ -467,14 +386,6 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
-      },
-      DarkorLight() {
-        // if (this.$route.name === 'vcenterCloudDriveList' && this.leftWidth === 2) {
-        //   return 'light'
-        // } else {
-        //   return 'dark'
-        // }
-        return 'dark'
       },
       eventUser() {
         let user = this.$store.state.event.user
@@ -540,14 +451,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .menuHide {
-    /* min-width: 160px; */
     background: #222;
     transition: 268ms all ease;
     position: fixed;
     z-index: 1;
     left: 0;
     top: 60px;
-    /* width: inherit; */
     width: 200px;
     height: calc(100% - 60px);
     /* overflow-y: auto; */
@@ -589,50 +498,50 @@
   }
 
   .menu-list .item.dashboard::before {
-    background: url(../../../assets/images/v_center_menu/Dashboard.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Dashboard.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.management::before {
-    background: url(../../../assets/images/v_center_menu/Management.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Management.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.Statistics::before {
-    background: url(../../../assets/images/v_center_menu/Statistics@2x.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Statistics@2x.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.cloud::before {
-    background: url(../../../assets/images/v_center_menu/Cloud.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Cloud.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.case::before,
   .menu-list .item.order::before,
   .menu-list .item.message::before,
   .menu-list .item.match-case::before {
-    background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Case.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.project-order::before {
-    background: url(../../../assets/images/v_center_menu/ProjectOrder.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/ProjectOrder.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.wallet::before {
-    background: url(../../../assets/images/v_center_menu/Wallet.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Wallet.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.account-management::before {
-    background: url(../../../assets/images/v_center_menu/AccountManagement.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/AccountManagement.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.user-management::before {
-    background: url(../../../assets/images/v_center_menu/UserManagement.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/UserManagement.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.company::before {
-    background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Company.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.demandList::before {
-    background: url(../../../assets/images/v_center_menu/Fire.png) no-repeat center;
+    background: url(../../assets/images/v_center_menu/Fire.png) no-repeat center;
     background-size: contain
   }
   .computer-btn {
@@ -689,11 +598,11 @@
     width: 60px;
     height: 60px;
     cursor: pointer;
-    background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
+    background: url(../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
     background-size: 24px;
   }
   .menu-icon:hover, .menu-icon:active {
-    background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #f7f7f7;
+    background: url(../../assets/images/v_center_menu/SideBar.png) no-repeat center #f7f7f7;
     background-size: 24px;
   }
   .home-icon {
@@ -702,15 +611,6 @@
     display: flex;
     align-items: center;
   }
-  /* .logo-icon {
-    width: 50px;
-    height: 60px;
-    transition: none;
-    padding: 0 16px;
-    margin-right: 30px;
-    background: url(../../../assets/images/logo.svg) no-repeat center / contain;
-    text-indent: -9999px;
-  } */
   .logo-icon img {
     width: 153px;
     height: 50px;
@@ -725,6 +625,14 @@
     height: 36px;
     border-radius: 50%;
     background: #f7f7f7;
+  }
+  .admin-container {
+    transition: 268ms all ease;
+    padding: 20px;
+    padding-left: 220px;
+  }
+  .container-mini {
+    padding-left: 80px;
   }
   .menuHide-mini {
     width: 60px;

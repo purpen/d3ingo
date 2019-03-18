@@ -2,15 +2,27 @@
  ** ###### 后台管理 ##########
  */
 module.exports = [
-  // 控制台
   {
     path: '/admin',
-    name: 'adminDashBoard',
+    name: 'admin',
     meta: {
-      title: '控制台',
-      requireAuth: true
+      requireAuth: true,
+      hideFooter: true
     },
-    component: require('@/components/admin/DashBoard')
+    component: require('@/components/admin/Admin'),
+    children: [
+      // 控制台
+      {
+        path: '/admin/dashboard',
+        name: 'adminDashBoard',
+        meta: {
+          title: '控制台',
+          requireAuth: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/DashBoard')
+      }
+    ]
   },
   // 客户管理
   {
