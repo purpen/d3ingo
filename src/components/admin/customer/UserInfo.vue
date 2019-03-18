@@ -2958,12 +2958,7 @@ export default {
   border: none;
   padding-left: 0px;
 }
-.user-status .el-select:hover .el-input__inner,
-.el-select .el-input__inner:focus {
-  border: none;
-  border-color: transparent;
-  box-shadow: none;
-}
+
 .user-status.status1 input {
   background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
 }
