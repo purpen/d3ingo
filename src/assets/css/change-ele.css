@@ -225,7 +225,7 @@
     background-color: #ff5a5f;
   }
   .el-select-dropdown__item {
-    color: #666;
+    color: #999;
     transition: 268ms all ease
   }
   .el-select-dropdown__item.selected.hover {
@@ -244,6 +244,10 @@
   .el-tag--primary .el-tag__close:hover {
     color: #ff5a5f;
     background: none
+  }
+  .el-tag--info {
+    background-color: #fafafa;
+    color: #999;
   }
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
     color: #222

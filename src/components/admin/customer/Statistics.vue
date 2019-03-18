@@ -152,10 +152,10 @@
                     {{table.cooperation}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.loss}}
+                    {{table.invalid}}
                   </el-col>
                   <el-col :span="3">
-                    {{table.invalid}}
+                    {{table.loss}}
                   </el-col>
                   <el-col :span="3">
                     {{table.loss_rate}}%
@@ -280,54 +280,56 @@
                 </el-date-picker>
               </div>
             </div>
-            <el-row :gutter="40">
-              <el-col :span="12">
-                <div class="funnel-box">
-                  <ECharts :options="polar" class="line-echarts">
-                  </ECharts>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="table-header">
-                  <el-row>
-                    <el-col :span="6">
-                      <p>转化环节</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>客户数量</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>上一步转化率</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p>整体转化率</p>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="table-content">
-                  <el-row v-for="(c,indexc) in chanceList" :key="indexc">
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.number}}
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.conversion}}%
-                      </p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p :class="{'fz-18': indexc === 'cooperation'}">
-                       {{c.total_conversion}}%
-                      </p>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-col>
-            </el-row>
+            <div class="funnel-margin">
+              <el-row :gutter="40">
+                <el-col :span="12">
+                  <div class="funnel-box">
+                    <ECharts :options="polar" class="line-echarts">
+                    </ECharts>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="table-header">
+                    <el-row>
+                      <el-col :span="6">
+                        <p>转化环节</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>客户数量</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>上一步转化率</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p>整体转化率</p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="table-content">
+                    <el-row v-for="(c,indexc) in chanceList" :key="indexc">
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.number}}
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                          {{c.conversion}}%
+                        </p>
+                      </el-col>
+                      <el-col :span="6">
+                        <p :class="{'fz-18': indexc === 'cooperation'}">
+                        {{c.total_conversion}}%
+                        </p>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
           </div>
           <div class="chart chart-line">
             <div class="chart-header">
@@ -633,20 +635,38 @@
                 </el-table-column>
                 <el-table-column
                   prop="cumulative"
-                  label="累计客户"
+                  label="商机"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="add"
-                  label="新增客户">
+                  prop="potential"
+                  label="潜在客户"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="docking"
+                  label="对接设计"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="sign"
+                  label="签订合作"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="invalid"
-                  label="无效客户">
+                  label="无效商机"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="low_price"
+                  label="低价客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="loss"
-                  label="流失客户">
+                  label="流失客户"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="wastage_rate"
@@ -678,12 +698,12 @@
                 border
                 style="width: 100%">
                 <el-table-column
-                  prop="new_from"
+                  prop="new_from_value"
                   label="来源"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="son_source"
+                  prop="son_source_value"
                   label="子来源">
                 </el-table-column>
                 <el-table-column
@@ -741,6 +761,7 @@ export default {
   data () {
     let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84']
     return {
+      color2: ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B', '#FFCDCF', '#00AC84'],
       page: {
         total: 1,
         size: 10,
@@ -1016,12 +1037,12 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#FFCDCF'],
+        color: ['#FF5A5F'],
         tooltip: {
-          // trigger: 'axis',
+          trigger: 'item',
           // backgroundColor: '#FF5A5F',
           axisPointer: {
-            type: 'none'
+            type: 'shadow'
           }
         },
         grid: {
@@ -1053,7 +1074,7 @@ export default {
             barWidth: '80%',
             emphasis: {
               itemStyle: {
-                color: '#FF5A5F'
+                color: '#FF8286'
               }
             },
             data: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -1076,15 +1097,15 @@ export default {
           trigger: 'item'
         },
         legend: {
-          bottom: 0,
+          bottom: 17,
           data: ['产品设计', '平面设计', '包装设计', '插画设计', 'UI/UX']
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '55%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -1124,8 +1145,8 @@ export default {
           {
             name: '访问来源',
             type: 'pie',
-            radius: '70%',
-            center: ['50%', '50%'],
+            radius: '68%',
+            center: ['50%', '48%'],
             data: [
             ],
             tooltip: {
@@ -1159,7 +1180,7 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['无明确预算', '1万以下', '5万以下', '5-10万', '10万-20万', '20万-30万', '30万-50万', '50万以上']
+          data: ['无明确预算', '1万以下', '1-5万以下', '5-10万', '10-20万', '20-30万', '30-50万', '50万以上']
         },
         series: [
           {
@@ -1308,6 +1329,8 @@ export default {
           pc_count: 0,
           new_from: 0,
           son_source: 0,
+          new_from_value: '',
+          son_source_value: '',
           url: '',
           wap_count: 0,
           device: 0,
@@ -1390,35 +1413,35 @@ export default {
           label: '全部来源'
         },
         {
-          value: '1',
+          value: '2',
           label: '网络广告'
         },
         {
-          value: '2',
+          value: '3',
           label: '官方'
         },
         {
-          value: '3',
+          value: '4',
           label: '合作伙伴'
         },
         {
-          value: '4',
+          value: '5',
           label: '内部推荐'
         },
         {
-          value: '5',
+          value: '6',
           label: '外部推荐'
         },
         {
-          value: '6',
+          value: '7',
           label: '新媒体'
         },
         {
-          value: '7',
+          value: '8',
           label: '展销会'
         },
         {
-          value: '8',
+          value: '1',
           label: '其他'
         }
       ], // 客户来源
@@ -1673,7 +1696,7 @@ export default {
         this.polar6.series[7].data = other
         this.polar6.series[8].data = alls
       } else {
-        let types = ['网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会', '其他']
+        let types = ['其他', '网络广告', '官方', '合作伙伴', '内部推荐', '外部推荐', '新媒体', '展销会']
         for (let p = 1; p < 9; p++) {
           if (p === parseInt(val)) {
             this.polar6.series[0].name = types[p - 1]
@@ -1684,9 +1707,27 @@ export default {
               color: '#333',
               fontSize: 14
             }
+            if (p === 1) {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[7]
+              }
+            } else {
+              this.polar6.series[0].itemStyle = {
+                'color': this.color2[p - 2]
+              }
+            }
             this.polar6.series.splice(1)
           }
         }
+      }
+      this.polar6.tooltip.formatter = function (params) {
+        let ret = ''
+        params.forEach(item => {
+          if (item.data > 0) {
+            ret += item.marker + item.seriesName + ': ' + item.data + '<br />'
+          }
+        })
+        return params[0].axisValue + '<br />' + ret
       }
     },
     // 筛选客户
@@ -2127,12 +2168,16 @@ export default {
               }
               let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
               let par = ''
-              for (let p in ret) {
-                if (p.length === 1) {
-                  par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+              if (params.name === '内部推荐' || params.name === '外部推荐' || params.name === '其他') {
+                return radius1 + ret.name + ': ' + ret['a']
+              } else {
+                for (let p in ret) {
+                  if (p.length === 1 && ret[p] !== 0) {
+                    par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
+                  }
                 }
+                return ret.name + '<br />' + par
               }
-              return ret.name + '<br />' + par
             }
           } else if (type === 4) {
             // 项目类型
@@ -2179,7 +2224,8 @@ export default {
                   probability: res[c].probability
                 }
                 res.splice(c, 1)
-              } else {
+              }
+              if (res[c].province_value) {
                 cityArr.push(res[c].province_value)
                 seriesData.push({
                   name: res[c].province_value,
@@ -2261,7 +2307,11 @@ export default {
                 'invalid': res.invalid[i].value,
                 'loss': res.loss[i].value,
                 'wastage_rate': res.wastage_rate[i].value + '%',
-                'date': res.add[i].date
+                'date': res.add[i].date,
+                'potential': res.potential[i].value,
+                'docking': res.docking[i].value,
+                'sign': res.sign[i].value,
+                'low_price': res.low_price[i].value
               }
               table.push(row)
             }
@@ -2655,16 +2705,17 @@ export default {
     padding-bottom: 0px;
   }
   .chart-circle {
-    height: 500px;
+    height: 550px;
+    padding-bottom: 15px;
   }
  .chart-line .line-echarts {
     height: 400px;
   }
   .chart-circle .chart-type .line-echarts {
-    height: 400px;
+    height: 460px;
   }
   .chart-circle .line-echarts {
-    height: 420px;
+    height: 460px;
   }
   /* .chart-line .line-echarts {
     height: 380px;
@@ -2771,5 +2822,8 @@ export default {
   }
   .funnel-box {
     margin-left: 20px;
+  }
+  .funnel-margin {
+    padding: 0 40px 0 20px;
   }
 </style>
