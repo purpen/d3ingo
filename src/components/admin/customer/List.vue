@@ -71,7 +71,7 @@
             </div>
           </div>       
           <div class="btn-list fz-0">
-            <el-button size="small"
+            <el-button size="small" :disabled="!voIpUserIds.includes(userId)"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="white-to-red-button">添加客户</el-button>
             <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
@@ -364,6 +364,7 @@ export default {
       },
       tableData: [],
       adminUserList: [],
+      voIpUserIds: [],
       noAllot: 0, // 没有负责人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
@@ -599,6 +600,13 @@ export default {
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.adminUserList = res.data.data
+          let ids = []
+          this.adminUserList.forEach(item => {
+            if (item.status === 1) {
+              ids.push(item.id)
+            }
+          })
+          this.voIpUserIds = [...new Set(ids)]
         } else {
           this.$message.error(res.data.message)
         }
@@ -629,6 +637,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === id) {
+              this.voIpUserIds.push(id)
+              this.voIpUserIds = [...new Set(this.voIpUserIds)]
               this.$set(array[i], 'status', 1)
             }
           })
@@ -650,6 +660,10 @@ export default {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === this.currentVoIpUserId) {
               this.$set(array[i], 'status', 2)
+              let index = this.voIpUserIds.indexOf(item.id)
+              if (index !== (-1)) {
+                this.voIpUserIds.splice(index, 1)
+              }
             }
           })
           this.$message.success('移除成功')
@@ -800,6 +814,7 @@ export default {
   created() {
     this.query.page = parseInt(this.$route.query.page || 1)
     this.getClueList()
+    this.getAdminList()
   },
   // directives: {Clickoutside},
   filters: {
@@ -813,6 +828,9 @@ export default {
     },
     token() {
       return this.$store.state.event.token
+    },
+    userId() {
+      return this.$store.state.event.user.id
     }
   },
   watch: {
