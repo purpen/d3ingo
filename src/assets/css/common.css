@@ -51,6 +51,9 @@
 .fz-20 {
   font-size: 20px;
 }
+.fz-22 {
+  font-size: 22px;
+}
 .tc-2 {
   color: #222
 }
@@ -111,6 +114,9 @@
 .line-height16 {
   line-height: 16px;
 }
+.line-height18 {
+  line-height: 18px;
+}
 .line-height30 {
   line-height: 30px;
 }
@@ -122,6 +128,9 @@
 }
 .line-height32 {
   line-height: 32px;
+}
+.line-height40 {
+  line-height: 40px;
 }
 .line-height1_5 {
   line-height: 1.5
