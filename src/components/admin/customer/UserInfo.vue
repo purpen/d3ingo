@@ -1473,6 +1473,8 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
+          this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
+            query: {page: this.query.page}})
           this.option = 'followLog'
           this.getUserInfo()
           this.getLogList()
