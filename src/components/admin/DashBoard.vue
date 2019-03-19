@@ -1,162 +1,148 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu></v-menu>
+  <div>
+    <div class="count-items">
+      <el-row :gutter="10">
+        <el-col :span="countNum">
+          <div class="count-item red">
+            <p class="count">{{ item.user_count }}</p>
+            <p class="title">注册用户</p>
+            <p class="des">需求方: <span class="red">{{ item.demand_user }}</span> | 设计服务商: <span class="red">{{ item.design_user }}</span></p>
+          </div>
+        </el-col>
 
-      <el-col :span="20" v-loading="isLoading">
+        <el-col :span="countNum">
+          <div class="count-item blue">
+            <p class="count">{{ item.item_count }}</p>
+            <p class="title">项目</p>
+            <p class="des">关闭: <span class="red">{{ item.close_item }}</span> | 进行中: <span
+              class="red">{{ item.processing_item }}</span> | 已完成: <span class="red">{{ item.finish_item }}</span>
+            </p>
+          </div>
+        </el-col>
 
-        <div class="count-items">
-          <el-row :gutter="10">
-            <el-col :span="countNum">
-              <div class="count-item red">
-                <p class="count">{{ item.user_count }}</p>
-                <p class="title">注册用户</p>
-                <p class="des">需求方: <span class="red">{{ item.demand_user }}</span> | 设计服务商: <span class="red">{{ item.design_user }}</span></p>
-              </div>
-            </el-col>
+        <el-col :span="countNum">
+          <div class="count-item green">
+            <p class="count">{{ item.pay_order }}</p>
+            <p class="title">订单</p>
+            <p class="des">待支付: <span class="red">{{ item.not_pay }}</span></p>
+          </div>
+        </el-col>
 
-            <el-col :span="countNum">
-              <div class="count-item blue">
-                <p class="count">{{ item.item_count }}</p>
-                <p class="title">项目</p>
-                <p class="des">关闭: <span class="red">{{ item.close_item }}</span> | 进行中: <span
-                  class="red">{{ item.processing_item }}</span> | 已完成: <span class="red">{{ item.finish_item }}</span>
+        <el-col :span="countNum">
+          <div class="count-item yellow">
+            <p class="count">{{ item.withdraw_order }}</p>
+            <p class="title">提现单</p>
+            <p class="des">~</p>
+          </div>
+        </el-col>
+
+      </el-row>
+    </div>
+
+    <div class="content-items">
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="content-item">
+            <div class="form-title">
+              <span>通知</span>
+            </div>
+
+            <div class="content-box" v-if="isNotice">
+
+              <p class="alert-title"><span>*</span> 请您尽快解决如下问题，不要让用户等太久哦〜</p>
+
+              <div class="item" v-show="item.not_design > 0">
+                <h3>设计服务商</h3>
+                <p class="item-title">有 <span class="green">{{ item.not_design }}</span> 家设计服务商等待认证</p>
+                <p class="item-btn">
+                  <router-link :to="{name: 'adminCompanyList'}">查看</router-link>
                 </p>
               </div>
-            </el-col>
 
-            <el-col :span="countNum">
-              <div class="count-item green">
-                <p class="count">{{ item.pay_order }}</p>
-                <p class="title">订单</p>
-                <p class="des">待支付: <span class="red">{{ item.not_pay }}</span></p>
+              <div class="item" v-show="item.not_demand > 0">
+                <h3>需求公司</h3>
+                <p class="item-title">有 <span class="green">{{ item.not_demand }}</span> 家需求公司等待认证</p>
+                <p class="item-btn">
+                  <router-link :to="{name: 'adminDemandCompanyList'}">查看</router-link>
+                </p>
               </div>
-            </el-col>
 
-            <el-col :span="countNum">
-              <div class="count-item yellow">
-                <p class="count">{{ item.withdraw_order }}</p>
-                <p class="title">提现单</p>
-                <p class="des">~</p>
+              <div class="item" v-show="item.bank_pay > 0">
+                <h3>订单</h3>
+                <p class="item-title">有 <span class="green">{{ item.bank_pay }}</span> 个订单申请对公打款，请留意账户打款动向〜</p>
+                <p class="item-btn">
+                  <router-link :to="{name: 'adminOrderList'}">查看</router-link>
+                </p>
               </div>
-            </el-col>
 
-          </el-row>
-        </div>
-
-        <div class="content-items">
-          <el-row :gutter="20">
-            <el-col :span="10">
-              <div class="content-item">
-                <div class="form-title">
-                  <span>通知</span>
-                </div>
-
-                <div class="content-box" v-if="isNotice">
-
-                  <p class="alert-title"><span>*</span> 请您尽快解决如下问题，不要让用户等太久哦〜</p>
-
-                  <div class="item" v-show="item.not_design > 0">
-                    <h3>设计服务商</h3>
-                    <p class="item-title">有 <span class="green">{{ item.not_design }}</span> 家设计服务商等待认证</p>
-                    <p class="item-btn">
-                      <router-link :to="{name: 'adminCompanyList'}">查看</router-link>
-                    </p>
-                  </div>
-
-                  <div class="item" v-show="item.not_demand > 0">
-                    <h3>需求公司</h3>
-                    <p class="item-title">有 <span class="green">{{ item.not_demand }}</span> 家需求公司等待认证</p>
-                    <p class="item-btn">
-                      <router-link :to="{name: 'adminDemandCompanyList'}">查看</router-link>
-                    </p>
-                  </div>
-
-                  <div class="item" v-show="item.bank_pay > 0">
-                    <h3>订单</h3>
-                    <p class="item-title">有 <span class="green">{{ item.bank_pay }}</span> 个订单申请对公打款，请留意账户打款动向〜</p>
-                    <p class="item-btn">
-                      <router-link :to="{name: 'adminOrderList'}">查看</router-link>
-                    </p>
-                  </div>
-
-                  <div class="item no-line" v-show="item.not_withdraw > 0">
-                    <h3>提现单</h3>
-                    <p class="item-title">有 <span class="green">{{ item.not_withdraw }}</span> 个提现单等待提现，请处理~</p>
-                    <p class="item-btn">
-                      <router-link :to="{name: 'adminWithDrawList'}">查看</router-link>
-                    </p>
-                  </div>
-
-                </div>
-
-                <div class="content-box center" v-else>
-                  <img src="../../assets/images/icon/control_icon.png"/>
-                  <p>当前无待处理事项</p>
-                </div>
-
+              <div class="item no-line" v-show="item.not_withdraw > 0">
+                <h3>提现单</h3>
+                <p class="item-title">有 <span class="green">{{ item.not_withdraw }}</span> 个提现单等待提现，请处理~</p>
+                <p class="item-btn">
+                  <router-link :to="{name: 'adminWithDrawList'}">查看</router-link>
+                </p>
               </div>
-            </el-col>
 
-            <el-col :span="14">
-              <div class="content-item">
-                <div class="form-title">
-                  <span>最近的项目</span>
-                </div>
-                <el-table
-                  :data="tableItemData"
-                  border
-                  v-loading="isItemLoading"
-                  class="admin-table"
-                  @selection-change="handleSelectionChange"
-                  style="width: 100%">
-                  <el-table-column
-                    prop="item.id"
-                    label="ID"
-                    width="50">
-                  </el-table-column>
-                  <el-table-column
-                    label="项目名称"
-                    min-width="120">
-                    <template slot-scope="scope">
-                      <p>
-                        <a href="#">{{ scope.row.info.name }}</a>
-                      </p>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    prop="item.status_label"
-                    min-width="100"
-                    label="状态">
-                  </el-table-column>
-                  <el-table-column
-                    prop="item.created_at"
-                    width="100"
-                    label="创建时间">
-                  </el-table-column>
-                </el-table>
+            </div>
 
-              </div>
-            </el-col>
+            <div class="content-box center" v-else>
+              <img src="../../assets/images/icon/control_icon.png"/>
+              <p>当前无待处理事项</p>
+            </div>
 
-          </el-row>
-        </div>
+          </div>
+        </el-col>
 
-      </el-col>
-    </el-row>
+        <el-col :span="14">
+          <div class="content-item">
+            <div class="form-title">
+              <span>最近的项目</span>
+            </div>
+            <el-table
+              :data="tableItemData"
+              border
+              v-loading="isItemLoading"
+              class="admin-table"
+              @selection-change="handleSelectionChange"
+              style="width: 100%">
+              <el-table-column
+                prop="item.id"
+                label="ID"
+                width="50">
+              </el-table-column>
+              <el-table-column
+                label="项目名称"
+                min-width="120">
+                <template slot-scope="scope">
+                  <p>
+                    <a href="#">{{ scope.row.info.name }}</a>
+                  </p>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="item.status_label"
+                min-width="100"
+                label="状态">
+              </el-table-column>
+              <el-table-column
+                prop="item.created_at"
+                width="100"
+                label="创建时间">
+              </el-table-column>
+            </el-table>
 
+          </div>
+        </el-col>
+
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
   import api from '@/api/api'
-  import vMenu from '@/components/admin/Menu'
   export default {
     name: 'admin_dash_board',
-    components: {
-      vMenu
-    },
     data () {
       return {
         countNum: 6,

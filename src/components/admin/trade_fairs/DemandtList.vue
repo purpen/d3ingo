@@ -1,210 +1,195 @@
 <template>
-  <div class="container company-verify">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="demandtList"></v-menu>
+  <div class="content company-verify">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDemandtList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDemandtList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">待审核</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDemandtList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">通过审核</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDemandtList', query: {type: -1}}" :class="{'item': true, 'is-active': menuType === -1}" active-class="false">未通过</router-link>
+      </div>
+    </div>
 
-          <div class="admin-menu-sub">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+    <div class="admin-search-form">
+      <el-form :inline="true" :model="query">
+        <el-form-item>
+          <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+            <el-option label="项目ID" value="1"></el-option>
+            <el-option label="成果名称" value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <el-table
+      :data="tableData"
+      border
+      v-loading="isLoading"
+      class="admin-table"
+      @selection-change="handleSelectionChange"
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="60">
+      </el-table-column>
+      <el-table-column
+        label="Logo"
+        width="80">
+          <template slot-scope="scope">
+            <p><img :src="scope.row.logo_url" width="50" /></p>
+          </template>
+      </el-table-column>
+      <el-table-column
+        label="内容"
+        min-width="160">
+          <template slot-scope="scope">
+            <p>项目名称: {{ scope.row.name }}</p>
+            <p>设计类别: {{ scope.row.design_types_value | typeJoin}}</p>
+            <p>交付时间: {{ scope.row.cycle_value }}</p>
+            <p>项目预算: {{ scope.row.design_cost_value }}</p>
+            <p>产品类别: {{ scope.row.type_value }}</p>
+            <p>所属行业: {{ scope.row.field_value }}</p>
+            <p>工作地点: {{scope.row.item_province_value}}{{scope.row.item_city_value}}</p>
+            <el-tooltip class="item" effect="light" placement="bottom">
+              <div slot="content" style="width:400px; font-size:14px">{{scope.row.content}}</div>
+              <p class="text-flow">功能描述: {{scope.row.content}}</p>
+            </el-tooltip>
+          </template>
+      </el-table-column>
+      <el-table-column
+        label="所属公司"
+        min-width="90">
+          <template slot-scope="scope">
+            <div>
+              {{scope.row.demand_company_name}}
             </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">待审核</router-link>
+            <div>
+              {{scope.row.phone}}
             </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">通过审核</router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: -1}}" :class="{'item': true, 'is-active': menuType === -1}" active-class="false">未通过</router-link>
-            </div>
-          </div>
+          </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="status"
+        label="审核状态">
+          <template slot-scope="scope">
+            <p v-if="scope.row.status === 2"><el-tag type="success">已发布</el-tag></p>
+            <p v-if="scope.row.status === -1"><el-tag type="danger">未通过</el-tag></p>
+            <p v-if="scope.row.status === 1"><el-tag type="warning">待审核</el-tag></p>
+          </template>
+      </el-table-column>
+      <!-- <el-table-column
+        align="center"
+        label="状态">
+          <template slot-scope="scope">
+            <p v-if="scope.row.status === 1"><el-tag type="success">正常</el-tag></p>
+            <p v-else><el-tag type="danger">禁用</el-tag></p>
+          </template>
+      </el-table-column> -->
+      <el-table-column
+        align="center"
+        prop="created_at"
+        width="100"
+        label="创建时间">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        width="100"
+        label="操作">
+          <template slot-scope="scope">
+            <p class="operate">
+              <span class="clearfix">
+                <a href="javascript:void(0);"
+                  v-if="scope.row.status === 1" @click="setVerify(scope.$index, scope.row,2)" class="tag-pass">通过</a>
+                <a href="javascript:void(0);" v-if="scope.row.status === 1 || scope.row.status === 2" @click="setVerify(scope.$index, scope.row, -1)"
+                class="tag-refuse">拒绝</a>
+              </span>
+              <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
+              <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)"
+              class="tag-able">启用</a> -->
+            </p>
+            <div v-if="scope.row.status === 2" @click="upDetails(scope.row.id)"
+                class="tag-pass focus-cursor">收藏数: {{scope.row.follow_count}}</div>
+          </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog
+      title="收藏数"
+      :visible.sync="focusOn"
+      width="380px" class="background-style">
+      <el-row class="title-style">
+        <el-col :span="4"><div class="">序号</div></el-col>
+        <el-col :span="10"><div class="">公司名称</div></el-col>
+        <el-col :span="10"><div class="">联系电话</div></el-col>
+      </el-row>
+      <div class="row-height scroll-bar">
+        <el-row class="dialog-top" v-for="(company, index) in formup" :key="index">
+          <el-col :span="4"><div class="">{{index}}</div></el-col>
+          <el-col :span="10"><div class="">{{company.design_company_name || ''}}</div></el-col>
+          <el-col :span="10"><div class="">{{company.phone}}</div></el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="focusOn = false">关 闭</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="收藏公司" :visible.sync="focusOn">
+      <el-table :data="formup">
+        <el-table-column property="design_company_name" label="公司名称" width="200"></el-table-column>
+        <el-table-column property="realname" label="联系人" width="150"></el-table-column>
+        <el-table-column property="phone" label="手机号"></el-table-column>
+      </el-table>
+    </el-dialog>
+    <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
+      <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
+        <el-form-item prop="refuseRease">
+          <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" v-if="verify.refuseRease" @click="setVerify(verify.index, verify.item, verify.evt, verify.refuseRease)">确 定</el-button>
+        <el-button size="small" type="primary" class="button" v-else>确 定</el-button>
 
-          <div class="admin-search-form">
-            <el-form :inline="true" :model="query">
-              <el-form-item>
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="项目ID" value="1"></el-option>
-                  <el-option label="成果名称" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+      </span>
+    </el-dialog>
 
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="Logo"
-              width="80">
-                <template slot-scope="scope">
-                  <p><img :src="scope.row.logo_url" width="50" /></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="内容"
-              min-width="160">
-                <template slot-scope="scope">
-                  <p>项目名称: {{ scope.row.name }}</p>
-                  <p>设计类别: {{ scope.row.design_types_value | typeJoin}}</p>
-                  <p>交付时间: {{ scope.row.cycle_value }}</p>
-                  <p>项目预算: {{ scope.row.design_cost_value }}</p>
-                  <p>产品类别: {{ scope.row.type_value }}</p>
-                  <p>所属行业: {{ scope.row.field_value }}</p>
-                  <p>工作地点: {{scope.row.item_province_value}}{{scope.row.item_city_value}}</p>
-                  <el-tooltip class="item" effect="light" placement="bottom">
-                    <div slot="content" style="width:400px; font-size:14px">{{scope.row.content}}</div>
-                    <p class="text-flow">功能描述: {{scope.row.content}}</p>
-                  </el-tooltip>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="所属公司"
-              min-width="90">
-                <template slot-scope="scope">
-                  <div>
-                    {{scope.row.demand_company_name}}
-                  </div>
-                  <div>
-                    {{scope.row.phone}}
-                  </div>
-                </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="status"
-              label="审核状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === 2"><el-tag type="success">已发布</el-tag></p>
-                  <p v-if="scope.row.status === -1"><el-tag type="danger">未通过</el-tag></p>
-                  <p v-if="scope.row.status === 1"><el-tag type="warning">待审核</el-tag></p>
-                </template>
-            </el-table-column>
-            <!-- <el-table-column
-              align="center"
-              label="状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === 1"><el-tag type="success">正常</el-tag></p>
-                  <p v-else><el-tag type="danger">禁用</el-tag></p>
-                </template>
-            </el-table-column> -->
-            <el-table-column
-              align="center"
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p class="operate">
-                    <span class="clearfix">
-                      <a href="javascript:void(0);"
-                        v-if="scope.row.status === 1" @click="setVerify(scope.$index, scope.row,2)" class="tag-pass">通过</a>
-                      <a href="javascript:void(0);" v-if="scope.row.status === 1 || scope.row.status === 2" @click="setVerify(scope.$index, scope.row, -1)"
-                      class="tag-refuse">拒绝</a>
-                    </span>
-                    <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
-                    <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)"
-                    class="tag-able">启用</a> -->
-                  </p>
-                  <div v-if="scope.row.status === 2" @click="upDetails(scope.row.id)"
-                      class="tag-pass focus-cursor">收藏数: {{scope.row.follow_count}}</div>
-                </template>
-            </el-table-column>
-          </el-table>
-          <el-dialog
-            title="收藏数"
-            :visible.sync="focusOn"
-            width="380px" class="background-style">
-            <el-row class="title-style">
-              <el-col :span="4"><div class="">序号</div></el-col>
-              <el-col :span="10"><div class="">公司名称</div></el-col>
-              <el-col :span="10"><div class="">联系电话</div></el-col>
-            </el-row>
-            <div class="row-height scroll-bar">
-              <el-row class="dialog-top" v-for="(company, index) in formup" :key="index">
-                <el-col :span="4"><div class="">{{index}}</div></el-col>
-                <el-col :span="10"><div class="">{{company.design_company_name || ''}}</div></el-col>
-                <el-col :span="10"><div class="">{{company.phone}}</div></el-col>
-              </el-row>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="focusOn = false">关 闭</el-button>
-            </span>
-          </el-dialog>
-          <el-dialog title="收藏公司" :visible.sync="focusOn">
-            <el-table :data="formup">
-              <el-table-column property="design_company_name" label="公司名称" width="200"></el-table-column>
-              <el-table-column property="realname" label="联系人" width="150"></el-table-column>
-              <el-table-column property="phone" label="手机号"></el-table-column>
-            </el-table>
-          </el-dialog>
-          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
-            <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
-              <el-form-item prop="refuseRease">
-                <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>
-              </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-              <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-              <el-button size="small" type="primary" v-if="verify.refuseRease" @click="setVerify(verify.index, verify.item, verify.evt, verify.refuseRease)">确 定</el-button>
-              <el-button size="small" type="primary" class="button" v-else>确 定</el-button>
-
-            </span>
-          </el-dialog>
-
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
-        </div>
-      </el-col>
-    </el-row>
-
+    <el-pagination
+      v-if="tableData.length && query.totalCount > query.pageSize"
+      class="pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="query.page"
+      :page-sizes="[50, 100, 500]"
+      :page-size="query.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="query.totalCount">
+    </el-pagination>
 
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_demandtList',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

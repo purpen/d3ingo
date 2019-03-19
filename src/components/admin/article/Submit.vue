@@ -1,177 +1,165 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="articleList"></v-menu>
+  <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminArticleList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
+      <div class="fr">
+        <router-link :to="{name: 'adminArticleSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
+      </div>
+    </div>
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminArticleList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminArticleSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
+      <div class="content-box">
+        <div class="form-title">
+          <span>{{ itemMode }}</span>
         </div>
+        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
-          <div class="content-box">
-            <div class="form-title">
-              <span>{{ itemMode }}</span>
-            </div>
-            <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
-
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="6">
-                  <el-form-item label="文章来源" prop="source_from">
-                    <el-input v-model="form.source_from" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-form-item label="类型" prop="type">
-                <el-radio-group v-model.number="form.type">
-                  <el-radio-button
-                    v-for="item in typeOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
+          <el-row :gutter="24">
+            <el-col :span="12">
+              <el-form-item label="标题" prop="title">
+                <el-input v-model="form.title" placeholder=""></el-input>
               </el-form-item>
+            </el-col>
+          </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="16">
-                  <el-form-item label="专题地址" prop="topic_url">
-                    <el-input v-model="form.topic_url" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-form-item label="分类" prop="classification_id">
-                <el-radio-group v-model.number="form.classification_id">
-                  <el-radio-button
-                    v-for="item in categoryOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
+          <el-row :gutter="24">
+            <el-col :span="6">
+              <el-form-item label="文章来源" prop="source_from">
+                <el-input v-model="form.source_from" placeholder=""></el-input>
               </el-form-item>
+            </el-col>
+          </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标签" prop="label_str">
-                    <el-tag
-                      :key="tag"
-                      v-for="tag in dynamicTags"
-                      closable
-                      :disable-transitions="false"
-                      @close="handleClose(tag)">
-                      {{tag}}
-                    </el-tag>
-                    <el-input 
-                      v-model="form.label_str"
-                        class="input-new-tag"
-                        v-if="inputVisible"
-                        ref="saveTagInput"
-                        size="small"
-                        @keyup.enter.native="handleInputConfirm"
-                        @blur="handleInputConfirm">
-                    </el-input>
-                      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-                    <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
-                  </el-form-item>
-                </el-col>
-              </el-row>
+          <el-form-item label="类型" prop="type">
+            <el-radio-group v-model.number="form.type">
+              <el-radio-button
+                v-for="item in typeOptions"
+                :key="item.index"
+                :label="item.value">{{ item.label }}</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
 
-              <el-row >
-                <el-col :span="24">
-                  <el-form-item label="上传封面图" prop="">
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      :show-file-list="false"
-                      list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
-                    </el-upload>
+          <el-row :gutter="24">
+            <el-col :span="16">
+              <el-form-item label="专题地址" prop="topic_url">
+                <el-input v-model="form.topic_url" placeholder=""></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-                    <div class="file-list">
-                      <el-row :gutter="10">
-                        <el-col :span="8" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                                <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
+          <el-form-item label="分类" prop="classification_id">
+            <el-radio-group v-model.number="form.classification_id">
+              <el-radio-button
+                v-for="item in categoryOptions"
+                :key="item.index"
+                :label="item.value">{{ item.label }}</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
 
-                              <div class="opt">
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div>
-
-                  </el-form-item>
-
-                </el-col>
-              </el-row>
-
-              <el-form-item label="简述" prop="short_content">
-                <el-input
-                  type="textarea"
-                  :rows="3"
-                  placeholder="用于列表页展示"
-                  v-model="form.short_content">
+          <el-row :gutter="24">
+            <el-col :span="12">
+              <el-form-item label="标签" prop="label_str">
+                <el-tag
+                  :key="tag"
+                  v-for="tag in dynamicTags"
+                  closable
+                  :disable-transitions="false"
+                  @close="handleClose(tag)">
+                  {{tag}}
+                </el-tag>
+                <el-input 
+                  v-model="form.label_str"
+                    class="input-new-tag"
+                    v-if="inputVisible"
+                    ref="saveTagInput"
+                    size="small"
+                    @keyup.enter.native="handleInputConfirm"
+                    @blur="handleInputConfirm">
                 </el-input>
+                  <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row >
+            <el-col :span="24">
+              <el-form-item label="上传封面图" prop="">
+                <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :file-list="fileList"
+                  :data="uploadParam"
+                  :on-progress="uploadProgress"
+                  :on-error="uploadError"
+                  :on-success="uploadSuccess"
+                  :before-upload="beforeUpload"
+                  :show-file-list="false"
+                  list-type="picture">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
+                </el-upload>
+
+                <div class="file-list">
+                  <el-row :gutter="10">
+                    <el-col :span="8" v-for="(d, index) in fileList" :key="index">
+                      <el-card :body-style="{ padding: '0px' }" class="item">
+                        <div class="image-box">
+                            <img :src="d.url">
+                        </div>
+                        <div class="content">
+                          <p>{{ d.name }}</p>
+
+                          <div class="opt">
+                            <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                              <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
+                            </el-tooltip>
+                          </div>
+                        </div>
+                      </el-card>
+                    </el-col>
+                  </el-row>
+                </div>
+
               </el-form-item>
 
-              <el-form-item label="内容" prop="content">
-                <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
-              </el-form-item>
-              <el-checkbox v-model="isSynchro">同步到官网社区</el-checkbox>
+            </el-col>
+          </el-row>
 
-              <div class="form-btn fr">
-                  <el-button @click="returnList">取消</el-button>
-                  <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
-              </div>
-              <div class="clear"></div>
-            </el-form>
+          <el-form-item label="简述" prop="short_content">
+            <el-input
+              type="textarea"
+              :rows="3"
+              placeholder="用于列表页展示"
+              v-model="form.short_content">
+            </el-input>
+          </el-form-item>
 
+          <el-form-item label="内容" prop="content">
+            <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
+          </el-form-item>
+          <el-checkbox v-model="isSynchro">同步到官网社区</el-checkbox>
+
+          <div class="form-btn fr">
+              <el-button @click="returnList">取消</el-button>
+              <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
           </div>
-        </div>
-      </el-col>
-    </el-row>
+          <div class="clear"></div>
+        </el-form>
 
-
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import typeData from '@/config'
@@ -179,7 +167,6 @@ import axios from 'axios'
 export default {
   name: 'admin_article_submit',
   components: {
-    vMenu,
     mavonEditor
   },
   data() {

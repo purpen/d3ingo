@@ -1,151 +1,136 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="designCaseList"></v-menu>
+  <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDesignCaseList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDesignCaseList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDesignCaseList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">通过</router-link>
+      </div>
+      <div class="fr admin-menu-sub-list">
+        <el-input
+          placeholder="请输入内容按Enter搜索"
+          size="mini"
+          prefix-icon="el-icon-search"
+          v-model="query.value"
+          @change="searchDesignCase">
+        </el-input>
+      </div>
+    </div>
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminDesignCaseList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminDesignCaseList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
-          </div>
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminDesignCaseList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">通过</router-link>
-          </div>
-          <div class="fr admin-menu-sub-list">
-            <el-input
-              placeholder="请输入内容按Enter搜索"
-              size="mini"
-              prefix-icon="el-icon-search"
-              v-model="query.value"
-              @change="searchDesignCase">
-            </el-input>
-          </div>
-        </div>
+    <el-table
+      :data="tableData"
+      border
+      v-loading="isLoading"
+      class="admin-table"
+      @selection-change="handleSelectionChange"
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="60">
+      </el-table-column>
+      <el-table-column
+        label="封面"
+        width="80">
+          <template slot-scope="scope">
+            <p><img :src="scope.row.cover_url" width="50" /></p>
+          </template>
+      </el-table-column>
+      <el-table-column
+        label="内容"
+        min-width="250">
+          <template slot-scope="scope">
+            <p>标题: <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: scope.row.id}}" target="_blank">{{ scope.row.title }}</router-link></p>
+            <p>类型: {{ scope.row.type_label }}</p>
+            <p>服务客户: {{ scope.row.customer }}</p>
+            <p>标签: {{ scope.row.tags }}</p>
+          </template>
+      </el-table-column>
+      <el-table-column
+        label="创建人">
+          <template slot-scope="scope">
+            <p>
+              {{ scope.row.user_id }}
+            </p>
+          </template>
+      </el-table-column>
+      <el-table-column
+        label="所属公司">
+          <template slot-scope="scope">
+            <p>
+              <router-link :to="{name: 'companyShow', params: {id: scope.row.design_company.id}}" target="_blank">{{ scope.row.design_company.company_name }}</router-link>
+            </p>
+          </template>
+      </el-table-column>
 
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="封面"
-              width="80">
-                <template slot-scope="scope">
-                  <p><img :src="scope.row.cover_url" width="50" /></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="内容"
-              min-width="250">
-                <template slot-scope="scope">
-                  <p>标题: <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: scope.row.id}}" target="_blank">{{ scope.row.title }}</router-link></p>
-                  <p>类型: {{ scope.row.type_label }}</p>
-                  <p>服务客户: {{ scope.row.customer }}</p>
-                  <p>标签: {{ scope.row.tags }}</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="创建人">
-                <template slot-scope="scope">
-                  <p>
-                    {{ scope.row.user_id }}
-                  </p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="所属公司">
-                <template slot-scope="scope">
-                  <p>
-                    <router-link :to="{name: 'companyShow', params: {id: scope.row.design_company.id}}" target="_blank">{{ scope.row.design_company.company_name }}</router-link>
-                  </p>
-                </template>
-            </el-table-column>
+      <el-table-column
+        prop="verify_status"
+        label="是否公开">
+          <template slot-scope="scope">
+            <p v-if="scope.row.open === 1"><el-tag type="success">是</el-tag></p>
+            <p v-else><el-tag type="gray">否</el-tag></p>
+          </template>
+      </el-table-column>
+      <!-- <el-table-column
+        label="状态">
+          <template slot-scope="scope">
+            <p v-if="scope.row.status === 1"><el-tag type="success">正常</el-tag></p>
+            <p v-else><el-tag type="gray">禁用</el-tag></p>
+          </template>
+      </el-table-column> -->
+      <el-table-column
+        prop="created_at"
+        width="100"
+        label="创建时间">
+      </el-table-column>
+      <el-table-column
+        width="100"
+        label="操作">
+          <template slot-scope="scope">
+            <p>
+              <a href="javascript:void(0);" v-if="scope.row.open === 1" @click="setOpen(scope.$index, scope.row, 0)">取消公开</a>
+              <a href="javascript:void(0);" v-else @click="setOpen(scope.$index, scope.row, 1)">公开</a>
+              <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a> -->
+              <!-- <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a> -->
+            </p>
+            <!--
+            <p>
+              <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
+              <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
+            </p>
+            -->
+          </template>
+      </el-table-column>
+    </el-table>
 
-            <el-table-column
-              prop="verify_status"
-              label="是否公开">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.open === 1"><el-tag type="success">是</el-tag></p>
-                  <p v-else><el-tag type="gray">否</el-tag></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === 1"><el-tag type="success">正常</el-tag></p>
-                  <p v-else><el-tag type="gray">禁用</el-tag></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-if="scope.row.open === 1" @click="setOpen(scope.$index, scope.row, 0)">取消公开</a>
-                    <a href="javascript:void(0);" v-else @click="setOpen(scope.$index, scope.row, 1)">公开</a>
-                    <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a>
-                    <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a>
-                  </p>
-                  <!--
-                  <p>
-                    <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
-                    <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
-                  </p>
-                  -->
-                </template>
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
-        </div>
-      </el-col>
-    </el-row>
-
+    <el-pagination
+      v-if="tableData.length && query.totalCount > query.pageSize"
+      class="pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="query.page"
+      :page-sizes="[50, 100, 500]"
+      :page-size="query.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="query.totalCount">
+    </el-pagination>
 
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_design_case_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,
