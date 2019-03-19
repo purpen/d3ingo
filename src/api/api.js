@@ -173,6 +173,12 @@ export default {
 
   // 控制台
   adminSurveyIndex: '/admin/survey/index', // GET 控制台
+  adminOverviewCompany: '/admin/overview/company', // GET 概览-入驻公司数量统计
+  adminOverviewRevenueType: '/admin/overview/revenueType', // GET 概览-收入按类型统计
+  adminOverviewIncomeStatistics: '/admin/overview/incomeStatistics', // GET 概览-收入统计
+  adminOverviewClueStatistics: '/admin/overview/clueStatistics', // GET 潜在客户统计
+  adminOverviewOrderStatistics: '/admin/overview/orderStatistics', // GET 概览-订单统计
+  adminOverviewItemStatistics: '/admin/overview/itemStatistics', // GET 概览-项目统计
 
   // 用户管理
   adminUserLists: '/admin/user/lists', // GET 用户列表
