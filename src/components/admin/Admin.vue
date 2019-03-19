@@ -79,7 +79,6 @@
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
-          :default-active="selectedName" 
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
           <el-tooltip class="item" content="控制台" placement="right">
@@ -120,7 +119,7 @@
           </el-tooltip>
           <el-tooltip class="item" content="推荐配置" placement="right">
           <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">
-            <i class="fa fx-2 fa-file-o"></i>
+            <i class="fa fx-2 fa-sliders" aria-hidden="true"></i>
             </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="提现管理" placement="right">
@@ -194,7 +193,7 @@
               <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
           </el-submenu>
           <el-submenu index="21">
-            <template slot="title"><i class="fa fx-2 fa-file-o"></i> 推荐配置</template>
+            <template slot="title"><i class="fa fx-2 fa-sliders" aria-hidden="true"></i> 推荐配置</template>
               <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
               <el-menu-item index="recommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
           </el-submenu>
