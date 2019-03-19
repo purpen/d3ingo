@@ -189,6 +189,9 @@
 .margin0 {
   margin: 0
 }
+.margin-r-10 {
+  margin-right: 10px;
+}
 .margin-r-15 {
   margin-right: 15px!important;
 }

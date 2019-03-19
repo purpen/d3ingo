@@ -91,7 +91,7 @@
           </div>
 
           <div class="user-body margin-t15">
-            <div class="user-info-left fl contant-border">
+            <div class="user-info-left fl contant-border  margin-r-10">
               <div class="card-body-header">
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目信息</span>
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">客户信息</span>
@@ -231,111 +231,187 @@
                   </ul>
                 </div>
               </div>
+
               <div v-if="option === 'user'">
-              <div class="bb-e6">
-                <p class="padding-l30 padding-r40 clearfix line-height40">
-                  <span class="tc-3 fl fw-5">基本信息</span>
-                  <span class="fr">编辑</span>
-                </p>
+                <div class="bb-e6">
+                  <p class="padding-l30 padding-r40 clearfix line-height40">
+                    <span class="tc-3 fl fw-5">基本信息</span>
+                    <span class="fr">编辑</span>
+                  </p>
+                </div>
+                <div class="client-info">
+                  <el-row class="padding-l30">
+                    <el-col :md="4" :lg="4">
+                      <span class="tc-9">客户姓名</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.name}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">客户来源</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{sourceValue + '/' + sonSourceValue}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30"> 
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">客户所有人</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.execute_user_name}}</span>
+                    </el-col>
+                  </el-row>
+                  <div class="client-line"></div>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">职位</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.position}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">公司</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.company}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">公司地址</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.province_value}}{{clientList.city_value}}</span>
+                    </el-col>
+                  </el-row>
+                  <div class="client-line"></div>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">电话</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.phone}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">微信</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.wx}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">QQ</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.qq}}</span>
+                    </el-col>
+                  </el-row>
+                  <div class="client-line"></div>
+                  <el-row class="padding-l30">
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">备注</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.summary}}</span>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="other-info">
+                  <div class="bb-e6">
+                    <p class="padding-l30 padding-r40 line-height40">
+                      <span class="tc-3 fw-5">其他信息</span>
+                    </p>
+                  </div>
+
+                  <el-row class="padding-l30">
+                    <el-col :md="4" :lg="4">
+                      <span class="tc-9">客户编号</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.name}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col :md="4" :lg="4">
+                      <span class="tc-9">创建人</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.name}}</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row class="padding-l30">
+                    <el-col :md="4" :lg="4">
+                      <span class="tc-9">修改人</span>
+                    </el-col>
+                    <el-col :md="16" :lg="16">
+                      <span>{{clientList.name}}</span>
+                    </el-col>
+                  </el-row>
+                </div>
               </div>
-              <div class="client-info">
-                <el-row class="padding-l30">
-                  <el-col :md="4" :lg="4">
-                    <span class="tc-9">客户姓名</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.name}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">客户来源</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{sourceValue + '/' + sonSourceValue}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30"> 
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">客户所有人</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.execute_user_name}}</span>
-                  </el-col>
-                </el-row>
-                <div class="client-line"></div>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">职位</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.position}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">公司</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.company}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">公司地址</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.province_value}}{{clientList.city_value}}</span>
-                  </el-col>
-                </el-row>
-                <div class="client-line"></div>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">电话</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.phone}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">微信</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.wx}}</span>
-                  </el-col>
-                </el-row>
-                
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">QQ</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.qq}}</span>
-                  </el-col>
-                </el-row>
-                <div class="client-line"></div>
-                <el-row class="padding-l30">
-                  <el-col  :md="4" :lg="4">
-                    <span class="tc-9">备注</span>
-                  </el-col>
-                  <el-col :md="16" :lg="16">
-                    <span>{{clientList.summary}}</span>
-                  </el-col>
-                </el-row>
-              </div>
-            </div>
             </div>
 
-            <div>
-              <div class="user-log">
+            <div class="contant-border user-log">
+              <div class="card-body-header">
+                <span @click="changeOption1('log')" :class="{'active': option1 === 'log'}">记录</span>
+                <span @click="changeOption1('event')" :class="{'active': option1 === 'event'}">事件</span>
+              </div>
+
+              <div class="progress">
+                <div>
+                  <el-input type="textarea"
+                    placeholder="添加跟进内容"
+                    v-model.trim="followVal"
+                    @focus="focusInput"
+                    @blur="blurInput"
+                    @keydown.native.enter.shift="quickSubmit"
+                    :autosize="{ minRows: 1, maxRows: 10}"
+                    :class="{'active': focusHeight}"
+                    :maxlength="500">
+                  </el-input>
+                  <div class="send clearfix" v-if="focusHeight">
+                    <div v-if="isFollowTime" class="date-picker">
+                        <el-date-picker
+                          v-model="followTime"
+                          type="date"
+                          placeholder="选择日期"
+                          :picker-options="pickerOptions1">
+                        </el-date-picker>
+                    </div>
+                    <el-button class="fr" :disabled="!isHasPower" size="mini" :loading="boolFollowLog" type="primary" @click="sendProgressVal">发布</el-button>
+                  </div>
+                </div>
+                <ul class="padding-l20">
+                  <li v-for="(item, i) in followLogList" :key="i" class="log-li">
+                    <p>
+                      <i class="fx fx-icon-sound-loudly"></i>
+                      <span class="fz-12">事件</span>
+                      <span class="fz-12 fr">{{item.date}}</span>
+                    </p>
+                    <p class="margin-t8 padding-l20">
+                      <span>{{item.log}}</span>
+                      <span class="name fz-12 fr">{{item.execute_user_name || ''}}</span>
+                    </p>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -1086,7 +1162,8 @@ export default {
       boolProgressContant: true,
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
-      option: 'user',
+      option: 'project',
+      option1: 'log',
       BoolEditUserInfo: false,
       focusHeight: false,
       BoolmarkFailure: false,
@@ -1520,6 +1597,9 @@ export default {
     changeOption(e) {
       this.option = e
     },
+    changeOption1(e) {
+      this.option1 = e
+    },
     changeLevel() {
       if (!this.currentId) return
       if (this.userForm.rank !== this.baseInfo.rank) {
@@ -1930,10 +2010,9 @@ export default {
     },
     focusInput() {
       this.focusHeight = true
-      this.boolEditLog = false
     },
-    focusInput1() {
-      // this.boolEditLog = false
+    blurInput() {
+      // this.focusHeight = false
     },
     quickSubmit() {
       this.sendProgressVal()
@@ -2386,10 +2465,9 @@ export default {
     }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
-      if (this.currentId) {
-        this.option = 'followLog'
-      }
       this.getUserInfo()
+      this.option = 'project'
+      // this.getUserProject()
       this.getLogList()
     } else {
       this.userForm.execute_user_id = this.userId
@@ -2451,8 +2529,14 @@ export default {
 .padding10 {
   padding: 10px;
 }
+.padding-l20 {
+  padding-left: 20px;
+}
 .padding-l30 {
   padding-left: 30px;
+}
+.padding-l40 {
+  padding-left: 40px;
 }
 .padding-r40 {
   padding-right: 40px;
@@ -2544,7 +2628,7 @@ export default {
   line-height: 30px;
   color: #666666;
 }
-.project-li span, .client-info span {
+.project-li span, .client-info span, .other-info span {
   line-height: 34px;
 }
 .add-design {
@@ -2577,7 +2661,9 @@ export default {
   padding: 5px 30px 5px 30px;
   border-bottom: 1px solid #e6e6e6;
 }
-
+.user-log {
+  overflow: hidden;
+}
 
 
 
@@ -2991,9 +3077,10 @@ export default {
 
 .log-li {
   /* height: 100px; */
+  padding: 10px 20px 10px 0;
   background-color: #FAFAFA;
   margin-top: 10px;
-  border: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
 }
 .log-li-top {
   position: relative;
@@ -3002,15 +3089,15 @@ export default {
   height: 50px;
 }
 .log-li-top > p {
-  margin-left: 20px;
-  color: #666666;
+  /* margin-left: 20px; */
+  /* color: #666666; */
 }
-.log-li-top .log-next-time {
+/* .log-li-top .log-next-time {
   padding: 0px 10px;
   height: 30px;
   line-height: 30px;
   background-color: #EFEFEF;
-}
+} */
 .log-next-time span {
   margin-right: 20px;
 }
@@ -3018,12 +3105,12 @@ export default {
   padding: 0px 5px;
   cursor: pointer;
 }
-.log-li-top > p > span {
+/* .log-li-top > p > span {
   color: #9E9E9E;
 }
 .log-li-top .carry-out {
   background: url(../../../assets/images/icon/Success@2x.png) no-repeat right / 18px 18px;
-}
+} */
 .log-contant {
   border-top: 1px solid #e6e6e6;
   min-height: 40px;
@@ -3050,39 +3137,9 @@ export default {
   margin-right: 10px;
 }
 .edit-log {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+
 }
-.edit-log:hover .edit-log-tag {
-  display: block;
-}
-.edit-log-tag {
-  display: none;
-  position: absolute;
-  top: 26px;
-  left: -40px;
-  width: 90px;
-  z-index: 99;
-  border: 1px solid #e6e6e6;
-  background: #ffffff;
-}
-.edit-log .edit-log-tag> p {
-  height: 40px;
-  line-height: 40px;
-  color: #AAAAAA;
-  margin-bottom: 0px;
-  text-align: center;
-  font-size: 12px;
-  border-bottom: 1px solid #e6e6e6;
-}
-.edit-log-tag> p:hover {
-  color: #484848;
-}
+
 .no-head {
   width: 30px;
   height: 30px;
