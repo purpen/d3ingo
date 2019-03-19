@@ -1,745 +1,735 @@
 <template>
-  <div class="container company-verify">
-    <div class="blank20"></div>
-    <el-row>
-      <v-menu selectedName="customerStatistics"></v-menu>
-
-      <el-col :span="20">
-        <div class="content">
-          <div class="chart chart-survey">
-            <div class="chart-header">
-              <span class="chart-title">商机概况</span>
-              <div class="fr edit-btn" @blur="hideEcharts('all')" tabindex="-1">
-                <i @click="onOff('all')"></i>
-                <ul v-if="all.show">
-                  <li @click="updateAll('all')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
+  <div class="content company-verify">
+    <div class="chart chart-survey">
+      <div class="chart-header">
+        <span class="chart-title">商机概况</span>
+        <div class="fr edit-btn" @blur="hideEcharts('all')" tabindex="-1">
+          <i @click="onOff('all')"></i>
+          <ul v-if="all.show">
+            <li @click="updateAll('all')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="pt-20">
+      <el-row>
+        <el-col :span="12">
+          <div class="s_header pr-30 pl-30">
+            <div class="header-title2">
+              <p class="tc-red fz-30">{{bigStatistics.total_customer}}</p>
+              <p class="tc-6">全部商机</p>
             </div>
-          </div>
-          <div class="pt-20">
-            <el-row>
-              <el-col :span="12">
-                <div class="s_header pr-30 pl-30">
-                  <div class="header-title2">
-                    <p class="tc-red fz-30">{{bigStatistics.total_customer}}</p>
-                    <p class="tc-6">全部商机</p>
-                  </div>
-                  <div>
-                    <el-row>
-                      <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.last_month_add||0}}</p>
-                          <p class="tc-6 bd-right">上月新增</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24 bd-right">{{bigStatistics.today_add||0}}</p>
-                          <p class="tc-6 bd-right">本月新增</p>
-                        </div>
-                      </el-col> 
-                       <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24 trend">
-                            {{bigStatistics.increase?(bigStatistics.increase >= 0?bigStatistics.increase: -bigStatistics.increase): 0}}<span class="fz-16">%</span>
-                            <i class="up" v-show="bigStatistics.increase >= 0"></i>
-                            <i class="down" v-show="bigStatistics.increase < 0"></i>
-                          </p>
-                          <p class="tc-6" v-if="bigStatistics.increase >=0">上涨</p>
-                          <p class="tc-6" v-else>下降</p>
-                        </div>
-                      </el-col>
-                    </el-row>
-                  </div>
-                </div>
-              </el-col>
-
-              <el-col :span="12">
-                <div class="s_header pl-30 pr-30">
-                  <div class="header-title2">
-                    <p class="fz-30 tc-red">{{bigStatistics.total_follow_up}}</p>
-                    <p class="tc-6">已跟进客户</p>
-                  </div>
-                   <el-row>
-                      <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24 bd-right">{{bigStatistics.total_three_days}}</p>
-                          <p class="tc-6 bd-right">3天未跟进</p>
-                        </div>
-                      </el-col>
-                       <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24 bd-right">{{bigStatistics.total_sever_days}}</p>
-                          <p class="tc-6 bd-right">7天未跟进</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="8">
-                        <div class="header-title">
-                          <p class="fz-24">{{bigStatistics.total_thirty_days}}</p>
-                          <p class="tc-6">30天未跟进</p>
-                        </div>
-                      </el-col>
-                    </el-row>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="table-overview">
-            <div class="chart-header">
-              <span class="chart-title">客户概况</span>
-              <div class="fr edit-btn" @blur="hideEcharts('overview')" tabindex="-1">
-                <i @click="onOff('overview')"></i>
-                <ul v-if="overview.show">
-                  <li @click="updateAll('overview')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-            </div>
-            <div class="overview-center">
-              <div class="overview-th">
-                <el-row>
-                  <el-col :span="3">
-                    &nbsp;
-                  </el-col>
-                  <el-col :span="3">
-                    商机
-                  </el-col>
-                  <el-col :span="3">
-                    潜在客户
-                  </el-col>
-                  <el-col :span="3">
-                    对接设计
-                  </el-col>
-                  <el-col :span="3">
-                    客户
-                  </el-col>
-                  <el-col :span="3">
-                    无效商机
-                  </el-col>
-                  <el-col :span="3">
-                    流失客户
-                  </el-col>
-                  <el-col :span="3">
-                    流失率
-                  </el-col>
-                </el-row>
-              </div>
-              <div class="overview-td">
-                <el-row v-for="(table, indext) in tableClue" :key="indext">
-                  <el-col :span="3">
-                    <div class="head">
-                      <p :class="[{
-                        'bc-3': indext === 'whole',
-                        'bc-red': indext === 'this',
-                        'bc-blue': indext === 'last'
-                      }]">{{indext| weekFormat}}</p>
-                    </div>
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.customer}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.potential}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.maintain}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.cooperation}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.invalid}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.loss}}
-                  </el-col>
-                  <el-col :span="3">
-                    {{table.loss_rate}}%
-                  </el-col>
-                </el-row>
-              </div>
-            </div>
-          </div>
-          <div class="chart chart-fun">
-            <div class="chart-header">
-              <span class="chart-title">商机转化</span>
-              <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
-                <i @click="onOff('chance')"></i>
-                <ul v-if="chance.show">
-                  <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li> 
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-              <div class="fr">
-                <div class="select-chance" v-clickoutside="downchance">
-                  <div @click="ischance=!ischance">
-                    全部商机
-                    <i :class="{'chance-up': ischance}"></i>
-                  </div>
-                  <div v-if="ischance" class="chance-dialog">
-                    <div class="chance-content">
-                      <el-row :gutter="60">
-                        <el-col :span="5">
-                          <p class="th">
-                          来源渠道
-                          </p>
-                          <ul class="scroll-bar">
-                            <li v-for="from in optionsFrom" :key="from.value" v-if="from.value > 0"
-                              @click="updataform('source', from.value, from.label)"
-                              :class="{'bg-f7':chance.data.source ===from.value}"
-                              >
-                              {{from.label}}
-                            </li>
-                          </ul>
-                        </el-col>
-                        <el-col :span="5">
-                          <p class="th">时段</p>
-                          <ul>
-                            <li v-for="date in optionsDate" 
-                              v-if="date.value !== 0"
-                              @click="updataform('time', date.value, date.label)"
-                              :class="{'bg-f7':chance.data.time ===date.value}"
-                              :key="date.value">
-                              {{date.label}}
-                            </li>
-                          </ul>
-                        </el-col>
-                        <el-col :span="4">
-                          <p class="th">地区</p>
-                          <ul class="scroll-bar">
-                            <li v-for="city in optionsCity"
-                              @click="updataform('region', city.value, city.label)"
-                              :class="{'bg-f7':chance.data.region ===city.value}"
-                              :key="city.value">
-                              {{city.label}}
-                            </li>
-                          </ul>
-                        </el-col>
-                        <el-col :span="5">
-                          <p class="th">项目类型</p>
-                          <ul>
-                            <li v-for="types in companyTypes"
-                              v-if="types.value>0"
-                              @click="updataform('project_type', types.value, types.label)"
-                              :class="{'bg-f7':chance.data.project_type ===types.value}"
-                              :key="types.value">
-                              {{types.label}}
-                            </li>
-                          </ul>
-                        </el-col>
-                        <el-col :span="5">
-                          <p class="th">项目预算</p>
-                          <ul>
-                            <li v-for="budget in optionsBudget"
-                              v-if="budget.value>0"
-                              @click="updataform('project_budget', budget.value, budget.label)"
-                              :class="{'bg-f7':chance.data.project_budget ===budget.value}"
-                              :key="budget.value">
-                              {{budget.label}}
-                            </li>
-                          </ul>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="dialog-footer">
-                      <div class="fl from-list">
-                        <span v-for="(ff, kk) in onChance" :key="kk">
-                          {{ff.label}}
-                          <i @click="deleteForm(ff)"></i>
-                        </span>
-                      </div>
-                      <div class="fr">
-                        <span class="reset-btn" @click="resetAll">
-                          重置条件 
-                        </span>
-                        <el-button class="full-red-button" @click="update(1, 'chance')">
-                          开始筛选
-                        </el-button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="chart-block fr">
-                <el-date-picker
-                  v-model="chance.times"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  @change="updateTime($event, 'chance')"
-                  value-format="yyyy-MM-dd"
-                  range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :picker-options="pickerOptions2">
-                </el-date-picker>
-              </div>
-            </div>
-            <div class="funnel-margin">
-              <el-row :gutter="40">
-                <el-col :span="12">
-                  <div class="funnel-box">
-                    <ECharts :options="polar" class="line-echarts">
-                    </ECharts>
+            <div>
+              <el-row>
+                <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24 tc-3 bd-right">{{bigStatistics.last_month_add||0}}</p>
+                    <p class="tc-6 bd-right">上月新增</p>
                   </div>
                 </el-col>
-                <el-col :span="12">
-                  <div class="table-header">
-                    <el-row>
-                      <el-col :span="6">
-                        <p>转化环节</p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p>客户数量</p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p>上一步转化率</p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p>整体转化率</p>
-                      </el-col>
-                    </el-row>
+                <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24 bd-right">{{bigStatistics.today_add||0}}</p>
+                    <p class="tc-6 bd-right">本月新增</p>
                   </div>
-                  <div class="table-content">
-                    <el-row v-for="(c,indexc) in chanceList" :key="indexc">
-                      <el-col :span="6">
-                        <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p :class="{'fz-18': indexc === 'cooperation'}">
-                          {{c.number}}
-                        </p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p :class="{'fz-18': indexc === 'cooperation'}">
-                          {{c.conversion}}%
-                        </p>
-                      </el-col>
-                      <el-col :span="6">
-                        <p :class="{'fz-18': indexc === 'cooperation'}">
-                        {{c.total_conversion}}%
-                        </p>
-                      </el-col>
-                    </el-row>
+                </el-col> 
+                  <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24 trend">
+                      {{bigStatistics.increase?(bigStatistics.increase >= 0?bigStatistics.increase: -bigStatistics.increase): 0}}<span class="fz-16">%</span>
+                      <i class="up" v-show="bigStatistics.increase >= 0"></i>
+                      <i class="down" v-show="bigStatistics.increase < 0"></i>
+                    </p>
+                    <p class="tc-6" v-if="bigStatistics.increase >=0">上涨</p>
+                    <p class="tc-6" v-else>下降</p>
                   </div>
                 </el-col>
               </el-row>
             </div>
           </div>
-          <div class="chart chart-line">
-            <div class="chart-header">
-              <span class="chart-title">客户数量</span>
-              <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
-                <i @click="onOff('customerNumber')"></i>
-                <ul v-if="customerNumber.show">
-                  <li @click="updateAll('customerNumber')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-              <div class='select-opt fr'>
-                <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
-                  <el-option
-                    v-for="f in optionsFrom"
-                    :key="f.value"
-                    :label="f.label"
-                    :value="f.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class="chart-block fr">
-                <el-date-picker
-                  v-model="customerNumber.times"
-                  type="daterange"
-                  align="right"
-                  @change="updateTime($event, 'customerNumber')"
-                  unlink-panels
-                  value-format="yyyy-MM-dd"
-                  range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :picker-options="pickerOptions2">
-                </el-date-picker>
-              </div>
-              <div class='select-opt2 fr'>
-                <el-select v-model="customerNumber.count" @change="updatecustomer" placeholder="请选择">
-                  <el-option
-                    v-for="item in optionsCustomer"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <div>
-              <ECharts :options="polar2" class="line-echarts">
-              </ECharts>
-            </div>
-          </div>
-          <div class="chart chart-columnar">
-            <div class="chart-header">
-              <span class="chart-title">来源渠道</span>
-              <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
-                <i @click="onOff('place')"></i>
-                <ul v-if="place.show">
-                  <li @click="updateAll('place')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-              <div class='select-opt fr'>
-                <el-select v-model="place.data.time" @change="update($event, 'place')" placeholder="请选择">
-                  <el-option
-                    v-for="from in optionsDate"
-                    :key="from.value"
-                    :label="from.label"
-                    :value="from.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class="chart-block fr">
-                <el-date-picker
-                  v-model="place.times"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  @change="updateTime($event, 'place')"
-                  value-format="yyyy-MM-dd"
-                  range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :picker-options="pickerOptions2">
-                </el-date-picker>
-              </div>
-            </div>
-            <div>
-              <ECharts :options="polar3" class="line-echarts">
-              </ECharts>
-            </div>
-          </div>
-          <div class="chart chart-circle">
-            <el-row :gutter="20">
-              <el-col :span="12" class="chart-type">
-                <div class="chart-header">
-                  <span class="chart-title">项目类型</span>
-                  <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
-                    <i @click="onOff('itemType')"></i>
-                    <ul v-if="itemType.show">
-                      <li @click="updateAll('itemType')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                      <!-- <li>导出图表</li>
-                      <li>不看此项</li> -->
-                    </ul>
-                  </div>
-                  <div class="chart-block fr">
-                    <el-date-picker
-                      v-model="itemType.times"
-                      type="daterange"
-                      align="right"
-                      unlink-panels
-                      range-separator="-"
-                      @change="updateTime($event, 'itemType')"
-                      value-format="yyyy-MM-dd"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
-                      :picker-options="pickerOptions2">
-                    </el-date-picker>
-                  </div>
-                </div>
-                <ECharts :options="polar4" class="line-echarts">
-                </ECharts>
-              </el-col>
-              <el-col :span="12">
-                <div class="chart-header">
-                  <span class="chart-title">地区</span>
-                  <div class="fr edit-btn" @blur="hideEcharts('area')" tabindex="-1">
-                    <i @click="onOff('area')"></i>
-                    <ul v-if="area.show">
-                      <li @click="updateAll('area')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                      <!-- <li>导出图表</li>
-                      <li>不看此项</li> -->
-                    </ul>
-                  </div>
-                  <div class="chart-block fr">
-                    <el-date-picker
-                      v-model="area.times"
-                      type="daterange"
-                      align="right"
-                      unlink-panels
-                      @change="updateTime($event, 'area')"
-                      value-format="yyyy-MM-dd"
-                      range-separator="-"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
-                      :picker-options="pickerOptions2">
-                    </el-date-picker>
-                  </div>
-                </div>
-                <ECharts :options="polar5" class="line-echarts" ref="echart5">
-                </ECharts>
-                <div>
-                </div>
-              </el-col>
-            </el-row>
-            <div>
-            </div>
-          </div>
-          <div class="chart chart-budget">
-            <div class="chart-header">
-              <span class="chart-title">项目预算</span>
-              <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
-                <i @click="onOff('itemBudget')"></i>
-                <ul v-if="itemBudget.show">
-                  <li @click="updateAll('itemBudget')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-              <div class='select-opt fr'>
-                <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
-                  <el-option
-                    v-for="item in optionsFrom"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class="chart-block fr">
-                <el-date-picker
-                  v-model="itemBudget.times"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="-"
-                  @change="updateTime($event, 'itemBudget')"
-                  value-format="yyyy-MM-dd"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :picker-options="pickerOptions2">
-                </el-date-picker>
-              </div>
-            </div>
-            <div>
-              <ECharts :options="polar6" class="line-echarts">
-              </ECharts>
-            </div>
-          </div>
-          <div class="chart pb-0 chart-all">
-            <div class="chart-header">
-              <span class="chart-title">全部客户分析</span>
-              <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
-                <i @click="onOff('allCustomer')"></i>
-                <ul v-show="allCustomer.show">
-                  <li @click="updateAll('allCustomer')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
-              </div>
-            </div>
-            <div class="chart-header2">
-              <div class="chart-block fl">
-                <el-date-picker
-                  v-model="allCustomer.times"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  @change="updateTime($event, 'allCustomer')"
-                  value-format="yyyy-MM-dd"
-                  :picker-options="pickerOptions2">
-                </el-date-picker>
-              </div>
-              <div class='select-opt fl'>
-                <el-select v-model="allCustomer.data.source" @change="update($event, 'allCustomer')" placeholder="请选择">
-                  <el-option
-                    v-for="item in optionsFrom"
-                    :key="item.value+'if'"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class='select-opt fl'>
-                <el-select v-model="allCustomer.data.time" @change="update($event, 'allCustomer')" placeholder="请选择">
-                  <el-option
-                    v-for="date in optionsDate"
-                    :key="date.value+'d'"
-                    :label="date.label"
-                    :value="date.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class='select-opt fl'>
-                <el-select v-model="allCustomer.data.region" @change="update($event, 'allCustomer')" placeholder="请选择">
-                  <el-option
-                    v-for="ff in optionsCity"
-                    :key="ff.value+'fff'"
-                    :label="ff.label"
-                    :value="ff.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.data.project_type" @change="update($event, 'allCustomer')" placeholder="请选择">
-                  <el-option :value="0" label="全部项目类型">
+        </el-col>
 
-                  </el-option>
-                  <el-option
-                    v-for="item in companyTypes"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.data.project_budget"
-                  @change="update($event, 'allCustomer')"
-                  placeholder="请选择">
-                  <el-option
-                    v-for="bud in optionsBudget"
-                    :key="bud.value + 'bb'"
-                    :label="bud.label"
-                    :value="bud.value">
-                  </el-option>
-                </el-select>
-              </div>
+        <el-col :span="12">
+          <div class="s_header pl-30 pr-30">
+            <div class="header-title2">
+              <p class="fz-30 tc-red">{{bigStatistics.total_follow_up}}</p>
+              <p class="tc-6">已跟进客户</p>
             </div>
-            <div>
-              <ECharts :options="polar7" class="line-echarts">
-              </ECharts>
-            </div>
-            <div class="up-details">
-              <span @click="allCustomer.isTable = !allCustomer.isTable">
-                <span v-if="allCustomer.isTable">收起详细数据</span>
-                <span v-else>展开详细数据</span>
-                <i :class="{'transform': allCustomer.isTable}"></i></span>
-            </div>
-            <div v-if="allCustomer.isTable" class="tables fz-16">
-              <el-table
-                :data="tableData3"
-                border
-                style="width: 100%">
-                <el-table-column
-                  prop="date"
-                  label="日期"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="cumulative"
-                  label="商机"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="potential"
-                  label="潜在客户"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="docking"
-                  label="对接设计"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="sign"
-                  label="签订合作"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="invalid"
-                  label="无效商机"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="low_price"
-                  label="低价客户"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="loss"
-                  label="流失客户"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="wastage_rate"
-                  label="流失率">
-                </el-table-column>
-              </el-table>
-              <div class="page-block">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page.sync="page.currentPage"
-                  :page-sizes="[10, 20, 50, 100]"
-                  :page-size="page.size"
-                  layout="sizes, prev, pager, next"
-                  :total="page.total">
-                </el-pagination>
-              </div>
-            </div>
+              <el-row>
+                <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24 bd-right">{{bigStatistics.total_three_days}}</p>
+                    <p class="tc-6 bd-right">3天未跟进</p>
+                  </div>
+                </el-col>
+                  <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24 bd-right">{{bigStatistics.total_sever_days}}</p>
+                    <p class="tc-6 bd-right">7天未跟进</p>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="header-title">
+                    <p class="fz-24">{{bigStatistics.total_thirty_days}}</p>
+                    <p class="tc-6">30天未跟进</p>
+                  </div>
+                </el-col>
+              </el-row>
           </div>
-          <div class="chart">
-            <div class="chart-header">
-              <div class="chart-title">
-                落地页点击统计列表
+        </el-col>
+      </el-row>
+    </div>
+    <div class="table-overview">
+      <div class="chart-header">
+        <span class="chart-title">客户概况</span>
+        <div class="fr edit-btn" @blur="hideEcharts('overview')" tabindex="-1">
+          <i @click="onOff('overview')"></i>
+          <ul v-if="overview.show">
+            <li @click="updateAll('overview')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+      </div>
+      <div class="overview-center">
+        <div class="overview-th">
+          <el-row>
+            <el-col :span="3">
+              &nbsp;
+            </el-col>
+            <el-col :span="3">
+              商机
+            </el-col>
+            <el-col :span="3">
+              潜在客户
+            </el-col>
+            <el-col :span="3">
+              对接设计
+            </el-col>
+            <el-col :span="3">
+              客户
+            </el-col>
+            <el-col :span="3">
+              无效商机
+            </el-col>
+            <el-col :span="3">
+              流失客户
+            </el-col>
+            <el-col :span="3">
+              流失率
+            </el-col>
+          </el-row>
+        </div>
+        <div class="overview-td">
+          <el-row v-for="(table, indext) in tableClue" :key="indext">
+            <el-col :span="3">
+              <div class="head">
+                <p :class="[{
+                  'bc-3': indext === 'whole',
+                  'bc-red': indext === 'this',
+                  'bc-blue': indext === 'last'
+                }]">{{indext| weekFormat}}</p>
               </div>
+            </el-col>
+            <el-col :span="3">
+              {{table.customer}}
+            </el-col>
+            <el-col :span="3">
+              {{table.potential}}
+            </el-col>
+            <el-col :span="3">
+              {{table.maintain}}
+            </el-col>
+            <el-col :span="3">
+              {{table.cooperation}}
+            </el-col>
+            <el-col :span="3">
+              {{table.invalid}}
+            </el-col>
+            <el-col :span="3">
+              {{table.loss}}
+            </el-col>
+            <el-col :span="3">
+              {{table.loss_rate}}%
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+    </div>
+    <div class="chart chart-fun">
+      <div class="chart-header">
+        <span class="chart-title">商机转化</span>
+        <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
+          <i @click="onOff('chance')"></i>
+          <ul v-if="chance.show">
+            <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li> 
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+        <div class="fr">
+          <div class="select-chance" v-clickoutside="downchance">
+            <div @click="ischance=!ischance">
+              全部商机
+              <i :class="{'chance-up': ischance}"></i>
             </div>
-            <div class="promotion">
-              <el-table
-                :data="tableData4"
-                border
-                style="width: 100%">
-                <el-table-column
-                  prop="new_from_value"
-                  label="来源"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="son_source_value"
-                  label="子来源">
-                </el-table-column>
-                <el-table-column
-                  prop="url"
-                  width="285"
-                  label="来源链接"
-                  >
-                </el-table-column>
-                <!-- <el-table-column
-                  prop="device"
-                  label="设备">
-                </el-table-column> -->
-                <el-table-column
-                  prop="app_count"
-                  label="app数量"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="pc_count"
-                  label="pc端数量">
-                </el-table-column>
-                <el-table-column
-                  prop="wap_count"
-                  label="移动端数量">
-                </el-table-column>
-                <el-table-column
-                  prop="total_count"
-                  label="总数">
-                </el-table-column>
-              </el-table>
+            <div v-if="ischance" class="chance-dialog">
+              <div class="chance-content">
+                <el-row :gutter="60">
+                  <el-col :span="5">
+                    <p class="th">
+                    来源渠道
+                    </p>
+                    <ul class="scroll-bar">
+                      <li v-for="from in optionsFrom" :key="from.value" v-if="from.value > 0"
+                        @click="updataform('source', from.value, from.label)"
+                        :class="{'bg-f7':chance.data.source ===from.value}"
+                        >
+                        {{from.label}}
+                      </li>
+                    </ul>
+                  </el-col>
+                  <el-col :span="5">
+                    <p class="th">时段</p>
+                    <ul>
+                      <li v-for="date in optionsDate" 
+                        v-if="date.value !== 0"
+                        @click="updataform('time', date.value, date.label)"
+                        :class="{'bg-f7':chance.data.time ===date.value}"
+                        :key="date.value">
+                        {{date.label}}
+                      </li>
+                    </ul>
+                  </el-col>
+                  <el-col :span="4">
+                    <p class="th">地区</p>
+                    <ul class="scroll-bar">
+                      <li v-for="city in optionsCity"
+                        @click="updataform('region', city.value, city.label)"
+                        :class="{'bg-f7':chance.data.region ===city.value}"
+                        :key="city.value">
+                        {{city.label}}
+                      </li>
+                    </ul>
+                  </el-col>
+                  <el-col :span="5">
+                    <p class="th">项目类型</p>
+                    <ul>
+                      <li v-for="types in companyTypes"
+                        v-if="types.value>0"
+                        @click="updataform('project_type', types.value, types.label)"
+                        :class="{'bg-f7':chance.data.project_type ===types.value}"
+                        :key="types.value">
+                        {{types.label}}
+                      </li>
+                    </ul>
+                  </el-col>
+                  <el-col :span="5">
+                    <p class="th">项目预算</p>
+                    <ul>
+                      <li v-for="budget in optionsBudget"
+                        v-if="budget.value>0"
+                        @click="updataform('project_budget', budget.value, budget.label)"
+                        :class="{'bg-f7':chance.data.project_budget ===budget.value}"
+                        :key="budget.value">
+                        {{budget.label}}
+                      </li>
+                    </ul>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="dialog-footer">
+                <div class="fl from-list">
+                  <span v-for="(ff, kk) in onChance" :key="kk">
+                    {{ff.label}}
+                    <i @click="deleteForm(ff)"></i>
+                  </span>
+                </div>
+                <div class="fr">
+                  <span class="reset-btn" @click="resetAll">
+                    重置条件 
+                  </span>
+                  <el-button class="full-red-button" @click="update(1, 'chance')">
+                    开始筛选
+                  </el-button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </el-col>
-    </el-row>
+        <div class="chart-block fr">
+          <el-date-picker
+            v-model="chance.times"
+            type="daterange"
+            align="right"
+            unlink-panels
+            @change="updateTime($event, 'chance')"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+        </div>
+      </div>
+      <div class="funnel-margin">
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <div class="funnel-box">
+              <ECharts :options="polar" class="line-echarts">
+              </ECharts>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="table-header">
+              <el-row>
+                <el-col :span="6">
+                  <p>转化环节</p>
+                </el-col>
+                <el-col :span="6">
+                  <p>客户数量</p>
+                </el-col>
+                <el-col :span="6">
+                  <p>上一步转化率</p>
+                </el-col>
+                <el-col :span="6">
+                  <p>整体转化率</p>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="table-content">
+              <el-row v-for="(c,indexc) in chanceList" :key="indexc">
+                <el-col :span="6">
+                  <p :class="{'fz-18': indexc === 'cooperation'}">{{indexc|titleName}}</p>
+                </el-col>
+                <el-col :span="6">
+                  <p :class="{'fz-18': indexc === 'cooperation'}">
+                    {{c.number}}
+                  </p>
+                </el-col>
+                <el-col :span="6">
+                  <p :class="{'fz-18': indexc === 'cooperation'}">
+                    {{c.conversion}}%
+                  </p>
+                </el-col>
+                <el-col :span="6">
+                  <p :class="{'fz-18': indexc === 'cooperation'}">
+                  {{c.total_conversion}}%
+                  </p>
+                </el-col>
+              </el-row>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+    <div class="chart chart-line">
+      <div class="chart-header">
+        <span class="chart-title">客户数量</span>
+        <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
+          <i @click="onOff('customerNumber')"></i>
+          <ul v-if="customerNumber.show">
+            <li @click="updateAll('customerNumber')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+        <div class='select-opt fr'>
+          <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
+            <el-option
+              v-for="f in optionsFrom"
+              :key="f.value"
+              :label="f.label"
+              :value="f.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="chart-block fr">
+          <el-date-picker
+            v-model="customerNumber.times"
+            type="daterange"
+            align="right"
+            @change="updateTime($event, 'customerNumber')"
+            unlink-panels
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+        </div>
+        <div class='select-opt2 fr'>
+          <el-select v-model="customerNumber.count" @change="updatecustomer" placeholder="请选择">
+            <el-option
+              v-for="item in optionsCustomer"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div>
+        <ECharts :options="polar2" class="line-echarts">
+        </ECharts>
+      </div>
+    </div>
+    <div class="chart chart-columnar">
+      <div class="chart-header">
+        <span class="chart-title">来源渠道</span>
+        <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
+          <i @click="onOff('place')"></i>
+          <ul v-if="place.show">
+            <li @click="updateAll('place')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+        <div class='select-opt fr'>
+          <el-select v-model="place.data.time" @change="update($event, 'place')" placeholder="请选择">
+            <el-option
+              v-for="from in optionsDate"
+              :key="from.value"
+              :label="from.label"
+              :value="from.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="chart-block fr">
+          <el-date-picker
+            v-model="place.times"
+            type="daterange"
+            align="right"
+            unlink-panels
+            @change="updateTime($event, 'place')"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+        </div>
+      </div>
+      <div>
+        <ECharts :options="polar3" class="line-echarts">
+        </ECharts>
+      </div>
+    </div>
+    <div class="chart chart-circle">
+      <el-row :gutter="20">
+        <el-col :span="12" class="chart-type">
+          <div class="chart-header">
+            <span class="chart-title">项目类型</span>
+            <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
+              <i @click="onOff('itemType')"></i>
+              <ul v-if="itemType.show">
+                <li @click="updateAll('itemType')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                <!-- <li>导出图表</li>
+                <li>不看此项</li> -->
+              </ul>
+            </div>
+            <div class="chart-block fr">
+              <el-date-picker
+                v-model="itemType.times"
+                type="daterange"
+                align="right"
+                unlink-panels
+                range-separator="-"
+                @change="updateTime($event, 'itemType')"
+                value-format="yyyy-MM-dd"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions2">
+              </el-date-picker>
+            </div>
+          </div>
+          <ECharts :options="polar4" class="line-echarts">
+          </ECharts>
+        </el-col>
+        <el-col :span="12">
+          <div class="chart-header">
+            <span class="chart-title">地区</span>
+            <div class="fr edit-btn" @blur="hideEcharts('area')" tabindex="-1">
+              <i @click="onOff('area')"></i>
+              <ul v-if="area.show">
+                <li @click="updateAll('area')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                <!-- <li>导出图表</li>
+                <li>不看此项</li> -->
+              </ul>
+            </div>
+            <div class="chart-block fr">
+              <el-date-picker
+                v-model="area.times"
+                type="daterange"
+                align="right"
+                unlink-panels
+                @change="updateTime($event, 'area')"
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions2">
+              </el-date-picker>
+            </div>
+          </div>
+          <ECharts :options="polar5" class="line-echarts" ref="echart5">
+          </ECharts>
+          <div>
+          </div>
+        </el-col>
+      </el-row>
+      <div>
+      </div>
+    </div>
+    <div class="chart chart-budget">
+      <div class="chart-header">
+        <span class="chart-title">项目预算</span>
+        <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
+          <i @click="onOff('itemBudget')"></i>
+          <ul v-if="itemBudget.show">
+            <li @click="updateAll('itemBudget')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+        <div class='select-opt fr'>
+          <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
+            <el-option
+              v-for="item in optionsFrom"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="chart-block fr">
+          <el-date-picker
+            v-model="itemBudget.times"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="-"
+            @change="updateTime($event, 'itemBudget')"
+            value-format="yyyy-MM-dd"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+        </div>
+      </div>
+      <div>
+        <ECharts :options="polar6" class="line-echarts">
+        </ECharts>
+      </div>
+    </div>
+    <div class="chart pb-0 chart-all">
+      <div class="chart-header">
+        <span class="chart-title">全部客户分析</span>
+        <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
+          <i @click="onOff('allCustomer')"></i>
+          <ul v-show="allCustomer.show">
+            <li @click="updateAll('allCustomer')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <!-- <li>导出图表</li>
+            <li>不看此项</li> -->
+          </ul>
+        </div>
+      </div>
+      <div class="chart-header2">
+        <div class="chart-block fl">
+          <el-date-picker
+            v-model="allCustomer.times"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="updateTime($event, 'allCustomer')"
+            value-format="yyyy-MM-dd"
+            :picker-options="pickerOptions2">
+          </el-date-picker>
+        </div>
+        <div class='select-opt fl'>
+          <el-select v-model="allCustomer.data.source" @change="update($event, 'allCustomer')" placeholder="请选择">
+            <el-option
+              v-for="item in optionsFrom"
+              :key="item.value+'if'"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class='select-opt fl'>
+          <el-select v-model="allCustomer.data.time" @change="update($event, 'allCustomer')" placeholder="请选择">
+            <el-option
+              v-for="date in optionsDate"
+              :key="date.value+'d'"
+              :label="date.label"
+              :value="date.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class='select-opt fl'>
+          <el-select v-model="allCustomer.data.region" @change="update($event, 'allCustomer')" placeholder="请选择">
+            <el-option
+              v-for="ff in optionsCity"
+              :key="ff.value+'fff'"
+              :label="ff.label"
+              :value="ff.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class='select-opt3 fl'>
+          <el-select v-model="allCustomer.data.project_type" @change="update($event, 'allCustomer')" placeholder="请选择">
+            <el-option :value="0" label="全部项目类型">
 
+            </el-option>
+            <el-option
+              v-for="item in companyTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class='select-opt3 fl'>
+          <el-select v-model="allCustomer.data.project_budget"
+            @change="update($event, 'allCustomer')"
+            placeholder="请选择">
+            <el-option
+              v-for="bud in optionsBudget"
+              :key="bud.value + 'bb'"
+              :label="bud.label"
+              :value="bud.value">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div>
+        <ECharts :options="polar7" class="line-echarts">
+        </ECharts>
+      </div>
+      <div class="up-details">
+        <span @click="allCustomer.isTable = !allCustomer.isTable">
+          <span v-if="allCustomer.isTable">收起详细数据</span>
+          <span v-else>展开详细数据</span>
+          <i :class="{'transform': allCustomer.isTable}"></i></span>
+      </div>
+      <div v-if="allCustomer.isTable" class="tables fz-16">
+        <el-table
+          :data="tableData3"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="date"
+            label="日期"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="cumulative"
+            label="商机"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="potential"
+            label="潜在客户"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="docking"
+            label="对接设计"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="sign"
+            label="签订合作"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="invalid"
+            label="无效商机"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="low_price"
+            label="低价客户"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="loss"
+            label="流失客户"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="wastage_rate"
+            label="流失率">
+          </el-table-column>
+        </el-table>
+        <div class="page-block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="page.currentPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="page.size"
+            layout="sizes, prev, pager, next"
+            :total="page.total">
+          </el-pagination>
+        </div>
+      </div>
+    </div>
+    <div class="chart">
+      <div class="chart-header">
+        <div class="chart-title">
+          落地页点击统计列表
+        </div>
+      </div>
+      <div class="promotion">
+        <el-table
+          :data="tableData4"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="new_from_value"
+            label="来源"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="son_source_value"
+            label="子来源">
+          </el-table-column>
+          <el-table-column
+            prop="url"
+            width="285"
+            label="来源链接"
+            >
+          </el-table-column>
+          <!-- <el-table-column
+            prop="device"
+            label="设备">
+          </el-table-column> -->
+          <el-table-column
+            prop="app_count"
+            label="app数量"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="pc_count"
+            label="pc端数量">
+          </el-table-column>
+          <el-table-column
+            prop="wap_count"
+            label="移动端数量">
+          </el-table-column>
+          <el-table-column
+            prop="total_count"
+            label="总数">
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -748,12 +738,10 @@ import api from '@/api/api'
 import {COMPANY_TYPE, DESIGN_COST_OPTIONS2} from '@/config'
 import REGION_DATA from 'china-area-data' // 地区数据库
 import ECharts from 'vue-echarts'
-import vMenu from '@/components/admin/Menu'
 import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_customer_statistics',
   components: {
-    vMenu,
     ECharts,
     COMPANY_TYPE,
     DESIGN_COST_OPTIONS2
@@ -2019,9 +2007,10 @@ export default {
       }
       if (from) {
         row = {...from}
-        if (row.source === '0') {
+        if (row.source === '0' || row.source === 0) {
           delete row.source
-        } else if (row.source) {
+        }
+        if (row.source) {
           row.source -= 1
         }
       }
@@ -2074,7 +2063,7 @@ export default {
               })
               let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
               let radius2 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FF5A5F;"></span>'
-              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.percentSum + '%'
+              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.total_conversion + '%'
             }
             this.chanceList = res
             this.updatecustomer(this.chance.count)

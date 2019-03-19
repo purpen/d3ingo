@@ -1,110 +1,86 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="awardsList"></v-menu>
+  <div class="content">
+    <div class="content-box">
+      <div class="form-title">
+        <span>{{ itemMode }}</span>
+      </div>
+      <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
-      <el-col :span="20">
-        <div class="content">
+        <el-form-item label="类型" prop="type">
+          <el-radio-group v-model.number="form.type">
+            <el-radio-button
+              v-for="item in typeOptions"
+              :key="item.index"
+              :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
 
-        <!-- <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminAwardsList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminAwardsSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
-        </div> -->
-          <div class="content-box">
-            <div class="form-title">
-              <span>{{ itemMode }}</span>
-            </div>
-            <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="名称" prop="name">
+              <el-input :maxlength="50" v-model="form.name" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-form-item label="类型" prop="type">
-                <el-radio-group v-model.number="form.type">
-                  <el-radio-button
-                    v-for="item in typeOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="5">
+            <el-form-item label="开始时间" prop="start_time">
+              <el-date-picker
+                v-model="form.start_time"
+                type="date"
+                value-format="yyyy-MM-dd"
+                @change="formatStartDate"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>           
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="结束时间" prop="end_time">
+              <el-date-picker
+                v-model="form.end_time"
+                type="date"
+                value-format="yyyy-MM-dd"
+                @change="formatEndDate"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="名称" prop="name">
-                    <el-input :maxlength="50" v-model="form.name" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="地址" prop="url">
+              <el-input v-model="form.url" placeholder=""></el-input>
+            </el-form-item>           
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="10">
-                <el-col :span="5">
-                  <el-form-item label="开始时间" prop="start_time">
-                    <el-date-picker
-                      v-model="form.start_time"
-                      type="date"
-                      value-format="yyyy-MM-dd"
-                      @change="formatStartDate"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                  </el-form-item>           
-                </el-col>
-                <el-col :span="5">
-                  <el-form-item label="结束时间" prop="end_time">
-                    <el-date-picker
-                      v-model="form.end_time"
-                      type="date"
-                      value-format="yyyy-MM-dd"
-                      @change="formatEndDate"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-form-item label="简述" prop="content">
+          <el-input
+            type="textarea"
+            :rows="5"
+            placeholder="请输入内容"
+            v-model="form.summary">
+          </el-input>
+        </el-form-item>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="地址" prop="url">
-                    <el-input v-model="form.url" placeholder=""></el-input>
-                  </el-form-item>           
-                </el-col>
-              </el-row>
-
-              <el-form-item label="简述" prop="content">
-                <el-input
-                  type="textarea"
-                  :rows="5"
-                  placeholder="请输入内容"
-                  v-model="form.summary">
-                </el-input>
-              </el-form-item>
-
-              <div class="form-btn">
-                  <el-button @click="returnList">取消</el-button>
-                  <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
-              </div>
-              <div class="clear"></div>
-            </el-form>
-
-          </div>
+        <div class="form-btn">
+            <el-button @click="returnList">取消</el-button>
+            <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
         </div>
-      </el-col>
-    </el-row>
+        <div class="clear"></div>
+      </el-form>
 
-
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_award_submit',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

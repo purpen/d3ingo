@@ -1,10 +1,6 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="potentialUserList"></v-menu>
-      <el-col :span="20">
-        <div class="head-content">
+  <div>
+    <div class="head-content">
           <i class="fx fx-icon-nothing-close-error"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left"  @click="getPreviousUser"></i>
@@ -1129,14 +1125,11 @@
               <el-button type="primary" @click="setClueStatus">确 定</el-button>
           </span>
         </el-dialog>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
@@ -1147,8 +1140,7 @@ import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_potential_userinfo',
   components: {
-    RegionPicker,
-    vMenu
+    RegionPicker
   },
   data() {
     return {
