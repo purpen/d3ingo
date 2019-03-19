@@ -24,12 +24,13 @@
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
-                <el-select v-model="query.search" placeholder="选择条件..." size="small">
+                <el-select v-model="query.search" placeholder="选择条件..." size="small" @change="query.val = ''">
                   <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按负责人" value="3"></el-option>
                   <el-option label="来源渠道" value="4"></el-option>
                   <el-option label="客户级别" value="5"></el-option>
+                  <el-option label="低价客户" value="6"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
@@ -364,6 +365,7 @@ export default {
       },
       tableData: [],
       adminUserList: [],
+      voIpUserIds: [],
       noAllot: 0, // 没有负责人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
@@ -599,6 +601,13 @@ export default {
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.adminUserList = res.data.data
+          let ids = []
+          this.adminUserList.forEach(item => {
+            if (item.status === 1) {
+              ids.push(item.id)
+            }
+          })
+          this.voIpUserIds = [...new Set(ids)]
         } else {
           this.$message.error(res.data.message)
         }
@@ -629,6 +638,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === id) {
+              this.voIpUserIds.push(id)
+              this.voIpUserIds = [...new Set(this.voIpUserIds)]
               this.$set(array[i], 'status', 1)
             }
           })
@@ -650,6 +661,10 @@ export default {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === this.currentVoIpUserId) {
               this.$set(array[i], 'status', 2)
+              let index = this.voIpUserIds.indexOf(item.id)
+              if (index !== (-1)) {
+                this.voIpUserIds.splice(index, 1)
+              }
             }
           })
           this.$message.success('移除成功')
@@ -800,6 +815,7 @@ export default {
   created() {
     this.query.page = parseInt(this.$route.query.page || 1)
     this.getClueList()
+    this.getAdminList()
   },
   // directives: {Clickoutside},
   filters: {
@@ -813,6 +829,9 @@ export default {
     },
     token() {
       return this.$store.state.event.token
+    },
+    userId() {
+      return this.$store.state.event.user.id
     }
   },
   watch: {
