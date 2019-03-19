@@ -4,7 +4,6 @@
       <div class="admin-header fz-0 clearfix">
         <el-form :inline="true" :model="query" class="select-query fl">
           <el-form-item>
-            <!-- <span class="fl line-height30 fz-12 margin-r-15">选择日期</span> -->
             <div class="fr select-data">
               <el-date-picker
                 v-model="query.valueDate"
@@ -18,6 +17,8 @@
                 @change="getDate">
               </el-date-picker>
             </div>
+          </el-form-item>
+        </el-form>
           <!-- <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
@@ -44,13 +45,11 @@
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
           </div> -->
-
-          </div>
           <!-- <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a> -->
           <!-- <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button> -->
           <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
-        </div>
-      </div>       
+      </div>
+
       <!-- <div class="btn-list fz-0">
         <el-button size="small"
           @click="$router.push({name: 'adminPotentialUserCreated'})" 
