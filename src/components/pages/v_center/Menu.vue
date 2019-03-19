@@ -546,10 +546,10 @@
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 60px;
+    top: 70px;
     /* width: inherit; */
     width: 200px;
-    height: calc(100% - 60px);
+    height: calc(100% - 70px);
     /* overflow-y: auto; */
     overflow-x: hidden;
   }
@@ -670,7 +670,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 70px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
   }
   .menu-left {
