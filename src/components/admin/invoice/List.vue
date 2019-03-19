@@ -247,13 +247,9 @@
 
 <script>
   import api from '@/api/api'
-  import vMenu from '@/components/admin/Menu'
   import typeData from '@/config'
   export default {
     name: 'admin_invoice_list',
-    components: {
-      vMenu
-    },
     data () {
       let checkNumber = (rule, value, callback) => {
         if (!value) {

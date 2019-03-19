@@ -1,102 +1,95 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="trendReportList"></v-menu>
+  <div>
+    <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
-
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminTrendReportList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminTrendReportAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminTrendReportList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
         </div>
-
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="封面"
-              width="90">
-                <template slot-scope="scope">
-                  <p><img :src="scope.row.cover_url" width="60" style="margin: 5px;" /></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="title"
-              label="标题"
-              min-width="180">
-            </el-table-column>
-            <el-table-column
-              prop="user_id"
-              label="用户ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              prop="hits"
-              label="浏览量"
-              min-width="30">
-            </el-table-column>
-            <el-table-column
-              width="60"
-              label="状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === 0"><el-tag type="gray">禁用</el-tag></p>
-                  <p v-else><el-tag type="success">启用</el-tag></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a>
-                    <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a>
-                  </p>
-                  <p>
-                    <router-link :to="{name: 'adminTrendReportEdit', params: {id: scope.row.id}}">编辑</router-link>
-                    <a href="javascript:void(0)" @click="removeBtn(scope.$index, scope.row)">删除</a>
-                  </p>
-                </template>
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[10, 50, 100, 500]"
-            :page-size="query.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
+        <div class="fr">
+          <router-link :to="{name: 'adminTrendReportAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+
+      <el-table
+        :data="tableData"
+        border
+        v-loading="isLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          label="封面"
+          width="90">
+            <template slot-scope="scope">
+              <p><img :src="scope.row.cover_url" width="60" style="margin: 5px;" /></p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          prop="title"
+          label="标题"
+          min-width="180">
+        </el-table-column>
+        <el-table-column
+          prop="user_id"
+          label="用户ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="hits"
+          label="浏览量"
+          min-width="30">
+        </el-table-column>
+        <el-table-column
+          width="60"
+          label="状态">
+            <template slot-scope="scope">
+              <p v-if="scope.row.status === 0"><el-tag type="gray">禁用</el-tag></p>
+              <p v-else><el-tag type="success">启用</el-tag></p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          prop="created_at"
+          width="100"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="操作">
+            <template slot-scope="scope">
+              <p>
+                <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a>
+                <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a>
+              </p>
+              <p>
+                <router-link :to="{name: 'adminTrendReportEdit', params: {id: scope.row.id}}">编辑</router-link>
+                <a href="javascript:void(0)" @click="removeBtn(scope.$index, scope.row)">删除</a>
+              </p>
+            </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[10, 50, 100, 500]"
+        :page-size="query.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.totalCount">
+      </el-pagination>
+
+    </div>
 
     <el-dialog
       title="提示"
@@ -114,12 +107,8 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_trend_report_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

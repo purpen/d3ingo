@@ -1,218 +1,207 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="awardCaseList"></v-menu>
+  <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminAwardCaseList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
+      <div class="fr">
+        <router-link :to="{name: 'adminAwardCaseAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
+      </div>
+    </div>
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminAwardCaseList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminAwardCaseAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
-        </div>
-
-          <div class="content-box">
-            <div class="form-title">
-              <span>{{ itemMode }}</span>
-            </div>
-            <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+    <div class="content-box">
+      <div class="form-title">
+        <span>{{ itemMode }}</span>
+      </div>
+      <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
 
-              <el-form-item label="所属奖项" prop="category_id">
-                <el-radio-group v-model.number="form.category_id">
-                  <el-radio-button
-                    v-for="item in categoryOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+        <el-form-item label="所属奖项" prop="category_id">
+          <el-radio-group v-model.number="form.category_id">
+            <el-radio-button
+              v-for="item in categoryOptions"
+              :key="item.index"
+              :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="form.title" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="链接" prop="url">
-                    <el-input v-model="form.url" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="链接" prop="url">
+              <el-input v-model="form.url" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="12">
-                <el-col :span="6">
-                  <el-form-item label="奖项级别" prop="grade">
-                    <el-input v-model="form.grade" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item label="获奖时间" prop="time_at">
-                    <el-input v-model="form.time_at" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="12">
+          <el-col :span="6">
+            <el-form-item label="奖项级别" prop="grade">
+              <el-input v-model="form.grade" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="获奖时间" prop="time_at">
+              <el-input v-model="form.time_at" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标签" prop="tags">
-                    <el-tag
-                      :key="tag"
-                      v-for="tag in dynamicTags"
-                      closable
-                      :disable-transitions="false"
-                      @close="handleClose(tag)">
-                      {{tag}}
-                    </el-tag>
-                    <el-input 
-                      v-model="form.label_str"
-                        class="input-new-tag"
-                        v-if="inputVisible"
-                        ref="saveTagInput"
-                        size="small"
-                        @keyup.enter.native="handleInputConfirm"
-                        @blur="handleInputConfirm">
-                    </el-input>
-                      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-                    <!-- <el-input v-model="form.tags" placeholder=""></el-input> -->
-                    <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="标签" prop="tags">
+              <el-tag
+                :key="tag"
+                v-for="tag in dynamicTags"
+                closable
+                :disable-transitions="false"
+                @close="handleClose(tag)">
+                {{tag}}
+              </el-tag>
+              <el-input 
+                v-model="form.label_str"
+                  class="input-new-tag"
+                  v-if="inputVisible"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm"
+                  @blur="handleInputConfirm">
+              </el-input>
+                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+              <!-- <el-input v-model="form.tags" placeholder=""></el-input> -->
+              <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row >
-                <el-col :span="24">
-                  <el-form-item label="上传图片" prop="">
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      :show-file-list="false"
-                      list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
-                    </el-upload>
+        <el-row >
+          <el-col :span="24">
+            <el-form-item label="上传图片" prop="">
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :file-list="fileList"
+                :data="uploadParam"
+                :on-progress="uploadProgress"
+                :on-error="uploadError"
+                :on-success="uploadSuccess"
+                :before-upload="beforeUpload"
+                :show-file-list="false"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
+              </el-upload>
 
-                    <div class="file-list">
-                      <el-row :gutter="10">
-                        <el-col :span="8" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                                <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
-                              <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary"></textarea>
-                              </div>
-                              <div class="summary" v-else>
-                                <p v-if="d.summary">{{ d.summary }}</p>
-                                <p class="image-no-summary" v-else>暂无描述信息</p>
-                              </div>
-                              <div class="opt" v-if="d.edit">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="saveAssetSummary">保存</a>
-                              </div>
-                              <div class="opt" v-else>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div>
-
-                  </el-form-item>
-
-                </el-col>
-              </el-row>
-
-              <el-row v-if="form.images_url">
-                <el-col :span="24">
-                  <el-form-item label="图片草稿" prop="images_url">
-                    <div class="file-list">
-                      <el-row :gutter="10">
-                        <el-col :span="8" v-for="(d, index) in fileDraftList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                                <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <div class="opt">
-                                <input type="checkbox" name="imgUrls" v-model="imgUrls" :value="d.url" style="float:left;" />
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top" v-if="!d.genImg">
-                                  <a href="javascript:void(0);" :index="index" :url="d.url" @click="upCoverBtn"><i class="fa fa-flag" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="上传中" placement="top" v-else>
-                                  <a>上传中...</a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :url="d.url" :index="index" @click="delDrafImage"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="description">
-                      <a href="javascript:void(0);" @click="insertEditor" v-if="!genEditorImg">插入至编辑器</a>
-                      <a v-else>上传中...</a>
-                    </div>
-                  </el-form-item>
-
-                </el-col>
-              </el-row>
-
-              <el-form-item label="简述" prop="summary">
-                <el-input
-                  type="textarea"
-                  :rows="5"
-                  placeholder="请输入简述"
-                  v-model="form.summary">
-                </el-input>
-                <div class="description">* 用于列表页显示,字数不易过多</div>
-              </el-form-item>
-
-              <el-form-item label="内容" prop="content">
-                <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
-              </el-form-item>
-
-              <div class="form-btn">
-                  <el-button @click="returnList">取消</el-button>
-                  <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+              <div class="file-list">
+                <el-row :gutter="10">
+                  <el-col :span="8" v-for="(d, index) in fileList" :key="index">
+                    <el-card :body-style="{ padding: '0px' }" class="item">
+                      <div class="image-box">
+                          <img :src="d.url">
+                      </div>
+                      <div class="content">
+                        <p>{{ d.name }}</p>
+                        <div class="summary-edit" v-if="d.edit">
+                          <textarea v-model="d.summary"></textarea>
+                        </div>
+                        <div class="summary" v-else>
+                          <p v-if="d.summary">{{ d.summary }}</p>
+                          <p class="image-no-summary" v-else>暂无描述信息</p>
+                        </div>
+                        <div class="opt" v-if="d.edit">
+                          <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="saveAssetSummary">保存</a>
+                        </div>
+                        <div class="opt" v-else>
+                          <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                          <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                        </div>
+                      </div>
+                    </el-card>
+                  </el-col>
+                </el-row>
               </div>
-              <div class="clear"></div>
-            </el-form>
 
-          </div>
+            </el-form-item>
+
+          </el-col>
+        </el-row>
+
+        <el-row v-if="form.images_url">
+          <el-col :span="24">
+            <el-form-item label="图片草稿" prop="images_url">
+              <div class="file-list">
+                <el-row :gutter="10">
+                  <el-col :span="8" v-for="(d, index) in fileDraftList" :key="index">
+                    <el-card :body-style="{ padding: '0px' }" class="item">
+                      <div class="image-box">
+                          <img :src="d.url">
+                      </div>
+                      <div class="content">
+                        <div class="opt">
+                          <input type="checkbox" name="imgUrls" v-model="imgUrls" :value="d.url" style="float:left;" />
+                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top" v-if="!d.genImg">
+                            <a href="javascript:void(0);" :index="index" :url="d.url" @click="upCoverBtn"><i class="fa fa-flag" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="上传中" placement="top" v-else>
+                            <a>上传中...</a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                            <a href="javascript:void(0);" :url="d.url" :index="index" @click="delDrafImage"><i class="fa fa-times" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                        </div>
+                      </div>
+                    </el-card>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="description">
+                <a href="javascript:void(0);" @click="insertEditor" v-if="!genEditorImg">插入至编辑器</a>
+                <a v-else>上传中...</a>
+              </div>
+            </el-form-item>
+
+          </el-col>
+        </el-row>
+
+        <el-form-item label="简述" prop="summary">
+          <el-input
+            type="textarea"
+            :rows="5"
+            placeholder="请输入简述"
+            v-model="form.summary">
+          </el-input>
+          <div class="description">* 用于列表页显示,字数不易过多</div>
+        </el-form-item>
+
+        <el-form-item label="内容" prop="content">
+          <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
+        </el-form-item>
+
+        <div class="form-btn">
+            <el-button @click="returnList">取消</el-button>
+            <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
         </div>
-      </el-col>
-    </el-row>
+        <div class="clear"></div>
+      </el-form>
 
-
+    </div>
   </div>
 </template>
 
@@ -221,13 +210,11 @@ import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import axios from 'axios'
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import d3in from 'assets/js/d3in'
 import typeData from '@/config'
 export default {
   name: 'admin_award_case_submit',
   components: {
-    vMenu,
     mavonEditor
   },
   data () {

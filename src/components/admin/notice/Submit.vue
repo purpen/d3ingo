@@ -122,13 +122,9 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_notice_submit',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

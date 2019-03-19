@@ -1,148 +1,140 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="userList"></v-menu>
+  <div>
+    <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
-
-          <div class="admin-menu-sub">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminUserList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-            </div>
-          </div>
-
-          <div class="admin-search-form">
-            <el-form :inline="true" :model="query">
-              <el-form-item>
-                <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="用户" value="1"></el-option>
-                  <el-option label="编辑" value="5"></el-option>
-                  <el-option label="管理员" value="10"></el-option>
-                  <el-option label="管理员plus" value="15"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.type" placeholder="目标人群..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="需求方" value="1"></el-option>
-                  <el-option label="设计服务商" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="ID" value="1"></el-option>
-                  <el-option label="手机号" value="2"></el-option>
-                  <el-option label="昵称" value="3"></el-option>
-                  <el-option label="邮箱" value="4"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="Logo"
-              width="80">
-                <template slot-scope="scope">
-                  <p><img :src="scope.row.logo_url" width="50" /></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="用户信息"
-              min-width="180">
-                <template slot-scope="scope">
-                  <p>账户: {{ scope.row.account }}</p>
-                  <p>昵称: {{ scope.row.username }}</p>
-                  <p v-if="scope.row.realname">真实姓名: {{ scope.row.realname }} [{{ scope.row.position }}]</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="60"
-              label="属性">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.kind === 2">鸟人</p>
-                  <p v-else>默认</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="80"
-              label="类型">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.type === 2">设计服务商</p>
-                  <p v-else>需求方</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="80"
-              label="状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === -1"><el-tag type="gray">禁用</el-tag></p>
-                  <p v-else><el-tag type="success">正常</el-tag></p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <!-- <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-if="scope.row.status === 0" @click="setStatus(scope.$index, scope.row, -1)">禁用</a>
-                    <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 0)">启用</a>
-                  </p>
-                  <p>
-                    <a href="javascript:void(0);" @click="setRoleBtn(scope.$index, scope.row)">权限设置</a>
-                  </p>
-                  <p>
-                    <router-link :to="{name: 'adminUserSubmit', query: {id: scope.row.id}}">编辑</router-link> -->
-                    <!--<a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>-->
-                  <!-- </p>
-                </template> -->
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminUserList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
         </div>
-      </el-col>
-    </el-row>
+      </div>
 
+      <div class="admin-search-form">
+        <el-form :inline="true" :model="query">
+          <el-form-item>
+            <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
+              <el-option label="全部" value="0"></el-option>
+              <el-option label="用户" value="1"></el-option>
+              <el-option label="编辑" value="5"></el-option>
+              <el-option label="管理员" value="10"></el-option>
+              <el-option label="管理员plus" value="15"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="query.type" placeholder="目标人群..." size="small">
+              <el-option label="全部" value="0"></el-option>
+              <el-option label="需求方" value="1"></el-option>
+              <el-option label="设计服务商" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+              <el-option label="ID" value="1"></el-option>
+              <el-option label="手机号" value="2"></el-option>
+              <el-option label="昵称" value="3"></el-option>
+              <el-option label="邮箱" value="4"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <el-table
+        :data="tableData"
+        border
+        v-loading="isLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          label="Logo"
+          width="80">
+            <template slot-scope="scope">
+              <p><img :src="scope.row.logo_url" width="50" /></p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          label="用户信息"
+          min-width="180">
+            <template slot-scope="scope">
+              <p>账户: {{ scope.row.account }}</p>
+              <p>昵称: {{ scope.row.username }}</p>
+              <p v-if="scope.row.realname">真实姓名: {{ scope.row.realname }} [{{ scope.row.position }}]</p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          width="60"
+          label="属性">
+            <template slot-scope="scope">
+              <p v-if="scope.row.kind === 2">鸟人</p>
+              <p v-else>默认</p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          width="80"
+          label="类型">
+            <template slot-scope="scope">
+              <p v-if="scope.row.type === 2">设计服务商</p>
+              <p v-else>需求方</p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          width="80"
+          label="状态">
+            <template slot-scope="scope">
+              <p v-if="scope.row.status === -1"><el-tag type="gray">禁用</el-tag></p>
+              <p v-else><el-tag type="success">正常</el-tag></p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          prop="created_at"
+          width="100"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="操作">
+            <!-- <template slot-scope="scope">
+              <p>
+                <a href="javascript:void(0);" v-if="scope.row.status === 0" @click="setStatus(scope.$index, scope.row, -1)">禁用</a>
+                <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 0)">启用</a>
+              </p>
+              <p>
+                <a href="javascript:void(0);" @click="setRoleBtn(scope.$index, scope.row)">权限设置</a>
+              </p>
+              <p>
+                <router-link :to="{name: 'adminUserSubmit', query: {id: scope.row.id}}">编辑</router-link> -->
+                <!--<a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>-->
+              <!-- </p>
+            </template> -->
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[50, 100, 500]"
+        :page-size="query.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.totalCount">
+      </el-pagination>
+
+    </div>
     <input type="hidden" ref="roleUserId" />
     <input type="hidden" ref="roleIndex" />
     <el-dialog title="设置权限" :visible.sync="setRoleDialog">
@@ -168,12 +160,8 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/b_admin/Menu'
 export default {
   name: 'admin_user_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

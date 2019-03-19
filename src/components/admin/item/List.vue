@@ -177,12 +177,8 @@
 
 <script>
   import api from '@/api/api'
-  import vMenu from '@/components/admin/Menu'
   export default {
     name: 'admin_item_list',
-    components: {
-      vMenu
-    },
     data () {
       return {
         menuType: 0,

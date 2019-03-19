@@ -116,12 +116,8 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_notice_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,
