@@ -103,7 +103,7 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/01@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
+              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名111</el-col>
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
@@ -136,7 +136,7 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/02@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
+              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名222</el-col>
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
@@ -171,7 +171,7 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/03@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
+              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名333</el-col>
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
@@ -204,7 +204,7 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/04@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
+              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名444</el-col>
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
