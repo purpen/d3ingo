@@ -93,9 +93,7 @@ body {
   font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
-  /* overflow: hidden; */
-  overflow-x: hidden;
-  /* background: #fff; */
+  overflow-x: hidden
 }
 
 .disableScroll {

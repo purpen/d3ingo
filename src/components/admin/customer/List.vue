@@ -316,7 +316,6 @@
 
       <el-table
         :data="tableData"
-        border
         v-loading="tableLoading"
         class="admin-table"
         @selection-change="handleSelectionChange"
@@ -2002,7 +2001,6 @@ export default {
   line-height: 20px;
 }
 .business-header {
-  background-color: #F7F9FB;
   height: 60px;
   line-height: 60px;
   padding-top: 12px;
