@@ -1,322 +1,316 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu :selectedName="bigType"></v-menu>
-      <el-col :span="20">
-        <div class="content">
-          <div class="business-header">
-            <div class="edit-i" @blur="isDown" tabindex="-1">
-              <i @click="isEdits = true"></i>
-              <ul v-show="isEdits">
-                <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
-                <li @click="exportForm">导出</li>
-                <li @click="randomAssign = true">随机分配</li>
-                <li @click="showClueDialog">无效</li> -->
-                <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-                <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
-              </ul>
-            </div>
-            <div class="export-upload">
-              <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
-              <el-upload
-                class="upload-demo"
-                :action="uploadUrl"
-                ref="upload"
-                :on-preview="handlePreview"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                :on-change="changeFile"
-                :auto-upload="false"
-                :on-error="uploadError"
-                :data="{'token': token}"
-                accept=".xlsx"
-                :show-file-list="false"
-                :file-list="file">
-                <!-- <span class="upload-file">批量导入</span> -->
-                <button class="new-button">
-                  <i class="el-icon-download"></i>
-                  导入商机
-                </button>
-              </el-upload>
-            </div>
-            <div class="search-sort">
-              <div class="search-select">
-                <el-select v-model="isSearch.label" placeholder="请选择">
-                  <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+  <div>
+    <div class="content">
+      <div class="business-header">
+        <div class="edit-i" @blur="isDown" tabindex="-1">
+          <i @click="isEdits = true"></i>
+          <ul v-show="isEdits">
+            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+            <li @click="exportForm">导出</li>
+            <li @click="randomAssign = true">随机分配</li>
+            <li @click="showClueDialog">无效</li> -->
+            <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+          </ul>
+        </div>
+        <div class="export-upload">
+          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-change="changeFile"
+            :auto-upload="false"
+            :on-error="uploadError"
+            :data="{'token': token}"
+            accept=".xlsx"
+            :show-file-list="false"
+            :file-list="file">
+            <!-- <span class="upload-file">批量导入</span> -->
+            <button class="new-button">
+              <i class="el-icon-download"></i>
+              导入商机
+            </button>
+          </el-upload>
+        </div>
+        <div class="search-sort">
+          <div class="search-select">
+            <el-select v-model="isSearch.label" placeholder="请选择">
+              <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
 
-                  </el-option>
-                </el-select>
-              </div>
-              <div class="search-input">
-                <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
-                </el-input>
-                <i class="icon-search" @click="updateSort"></i>
-              </div>
-            </div>
-            <div class="select-business">
-              <el-select v-model="query.search_val" @change="getClueList">
-                <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="select-date">
-              <el-select v-model="query.sort_evt" @change="getClueList">
-                <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
-                </el-option>
-              </el-select>
-            </div>
+              </el-option>
+            </el-select>
           </div>
-          <!-- <div class="admin-header fz-0 clearfix">
-            <el-form :inline="true" :model="query" class="select-query fl">
-              <el-form-item>
-                <div class="fr select-data">
-                  <el-date-picker
-                    v-model="query.valueDate"
-                    type="daterange"
-                    size="small"
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    unlink-panels
-                    :default-time="['00:00:00', '23:59:59']"
-                    @change="getDate">
-                  </el-date-picker>
-                </div>
-              </el-form-item>
-              <el-form-item class="select-info">
-                <el-select v-model="query.search" placeholder="选择条件..." size="small">
-                  <el-option label="用户名称" value="1"></el-option>
-                  <el-option label="按电话" value="2"></el-option>
-                  <el-option label="按负责人" value="3"></el-option>
-                  <el-option label="来源渠道" value="4"></el-option>
-                  <el-option label="客户级别" value="5"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item style="width: 20%;">
-                <el-input v-model="query.val" placeholder="搜索..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item class="margin0">
-                <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
-              </el-form-item>
-            </el-form>
-            <div class="admin-header-right fr clearfix">
-              <div class="fl">
-
-              </div>
-            </div>
-          </div>
-          <div class="btn-list fz-0">
-            <el-button size="small"
-              @click="$router.push({name: 'adminPotentialUserCreated'})" 
-              class="white-to-red-button">添加客户</el-button>
-            <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
-            <el-upload
-              class="upload-demo"
-              :action="uploadUrl"
-              ref="upload"
-              :on-preview="handlePreview"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :on-change="changeFile"
-              :auto-upload="false"
-              :on-error="uploadError"
-              :data="{'token': token}"
-              accept=".xlsx"
-              :show-file-list="false"
-              :file-list="file">
-              <el-button size="small" >批量导入</el-button>
-            </el-upload>
-            <el-button size="small" @click="exportForm">导出</el-button>
-            <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
-            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
-            <el-button size="small" @click="showClueDialog">无效</el-button>
-          </div> -->
-
-          <el-table
-            :data="tableData"
-            border
-            v-loading="tableLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            @filter-change="filterList"
-            @sort-change="sortChange"
-            style="width: 100%"
-            :row-class-name="tableRowClassName"
-            @row-click="getLookUserInfo">
-            <el-table-column
-              type="selection"
-              width="40">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              sortable="custom"
-              label="姓名"
-              width="100">
-            </el-table-column>
-             <el-table-column
-              width="130"
-              sortable="custom"
-              label="状态">
-              <template slot-scope="scope">
-                <p v-if="scope.row.new_call_status === 13">
-                  <span v-if="scope.row.son_status === 1">无效商机</span>
-                  <span v-if="scope.row.son_status === 2">低价客户</span>
-                  <span v-if="scope.row.son_status === 3">流失客户</span>
-                </p>
-                <p v-else>{{scope.row.call_status_value}}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              width="110"
-              sortable="custom"
-              label="客户级别">
-                 <template slot-scope="scope">
-                  <el-rate
-                    v-model="scope.row.rank"
-                    disabled
-                    text-color="#ff9900">
-                  </el-rate>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="110"
-              sortable="custom"
-              label="来源渠道">
-              <template slot-scope="scope">
-                <div v-if="scope.row.new_source || scope.row.new_source === 0" class="fz-14 tc-3">
-                  <div v-if="scope.row.new_source === 1">
-                    <p class="fz-12 tc-6">网络广告</p>
-                    <span v-if="scope.row.son_source === 'a'">百度</span>
-                    <span v-if="scope.row.son_source === 'b'">360</span>
-                    <span v-if="scope.row.son_source === 'c'">知乎</span>
-                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
-                    <span v-if="!scope.row.son_source">网络广告</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">官方</p>
-                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
-                    <span v-if="scope.row.son_source === 'b'">小程序</span>
-                    <span v-if="scope.row.son_source === 'c'">App</span>
-                    <span v-if="!scope.row.son_source">官方</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">合作伙伴</p>
-                    <span v-if="scope.row.son_source === 'a'">京东</span>
-                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
-                    <span v-if="!scope.row.son_source">合作伙伴</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">内部推荐</p>
-                    <span v-if="scope.row.son_source === 'a'">雷总/公司员工推荐的熟人客户</span>
-                    <span v-if="!scope.row.son_source">内部推荐</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">外部推荐</p>
-                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
-                    <span v-if="!scope.row.son_source">外部推荐</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">新媒体</p>
-                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
-                    <span v-if="scope.row.son_source === 'b'">头条号</span>
-                    <span v-if="scope.row.son_source === 'c'">百家号</span>
-                    <span v-if="!scope.row.son_source">新媒体</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">展销会</p>
-                    <span v-if="scope.row.son_source === 'a'">参展</span>
-                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
-                    <span v-if="!scope.row.son_source">展销会</span>
-                  </div>
-                  <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
-                    <p class="fz-12 tc-6">其他</p>
-                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
-                    <span v-if="!scope.row.son_source">其他</span>
-                  </div>
-                </div>
-                <div v-else>
-                  <p>{{scope.row.son_source}}</p>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              sortable="custom"
-              width="135"
-              label="创建时间">
-            </el-table-column>
-             <el-table-column
-              width="129"
-              sortable="custom"
-              prop="execute_user_name"
-              label="商机所有人">
-            </el-table-column>
-            <!-- <el-table-column
-              label="编号"
-              sortable="custom"
-              prop="number"
-              width="121">
-            </el-table-column>
-             -->
-            <el-table-column
-              width="135"
-              sortable="custom"
-              label="最后跟进日">
-              <template slot-scope="scope">
-                <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="new_status"
-              width="90"
-              label="级别"
-              >
-              <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
-                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
-                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-                  <p class="status5 status"  v-else>签约合作</p>
-                </template>
-            </el-table-column>
-            <!-- <el-table-column
-              prop="new_status"
-              width="90"
-              :label="statusValue"
-              :filters="[
-                {text: '商机', value: '1' },
-                { text: '潜在客户', value: '2' },
-                { text: '对接设计', value: '3' },
-                { text: '签约合作', value: '4' }
-              ]"
-              :filter-multiple="false"
-              filter-placement="bottom-end">
-                <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
-                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
-                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-                  <p class="status5 status"  v-else>签约合作</p>
-                </template>
-            </el-table-column> -->
-          </el-table>
-
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.per_page"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="query.per_page"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-          <div v-else>
-            <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
+          <div class="search-input">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            </el-input>
+            <i class="icon-search" @click="updateSort"></i>
           </div>
         </div>
-      </el-col>
-    </el-row>
+        <div class="select-business">
+          <el-select v-model="query.search_val" @change="getClueList">
+            <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="select-date">
+          <el-select v-model="query.sort_evt" @change="getClueList">
+            <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <!-- <div class="admin-header fz-0 clearfix">
+        <el-form :inline="true" :model="query" class="select-query fl">
+          <el-form-item>
+            <div class="fr select-data">
+              <el-date-picker
+                v-model="query.valueDate"
+                type="daterange"
+                size="small"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                unlink-panels
+                :default-time="['00:00:00', '23:59:59']"
+                @change="getDate">
+              </el-date-picker>
+            </div>
+          </el-form-item>
+          <el-form-item class="select-info">
+            <el-select v-model="query.search" placeholder="选择条件..." size="small">
+              <el-option label="用户名称" value="1"></el-option>
+              <el-option label="按电话" value="2"></el-option>
+              <el-option label="按负责人" value="3"></el-option>
+              <el-option label="来源渠道" value="4"></el-option>
+              <el-option label="客户级别" value="5"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item style="width: 20%;">
+            <el-input v-model="query.val" placeholder="搜索..." size="small"></el-input>
+          </el-form-item>
+          <el-form-item class="margin0">
+            <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="admin-header-right fr clearfix">
+          <div class="fl">
+
+          </div>
+        </div>
+      </div>
+      <div class="btn-list fz-0">
+        <el-button size="small"
+          @click="$router.push({name: 'adminPotentialUserCreated'})" 
+          class="white-to-red-button">添加客户</el-button>
+        <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
+        <el-upload
+          class="upload-demo"
+          :action="uploadUrl"
+          ref="upload"
+          :on-preview="handlePreview"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :on-change="changeFile"
+          :auto-upload="false"
+          :on-error="uploadError"
+          :data="{'token': token}"
+          accept=".xlsx"
+          :show-file-list="false"
+          :file-list="file">
+          <el-button size="small" >批量导入</el-button>
+        </el-upload>
+        <el-button size="small" @click="exportForm">导出</el-button>
+        <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
+        <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
+        <el-button size="small" @click="showClueDialog">无效</el-button>
+      </div> -->
+
+      <el-table
+        :data="tableData"
+        border
+        v-loading="tableLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        @filter-change="filterList"
+        @sort-change="sortChange"
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+        @row-click="getLookUserInfo">
+        <el-table-column
+          type="selection"
+          width="40">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          sortable="custom"
+          label="姓名"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          width="130"
+          sortable="custom"
+          label="状态">
+          <template slot-scope="scope">
+            <p v-if="scope.row.new_call_status === 13">
+              <span v-if="scope.row.son_status === 1">无效商机</span>
+              <span v-if="scope.row.son_status === 2">低价客户</span>
+              <span v-if="scope.row.son_status === 3">流失客户</span>
+            </p>
+            <p v-else>{{scope.row.call_status_value}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="110"
+          sortable="custom"
+          label="客户级别">
+            <template slot-scope="scope">
+              <el-rate
+                v-model="scope.row.rank"
+                disabled
+                text-color="#ff9900">
+              </el-rate>
+            </template>
+        </el-table-column>
+        <el-table-column
+          width="110"
+          sortable="custom"
+          label="来源渠道">
+          <template slot-scope="scope">
+            <div v-if="scope.row.new_source || scope.row.new_source === 0" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 1">
+                <p class="fz-12 tc-6">网络广告</p>
+                <span v-if="scope.row.son_source === 'a'">百度</span>
+                <span v-if="scope.row.son_source === 'b'">360</span>
+                <span v-if="scope.row.son_source === 'c'">知乎</span>
+                <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                <span v-if="!scope.row.son_source">网络广告</span>
+              </div>
+              <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">官方</p>
+                <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
+                <span v-if="scope.row.son_source === 'b'">小程序</span>
+                <span v-if="scope.row.son_source === 'c'">App</span>
+                <span v-if="!scope.row.son_source">官方</span>
+              </div>
+              <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">合作伙伴</p>
+                <span v-if="scope.row.son_source === 'a'">京东</span>
+                <span v-if="scope.row.son_source === 'b'">优客工场</span>
+                <span v-if="!scope.row.son_source">合作伙伴</span>
+              </div>
+              <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">内部推荐</p>
+                <span v-if="scope.row.son_source === 'a'">雷总/公司员工推荐的熟人客户</span>
+                <span v-if="!scope.row.son_source">内部推荐</span>
+              </div>
+              <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">外部推荐</p>
+                <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
+                <span v-if="!scope.row.son_source">外部推荐</span>
+              </div>
+              <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">新媒体</p>
+                <span v-if="scope.row.son_source === 'a'">微信公众号</span>
+                <span v-if="scope.row.son_source === 'b'">头条号</span>
+                <span v-if="scope.row.son_source === 'c'">百家号</span>
+                <span v-if="!scope.row.son_source">新媒体</span>
+              </div>
+              <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">展销会</p>
+                <span v-if="scope.row.son_source === 'a'">参展</span>
+                <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
+                <span v-if="!scope.row.son_source">展销会</span>
+              </div>
+              <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
+                <p class="fz-12 tc-6">其他</p>
+                <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
+                <span v-if="!scope.row.son_source">其他</span>
+              </div>
+            </div>
+            <div v-else>
+              <p>{{scope.row.son_source}}</p>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="created_at"
+          sortable="custom"
+          width="135"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="129"
+          sortable="custom"
+          prop="execute_user_name"
+          label="商机所有人">
+        </el-table-column>
+        <!-- <el-table-column
+          label="编号"
+          sortable="custom"
+          prop="number"
+          width="121">
+        </el-table-column>
+        -->
+        <el-table-column
+          width="135"
+          sortable="custom"
+          label="最后跟进日">
+          <template slot-scope="scope">
+            <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="new_status"
+          width="90"
+          label="级别"
+          >
+          <template slot-scope="scope">
+              <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+              <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
+              <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
+              <p class="status5 status"  v-else>签约合作</p>
+            </template>
+        </el-table-column>
+        <!-- <el-table-column
+          prop="new_status"
+          width="90"
+          :label="statusValue"
+          :filters="[
+            {text: '商机', value: '1' },
+            { text: '潜在客户', value: '2' },
+            { text: '对接设计', value: '3' },
+            { text: '签约合作', value: '4' }
+          ]"
+          :filter-multiple="false"
+          filter-placement="bottom-end">
+            <template slot-scope="scope">
+              <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+              <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
+              <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
+              <p class="status5 status"  v-else>签约合作</p>
+            </template>
+        </el-table-column> -->
+      </el-table>
+
+      <el-pagination
+        v-if="tableData.length && query.totalCount > query.per_page"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query.per_page"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.totalCount">
+      </el-pagination>
+      <div v-else>
+        <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
+      </div>
+    </div>
 
     <el-dialog
       title="确认"
@@ -473,14 +467,12 @@
 <script>
 import api from '@/api/api'
 import conf from 'conf/prod.env'
-import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
 import '@/assets/js/date_format'
 import RegionPicker from '@/components/block/RegionPicker'
 export default {
   name: 'admin_potential_list',
   components: {
-    vMenu,
     RegionPicker
   },
   data() {
@@ -742,6 +734,7 @@ export default {
       },
       tableData: [],
       adminUserList: [],
+      voIpUserIds: [],
       noAllot: 0, // 没有负责人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
@@ -1130,6 +1123,13 @@ export default {
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.adminUserList = res.data.data
+          let ids = []
+          this.adminUserList.forEach(item => {
+            if (item.status === 1) {
+              ids.push(item.id)
+            }
+          })
+          this.voIpUserIds = [...new Set(ids)]
         } else {
           this.$message.error(res.data.message)
         }
@@ -1160,6 +1160,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === id) {
+              this.voIpUserIds.push(id)
+              this.voIpUserIds = [...new Set(this.voIpUserIds)]
               this.$set(array[i], 'status', 1)
             }
           })
@@ -1181,6 +1183,10 @@ export default {
           this.adminUserList.forEach((item, i, array) => {
             if (item.id === this.currentVoIpUserId) {
               this.$set(array[i], 'status', 2)
+              let index = this.voIpUserIds.indexOf(item.id)
+              if (index !== (-1)) {
+                this.voIpUserIds.splice(index, 1)
+              }
             }
           })
           this.$message.success('移除成功')
@@ -1332,6 +1338,7 @@ export default {
     this.query.page = parseInt(this.$route.query.page || 1)
     this.bigType = 'potentialUserList' + this.$route.params.type
     this.getClueList()
+    this.getAdminList()
   },
   // directives: {Clickoutside},
   filters: {

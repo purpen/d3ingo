@@ -22,18 +22,18 @@
               </a>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_general_list">设计案例</el-menu-item>
-              <el-menu-item v-if="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
+              <el-menu-item v-show="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
               <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
 
-              <el-menu-item v-if="!isLogin" index="" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
+              <el-menu-item v-show="!isLogin" index="/register123" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
                 <span class="login-shadow">
                   注册
                 </span>
               </el-menu-item>
-              <el-menu-item v-if="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
+              <el-menu-item v-show="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -82,7 +82,7 @@
                 <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
                 <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
                 <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
               </el-submenu>
@@ -233,7 +233,7 @@
                 <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
                 <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
                 <el-menu-item :index="'/b_admin/item/list'" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-                <!-- <el-menu-item :index="custom.id === 0?'/admin':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
+                <!-- <el-menu-item :index="custom.id === 0?'/admin/dashboard':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
               </el-submenu>
@@ -787,8 +787,8 @@
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
-    height: 60px;
-    line-height: 63px;
+    height: 70px;
+    line-height: 73px;
     border-bottom: 3px solid transparent;
     color: #666;
     padding: 0 3px;
@@ -858,10 +858,6 @@
     -ms-flex-pack: end;
     justify-content: flex-end;
   }
-
-  /* .nav-header .nav-right .el-menu-item {
-    margin: 0 10px;
-  } */
 
   .nav-header .nav-item {
     width: 80px;
@@ -1017,8 +1013,8 @@
   }
   
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
-    height: 60px;
-    line-height: 60px;
+    height: 70px;
+    line-height: 70px;
     border: none;
     background: #ffffff;
     color: #666;

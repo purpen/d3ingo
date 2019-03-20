@@ -1,129 +1,121 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="itemList"></v-menu>
+  <div>
+    <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
-
-          <div class="admin-menu-sub clearfix">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'bAdminItemList'}" active-class="false"
-                           :class="{'item': true, 'is-active': menuType === 0}">全部
-              </router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'bAdminItemList', query: {type: 1}}" active-class="false"
-                           :class="{'item': true, 'is-active': menuType === 1}">完善资料
-              </router-link>
-            </div>
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'bAdminItemList', query: {type: 2}}" active-class="false"
-                           :class="{'item': true, 'is-active': menuType === 2}">等待推荐
-              </router-link>
-            </div>
-          </div>
-
-          <div class="admin-search-form">
-            <el-form :inline="true" :model="query">
-              <el-form-item>
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="项目ID" value="1"></el-option>
-                  <el-option label="公司名称" value="2"></el-option>
-                  <el-option label="联系人电话" value="3"></el-option>
-                  <el-option label="用户ID" value="8"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="item.id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              label="内容"
-              min-width="140">
-              <template slot-scope="scope">
-                <p>标题: {{ scope.row.item.name }}</p>
-                <p>类型: {{ scope.row.item.type_label }}</p>
-                <p>预算: {{ scope.row.item.design_cost_value }}</p>
-                <p>周期: {{ scope.row.item.cycle_value }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              width="120"
-              label="创建人">
-              <template slot-scope="scope">
-                <p>
-                  {{ scope.row.item.user.account }}[{{ scope.row.item.user_id }}]
-                </p>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="item.locale"
-              label="工作地点">
-            </el-table-column>
-            <el-table-column
-              prop="item.status_label"
-              width="120"
-              label="状态">
-            </el-table-column>
-            <el-table-column
-              prop="item.created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-              <template slot-scope="scope">
-                <!-- <p>
-                  <a href="javascript:void(0);" v-show="scope.row.item.status === 2 || scope.row.item.status === 3"
-                     @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
-                </p> -->
-                <p>
-                  <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
-                  </router-link>
-                </p>
-              </template>
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
+      <div class="admin-menu-sub clearfix">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'bAdminItemList'}" active-class="false"
+                        :class="{'item': true, 'is-active': menuType === 0}">全部
+          </router-link>
         </div>
-      </el-col>
-    </el-row>
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'bAdminItemList', query: {type: 1}}" active-class="false"
+                        :class="{'item': true, 'is-active': menuType === 1}">完善资料
+          </router-link>
+        </div>
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'bAdminItemList', query: {type: 2}}" active-class="false"
+                        :class="{'item': true, 'is-active': menuType === 2}">等待推荐
+          </router-link>
+        </div>
+      </div>
 
+      <div class="admin-search-form">
+        <el-form :inline="true" :model="query">
+          <el-form-item>
+            <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+              <el-option label="项目ID" value="1"></el-option>
+              <el-option label="公司名称" value="2"></el-option>
+              <el-option label="联系人电话" value="3"></el-option>
+              <el-option label="用户ID" value="8"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <el-table
+        :data="tableData"
+        border
+        v-loading="isLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="item.id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          label="内容"
+          min-width="140">
+          <template slot-scope="scope">
+            <p>标题: {{ scope.row.item.name }}</p>
+            <p>类型: {{ scope.row.item.type_label }}</p>
+            <p>预算: {{ scope.row.item.design_cost_value }}</p>
+            <p>周期: {{ scope.row.item.cycle_value }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="创建人">
+          <template slot-scope="scope">
+            <p>
+              {{ scope.row.item.user.account }}[{{ scope.row.item.user_id }}]
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="item.locale"
+          label="工作地点">
+        </el-table-column>
+        <el-table-column
+          prop="item.status_label"
+          width="120"
+          label="状态">
+        </el-table-column>
+        <el-table-column
+          prop="item.created_at"
+          width="100"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="操作">
+          <template slot-scope="scope">
+            <!-- <p>
+              <a href="javascript:void(0);" v-show="scope.row.item.status === 2 || scope.row.item.status === 3"
+                  @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
+            </p> -->
+            <p>
+              <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+              </router-link>
+            </p>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[20, 50, 100, 500]"
+        :page-size="query.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.totalCount">
+      </el-pagination>
+
+    </div>
     <el-dialog title="匹配公司" :visible.sync="matchCompanyDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="matchCompanyForm.itemId" value=""/>
@@ -148,18 +140,13 @@
         <el-button type="primary" @click="addMatchCompany">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
   import api from '@/api/api'
-  import vMenu from '@/components/b_admin/Menu'
   export default {
     name: 'admin_item_list',
-    components: {
-      vMenu
-    },
     data () {
       return {
         menuType: 0,

@@ -53,7 +53,7 @@
             <!-- <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
             <el-menu-item  index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
             <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-            <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -546,10 +546,10 @@
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 60px;
+    top: 70px;
     /* width: inherit; */
     width: 200px;
-    height: calc(100% - 60px);
+    height: calc(100% - 70px);
     /* overflow-y: auto; */
     overflow-x: hidden;
   }
@@ -670,7 +670,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 70px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
   }
   .menu-left {

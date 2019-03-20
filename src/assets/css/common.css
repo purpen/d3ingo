@@ -18,6 +18,9 @@
 .flex {
   display: flex;
 }
+.flex-column {
+  flex-direction: column
+}
 .flex1 {
   flex: 1 1 auto
 }
@@ -50,6 +53,9 @@
 }
 .fz-20 {
   font-size: 20px;
+}
+.fz-22 {
+  font-size: 22px;
 }
 .tc-2 {
   color: #222
@@ -84,6 +90,9 @@
 .bb-e6 {
   border-bottom: 1px solid #e6e6e6
 }
+.bg-f {
+  background: #fff
+}
 .bg-fa {
   background: #fafafa
 }
@@ -111,8 +120,8 @@
 .line-height16 {
   line-height: 16px;
 }
-.line-height30 {
-  line-height: 30px;
+.line-height18 {
+  line-height: 18px;
 }
 .line-height24 {
   line-height: 24px;
@@ -120,8 +129,17 @@
 .line-height20 {
   line-height: 20px;
 }
+.line-height28 {
+  line-height: 28px;
+}
+.line-height30 {
+  line-height: 30px;
+}
 .line-height32 {
   line-height: 32px;
+}
+.line-height40 {
+  line-height: 40px;
 }
 .line-height1_5 {
   line-height: 1.5
@@ -511,6 +529,28 @@ button.el-button.is-custom.is-disabled,
 }
 .no-border_radius {
   border-radius: 0;
+}
+/* 选项框 */
+.option-menu {
+  display: flex;
+}
+.option-item {
+  width: 60px;
+  height: 30px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  margin-left: -1px;
+  line-height: 30px;
+  text-align: center;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.option-item:hover, .option-item.active {
+  background: #ff5a5f;
+  color: #fff
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {

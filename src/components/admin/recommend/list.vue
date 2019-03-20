@@ -1,103 +1,97 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="recommendList"></v-menu>
-      <el-col :span="20">
-        <div class="content">
-          <div class="admin-menu-sub">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminRecommendList'}" active-class="false" :class="{'item': true}">全部</router-link>
-              <!-- 'is-active': menuType == 0 -->
-            </div>
-            <!-- <div class="fr">
-              <div class="item add">
-                <i class="el-icon-plus"></i> 添加
-              </div>
-            </div> -->
-          </div>
-          <el-table
-            :data="tableData"
-            border
-            v-loading="tableLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="id"
-              label="ID"
-              width="60">
-            </el-table-column>
-            <el-table-column
-              prop="company_name"
-              label="公司名称"
-              width="200"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="score"
-              label="公司评分"
-              width="80"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="case"
-              label="作品案例数"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="cooperation_count"
-              label="合作次数"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="recommend_count"
-              label="推荐次数"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="average_price"
-              label="接单均价"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="success_rate"
-              label="接单成功率(%)"
-              width="80">
-            </el-table-column>
-            <el-table-column
-              prop="intervene"
-              label="人工干预分值"
-              width="80">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p>
-                    <a @click="editScore(scope.row)" class="cur">设置</a>
-                  </p>
-                </template>
-            </el-table-column>
-          </el-table>
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.total">
-          </el-pagination>
+  <div>
+    <div class="content">
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminRecommendList'}" active-class="false" :class="{'item': true}">全部</router-link>
+          <!-- 'is-active': menuType == 0 -->
         </div>
-      </el-col>
-    </el-row>
+        <!-- <div class="fr">
+          <div class="item add">
+            <i class="el-icon-plus"></i> 添加
+          </div>
+        </div> -->
+      </div>
+      <el-table
+        :data="tableData"
+        border
+        v-loading="tableLoading"
+        class="admin-table"
+        @selection-change="handleSelectionChange"
+        style="width: 100%">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="company_name"
+          label="公司名称"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="score"
+          label="公司评分"
+          width="80"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="case"
+          label="作品案例数"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="cooperation_count"
+          label="合作次数"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="recommend_count"
+          label="推荐次数"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="average_price"
+          label="接单均价"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="success_rate"
+          label="接单成功率(%)"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="intervene"
+          label="人工干预分值"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="操作">
+            <template slot-scope="scope">
+              <p>
+                <a @click="editScore(scope.row)" class="cur">设置</a>
+              </p>
+            </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        v-if="tableData.length && query.totalCount > query.pageSize"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[50, 100, 500]"
+        :page-size="query.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.total">
+      </el-pagination>
+    </div>
     <el-dialog
       title="设置分值"
       :visible.sync="dialogVisible"
@@ -123,12 +117,10 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_recommend_list',
   components: {
-    vMenu,
     typeData,
     api
   },

@@ -1,803 +1,792 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="itemList"></v-menu>
-
-      <el-col :span="20">
-        <!-- <div class="content" > -->
-        <div v-loading="firstLoading" class="first-loading" v-if="firstLoading">
-
+  <div>
+    <!-- <div class="content" > -->
+    <div v-loading="firstLoading" class="first-loading" v-if="firstLoading">
+    </div>
+    <div class="content" v-else>
+      <div class="content-header fz-14">
+        <div>
+          <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">项目列表</router-link>
+          <span>&gt;</span>
+          <span>{{item.name}}</span>
         </div>
-        <div class="content" v-else>
-          <div class="content-header fz-14">
-            <div>
-              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">项目列表</router-link>
-              <span>&gt;</span>
-              <span>{{item.name}}</span>
-            </div>
-            <div class="header-box">
-              <span class="fz-18 tc-2 header-source">{{item.name}}</span>
-              <span class="tc-6">来源:</span>
-              <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
-              <span v-else-if="item.source === 1" class="header-source">京东</span>
-              <span class="tc-6">项目状态 : </span>
-              <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
-              <div class="fixe-header">
-              <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
-              <div class="test-select">
-                <el-select v-model="testStatus" @change="setTestDataSubmit" placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              </div>
-            </div>
-            <div>
-              <el-row class="header-basics">
-                <el-col :span="8">
-                  <div class="header-pact" v-if="item.contract &&item.contract.true_time">
-                    <p class="t-center">合同</p>
-                    <div class="mg-t-10">
-                      <p>合同费用: {{contract.total}} 元</p>
-                      <p>确认时间：{{item.contract.true_time|timeFormat}}</p>
-                      <p class="tc-red mg-t-10" v-if="item.source === 1">
-                        <el-row>
-                          <el-col :span="12" class="t-center" >
-                            <a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a>
-                          </el-col>
-                          <el-col :span="12" class="t-center">
-                            <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a>
-                          </el-col>
-                        </el-row>
-                      </p>
-                      <p class="t-center tc-red mg-t-10" v-else>
-                        <a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a>
-                      </p>
-                    </div>
-                  </div>
-                  <div v-else class="no-contract">
-                    <span>暂无合同</span>
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="header-company">
-                    <p>甲方（客户）：</p>
-                    <p>公司名称：{{item.company_name}}</p>
-                    <p>地址：{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
-                    <p>联系人：{{ item.contact_name }}</p>
-                    <p>电话：{{ item.phone }}</p>
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="header-company" v-if="contract">
-                    <p>乙方（设计服务商）：</p>
-                    <div>
-                      <p>公司名称：{{contract.design_company_name}}</p>
-                      <p>地址：{{contract.design_company_address}}</p>
-                      <p>联系人：{{contract.design_company_legal_person}}</p>
-                      <p>电话：{{contract.design_company_phone}}</p>
-                    </div>
-                  </div>
-                  <div v-else class="no-contract">
-                    <span>暂无信息</span>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="tab-btn">
-              <el-row>
-                <el-col :span="6">
-                  <button :class="['white-button','middle-button', {
-                    'full-red-button': childType === 0
-                  }]" @click="updateType(0)" ref="type0">项目进度</button>
-                </el-col>
-                <el-col :span="6">
-                  <button :class="['white-button','middle-button', {
-                    'full-red-button': childType === 1
-                  }]" @click="updateType(1)" ref="type1">基本信息</button>
-                </el-col>
-                <el-col :span="6">
-                  <button :class="['white-button','middle-button', {
-                    'full-red-button': childType === 2
-                  }]" @click="updateType(2)" ref="type2">订单进度</button>
-                </el-col>
-                <el-col :span="6">
-                  <button :class="['white-button','middle-button', {
-                    'full-red-button': childType === 3
-                  }]" @click="updateType(3)" ref="type3">金额及协议</button>
-                </el-col>
-              </el-row>
-            </div>
+        <div class="header-box">
+          <span class="fz-18 tc-2 header-source">{{item.name}}</span>
+          <span class="tc-6">来源:</span>
+          <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
+          <span v-else-if="item.source === 1" class="header-source">京东</span>
+          <span class="tc-6">项目状态 : </span>
+          <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
+          <div class="fixe-header">
+          <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
+          <div class="test-select">
+            <el-select v-model="testStatus" @change="setTestDataSubmit" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
-          <div v-if="childType === 0">
-            <div class="content-box">
-              <el-row class="t-center">
-                <el-col :span="8">
-                  设计服务商
-                </el-col>
-                <el-col :span="8">
-                  需求方
-                </el-col>
-                <el-col :span="8">
-                  备注
-                </el-col>
-              </el-row>
-            </div>
-            <div class="step-list">
-              <el-row v-for="(i,indexi) in itemSchedule" :key="indexi" :class="['is-succeed',{'last-step':i.type === 13}]" v-if="itemSchedule.length">
-                <el-col :span="8" :offset="i.both === 'left'?8:0">
-                  <div :class="{
-                    'step-left': i.both === 'left',
-                    'step-right': i.both === 'right',
-                  }">
-                    <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition"><a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a></span></p>
-                    <p class="created-date">{{i.created}}</p>
-                    <div class="company-list">
-                      <p><span v-if="i.type === 13 && i.evaluate">
-                          <a href="javascript:void(0);" @click="evaluateup(i.evaluate)">查看评价</a>
-                        </span></p>
-                      <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
-                        <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span> 
-                        <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name}}</router-link>
-                      </p>
-                      <p v-if="i.type === 5&&i.designCompany">
-                        <router-link :to="{name: 'companyShow', params: {id: i.designCompany.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ i.designCompany.company_name}}</router-link>
-                      </p>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="8" :offset="i.both === 'left'?0:8">
-                  <div class="remarks">
-                    <i @click="editRemarksBtn(i.id, i.summary)"></i>
-                    <p>备注: {{i.summary}}</p>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row v-for="(d,indexd) in defaultList" :key="indexd + 'd'" :class="{'last-step':d.type === 13}" v-if="defaultList.length">
-                <el-col :span="8" :offset="d.both === 'left'?8:0">
-                  <div :class="{
-                    'step-left': d.both === 'left',
-                    'step-right': d.both === 'right',
-                  }">
-                    <p><span>{{d.name}}</span></p>
-                    <!-- <p class="created-date">{{d.created}}</p> -->
-                  </div>
-                </el-col>
-                <el-col :span="8" :offset="d.both === 'left'?0:8">
-                  <div class="remarks">
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <el-dialog
-              title="编辑备注"
-              :visible.sync="dialogVisible"
-              width="30%"
-              >
-              <el-form :model="form" :rules="rules" ref="ruleForm">
-                <el-form-item prop="summary">
-                  <el-input placeholder="请填写100字以内的备注" v-model.trim="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
-                </el-form-item>
-              </el-form>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="updateRemarks('ruleForm')">确 定</el-button>
-              </span>
-            </el-dialog>
           </div>
-          <div v-if="childType === 1">
-            <div class="basic-box">
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">项目名称</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{item.name}}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">设计类型</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{item.type_value}}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">设计项目类型</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content" v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">产品类别</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{info.field_value}}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">行业领域</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{ item.industry_value }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">项目预算</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{ item.design_cost_value }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">交付时间</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{ item.cycle_value }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">项目工作地点</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{ item.province_value }} {{ item.city_value }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">产品功能描述</span>
-                </el-col>
-                <el-col :span="18">
-                  <span class="basic-content">{{ info.product_features }}</span>
-                </el-col>
-              </el-row>
-              <el-row class="basic">
-                <el-col :span="5" :offset="1">
-                  <span class="basic-title">相关附件</span>
-                </el-col>
-                <el-col :span="18">
-                  <p class="basic-content" v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-          <div v-if="childType === 2">
-            <div class="content-box">
-              <el-row class="t-center">
-                <el-col :span="8">
-                  订单进度
-                </el-col>
-                <el-col :span="8">
-                  发票管理
-                </el-col>
-              </el-row>
-            </div>
-            <div class="step-list">
-              <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="[{'last-step':i.is_last,'is-succeed': i.status > 0 || (i.is_last && itemOrder[indexi - 1].status > 0)}]" v-if="itemOrder.length">
-                <el-col :span="8" :offset="i.both === 'left'?8:0">
-                  <div :class="{
-                    'step-left': i.both === 'left',
-                    'step-right': i.both === 'right',
-                  }">
-                    <p><span>{{i.name}}</span></p>
-                    <div class="is-money">
-                      <p>
-                        <a href="javascript:void(0);" v-if="i.assets&&!(i.assets instanceof Array)" @click="showTransfer(indexi, i)">查看凭证</a>
-                      </p>
-                      <p>
-                        <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="sureTransfer(indexi, i)">确认收款</a>
-                        <span v-show="i.pay_type === 5 && i.status === 1 && i.bank_transfer === 1" class="pay-money">已收款</span>
-                      </p>
-                    </div>
-                    <p class="created-date" v-if="i.amount&&i.assets&&!(i.assets instanceof Array)">应付金额: {{i.amount}} 元</p>
-                    <p class="created-date" v-if="i.updated_at&&i.assets&&!(i.assets instanceof Array)">支付时间: {{i.updated_at|timeFormat}}</p>
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="step_invoice">
-                    <p>{{i.newName}}</p>
-                    <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" class="tab-green" @click="confirmReceipt(i,2)">确认收到发票</a>
-                    </p>
-                    <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
-                      <span class="invoice-btn2">已收发票</span>
-                    </p>
-                    <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);" @click="OpenReceipt(i)" class="tab-green">确认开出发票</a>
-                    </p>
-                    <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
-                      <span class="invoice-btn2">已开发票</span><span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息>></span>
-                    </p>
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="remarks">
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row v-for="(d,indexd) in defaultOrder" :key="indexd+ 'd'" :class="{'last-step':d.is_last}" v-if="defaultOrder.length">
-                <el-col :span="8" :offset="d.both === 'left'?8:0">
-                  <div :class="{
-                    'step-left': d.both === 'left',
-                    'step-right': d.both === 'right',
-                  }">
-                    <p><span>{{d.name}}</span></p>
-                    <div class="is-money">
-                    </div>
-                    <!-- <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
-                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p> -->
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="step_invoice">
-                    <p>{{d.newName}}</p>
-                  </div>
-                </el-col>
-                <el-col :span="8">
-                  <div class="remarks">
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <el-dialog title="打款凭证" :visible.sync="transferDialog">
-              <img :src="imgUrl" width="100%" />
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="transferDialog = false">取 消</el-button>
+        </div>
+        <div>
+          <el-row class="header-basics">
+            <el-col :span="8">
+              <div class="header-pact" v-if="item.contract &&item.contract.true_time">
+                <p class="t-center">合同</p>
+                <div class="mg-t-10">
+                  <p>合同费用: {{contract.total}} 元</p>
+                  <p>确认时间：{{item.contract.true_time|timeFormat}}</p>
+                  <p class="tc-red mg-t-10" v-if="item.source === 1">
+                    <el-row>
+                      <el-col :span="12" class="t-center" >
+                        <a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a>
+                      </el-col>
+                      <el-col :span="12" class="t-center">
+                        <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a>
+                      </el-col>
+                    </el-row>
+                  </p>
+                  <p class="t-center tc-red mg-t-10" v-else>
+                    <a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a>
+                  </p>
+                </div>
               </div>
-            </el-dialog>
-            <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
-              <el-form label-position="top">
-                <input type="hidden" v-model="orderForm.orderId" value="" />
-                <input type="hidden" v-model.number="orderForm.index" value="" />
-                <!-- <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
-                  <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
-                </el-form-item> -->
-                <el-form-item label="项目名称" label-width="200px">
-                  <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
+              <div v-else class="no-contract">
+                <span>暂无合同</span>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="header-company">
+                <p>甲方（客户）：</p>
+                <p>公司名称：{{item.company_name}}</p>
+                <p>地址：{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
+                <p>联系人：{{ item.contact_name }}</p>
+                <p>电话：{{ item.phone }}</p>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="header-company" v-if="contract">
+                <p>乙方（设计服务商）：</p>
+                <div>
+                  <p>公司名称：{{contract.design_company_name}}</p>
+                  <p>地址：{{contract.design_company_address}}</p>
+                  <p>联系人：{{contract.design_company_legal_person}}</p>
+                  <p>电话：{{contract.design_company_phone}}</p>
+                </div>
+              </div>
+              <div v-else class="no-contract">
+                <span>暂无信息</span>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="tab-btn">
+          <el-row>
+            <el-col :span="6">
+              <button :class="['white-button','middle-button', {
+                'full-red-button': childType === 0
+              }]" @click="updateType(0)" ref="type0">项目进度</button>
+            </el-col>
+            <el-col :span="6">
+              <button :class="['white-button','middle-button', {
+                'full-red-button': childType === 1
+              }]" @click="updateType(1)" ref="type1">基本信息</button>
+            </el-col>
+            <el-col :span="6">
+              <button :class="['white-button','middle-button', {
+                'full-red-button': childType === 2
+              }]" @click="updateType(2)" ref="type2">订单进度</button>
+            </el-col>
+            <el-col :span="6">
+              <button :class="['white-button','middle-button', {
+                'full-red-button': childType === 3
+              }]" @click="updateType(3)" ref="type3">金额及协议</button>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div v-if="childType === 0">
+        <div class="content-box">
+          <el-row class="t-center">
+            <el-col :span="8">
+              设计服务商
+            </el-col>
+            <el-col :span="8">
+              需求方
+            </el-col>
+            <el-col :span="8">
+              备注
+            </el-col>
+          </el-row>
+        </div>
+        <div class="step-list">
+          <el-row v-for="(i,indexi) in itemSchedule" :key="indexi" :class="['is-succeed',{'last-step':i.type === 13}]" v-if="itemSchedule.length">
+            <el-col :span="8" :offset="i.both === 'left'?8:0">
+              <div :class="{
+                'step-left': i.both === 'left',
+                'step-right': i.both === 'right',
+              }">
+                <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition"><a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a></span></p>
+                <p class="created-date">{{i.created}}</p>
+                <div class="company-list">
+                  <p><span v-if="i.type === 13 && i.evaluate">
+                      <a href="javascript:void(0);" @click="evaluateup(i.evaluate)">查看评价</a>
+                    </span></p>
+                  <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
+                    <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span> 
+                    <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name}}</router-link>
+                  </p>
+                  <p v-if="i.type === 5&&i.designCompany">
+                    <router-link :to="{name: 'companyShow', params: {id: i.designCompany.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ i.designCompany.company_name}}</router-link>
+                  </p>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" :offset="i.both === 'left'?0:8">
+              <div class="remarks">
+                <i @click="editRemarksBtn(i.id, i.summary)"></i>
+                <p>备注: {{i.summary}}</p>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row v-for="(d,indexd) in defaultList" :key="indexd + 'd'" :class="{'last-step':d.type === 13}" v-if="defaultList.length">
+            <el-col :span="8" :offset="d.both === 'left'?8:0">
+              <div :class="{
+                'step-left': d.both === 'left',
+                'step-right': d.both === 'right',
+              }">
+                <p><span>{{d.name}}</span></p>
+                <!-- <p class="created-date">{{d.created}}</p> -->
+              </div>
+            </el-col>
+            <el-col :span="8" :offset="d.both === 'left'?0:8">
+              <div class="remarks">
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <el-dialog
+          title="编辑备注"
+          :visible.sync="dialogVisible"
+          width="30%"
+          >
+          <el-form :model="form" :rules="rules" ref="ruleForm">
+            <el-form-item prop="summary">
+              <el-input placeholder="请填写100字以内的备注" v-model.trim="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateRemarks('ruleForm')">确 定</el-button>
+          </span>
+        </el-dialog>
+      </div>
+      <div v-if="childType === 1">
+        <div class="basic-box">
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">项目名称</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{item.name}}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">设计类型</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{item.type_value}}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">设计项目类型</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content" v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">产品类别</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{info.field_value}}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">行业领域</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{ item.industry_value }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">项目预算</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{ item.design_cost_value }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">交付时间</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{ item.cycle_value }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">项目工作地点</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{ item.province_value }} {{ item.city_value }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">产品功能描述</span>
+            </el-col>
+            <el-col :span="18">
+              <span class="basic-content">{{ info.product_features }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="basic">
+            <el-col :span="5" :offset="1">
+              <span class="basic-title">相关附件</span>
+            </el-col>
+            <el-col :span="18">
+              <p class="basic-content" v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div v-if="childType === 2">
+        <div class="content-box">
+          <el-row class="t-center">
+            <el-col :span="8">
+              订单进度
+            </el-col>
+            <el-col :span="8">
+              发票管理
+            </el-col>
+          </el-row>
+        </div>
+        <div class="step-list">
+          <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="[{'last-step':i.is_last,'is-succeed': i.status > 0 || (i.is_last && itemOrder[indexi - 1].status > 0)}]" v-if="itemOrder.length">
+            <el-col :span="8" :offset="i.both === 'left'?8:0">
+              <div :class="{
+                'step-left': i.both === 'left',
+                'step-right': i.both === 'right',
+              }">
+                <p><span>{{i.name}}</span></p>
+                <div class="is-money">
+                  <p>
+                    <a href="javascript:void(0);" v-if="i.assets&&!(i.assets instanceof Array)" @click="showTransfer(indexi, i)">查看凭证</a>
+                  </p>
+                  <p>
+                    <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="sureTransfer(indexi, i)">确认收款</a>
+                    <span v-show="i.pay_type === 5 && i.status === 1 && i.bank_transfer === 1" class="pay-money">已收款</span>
+                  </p>
+                </div>
+                <p class="created-date" v-if="i.amount&&i.assets&&!(i.assets instanceof Array)">应付金额: {{i.amount}} 元</p>
+                <p class="created-date" v-if="i.updated_at&&i.assets&&!(i.assets instanceof Array)">支付时间: {{i.updated_at|timeFormat}}</p>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="step_invoice">
+                <p>{{i.newName}}</p>
+                <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
+                  <a href="javascript:void(0);" class="tab-green" @click="confirmReceipt(i,2)">确认收到发票</a>
+                </p>
+                <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
+                  <span class="invoice-btn2">已收发票</span>
+                </p>
+                <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
+                    <a href="javascript:void(0);" @click="OpenReceipt(i)" class="tab-green">确认开出发票</a>
+                </p>
+                <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
+                  <span class="invoice-btn2">已开发票</span><span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息>></span>
+                </p>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="remarks">
+              </div>
+            </el-col>
+          </el-row>
+          <el-row v-for="(d,indexd) in defaultOrder" :key="indexd+ 'd'" :class="{'last-step':d.is_last}" v-if="defaultOrder.length">
+            <el-col :span="8" :offset="d.both === 'left'?8:0">
+              <div :class="{
+                'step-left': d.both === 'left',
+                'step-right': d.both === 'right',
+              }">
+                <p><span>{{d.name}}</span></p>
+                <div class="is-money">
+                </div>
+                <!-- <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
+                <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p> -->
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="step_invoice">
+                <p>{{d.newName}}</p>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="remarks">
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <el-dialog title="打款凭证" :visible.sync="transferDialog">
+          <img :src="imgUrl" width="100%" />
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="transferDialog = false">取 消</el-button>
+          </div>
+        </el-dialog>
+        <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
+          <el-form label-position="top">
+            <input type="hidden" v-model="orderForm.orderId" value="" />
+            <input type="hidden" v-model.number="orderForm.index" value="" />
+            <!-- <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
+              <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
+            </el-form-item> -->
+            <el-form-item label="项目名称" label-width="200px">
+              <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="订单金额" label-width="200px">
+              <el-input v-model="orderForm.amount" auto-complete="off" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="所属银行" prop="bandId">
+              <el-select v-model.number="orderForm.bankId" placeholder="请选择银行">
+                <el-option label="京东云支付" :value="-1"></el-option>
+                <el-option
+                  v-for="(item, index) in bankOptions"
+                  :label="item.label"
+                  :key="index"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="交易单号" label-width="80px">
+              <el-input v-model.trim="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="sureTransferDialog = false">取 消</el-button>
+            <el-button type="primary" :load="sureTransferLoading" @click="sureTransferSubmit">确 定</el-button>
+          </div>
+        </el-dialog>
+      </div>
+      <div v-if="childType === 3">
+        <div class="company-show">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>项目报价</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>¥ {{ item.price }} <a v-if="quotation1" href="javascript:void(0);" @click="showQuotaBtn(quotation1)">查看报价单>></a></p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>佣金</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.commission_rate }} %</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>平台监管金额</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>¥ {{ item.rest_fund }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>合同</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-if="item.contract"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a> &nbsp;&nbsp; <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
+              <p v-else>无</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>阶段</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>
+                  <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
+                    <div class="stage-title clearfix">
+                      <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
+
+                      <p v-if="d.confirm === 0">
+                        <span>未确认</span>
+                      </p>
+                      <p v-else>
+                        <span>已确认</span>
+                      </p>
+                    </div>
+                    <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
+                      <div class="contract-left">
+                        <div class="contract-content">
+                          <p>{{ asset.name }}</p>
+                          <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
+                        </div>
+                      </div>
+                      <div class="contract-right">
+                        <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                        </p>
+                      </div>
+                      <div class="clear"></div>
+                    </div>
+                  </div>
+              </p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <el-dialog
+        title="提示"
+        :visible.sync="comfirmDialog"
+        width="380px">
+        <span>{{ comfirmMessage }}</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="comfirmDialog = false">取 消</el-button>
+          <el-button type="primary" @click="sureDialogSubmit">确 定</el-button>
+          <input type="hidden" ref="comfirmType" value="1" />
+        </span>
+      </el-dialog>
+      <el-dialog
+        title="合同浏览"
+        :visible.sync="contractDialog"
+        top="2%"
+        width="75%">
+        <div v-if="contractEvt === 1">
+          <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
+        </div>
+        <div v-else-if="contractEvt === 2">
+          <v-jd-design-contract-view :propForm="contract"></v-jd-design-contract-view>
+        </div>
+        <div v-else>
+          <v-contract-view :propForm="contract"></v-contract-view>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" class="is-custom" @click="contractDialog = false">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="发票备注" :visible.sync="dialogVisible0" width="380px">
+        <el-input type="textarea" v-model="verify.refuseRease"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="small" @click="dialogVisible0 = false">取 消</el-button>
+          <el-button size="small" type="primary" :loading="sureTransferLoading" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="评价详情" :visible.sync="evaluateDialog" width="580px">
+        <div class="evaluate-result clearfix">
+          <el-row>
+            <el-col :span="22" :offset="2">
+              <div class="eva-content">
+                <p class="ev-c-name">
+                  <router-link :to="{name: 'companyShow', params: {id: item.design_company_id}}"
+                    target="_blank" v-if="quotation1">
+                    设计服务商: {{quotation1.design_company_name}}
+                  </router-link>
+                </p>
+                <el-row class="grade pl">
+                  <el-col :span="8">
+                    <p>设计水平</p>
+                    <el-rate
+                    v-model.number="score.design_level"
+                    disabled class="mg-t-10">
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>响应速度</p>
+                    <el-rate
+                    v-model.number="score.response_speed"
+                    disabled class="mg-t-10">
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>服务态度</p>
+                    <el-rate
+                    v-model.number="score.service"
+                    disabled class="mg-t-10">
+                  </el-rate>
+                  </el-col>
+                </el-row>
+                <p class="ev-c-content">
+                  评价内容: {{ score.content }}
+                </p>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="small" @click="evaluateDialog = false">关闭</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
+        <v-quote-view :formProp="quotation"></v-quote-view>
+        <div slot="footer" class="dialog-footer btn">
+          <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
+        <div>
+          <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+            <h3>需求公司发票信息</h3>
+            <el-row>
+              <el-col :span="4">
+                名称
+              </el-col>
+              <el-col :span="20">
+                <el-form-item class="fullwidth">
+                  <el-input v-model="item.company_name" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="订单金额" label-width="200px">
-                  <el-input v-model="orderForm.amount" auto-complete="off" disabled></el-input>
+              </el-col>
+              <el-col :span="4">
+                注册地址
+              </el-col>
+              <el-col :span="20">
+                <el-form-item class="fullwidth">
+                  <el-input v-model="item.address" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="所属银行" prop="bandId">
-                  <el-select v-model.number="orderForm.bankId" placeholder="请选择银行">
-                    <el-option label="京东云支付" :value="-1"></el-option>
+              </el-col>
+              <el-col :span="4">
+                税号
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="duty_number" class="fullwidth">
+                  <el-input v-model="invoiceForm.duty_number"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                开户银行
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="bank_name" class="fullwidth">
+                  <el-input v-model="invoiceForm.bank_name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                银行账户
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="account_number" class="fullwidth">
+                  <el-input v-model="invoiceForm.account_number"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <h3>
+              发票快递地址
+            </h3>
+            <el-row>
+              <el-col :span="4">
+                收件人姓名
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="contact_name" class="fullwidth">
+                  <el-input v-model="invoiceForm.contact_name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                收件人电话
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="phone" class="fullwidth">
+                  <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                收件人地址
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="address" class="fullwidth">
+                  <el-input  v-model="invoiceForm.address"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <h3>
+              邮寄信息
+            </h3>
+            <el-row>
+              <el-col :span="4">
+                快递公司
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="logistics_id" class="fullwidth">
+                  <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
                     <el-option
-                      v-for="(item, index) in bankOptions"
-                      :label="item.label"
+                      v-for="(d, index) in logisticsOptions"
+                      :label="d.label"
                       :key="index"
-                      :value="item.value">
+                      :value="d.value">
                     </el-option>
                   </el-select>
                 </el-form-item>
-
-                <el-form-item label="交易单号" label-width="80px">
-                  <el-input v-model.trim="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="4">
+                快递单号
+              </el-col>
+              <el-col :span="20">
+                <el-form-item prop="logistics_number">
+                  <el-input v-model="invoiceForm.logistics_number"></el-input>
                 </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="sureTransferDialog = false">取 消</el-button>
-                <el-button type="primary" :load="sureTransferLoading" @click="sureTransferSubmit">确 定</el-button>
-              </div>
-            </el-dialog>
-          </div>
-          <div v-if="childType === 3">
-            <div class="company-show">
-              <el-row class="item" :gutter="gutter">
-                <el-col :span="spanKey">
-                  <p>项目报价</p>
-                </el-col>
-                <el-col :span="spanVal">
-                  <p>¥ {{ item.price }} <a v-if="quotation1" href="javascript:void(0);" @click="showQuotaBtn(quotation1)">查看报价单>></a></p>
-                </el-col>
-                <el-col :span="spanOpt">
-                </el-col>
-              </el-row>
+              </el-col>
+            </el-row>
 
-              <el-row class="item" :gutter="gutter">
-                <el-col :span="spanKey">
-                  <p>佣金</p>
-                </el-col>
-                <el-col :span="spanVal">
-                  <p>{{ item.commission_rate }} %</p>
-                </el-col>
-                <el-col :span="spanOpt">
-                </el-col>
-              </el-row>
-
-              <el-row class="item" :gutter="gutter">
-                <el-col :span="spanKey">
-                  <p>平台监管金额</p>
-                </el-col>
-                <el-col :span="spanVal">
-                  <p>¥ {{ item.rest_fund }}</p>
-                </el-col>
-                <el-col :span="spanOpt">
-                </el-col>
-              </el-row>
-
-              <el-row class="item" :gutter="gutter">
-                <el-col :span="spanKey">
-                  <p>合同</p>
-                </el-col>
-                <el-col :span="spanVal">
-                  <p v-if="item.contract"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a> &nbsp;&nbsp; <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
-                  <p v-else>无</p>
-                </el-col>
-                <el-col :span="spanOpt">
-                </el-col>
-              </el-row>
-
-              <el-row class="item" :gutter="gutter">
-                <el-col :span="spanKey">
-                  <p>阶段</p>
-                </el-col>
-                <el-col :span="spanVal">
-                  <p>
-                      <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
-                        <div class="stage-title clearfix">
-                          <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
-
-                          <p v-if="d.confirm === 0">
-                            <span>未确认</span>
-                          </p>
-                          <p v-else>
-                            <span>已确认</span>
-                          </p>
-                        </div>
-                        <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
-                          <div class="contract-left">
-                            <div class="contract-content">
-                              <p>{{ asset.name }}</p>
-                              <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
-                            </div>
-                          </div>
-                          <div class="contract-right">
-                            <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
-                            </p>
-                          </div>
-                          <div class="clear"></div>
-                        </div>
-                      </div>
-                  </p>
-                </el-col>
-                <el-col :span="spanOpt">
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-          <el-dialog
-            title="提示"
-            :visible.sync="comfirmDialog"
-            width="380px">
-            <span>{{ comfirmMessage }}</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="comfirmDialog = false">取 消</el-button>
-              <el-button type="primary" @click="sureDialogSubmit">确 定</el-button>
-              <input type="hidden" ref="comfirmType" value="1" />
-            </span>
-          </el-dialog>
-          <el-dialog
-            title="合同浏览"
-            :visible.sync="contractDialog"
-            top="2%"
-            width="75%">
-            <div v-if="contractEvt === 1">
-              <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
-            </div>
-            <div v-else-if="contractEvt === 2">
-              <v-jd-design-contract-view :propForm="contract"></v-jd-design-contract-view>
-            </div>
-            <div v-else>
-              <v-contract-view :propForm="contract"></v-contract-view>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button type="primary" class="is-custom" @click="contractDialog = false">确 定</el-button>
-            </span>
-          </el-dialog>
-          <el-dialog title="发票备注" :visible.sync="dialogVisible0" width="380px">
-            <el-input type="textarea" v-model="verify.refuseRease"></el-input>
-            <span slot="footer" class="dialog-footer">
-              <el-button size="small" @click="dialogVisible0 = false">取 消</el-button>
-              <el-button size="small" type="primary" :loading="sureTransferLoading" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
-            </span>
-          </el-dialog>
-          <el-dialog title="评价详情" :visible.sync="evaluateDialog" width="580px">
-            <div class="evaluate-result clearfix">
-              <el-row>
-                <el-col :span="22" :offset="2">
-                  <div class="eva-content">
-                    <p class="ev-c-name">
-                      <router-link :to="{name: 'companyShow', params: {id: item.design_company_id}}"
-                       target="_blank" v-if="quotation1">
-                        设计服务商: {{quotation1.design_company_name}}
-                      </router-link>
-                    </p>
-                    <el-row class="grade pl">
-                      <el-col :span="8">
-                        <p>设计水平</p>
-                        <el-rate
-                        v-model.number="score.design_level"
-                        disabled class="mg-t-10">
-                      </el-rate>
-                      </el-col>
-                      <el-col :span="8">
-                        <p>响应速度</p>
-                        <el-rate
-                        v-model.number="score.response_speed"
-                        disabled class="mg-t-10">
-                      </el-rate>
-                      </el-col>
-                      <el-col :span="8">
-                        <p>服务态度</p>
-                        <el-rate
-                        v-model.number="score.service"
-                        disabled class="mg-t-10">
-                      </el-rate>
-                      </el-col>
-                    </el-row>
-                    <p class="ev-c-content">
-                      评价内容: {{ score.content }}
-                    </p>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button size="small" @click="evaluateDialog = false">关闭</el-button>
-            </span>
-          </el-dialog>
-          <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
-            <v-quote-view :formProp="quotation"></v-quote-view>
-            <div slot="footer" class="dialog-footer btn">
-              <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-            </div>
-          </el-dialog>
-
-          <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
-            <div>
-              <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
-                <h3>需求公司发票信息</h3>
-                <el-row>
-                  <el-col :span="4">
-                    名称
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item class="fullwidth">
-                      <el-input v-model="item.company_name" :disabled="true"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    注册地址
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item class="fullwidth">
-                      <el-input v-model="item.address" :disabled="true"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    税号
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="duty_number" class="fullwidth">
-                      <el-input v-model="invoiceForm.duty_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    开户银行
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="bank_name" class="fullwidth">
-                      <el-input v-model="invoiceForm.bank_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    银行账户
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="account_number" class="fullwidth">
-                      <el-input v-model="invoiceForm.account_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <h3>
-                  发票快递地址
-                </h3>
-                <el-row>
-                  <el-col :span="4">
-                    收件人姓名
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="contact_name" class="fullwidth">
-                      <el-input v-model="invoiceForm.contact_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    收件人电话
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="phone" class="fullwidth">
-                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="4">
-                    收件人地址
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="address" class="fullwidth">
-                      <el-input  v-model="invoiceForm.address"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <h3>
-                  邮寄信息
-                </h3>
-                <el-row>
-                  <el-col :span="4">
-                    快递公司
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="logistics_id" class="fullwidth">
-                      <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
-                        <el-option
-                          v-for="(d, index) in logisticsOptions"
-                          :label="d.label"
-                          :key="index"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="4">
-                    快递单号
-                  </el-col>
-                  <el-col :span="20">
-                    <el-form-item prop="logistics_number">
-                      <el-input v-model="invoiceForm.logistics_number"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-              </el-form>
-            </div>
-            
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="receiptDialog = false">取消</el-button>
-              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
-            </div>
-          </el-dialog>
-
-         <el-dialog title="发票详情" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
-            <div class="invoice-one">
-              <p class="tc-2 fz-16">需求公司发票信息</p>
-              <el-row>
-                <el-col :span="4">
-                  名称
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="item.company_name">{{item.company_name}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  注册地址
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="item.address">{{item.address}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  税号
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.duty_number">{{invoiceOne.duty_number}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  开户银行
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.bank_name">{{invoiceOne.bank_name}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  银行账户
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.account_number">{{invoiceOne.account_number}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-              </el-row>
-              <p class="tc-2 fz-16">
-                发票快递地址
-              </p>
-              <el-row>
-                <el-col :span="4">
-                  收件人姓名
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.contact_name">{{invoiceOne.contact_name}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  收件人电话
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.phone">{{invoiceOne.phone}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-                <el-col :span="4">
-                  收件人地址
-                </el-col>
-                <el-col :span="20">
-                  <p v-if="invoiceOne.address">{{invoiceOne.address}}</p>
-                  <p v-else>&nbsp;</p>
-                </el-col>
-              </el-row>
-              <p class="tc-2 fz-16">
-                邮寄信息
-              </p>
-              <el-row>
-                <el-col :span="4">
-                  快递公司
-                </el-col>
-                <el-col :span="20">
-                  <p>{{invoiceOne.logistics_label}}</p>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="4">
-                  快递单号
-                </el-col>
-                <el-col :span="20">
-                  <p>{{invoiceOne.logistics_number}}</p>
-                </el-col>
-              </el-row>
-            </div>
-            
-            <div slot="footer" class="dialog-footer">
-              <el-button type="primary" class="is-custom" @click="invoiceOneDialog = false">关闭</el-button>
-            </div>
-          </el-dialog>
-
-          <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
-            <el-form label-position="left">
-              <el-form-item label="需求公司返款金额">
-                <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="设计服务商返款金额">
-                <el-input v-model="matchCompanyForm.designAmount" placeholder="￥0.00" auto-complete="off"></el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="forceCloseDialog = false">取 消</el-button>
-              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="forceCloseSubmit">确 定</el-button>
-            </div>
-          </el-dialog>
+          </el-form>
         </div>
-      </el-col>
-    </el-row>
+        
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="receiptDialog = false">取消</el-button>
+          <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
+        </div>
+      </el-dialog>
 
+      <el-dialog title="发票详情" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
+        <div class="invoice-one">
+          <p class="tc-2 fz-16">需求公司发票信息</p>
+          <el-row>
+            <el-col :span="4">
+              名称
+            </el-col>
+            <el-col :span="20">
+              <p v-if="item.company_name">{{item.company_name}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              注册地址
+            </el-col>
+            <el-col :span="20">
+              <p v-if="item.address">{{item.address}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              税号
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.duty_number">{{invoiceOne.duty_number}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              开户银行
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.bank_name">{{invoiceOne.bank_name}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              银行账户
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.account_number">{{invoiceOne.account_number}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+          </el-row>
+          <p class="tc-2 fz-16">
+            发票快递地址
+          </p>
+          <el-row>
+            <el-col :span="4">
+              收件人姓名
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.contact_name">{{invoiceOne.contact_name}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              收件人电话
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.phone">{{invoiceOne.phone}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+            <el-col :span="4">
+              收件人地址
+            </el-col>
+            <el-col :span="20">
+              <p v-if="invoiceOne.address">{{invoiceOne.address}}</p>
+              <p v-else>&nbsp;</p>
+            </el-col>
+          </el-row>
+          <p class="tc-2 fz-16">
+            邮寄信息
+          </p>
+          <el-row>
+            <el-col :span="4">
+              快递公司
+            </el-col>
+            <el-col :span="20">
+              <p>{{invoiceOne.logistics_label}}</p>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4">
+              快递单号
+            </el-col>
+            <el-col :span="20">
+              <p>{{invoiceOne.logistics_number}}</p>
+            </el-col>
+          </el-row>
+        </div>
+        
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" class="is-custom" @click="invoiceOneDialog = false">关闭</el-button>
+        </div>
+      </el-dialog>
 
+      <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
+        <el-form label-position="left">
+          <el-form-item label="需求公司返款金额">
+            <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="设计服务商返款金额">
+            <el-input v-model="matchCompanyForm.designAmount" placeholder="￥0.00" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="forceCloseDialog = false">取 消</el-button>
+          <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="forceCloseSubmit">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
@@ -806,7 +795,6 @@ const vJdDesignContractView = () => import('@/components/block/JdDesignContractV
 export default {
   name: 'admin_item_view0',
   components: {
-    vMenu,
     vQuoteView,
     vContractView,
     vJdDemandContractView,
