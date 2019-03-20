@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <div class="business-header">
+      <div class="business-header" v-if="typeId === 1">
         <div class="edit-i" @blur="isDown" tabindex="-1">
           <i @click="isEdits = true"></i>
           <ul v-show="isEdits">
@@ -51,14 +51,199 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query.search_val" @change="getClueList">
+          <el-select v-model="query1.search_val" @change="getClueList">
             <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
             </el-option>
           </el-select>
         </div>
         <div class="select-date">
-          <el-select v-model="query.sort_evt" @change="getClueList">
+          <el-select v-model="query1.sort_evt" @change="getClueList">
             <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="business-header" v-if="typeId === 2">
+        <div class="edit-i" @blur="isDown" tabindex="-1">
+          <i @click="isEdits = true"></i>
+          <ul v-show="isEdits">
+            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+            <li @click="exportForm">导出</li>
+            <li @click="randomAssign = true">随机分配</li>
+            <li @click="showClueDialog">无效</li> -->
+            <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+          </ul>
+        </div>
+        <div class="export-upload">
+          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-change="changeFile"
+            :auto-upload="false"
+            :on-error="uploadError"
+            :data="{'token': token}"
+            accept=".xlsx"
+            :show-file-list="false"
+            :file-list="file">
+            <!-- <span class="upload-file">批量导入</span> -->
+            <button class="new-button">
+              <i class="el-icon-download"></i>
+              导入商机
+            </button>
+          </el-upload>
+        </div>
+        <div class="search-sort">
+          <div class="search-select">
+            <el-select v-model="isSearch.label" placeholder="请选择">
+              <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+
+              </el-option>
+            </el-select>
+          </div>
+          <div class="search-input">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            </el-input>
+            <i class="icon-search" @click="updateSort"></i>
+          </div>
+        </div>
+        <div class="select-business">
+          <el-select v-model="query2.search_val" @change="getClueList">
+            <el-option v-for="l in optionLatent" :key="l.value" :label="l.label" :value="l.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="select-date">
+          <el-select v-model="query2.sort_evt" @change="getClueList">
+            <el-option v-for="c in optionLatentCondition" :key="c.value" :value="c.value" :label="c.label">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="business-header" v-if="typeId === 3">
+        <div class="edit-i" @blur="isDown" tabindex="-1">
+          <i @click="isEdits = true"></i>
+          <ul v-show="isEdits">
+            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+            <li @click="exportForm">导出</li>
+            <li @click="randomAssign = true">随机分配</li>
+            <li @click="showClueDialog">无效</li> -->
+            <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+          </ul>
+        </div>
+        <div class="export-upload">
+          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-change="changeFile"
+            :auto-upload="false"
+            :on-error="uploadError"
+            :data="{'token': token}"
+            accept=".xlsx"
+            :show-file-list="false"
+            :file-list="file">
+            <!-- <span class="upload-file">批量导入</span> -->
+            <button class="new-button">
+              <i class="el-icon-download"></i>
+              导入商机
+            </button>
+          </el-upload>
+        </div>
+        <div class="search-sort">
+          <div class="search-select">
+            <el-select v-model="isSearch.label" placeholder="请选择">
+              <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+
+              </el-option>
+            </el-select>
+          </div>
+          <div class="search-input">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            </el-input>
+            <i class="icon-search" @click="updateSort"></i>
+          </div>
+        </div>
+        <div class="select-business">
+          <el-select v-model="query3.search_val" @change="getClueList">
+            <el-option v-for="l in optionClient" :key="l.value" :label="l.label" :value="l.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="select-date">
+          <el-select v-model="query3.sort_evt" @change="getClueList">
+            <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="business-header" v-if="typeId === 4">
+        <div class="edit-i" @blur="isDown" tabindex="-1">
+          <i @click="isEdits = true"></i>
+          <ul v-show="isEdits">
+            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+            <li @click="exportForm">导出</li>
+            <li @click="randomAssign = true">随机分配</li>
+            <li @click="showClueDialog">无效</li> -->
+            <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+          </ul>
+        </div>
+        <!-- <div class="export-upload">
+          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-change="changeFile"
+            :auto-upload="false"
+            :on-error="uploadError"
+            :data="{'token': token}"
+            accept=".xlsx"
+            :show-file-list="false"
+            :file-list="file">
+            <button class="new-button">
+              <i class="el-icon-download"></i>
+              导入商机
+            </button>
+          </el-upload>
+        </div> -->
+        <div class="search-sort">
+          <div class="search-select">
+            <el-select v-model="isSearch.label" placeholder="请选择">
+              <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+
+              </el-option>
+            </el-select>
+          </div>
+          <div class="search-input">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            </el-input>
+            <i class="icon-search" @click="updateSort"></i>
+          </div>
+        </div>
+        <!-- <div class="select-business">
+          <el-select v-model="query4.search_val" @change="getClueList">
+            <el-option v-for="l in optionClient" :key="l.value" :label="l.label" :value="l.value">
+            </el-option>
+          </el-select>
+        </div> -->
+        <div class="select-date">
+          <el-select v-model="query4.sort_evt" @change="getClueList">
+            <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -148,10 +333,9 @@
           prop="name"
           sortable="custom"
           label="姓名"
-          width="100">
+          >
         </el-table-column>
         <el-table-column
-          width="130"
           sortable="custom"
           label="状态">
           <template slot-scope="scope">
@@ -164,7 +348,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="110"
           sortable="custom"
           label="客户级别">
             <template slot-scope="scope">
@@ -176,7 +359,6 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="110"
           sortable="custom"
           label="来源渠道">
           <template slot-scope="scope">
@@ -239,7 +421,6 @@
         <el-table-column
           prop="created_at"
           sortable="custom"
-          width="135"
           label="创建时间">
         </el-table-column>
         <el-table-column
@@ -256,7 +437,6 @@
         </el-table-column>
         -->
         <el-table-column
-          width="135"
           sortable="custom"
           label="最后跟进日">
           <template slot-scope="scope">
@@ -265,7 +445,6 @@
         </el-table-column>
         <el-table-column
           prop="new_status"
-          width="90"
           label="级别"
           >
           <template slot-scope="scope">
@@ -296,20 +475,53 @@
         </el-table-column> -->
       </el-table>
 
-      <el-pagination
-        v-if="tableData.length && query.totalCount > query.per_page"
+      <!-- <el-pagination
+        v-if="typeId === 1&&tableData.length && query1.totalCount > query1.per_page"
         class="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="query.page"
+        :current-page="query1.page"
         :page-sizes="[10, 20, 50]"
-        :page-size="query.per_page"
+        :page-size="query1.per_page"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="query.totalCount">
+        :total="query1.totalCount">
+      </el-pagination> -->
+      <!-- <el-pagination
+        v-else-if="typeId === 2&&tableData.length && query2.totalCount > query2.per_page"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query2.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query2.per_page"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query2.totalCount">
       </el-pagination>
-      <div v-else>
+      <el-pagination
+        v-else-if="typeId === 3&&tableData.length && query3.totalCount > query3.per_page"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query3.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query3.per_page"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query3.totalCount">
+      </el-pagination>
+      <el-pagination
+        v-else-if="typeId === 4&&tableData.length && query4.totalCount > query4.per_page"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query4.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query4.per_page"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query4.totalCount">
+      </el-pagination> -->
+      <!-- <div v-else>
         <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
-      </div>
+      </div> -->
     </div>
 
     <el-dialog
@@ -643,6 +855,7 @@ export default {
           label: '按编号'
         }
       ],
+      // 商机搜索条件
       optionCondition: [
         {
           value: 1,
@@ -673,29 +886,128 @@ export default {
           label: '按最后跟进日'
         }
       ],
-      optionBusiness: [
+      // 潜在客户条件
+      optionLatentCondition: [
         {
           value: 1,
-          label: '全部商机'
+          label: '按姓名'
         },
         {
           value: 2,
-          label: '未分配的商机'
+          label: '按客户级别'
         },
         {
           value: 3,
-          label: '我的商机'
+          label: '按创建时间'
         },
         {
           value: 4,
-          label: '最近查看'
+          label: '按潜在客户来源'
         },
         {
           value: 5,
-          label: '本周新建的商机'
+          label: '按潜在客户所有人'
         },
         {
           value: 6,
+          label: '按状态'
+        },
+        {
+          value: 7,
+          label: '按最后跟进日'
+        }
+      ],
+      // 客户
+      optionClientCondition: [
+        {
+          value: 1,
+          label: '按姓名'
+        },
+        {
+          value: 2,
+          label: '按客户级别'
+        },
+        {
+          value: 3,
+          label: '按创建时间'
+        },
+        {
+          value: 4,
+          label: '按客户来源'
+        },
+        {
+          value: 5,
+          label: '按客户所有人'
+        },
+        {
+          value: 6,
+          label: '按状态'
+        },
+        {
+          value: 7,
+          label: '按最后跟进日'
+        }
+      ],
+      optionClient: [
+        {
+          value: 0,
+          label: '全部客户'
+        },
+        {
+          value: 1,
+          label: '我的客户'
+        }
+      ],
+      // 0.全部商家; 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
+      optionLatent: [
+        {
+          value: 0,
+          label: '全部商家'
+        },
+        {
+          value: 1,
+          label: '全部潜在客户'
+        },
+        {
+          value: 2,
+          label: '未分配的潜在客户'
+        },
+        {
+          value: 3,
+          label: '我的潜在客户'
+        },
+        {
+          value: 4,
+          label: '全部对接设计'
+        },
+        {
+          value: 5,
+          label: '我的对接设计'
+        }
+      ],
+      optionBusiness: [
+        {
+          value: 0,
+          label: '全部商机'
+        },
+        {
+          value: 1,
+          label: '未分配的商机'
+        },
+        {
+          value: 2,
+          label: '我的商机'
+        },
+        {
+          value: 5,
+          label: '最近查看'
+        },
+        {
+          value: 3,
+          label: '本周新建的商机'
+        },
+        {
+          value: 4,
           label: '上周新建的商机'
         }
       ],
@@ -707,7 +1019,67 @@ export default {
       BoolAddVoIpUser: false,
       boolClueStatus: false,
       multipleSelection: [],
-      query: {
+      query1: {
+        page: 1,
+        per_page: 50,
+        evt: '',
+        sort: 2,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        status: 5,
+        // totalCount: 0,
+        search: '',
+        valueDate: []
+      },
+      query2: {
+        page: 1,
+        per_page: 50,
+        evt: '',
+        sort: 2,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        status: 5,
+        // totalCount: 0,
+        search: '',
+        valueDate: []
+      },
+      query3: {
+        page: 1,
+        per_page: 50,
+        evt: '',
+        sort: 2,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        status: 5,
+        // totalCount: 0,
+        search: '',
+        valueDate: []
+      },
+      query4: {
         page: 1,
         per_page: 50,
         evt: '',
@@ -746,7 +1118,7 @@ export default {
   },
   methods: {
     resetAll() {
-      this.query = {
+      this['query' + this.typeId] = {
         page: 1,
         per_page: 50,
         evt: '',
@@ -777,17 +1149,17 @@ export default {
     updateSort() {
       if (this.isSearch.label) {
         if (this.isSearch.label === 1) {
-          this.query.name = this.isSearch.value
-          this.query.phone = ''
-          this.query.number = ''
+          this['query' + this.typeId].name = this.isSearch.value
+          this['query' + this.typeId].phone = ''
+          this['query' + this.typeId].number = ''
         } else if (this.isSearch.label === 2) {
-          this.query.name = ''
-          this.query.number = ''
-          this.query.phone = this.isSearch.value
+          this['query' + this.typeId].name = ''
+          this['query' + this.typeId].number = ''
+          this['query' + this.typeId].phone = this.isSearch.value
         } else if (this.isSearch.label === 3) {
-          this.query.name = ''
-          this.query.phone = ''
-          this.query.number = this.isSearch.value
+          this['query' + this.typeId].name = ''
+          this['query' + this.typeId].phone = ''
+          this['query' + this.typeId].number = this.isSearch.value
         }
         this.getClueList()
       }
@@ -912,26 +1284,26 @@ export default {
       let value = Object.values(row).toString()
       switch (value) {
         case '1':
-          this.query.status = 1
+          this['query' + this.typeId].status = 1
           this.statusValue = '商机'
           break
         case '2':
-          this.query.status = 2
+          this['query' + this.typeId].status = 2
           this.statusValue = '潜在客户'
           break
         case '3':
-          this.query.status = 3
+          this['query' + this.typeId].status = 3
           this.statusValue = '对接设计'
           break
         case '4':
-          this.query.status = 4
+          this['query' + this.typeId].status = 4
           this.statusValue = '签订合作'
           break
         default:
-          this.query.status = 5
+          this['query' + this.typeId].status = 5
           this.statusValue = '阶段'
       }
-      this.query.page = 1
+      this['query' + this.typeId].page = 1
       this.getClueList()
     },
     // 多选
@@ -979,7 +1351,7 @@ export default {
       }
     },
     onSearch() {
-      this.query.page = 1
+      this['query' + this.typeId].page = 1
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
@@ -989,50 +1361,68 @@ export default {
       if (!column) return
       switch (column.label) {
         case '编号':
-          this.query.evt = 1
+          this['query' + this.typeId].evt = 1
           break
         case '姓名':
-          this.query.evt = 2
+          this['query' + this.typeId].evt = 2
           break
         case '客户级别':
-          this.query.evt = 3
+          this['query' + this.typeId].evt = 3
           break
         case '创建时间':
-          this.query.evt = 4
+          this['query' + this.typeId].evt = 4
           break
         case '来源渠道':
-          this.query.evt = 5
+          this['query' + this.typeId].evt = 5
           break
         case '负责人':
-          this.query.evt = 6
+          this['query' + this.typeId].evt = 6
           break
         case '沟通状态':
-          this.query.evt = 7
+          this['query' + this.typeId].evt = 7
           break
         default:
-          this.query.evt = 8
+          this['query' + this.typeId].evt = 8
       }
-      let sort = parseInt(this.query.sort)
+      let sort = parseInt(this['query' + this.typeId].sort)
       if (sort === 2) {
-        this.query.sort = 1
+        this['query' + this.typeId].sort = 1
       }
       if (sort === 1) {
-        this.query.sort = 2
+        this['query' + this.typeId].sort = 2
       }
-      this.query.page = 1
+      this['query' + this.typeId].page = 1
       this.getClueList()
     },
     getClueList() {
-      let url = api.adminClueClueList
+      // let url = api.adminClueClueList
+      let url = ''
       let row = {}
-      Object.assign(row, this.query)
+      let typeId = this.$route.params.type
+      if (typeId === 1) {
+        url = api.adminClueClueList
+        Object.assign(row, this.query1)
+      }
+      if (typeId === 2) {
+        url = api.adminClueClueLatentList
+        Object.assign(row, this.query2)
+      }
+      if (typeId === 3) {
+        url = api.adminClueClueSignList
+        Object.assign(row, this.query3)
+        // url = api.adminClueClueSignList
+      }
+      if (typeId === 4) {
+        url = api.adminClueClueLowList
+        Object.assign(row, this.query4)
+      }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
       this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
-          this.query.totalCount = parseInt(res.data.meta.pagination.total)
+          this['query' + typeId].totalCount = parseInt(res.data.meta.pagination.total)
           if (res.data.data.length) {
             this.noAllot = res.data.data[0].no_allot
           }
@@ -1086,21 +1476,21 @@ export default {
     },
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
-      this.query.id = id
-      this.query.name = name
+      this['query' + this.typeId].id = id
+      this['query' + this.typeId].name = name
       // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {page: this.query.page}
+        query: {page: this['query' + this.typeId].page}
       })
       window.open(href, '_blank')
     },
     getLookUserInfo({id = {}, name = {}}) {
-      this.query.id = id
-      this.query.name = name
+      this['query' + this.typeId].id = id
+      this['query' + this.typeId].name = name
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {page: this.query.page}
+        query: {page: this['query' + this.typeId].page}
       })
       window.open(href, '_blank')
     },
@@ -1199,12 +1589,12 @@ export default {
       })
     },
     handleSizeChange(val) {
-      this.query.per_page = parseInt(val)
+      this['query' + this.typeId].per_page = parseInt(val)
       this.getClueList()
     },
     handleCurrentChange(val) {
-      this.query.page = parseInt(val)
-      this.$router.push({ name: this.$route.name, query: {page: this.query.page} })
+      this['query' + this.typeId].page = parseInt(val)
+      this.$router.push({ name: this.$route.name, query: {page: this['query' + this.typeId].page} })
     },
     exportForm(type) { // 导出
       // if (this.multipleSelection.length === 0) {
@@ -1320,11 +1710,9 @@ export default {
     this.uploadUrl = api.adminClueImportExcel
   },
   created() {
-    this.query.page = parseInt(this.$route.query.page || 1)
-    if (this.$route.params.type) {
-      this.bigType = 'potentialUserList' + this.$route.params.type
-      this.typeId = this.$route.params.type
-    }
+    this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
+    this.bigType = 'potentialUserList' + this.$route.params.type
+    this.typeId = this.$route.params.type
     this.getClueList()
     this.getAdminList()
   },
@@ -1355,6 +1743,27 @@ export default {
   watch: {
     $route(to, form) {
       // 对路由变化做出相应...
+      this.typeId = this.$route.params.type
+      this['query' + this.typeId] = {
+        page: 1,
+        per_page: 50,
+        evt: '',
+        sort: 2,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: this.userId, // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        status: 5,
+        // totalCount: 0,
+        search: '',
+        valueDate: []
+      }
       this.getClueList()
     }
   }
