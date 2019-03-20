@@ -702,7 +702,7 @@
   }
   .admin-container {
     transition: 268ms all ease;
-    padding: 40px 40px 40px 280px
+    padding: 20px 40px 40px 280px
   }
   .container-mini {
     padding-left: 100px;

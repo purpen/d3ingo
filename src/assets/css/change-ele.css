@@ -72,7 +72,7 @@
     color: #222
   }
 
-  .ordershow-span-color  .el-breadcrumb__inner:hover {
+  .ordershow-span-color .el-breadcrumb__inner:hover {
     color: #ff5a5f;
   }
   .el-breadcrumb {
@@ -1077,6 +1077,15 @@
   }
   .el-carousel__container {
     height: 260px;
+  }
+  .search-select .el-input__inner:hover, .search-select .el-input__inner:focus {
+    border-right: none;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+  .search-input .el-input__inner:hover {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

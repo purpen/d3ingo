@@ -4,7 +4,6 @@
 module.exports = [
   {
     path: '/admin',
-    name: 'admin',
     meta: {
       requireAuth: true,
       hideFooter: true
