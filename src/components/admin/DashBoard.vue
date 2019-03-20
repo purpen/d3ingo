@@ -109,7 +109,7 @@
           <div class="height-260 flex">
             <div class="content-item flex1">
               <img :src="require('assets/images/admin/dash_board/SettledInDemand@2x.png')" alt="">
-              <div class="tc-6 fz-14" v-if="AdminOverviewCompany.demand_company">
+              <div class="tc-6 fz-14">
                 <p>已认证需求公司</p>
                 <p class="count-number">{{AdminOverviewCompany.demand_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.demand_company.uncertified}}</p>
@@ -117,7 +117,7 @@
             </div>
             <div class="content-item flex1">
               <img :src="require('assets/images/admin/dash_board/SettledInDesign@2x.png')" alt="">
-              <div class="tc-6 fz-14" v-if="AdminOverviewCompany.design_company">
+              <div class="tc-6 fz-14">
                 <p>已认证设计服务商</p>
                 <p class="count-number">{{AdminOverviewCompany.design_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.design_company.uncertified}}</p>
@@ -151,14 +151,14 @@
           </el-row>
           <el-row>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img" v-if="AdminOverviewCompany.demand_company">
+              <div class="relative sub-img">
                 <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
                 <img :src="require('assets/images/admin/dash_board/RemindDemand Company@2x.png')" alt="">
               </div>
               <p>需求公司等待认证</p>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img" v-if="AdminOverviewCompany.design_company">
+              <div class="relative sub-img">
                 <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
                 <img :src="require('assets/images/admin/dash_board/RemindDesign Company@2x.png')" alt="">
               </div>
@@ -347,10 +347,34 @@
             }
           ]
         },
-        AdminOverviewCompany: {},
-        AdminOverviewOrderStatistics: {},
-        AdminOverviewItemStatistics: {},
-        AdminOverviewClueStatistics: {},
+        AdminOverviewCompany: {
+          demand_company: {
+            authentication: 0,
+            uncertified: 0
+          },
+          design_company: {
+            authentication: 0,
+            uncertified: 0
+          }
+        },
+        AdminOverviewOrderStatistics: {
+          total: 0,
+          unpaid: 0,
+          paid: 0,
+          close: 0
+        },
+        AdminOverviewItemStatistics: {
+          total: 0,
+          execution: 0,
+          complete: 0,
+          close: 0
+        },
+        AdminOverviewClueStatistics: {
+          cooperation: 0,
+          customer: 0,
+          potential: 0,
+          maintain: 0
+        },
         IncomeStatistics: '0.00'
       }
     },
