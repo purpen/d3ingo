@@ -614,8 +614,8 @@
   margin: 0;
   padding-left: 0; }
   .el-submenu__title {
-    height: 56px;
-    line-height: 56px;
+    height: 50px;
+    line-height: 50px;
     font-size: 14px;
     color: #222222;
     padding: 0 20px;
