@@ -446,8 +446,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #666
 }
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active,
-.el-menu-item.is-active {
-  color: #ff5a5f;
+.menuHide .el-menu-item.is-active {
+  background-color: #1b1b1b!important
 }
 .el-submenu .el-menu-item:hover, .el-submenu__title:hover {
   color: #222;
