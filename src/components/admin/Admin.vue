@@ -156,7 +156,7 @@
           class="admin-menu"
           :default-active="selectedName"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
-          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#333">
           <el-submenu index="1">
           <template slot="title">
             <img :src="require('assets/images/admin/menu/Console@2x.png')" alt="控制台">控制台
@@ -760,5 +760,10 @@
     .avatar {
       display: block
     }
+  }
+  .el-menu-item {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px
   }
 </style>

@@ -859,10 +859,6 @@
     justify-content: flex-end;
   }
 
-  /* .nav-header .nav-right .el-menu-item {
-    margin: 0 10px;
-  } */
-
   .nav-header .nav-item {
     width: 80px;
     position: relative;
