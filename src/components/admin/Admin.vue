@@ -73,7 +73,7 @@
         </el-menu>
       </div>
     </header>
-    <section :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -259,6 +259,55 @@
         </el-menu>
       </div>
     </section>
+    <section v-else :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+      <div v-if="leftWidth === 2">
+        <el-menu
+          class="admin-menu"
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
+          <el-tooltip class="item" content="项目管理" placement="right">
+            <el-menu-item index="itemList" :route="{name:'bAdminItemList'}">
+              <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理">
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="需求公司管理" placement="right">
+            <el-menu-item index="demandCompanyList" :route="{name:'bAdminDemandCompanyList'}">
+              <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理">
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="订单管理" placement="right">
+            <el-menu-item index="orderList" :route="{name:'bAdminOrderList'}">
+              <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理">
+            </el-menu-item>
+          </el-tooltip>
+          <el-tooltip class="item" content="用户管理" placement="right">
+          <el-menu-item index="userList" :route="{name: 'bAdminUserList'}">
+            <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理">
+            </el-menu-item>
+          </el-tooltip>
+        </el-menu>
+      </div>
+      <div v-if="leftWidth === 4">
+        <el-menu
+          class="admin-menu"
+          :default-active="selectedName2"
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#333">
+          <el-menu-item index="itemList" :route="{name:'bAdminItemList'}">
+            <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理">项目管理
+          </el-menu-item>
+          <el-menu-item index="demandCompanyList" :route="{name:'bAdminDemandCompanyList'}">
+            <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理">需求公司管理
+          </el-menu-item>
+          <el-menu-item index="bAdminOrderList" :route="{name:'bAdminOrderList'}">
+            <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理">订单管理
+          </el-menu-item>
+          <el-menu-item index="bAdminUserList" :route="{name:'bAdminUserList'}">
+            <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理">用户管理
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </section>
     <section :class="['admin-container full-height', {'container-mini': leftWidth === 2}]">
       <router-view></router-view>
     </section>
@@ -285,6 +334,7 @@
     data () {
       return {
         selectedName: 'dashBoard',
+        selectedName2: 'itemList',
         isEmpty: false,
         leftValue: 2,
         designItems: [] // 订单提醒
@@ -763,7 +813,10 @@
   }
   .el-menu-item {
     height: 50px;
-    line-height: 50px;
-    padding: 0 15px
+    line-height: 1;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 </style>
