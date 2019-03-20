@@ -1309,6 +1309,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
+      console.log('val', val)
     },
     // 删除用户
     multipleDelItem() {
