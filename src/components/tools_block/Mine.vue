@@ -73,7 +73,7 @@
     position: fixed;
     z-index: 99;
     left: 0;
-    top: 60px;
+    top: 70px;
     width: 100%;
     height: 100%;
     background: #fff;

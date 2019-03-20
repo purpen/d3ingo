@@ -33,6 +33,11 @@
   .textarea-summary .el-textarea__inner:focus {
     border-color: #e6e6e6
   }
+
+  .el-submenu__title {
+    height: 50px;
+    line-height: 50px;
+  }
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
