@@ -455,9 +455,9 @@
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 60px;
+    top: 70px;
     width: 240px;
-    height: calc(100% - 60px);
+    height: calc(100% - 70px);
     /* overflow-y: auto; */
     overflow-x: hidden;
   }
@@ -578,7 +578,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 70px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
   }
   .menu-left {
@@ -627,11 +627,10 @@
   }
   .admin-container {
     transition: 268ms all ease;
-    padding: 20px;
-    padding-left: 260px;
+    padding: 40px 40px 40px 280px
   }
   .container-mini {
-    padding-left: 80px;
+    padding-left: 100px;
   }
   .menuHide-mini {
     width: 60px;

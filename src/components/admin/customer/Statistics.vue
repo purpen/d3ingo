@@ -620,7 +620,6 @@
       <div v-if="allCustomer.isTable" class="tables fz-16">
         <el-table
           :data="tableData3"
-          border
           style="width: 100%">
           <el-table-column
             prop="date"
@@ -689,7 +688,6 @@
       <div class="promotion">
         <el-table
           :data="tableData4"
-          border
           style="width: 100%">
           <el-table-column
             prop="new_from_value"
