@@ -76,6 +76,9 @@
             </div> -->
           </div>
           <div>
+            <p class="count-number">￥{{IncomeStatistics}}</p>
+          </div>
+          <div>
             <ECharts :options="polar" class="line-echarts">
             </ECharts>
           </div>
@@ -171,11 +174,11 @@
     <div>
       <el-table
         :data="tableItemData"
-        border
         v-loading="isItemLoading"
         class="admin-table"
         @selection-change="handleSelectionChange"
-        style="width: 100%">
+        style="width: 100%"
+        @row-click="redirect">
         <el-table-column
           prop="item.id"
           label=""
@@ -185,7 +188,7 @@
           label="客户姓名">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.user.username }}</a>
+              <span>{{ scope.row.item.user.username || scope.row.item.user.realname || scope.row.item.user.account }}</span>
             </p>
           </template>
         </el-table-column>
@@ -193,7 +196,7 @@
           label="项目名称">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.name }}</a>
+              <span>{{ scope.row.item.name }}</span>
             </p>
           </template>
         </el-table-column>
@@ -201,7 +204,7 @@
           label="设计类型">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.design_types_value  }}</a>
+              <span>{{ scope.row.item.type_value || '—' }}</span>
             </p>
           </template>
         </el-table-column>
@@ -209,7 +212,7 @@
           label="项目预算">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.type  }}</a>
+              <span>{{ scope.row.item.design_cost_value || '无明确预算' }}</span>
             </p>
           </template>
         </el-table-column>
@@ -217,7 +220,7 @@
           label="状态">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.type }}</a>
+              <span>{{ scope.row.item.status_value }}</span>
             </p>
           </template>
         </el-table-column>
@@ -225,7 +228,7 @@
           label="创建日期">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.created_at }}</a>
+              <span>{{ scope.row.item.created_at }}</span>
             </p>
           </template>
         </el-table-column>
@@ -268,7 +271,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '{c}万元'
+            formatter: '￥{c}'
           },
           legend: {
             bottom: '0',
@@ -316,7 +319,7 @@
                 },
                 emphasis: {
                   show: true,
-                  formatter: '{b}\n{normal|{c}万元}',
+                  formatter: '{b}\n {normal|¥{c}}',
                   textStyle: {
                     fontSize: '30',
                     fontWeight: 'bold'
@@ -347,10 +350,14 @@
         AdminOverviewCompany: {},
         AdminOverviewOrderStatistics: {},
         AdminOverviewItemStatistics: {},
-        AdminOverviewClueStatistics: {}
+        AdminOverviewClueStatistics: {},
+        IncomeStatistics: '0.00'
       }
     },
     methods: {
+      redirect(row) {
+        this.$router.push({name: 'adminItemShow0', params: {id: row.item.id}})
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -367,7 +374,6 @@
               item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               this.tableItemData.push(item)
             } // endfor
-            console.log(this.tableItemData)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -397,7 +403,6 @@
       getAdminOverviewCompany() {
         this.$http.get(api.adminOverviewCompany)
         .then(res => {
-          console.log(res)
           this.AdminOverviewCompany = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -406,7 +411,6 @@
       getAdminOverviewRevenueType() {
         this.$http.get(api.adminOverviewRevenueType)
         .then(res => {
-          console.log('adminOverviewRevenueType', res.data.data)
           this.option.series[0].data = []
           res.data.data.forEach(item => {
             switch (item.type) {
@@ -431,6 +435,7 @@
                 break
               }
             }
+            item.value = item.value.toFixed(2)
             this.option.series[0].data.push({name: item.name, value: item.value})
           })
         }).catch(err => {
@@ -441,9 +446,13 @@
         this.$http.get(api.adminOverviewIncomeStatistics)
         .then(res => {
           this.polar.series[0].data = []
+          this.IncomeStatistics = 0
           res.data.data.forEach(item => {
+            item.value = Number(item.value).toFixed(2)
+            this.IncomeStatistics += Number(item.value)
             this.polar.series[0].data.push(item.value)
           })
+          this.IncomeStatistics = Number(this.IncomeStatistics).toFixed(2)
         }).catch(err => {
           console.error(err.message)
         })
@@ -451,7 +460,6 @@
       getAdminOverviewClueStatistics() {
         this.$http.get(api.adminOverviewClueStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewClueStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -460,7 +468,6 @@
       getAdminOverviewOrderStatistics() {
         this.$http.get(api.adminOverviewOrderStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewOrderStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -469,7 +476,6 @@
       getAdminOverviewItemStatistics() {
         this.$http.get(api.adminOverviewItemStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewItemStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
