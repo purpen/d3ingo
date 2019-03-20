@@ -250,7 +250,7 @@
               width="129"
               sortable="custom"
               prop="execute_user_name"
-              label="负责人">
+              label="商机所有人">
             </el-table-column>
             <!-- <el-table-column
               label="编号"
@@ -270,7 +270,7 @@
             <el-table-column
               prop="new_status"
               width="90"
-              label="状态"
+              label="级别"
               >
               <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
@@ -490,6 +490,7 @@ export default {
       select: '',
       input5: '',
       boolCreateUser: false, // loading
+      typeId: 1,
       isGoOn: false, // 保存后继续新增
       clientForm: {
         fromOptions: [], // 来源数组
@@ -1029,11 +1030,12 @@ export default {
       this.getClueList()
     },
     getClueList() {
+      let url = api.adminClueClueList
       let row = {}
       Object.assign(row, this.query)
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
-      this.$http.get(api.adminClueClueList, {params: row}).then(res => {
+      this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
@@ -1315,6 +1317,7 @@ export default {
     this.query.page = parseInt(this.$route.query.page || 1)
     if (this.$route.params.type) {
       this.bigType = 'potentialUserList' + this.$route.params.type
+      this.typeId = this.$route.params.type
     }
     this.getClueList()
   },
