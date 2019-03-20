@@ -167,7 +167,10 @@
             <template slot="title">
             <img :src="require('assets/images/admin/menu/Customer@2x.png')" alt="客户管理">客户管理
               </template>
-            <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">客户列表</el-menu-item>
+            <el-menu-item index="potentialUserList1" :route="{name: 'adminPotentialUserList', params: {type: 1}}">商机</el-menu-item>
+            <el-menu-item index="potentialUserList2" :route="{name: 'adminPotentialUserList', params: {type: 2}}">潜在客户</el-menu-item>
+            <el-menu-item index="potentialUserList3" :route="{name: 'adminPotentialUserList', params: {type: 3}}">客户</el-menu-item>
+            <el-menu-item index="potentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">回收站</el-menu-item>
             <el-menu-item index="customerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
           </el-submenu>
           <el-submenu index="2">

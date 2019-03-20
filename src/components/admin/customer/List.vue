@@ -148,10 +148,9 @@
           prop="name"
           sortable="custom"
           label="姓名"
-          width="100">
+          >
         </el-table-column>
         <el-table-column
-          width="130"
           sortable="custom"
           label="状态">
           <template slot-scope="scope">
@@ -164,7 +163,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="110"
           sortable="custom"
           label="客户级别">
             <template slot-scope="scope">
@@ -176,7 +174,6 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="110"
           sortable="custom"
           label="来源渠道">
           <template slot-scope="scope">
@@ -239,7 +236,6 @@
         <el-table-column
           prop="created_at"
           sortable="custom"
-          width="135"
           label="创建时间">
         </el-table-column>
         <el-table-column
@@ -256,7 +252,6 @@
         </el-table-column>
         -->
         <el-table-column
-          width="135"
           sortable="custom"
           label="最后跟进日">
           <template slot-scope="scope">
@@ -265,7 +260,6 @@
         </el-table-column>
         <el-table-column
           prop="new_status"
-          width="90"
           label="级别"
           >
           <template slot-scope="scope">

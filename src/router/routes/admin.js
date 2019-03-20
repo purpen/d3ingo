@@ -34,7 +34,7 @@ module.exports = [
       },
       // 潜在用户列表
       {
-        path: '/admin/customer/list',
+        path: '/admin/customer/list/:type',
         name: 'adminPotentialUserList',
         meta: {
           title: '潜在用户列表',
