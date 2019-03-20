@@ -24,7 +24,7 @@ module.exports = [
   },
   // 潜在用户列表
   {
-    path: '/admin/customer/list',
+    path: '/admin/customer/list/:type',
     name: 'adminPotentialUserList',
     meta: {
       title: '潜在用户列表',
@@ -32,6 +32,16 @@ module.exports = [
     },
     component: require('@/components/admin/customer/List')
   },
+  // 潜在用户列表
+  // {
+  //   path: '/admin/customer/list',
+  //   name: 'adminPotentialUserList',
+  //   meta: {
+  //     title: '商机列表',
+  //     requireAuth: true
+  //   },
+  //   component: require('@/components/admin/customer/List')
+  // },
   // 编辑潜在用户信息
   {
     path: '/admin/customer/userinfo/:id',

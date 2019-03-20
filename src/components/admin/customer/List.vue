@@ -2,13 +2,74 @@
   <div class="container">
     <div class="blank20"></div>
     <el-row :gutter="20">
-      <v-menu selectedName="potentialUserList"></v-menu>
+      <v-menu :selectedName="bigType"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="admin-header fz-0 clearfix">
+          <div class="business-header">
+            <div class="edit-i" @blur="isDown" tabindex="-1">
+              <i @click="isEdits = true"></i>
+              <ul v-show="isEdits">
+                <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+                <li @click="exportForm">导出</li>
+                <li @click="randomAssign = true">随机分配</li>
+                <li @click="showClueDialog">无效</li> -->
+                <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+              </ul>
+            </div>
+            <div class="export-upload">
+              <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                ref="upload"
+                :on-preview="handlePreview"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                :on-change="changeFile"
+                :auto-upload="false"
+                :on-error="uploadError"
+                :data="{'token': token}"
+                accept=".xlsx"
+                :show-file-list="false"
+                :file-list="file">
+                <!-- <span class="upload-file">批量导入</span> -->
+                <button class="new-button">
+                  <i class="el-icon-download"></i>
+                  导入商机
+                </button>
+              </el-upload>
+            </div>
+            <div class="search-sort">
+              <div class="search-select">
+                <el-select v-model="isSearch.label" placeholder="请选择">
+                  <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+
+                  </el-option>
+                </el-select>
+              </div>
+              <div class="search-input">
+                <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+                </el-input>
+                <i class="icon-search" @click="updateSort"></i>
+              </div>
+            </div>
+            <div class="select-business">
+              <el-select v-model="query.search_val" @change="getClueList">
+                <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="select-date">
+              <el-select v-model="query.sort_evt" @change="getClueList">
+                <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <!-- <div class="admin-header fz-0 clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
-                <!-- <span class="fl line-height30 fz-12 margin-r-15">选择日期</span> -->
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -41,34 +102,10 @@
             </el-form>
             <div class="admin-header-right fr clearfix">
               <div class="fl">
-                <!-- <div class="add-user">
-                  <span class="add-voip-user">
-                    <i class="fx fx-icon-plus"></i>添加用户
-                  </span>
-                  <div class="drop-down">
-                    <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      :on-error="uploadError"
-                      :data="{'token': token}"
-                      accept=".xlsx"
-                      :show-file-list="false"
-                      :file-list="file">
-                      <span class="upload-file">导入文件</span>
-                    </el-upload>
-                  </div>
-                </div> -->
 
               </div>
-              <!-- <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a> -->
-              <!-- <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button> -->
-              <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
-          </div>       
+          </div>
           <div class="btn-list fz-0">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
@@ -88,14 +125,13 @@
               accept=".xlsx"
               :show-file-list="false"
               :file-list="file">
-              <!-- <span class="upload-file">批量导入</span> -->
               <el-button size="small" >批量导入</el-button>
             </el-upload>
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
-          </div>
+          </div> -->
 
           <el-table
             :data="tableData"
@@ -113,99 +149,13 @@
               width="40">
             </el-table-column>
             <el-table-column
-              label="编号"
-              sortable="custom"
-              prop="number"
-              width="121">
-            </el-table-column>
-            <el-table-column
               prop="name"
               sortable="custom"
               label="姓名"
-              width="80">
+              width="100">
             </el-table-column>
-            <el-table-column
-              width="105"
-              sortable="custom"
-              label="客户级别">
-                 <template slot-scope="scope">
-                  <el-rate
-                    v-model="scope.row.rank"
-                    disabled
-                    text-color="#ff9900">
-                  </el-rate>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              sortable="custom"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            
-            <el-table-column
-              width="95"
-              sortable="custom"
-              label="来源渠道">
-              <template slot-scope="scope">
-                <div v-if="scope.row.new_source || scope.row.new_source === 0">
-                  <p v-if="scope.row.new_source === 1">
-                    <span v-if="scope.row.son_source === 'a'">百度</span>
-                    <span v-if="scope.row.son_source === 'b'">360</span>
-                    <span v-if="scope.row.son_source === 'c'">知乎</span>
-                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
-                    <span v-if="!scope.row.son_source">网络广告</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 2">
-                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
-                    <span v-if="scope.row.son_source === 'b'">小程序</span>
-                    <span v-if="scope.row.son_source === 'c'">App</span>
-                    <span v-if="!scope.row.son_source">官方</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 3">
-                    <span v-if="scope.row.son_source === 'a'">京东</span>
-                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
-                    <span v-if="!scope.row.son_source">合作伙伴</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 4">
-                    <span v-if="scope.row.son_source === 'a'">雷总/公司员⼯推荐的熟⼈客户</span>
-                    <span v-if="!scope.row.son_source">内部推荐</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 5">
-                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
-                    <span v-if="!scope.row.son_source">外部推荐</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 6">
-                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
-                    <span v-if="scope.row.son_source === 'b'">头条号</span>
-                    <span v-if="scope.row.son_source === 'c'">百家号</span>
-                    <span v-if="!scope.row.son_source">新媒体</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 7">
-                    <span v-if="scope.row.son_source === 'a'">参展</span>
-                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
-                    <span v-if="!scope.row.son_source">展销会</span>
-                  </p>
-                  <p v-if="scope.row.new_source === 0">
-                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
-                    <span v-if="!scope.row.son_source">其他</span>
-                  </p>
-                </div>
-                <div v-else>
-                  <p>{{scope.row.son_source}}</p>
-                </div>
-              </template>
-            </el-table-column>
-            
-            <el-table-column
-              width="118"
-              sortable="custom"
-              prop="execute_user_name"
-              label="负责人">
-            </el-table-column>
-            
-            <el-table-column
-              width="125"
+             <el-table-column
+              width="130"
               sortable="custom"
               label="状态">
               <template slot-scope="scope">
@@ -218,7 +168,99 @@
               </template>
             </el-table-column>
             <el-table-column
-              width="105"
+              width="110"
+              sortable="custom"
+              label="客户级别">
+                 <template slot-scope="scope">
+                  <el-rate
+                    v-model="scope.row.rank"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
+                </template>
+            </el-table-column>
+            <el-table-column
+              width="110"
+              sortable="custom"
+              label="来源渠道">
+              <template slot-scope="scope">
+                <div v-if="scope.row.new_source || scope.row.new_source === 0" class="fz-14 tc-3">
+                  <div v-if="scope.row.new_source === 1">
+                    <p class="fz-12 tc-6">网络广告</p>
+                    <span v-if="scope.row.son_source === 'a'">百度</span>
+                    <span v-if="scope.row.son_source === 'b'">360</span>
+                    <span v-if="scope.row.son_source === 'c'">知乎</span>
+                    <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                    <span v-if="!scope.row.son_source">网络广告</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">官方</p>
+                    <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
+                    <span v-if="scope.row.son_source === 'b'">小程序</span>
+                    <span v-if="scope.row.son_source === 'c'">App</span>
+                    <span v-if="!scope.row.son_source">官方</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">合作伙伴</p>
+                    <span v-if="scope.row.son_source === 'a'">京东</span>
+                    <span v-if="scope.row.son_source === 'b'">优客工场</span>
+                    <span v-if="!scope.row.son_source">合作伙伴</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">内部推荐</p>
+                    <span v-if="scope.row.son_source === 'a'">雷总/公司员工推荐的熟人客户</span>
+                    <span v-if="!scope.row.son_source">内部推荐</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">外部推荐</p>
+                    <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
+                    <span v-if="!scope.row.son_source">外部推荐</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">新媒体</p>
+                    <span v-if="scope.row.son_source === 'a'">微信公众号</span>
+                    <span v-if="scope.row.son_source === 'b'">头条号</span>
+                    <span v-if="scope.row.son_source === 'c'">百家号</span>
+                    <span v-if="!scope.row.son_source">新媒体</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">展销会</p>
+                    <span v-if="scope.row.son_source === 'a'">参展</span>
+                    <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
+                    <span v-if="!scope.row.son_source">展销会</span>
+                  </div>
+                  <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
+                    <p class="fz-12 tc-6">其他</p>
+                    <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
+                    <span v-if="!scope.row.son_source">其他</span>
+                  </div>
+                </div>
+                <div v-else>
+                  <p>{{scope.row.son_source}}</p>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="created_at"
+              sortable="custom"
+              width="135"
+              label="创建时间">
+            </el-table-column>
+             <el-table-column
+              width="129"
+              sortable="custom"
+              prop="execute_user_name"
+              label="负责人">
+            </el-table-column>
+            <!-- <el-table-column
+              label="编号"
+              sortable="custom"
+              prop="number"
+              width="121">
+            </el-table-column>
+             -->
+            <el-table-column
+              width="135"
               sortable="custom"
               label="最后跟进日">
               <template slot-scope="scope">
@@ -226,6 +268,18 @@
               </template>
             </el-table-column>
             <el-table-column
+              prop="new_status"
+              width="90"
+              label="状态"
+              >
+              <template slot-scope="scope">
+                  <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
+                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
+                  <p class="status5 status"  v-else>签约合作</p>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column
               prop="new_status"
               width="90"
               :label="statusValue"
@@ -243,7 +297,7 @@
                   <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
                   <p class="status5 status"  v-else>签约合作</p>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
 
           <el-pagination
@@ -321,6 +375,98 @@
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="新增商机"
+      :visible.sync="dialogAddUser"
+      class="user-add"
+      :modal-append-to-body="true"
+      top="10vh"
+      width="690"
+      :before-close="closeForm"
+      >
+      <div>
+        <el-form label-position="right" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px" class="add-form scroll-bar">
+          <el-row>
+            <el-col>
+              <el-form-item label="客户姓名" prop="name">
+                <el-input v-model.trim="clientForm.name" placeholder="输入客户姓名" :maxlength="10"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="联系电话" prop="phone">
+                <el-input v-model.trim="clientForm.phone" placeholder="请填写联系电话" :maxlength="11"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="微信号" prop="wx">
+                <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="20"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col class="mg-b-10">
+              <el-form-item label="来源渠道" prop="fromOptions">
+                <el-cascader
+                  :options="options"
+                  v-model="selectedOptions"
+                  @change="handleChange">
+                </el-cascader>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="client-rank">
+            <span>级别</span>
+            <el-rate v-model="clientForm.rank"></el-rate>
+          </div>
+          <el-row>
+            <el-col >
+              <el-form-item label="职位" prop="position">
+                <el-input v-model.trim="clientForm.position" placeholder="请填写联系人职位" :maxlength="20"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col>
+              <el-form-item label="公司名称" prop="company">
+                  <el-input v-model.trim="clientForm.company" placeholder="公司名称" :maxlength="40"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col class="region">
+              <region-picker :provinceProp="clientForm.province" 
+                :cityProp="clientForm.city"
+                :twoSelect="true"
+                :gutter="0"
+                :isFirstProp="isFirstRegion" titleProp="企业地址"
+                @onchange="changeClient">
+              </region-picker>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24">
+              <el-form-item label="备注" prop="summary">
+                <el-input v-model.trim="clientForm.summary" 
+                  type="textarea"
+                  :maxlength="500"
+                  :autosize="{ minRows: 2, maxRows: 4}"
+                  placeholder="备注">
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div class="form-footer">
+          <el-checkbox v-model="isGoOn">保存后继续新增</el-checkbox>
+          <el-button class="fr full-red-button" @click="submitUserForm('ruleClientForm')" :loading="boolCreateUser">保存</el-button>
+          <el-button class="fr" @click="closeForm">取消</el-button>
+        </div>
+        </el-form>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -330,13 +476,236 @@ import conf from 'conf/prod.env'
 import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
 import '@/assets/js/date_format'
+import RegionPicker from '@/components/block/RegionPicker'
 export default {
   name: 'admin_potential_list',
   components: {
-    vMenu
+    vMenu,
+    RegionPicker
   },
   data() {
     return {
+      bigType: 'potentialUserList1',
+      value10: '',
+      select: '',
+      input5: '',
+      boolCreateUser: false, // loading
+      isGoOn: false, // 保存后继续新增
+      clientForm: {
+        fromOptions: [], // 来源数组
+        company: '', // 企业名称
+        position: '', // 职位
+        wx: '', // 微信
+        summary: '', // 备注
+        province: '', // 省份
+        city: '', // 城市
+        rank: 0, // 级别 1-5
+        name: '', // 姓名
+        phone: '', // 联系电话
+        new_call_status: '', // 提交
+        execute_user_id: '', // 负责人
+        new_source: '', // 来源 1.网络广告 2.官方 3.合作伙伴 4.内部推荐 5.外部推荐 6.新媒体 7.展销会 0.其他
+        son_source: '' // 子来源
+      },
+      options: [
+        {
+          value: 1,
+          label: '网络广告',
+          children: [
+            {
+              value: 'a',
+              label: '百度'
+            },
+            {
+              value: 'b',
+              label: '360'
+            },
+            {
+              value: 'c',
+              label: '知乎'
+            },
+            {
+              value: 'd',
+              label: '今日头条'
+            }]
+        },
+        {
+          value: 2,
+          label: '官方',
+          children: [
+            {
+              value: 'a',
+              label: 'Pc/Wap官网'
+            },
+            {
+              value: 'b',
+              label: '小程序'
+            },
+            {
+              value: 'c',
+              label: 'App'
+            }]
+        },
+        {
+          value: 3,
+          label: '合作伙伴',
+          children: [
+            {
+              value: 'a',
+              label: '京东'
+            },
+            {
+              value: 'b',
+              label: '优客工场'
+            }]
+        },
+        {
+          value: 4,
+          label: '内部推荐',
+          children: [
+            {
+              value: 'a',
+              label: '雷总/公司员工推荐的熟人客户'
+            }
+          ]
+        },
+        {
+          value: 5,
+          label: '外部推荐',
+          children: [
+            {
+              value: 'a',
+              label: '朋友/其他公司推荐的客户'
+            }
+          ]
+        },
+        {
+          value: 6,
+          label: '新媒体',
+          children: [
+            {
+              value: 'a',
+              label: '微信公众号'
+            },
+            {
+              value: 'b',
+              label: '头条号'
+            },
+            {
+              value: 'c',
+              label: '百家号'
+            }
+          ]
+        },
+        {
+          value: 7,
+          label: '展销会',
+          children: [
+            {
+              value: 'a',
+              label: '参展'
+            },
+            {
+              value: 'b',
+              label: '业界活动、论坛'
+            }
+          ]
+        },
+        {
+          value: 0,
+          label: '其他',
+          children: [
+            {
+              value: 'a',
+              label: '无法归类的小群体'
+            }
+          ]
+        }
+      ],
+      selectedOptions: [],
+      isFirstRegion: true,
+      ruleClientForm: {
+        name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
+        phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
+      },
+      dialogAddUser: false, // 新建商机弹窗
+      isSearch: {
+        value: '',
+        label: ''
+      }, // 选择条件搜索
+      isBusiness: '', // 全部商机select
+      isWitch: '',
+      isEdits: false, // 提交内容
+      optionSearch: [
+        {
+          value: 1,
+          label: '按姓名'
+        },
+        {
+          value: 2,
+          label: '按电话'
+        },
+        {
+          value: 3,
+          label: '按编号'
+        }
+      ],
+      optionCondition: [
+        {
+          value: 1,
+          label: '按姓名'
+        },
+        {
+          value: 2,
+          label: '按客户级别'
+        },
+        {
+          value: 3,
+          label: '按创建时间'
+        },
+        {
+          value: 4,
+          label: '按商机来源'
+        },
+        {
+          value: 5,
+          label: '按商机所有人'
+        },
+        {
+          value: 6,
+          label: '按状态'
+        },
+        {
+          value: 7,
+          label: '按最后跟进日'
+        }
+      ],
+      optionBusiness: [
+        {
+          value: 1,
+          label: '全部商机'
+        },
+        {
+          value: 2,
+          label: '未分配的商机'
+        },
+        {
+          value: 3,
+          label: '我的商机'
+        },
+        {
+          value: 4,
+          label: '最近查看'
+        },
+        {
+          value: 5,
+          label: '本周新建的商机'
+        },
+        {
+          value: 6,
+          label: '上周新建的商机'
+        }
+      ],
       uploadUrl: '',
       file: [],
       statusValue: '阶段',
@@ -350,7 +719,16 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        // new_status: 6,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
         status: 5,
         // totalCount: 0,
         search: '',
@@ -373,6 +751,143 @@ export default {
     }
   },
   methods: {
+    resetAll() {
+      this.query = {
+        page: 1,
+        per_page: 50,
+        evt: '',
+        sort: 2,
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        status: 5,
+        // totalCount: 0,
+        search: '',
+        valueDate: []
+      }
+      this.isSearch = {
+        value: '',
+        label: ''
+      }
+      this.isEdits = false
+      this.getClueList()
+    },
+    // 搜索姓名.电话.编号
+    updateSort() {
+      if (this.isSearch.label) {
+        if (this.isSearch.label === 1) {
+          this.query.name = this.isSearch.value
+          this.query.phone = ''
+          this.query.number = ''
+        } else if (this.isSearch.label === 2) {
+          this.query.name = ''
+          this.query.number = ''
+          this.query.phone = this.isSearch.value
+        } else if (this.isSearch.label === 3) {
+          this.query.name = ''
+          this.query.phone = ''
+          this.query.number = this.isSearch.value
+        }
+        this.getClueList()
+      }
+    },
+    submitUserForm() { // 生成用户
+      if (!this.clientForm.name) {
+        this.$message.error('请填写联系人姓名')
+        return
+      }
+      if (this.clientForm.name.length >= 20) {
+        this.$message.error('联系人姓名最多20个字符')
+        return
+      }
+      if (!this.clientForm.phone) {
+        this.$message.error('请填写联系人电话')
+        return
+      }
+      if (this.clientForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.clientForm.phone)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
+        return
+      }
+      if (!this.clientForm.new_source || !this.clientForm.son_source) {
+        this.$message.error('请选择来源渠道和子来源渠道')
+        return
+      }
+      this.boolCreateUser = true
+      let row = {
+        company: this.clientForm.company,
+        position: this.clientForm.position,
+        wx: this.clientForm.wx,
+        summary: this.clientForm.summary,
+        province: this.clientForm.province,
+        city: this.clientForm.city,
+        rank: this.clientForm.rank,
+        name: this.clientForm.name,
+        phone: this.clientForm.phone,
+        new_call_status: this.clientForm.new_call_status,
+        execute_user_id: this.userId,
+        new_source: this.clientForm.new_source,
+        son_source: this.clientForm.son_source,
+        qq: '',
+        email: '',
+        new_status: ''
+      }
+      this.$http.post(api.adminClueCreate, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.tableData.unshift(row)
+          this.$message.success(res.data.meta.message)
+          this.boolCreateUser = false
+          this.$refs['ruleClientForm'].resetFields()
+          this.clientForm.rank = 0
+          this.clientForm.province = ''
+          this.clientForm.city = ''
+          this.selectedOptions = []
+          if (!this.isGoOn) {
+            this.dialogAddUser = false
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    closeForm() {
+      this.$refs['ruleClientForm'].resetFields()
+      this.isGoOn = false
+      this.clientForm.rank = 0
+      this.clientForm.province = ''
+      this.clientForm.city = ''
+      this.selectedOptions = []
+      this.dialogAddUser = false
+    },
+    handleChange(val) {
+      if (val.length) {
+        this.clientForm.new_source = val[0]
+        this.clientForm.son_source = val[1]
+      } else {
+        this.clientForm.new_source = ''
+        this.clientForm.son_source = ''
+      }
+    },
+    changeClient(obj) { // 改变城市组件值- 客户信息()
+      this.$set(this.clientForm, 'province', obj.province)
+      this.$set(this.clientForm, 'city', obj.city)
+    },
+    isDown() {
+      this.isEdits = false
+      console.log('is', this.isEdits)
+    },
     tableRowClassName({row, index}) {
       // if (row.next_time) {
       //   if (this.dateCompare(row.next_time) === false) { // 没到期
@@ -798,6 +1313,9 @@ export default {
   },
   created() {
     this.query.page = parseInt(this.$route.query.page || 1)
+    if (this.$route.params.type) {
+      this.bigType = 'potentialUserList' + this.$route.params.type
+    }
     this.getClueList()
   },
   // directives: {Clickoutside},
@@ -807,8 +1325,18 @@ export default {
     }
   },
   computed: {
+    userId() {
+      return this.$store.state.event.user.id
+    },
     isAdmin() {
       return this.$store.state.event.user.role_id
+    },
+    isHasPower() { // 是否有权限编辑
+      if (this.isAdmin >= 15) {
+        return true
+      } else {
+        return false
+      }
     },
     token() {
       return this.$store.state.event.token
@@ -870,6 +1398,8 @@ export default {
 }
 .upload-demo {
   display: inline-block;
+  height: 36px;
+  line-height: 36px;
 }
 .user-list {
   height: 50px;
@@ -1050,5 +1580,214 @@ export default {
 }
 .select-data .el-range-editor--small .el-range-separator {
   line-height: 20px;
+}
+.business-header {
+  background-color: #F7F9FB;
+  height: 60px;
+  line-height: 60px;
+  padding-top: 12px;
+}
+.business-select {
+  width: 220px;
+  height: 36px;
+  margin-bottom: 30px;
+}
+.condition-date {
+  float: left;
+}
+.edit-i {
+  float: right;
+  height: 36px;
+  margin-right: 15px;
+  position: relative;
+}
+.edit-i i {
+  display: block;
+  transform: rotate(90deg);
+  width: 36px;
+  height: 36px;
+  background: url('../../../assets/images/member/more-hover@2x.png') no-repeat center/ 24px 24px;
+  cursor: pointer;
+}
+.edit-i ul {
+  position: absolute;
+  width: 120px;
+  top: 45px;
+  right: 10px;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+  color: #333;
+  font-size: 14px;
+}
+.edit-i li {
+  line-height: 34px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.edit-i li:hover {
+  background-color: #f7f7f7;
+}
+.export-upload {
+  width: 150px;
+  float: right;
+  height: 36px;
+  display: flex;
+}
+.export-upload>span {
+  display: inline-block;
+  border: 1px solid #e6e6e6;
+  border-right: none;
+  height: 36px;
+  width: 36px;
+  cursor: pointer;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  background-color: #fff;
+  line-height: 36px;
+  text-align: center;
+  background: url('../../../assets/images/tools/cloud_drive/operate/add@2x.png') no-repeat center / 24px 24px;
+}
+.new-button {
+  background-color: #ff5a5f;
+  color: #fff;
+  width: 110px;
+  height: 36px;
+  line-height: 36px;
+  border: none;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.search-sort {
+  width: 292px;
+  float: right;
+  display: flex;
+  margin-right: 10px;
+}
+.search-select {
+  height: 36px;
+  line-height: 36px;
+  width: 90px;
+  position: relative;
+}
+.search-select .el-input__inner {
+  min-width: 90px;
+  border: 1px solid #e6e6e6;
+  height: 36px;
+  line-height: 36px;
+  background-color: #fff;
+  border-right: none;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+  color: #333;
+}
+.search-select .el-input__icon {
+  line-height: 36px;
+}
+.new-button {
+  position: relative;
+  padding-left: 21px;
+}
+.new-button i {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  font-size: 16px;
+}
+.search-input {
+  height: 36px;
+  line-height: 36px;
+  position: relative;
+}
+.search-input .icon-search {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  top: 0;
+  right: 5px;
+  background: url('../../../assets/images/tools/cloud_drive/operate/search@2x.png') no-repeat center / 24px 24px;
+}
+.search-input .el-input__inner {
+  height: 36px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.search-input .el-input__inner:hover {
+  /* border-left: none; */
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.select-business {
+  float: left;
+  width: 220px;
+  margin-left: 20px;
+  height: 36px;
+  line-height: 36px;
+}
+.select-business .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+}
+.select-date .el-input__icon, .select-business .el-input__icon {
+  line-height: 36px;
+}
+.select-date {
+  width: 132px;
+  float: left;
+  margin-left: 10px;
+  height: 36px;
+  line-height: 36px;
+}
+.select-date .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+}
+/* 新建商机弹窗 */
+.user-add .el-dialog {
+  width: 690px;
+  height: 77vh;
+  overflow: hidden;
+}
+.user-add .el-dialog__header {
+  padding: 17px 20px;
+  text-align: left;
+}
+.user-add .el-dialog__body {
+  padding: 0px;
+}
+.add-form {
+  overflow-y: auto;
+  height: calc(80vh - 70px);
+  padding: 30px 60px;
+}
+.client-rank {
+  position: relative;
+  padding-left: 80px;
+  margin: 20px 0;
+}
+.client-rank>span {
+  position: absolute;
+  left: 38px;
+  top: 0px;
+  line-height: 20px;
+}
+.mg-b-10 .el-form-item {
+  margin-bottom: 10px;
+}
+.form-footer {
+  padding-left: 80px;
+  line-height: 34px;
+}
+.form-footer .full-red-button {
+  margin-left: 20px;
+}
+.is-disabled {
+  cursor: not-allowed;
+}
+.tc-3 {
+  color: #333;
 }
 </style>
