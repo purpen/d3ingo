@@ -316,7 +316,6 @@
 
       <el-table
         :data="tableData"
-        border
         v-loading="tableLoading"
         class="admin-table"
         @selection-change="handleSelectionChange"
@@ -1309,6 +1308,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
+      console.log('val', val)
     },
     // 删除用户
     multipleDelItem() {
@@ -2001,7 +2001,6 @@ export default {
   line-height: 20px;
 }
 .business-header {
-  background-color: #F7F9FB;
   height: 60px;
   line-height: 60px;
   padding-top: 12px;
