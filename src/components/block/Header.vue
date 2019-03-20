@@ -1026,7 +1026,7 @@
     border: none;
     height: 24px;
     line-height: 24px;
-    margin-top: 18px;
+    margin-top: 23px;
     color: #fff;
     background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
     border-radius: 2px;
@@ -1034,7 +1034,7 @@
   }
   .jdc .nav-header .nav-right .register:hover {
     background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
-    color: #fff;
+    color: #fff!important;
   }
   .logo-text {
     font-size: 18px;
