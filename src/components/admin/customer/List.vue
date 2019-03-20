@@ -1350,9 +1350,6 @@ export default {
     },
     token() {
       return this.$store.state.event.token
-    },
-    userId() {
-      return this.$store.state.event.user.id
     }
   },
   watch: {
