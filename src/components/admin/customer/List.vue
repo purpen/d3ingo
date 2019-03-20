@@ -1030,7 +1030,22 @@ export default {
       this.getClueList()
     },
     getClueList() {
-      let url = api.adminClueClueList
+      // let url = api.adminClueClueList
+      let url = ''
+      let typeId = this.$route.params.type
+      if (typeId === 1) {
+        url = api.adminClueClueList
+      }
+      if (typeId === 2) {
+        url = api.adminClueClueLatentList
+      }
+      if (typeId === 3) {
+        url = api.adminClueClueSignList
+        // url = api.adminClueClueSignList
+      }
+      if (typeId === 4) {
+        url = api.adminClueClueLowList
+      }
       let row = {}
       Object.assign(row, this.query)
       row.valueDate = [...this.dateArr]
@@ -1315,10 +1330,7 @@ export default {
   },
   created() {
     this.query.page = parseInt(this.$route.query.page || 1)
-    if (this.$route.params.type) {
-      this.bigType = 'potentialUserList' + this.$route.params.type
-      this.typeId = this.$route.params.type
-    }
+    this.bigType = 'potentialUserList' + this.$route.params.type
     this.getClueList()
   },
   // directives: {Clickoutside},

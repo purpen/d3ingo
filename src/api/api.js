@@ -242,7 +242,9 @@ export default {
   adminGeneralizeLists: '/admin/generalize/lists', // GET 落地页点击统计表
   adminClueCustomerProfile: '/admin/clue/customerProfile', // GET 潜在客户-客户概况
   adminClueSearch: '/admin/clue/search', // GET 潜在客户-统计搜索
-
+  adminClueClueLatentList: '/admin/clue/clueLatentList', // GET 潜在客户-潜在列表
+  adminClueClueLowList: '/admin/clue/clueLowList', // GET 潜在客户-低价列表
+  adminClueClueSignList: '/admin/clue/clueSignList', // GET 潜在客户-客户列表
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
   wxClueWxClueBinding: 'wxClue/wxClueBinding', // POST 微信潜在客户绑定
