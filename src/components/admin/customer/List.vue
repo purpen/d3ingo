@@ -467,12 +467,12 @@
         </el-table-column>
         -->
         <el-table-column
-          v-show="typeId !== 4"
+          v-if="typeId !== 4"
           sortable="custom"
           label="最后跟进日"
           >
           <template slot-scope="scope">
-            <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
+            <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time.slice(0, 10)}}</p>
           </template>
         </el-table-column>
         <el-table-column
@@ -486,24 +486,26 @@
               <p class="status5 status"  v-else>签约合作</p>
             </template>
         </el-table-column>
-        <!-- <el-table-column
-          v-show="typeId&&typeId === 4"
+        <el-table-column
+          v-if="typeId&&typeId === 4"
           prop="invalid_time"
           label="删除时间"
+          key="invalidTime"
           >
         </el-table-column>
         <el-table-column
-          v-show="typeId&&typeId === 4"
+          v-if="typeId&&typeId === 4"
           prop="label_cause"
           label="删除原因"
           width="120px"
+          key="labelCause"
           >
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
             <p v-else>无</p>
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <!-- <el-table-column
           prop="new_status"
           width="90"
@@ -1491,8 +1493,8 @@ export default {
       // let url = api.adminClueClueList
       let url = api.adminClueClueList
       let row = {}
-      let typeId = this.$route.params.type
-      this.typeId = this.$route.params.type
+      let typeId = Number(this.$route.params.type)
+      this.typeId = Number(this.$route.params.type)
       console.log('11', this.$route.params.type)
       if (typeId === 1) {
         url = api.adminClueClueList
@@ -1820,9 +1822,9 @@ export default {
     this.uploadUrl = api.adminClueImportExcel
   },
   created() {
-    this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     this.bigType = 'potentialUserList' + this.$route.params.type
-    this.typeId = this.$route.params.type
+    this.typeId = Number(this.$route.params.type)
+    this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     this.getClueList()
     this.getAdminList()
   },
@@ -1853,7 +1855,7 @@ export default {
   watch: {
     $route(to, form) {
       // 对路由变化做出相应...
-      this.typeId = this.$route.params.type
+      this.typeId = Number(this.$route.params.type)
       this['query' + this.typeId] = {
         page: 1,
         per_page: 50,
