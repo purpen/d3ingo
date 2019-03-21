@@ -13,8 +13,8 @@
           </ul>
         </div>
         <div class="select-user" tabindex="-1" @blur="isUser = false" v-if="typeId &&typeId < 4">
-          <p class="select-model" @click="getUsers()" v-if="typeId === 1">分配商机所有人</p>
-          <p class="select-model" @click="getUsers()" v-else>分配客户所有人</p>
+          <p class="select-model" @click="getUsers(1)" v-if="typeId === 1">分配商机所有人</p>
+          <p class="select-model" @click="getUsers(1)" v-else>分配客户所有人</p>
           <ul v-if="isUser&&userList.length">
             <li v-for="(u,indexu) in userList" :key="indexu" @click="addAssign(u)">{{u.user_name}}</li>
             <li class="random-allot" @click="randomAssign = true">随机自动分配</li>
@@ -41,7 +41,7 @@
           </ul>
         </div>
         <div class="export-upload">
-          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <span @click="isOpenDialog()" :class="{'is-disabled': !isHasPower}"></span>
           <el-upload
             class="upload-demo"
             :action="uploadUrl"
@@ -527,7 +527,7 @@
         </el-table-column> -->
       </el-table>
 
-      <!-- <el-pagination
+      <el-pagination
         v-if="typeId === 1&&tableData.length && query1.totalCount > query1.per_page"
         class="pagination"
         @size-change="handleSizeChange"
@@ -537,8 +537,8 @@
         :page-size="query1.per_page"
         layout="total, sizes, prev, pager, next, jumper"
         :total="query1.totalCount">
-      </el-pagination> -->
-      <!-- <el-pagination
+      </el-pagination>
+      <el-pagination
         v-else-if="typeId === 2&&tableData.length && query2.totalCount > query2.per_page"
         class="pagination"
         @size-change="handleSizeChange"
@@ -570,10 +570,10 @@
         :page-size="query4.per_page"
         layout="total, sizes, prev, pager, next, jumper"
         :total="query4.totalCount">
-      </el-pagination> -->
-      <!-- <div v-else>
+      </el-pagination>
+      <div v-else>
         <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
-      </div> -->
+      </div>
     </div>
 
     <el-dialog
@@ -649,11 +649,21 @@
       class="user-add"
       :modal-append-to-body="true"
       top="10vh"
-      width="690"
+      width="690px"
       :before-close="closeForm"
       >
       <div>
-        <el-form label-position="right" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px" class="add-form scroll-bar">
+        <el-form label-position="right" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="100px" class="add-form scroll-bar">
+           <el-row>
+            <el-col>
+              <el-form-item label="商机所有人" prop="execute_user_id">
+                <!-- <el-input v-model.trim="clientForm.execute_user_id" placeholder="输入客户姓名" :maxlength="10"></el-input> -->
+                <el-select v-model.trim="clientForm.execute_user_id" placeholder="请选择商机所有人">
+                  <el-option v-for="u in userList" :key="u.user_id" :value="u.user_id" :label="u.user_name"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col>
               <el-form-item label="客户姓名" prop="name">
@@ -906,7 +916,7 @@ export default {
       dialogAddUser: false, // 新建商机弹窗
       isSearch: {
         value: '',
-        label: ''
+        label: 1
       }, // 选择条件搜索
       isBusiness: '', // 全部商机select
       isWitch: '',
@@ -1032,7 +1042,7 @@ export default {
       optionLatent: [
         {
           value: 0,
-          label: '全部商家'
+          label: '全部'
         },
         {
           value: 1,
@@ -1069,10 +1079,6 @@ export default {
           label: '我的商机'
         },
         {
-          value: 5,
-          label: '最近查看'
-        },
-        {
           value: 3,
           label: '本周新建的商机'
         },
@@ -1094,8 +1100,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商机; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1114,8 +1120,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 0.全部 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1134,8 +1140,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1154,8 +1160,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1191,8 +1197,16 @@ export default {
       this.assignUser = u
       this.AssignOne = true
     },
+    isOpenDialog() {
+      if (this.isHasPower) {
+        this.dialogAddUser = true
+        this.getUsers()
+      } else {
+        this.dialogAddUser = true
+      }
+    },
     // 获取业务人员列表
-    getUsers() {
+    getUsers(type) {
       this.$http.get(api.adminClueVoIpList).then((response) => {
         if (response.data.meta.status_code === 200) {
           if (response.data.data && response.data.data.length) {
@@ -1200,7 +1214,9 @@ export default {
           } else {
             this.userList = []
           }
-          this.isUser = true
+          if (type) {
+            this.isUser = true
+          }
         }
       })
     },
@@ -1298,7 +1314,7 @@ export default {
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           if (this.typeId === 1) {
-            this.tableData.unshift(row)
+            this.getClueList()
           }
           this.$message.success(res.data.meta.message)
           this.boolCreateUser = false
@@ -1861,8 +1877,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1877,6 +1893,10 @@ export default {
         valueDate: []
       }
       this.isCheck = false
+      this.isSearch = {
+        label: 1,
+        value: ''
+      }
       this.getClueList()
     }
   }
@@ -2299,12 +2319,12 @@ export default {
 }
 .client-rank {
   position: relative;
-  padding-left: 80px;
+  padding-left: 100px;
   margin: 20px 0;
 }
 .client-rank>span {
   position: absolute;
-  left: 38px;
+  left: 60px;
   top: 0px;
   line-height: 20px;
 }
