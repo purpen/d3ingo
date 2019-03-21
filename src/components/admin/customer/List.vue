@@ -1,6 +1,33 @@
 <template>
   <div>
     <div class="content">
+      <div class="edit-header" v-show="isCheck">
+        <div class="check-all">
+          已选中 {{multipleSelection.length}} 条
+          <i class="el-icon-close fz-16" @click="downCheck"></i>
+        </div>
+        <div class="label-status" tabindex="-1" @blur="isinvalid=false" @click="isinvalid = true" v-if="typeId === 1">
+          <div class="label-i">标记商机状态</div>
+          <ul v-show="isinvalid">
+            <li @click="boolClueStatus = true">无效</li>
+          </ul>
+        </div>
+        <div class="select-user" tabindex="-1" @blur="isUser = false" v-if="typeId &&typeId < 4">
+          <p class="select-model" @click="getUsers()" v-if="typeId === 1">分配商机所有人</p>
+          <p class="select-model" @click="getUsers()" v-else>分配客户所有人</p>
+          <ul v-if="isUser&&userList.length">
+            <li v-for="(u,indexu) in userList" :key="indexu" @click="addAssign(u)">{{u.user_name}}</li>
+            <li class="random-allot" @click="randomAssign = true">随机自动分配</li>
+          </ul>
+        </div>
+        <div class="export-del" tabindex="-1" @blur="isexportShow = false" @click="isexportShow=true">
+          <i class="el-icon-more"></i>
+          <ul v-show="isexportShow">
+            <li @click="exportForm">导出报表</li>
+            <!-- <li>删除</li> -->
+          </ul>
+        </div>
+      </div>
       <div class="business-header" v-if="typeId === 1">
         <div class="edit-i" @blur="isDown" tabindex="-1">
           <i @click="isEdits = true"></i>
@@ -318,6 +345,7 @@
         :data="tableData"
         v-loading="tableLoading"
         class="admin-table"
+        ref="tableData"
         @selection-change="handleSelectionChange"
         @filter-change="filterList"
         @sort-change="sortChange"
@@ -437,7 +465,9 @@
         -->
         <el-table-column
           sortable="custom"
-          label="最后跟进日">
+          label="最后跟进日"
+          v-if="typeId !== 4"
+          >
           <template slot-scope="scope">
             <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
           </template>
@@ -452,6 +482,24 @@
               <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status5 status"  v-else>签约合作</p>
             </template>
+        </el-table-column>
+        <el-table-column
+          prop="invalid_time"
+          label="删除时间"
+          v-show="typeId === 4"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="label_cause"
+          label="删除原因"
+          width="120px"
+          v-show="typeId === 4"
+          >
+          <template slot-scope="scope">
+            <p v-if="scope.row.label_cause === 1">虚假商机</p>
+            <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
+            <p v-else>无</p>
+          </template>
         </el-table-column>
         <!-- <el-table-column
           prop="new_status"
@@ -542,15 +590,25 @@
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
-      width="300px">
-      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
-      <span v-else>没有潜在用户待分配</span>
+      width="350px">
+      <span>有 <span class="tc-red">{{multipleSelection.length}}</span> 个用户等待分配负责人，是否确认随机分配？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
+        <!-- :disabled="!noAllot" -->
+        <el-button type="primary" @click="randomAllot" :disabled="!multipleSelection.length" >确 定</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog
+      title="分配成员"
+      :visible.sync="AssignOne"
+      width="350px">
+      <span>确认将 <span class="tc-red">{{multipleSelection.length}}</span> 个用户分配给{{assignUser.user_name}}么？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="AssignOne = false">取 消</el-button>
+        <!-- :disabled="!noAllot" -->
+        <el-button type="primary" @click="randomAllot(1)" :disabled="!multipleSelection.length" >确 定</el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
@@ -688,6 +746,14 @@ export default {
   },
   data() {
     return {
+      assignUser: {},
+      AssignOne: false,
+      isinvalid: false, // 无效弹窗
+      userList: [], // 业务人员列表
+      isUser: false, // 业务人员下拉
+      isexportShow: false, // 取消导出下拉
+      clearSelect: false,
+      isCheck: false,
       bigType: 'potentialUserList1',
       value10: '',
       select: '',
@@ -1116,6 +1182,23 @@ export default {
     }
   },
   methods: {
+    addAssign(u) {
+      this.assignUser = u
+      this.AssignOne = true
+    },
+    // 获取业务人员列表
+    getUsers() {
+      this.$http.get(api.adminClueVoIpList).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          if (response.data.data && response.data.data.length) {
+            this.userList = response.data.data
+          } else {
+            this.userList = []
+          }
+          this.isUser = true
+        }
+      })
+    },
     resetAll() {
       this['query' + this.typeId] = {
         page: 1,
@@ -1209,7 +1292,9 @@ export default {
       }
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.tableData.unshift(row)
+          if (this.typeId === 1) {
+            this.tableData.unshift(row)
+          }
           this.$message.success(res.data.meta.message)
           this.boolCreateUser = false
           this.$refs['ruleClientForm'].resetFields()
@@ -1305,10 +1390,15 @@ export default {
       this['query' + this.typeId].page = 1
       this.getClueList()
     },
+    // 取消多选操作
+    downCheck() {
+      this.$refs.tableData.clearSelection()
+      this.isCheck = false
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log('val', val)
+      this.isCheck = true
     },
     // 删除用户
     multipleDelItem() {
@@ -1428,6 +1518,9 @@ export default {
           }
           let ids = []
           this.tableData.forEach(item => {
+            if (item.invalid_time) {
+              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+            }
             item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
             if (item.id) {
               ids.push(item.id)
@@ -1574,11 +1667,23 @@ export default {
         this.$message.error(error.message)
       })
     },
-    randomAllot() { // 随机分配
+    randomAllot(type) { // 随机分配
       this.randomAssign = false
-      this.$http.post(api.adminClueRandomAllot).then(res => {
+      let clue = this.multipleSelection.map(item => {
+        return item.id
+      })
+      let userId = ''
+      if (type === 1) {
+        userId = this.assignUser.user_id
+      }
+      this.$http.post(api.adminClueRandomAllot, {clue_ids: clue, user_id: userId}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.$message.success('随机分配成功')
+          if (type === 1) {
+            this.AssignOne = false
+            this.$message.success('分配成功')
+          } else {
+            this.$message.success('随机分配成功')
+          }
           this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -1623,7 +1728,7 @@ export default {
           }
         })
       }
-      downloadUrl = url + '?' + urlStr
+      downloadUrl = url + '?' + urlStr + '&status=' + this.typeId
       window.open(decodeURI(downloadUrl))
     },
     arrayExportIds() {
@@ -1754,7 +1859,7 @@ export default {
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
-        execute_user_id: this.userId, // 所属人
+        execute_user_id: '', // 所属人
         rank: '', // 客户级别
         new_source: '', // 来源渠道
         son_source: '', // 子来源渠道
@@ -1764,6 +1869,7 @@ export default {
         search: '',
         valueDate: []
       }
+      this.isCheck = false
       this.getClueList()
     }
   }
@@ -1771,6 +1877,9 @@ export default {
 </script>
 
 <style scoped>
+.content {
+  position: relative;
+}
 .cursor-p {
   cursor: pointer;
 }
@@ -2016,7 +2125,7 @@ export default {
 .edit-i {
   float: right;
   height: 36px;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   position: relative;
 }
 .edit-i i {
@@ -2141,7 +2250,7 @@ export default {
 .select-business {
   float: left;
   width: 220px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   height: 36px;
   line-height: 36px;
 }
@@ -2207,5 +2316,121 @@ export default {
 }
 .tc-3 {
   color: #333;
+}
+.edit-header {
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #f7f7f7;
+  z-index: 1;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+}
+.label-status {
+  width: 130px;
+  height: 36px;
+  line-height: 36px;
+  position: relative;
+  margin-right: 10px;
+}
+.label-status ul {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+  background: #fff;
+  line-height: 40px;
+  width: 130px;
+  font-size: 14px;
+}
+.label-status li {
+  padding-left: 10px;
+}
+.label-i {
+  border:1px solid #e6e6e6;
+  padding-left: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.select-user {
+  width: 110px;
+  height: 36px;
+  line-height: 36px;
+  margin-right: 10px;
+  position: relative;
+}
+.select-model {
+  border: 1px solid #e6e6e6;
+  background-color: #fff;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+.check-all {
+  width: 200px;
+  margin-right: 30px;
+  padding-left: 15px;
+  position: relative;
+}
+.check-all i {
+  position: absolute;
+  top: -1px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.export-del {
+  width: 50px;
+  position: relative;
+}
+.export-del>i {
+  display: block;
+  width: 50px;
+  height: 36px;
+  line-height: 36px;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  background-color: #fff;
+}
+.select-user ul {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+  background: #fff;
+  line-height: 40px;
+  width: 120px;
+}
+.select-user li {
+  padding-left: 10px;
+  cursor: pointer;
+}
+.select-user li:hover {
+  background-color: #f7f7f7;
+}
+.export-del ul {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+  background: #fff;
+  line-height: 30px;
+  width: 120px;
+  font-size: 14px;
+}
+.export-del li {
+  padding-left: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.random-allot {
+  border-top: 1px solid #e6e6e6;
+}
+.export-del li:hover {
+  background-color: #f7f7f7;
 }
 </style>
