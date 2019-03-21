@@ -436,7 +436,7 @@
               </div>
               <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">其他</p>
-                <span v-if="scope.row.son_source === 'a'">无法归类的⼩群体</span>
+                <span v-if="scope.row.son_source === 'a'">无法归类的小群体</span>
                 <span v-if="!scope.row.son_source">其他</span>
               </div>
             </div>
