@@ -2072,7 +2072,7 @@ export default {
     },
     isAdmin() {
       var user = this.$store.state.event.user
-      if (user.role_id === 15 || user.role_id === 20) {
+      if (user.role_id >= 10) {
         return true
       }
       return false

@@ -24,6 +24,7 @@
                 <el-option label="编辑" value="5"></el-option>
                 <el-option label="管理员" value="10"></el-option>
                 <el-option label="管理员plus" value="15"></el-option>
+                <el-option label="商务" value="25"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -134,6 +135,7 @@
               <p v-else-if="scope.row.role_id === 10">管理员</p>
               <p v-else-if="scope.row.role_id === 15">管理员Plus</p>
               <p v-else-if="scope.row.role_id === 20">超级管理员</p>
+              <p v-else-if="scope.row.role_id === 25">商务</p>
               <p v-else>--</p>
             </template>
         </el-table-column>
@@ -196,6 +198,7 @@
               <el-radio :label="5">编辑</el-radio>
               <el-radio :label="10">管理员</el-radio>
               <el-radio :label="15">管理员plus</el-radio>
+              <el-radio class="margin-t-10" :label="25">商务</el-radio>
             </el-radio-group>
           </div>
         </el-col>
