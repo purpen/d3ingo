@@ -42,7 +42,7 @@
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
           <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
           <el-menu-item index="/vcenter/account/modify_pwd"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
-          <el-menu-item :index="'/b_admin/item/list'" v-if="user.source_admin===1 || user.source_admin===2">
+          <el-menu-item index="/b_admin/item/list" v-if="user.source_admin===1 || user.source_admin===2">
             <i class="fx-4 fx-icon-control-center"></i>
             <i class="fx-4 fx-icon-console-hover"></i>后台管理
           </el-menu-item>
