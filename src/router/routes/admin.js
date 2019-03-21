@@ -4,7 +4,6 @@
 module.exports = [
   {
     path: '/admin',
-    name: 'admin',
     meta: {
       requireAuth: true,
       hideFooter: true
@@ -35,7 +34,7 @@ module.exports = [
       },
       // 潜在用户列表
       {
-        path: '/admin/customer/list',
+        path: '/admin/customer/list/:type',
         name: 'adminPotentialUserList',
         meta: {
           title: '潜在用户列表',
@@ -65,6 +64,17 @@ module.exports = [
           hideFooter: true
         },
         component: require('@/components/admin/customer/UserInfo')
+      },
+      // 商机分析
+      {
+        path: '/admin/customer/analyze',
+        name: 'adminPotentialAnalyze',
+        meta: {
+          title: '商机分析',
+          requireAuth: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/customer/Analyze')
       },
       // 说明列表
       {
@@ -637,6 +647,87 @@ module.exports = [
           hideFooter: true
         },
         component: require('@/components/admin/block/List')
+      },
+      // 艺火后台路由
+      // 项目列表
+      {
+        path: '/b_admin/item/list',
+        name: 'bAdminItemList',
+        meta: {
+          title: '项目列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/item/List')
+      },
+      // 项目详情
+      {
+        path: '/b_admin/item/show/:id',
+        name: 'bAdminItemShow',
+        meta: {
+          title: '项目详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/item/Show')
+      },
+      // 订单列表
+      {
+        path: '/b_admin/order/list',
+        name: 'bAdminOrderList',
+        meta: {
+          title: '订单列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/order/List')
+      },
+      // 设计服务商列表
+      {
+        path: '/b_admin/company/list',
+        name: 'bAdminCompanyList',
+        meta: {
+          title: '设计服务商列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/company/List')
+      },
+      // 设计服务商详情
+      {
+        path: '/b_admin/company/show/:id',
+        name: 'bAdminCompanyShow',
+        meta: {
+          title: '设计服务商详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/company/Show')
+      },
+      // 需求公司列表
+      {
+        path: '/b_admin/demand_company/list',
+        name: 'bAdminDemandCompanyList',
+        meta: {
+          title: '需求公司列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/demand_company/List')
+      },
+      // 需求公司详情
+      {
+        path: '/b_admin/demand_company/show/:id',
+        name: 'bAdminDemandCompanyShow',
+        meta: {
+          title: '需求公司详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/demand_company/Show')
+      },
+      // 用户列表
+      {
+        path: '/b_admin/user/list',
+        name: 'bAdminUserList',
+        meta: {
+          title: '用户列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/user/List')
       }
     ]
   }

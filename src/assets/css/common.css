@@ -18,6 +18,9 @@
 .flex {
   display: flex;
 }
+.flex-column {
+  flex-direction: column
+}
 .flex1 {
   flex: 1 1 auto
 }
@@ -87,6 +90,9 @@
 .bb-e6 {
   border-bottom: 1px solid #e6e6e6
 }
+.bg-f {
+  background: #fff
+}
 .bg-fa {
   background: #fafafa
 }
@@ -117,14 +123,17 @@
 .line-height18 {
   line-height: 18px;
 }
-.line-height30 {
-  line-height: 30px;
-}
 .line-height24 {
   line-height: 24px;
 }
 .line-height20 {
   line-height: 20px;
+}
+.line-height28 {
+  line-height: 28px;
+}
+.line-height30 {
+  line-height: 30px;
 }
 .line-height32 {
   line-height: 32px;
@@ -188,6 +197,9 @@
 }
 .margin0 {
   margin: 0
+}
+.margin-t-10 {
+  margin-top: 10px;
 }
 .margin-r-10 {
   margin-right: 10px;
@@ -526,6 +538,28 @@ button.el-button.is-custom.is-disabled,
 }
 .no-border_radius {
   border-radius: 0;
+}
+/* 选项框 */
+.option-menu {
+  display: flex;
+}
+.option-item {
+  width: 60px;
+  height: 30px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  margin-left: -1px;
+  line-height: 30px;
+  text-align: center;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.option-item:hover, .option-item.active {
+  background: #ff5a5f;
+  color: #fff
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {

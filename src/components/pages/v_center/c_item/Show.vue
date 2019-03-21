@@ -728,7 +728,7 @@
         currentInvoiceId: 0,
         msg: '',
         ispayStatus: '',
-        isReady: true
+        isReady: false
       }
     },
     methods: {
@@ -1114,12 +1114,17 @@
       },
       // 发送阶段确认框
       stageSendBtn(event) {
+        let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
+        let index = parseInt(event.currentTarget.getAttribute('index'))
+        if (this.stages[index].item_stage_image) {
+          this.isReady = true
+        } else {
+          this.isReady = false
+        }
         if (!this.isReady) {
           this.$message.error('请等待文件上传成功')
           return
         }
-        let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
-        let index = parseInt(event.currentTarget.getAttribute('index'))
         if (this.stages[index].item_stage_image.length <= 0) {
           this.$message.error('请上传当前阶段附件!')
           return false
@@ -1209,6 +1214,10 @@
       },
       // Before上传阶段附件
       beforeStageUpload(file) {
+        if (!this.uploadUrl) {
+          this.$message.error('没有获取到上传地址，请刷新重试')
+          return false
+        }
         const arr = ['image/jpeg', 'image/gif', 'image/png', 'application/pdf']
         const isLt50M = file.size / 1024 / 1024 < 50
 
@@ -1248,7 +1257,7 @@
           if (res.data && res.data.meta.status_code === 200) {
             document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传附件'
             this.$refs.upload[0].submit()
-            this.isReady = false
+            this.isReady = true
           } else {
             this.$message.error(res.data.meta.message)
           }

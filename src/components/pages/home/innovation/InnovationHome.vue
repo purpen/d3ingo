@@ -5,7 +5,7 @@
         <el-col :span="24">
           <router-link :to="{name: 'InnovateList', hash: '#innovation'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/design@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>设计创新力指数</p>
@@ -17,7 +17,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#power'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/innovate@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>基础运作力指数</p>
@@ -29,7 +29,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#innovation2'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/business_making_power@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/innovate@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>创新交付力指数</p>
@@ -41,7 +41,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#business'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/business@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/business_making_power@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>商业决策力指数</p>
@@ -53,7 +53,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#brand'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/objective_credibility@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/business@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>品牌溢价力指数</p>
@@ -65,7 +65,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#credibility'}" class="dimension-resolve">
             <div class="img-box">
-              <img :src="require('assets/images/subject/innovation/risk_response_ability@2x.png')" alt="">
+              <img :src="require('assets/images/subject/innovation/objective_credibility@2x.png')" alt="">
             </div>
             <div class="dimension-title">
               <p>客观公信力指数</p>

@@ -33,6 +33,11 @@
   .textarea-summary .el-textarea__inner:focus {
     border-color: #e6e6e6
   }
+
+  .el-submenu__title {
+    height: 50px;
+    line-height: 50px;
+  }
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
@@ -72,7 +77,7 @@
     color: #222
   }
 
-  .ordershow-span-color  .el-breadcrumb__inner:hover {
+  .ordershow-span-color .el-breadcrumb__inner:hover {
     color: #ff5a5f;
   }
   .el-breadcrumb {
@@ -887,7 +892,7 @@
     padding-left: 40px;
   }
   .el-date-table td.current:not(.disabled) span {
-    background-color: inherit;
+    background-color: #ff5a5f;
   }
   .el-date-table td.today span {
     color: #ff5a5f;
@@ -1077,6 +1082,15 @@
   }
   .el-carousel__container {
     height: 260px;
+  }
+  .search-select .el-input__inner:hover, .search-select .el-input__inner:focus {
+    border-right: none;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+  .search-input .el-input__inner:hover {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
