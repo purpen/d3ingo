@@ -414,6 +414,10 @@
       this.leftValue = this.leftWidth
       this.selectedName = this.$route.name
       this.selectedName2 = this.$route.name
+      if (this.$route.name === 'adminPotentialUserList') {
+        this.selectedName = this.$route.name + this.$route.params.type
+        this.selectedName2 = this.$route.name + this.$route.params.type
+      }
     },
     computed: {
       isCompany() {
