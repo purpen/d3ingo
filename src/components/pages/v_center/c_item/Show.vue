@@ -1116,7 +1116,7 @@
       stageSendBtn(event) {
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
         let index = parseInt(event.currentTarget.getAttribute('index'))
-        if (self.stages[index].item_stage_image) {
+        if (this.stages[index].item_stage_image) {
           this.isReady = true
         } else {
           this.isReady = false
