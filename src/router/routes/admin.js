@@ -65,6 +65,17 @@ module.exports = [
         },
         component: require('@/components/admin/customer/UserInfo')
       },
+      // 商机分析
+      {
+        path: '/admin/customer/analyze',
+        name: 'adminPotentialAnalyze',
+        meta: {
+          title: '商机分析',
+          requireAuth: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/customer/Analyze')
+      },
       // 说明列表
       {
         path: '/admin/content_manage/list',

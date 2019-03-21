@@ -724,7 +724,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120px;
+    height: 160px;
     flex-direction: column
   }
   .margin-b_0 {
