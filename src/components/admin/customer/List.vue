@@ -366,7 +366,7 @@
           sortable="custom"
           label="状态">
           <template slot-scope="scope">
-            <p v-if="scope.row.new_call_status === 13">
+            <p v-if="typeId===4">
               <span v-if="scope.row.son_status === 1">无效商机</span>
               <span v-if="scope.row.son_status === 2">低价客户</span>
               <span v-if="scope.row.son_status === 3">流失客户</span>
@@ -387,6 +387,7 @@
         </el-table-column>
         <el-table-column
           sortable="custom"
+          width="150px"
           label="来源渠道">
           <template slot-scope="scope">
             <div v-if="scope.row.new_source || scope.row.new_source === 0" class="fz-14 tc-3">
@@ -413,12 +414,14 @@
               </div>
               <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">内部推荐</p>
-                <span v-if="scope.row.son_source === 'a'">雷总/公司员工推荐的熟人客户</span>
+                <span v-if="scope.row.son_source === 'a'">雷总/公司员工推...</span>
+                <!-- 雷总/公司员工推荐的熟人客户 -->
                 <span v-if="!scope.row.son_source">内部推荐</span>
               </div>
               <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">外部推荐</p>
-                <span v-if="scope.row.son_source === 'a'">朋友/其他公司推荐的客户</span>
+                <span v-if="scope.row.son_source === 'a'">朋友/其他公司推...</span>
+                <!-- 朋友/其他公司推荐的客户 -->
                 <span v-if="!scope.row.son_source">外部推荐</span>
               </div>
               <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
@@ -464,9 +467,9 @@
         </el-table-column>
         -->
         <el-table-column
+          v-show="typeId !== 4"
           sortable="custom"
           label="最后跟进日"
-          v-if="typeId !== 4"
           >
           <template slot-scope="scope">
             <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
@@ -483,24 +486,24 @@
               <p class="status5 status"  v-else>签约合作</p>
             </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
+          v-show="typeId&&typeId === 4"
           prop="invalid_time"
           label="删除时间"
-          v-show="typeId === 4"
           >
         </el-table-column>
         <el-table-column
+          v-show="typeId&&typeId === 4"
           prop="label_cause"
           label="删除原因"
           width="120px"
-          v-show="typeId === 4"
           >
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
             <p v-else>无</p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <!-- <el-table-column
           prop="new_status"
           width="90"
@@ -1486,9 +1489,11 @@ export default {
     },
     getClueList() {
       // let url = api.adminClueClueList
-      let url = ''
+      let url = api.adminClueClueList
       let row = {}
       let typeId = this.$route.params.type
+      this.typeId = this.$route.params.type
+      console.log('11', this.$route.params.type)
       if (typeId === 1) {
         url = api.adminClueClueList
         Object.assign(row, this.query1)
