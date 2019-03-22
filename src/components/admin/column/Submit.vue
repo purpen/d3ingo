@@ -1,167 +1,152 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="columnList"></v-menu>
+  <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminColumnList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
+      <div class="fr">
+        <router-link :to="{name: 'adminColumnAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
+      </div>
+    </div>
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminColumnList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminColumnAdd'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
-        </div>
-
-          <div class="content-box">
-            <div class="form-title">
-              <span>{{ itemMode }}</span>
-            </div>
-            <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+    <div class="content-box">
+      <div class="form-title">
+        <span>{{ itemMode }}</span>
+      </div>
+      <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
 
-              <el-form-item label="设计类型" prop="type">
-                <el-radio-group v-model.number="form.type">
-                  <el-radio-button
-                    v-for="item in typeOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-              <el-row :gutter="24" v-if="form.type === 2">
-                <el-col :span="12">
-                  <el-form-item label="设备" prop="facility">
-                    <el-radio-group v-model.number="form.facility">
-                      <el-radio-button
-                        v-for="f in facilitys"
-                        :key="f.index"
-                        :label="f.value">{{ f.label }}
-                      </el-radio-button>
-                    </el-radio-group>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="24" v-if="form.type === 2">
-                <el-col :span="12">
-                  <el-form-item label="权重" prop="sort">
-                    <el-input v-model="form.sort" type="number" placeholder="权重越大排名越前"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-form-item label="设计类型" prop="type">
+          <el-radio-group v-model.number="form.type">
+            <el-radio-button
+              v-for="item in typeOptions"
+              :key="item.index"
+              :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-row :gutter="24" v-if="form.type === 2">
+          <el-col :span="12">
+            <el-form-item label="设备" prop="facility">
+              <el-radio-group v-model.number="form.facility">
+                <el-radio-button
+                  v-for="f in facilitys"
+                  :key="f.index"
+                  :label="f.value">{{ f.label }}
+                </el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24" v-if="form.type === 2">
+          <el-col :span="12">
+            <el-form-item label="权重" prop="sort">
+              <el-input v-model="form.sort" type="number" placeholder="权重越大排名越前"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="form.title" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="链接" prop="url">
-                    <el-input v-model="form.url" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="链接" prop="url">
+              <el-input v-model="form.url" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-row >
-                <el-col :span="24">
-                  <el-form-item label="上传图片" prop="">
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      :show-file-list="false"
-                      list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
-                    </el-upload>
+        <el-row >
+          <el-col :span="24">
+            <el-form-item label="上传图片" prop="">
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :file-list="fileList"
+                :data="uploadParam"
+                :on-progress="uploadProgress"
+                :on-error="uploadError"
+                :on-success="uploadSuccess"
+                :before-upload="beforeUpload"
+                :show-file-list="false"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
+              </el-upload>
 
-                    <div class="file-list">
-                      <el-row :gutter="10">
-                        <el-col :span="8" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                                <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
-                              <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary"></textarea>
-                              </div>
-                              <div class="summary" v-else>
-                                <p v-if="d.summary">{{ d.summary }}</p>
-                                <p class="image-no-summary" v-else>暂无描述信息</p>
-                              </div>
-                              <div class="opt" v-if="d.edit">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="saveAssetSummary">保存</a>
-                              </div>
-                              <div class="opt" v-else>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div>
-
-                  </el-form-item>
-
-                </el-col>
-              </el-row>
-
-              <el-form-item label="描述" prop="content">
-                <el-input
-                  type="textarea"
-                  :rows="10"
-                  placeholder="请输入内容"
-                  v-model="form.content">
-                </el-input>
-              </el-form-item>
-
-              <div class="form-btn">
-                  <el-button @click="returnList">取消</el-button>
-                  <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+              <div class="file-list">
+                <el-row :gutter="10">
+                  <el-col :span="8" v-for="(d, index) in fileList" :key="index">
+                    <el-card :body-style="{ padding: '0px' }" class="item">
+                      <div class="image-box">
+                          <img :src="d.url">
+                      </div>
+                      <div class="content">
+                        <p>{{ d.name }}</p>
+                        <div class="summary-edit" v-if="d.edit">
+                          <textarea v-model="d.summary"></textarea>
+                        </div>
+                        <div class="summary" v-else>
+                          <p v-if="d.summary">{{ d.summary }}</p>
+                          <p class="image-no-summary" v-else>暂无描述信息</p>
+                        </div>
+                        <div class="opt" v-if="d.edit">
+                          <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="saveAssetSummary">保存</a>
+                        </div>
+                        <div class="opt" v-else>
+                          <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                          <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
+                          </el-tooltip>
+                        </div>
+                      </div>
+                    </el-card>
+                  </el-col>
+                </el-row>
               </div>
-              <div class="clear"></div>
-            </el-form>
 
-          </div>
+            </el-form-item>
+
+          </el-col>
+        </el-row>
+
+        <el-form-item label="描述" prop="content">
+          <el-input
+            type="textarea"
+            :rows="10"
+            placeholder="请输入内容"
+            v-model="form.content">
+          </el-input>
+        </el-form-item>
+
+        <div class="form-btn">
+            <el-button @click="returnList">取消</el-button>
+            <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
         </div>
-      </el-col>
-    </el-row>
+        <div class="clear"></div>
+      </el-form>
 
-
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_column_submit',
-  components: {
-    vMenu
-  },
   data () {
     return {
       facilitys: [

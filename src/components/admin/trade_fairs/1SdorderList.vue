@@ -1,148 +1,142 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="sdOrderList"></v-menu>
+  <div>
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="content">
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminSdOrderList', query: {type: 5}}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
-            <router-link :to="{name: 'adminSdOrderList', query: {type: 5, status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
-          </div>
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminSdOrderList', query: {type: 5}}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+          <router-link :to="{name: 'adminSdOrderList', query: {type: 5, status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
+        </div>
+      </div>
+
+        <div class="admin-search-form">
+          <el-form :inline="true" :model="query">
+            <el-form-item>
+              <el-select v-model="query.pay_type" placeholder="支付方式..." size="small">
+                <el-option label="--请选择--" value=""></el-option>
+                <el-option label="自平台" value="1"></el-option>
+                <el-option label="支付宝" value="2"></el-option>
+                <el-option label="微信" value="3"></el-option>
+                <el-option label="京东" value="4"></el-option>
+                <el-option label="银行转账" value="5"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+                <el-option label="订单号" value="1"></el-option>
+                <el-option label="项目ID" value="2"></el-option>
+                <el-option label="用户ID" value="3"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+            </el-form-item>
+          </el-form>
         </div>
 
-          <div class="admin-search-form">
-            <el-form :inline="true" :model="query">
-              <el-form-item>
-                <el-select v-model="query.pay_type" placeholder="支付方式..." size="small">
-                  <el-option label="--请选择--" value=""></el-option>
-                  <el-option label="自平台" value="1"></el-option>
-                  <el-option label="支付宝" value="2"></el-option>
-                  <el-option label="微信" value="3"></el-option>
-                  <el-option label="京东" value="4"></el-option>
-                  <el-option label="银行转账" value="5"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="订单号" value="1"></el-option>
-                  <el-option label="项目ID" value="2"></el-option>
-                  <el-option label="用户ID" value="3"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+        <el-table
+          :data="tableData"
+          border
+          v-loading="isLoading"
+          class="admin-table"
+          @selection-change="handleSelectionChange"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            prop="uid"
+            label="订单号"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            label="项目信息"
+            width="140">
+              <template slot-scope="scope">
+                <p v-if="scope.row.type === 5">名称: {{ scope.row.design_result_name }}</p>
+                <p v-else>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
+                <p>阶段: {{ scope.row.item_stage_id }}</p>
+              </template>
+          </el-table-column>
+          <el-table-column
+            label="创建信息">
+              <template slot-scope="scope">
+                <p>用户: {{ scope.row.user?(scope.row.user.account? scope.row.user.account: ''):'' }}[{{ scope.row.user_id }}]</p>
+                <p>公司: {{ scope.row.company_name }}</p>
+              </template>
+          </el-table-column>
+          <el-table-column
+            label="支付信息"
+            width="160">
+              <template slot-scope="scope">
+                <p>支付金额: {{ scope.row.amount }}</p>
+                <p>支付类型: {{ scope.row.type_value }}</p>
+                <p>支付方式: {{ scope.row.pay_type_value }}</p>
+                <p v-if="scope.row.pay_type !== 5">交易号: {{ scope.row.pay_no }}</p>
+                <div v-else>
+                  <p>银行: {{ scope.row.bank }}</p>
+                  <p>交易号: {{ scope.row.pay_no }}</p>
+                </div>
+              </template>
+          </el-table-column>
+          <el-table-column
+            prop="source_value"
+            width="80"
+            label="来源">
+          </el-table-column>
+          <el-table-column
+            prop="status_value"
+            width="80"
+            label="状态">
+          </el-table-column>
+          <el-table-column
+            prop="created_at"
+            width="100"
+            label="创建时间">
+          </el-table-column>
+          <el-table-column
+            width="100"
+            label="操作">
+              <template slot-scope="scope">
+                <p>
+                  <a href="javascript:void(0);" v-show="(scope.row.status >= 0)&&(scope.row.design_result.sell === 1?true:false)" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
+                </p>
+                <p>
+                  <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
+                </p>
+                <p>
+                  <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="sureTransfer(scope.$index, scope.row)">确认收款</a>
+                </p>
+                <p>
+                <!--
+                  <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
+                  <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
+                  <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">查看</a>
 
-          <el-table
-            :data="tableData"
-            border
-            v-loading="isLoading"
-            class="admin-table"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="uid"
-              label="订单号"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              label="项目信息"
-              width="140">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.type === 5">名称: {{ scope.row.design_result_name }}</p>
-                  <p v-else>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
-                  <p>阶段: {{ scope.row.item_stage_id }}</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="创建信息">
-                <template slot-scope="scope">
-                  <p>用户: {{ scope.row.user?(scope.row.user.account? scope.row.user.account: ''):'' }}[{{ scope.row.user_id }}]</p>
-                  <p>公司: {{ scope.row.company_name }}</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              label="支付信息"
-              width="160">
-                <template slot-scope="scope">
-                  <p>支付金额: {{ scope.row.amount }}</p>
-                  <p>支付类型: {{ scope.row.type_value }}</p>
-                  <p>支付方式: {{ scope.row.pay_type_value }}</p>
-                  <p v-if="scope.row.pay_type !== 5">交易号: {{ scope.row.pay_no }}</p>
-                  <div v-else>
-                    <p>银行: {{ scope.row.bank }}</p>
-                    <p>交易号: {{ scope.row.pay_no }}</p>
-                  </div>
-                </template>
-            </el-table-column>
-            <el-table-column
-              prop="source_value"
-              width="80"
-              label="来源">
-            </el-table-column>
-            <el-table-column
-              prop="status_value"
-              width="80"
-              label="状态">
-            </el-table-column>
-            <el-table-column
-              prop="created_at"
-              width="100"
-              label="创建时间">
-            </el-table-column>
-            <el-table-column
-              width="100"
-              label="操作">
-                <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-show="(scope.row.status >= 0)&&(scope.row.design_result.sell === 1?true:false)" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
-                  </p>
-                  <p>
-                    <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
-                  </p>
-                  <p>
-                    <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="sureTransfer(scope.$index, scope.row)">确认收款</a>
-                  </p>
-                  <p>
-                  <!--
-                    <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
-                    <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
-                    <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">查看</a>
+                  -->
+                </p>
+              </template>
+          </el-table-column>
+        </el-table>
 
-                    -->
-                  </p>
-                </template>
-            </el-table-column>
-          </el-table>
+        <el-pagination
+          v-if="tableData.length && query.totalCount > query.pageSize"
+          class="pagination"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="query.page"
+          :page-sizes="[50, 100, 500]"
+          :page-size="query.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="query.totalCount">
+        </el-pagination>
 
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-            class="pagination"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-sizes="[50, 100, 500]"
-            :page-size="query.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="query.totalCount">
-          </el-pagination>
-
-        </div>
-      </el-col>
-    </el-row>
+    </div>
 
     <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
       <el-form label-position="top">
@@ -218,13 +212,9 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_sd_order_list',
-  components: {
-    vMenu
-  },
   data () {
     return {
       menuType: 0,

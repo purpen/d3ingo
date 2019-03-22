@@ -1,97 +1,86 @@
 <template>
-  <!-- <v-menu selectedName="adminContentList"></v-menu> -->
-  <div class="container company-verify">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="adminContentList"></v-menu>
-      <el-col :span="20">
-        <div class="content">
+  <div class="content company-verify">
 
-        <!-- <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminContentList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-          </div>
-          <div class="fr">
-            <router-link :to="{name: 'adminContentSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
-          </div>
-        </div> -->
+    <!-- <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminContentList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
+      <div class="fr">
+        <router-link :to="{name: 'adminContentSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
+      </div>
+    </div> -->
 
-          <div class="content-box">
-            <div class="form-title">
-              <span>{{ itemMode }}</span>
-            </div>
-            <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="from-style">
+    <div class="content-box">
+      <div class="form-title">
+        <span>{{ itemMode }}</span>
+      </div>
+      <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="from-style">
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" :maxlength="30" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="角色" prop="title">
-                      <el-radio v-model="form.son_type" :label="1" @change="updateRadio">客户</el-radio>
-                      <el-radio v-model="form.son_type" :label="2" @change="updateRadio">设计服务商</el-radio>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-form-item label="分类" prop="category_id">
-                <el-radio-group v-model.number="form.category_id">
-                  <el-radio-button
-                    v-for="item in categoryOptions"
-                    :key="item.index"
-                    :label="item.value">{{ item.label }}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="form.title" :maxlength="30" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="角色" prop="title">
+                <el-radio v-model="form.son_type" :label="1" @change="updateRadio">客户</el-radio>
+                <el-radio v-model="form.son_type" :label="2" @change="updateRadio">设计服务商</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="分类" prop="category_id">
+          <el-radio-group v-model.number="form.category_id">
+            <el-radio-button
+              v-for="item in categoryOptions"
+              :key="item.index"
+              :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
 
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="排序值" prop="sort">
-                    <el-input v-model="form.sort" :maxlength="5" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="排序值" prop="sort">
+              <el-input v-model="form.sort" :maxlength="5" placeholder=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-              <el-form-item label="简述" prop="intro">
-                <el-input
-                  type="textarea"
-                  :rows="3"
-                  :maxlength="130"
-                  placeholder="用于搜索展示"
-                  v-model="form.intro">
-                </el-input>
-              </el-form-item>
+        <el-form-item label="简述" prop="intro">
+          <el-input
+            type="textarea"
+            :rows="3"
+            :maxlength="130"
+            placeholder="用于搜索展示"
+            v-model="form.intro">
+          </el-input>
+        </el-form-item>
 
-              <el-form-item label="内容" prop="content">
-                <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
-              </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <mavon-editor ref="mavonEditor" :ishljs="false" v-model="form.content" id="editor" @imgAdd="$imgAdd" @imgDel="$imgDel" ></mavon-editor>
+        </el-form-item>
 
-              <div class="form-btn fr">
-                  <el-button @click="returnList" class="cancel">取消</el-button>
-                  <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
-              </div>
-              <div class="clear"></div>
-            </el-form>
-
-          </div>
+        <div class="form-btn fr">
+            <el-button @click="returnList" class="cancel">取消</el-button>
+            <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
         </div>
-      </el-col>
-    </el-row>
+        <div class="clear"></div>
+      </el-form>
+
+    </div>
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import axios from 'axios'
 export default {
   name: 'admin_content_submit',
   components: {
-    vMenu,
     mavonEditor
   },
   data() {
