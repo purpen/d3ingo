@@ -170,7 +170,7 @@
             <el-menu-item index="adminPotentialUserList1" :route="{name: 'adminPotentialUserList', params: {type: 1}}">商机</el-menu-item>
             <el-menu-item index="adminPotentialUserList2" :route="{name: 'adminPotentialUserList', params: {type: 2}}">潜在客户</el-menu-item>
             <el-menu-item index="adminPotentialUserList3" :route="{name: 'adminPotentialUserList', params: {type: 3}}">客户</el-menu-item>
-            <el-menu-item index="adminPotentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">回收站</el-menu-item>
+            <el-menu-item index="adminPotentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">无效客户</el-menu-item>
             <el-menu-item index="adminCustomerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
             <el-menu-item index="adminPotentialAnalyze" :route="{name: 'adminPotentialAnalyze'}">商机分析</el-menu-item>
           </el-submenu>
