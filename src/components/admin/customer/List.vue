@@ -354,17 +354,17 @@
         @row-click="getLookUserInfo">
         <el-table-column
           type="selection"
-          width="40">
+          min-width="40">
         </el-table-column>
         <el-table-column
           prop="name"
           label="姓名"
-          width="80"
+          min-width="80"
           >
         </el-table-column>
         <el-table-column
           label="状态"
-          width="100"
+          min-width="100"
           prop="call_status_value"
           :filters="statusList"
           column-key="call_status_value"
@@ -382,7 +382,7 @@
         </el-table-column>
         <el-table-column
           label="客户级别"
-          width="100"
+          min-width="100"
           prop="rank"
           :filters="[
             {text: '一级', value: '1' },
@@ -404,7 +404,7 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="120px"
+          min-width="120px"
           label="来源渠道"
           :render-header="renderHeader"
           >
@@ -483,10 +483,11 @@
           label="创建时间"
           v-if="typeId !== 4"
           key="created_at1"
+          min-width="120"
           >
         </el-table-column>
         <el-table-column
-          width="129"
+          min-width="129"
           prop="execute_user_name"
           label="商机所有人"
           :filters="userIds"
@@ -505,6 +506,7 @@
         <el-table-column
           v-if="typeId !== 4"
           label="最后跟进日"
+          min-width="120"
           >
           <template slot-scope="scope">
             <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time}}</p>
@@ -526,13 +528,14 @@
           prop="invalid_time"
           label="删除时间"
           key="invalidTime"
+          min-width="120"
           >
         </el-table-column>
         <el-table-column
           v-if="typeId&&typeId === 4"
           prop="label_cause"
           label="删除原因"
-          width="120px"
+          min-width="120"
           key="labelCause"
           >
           <template slot-scope="scope">
@@ -1759,6 +1762,7 @@ export default {
     // 清空下面的筛选
     emptySearch() {
       this.$refs.tableData.clearFilter()
+      this.selectedOptions2 = []
       this['query' + this.typeId].son_status = ''
       this['query' + this.typeId].new_call_status = ''
       this['query' + this.typeId].rank = ''
@@ -1899,9 +1903,12 @@ export default {
           let ids = []
           this.tableData.forEach(item => {
             if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd hh:mm:ss')
+              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd hh:mm')
             }
-            item.created_at = item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
+            if (item.end_time) {
+              item.end_time = item.end_time.date_format().format('yyyy-MM-dd hh:mm')
+            }
             if (item.id) {
               ids.push(item.id)
             }
