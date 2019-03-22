@@ -978,7 +978,7 @@
             }
             this.btn3 = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
@@ -1010,7 +1010,7 @@
             }
             this.isLoadingBtn = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
@@ -1045,7 +1045,7 @@
             }
             this.appBtn = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
@@ -1079,7 +1079,7 @@
             }
             this.appBtn2 = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')

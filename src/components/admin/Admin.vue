@@ -758,8 +758,8 @@
     display: block
   }
   .menu-header .icon.active span {
-    top: 20px;
-    right: 20px;
+    top: 24px;
+    right: 22px;
   }
   .mine {
     font-size: 16px;
