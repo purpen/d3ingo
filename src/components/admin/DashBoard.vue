@@ -300,7 +300,8 @@
         option: {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
+            formatter: '{a} <br/>{b}: {c} ({d}%)',
+            enterable: true
           },
           legend: {
             bottom: 0,
@@ -450,11 +451,11 @@
                 item.name = '平面设计'
                 break
               }
-              case 4: {
+              case 5: {
                 item.name = '包装设计'
                 break
               }
-              case 5: {
+              case 6: {
                 item.name = '插画设计'
                 break
               }
