@@ -708,7 +708,7 @@
             <el-col class="mg-b-10">
               <el-form-item label="来源渠道" prop="fromOptions">
                 <el-cascader
-                  :options="options"
+                  :options="options2"
                   v-model="selectedOptions"
                   @change="handleChange">
                 </el-cascader>
@@ -780,6 +780,7 @@ export default {
   },
   data() {
     return {
+      selectedOptions2: [], // 筛选来源2
       statusList: [], // 筛选状态数组
       assignUser: {},
       userIds: [], // 筛选所有人数组
@@ -814,6 +815,157 @@ export default {
         son_source: '' // 子来源
       },
       options: [
+        {
+          value: -1,
+          label: '全部渠道'
+        },
+        {
+          value: 1,
+          label: '网络广告',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '百度'
+            },
+            {
+              value: 'b',
+              label: '360'
+            },
+            {
+              value: 'c',
+              label: '知乎'
+            },
+            {
+              value: 'd',
+              label: '今日头条'
+            }]
+        },
+        {
+          value: 2,
+          label: '官方',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: 'Pc/Wap官网'
+            },
+            {
+              value: 'b',
+              label: '小程序'
+            },
+            {
+              value: 'c',
+              label: 'App'
+            }]
+        },
+        {
+          value: 3,
+          label: '合作伙伴',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '京东'
+            },
+            {
+              value: 'b',
+              label: '优客工场'
+            }]
+        },
+        {
+          value: 4,
+          label: '内部推荐',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '雷总/公司员工推荐的熟人客户'
+            }
+          ]
+        },
+        {
+          value: 5,
+          label: '外部推荐',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '朋友/其他公司推荐的客户'
+            }
+          ]
+        },
+        {
+          value: 6,
+          label: '新媒体',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '微信公众号'
+            },
+            {
+              value: 'b',
+              label: '头条号'
+            },
+            {
+              value: 'c',
+              label: '百家号'
+            }
+          ]
+        },
+        {
+          value: 7,
+          label: '展销会',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '参展'
+            },
+            {
+              value: 'b',
+              label: '业界活动、论坛'
+            }
+          ]
+        },
+        {
+          value: 0,
+          label: '其他',
+          children: [
+            {
+              value: '0',
+              label: '全部子来源'
+            },
+            {
+              value: 'a',
+              label: '无法归类的小群体'
+            }
+          ]
+        }
+      ],
+      options2: [
         {
           value: 1,
           label: '网络广告',
@@ -1221,11 +1373,8 @@ export default {
   },
   methods: {
     renderHeader(h, { column, $index }, index) {
-      return (<span>
-        来源渠道
-        <span class="el-table__column-filter-trigger">
-         <i class="el-icon-arrow-down"></i>
-        </span>
+      return (<span class="header-box">
+        <el-cascader options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1274,6 +1423,21 @@ export default {
           }
         }
       })
+    },
+    renderChange(val) {
+      if (val.length) {
+        if (val[0] === -1) {
+          this['query' + this.typeId].new_source = ''
+          this['query' + this.typeId].son_source = ''
+        } else {
+          this['query' + this.typeId].new_source = val[0]
+          this['query' + this.typeId].son_source = val[1]
+          if (val[1] === '0') {
+            this['query' + this.typeId].son_source = ''
+          }
+        }
+        this.getClueList()
+      }
     },
     resetAll() {
       this['query' + this.typeId] = {
@@ -2711,5 +2875,38 @@ export default {
 }
 .el-table__column-filter-trigger {
   margin-left: 5px;
+}
+.options-trigger .el-input__inner {
+  background-color: #f7f7f7;
+  width: 67px;
+  padding: 0px 15px 0px 0px;
+  border: none;
+  font-size: 12px;
+}
+.options-trigger input::input-placeholder {
+  color: #222;
+}
+.options-trigger, .options-trigger .el-cascader__label, .options-trigger .el-input__icon {
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  padding-left: 0px;
+  color: #222;
+}
+.header-box {
+  display: block;
+  height: 40px;
+}
+.options-trigger .el-input__inner::-webkit-input-placeholder { /* WebKit browsers */
+    color: #222!important;
+}
+.options-trigger .el-input__inner:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #999!important;
+}
+.options-trigger .el-input__inner::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #222!important;
+}
+.options-trigger .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #222!important;
 }
 </style>

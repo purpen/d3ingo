@@ -1093,6 +1093,15 @@
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
   }
+  .options-trigger .el-input__inner:focus {
+    border: none;
+  }
+  .options-trigger .el-input--suffix .el-input__inner {
+    padding-right: 15px
+  }
+  .options-trigger .el-input--suffix {
+    padding-left:0px;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
