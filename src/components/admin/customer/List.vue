@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <div class="edit-header" v-show="isCheck">
+      <div class="edit-header" v-if="isCheck">
         <div class="check-all">
           已选中 {{multipleSelection.length}} 条
           <i class="el-icon-close fz-16" @click="downCheck"></i>
@@ -416,6 +416,8 @@
                 <span v-if="scope.row.son_source === 'b'">360</span>
                 <span v-if="scope.row.son_source === 'c'">知乎</span>
                 <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                <span v-if="scope.row.son_source === 'edm'">邮件</span>
+                <span v-if="scope.row.son_source === 'sms'">短信</span>
                 <span v-if="!scope.row.son_source">网络广告</span>
               </div>
               <div v-else-if="scope.row.new_source === 2" class="fz-14 tc-3">
@@ -423,6 +425,9 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-if="scope.row.son_source === 'c'">App</span>
+                <span v-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
+                <span v-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
+                <span v-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
                 <span v-if="!scope.row.son_source">官方</span>
               </div>
               <div v-else-if="scope.row.new_source === 3" class="fz-14 tc-3">
@@ -448,6 +453,8 @@
                 <span v-if="scope.row.son_source === 'a'">微信公众号</span>
                 <span v-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-if="scope.row.son_source === 'c'">百家号</span>
+                <span v-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
+                
                 <span v-if="!scope.row.son_source">新媒体</span>
               </div>
               <div v-else-if="scope.row.new_source === 7" class="fz-14 tc-3">
@@ -789,6 +796,7 @@ export default {
   },
   data() {
     return {
+      isFirst: false,
       selectedOptions2: [], // 筛选来源2
       statusList: [], // 筛选状态数组
       assignUser: {},
@@ -1548,6 +1556,7 @@ export default {
           this['query' + this.typeId].phone = ''
           this['query' + this.typeId].number = this.isSearch.value
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
     },
@@ -1576,8 +1585,12 @@ export default {
         })
         return
       }
-      if (!this.clientForm.new_source || !this.clientForm.son_source) {
+      if ((!this.clientForm.new_source || !this.clientForm.son_source) && this.clientForm.new_source !== 0) {
         this.$message.error('请选择来源渠道和子来源渠道')
+        return
+      }
+      if (!this.clientForm.rank) {
+        this.$message.error('请至少选择一级客户级别')
         return
       }
       this.boolCreateUser = true
@@ -1689,6 +1702,7 @@ export default {
         } else {
           this['query' + this.typeId].rank = ''
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       if (value.call_status_value) {
@@ -1705,6 +1719,7 @@ export default {
             this['query' + this.typeId].new_call_status = ''
           }
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       if (value.execute_user_name) {
@@ -1713,6 +1728,7 @@ export default {
         } else {
           this['query' + this.typeId].execute_user_id = ''
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       // let value = Object.values(row).toString()
@@ -1756,6 +1772,10 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
+      if (this.isFirst) {
+        this.isFirst = false
+        return
+      }
       this.multipleSelection = val
       this.isCheck = true
     },
@@ -2301,11 +2321,11 @@ export default {
         search: '',
         valueDate: []
       }
-      this.isCheck = false
       this.isSearch = {
         label: 1,
         value: ''
       }
+      this.multipleSelection = []
       if (this.typeId) {
         if (this.typeId === 1) {
           this.statusList = [
@@ -2380,7 +2400,9 @@ export default {
           ]
         }
       }
+      this.isFirst = true
       this.$refs.tableData.clearFilter()
+      this.isCheck = false
       this.getClueList()
     }
   }
