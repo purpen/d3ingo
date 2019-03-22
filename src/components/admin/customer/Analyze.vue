@@ -8,7 +8,7 @@
               <h2 class="sub-title">今日商机</h2>
               <div class="sub-item clearfix flex bb-e6">
                 <p class="count-number flex1">{{BusinessOpportunity.today}}</p>
-                <p v-if="Number(BusinessOpportunityRateDay) > 100" class="index va-bottom tc-red">
+                <p v-if="Number(BusinessOpportunityRateDay) > 0" class="index va-bottom tc-red">
                   <span>⬆</span>{{BusinessOpportunityRateDay}}%
                 </p>
                 <div v-else>
@@ -16,7 +16,7 @@
                     <span>—</span> {{BusinessOpportunityRateDay}}%
                   </p>
                   <p v-else class="index va-bottom tc-green">
-                    <span>⬇</span>{{BusinessOpportunityRateDay}}%
+                    <span>⬇</span>{{Math.abs(BusinessOpportunityRateDay)}}%
                   </p>
                 </div>
               </div>
@@ -30,7 +30,7 @@
               <h2 class="sub-title">本周商机</h2>
               <div class="sub-item clearfix flex bb-e6">
                 <p class="count-number flex1">{{BusinessOpportunity.this_week}}</p>
-                <p v-if="Number(BusinessOpportunityRateWeek) > 100" class="index va-bottom tc-red">
+                <p v-if="Number(BusinessOpportunityRateWeek) > 0" class="index va-bottom tc-red">
                   <span>⬆</span>{{BusinessOpportunityRateWeek}}%
                 </p>
                 <div v-else>
@@ -38,7 +38,7 @@
                     <span>—</span> {{BusinessOpportunityRateWeek}}%
                   </p>
                   <p v-else class="index va-bottom tc-green">
-                    <span>⬇</span>{{BusinessOpportunityRateWeek}}%
+                    <span>⬇</span>{{Math.abs(BusinessOpportunityRateWeek)}}%
                   </p>
                 </div>
               </div>
@@ -595,7 +595,7 @@
       BusinessOpportunityRateDay() {
         if (this.BusinessOpportunity.today) {
           let r = this.BusinessOpportunity.today - this.BusinessOpportunity.yesterday
-          return (Math.abs(r / this.BusinessOpportunity.yesterday) * 100).toFixed(2)
+          return ((r / this.BusinessOpportunity.yesterday) * 100).toFixed(2)
         } else {
           return 0
         }
@@ -603,7 +603,7 @@
       BusinessOpportunityRateWeek() {
         if (this.BusinessOpportunity.this_week) {
           let r = this.BusinessOpportunity.this_week - this.BusinessOpportunity.last_week
-          return (Math.abs(r / this.BusinessOpportunity.last_week) * 100).toFixed(2)
+          return ((r / this.BusinessOpportunity.last_week) * 100).toFixed(2)
         } else {
           return 0
         }
@@ -871,5 +871,8 @@
     text-align: right;
     font-size: 12px;
     width: 60px;
+  }
+  .full-height {
+    height: 100%
   }
 </style>
