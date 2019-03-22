@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query1.search_val" @change="getClueList">
+          <el-select v-model="query1.search_val" @change="emptySearch">
             <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
             </el-option>
           </el-select>
@@ -139,7 +139,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query2.search_val" @change="getClueList">
+          <el-select v-model="query2.search_val" @change="emptySearch">
             <el-option v-for="l in optionLatent" :key="l.value" :label="l.label" :value="l.value">
             </el-option>
           </el-select>
@@ -201,7 +201,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query3.search_val" @change="getClueList">
+          <el-select v-model="query3.search_val" @change="emptySearch">
             <el-option v-for="l in optionClient" :key="l.value" :label="l.label" :value="l.value">
             </el-option>
           </el-select>
@@ -467,8 +467,7 @@
         <el-table-column
           prop="created_at"
           label="创建时间"
-          column-key="created_at"
-          v-if="typeId !== 4"
+          v-show="typeId !== 4"
           >
         </el-table-column>
         <el-table-column
@@ -1428,7 +1427,7 @@ export default {
   methods: {
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1498,8 +1497,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1515,7 +1514,7 @@ export default {
       }
       this.isSearch = {
         value: '',
-        label: ''
+        label: 1
       }
       this.isEdits = false
       this.getClueList()
@@ -1724,6 +1723,15 @@ export default {
       // }
       // this['query' + this.typeId].page = 1
       // this.getClueList()
+    },
+    // 清空下面的筛选
+    emptySearch() {
+      this.$refs.tableData.clearFilter()
+      this['query' + this.typeId].son_status = ''
+      this['query' + this.typeId].new_call_status = ''
+      this['query' + this.typeId].rank = ''
+      this['query' + this.typeId].execute_user_id = ''
+      this.getClueList()
     },
     // 取消多选操作
     downCheck() {
@@ -2034,7 +2042,8 @@ export default {
     },
     handleCurrentChange(val) {
       this['query' + this.typeId].page = parseInt(val)
-      this.$router.push({ name: this.$route.name, query: {page: this['query' + this.typeId].page} })
+      this.getClueList()
+      // this.$router.push({ name: this.$route.name, query: {page: this['query' + this.typeId].page} })
     },
     exportForm(type) { // 导出
       // if (this.multipleSelection.length === 0) {
@@ -2355,6 +2364,7 @@ export default {
           ]
         }
       }
+      this.$refs.tableData.clearFilter()
       this.getClueList()
     }
   }
@@ -2952,6 +2962,19 @@ export default {
     color: #222!important;
 }
 .options-trigger .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: #222!important;
+  color: #222!important;
 }
+.options-trigger .el-input__icon {
+  color: #65A6FF;
+  font-size: 12px;
+  -webkit-transform: scale(0.70);
+  transform: scale(0.70);
+}
+</style>
+
+<style>
+ .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
+   background-color: #f7f7f7;
+   color: #666;
+ }
 </style>
