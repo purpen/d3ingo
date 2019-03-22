@@ -72,7 +72,7 @@
             </el-select>
           </div>
           <div class="search-input">
-            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value" @keyup.enter="updateSort">
             </el-input>
             <i class="icon-search" @click="updateSort"></i>
           </div>
@@ -129,12 +129,11 @@
           <div class="search-select">
             <el-select v-model="isSearch.label" placeholder="请选择">
               <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
-
               </el-option>
             </el-select>
           </div>
           <div class="search-input">
-            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value" @keyup.enter="updateSort">
             </el-input>
             <i class="icon-search" @click="updateSort"></i>
           </div>
@@ -196,7 +195,7 @@
             </el-select>
           </div>
           <div class="search-input">
-            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value" @keyup.enter="updateSort">
             </el-input>
             <i class="icon-search" @click="updateSort"></i>
           </div>
@@ -257,7 +256,7 @@
             </el-select>
           </div>
           <div class="search-input">
-            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value" @keyup.enter="updateSort">
             </el-input>
             <i class="icon-search" @click="updateSort"></i>
           </div>
@@ -467,7 +466,10 @@
         </el-table-column>
         <el-table-column
           prop="created_at"
-          label="创建时间">
+          label="创建时间"
+          column-key="created_at"
+          v-if="typeId !== 4"
+          >
         </el-table-column>
         <el-table-column
           width="129"
@@ -2240,7 +2242,7 @@ export default {
       return this.$store.state.event.user.role_id
     },
     isHasPower() { // 是否有权限编辑
-      if (this.isAdmin >= 15) {
+      if (this.isAdmin === 12) {
         return true
       } else {
         return false
