@@ -1147,6 +1147,7 @@
 .height30-datepicker.el-input__inner {
   height: 30px;
   line-height: 30px;
+  width: 235px
 }
 .height30-datepicker.el-date-editor .el-range__icon,
 .height30-datepicker.el-date-editor .el-range-separator,

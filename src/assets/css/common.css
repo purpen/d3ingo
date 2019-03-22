@@ -263,6 +263,12 @@
 .pointer {
   cursor: pointer;
 }
+.text-overflow {
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* 发布需求 */
 .project-cover {
   position: relative;
