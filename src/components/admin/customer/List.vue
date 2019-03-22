@@ -359,10 +359,12 @@
         <el-table-column
           prop="name"
           label="姓名"
+          width="80"
           >
         </el-table-column>
         <el-table-column
           label="状态"
+          width="100"
           prop="call_status_value"
           :filters="statusList"
           column-key="call_status_value"
@@ -380,6 +382,7 @@
         </el-table-column>
         <el-table-column
           label="客户级别"
+          width="100"
           prop="rank"
           :filters="[
             {text: '一级', value: '1' },
@@ -401,7 +404,7 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="150px"
+          width="120px"
           label="来源渠道"
           :render-header="renderHeader"
           >
@@ -471,7 +474,8 @@
         <el-table-column
           prop="created_at"
           label="创建时间"
-          v-show="typeId !== 4"
+          v-if="typeId !== 4"
+          key="created_at1"
           >
         </el-table-column>
         <el-table-column
@@ -496,7 +500,7 @@
           label="最后跟进日"
           >
           <template slot-scope="scope">
-            <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time.slice(0, 10)}}</p>
+            <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time}}</p>
           </template>
         </el-table-column>
         <el-table-column
@@ -1875,9 +1879,9 @@ export default {
           let ids = []
           this.tableData.forEach(item => {
             if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd hh:mm:ss')
             }
-            item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
             if (item.id) {
               ids.push(item.id)
             }
