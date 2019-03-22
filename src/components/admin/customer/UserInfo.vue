@@ -452,7 +452,7 @@
           </div>
 
           <div v-if="option1 === 'log'">
-            <div class="padding20">
+            <div class="padding20 bb-e6">
               <div class="progress">
                 <el-input type="textarea"
                   placeholder="记录你与客户沟通的情况"
@@ -492,32 +492,30 @@
             </div>
 
             <div>
-              <ul class="padding-l20">
-                <li v-for="(item, i) in followLogList" :key="i" class="log-li">
-                  <p>
-                    <i class="fx fx-icon-sound-loudly"></i>
+              <ul class="padding-l20  tc-6">
+                <li v-for="(item, i) in activeLogList" :key="i" class="log-li">
+                  <p :class="{'phone': item.type === 1, 'wx': item.type === 2}">
                     <span v-if="item.type === 1" class="fz-12">电话</span>
                     <span v-if="item.type === 2" class="fz-12">微信</span>
                     <span class="fz-12 fr">{{item.date}}</span>
                   </p>
                   <p class="margin-t8 padding-l20">
-                    <span>{{item.log}}</span>
+                    <span class="line-height1_4 tc-2">{{item.log}}</span>
                     <span class="name fz-12 fr">{{item.execute_user_name || ''}}</span>
                   </p>
                 </li>
               </ul>
             </div>
-            <div>
+            <div class="padding-l20  tc-6">
               <p class="event-title bb-e6">事件</p>
-              <ul class="padding-l20 bb-e6">
+              <ul class="bb-e6">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
                   <p>
-                    <i class="fx fx-icon-sound-loudly"></i>
                     <span class="fz-12">系统通知</span>
                     <span class="fz-12 fr">{{item.date}}</span>
                   </p>
                   <p class="margin-t8 padding-l20">
-                    <span>{{item.log}}</span>
+                    <span class="line-height1_4 tc-2">{{item.log}}</span>
                     <span class="name fz-12 fr">{{item.execute_user_name || ''}}</span>
                   </p>
                 </li>
@@ -553,7 +551,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="负责人" prop="execute_user_id">
-              <el-select v-model="clientForm.execute_user_id"  :disabled="isAdmin<15">
+              <el-select v-model="clientForm.execute_user_id" :disabled="!isHasPower">
                 <el-option
                   v-for="(item, index) in adminVoIpList"
                   :key="index"
@@ -1291,7 +1289,6 @@ export default {
       followTime: '',
       editFollowTime: '',
       followLogList: [],
-      eventLogList: [],
       logStstus: '',
       logId: '',
       boolEditLog: false,
@@ -1934,14 +1931,9 @@ export default {
       this.$http.get(api.adminClueShowTrackLog, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.followLogList = res.data.data
-          let event = []
           this.followLogList.forEach(item => {
             item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
-            if (item.type === 0) {
-              event.push(item)
-            }
           })
-          this.eventLogList = event
           this.userLogLoading = false
         } else {
           this.$message.error(res.data.meta.message)
@@ -2262,6 +2254,16 @@ export default {
       console.log(this.userForm.created_at)
       console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
       return this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10)
+    },
+    activeLogList() {
+      return this.followLogList.filter(d => {
+        return d.type === 1 || d.type === 2
+      })
+    },
+    eventLogList() {
+      return this.followLogList.filter(d => {
+        return d.type === 0
+      })
     }
   },
   watch: {
@@ -3006,7 +3008,17 @@ export default {
   padding: 10px 20px 10px 0;
   /* background-color: #FAFAFA; */
   margin-top: 10px;
-  border-bottom: 1px solid #e6e6e6;
+  /* border-bottom: 1px solid #e6e6e6; */
+}
+.log-li > p:first-child {
+  padding-left: 20px;
+  background: url(../../../assets/images/crm/SystemMessage@2x.png) no-repeat left/16px;
+}
+.log-li > p.wx {
+  background: url(../../../assets/images/crm/wx.png) no-repeat left/16px;
+}
+.log-li > p.phone {
+  background: url(../../../assets/images/crm/Telephone@2x.png) no-repeat left/16px;
 }
 .log-li-top {
   position: relative;
