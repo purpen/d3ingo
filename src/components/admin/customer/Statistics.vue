@@ -2038,12 +2038,17 @@ export default {
                 'b': '360',
                 'c': '知乎',
                 'd': '今日头条',
+                'edm': '邮件',
+                'sms': '短信',
                 'name': '网络广告'
               },
               official: {
                 'a': 'Pc/Wap官网',
                 'b': '小程序',
                 'c': 'App',
+                'topic_view_h': '文章详情头部',
+                'topic_view_f': '文章详情底部',
+                'topic_view_r': '文章详情右侧',
                 'name': '官方'
               },
               cooperation: {
@@ -2063,6 +2068,7 @@ export default {
                 'a': '微信公众号',
                 'b': '头条号',
                 'c': '百家号',
+                'toutiao_ad': '头条文章广告位',
                 'name': '新媒体'
               },
               exhibition: {
@@ -2096,7 +2102,7 @@ export default {
                 return radius1 + ret.name + ': ' + ret['a']
               } else {
                 for (let p in ret) {
-                  if (p.length === 1 && ret[p] !== 0) {
+                  if ((p.length === 1 || p === 'edm' || p === 'sms' || p === 'topic_view_h' || p === 'topic_view_f' || p === 'topic_view_r' || p === 'toutiao_ad') && ret[p] !== 0) {
                     par += radius1 + ret[p + '_name'] + ': ' + ret[p] + '<br />'
                   }
                 }
