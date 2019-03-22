@@ -679,55 +679,6 @@
         </div>
       </div>
     </div>
-    <div class="chart">
-      <div class="chart-header">
-        <div class="chart-title">
-          落地页点击统计列表
-        </div>
-      </div>
-      <div class="promotion">
-        <el-table
-          :data="tableData4"
-          style="width: 100%">
-          <el-table-column
-            prop="new_from_value"
-            label="来源"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="son_source_value"
-            label="子来源">
-          </el-table-column>
-          <el-table-column
-            prop="url"
-            width="285"
-            label="来源链接"
-            >
-          </el-table-column>
-          <!-- <el-table-column
-            prop="device"
-            label="设备">
-          </el-table-column> -->
-          <el-table-column
-            prop="app_count"
-            label="app数量"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="pc_count"
-            label="pc端数量">
-          </el-table-column>
-          <el-table-column
-            prop="wap_count"
-            label="移动端数量">
-          </el-table-column>
-          <el-table-column
-            prop="total_count"
-            label="总数">
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
   </div>
 </template>
 
