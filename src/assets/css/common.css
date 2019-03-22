@@ -79,7 +79,7 @@
   color: #20AD1E
 }
 .tc-hover-red:hover {
-  color: #ff5a5f
+  color: #ff5a5f !important;
 }
 .tc-blue {
   color: #0989C5
