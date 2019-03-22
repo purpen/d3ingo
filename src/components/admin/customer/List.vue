@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query1.search_val" @change="getClueList">
+          <el-select v-model="query1.search_val" @change="emptySearch">
             <el-option v-for="bus in optionBusiness" :key="bus.value" :label="bus.label" :value="bus.value">
             </el-option>
           </el-select>
@@ -139,7 +139,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query2.search_val" @change="getClueList">
+          <el-select v-model="query2.search_val" @change="emptySearch">
             <el-option v-for="l in optionLatent" :key="l.value" :label="l.label" :value="l.value">
             </el-option>
           </el-select>
@@ -201,7 +201,7 @@
           </div>
         </div>
         <div class="select-business">
-          <el-select v-model="query3.search_val" @change="getClueList">
+          <el-select v-model="query3.search_val" @change="emptySearch">
             <el-option v-for="l in optionClient" :key="l.value" :label="l.label" :value="l.value">
             </el-option>
           </el-select>
@@ -415,48 +415,52 @@
                 <span v-if="scope.row.son_source === 'd'">今日头条</span>
                 <span v-if="!scope.row.son_source">网络广告</span>
               </div>
-              <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 2" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">官方</p>
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-if="scope.row.son_source === 'c'">App</span>
                 <span v-if="!scope.row.son_source">官方</span>
               </div>
-              <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 3" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">合作伙伴</p>
                 <span v-if="scope.row.son_source === 'a'">京东</span>
                 <span v-if="scope.row.son_source === 'b'">优客工场</span>
                 <span v-if="!scope.row.son_source">合作伙伴</span>
               </div>
-              <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 4" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">内部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">雷总/公司员工推...</span>
                 <!-- 雷总/公司员工推荐的熟人客户 -->
                 <span v-if="!scope.row.son_source">内部推荐</span>
               </div>
-              <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 5" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">外部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">朋友/其他公司推...</span>
                 <!-- 朋友/其他公司推荐的客户 -->
                 <span v-if="!scope.row.son_source">外部推荐</span>
               </div>
-              <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 6" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">新媒体</p>
                 <span v-if="scope.row.son_source === 'a'">微信公众号</span>
                 <span v-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-if="scope.row.son_source === 'c'">百家号</span>
                 <span v-if="!scope.row.son_source">新媒体</span>
               </div>
-              <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 7" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">展销会</p>
                 <span v-if="scope.row.son_source === 'a'">参展</span>
                 <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
                 <span v-if="!scope.row.son_source">展销会</span>
               </div>
-              <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 0" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">其他</p>
                 <span v-if="scope.row.son_source === 'a'">无法归类的小群体</span>
                 <span v-if="!scope.row.son_source">其他</span>
+              </div>
+              <div v-else>
+                <p class="fz-12 tc-6">&nbsp;</p>
+                <span>&nbsp;</span>
               </div>
             </div>
             <div v-else>
@@ -467,8 +471,7 @@
         <el-table-column
           prop="created_at"
           label="创建时间"
-          column-key="created_at"
-          v-if="typeId !== 4"
+          v-show="typeId !== 4"
           >
         </el-table-column>
         <el-table-column
@@ -1428,7 +1431,7 @@ export default {
   methods: {
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1498,8 +1501,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1515,7 +1518,7 @@ export default {
       }
       this.isSearch = {
         value: '',
-        label: ''
+        label: 1
       }
       this.isEdits = false
       this.getClueList()
@@ -1644,6 +1647,9 @@ export default {
       //   }
       // }
       let callStatus = row.new_call_status - 0
+      if (this.typeId === 4) {
+        return
+      }
       if (callStatus < 9) {
         return 'over-date'
       } else if (callStatus === 10 || callStatus === 9) {
@@ -1724,6 +1730,15 @@ export default {
       // }
       // this['query' + this.typeId].page = 1
       // this.getClueList()
+    },
+    // 清空下面的筛选
+    emptySearch() {
+      this.$refs.tableData.clearFilter()
+      this['query' + this.typeId].son_status = ''
+      this['query' + this.typeId].new_call_status = ''
+      this['query' + this.typeId].rank = ''
+      this['query' + this.typeId].execute_user_id = ''
+      this.getClueList()
     },
     // 取消多选操作
     downCheck() {
@@ -2034,7 +2049,8 @@ export default {
     },
     handleCurrentChange(val) {
       this['query' + this.typeId].page = parseInt(val)
-      this.$router.push({ name: this.$route.name, query: {page: this['query' + this.typeId].page} })
+      this.getClueList()
+      // this.$router.push({ name: this.$route.name, query: {page: this['query' + this.typeId].page} })
     },
     exportForm(type) { // 导出
       // if (this.multipleSelection.length === 0) {
@@ -2355,6 +2371,7 @@ export default {
           ]
         }
       }
+      this.$refs.tableData.clearFilter()
       this.getClueList()
     }
   }
@@ -2952,6 +2969,13 @@ export default {
     color: #222!important;
 }
 .options-trigger .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: #222!important;
+  color: #222!important;
+}
+.options-trigger .el-input__icon {
+  color: #65A6FF;
+  font-size: 12px;
+  -webkit-transform: scale(0.70);
+  transform: scale(0.70);
 }
 </style>
+

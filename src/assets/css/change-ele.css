@@ -1102,6 +1102,14 @@
   .options-trigger .el-input--suffix {
     padding-left:0px;
   }
+  .options-trigger .el-icon-arrow-down.is-reverse {
+    -webkit-transform: scale(0.70);
+    transform: scale(0.70);
+  }
+  .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
+    background-color: #f7f7f7;
+    color: #666;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

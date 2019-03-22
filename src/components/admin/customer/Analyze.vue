@@ -629,6 +629,7 @@
               // let device = ['', 'pc端', '移动端', 'app']
               response.data.data.forEach(item => {
                 item.new_from = from[item.new_from]
+                item.son_source_value = item.son_source_value || item.son_source
                 // item.device = device[item.device]
               })
             }
