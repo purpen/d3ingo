@@ -1,7 +1,7 @@
 <template>
   <div class="user-contant">
     <div class="head-content">
-          <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList'})"></i>
+          <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
             <i class="border-t10 fx fx-icon-nothing-right tc-hover-red" @click="getNextUser"></i>
@@ -33,7 +33,7 @@
 
         </div>
         <div class="margin-l20 head-c-content">
-          <el-row>
+          <el-row :gutter="10">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">电话</span>
@@ -169,7 +169,6 @@
                       <h5 class="project-name fl">{{item.name}}</h5>
                       <div class="edit-project fr">
                         <div class="edit-project-tag" v-if="isHasPower">
-                          <p @click="markProjectFailure(item.item_id)">标记为失败</p>
                           <p @click="editProject(item)">编辑项目</p>
                         </div>
                       </div>
@@ -232,10 +231,10 @@
                     <el-col :md="6" :lg="6">
                       <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
                       <span v-if="!item.remarks && isHasPower" @click="editRemarks(item.item_id)" class="pointer">添加备注</span>
-                        <i @click="editRemarks(item.item_id)" v-if="isHasPower" class="el-icon-edit"></i>
+                        <i @click="editRemarks(item.item_id)" v-if="isHasPower" class="el-icon-edit pointer"></i>
                     </el-col>
                     <el-col :md="10" :lg="10" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <el-input v-model="item.remarks" size="small" placeholder="输入备注"></el-input>
+                      <el-input v-model="remarksValue" autofocus size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
                     </el-col>
                     <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
@@ -249,7 +248,8 @@
                       <span class="tc-9">创建人</span>
                     </el-col>
                     <el-col :md="16" :lg="16">
-                      <span>{{item.user_id_name}}</span>
+                      <span v-if="item.user_name">{{item.user_name}}</span>
+                      <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
                     </el-col>
                   </el-row>
                   <el-row>
@@ -257,7 +257,8 @@
                       <span class="tc-9">修改人</span>
                     </el-col>
                     <el-col :md="16" :lg="16">
-                      <span>{{item.update_user_name}}</span>
+                      <span class="item.update_user_name">{{item.update_user_name}}</span>
+                      <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
                     </el-col>
                   </el-row>
                   <!-- 对接设计公司 -->
@@ -275,7 +276,7 @@
                         <span class="padding-l10">{{d.company_name}}</span>
                         <div v-if="item.failure === null && isHasPower" class="edit-project fr">
                           <div class="edit-project-tag" v-if="isHasPower">
-                            <p @click="deleteDesignProject(d)">删除</p>
+                            <!-- <p @click="deleteDesignProject(d)">删除</p> -->
                             <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
                           </div>
                         </div>
@@ -301,7 +302,7 @@
                       <div class="design-li-footer">
                         <span>确认设计需求</span>
                         <span><i class="fx fx-icon-time"></i>2019-03-16</span>
-                        <span class="fr">查看进度</span>
+                        <span class="fr" @click="boolStage = true">查看进度</span>
                       </div>
                       <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
                     </li>
@@ -312,7 +313,7 @@
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
               <p class="text-center tc-2">客户备注</p>
-              <p class="text-center tc-6 line-height20">语雀是一款优雅高效的在线文档编辑与协同工具， 让每个企业轻松拥有文档中心阿里巴巴集团内部使用多年，众多中小企业首选。</p>
+              <p class="text-center tc-6 line-height20">{{clientList.summary}}</p>
             </div>
           </div>
 
@@ -437,7 +438,7 @@
                   <span class="tc-9">创建人</span>
                 </el-col>
                 <el-col :md="16" :lg="16">
-                  <span>{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
+                  <span v-if="clientList.user_id_name">{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
                 </el-col>
               </el-row>
               
@@ -454,11 +455,11 @@
         </div>
 
         <div class="contant-border user-log">
-          <div class="card-body-header">
+          <!-- <div class="card-body-header">
             <span @click="changeOption1('log')" class="">记录</span>
-            <!-- <span @click="changeOption1('event')" :class="{'active': option1 === 'event'}">事件</span> -->
-          </div>
-
+            <span @click="changeOption1('event')" :class="{'active': option1 === 'event'}">事件</span>
+          </div> -->
+          <p class="log-title">记录</p>
           <div v-if="option1 === 'log'">
             <div class="padding20 bb-e6">
               <div class="progress">
@@ -493,7 +494,7 @@
                   </div>
                   <div class="send margin-t10 clearfix">
                     <el-button class="fr" :disabled="!isHasPower" size="mini" :loading="boolFollowLog" type="primary" @click="sendProgressVal">保 存</el-button>
-                    <el-button class="fr" size="mini" @click="focusHeight = false">取 消</el-button>
+                    <el-button class="fr  margin-r-15" size="mini" @click="focusHeight = false, followVal = ''">取 消</el-button>
                   </div>
                 </div>
               </div>
@@ -516,7 +517,7 @@
             </div>
             <div class="padding-l20  tc-6">
               <p class="event-title bb-e6">事件</p>
-              <ul class="bb-e6">
+              <ul class="">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
                   <p>
                     <span class="fz-12">系统通知</span>
@@ -673,7 +674,7 @@
         </el-row>
       </el-form>
 
-      <span slot="footer" class="dialog-footer client-btn fz-0">
+      <span slot="footer" class="dialog-footer client-btn fz-0 flex-right">
         <el-button @click="BoolEditUserInfo = false">取 消</el-button>
         <el-button type="primary"  @click="updateUserinfo('ruleClientForm')">保 存</el-button>
       </span>
@@ -795,14 +796,14 @@
 
       </el-form>
       
-      <span v-if="boolAddProject" slot="footer" class="dialog-footer edit-design-btn fz-0">
+      <span v-if="boolAddProject" slot="footer" class="dialog-footer edit-design-btn fz-0 flex-right">
         <el-button @click="boolProject = false, boolAddProject = false">取 消</el-button>
-        <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">确 定</el-button>
+        <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保 存</el-button>
       </span>
-      <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix margin-b22 fz-0">
-        <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm')">保 存
+      <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
+        <el-button type="primary" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
-        <el-button class="fr margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
       </span>
     </el-dialog>
     
@@ -880,16 +881,24 @@
         </el-row>
 
       </el-form>
-      <span v-if="boolEditDesignCompany"  slot="footer" class="dialog-footer design-btn fz-0">
+      <span v-if="boolEditDesignCompany"  slot="footer" class="dialog-footer design-btn fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolEditDesignCompany = false, boolDesignCompany = false">取 消</el-button>
         <el-button type="primary" @click="submitEditDesignCompanyForm('ruleDesignCompanyForm')">保 存
         </el-button>
-        <el-button class="margin-r-15" @click="boolEditDesignCompany = false, boolDesignCompany = false">取 消</el-button>
       </span>
-      <span v-else slot="footer" class="dialog-footer design-btn fz-0">
+      <span v-else slot="footer" class="dialog-footer design-btn fz-0 flex-right">
         <el-button @click="boolDesignCompany = false">取 消</el-button>
-        <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">确 定</el-button>
+        <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保 存</el-button>
       </span>
     </el-dialog>
+
+    <!-- <el-dialog
+      title="对接进度"
+      :visible.sync="boolStage"
+      width="380px">
+    </el-dialog> -->
+
+
   </div>
 </template>
 
@@ -921,6 +930,7 @@ export default {
       boolProjectList: true,
       boolDesigeList: true,
       boolRemarks: false,
+      remarksValue: '',
       editRemarksId: '',
       dialogProjectTitle: '',
       selectedsource: [],
@@ -1375,7 +1385,9 @@ export default {
       ClueStatusRemarks: '', // 更改状态备注
       label_cause: '',
       boolClueStatus2: true, // 显示无效后者流失
-      isOpen: true
+      isOpen: true,
+
+      boolStage: false
     }
   },
   methods: {
@@ -1488,23 +1500,22 @@ export default {
     changeStatus() {
     },
     editClientUser() {
+      this.clientForm = {}
+      this.clientForm = JSON.parse(JSON.stringify(this.clientList))
       this.BoolEditUserInfo = true
-      const {province, city} = this.clientForm
-      this.clientForm.province = ''
-      this.clientForm.city = ''
+      const {province, city} = this.clientList
       this.$nextTick(_ => {
-        this.selectedsource = [this.clientForm.new_source, this.clientForm.son_source]
+        this.selectedsource = [this.clientList.new_source, this.clientList.son_source]
         this.clientForm.province = province
         this.clientForm.city = city
       })
-      console.log(this.clientForm)
     },
     getNextUser() { // 下一条
       if (this.currentId) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
-          this.$router.push({name: 'adminPotentialUserList'})
+          this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
         }
         if (index !== -1) {
@@ -1523,7 +1534,7 @@ export default {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
           this.$message.info('已经是第一条,返回列表页,获取最新数据')
-          this.$router.push({name: 'adminPotentialUserList'})
+          this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
         }
         if (index !== -1) {
@@ -1708,7 +1719,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
           this.boolCreateUser = false
-          this.$router.push({name: 'adminPotentialUserList'})
+          // this.$router.push({name: 'adminPotentialUserList', params: this.query})
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1736,10 +1747,12 @@ export default {
             return
           }
           if (!this.clientForm.new_source) {
-            this.$message.error('请选择一级来源')
-            return
+            if (this.clientForm.new_source !== 0) {
+              this.$message.error('请选择一级来源')
+              return
+            }
           }
-          if (!this.clientForm.new_source) {
+          if (!this.clientForm.son_source) {
             this.$message.error('请选择二级来源')
             return
           }
@@ -1751,6 +1764,7 @@ export default {
               this.$message.success('更新成功')
               this.BoolEditUserInfo = false
               this.getUserInfo()
+              this.getLogList()
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -1790,7 +1804,6 @@ export default {
             this.$message.error('请选择项目需求类边')
             return
           }
-          this.boolProject = false
           this.createProjectLoading = true
           let row = { // 传空字段
             summary: this.projectForm.summary || '',
@@ -1829,8 +1842,6 @@ export default {
           row.crm_item_id = this.currentProjectId
           const apiRequest = api.adminClueUpdateCrmItem
           this.saveProject(row, apiRequest)
-          this.boolProject = false
-          this.boolEditProject = false
         }
       })
     },
@@ -1838,10 +1849,14 @@ export default {
       this.$http.post(request, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getUserProject()
-          // this.getUserInfo()
           this.boolAddProject = false
           this.createProjectLoading = false
+          this.boolProject = false
+          this.boolEditProject = false
           this.boolRemarks = false
+          if (request === 'api.adminClueAddCrmItem') {
+            this.getLogList()
+          }
         } else {
           this.$message.error(res.data.meta.message)
           this.createProjectLoading = false
@@ -1857,8 +1872,10 @@ export default {
       this.boolRemarks = true
     },
     submitRemarks(d) { // 更新项目备注
+      d.remarks = this.remarksValue
       d.crm_item_id = d.item_id
       this.saveProject(d, api.adminClueUpdateCrmItem)
+      this.remarksValue = ''
     },
     submitDesignCompanyForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -2310,7 +2327,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin === 12) {
+        if (this.isAdmin >= 12) {
           return true
         }
       }
@@ -2393,6 +2410,9 @@ export default {
 .t180-before::before {
   display: inline-block;
   transform: rotate(180deg);
+}
+.flex-right {
+  justify-content: flex-end !important;
 }
 .font14 {
   font-size: 14px;
@@ -2654,7 +2674,12 @@ export default {
 .event-title {
   padding: 20px 0 10px 20px;
 }
-
+.log-title {
+  line-height: 40px;
+  padding-left: 20px;
+  font-size: 16px;
+  color: #222222;
+}
 
 
 
@@ -3062,7 +3087,7 @@ export default {
 .progress {
   /* border: 1px solid #e6e6e6; */
   border-radius: 4px;
-  margin-top: 20px;
+  margin-top: -10px;
 }
 .send {
   /* border-top: 1px solid #e6e6e6; */
@@ -3244,9 +3269,6 @@ export default {
 }
 .el-form-item__label:before {
   display: inline !important;
-}
-.el-dialog__footer .design-btn, .el-dialog__footer .edit-design-btn, .el-dialog__footer .client-btn {
-  justify-content: flex-end;
 }
 </style>
 
