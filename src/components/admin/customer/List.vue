@@ -415,48 +415,52 @@
                 <span v-if="scope.row.son_source === 'd'">今日头条</span>
                 <span v-if="!scope.row.son_source">网络广告</span>
               </div>
-              <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 2" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">官方</p>
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-if="scope.row.son_source === 'c'">App</span>
                 <span v-if="!scope.row.son_source">官方</span>
               </div>
-              <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 3" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">合作伙伴</p>
                 <span v-if="scope.row.son_source === 'a'">京东</span>
                 <span v-if="scope.row.son_source === 'b'">优客工场</span>
                 <span v-if="!scope.row.son_source">合作伙伴</span>
               </div>
-              <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 4" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">内部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">雷总/公司员工推...</span>
                 <!-- 雷总/公司员工推荐的熟人客户 -->
                 <span v-if="!scope.row.son_source">内部推荐</span>
               </div>
-              <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 5" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">外部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">朋友/其他公司推...</span>
                 <!-- 朋友/其他公司推荐的客户 -->
                 <span v-if="!scope.row.son_source">外部推荐</span>
               </div>
-              <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 6" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">新媒体</p>
                 <span v-if="scope.row.son_source === 'a'">微信公众号</span>
                 <span v-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-if="scope.row.son_source === 'c'">百家号</span>
                 <span v-if="!scope.row.son_source">新媒体</span>
               </div>
-              <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 7" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">展销会</p>
                 <span v-if="scope.row.son_source === 'a'">参展</span>
                 <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
                 <span v-if="!scope.row.son_source">展销会</span>
               </div>
-              <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
+              <div v-else-if="scope.row.new_source === 0" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">其他</p>
                 <span v-if="scope.row.son_source === 'a'">无法归类的小群体</span>
                 <span v-if="!scope.row.son_source">其他</span>
+              </div>
+              <div v-else>
+                <p class="fz-12 tc-6">&nbsp;</p>
+                <span>&nbsp;</span>
               </div>
             </div>
             <div v-else>
@@ -1643,6 +1647,9 @@ export default {
       //   }
       // }
       let callStatus = row.new_call_status - 0
+      if (this.typeId === 4) {
+        return
+      }
       if (callStatus < 9) {
         return 'over-date'
       } else if (callStatus === 10 || callStatus === 9) {
@@ -2972,9 +2979,3 @@ export default {
 }
 </style>
 
-<style>
- .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
-   background-color: #f7f7f7;
-   color: #666;
- }
-</style>
