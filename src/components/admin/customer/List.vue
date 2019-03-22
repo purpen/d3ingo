@@ -13,8 +13,8 @@
           </ul>
         </div>
         <div class="select-user" tabindex="-1" @blur="isUser = false" v-if="typeId &&typeId < 4">
-          <p class="select-model" @click="getUsers()" v-if="typeId === 1">分配商机所有人</p>
-          <p class="select-model" @click="getUsers()" v-else>分配客户所有人</p>
+          <p class="select-model" @click="getUsers(1)" v-if="typeId === 1">分配商机所有人</p>
+          <p class="select-model" @click="getUsers(1)" v-else>分配客户所有人</p>
           <ul v-if="isUser&&userList.length">
             <li v-for="(u,indexu) in userList" :key="indexu" @click="addAssign(u)">{{u.user_name}}</li>
             <li class="random-allot" @click="randomAssign = true">随机自动分配</li>
@@ -41,7 +41,7 @@
           </ul>
         </div>
         <div class="export-upload">
-          <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
+          <span @click="isOpenDialog()" :class="{'is-disabled': !isHasPower}"></span>
           <el-upload
             class="upload-demo"
             :action="uploadUrl"
@@ -341,15 +341,16 @@
         <el-button size="small" @click="showClueDialog">无效</el-button>
       </div> -->
 
+        <!-- @filter-change="filterList" -->
       <el-table
         :data="tableData"
         v-loading="tableLoading"
         class="admin-table"
         ref="tableData"
         @selection-change="handleSelectionChange"
-        @filter-change="filterList"
         @sort-change="sortChange"
         style="width: 100%"
+        @filter-change="filterList"
         :row-class-name="tableRowClassName"
         @row-click="getLookUserInfo">
         <el-table-column
@@ -358,13 +359,17 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          sortable="custom"
           label="姓名"
           >
         </el-table-column>
         <el-table-column
-          sortable="custom"
-          label="状态">
+          label="状态"
+          prop="call_status_value"
+          :filters="statusList"
+          column-key="call_status_value"
+          :filter-multiple="false"
+          filter-placement="bottom-end"
+          >
           <template slot-scope="scope">
             <p v-if="typeId===4">
               <span v-if="scope.row.son_status === 1">无效商机</span>
@@ -375,8 +380,19 @@
           </template>
         </el-table-column>
         <el-table-column
-          sortable="custom"
-          label="客户级别">
+          label="客户级别"
+          prop="rank"
+          :filters="[
+            {text: '一级', value: '1' },
+            { text: '二级', value: '2' },
+            { text: '三级', value: '3' },
+            { text: '四级', value: '4' },
+            { text: '五级', value: '5' }
+          ]"
+          column-key="rank"
+          :filter-multiple="false"
+          filter-placement="bottom-end"
+          >
             <template slot-scope="scope">
               <el-rate
                 v-model="scope.row.rank"
@@ -386,9 +402,10 @@
             </template>
         </el-table-column>
         <el-table-column
-          sortable="custom"
           width="150px"
-          label="来源渠道">
+          label="来源渠道"
+          :render-header="renderHeader"
+          >
           <template slot-scope="scope">
             <div v-if="scope.row.new_source || scope.row.new_source === 0" class="fz-14 tc-3">
               <div v-if="scope.row.new_source === 1">
@@ -450,14 +467,17 @@
         </el-table-column>
         <el-table-column
           prop="created_at"
-          sortable="custom"
           label="创建时间">
         </el-table-column>
         <el-table-column
           width="129"
-          sortable="custom"
           prop="execute_user_name"
-          label="商机所有人">
+          label="商机所有人"
+          :filters="userIds"
+          column-key="execute_user_name"
+          :filter-multiple="false"
+          filter-placement="bottom-end"
+          >
         </el-table-column>
         <!-- <el-table-column
           label="编号"
@@ -468,7 +488,6 @@
         -->
         <el-table-column
           v-if="typeId !== 4"
-          sortable="custom"
           label="最后跟进日"
           >
           <template slot-scope="scope">
@@ -477,7 +496,7 @@
         </el-table-column>
         <el-table-column
           prop="new_status"
-          label="级别"
+          label="阶段"
           >
           <template slot-scope="scope">
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
@@ -527,7 +546,7 @@
         </el-table-column> -->
       </el-table>
 
-      <!-- <el-pagination
+      <el-pagination
         v-if="typeId === 1&&tableData.length && query1.totalCount > query1.per_page"
         class="pagination"
         @size-change="handleSizeChange"
@@ -537,8 +556,8 @@
         :page-size="query1.per_page"
         layout="total, sizes, prev, pager, next, jumper"
         :total="query1.totalCount">
-      </el-pagination> -->
-      <!-- <el-pagination
+      </el-pagination>
+      <el-pagination
         v-else-if="typeId === 2&&tableData.length && query2.totalCount > query2.per_page"
         class="pagination"
         @size-change="handleSizeChange"
@@ -570,10 +589,10 @@
         :page-size="query4.per_page"
         layout="total, sizes, prev, pager, next, jumper"
         :total="query4.totalCount">
-      </el-pagination> -->
-      <!-- <div v-else>
+      </el-pagination>
+      <div v-else>
         <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
-      </div> -->
+      </div>
     </div>
 
     <el-dialog
@@ -649,11 +668,21 @@
       class="user-add"
       :modal-append-to-body="true"
       top="10vh"
-      width="690"
+      width="690px"
       :before-close="closeForm"
       >
       <div>
-        <el-form label-position="right" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px" class="add-form scroll-bar">
+        <el-form label-position="right" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="100px" class="add-form scroll-bar">
+           <el-row>
+            <el-col>
+              <el-form-item label="商机所有人" prop="execute_user_id">
+                <!-- <el-input v-model.trim="clientForm.execute_user_id" placeholder="输入客户姓名" :maxlength="10"></el-input> -->
+                <el-select v-model.trim="clientForm.execute_user_id" placeholder="请选择商机所有人">
+                  <el-option v-for="u in userList" :key="u.user_id" :value="u.user_id" :label="u.user_name"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col>
               <el-form-item label="客户姓名" prop="name">
@@ -751,7 +780,9 @@ export default {
   },
   data() {
     return {
+      statusList: [], // 筛选状态数组
       assignUser: {},
+      userIds: [], // 筛选所有人数组
       AssignOne: false,
       isinvalid: false, // 无效弹窗
       userList: [], // 业务人员列表
@@ -900,13 +931,19 @@ export default {
       selectedOptions: [],
       isFirstRegion: true,
       ruleClientForm: {
+        fromOptions: [
+          { required: true, message: '请选择来源渠道', trigger: 'blur' }
+        ],
+        execute_user_id: [
+          { required: true, message: '请选择商机所有人', trigger: 'blur' }
+        ],
         name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
       },
       dialogAddUser: false, // 新建商机弹窗
       isSearch: {
         value: '',
-        label: ''
+        label: 1
       }, // 选择条件搜索
       isBusiness: '', // 全部商机select
       isWitch: '',
@@ -1032,7 +1069,7 @@ export default {
       optionLatent: [
         {
           value: 0,
-          label: '全部商家'
+          label: '全部'
         },
         {
           value: 1,
@@ -1069,10 +1106,6 @@ export default {
           label: '我的商机'
         },
         {
-          value: 5,
-          label: '最近查看'
-        },
-        {
           value: 3,
           label: '本周新建的商机'
         },
@@ -1094,8 +1127,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商机; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1114,8 +1147,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 0.全部 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1134,8 +1167,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1154,8 +1187,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1187,20 +1220,58 @@ export default {
     }
   },
   methods: {
+    renderHeader(h, { column, $index }, index) {
+      return (<span>
+        来源渠道
+        <span class="el-table__column-filter-trigger">
+         <i class="el-icon-arrow-down"></i>
+        </span>
+      </span>)
+    },
+    searchUpdate() {
+      this.isSearch = {
+        label: 1,
+        value: ''
+      }
+      this['query' + this.typeId].name = ''
+      this['query' + this.typeId].phone = ''
+      this['query' + this.typeId].number = ''
+      this.getClueList()
+    },
     addAssign(u) {
       this.assignUser = u
       this.AssignOne = true
     },
+    isOpenDialog() {
+      if (this.isHasPower) {
+        this.dialogAddUser = true
+        this.getUsers()
+      } else {
+        this.dialogAddUser = true
+      }
+    },
     // 获取业务人员列表
-    getUsers() {
+    getUsers(type) {
       this.$http.get(api.adminClueVoIpList).then((response) => {
         if (response.data.meta.status_code === 200) {
           if (response.data.data && response.data.data.length) {
             this.userList = response.data.data
+            let arr = []
+            this.userList.forEach(item => {
+              arr.push({
+                'text': item.user_name,
+                'value': item.user_id + ''
+              })
+            })
+            this.userIds = arr
+            console.log(this.userIds)
           } else {
             this.userList = []
+            this.userIds = []
           }
-          this.isUser = true
+          if (type) {
+            this.isUser = true
+          }
         }
       })
     },
@@ -1252,6 +1323,10 @@ export default {
       }
     },
     submitUserForm() { // 生成用户
+      if (!this.clientForm.execute_user_id) {
+        this.$message.error('请选择商机所有人')
+        return
+      }
       if (!this.clientForm.name) {
         this.$message.error('请填写联系人姓名')
         return
@@ -1298,7 +1373,7 @@ export default {
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           if (this.typeId === 1) {
-            this.tableData.unshift(row)
+            this.getClueList()
           }
           this.$message.success(res.data.meta.message)
           this.boolCreateUser = false
@@ -1369,31 +1444,72 @@ export default {
         return true
       }
     },
-    filterList(row) {
-      let value = Object.values(row).toString()
-      switch (value) {
-        case '1':
-          this['query' + this.typeId].status = 1
-          this.statusValue = '商机'
-          break
-        case '2':
-          this['query' + this.typeId].status = 2
-          this.statusValue = '潜在客户'
-          break
-        case '3':
-          this['query' + this.typeId].status = 3
-          this.statusValue = '对接设计'
-          break
-        case '4':
-          this['query' + this.typeId].status = 4
-          this.statusValue = '签订合作'
-          break
-        default:
-          this['query' + this.typeId].status = 5
-          this.statusValue = '阶段'
+    filterRank(value, row, column) {
+      console.log(value, row)
+      if (value) {
+        this['query' + this.typeId].rank = Number(value)
+        this.getClueList()
+        return
       }
-      this['query' + this.typeId].page = 1
-      this.getClueList()
+    },
+    filterList(value, row, column) {
+      console.log(value, row, column)
+      if (value.rank) {
+        if (value.rank.length) {
+          this['query' + this.typeId].rank = value.rank[0]
+        } else {
+          this['query' + this.typeId].rank = ''
+        }
+        this.getClueList()
+      }
+      if (value.call_status_value) {
+        if (value.call_status_value.length) {
+          if (this.typeId === 4) {
+            this['query' + this.typeId].son_status = value.call_status_value[0]
+          } else {
+            this['query' + this.typeId].new_call_status = value.call_status_value[0]
+          }
+        } else {
+          if (this.typeId === 4) {
+            this['query' + this.typeId].son_status = ''
+          } else {
+            this['query' + this.typeId].new_call_status = ''
+          }
+        }
+        this.getClueList()
+      }
+      if (value.execute_user_name) {
+        if (value.execute_user_name.length) {
+          this['query' + this.typeId].execute_user_id = Number(value.execute_user_name[0])
+        } else {
+          this['query' + this.typeId].execute_user_id = ''
+        }
+        this.getClueList()
+      }
+      // let value = Object.values(row).toString()
+      // switch (value) {
+      //   case '1':
+      //     this['query' + this.typeId].status = 1
+      //     this.statusValue = '商机'
+      //     break
+      //   case '2':
+      //     this['query' + this.typeId].status = 2
+      //     this.statusValue = '潜在客户'
+      //     break
+      //   case '3':
+      //     this['query' + this.typeId].status = 3
+      //     this.statusValue = '对接设计'
+      //     break
+      //   case '4':
+      //     this['query' + this.typeId].status = 4
+      //     this.statusValue = '签订合作'
+      //     break
+      //   default:
+      //     this['query' + this.typeId].status = 5
+      //     this.statusValue = '阶段'
+      // }
+      // this['query' + this.typeId].page = 1
+      // this.getClueList()
     },
     // 取消多选操作
     downCheck() {
@@ -1825,8 +1941,83 @@ export default {
     this.bigType = 'potentialUserList' + this.$route.params.type
     this.typeId = Number(this.$route.params.type)
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
+    if (this.typeId) {
+      if (this.typeId === 1) {
+        this.statusList = [
+          {
+            'text': '待初次沟通',
+            'value': '0'
+          },
+          {
+            'text': '待转化为潜在客户',
+            'value': '1'
+          }
+        ]
+      }
+      if (this.typeId === 2) {
+        this.statusList = [
+          {
+            'text': '待匹配设计服务商',
+            'value': '2'
+          },
+          {
+            'text': '待回访',
+            'value': '3'
+          },
+          {
+            'text': '预约回访',
+            'value': '4'
+          },
+          {
+            'text': '推送未响应',
+            'value': '5'
+          },
+          {
+            'text': '拒绝合作(设计方)',
+            'value': '6'
+          },
+          {
+            'text': '拒绝合作(需求方)',
+            'value': '7'
+          },
+          {
+            'text': '确认合作意向',
+            'value': '8'
+          },
+          {
+            'text': '沟通中',
+            'value': '11'
+          }
+        ]
+      }
+      if (this.typeId === 3) {
+        this.statusList = [
+          {
+            'text': '项目进行中',
+            'value': '12'
+          }
+        ]
+      }
+      if (this.typeId === 4) {
+        this.statusList = [
+          {
+            'text': '无效商机',
+            'value': '1'
+          },
+          {
+            'text': '低价客户',
+            'value': '2'
+          },
+          {
+            'text': '流失客户',
+            'value': '3'
+          }
+        ]
+      }
+    }
     this.getClueList()
     this.getAdminList()
+    this.getUsers()
   },
   // directives: {Clickoutside},
   filters: {
@@ -1861,8 +2052,8 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: '', // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1877,6 +2068,84 @@ export default {
         valueDate: []
       }
       this.isCheck = false
+      this.isSearch = {
+        label: 1,
+        value: ''
+      }
+      if (this.typeId) {
+        if (this.typeId === 1) {
+          this.statusList = [
+            {
+              'text': '待初次沟通',
+              'value': '0'
+            },
+            {
+              'text': '待转化为潜在客户',
+              'value': '1'
+            }
+          ]
+        }
+        if (this.typeId === 2) {
+          this.statusList = [
+            {
+              'text': '待匹配设计服务商',
+              'value': '2'
+            },
+            {
+              'text': '待回访',
+              'value': '3'
+            },
+            {
+              'text': '预约回访',
+              'value': '4'
+            },
+            {
+              'text': '推送未响应',
+              'value': '5'
+            },
+            {
+              'text': '拒绝合作(设计方)',
+              'value': '6'
+            },
+            {
+              'text': '拒绝合作(需求方)',
+              'value': '7'
+            },
+            {
+              'text': '确认合作意向',
+              'value': '8'
+            },
+            {
+              'text': '沟通中',
+              'value': '11'
+            }
+          ]
+        }
+        if (this.typeId === 3) {
+          this.statusList = [
+            {
+              'text': '项目进行中',
+              'value': '12'
+            }
+          ]
+        }
+        if (this.typeId === 4) {
+          this.statusList = [
+            {
+              'text': '无效商机',
+              'value': '1'
+            },
+            {
+              'text': '低价客户',
+              'value': '2'
+            },
+            {
+              'text': '流失客户',
+              'value': '3'
+            }
+          ]
+        }
+      }
       this.getClueList()
     }
   }
@@ -2299,12 +2568,12 @@ export default {
 }
 .client-rank {
   position: relative;
-  padding-left: 80px;
+  padding-left: 100px;
   margin: 20px 0;
 }
 .client-rank>span {
   position: absolute;
-  left: 38px;
+  left: 60px;
   top: 0px;
   line-height: 20px;
 }
@@ -2439,5 +2708,8 @@ export default {
 }
 .export-del li:hover {
   background-color: #f7f7f7;
+}
+.el-table__column-filter-trigger {
+  margin-left: 5px;
 }
 </style>
