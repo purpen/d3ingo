@@ -1,7 +1,7 @@
 <template>
   <div class="user-contant">
     <div class="head-content">
-          <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList'})"></i>
+          <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
             <i class="border-t10 fx fx-icon-nothing-right tc-hover-red" @click="getNextUser"></i>
@@ -1515,7 +1515,7 @@ export default {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
-          this.$router.push({name: 'adminPotentialUserList'})
+          this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
         }
         if (index !== -1) {
@@ -1534,7 +1534,7 @@ export default {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
           this.$message.info('已经是第一条,返回列表页,获取最新数据')
-          this.$router.push({name: 'adminPotentialUserList'})
+          this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
         }
         if (index !== -1) {
@@ -1719,7 +1719,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
           this.boolCreateUser = false
-          this.$router.push({name: 'adminPotentialUserList'})
+          // this.$router.push({name: 'adminPotentialUserList', params: this.query})
         } else {
           this.$message.error(res.data.meta.message)
         }

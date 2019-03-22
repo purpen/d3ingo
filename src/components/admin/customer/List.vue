@@ -1590,7 +1590,7 @@ export default {
       this['query' + this.typeId].name = name
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {page: this['query' + this.typeId].page}
+        query: {page: this['query' + this.typeId].page, type: this.typeId}
       })
       window.open(href, '_blank')
     },
