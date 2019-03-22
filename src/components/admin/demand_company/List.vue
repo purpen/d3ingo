@@ -3,7 +3,10 @@
 
     <div class="admin-menu-sub">
       <div class="admin-menu-sub-list">
-        <router-link :to="{name: 'adminDemandCompanyList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+        <router-link :to="{name: 'adminDemandCompanyList', query: {type: -1}}" active-class="false" :class="{'item': true, 'is-active': menuType === -1}">全部</router-link>
+      </div>
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminDemandCompanyList', query: {type: 0}}" :class="{'item': true, 'is-active': menuType === 0}" active-class="false">未审核</router-link>
       </div>
       <div class="admin-menu-sub-list">
         <router-link :to="{name: 'adminDemandCompanyList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">待审核</router-link>
@@ -172,7 +175,7 @@ export default {
   name: 'admin_company_list',
   data () {
     return {
-      menuType: 0,
+      menuType: -1,
       itemList: [],
       tableData: [],
       isLoading: false,
@@ -292,18 +295,22 @@ export default {
     },
     loadList() {
       const self = this
-      self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 0
-      self.query.type = this.$route.query.type || ''
-      self.query.source = this.$route.query.source || ''
-      self.query.evt = this.$route.query.evt || '2'
-      self.query.val = this.$route.query.val || ''
-      this.menuType = 0
-      if (this.$route.query.type) {
-        this.menuType = parseInt(this.$route.query.type)
-      }
+      self.query.page = parseInt(self.$route.query.page || 1)
+      self.query.sort = self.$route.query.sort
+      self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
+      self.query.source = self.$route.query.source || 0
+      self.query.evt = self.$route.query.evt || '2'
+      self.query.val = self.$route.query.val
+      self.menuType = parseInt(self.$route.query.type)
       self.isLoading = true
-      self.$http.get(api.adminDemandCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, source: self.query.source, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.adminDemandCompanyList, {params: {
+        page: self.query.page,
+        per_page: self.query.pageSize,
+        sort: self.query.sort,
+        type_verify_status: self.menuType,
+        source: self.query.source,
+        evt: self.query.evt,
+        val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
