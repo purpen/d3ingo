@@ -33,30 +33,38 @@
 
         </div>
         <div class="margin-l20 head-c-content">
-          <div class="flex-column">
-            <span class="tc-9">电话</span>
-            <span class="fz-14">{{userForm.phone}}</span>
-          </div>
-          
-          <div class="flex-column">
-            <span class="tc-9">职位</span>
-            <span class="fz-14">{{userForm.position}}</span>
-          </div>
-          
-          <div class="flex-column">
-            <span class="tc-9">潜在客户来源</span>
-            <span class="fz-14">{{sourceValue + '/' + sonSourceValue}}</span>
-          </div>
-          
-          <div class="flex-column">
-            <span class="tc-9">潜在客户所有人</span>
-            <span class="fz-14">{{userForm.execute_user_name}}</span>
-          </div>
-          
-          <div class="flex-column">
-            <span class="tc-9">创建时间</span>
-            <span class="fz-14">{{createdTime}}</span>
-          </div>
+          <el-row>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <div class="flex-column">
+                <span class="tc-9">电话</span>
+                <span class="fz-14  text-overflow">{{userForm.phone}}</span>
+              </div>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <div class="flex-column">
+                <span class="tc-9">职位</span>
+                <span class="fz-14  text-overflow">{{userForm.position}}</span>
+              </div>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <div class="flex-column">
+                <span class="tc-9">潜在客户来源</span>
+                <span class="fz-14  text-overflow">{{sourceValue + '/' + sonSourceValue}}</span>
+              </div>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <div class="flex-column">
+                <span class="tc-9">潜在客户所有人</span>
+                <span class="fz-14  text-overflow">{{userForm.execute_user_name}}</span>
+              </div>
+            </el-col>
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <div class="flex-column">
+                <span class="tc-9">创建时间</span>
+                <span class="fz-14  text-overflow">{{createdTime}}</span>
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </div>
 
@@ -223,13 +231,13 @@
                     </el-col>
                     <el-col :md="6" :lg="6">
                       <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-                      <span v-if="!item.remarks && isHasPower" @click="boolRemarks = true" class="pointer">添加备注</span>
-                        <i @click="boolRemarks = true" v-if="isHasPower" class="el-icon-edit"></i>
+                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item.item_id)" class="pointer">添加备注</span>
+                        <i @click="editRemarks(item.item_id)" v-if="isHasPower" class="el-icon-edit"></i>
                     </el-col>
-                    <el-col :md="10" :lg="10" v-if="boolRemarks">
+                    <el-col :md="10" :lg="10" v-if="boolRemarks && item.item_id === editRemarksId">
                       <el-input v-model="item.remarks" size="small" placeholder="输入备注"></el-input>
                     </el-col>
-                    <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks">
+                    <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
                       <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false"></i>
                     </el-col>
@@ -429,7 +437,7 @@
                   <span class="tc-9">创建人</span>
                 </el-col>
                 <el-col :md="16" :lg="16">
-                  <span>{{clientList.user_id_name}}</span>
+                  <span>{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
                 </el-col>
               </el-row>
               
@@ -438,7 +446,7 @@
                   <span class="tc-9">修改人</span>
                 </el-col>
                 <el-col :md="16" :lg="16">
-                  <span>{{clientList.update_user_name}}</span>
+                  <span v-if="updateTime">{{clientList.update_user_name}}  &nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
                 </el-col>
               </el-row>
             </div>
@@ -484,8 +492,8 @@
                     </el-date-picker>
                   </div>
                   <div class="send margin-t10 clearfix">
-                    <el-button class="fr" :disabled="!isHasPower" size="mini" :loading="boolFollowLog" type="primary" @click="sendProgressVal">发布</el-button>
-                    <el-button class="fr" size="mini" @click="focusHeight = false">取消</el-button>
+                    <el-button class="fr" :disabled="!isHasPower" size="mini" :loading="boolFollowLog" type="primary" @click="sendProgressVal">保 存</el-button>
+                    <el-button class="fr" size="mini" @click="focusHeight = false">取 消</el-button>
                   </div>
                 </div>
               </div>
@@ -792,9 +800,9 @@
         <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">确 定</el-button>
       </span>
       <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix margin-b22 fz-0">
-        <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm')">保存
+        <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
-        <el-button class="fr margin-r-15" @click="boolEditProject = false, boolProject = false">取消</el-button>
+        <el-button class="fr margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
       </span>
     </el-dialog>
     
@@ -873,9 +881,9 @@
 
       </el-form>
       <span v-if="boolEditDesignCompany"  slot="footer" class="dialog-footer design-btn fz-0">
-        <el-button type="primary" @click="submitEditDesignCompanyForm('ruleDesignCompanyForm')">保存
+        <el-button type="primary" @click="submitEditDesignCompanyForm('ruleDesignCompanyForm')">保 存
         </el-button>
-        <el-button class="margin-r-15" @click="boolEditDesignCompany = false, boolDesignCompany = false">取消</el-button>
+        <el-button class="margin-r-15" @click="boolEditDesignCompany = false, boolDesignCompany = false">取 消</el-button>
       </span>
       <span v-else slot="footer" class="dialog-footer design-btn fz-0">
         <el-button @click="boolDesignCompany = false">取 消</el-button>
@@ -913,6 +921,7 @@ export default {
       boolProjectList: true,
       boolDesigeList: true,
       boolRemarks: false,
+      editRemarksId: '',
       dialogProjectTitle: '',
       selectedsource: [],
       QRCode: '', // 需求方二维码链接
@@ -970,6 +979,7 @@ export default {
         is_thn: 0
       },
       createdTime: '',
+      updateTime: '',
       sourceArr: [
         {
           id: 1,
@@ -990,6 +1000,14 @@ export default {
             {
               key: 'd',
               name: '今日头条'
+            },
+            {
+              key: 'edm',
+              name: '邮件'
+            },
+            {
+              key: 'sms',
+              name: '短信'
             }
           ]
         },
@@ -1008,6 +1026,18 @@ export default {
             {
               key: 'c',
               name: 'App'
+            },
+            {
+              key: 'topic_view_h',
+              name: '文章详情头部'
+            },
+            {
+              key: 'topic_view_f',
+              name: '文章详情底部'
+            },
+            {
+              key: 'topic_view_r',
+              name: '文章详情右侧'
             }
           ]
         },
@@ -1055,11 +1085,15 @@ export default {
             },
             {
               key: 'b',
-              name: '头条号'
+              name: '头条号菜单'
             },
             {
               key: 'c',
               name: '百家号'
+            },
+            {
+              key: 'toutiao_ad',
+              name: '头条文章广告位'
             }
           ]
         },
@@ -1108,6 +1142,14 @@ export default {
             {
               value: 'd',
               label: '今日头条'
+            },
+            {
+              value: 'edm',
+              label: '邮件'
+            },
+            {
+              value: 'sms',
+              label: '短信'
             }
           ]
         },
@@ -1126,6 +1168,18 @@ export default {
             {
               value: 'c',
               label: 'App'
+            },
+            {
+              value: 'topic_view_h',
+              label: '文章详情头部'
+            },
+            {
+              value: 'topic_view_f',
+              label: '文章详情底部'
+            },
+            {
+              value: 'topic_view_r',
+              label: '文章详情右侧'
             }
           ]
         },
@@ -1173,11 +1227,15 @@ export default {
             },
             {
               value: 'b',
-              label: '头条号'
+              label: '头条号菜单'
             },
             {
               value: 'c',
               label: '百家号'
+            },
+            {
+              value: 'toutiao_ad',
+              label: '头条文章广告位'
             }
           ]
         },
@@ -1196,7 +1254,7 @@ export default {
           ]
         },
         {
-          id: 0,
+          value: 0,
           label: '其他',
           children: [
             {
@@ -1252,11 +1310,11 @@ export default {
       ],
       optionsCall: [
         {
-          value: 1,
+          value: 2,
           label: '微信'
         },
         {
-          value: 2,
+          value: 1,
           label: '电话'
         }
       ],
@@ -1505,6 +1563,7 @@ export default {
             wx: data.wx,
             summary: data.summary,
             position: data.position,
+            user_id_name: data.user_id_name,
             update_user_name: data.update_user_name
           }
           this.currentUser = data.name
@@ -1524,6 +1583,9 @@ export default {
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          if (data.update_user_time) {
+            this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss')
+          }
           if (this.userForm.new_source) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
@@ -1789,6 +1851,10 @@ export default {
         console.log(error.message)
         this.createProjectLoading = false
       })
+    },
+    editRemarks(id) {
+      this.editRemarksId = id
+      this.boolRemarks = true
     },
     submitRemarks(d) { // 更新项目备注
       d.crm_item_id = d.item_id
@@ -2426,16 +2492,16 @@ export default {
   padding: 20px 25px 20px 30px;
 }
 .head-c-content {
-  display: flex;
+  /* display: flex; */
   height: 60px;
   margin: 0 30px 0 30px;
   padding-top: 10px;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
-  padding-right: 100px;
+  /* padding-right: 100px; */
 }
-.head-c-content > div > span:nth-child(1) {
+.head-c-content .flex-column > span:nth-child(1) {
   padding-bottom: 10px;
 }
 .base-info {
