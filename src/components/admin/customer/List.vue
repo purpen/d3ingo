@@ -842,7 +842,16 @@ export default {
             {
               value: 'd',
               label: '今日头条'
-            }]
+            },
+            {
+              value: 'edm',
+              label: '邮件'
+            },
+            {
+              value: 'sms',
+              label: '短信'
+            }
+          ]
         },
         {
           value: 2,
@@ -863,7 +872,20 @@ export default {
             {
               value: 'c',
               label: 'App'
-            }]
+            },
+            {
+              value: 'topic_view_h',
+              label: '.文章详情头部'
+            },
+            {
+              value: 'topic_view_f',
+              label: '文章详情底部'
+            },
+            {
+              value: 'topic_view_r',
+              label: '文章详情右侧'
+            }
+          ]
         },
         {
           value: 3,
@@ -929,6 +951,10 @@ export default {
             {
               value: 'c',
               label: '百家号'
+            },
+            {
+              value: 'toutiao_ad',
+              label: '头条文章广告位'
             }
           ]
         },
@@ -985,7 +1011,16 @@ export default {
             {
               value: 'd',
               label: '今日头条'
-            }]
+            },
+            {
+              value: 'edm',
+              label: '邮件'
+            },
+            {
+              value: 'sms',
+              label: '短信'
+            }
+          ]
         },
         {
           value: 2,
@@ -1002,7 +1037,20 @@ export default {
             {
               value: 'c',
               label: 'App'
-            }]
+            },
+            {
+              value: 'topic_view_h',
+              label: '.文章详情头部'
+            },
+            {
+              value: 'topic_view_f',
+              label: '文章详情底部'
+            },
+            {
+              value: 'topic_view_r',
+              label: '文章详情右侧'
+            }
+          ]
         },
         {
           value: 3,
@@ -1052,6 +1100,10 @@ export default {
             {
               value: 'c',
               label: '百家号'
+            },
+            {
+              value: 'toutiao_ad',
+              label: '头条文章广告位'
             }
           ]
         },
@@ -1413,7 +1465,6 @@ export default {
               })
             })
             this.userIds = arr
-            console.log(this.userIds)
           } else {
             this.userList = []
             this.userIds = []
@@ -1580,7 +1631,6 @@ export default {
     },
     isDown() {
       this.isEdits = false
-      console.log('is', this.isEdits)
     },
     tableRowClassName({row, index}) {
       // if (row.next_time) {
@@ -1609,7 +1659,6 @@ export default {
       }
     },
     filterRank(value, row, column) {
-      console.log(value, row)
       if (value) {
         this['query' + this.typeId].rank = Number(value)
         this.getClueList()
@@ -1617,7 +1666,6 @@ export default {
       }
     },
     filterList(value, row, column) {
-      console.log(value, row, column)
       if (value.rank) {
         if (value.rank.length) {
           this['query' + this.typeId].rank = value.rank[0]
@@ -1775,7 +1823,6 @@ export default {
       let row = {}
       let typeId = Number(this.$route.params.type)
       this.typeId = Number(this.$route.params.type)
-      console.log('11', this.$route.params.type)
       if (typeId === 1) {
         url = api.adminClueClueList
         Object.assign(row, this.query1)
@@ -1838,7 +1885,6 @@ export default {
           clue_ids: idArr,
           label_cause: this.label_cause
         }
-        console.log(this.label_cause)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
@@ -2026,10 +2072,8 @@ export default {
       return idArr
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList)
     },
     handlePreview(file) {
-      console.log(file)
     },
     changeFile(file) {
       if (file.status === 'ready') {
@@ -2047,7 +2091,6 @@ export default {
       }
     },
     beforeAvatarUpload(file) {
-      console.log(file)
       // const isXLSX = file.type === 'xlsx'
       // const isLt2M = file.size / 1024 / 1024 < 2
       // if (!isXLSX) {
