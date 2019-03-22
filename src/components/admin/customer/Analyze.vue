@@ -50,7 +50,7 @@
         </el-row>
       </el-col>
       <el-col :span="16">
-        <div class="bg-f7 padding20">
+        <div class=" padding20">
           <div class="clearfix content-head">
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机趋势</h2>
@@ -70,7 +70,7 @@
     </el-row>
     <el-row :gutter="20">
       <el-col :span="18" class="margin-b-20">
-        <div class="bg-f7 padding20">
+        <div class=" padding20">
           <div class="clearfix content-head">
             <div class="fl padding-tb-7">
               <h2 class="sub-title">转化趋势</h2>
@@ -104,7 +104,7 @@
       <el-col :span="6">
         <el-row :gutter="0">
           <el-col>
-            <div class="bg-f7 padding20 sub-cont">
+            <div class=" padding20 sub-cont">
               <div class="clearfix content-head">
                 <div class="fl padding-tb-7">
                   <h2 class="sub-title">转化率</h2>
@@ -117,7 +117,7 @@
             </div>
           </el-col>
           <el-col>
-            <div class="bg-f7 padding20 sub-cont">
+            <div class=" padding20 sub-cont">
               <div class="clearfix content-head">
                 <div class="fl padding-tb-7">
                   <h2 class="sub-title">流失率</h2>
