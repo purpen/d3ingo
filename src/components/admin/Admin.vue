@@ -418,6 +418,12 @@
         this.selectedName = this.$route.name + this.$route.params.type
         this.selectedName2 = this.$route.name + this.$route.params.type
       }
+      if (this.$route.name === 'adminPotentialUserInfo') {
+        this.selectedName = localStorage.getItem('selectedName')
+        this.selectedName2 = localStorage.getItem('selectedName2')
+      }
+      localStorage.setItem('selectedName', this.selectedName)
+      localStorage.setItem('selectedName2', this.selectedName2)
     },
     computed: {
       isCompany() {
@@ -523,6 +529,19 @@
       $route (to, from) {
         this.showCover = ''
         this.showCover2 = ''
+        this.leftValue = this.leftWidth
+        this.selectedName = this.$route.name
+        this.selectedName2 = this.$route.name
+        if (this.$route.name === 'adminPotentialUserList') {
+          this.selectedName = this.$route.name + this.$route.params.type
+          this.selectedName2 = this.$route.name + this.$route.params.type
+        }
+        if (this.$route.name === 'adminPotentialUserInfo') {
+          this.selectedName = localStorage.getItem('selectedName')
+          this.selectedName2 = localStorage.getItem('selectedName2')
+        }
+        localStorage.setItem('selectedName', this.selectedName)
+        localStorage.setItem('selectedName2', this.selectedName2)
       }
     },
     components: {
