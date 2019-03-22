@@ -238,7 +238,7 @@
                     </el-col>
                     <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
-                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false"></i>
+                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
                     </el-col>
 
                   </el-row>
