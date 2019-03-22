@@ -238,11 +238,11 @@
             <img :src="require('assets/images/admin/menu/Content@2x.png')" alt="内容管理">内容管理
             </template>
             <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
-            <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
+            <el-menu-item index="adminColumnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
             <el-menu-item index="adminBlockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
             <el-menu-item index="adminArticleList" :route="{name: 'adminArticleList'}">文章列表</el-menu-item>
             <el-menu-item index="adminWorksList" :route="{name: 'adminWorksList'}">作品列表</el-menu-item>
-            <el-menu-item index="awardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
+            <el-menu-item index="adminAwardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
             <el-menu-item index="adminTrendReportList" :route="{name: 'adminTrendReportList'}">趋势/报告列表</el-menu-item>
             <el-menu-item index="adminCommonlySiteList" :route="{name: 'adminCommonlySiteList'}">常用网站列表</el-menu-item>
             <el-menu-item index="adminAwardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
