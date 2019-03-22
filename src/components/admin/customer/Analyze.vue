@@ -69,7 +69,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="12" class="margin-b-20">
+      <el-col :span="18" class="margin-b-20">
         <div class="bg-f7 padding20">
           <div class="clearfix content-head">
             <div class="fl padding-tb-7">
@@ -101,7 +101,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="6">
         <el-row :gutter="0">
           <el-col>
             <div class="bg-f7 padding20 sub-cont">
@@ -110,7 +110,7 @@
                   <h2 class="sub-title">转化率</h2>
                 </div>
               </div>
-              <div class="height199">
+              <div class="height195">
                 <ECharts :options="option" class="full-height line-echarts">
                 </ECharts>
               </div>
@@ -123,7 +123,7 @@
                   <h2 class="sub-title">流失率</h2>
                 </div>
               </div>
-              <div class="height199">
+              <div class="height195">
                 <ECharts :options="option2" class="full-height line-echarts">
                 </ECharts>
               </div>
@@ -140,7 +140,7 @@
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机来源排行</h2>
             </div>
-            <el-select class="fr" v-model="selectOption.source" placeholder="请选择" 
+            <el-select class="fr select" v-model="selectOption.source" placeholder="请选择" 
             @change="handleChange(selectOption.source, 'getSource')" size="customer-mini">
               <el-option
                 v-for="item in options"
@@ -172,7 +172,7 @@
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机预算排行</h2>
             </div>
-            <el-select class="fr" v-model="selectOption.budget" placeholder="请选择" @change="handleChange(selectOption.budget, 'getBudget')" size="customer-mini">
+            <el-select class="fr select" v-model="selectOption.budget" placeholder="请选择" @change="handleChange(selectOption.budget, 'getBudget')" size="customer-mini">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -205,7 +205,7 @@
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机类型排行</h2>
             </div>
-            <el-select class="fr" v-model="selectOption.itemType" placeholder="请选择" @change="handleChange(selectOption.itemType, 'getItemType')" size="customer-mini">
+            <el-select class="fr select" v-model="selectOption.itemType" placeholder="请选择" @change="handleChange(selectOption.itemType, 'getItemType')" size="customer-mini">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -236,7 +236,7 @@
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机地区 Top10</h2>
             </div>
-            <el-select class="fr" v-model="selectOption.province" placeholder="请选择" @change="handleChange(selectOption.province, 'getProvince')" size="customer-mini">
+            <el-select class="fr select" v-model="selectOption.province" placeholder="请选择" @change="handleChange(selectOption.province, 'getProvince')" size="customer-mini">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -333,7 +333,7 @@
           }
         ],
         polar: {
-          color: ['#0A6DD9'],
+          color: ['#ffcdce'],
           grid: {
             show: false
           },
@@ -347,14 +347,19 @@
           series: [{
             data: [],
             barMaxWidth: 55,
-            type: 'bar'
+            type: 'bar',
+            emphasis: {
+              itemStyle: {
+                color: ['#ff5a5f']
+              }
+            }
           }],
           tooltip: {
             trigger: 'axis'
           }
         },
         polar2: {
-          color: ['#0A6DD9'],
+          color: ['#ffcdce'],
           grid: {
             show: false
           },
@@ -369,7 +374,12 @@
           series: [{
             barMaxWidth: 55,
             data: [],
-            type: 'bar'
+            type: 'bar',
+            emphasis: {
+              itemStyle: {
+                color: ['#ff5a5f']
+              }
+            }
           }],
           tooltip: {
             trigger: 'axis'
@@ -812,8 +822,8 @@
   .line-echarts {
     width: 100%
   }
-  .height199 {
-    height: 199px
+  .height195 {
+    height: 195px
   }
   .height364 {
     height: 364px
@@ -863,7 +873,7 @@
     padding: 10px 0
   }
   .rank-r .rate {
-    background: #0A6DD9;
+    background: #FFCDCF;
     padding: 0 8px;
     color: #fff;
     height: 25px;
@@ -871,8 +881,15 @@
     text-align: right;
     font-size: 12px;
     width: 60px;
+    cursor: pointer;
+  }
+  .rank-r .rate:hover {
+    background: #ff5a5f;
   }
   .full-height {
     height: 100%
+  }
+  .select {
+    margin-right: 14px
   }
 </style>
