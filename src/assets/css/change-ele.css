@@ -1134,3 +1134,13 @@
   bottom: 0;
   margin: auto;
 }
+
+.height30-datepicker.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+.height30-datepicker.el-date-editor .el-range__icon,
+.height30-datepicker.el-date-editor .el-range-separator,
+.height30-datepicker.el-date-editor .el-range__close-icon {
+  line-height: 24px;
+}

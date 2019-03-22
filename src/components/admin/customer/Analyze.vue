@@ -77,6 +77,7 @@
             </div>
             <div class="chart-block fr">
               <el-date-picker
+                class="height30-datepicker"
                 v-model="times"
                 type="daterange"
                 align="right"
@@ -89,9 +90,9 @@
                 :picker-options="pickerOptions2">
               </el-date-picker>
             </div>
-            <div class="fr option-menu">
-              <span class="option-item option-item80">最近7天</span>
-              <span class="option-item option-item80">最近30天</span>
+            <div class="fr option-menu margin-r-15">
+              <span :class="['option-item option-item80', {'active' : showLastWeek}]" @click="changeTimes(7)">最近7天</span>
+              <span :class="['option-item option-item80', {'active' : showLastMonth}]" @click="changeTimes(30)">最近30天</span>
             </div>
           </div>
           <div>
@@ -109,7 +110,7 @@
                   <h2 class="sub-title">转化率</h2>
                 </div>
               </div>
-              <div class="height172">
+              <div class="height199">
                 <ECharts :options="option" class="full-height line-echarts">
                 </ECharts>
               </div>
@@ -122,7 +123,7 @@
                   <h2 class="sub-title">流失率</h2>
                 </div>
               </div>
-              <div class="height172">
+              <div class="height199">
                 <ECharts :options="option2" class="full-height line-echarts">
                 </ECharts>
               </div>
@@ -326,8 +327,6 @@
             formatter: '{c}%'
           },
           legend: {
-            bottom: '0',
-            data: ['收入']
           },
           yAxis: {
             axisTick: {
@@ -429,7 +428,7 @@
         loading2: false,
         loading3: false,
         loading4: false,
-        times: '',
+        times: [],
         pickerOptions2: {
           shortcuts: [
             {
@@ -495,7 +494,9 @@
               }
             }
           ]
-        }
+        },
+        showLastWeek: false,
+        showLastMonth: false
       }
     },
     components: {
@@ -520,6 +521,13 @@
       }
     },
     methods: {
+      changeTimes(num) {
+        this.times = [this.getLastDate(num), this.getLastDate(0)]
+        this.getAdminAnalysisConversionTrend(this.getLastDate(num), this.getLastDate(0))
+      },
+      getLastDate(num) {
+        return new Date(new Date().getTime() - 3600 * 1000 * 24 * num).format('yyyy-MM-dd')
+      },
       setTrend(trend) {
         this.polar2.series[0].data = []
         this.polar2.series[0].data.push(trend.business_opportunity)
@@ -536,7 +544,9 @@
           this.setTrend(trend)
           let conversionRate = res.data.data.conversion_rate
           this.option.series[0].data = []
+          this.polar2.xAxis.data = []
           conversionRate.forEach(item => {
+            this.polar2.xAxis.data.push(item.date)
             this.option.series[0].data.push(item.value)
           })
           let lossRate = res.data.data.loss_rate
@@ -630,12 +640,27 @@
       }
     },
     created() {
-      // this.getBusinessOpportunity()
-      // this.getAdminAnalysisTrend()
+      this.getBusinessOpportunity()
+      this.getAdminAnalysisTrend()
+      this.times = [this.getLastDate(30), this.getLastDate(0)]
       this.getSource()
       this.getProvince()
       this.getItemType()
       this.getBudget()
+    },
+    watch: {
+      times(val) {
+        if (val[0] === this.getLastDate(7)) {
+          this.showLastWeek = true
+        } else {
+          this.showLastWeek = false
+        }
+        if (val[0] === this.getLastDate(30)) {
+          this.showLastMonth = true
+        } else {
+          this.showLastMonth = false
+        }
+      }
     }
   }
 </script>
@@ -672,8 +697,8 @@
   .line-echarts {
     width: 100%
   }
-  .height172 {
-    height: 172px
+  .height199 {
+    height: 199px
   }
   .height364 {
     height: 364px
