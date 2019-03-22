@@ -1260,20 +1260,6 @@ export default {
           address: '0%'
         }
       ],
-      tableData4: [
-        {
-          app_count: 0,
-          pc_count: 0,
-          new_from: 0,
-          son_source: 0,
-          new_from_value: '',
-          son_source_value: '',
-          url: '',
-          wap_count: 0,
-          device: 0,
-          total_count: 0
-        }
-      ],
       optionsCity: [
         {
           value: 0,
@@ -2281,27 +2267,6 @@ export default {
     downchance() {
       this.ischance = false
     },
-    // 落地页统计列表
-    getList() {
-      this.$http.get(api.adminGeneralizeLists).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          if (response.data.data && response.data.data.length) {
-            let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
-            // let device = ['', 'pc端', '移动端', 'app']
-            response.data.data.forEach(item => {
-              item.new_from = from[item.new_from]
-              // item.device = device[item.device]
-            })
-          }
-          this.tableData4 = response.data.data
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch (function (error) {
-        this.$message.error(error.message)
-      })
-    },
     // 下载
     download() {
       this.$nextTick(() => {
@@ -2343,7 +2308,6 @@ export default {
     }
   },
   created: function() {
-    this.getList()
     this.getClueStatistics()
     this.getCustomerProfile()
     for (let i = 0; i < 7; i++) {
