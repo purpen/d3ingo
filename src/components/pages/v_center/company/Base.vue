@@ -129,6 +129,29 @@
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('address')">编辑</a>
               </el-col>
             </el-row> -->
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>成立时间</p>
+              </el-col>
+              <el-col :span="contentSpan" class="content">
+
+                <el-date-picker
+                  v-model="form.establish_time"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="element.establish_time"
+                  class="option-bord botn-color">
+                </el-date-picker>
+
+                <p v-else>{{ form.establish_time }}</p>
+              </el-col>
+              <el-col :span="editSpan" :offset="7" class="edit">
+                <a v-if="element.establish_time" title="保存" href="javascript:void(0)"
+                   @click="saveBtn('establish_time', ['establish_time'])">保存</a>
+                <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('establish_time')">编辑</a>
+              </el-col>
+            </el-row>
+
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
@@ -933,6 +956,7 @@
           company_abbreviation: '',
           company_english: '',
           company_type: '',
+          establish_time: '',
           good_field: [],
           branch: '',
           registration_number: '',
@@ -999,6 +1023,7 @@
         element: {
           company_abbreviation: false,
           company_english: false,
+          establish_time: false,
           contact: false,
           good_field: false,
           address: false,
@@ -1355,6 +1380,9 @@
             row.web = 'http://' + row['web']
           }
         }
+        if (mark === 'establish_time' && row['establish_time']) {
+          row.establish_time = row.establish_time.format('yyyy-MM-dd')
+        }
         // 验证简介长度
         if (mark === 'profile' && row['company_profile']) {
           if (row['company_profile'].length > 300) {
@@ -1403,6 +1431,9 @@
                 that.$store.commit(USER_INFO, currentUser)
               } else if (mark === 'revenue') {
                 that.form.revenue_value = item.revenue_value
+              } else if (mark === 'establish_time') {
+                let establishTime = item.establish_time.slice(0, 10)
+                that.form.establish_time = establishTime
               } else if (mark === 'web') {
                 that.form.web_p = row.web
                 let urlRegex = /http:\/\/|https:\/\//
@@ -1773,6 +1804,10 @@
                   if (this.form.branch_office > 0) {
                     this.form.branch = this.form.branch_office + '家'
                   }
+                  if (this.form.establish_time) {
+                    let establishTime = this.form.establish_time.slice(0, 10)
+                    this.form.establish_time = establishTime
+                  }
                   if (response.data.data.logo_image) {
                     this.imageUrl = response.data.data.logo_image.logo
                   }
@@ -1837,6 +1872,7 @@
                 province: data.province,
                 area: data.area,
                 city: data.city,
+                establish_time: this.form.establish_time,
                 address: data.address,
                 account_name: data.account_name,
                 bank_name: data.bank_name,

@@ -1,89 +1,75 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="articleList"></v-menu>
+  <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+    <div class="admin-menu-sub">
+      <div class="admin-menu-sub-list">
+        <router-link :to="{name: 'adminArticleList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+      </div>
 
-          <div class="admin-menu-sub">
-            <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminArticleList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
-            </div>
+      <div class="fr">
+        <router-link :to="{name: 'adminArticleSubmit'}" class="item add">
+          <i class="el-icon-plus"></i> 添加</router-link>
+      </div>
+    </div>
 
-            <div class="fr">
-              <router-link :to="{name: 'adminArticleSubmit'}" class="item add">
-                <i class="el-icon-plus"></i> 添加</router-link>
-            </div>
-          </div>
+    <el-table :data="tableData" border v-loading="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
+      <el-table-column prop="id" label="ID" width="60">
+      </el-table-column>
+      <el-table-column label="封面" width="80">
+        <template slot-scope="scope">
+          <p><img :src="scope.row.cover_url" width="50" /></p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="title" label="标题" min-width="180">
+      </el-table-column>
+      <el-table-column prop="classification_value" label="分类" width="100">
+      </el-table-column>
+      <el-table-column prop="source_from" label="来源" width="120">
+      </el-table-column>
+      <el-table-column prop="user_id" label="创建人" width="60">
+      </el-table-column>
+      <el-table-column prop="read_amount" label="浏览量" width="60">
+      </el-table-column>
+      <el-table-column label="状态" width="60">
+        <template slot-scope="scope">
+          <p v-if="scope.row.status === 1">
+            <el-tag type="success">发布</el-tag>
+          </p>
+          <p v-else>
+            <el-tag type="gray">草稿</el-tag>
+          </p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="created_at" width="100" label="创建时间">
+      </el-table-column>
+      <el-table-column width="100" label="操作">
+        <template slot-scope="scope">
+          <p>
+            <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">取消发布</a>
+            <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">发布</a>
+          </p>
+          <p>
+            <router-link :to="{name: 'adminArticleSubmit', query: {id: scope.row.id}}">编辑</router-link>
+            <a href="javascript:void(0);">删除</a>
+          </p>
+        </template>
+      </el-table-column>
+    </el-table>
 
-          <el-table :data="tableData" border v-loading="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
-            <el-table-column type="selection" width="55">
-            </el-table-column>
-            <el-table-column prop="id" label="ID" width="60">
-            </el-table-column>
-            <el-table-column label="封面" width="80">
-              <template slot-scope="scope">
-                <p><img :src="scope.row.cover_url" width="50" /></p>
-              </template>
-            </el-table-column>
-            <el-table-column prop="title" label="标题" min-width="180">
-            </el-table-column>
-            <el-table-column prop="classification_value" label="分类" width="100">
-            </el-table-column>
-            <el-table-column prop="source_from" label="来源" width="120">
-            </el-table-column>
-            <el-table-column prop="user_id" label="创建人" width="60">
-            </el-table-column>
-            <el-table-column prop="read_amount" label="浏览量" width="60">
-            </el-table-column>
-            <el-table-column label="状态" width="60">
-              <template slot-scope="scope">
-                <p v-if="scope.row.status === 1">
-                  <el-tag type="success">发布</el-tag>
-                </p>
-                <p v-else>
-                  <el-tag type="gray">草稿</el-tag>
-                </p>
-              </template>
-            </el-table-column>
-            <el-table-column prop="created_at" width="100" label="创建时间">
-            </el-table-column>
-            <el-table-column width="100" label="操作">
-              <template slot-scope="scope">
-                <p>
-                  <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">取消发布</a>
-                  <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">发布</a>
-                </p>
-                <p>
-                  <router-link :to="{name: 'adminArticleSubmit', query: {id: scope.row.id}}">编辑</router-link>
-                  <a href="javascript:void(0);">删除</a>
-                </p>
-              </template>
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            v-if="tableData.length && query.totalCount > query.pageSize"
-           class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="query.page" :page-sizes="[50, 100, 500]" :page-size="query.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="query.totalCount">
-          </el-pagination>
-
-        </div>
-      </el-col>
-    </el-row>
+    <el-pagination
+      v-if="tableData.length && query.totalCount > query.pageSize"
+      class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="query.page" :page-sizes="[50, 100, 500]" :page-size="query.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="query.totalCount">
+    </el-pagination>
 
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
 export default {
   name: 'admin_company_list',
-  components: {
-    vMenu
-  },
   data() {
     return {
       menuType: 0,

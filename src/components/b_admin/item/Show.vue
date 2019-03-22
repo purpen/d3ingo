@@ -1,413 +1,406 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
-      <v-menu selectedName="itemList"></v-menu>
+  <div>
+    
+    <div class="content">
 
-      <el-col :span="20">
-        <div class="content">
+      <div class="admin-menu-sub">
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+        </div>
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminItemList', query: {type: 1}}" active-class="false" :class="{'item': true, 'is-active': menuType === 1}">完善资料</router-link>
+        </div>
+        <div class="admin-menu-sub-list">
+          <router-link :to="{name: 'adminItemList', query: {type: 2}}" active-class="false" :class="{'item': true, 'is-active': menuType === 2}">等待推荐</router-link>
+        </div>
+      </div>
 
-        <div class="admin-menu-sub">
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
-          </div>
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminItemList', query: {type: 1}}" active-class="false" :class="{'item': true, 'is-active': menuType === 1}">完善资料</router-link>
-          </div>
-          <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminItemList', query: {type: 2}}" active-class="false" :class="{'item': true, 'is-active': menuType === 2}">等待推荐</router-link>
-          </div>
+
+      <div class="content-box" v-loading="isLoading">
+
+        <div class="form-title">
+          <span>基本信息</span>
         </div>
 
+        <div class="company-show">
 
-        <div class="content-box" v-loading="isLoading">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>名称</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.name }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-          <div class="form-title">
-            <span>基本信息</span>
-          </div>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>类型</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.type_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-          <div class="company-show">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>类别</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>名称</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.name }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>领域</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ info.field_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>类型</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.type_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>行业</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.industry_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>类别</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>预算</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.design_cost_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>领域</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ info.field_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>周期</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.cycle_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>行业</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.industry_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>工作地点</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.province_value }} {{ item.city_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>预算</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.design_cost_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>功能或卖点</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ info.product_features }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>周期</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.cycle_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>工作地点</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.province_value }} {{ item.city_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>功能或卖点</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ info.product_features }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>相关附件</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-for="(d, index) in info.image" :key="index+'d'"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>相关附件</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-for="(d, index) in info.image" :key="index+'d'"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
 
-          </div>
+        </div>
 
-          <div class="form-title">
-            <span>公司信息</span>
-          </div>
+        <div class="form-title">
+          <span>公司信息</span>
+        </div>
 
-          <div class="company-show">
+        <div class="company-show">
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>名称</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.company_name }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>名称</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.company_name }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>规模</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.company_size_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>规模</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.company_size_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>网址</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.company_web }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>网址</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.company_web }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>所在地区</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>所在地区</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>详细地址</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.address }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>详细地址</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.address }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>联系人</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.contact_name }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>联系人</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.contact_name }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>职位</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.position }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>职位</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.position }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>手机</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.phone }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>手机</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.phone }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>邮箱</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.email }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>邮箱</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.email }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-          </div>
+        </div>
 
-          <div class="form-title">
-            <span>金额及协议</span>
-          </div>
+        <div class="form-title">
+          <span>金额及协议</span>
+        </div>
 
-          <div class="company-show">
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>项目报价</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>¥ {{ item.price }} <a v-if="quotation" href="javascript:void(0);" @click="showQuotaBtn">查看报价单>></a></p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+        <div class="company-show">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>项目报价</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>¥ {{ item.price }} <a v-if="quotation" href="javascript:void(0);" @click="showQuotaBtn">查看报价单>></a></p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>佣金</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.commission_rate }} %</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>佣金</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.commission_rate }} %</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>剩余金额</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>¥ {{ item.rest_fund }}</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>剩余金额</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>¥ {{ item.rest_fund }}</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>合同</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
-                <p v-else>无</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>合同</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
+              <p v-else>无</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>阶段</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>
-                  <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
-                  <div class="stage-title clearfix">
-                    <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>阶段</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>
+                <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
+                <div class="stage-title clearfix">
+                  <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
-                    <p v-if="d.confirm === 0">
-                      <span>未确认</span>
-                    </p>
-                    <p v-else>
-                      <span>已确认</span>
-                    </p>
-                  </div>
-                  <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
-                    <div class="contract-left">
-                      <div class="contract-content">
-                        <p>{{ asset.name }}</p>
-                        <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
-                      </div>
-                    </div>
-                    <div class="contract-right">
-                      <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
-                      </p>
-                    </div>
-                    <div class="clear"></div>
-                  </div>
+                  <p v-if="d.confirm === 0">
+                    <span>未确认</span>
+                  </p>
+                  <p v-else>
+                    <span>已确认</span>
+                  </p>
                 </div>
-                </p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-          </div>
-
-          <div class="form-title">
-            <span>设计服务商</span>
-          </div>
-
-          <div class="company-show">
-            <el-row class="item" :gutter="gutter" v-if="item.status === 3">
-              <el-col :span="spanKey">
-                <p>系统推荐</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-            <el-row class="item" :gutter="gutter" v-if="item.status > 3">
-              <el-col :span="spanKey">
-                <p>已选择</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-for="(d, index) in offerCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.design_company.id}}" target="_blank">{{ d.design_company.company_name }}</router-link>---<span>[{{ d.status_value }}]</span></p>
-              </el-col>
-              <el-col :span="spanOpt">
-              </el-col>
-            </el-row>
-
-          </div>
-
-          <div class="form-title">
-            <span>其它</span>
-          </div>
-
-          <div class="company-show">
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>来源</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p v-if="item.source === 0">铟果</p>
-                <p v-else-if="item.source === 1">京东云</p>
-              </el-col>
-            </el-row>
-
-          </div>
-
-          <div class="form-title">
-            <span>状态</span>
-          </div>
-
-          <div class="company-show">
-            <el-row class="item" :gutter="gutter">
-              <el-col :span="spanKey">
-                <p>状态</p>
-              </el-col>
-              <el-col :span="spanVal">
-                <p>{{ item.status_value }}</p>
-              </el-col>
-              <!-- <el-col :span="spanOpt">
-                <p><el-button class="is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
-              </el-col> -->
-            </el-row>
-
-          </div>
+                <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
+                  <div class="contract-left">
+                    <div class="contract-content">
+                      <p>{{ asset.name }}</p>
+                      <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
+                    </div>
+                  </div>
+                  <div class="contract-right">
+                    <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                    </p>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              </p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
 
         </div>
 
+        <div class="form-title">
+          <span>设计服务商</span>
         </div>
-      </el-col>
-    </el-row>
 
+        <div class="company-show">
+          <el-row class="item" :gutter="gutter" v-if="item.status === 3">
+            <el-col :span="spanKey">
+              <p>系统推荐</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+          <el-row class="item" :gutter="gutter" v-if="item.status > 3">
+            <el-col :span="spanKey">
+              <p>已选择</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-for="(d, index) in offerCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.design_company.id}}" target="_blank">{{ d.design_company.company_name }}</router-link>---<span>[{{ d.status_value }}]</span></p>
+            </el-col>
+            <el-col :span="spanOpt">
+            </el-col>
+          </el-row>
+
+        </div>
+
+        <div class="form-title">
+          <span>其它</span>
+        </div>
+
+        <div class="company-show">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>来源</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p v-if="item.source === 0">铟果</p>
+              <p v-else-if="item.source === 1">京东云</p>
+            </el-col>
+          </el-row>
+
+        </div>
+
+        <div class="form-title">
+          <span>状态</span>
+        </div>
+
+        <div class="company-show">
+          <el-row class="item" :gutter="gutter">
+            <el-col :span="spanKey">
+              <p>状态</p>
+            </el-col>
+            <el-col :span="spanVal">
+              <p>{{ item.status_value }}</p>
+            </el-col>
+            <!-- <el-col :span="spanOpt">
+              <p><el-button class="is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
+            </el-col> -->
+          </el-row>
+
+        </div>
+
+      </div>
+
+    </div>
     <el-dialog
       title="提示"
       :visible.sync="comfirmDialog"
@@ -488,7 +481,6 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/b_admin/Menu'
 const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
 const vJdDemandContractView = () => import('@/components/block/JdDemandContractView')
@@ -496,7 +488,6 @@ const vJdDesignContractView = () => import('@/components/block/JdDesignContractV
 export default {
   name: 'admin_item_view',
   components: {
-    vMenu,
     vQuoteView,
     vContractView,
     vJdDemandContractView,
@@ -780,7 +771,7 @@ export default {
   computed: {
     isAdmin() {
       var user = this.$store.state.event.user
-      if (user.role_id === 15 || user.role_id === 20) {
+      if (user.role_id >= 10) {
         return true
       }
       return false

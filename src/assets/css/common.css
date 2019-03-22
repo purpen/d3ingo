@@ -18,6 +18,9 @@
 .flex {
   display: flex;
 }
+.flex-column {
+  flex-direction: column
+}
 .flex1 {
   flex: 1 1 auto
 }
@@ -51,6 +54,9 @@
 .fz-20 {
   font-size: 20px;
 }
+.fz-22 {
+  font-size: 22px;
+}
 .tc-2 {
   color: #222
 }
@@ -69,8 +75,11 @@
 .tc-red {
   color: #ff5a5f
 }
+.tc-green {
+  color: #20AD1E
+}
 .tc-hover-red:hover {
-  color: #ff5a5f
+  color: #ff5a5f !important;
 }
 .tc-blue {
   color: #0989C5
@@ -83,6 +92,9 @@
 }
 .bb-e6 {
   border-bottom: 1px solid #e6e6e6
+}
+.bg-f {
+  background: #fff
 }
 .bg-fa {
   background: #fafafa
@@ -111,8 +123,8 @@
 .line-height16 {
   line-height: 16px;
 }
-.line-height30 {
-  line-height: 30px;
+.line-height18 {
+  line-height: 18px;
 }
 .line-height24 {
   line-height: 24px;
@@ -120,8 +132,17 @@
 .line-height20 {
   line-height: 20px;
 }
+.line-height28 {
+  line-height: 28px;
+}
+.line-height30 {
+  line-height: 30px;
+}
 .line-height32 {
   line-height: 32px;
+}
+.line-height40 {
+  line-height: 40px;
 }
 .line-height1_5 {
   line-height: 1.5
@@ -151,11 +172,47 @@
 .fw-normal {
   font-family: PingFangSC-Light
 }
+.margin0 {
+  margin: 0
+}
+.margin-t-10 {
+  margin-top: 10px;
+}
+.margin-r-10 {
+  margin-right: 10px;
+}
+.margin-r-15 {
+  margin-right: 15px!important;
+}
+.margin-r-20 {
+  margin-right: 20px;
+}
+.padding10 {
+  padding: 10px
+}
+.padding15 {
+  padding: 15px
+}
+.padding20 {
+  padding: 20px
+}
+.padding26 {
+  padding-bottom: 26px;
+}
+.padding-b15 {
+  padding-bottom: 15px;
+}
+.margin-b-20 {
+  margin-bottom: 20px
+}
 .blank5 {
   padding-top: 5px;
 }
 .blank10 {
   padding-top: 10px;
+}
+.blank13 {
+  padding-top: 13px;
 }
 
 .blank20 {
@@ -177,25 +234,12 @@
 .blank60 {
   padding-top: 60px;
 }
-.margin0 {
-  margin: 0
-}
-.margin-r-15 {
-  margin-right: 15px!important;
-}
-.margin-r-20 {
-  margin-right: 20px;
-}
-.padding26 {
-  padding-bottom: 26px;
-}
-.padding-b15 {
-  padding-bottom: 15px;
-}
 .text-center {
   text-align: center
 }
-
+.va-bottom {
+  vertical-align: bottom
+}
 .fw-4 {
   font-weight: 400;
 }
@@ -215,6 +259,15 @@
 }
 .helf-width {
   width: 50%;
+}
+.pointer {
+  cursor: pointer;
+}
+.text-overflow {
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* 发布需求 */
 .project-cover {
@@ -511,6 +564,31 @@ button.el-button.is-custom.is-disabled,
 }
 .no-border_radius {
   border-radius: 0;
+}
+/* 选项框 */
+.option-menu {
+  display: flex;
+}
+.option-item {
+  width: 60px;
+  height: 30px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  margin-left: -1px;
+  line-height: 30px;
+  text-align: center;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.option-item80 {
+  width: 80px
+}
+.option-item:hover, .option-item.active {
+  background: #ff5a5f;
+  color: #fff
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
