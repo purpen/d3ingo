@@ -1450,10 +1450,15 @@ export default {
     },
     isOpenDialog() {
       if (this.isHasPower) {
+        if (this.isAdmin === 12) {
+          this.clientForm.execute_user_id = this.userId
+        } else {
+          this.clientForm.execute_user_id = ''
+        }
         this.dialogAddUser = true
         this.getUsers()
       } else {
-        this.dialogAddUser = true
+        this.dialogAddUser = false
       }
     },
     // 获取业务人员列表
@@ -1583,7 +1588,7 @@ export default {
         name: this.clientForm.name,
         phone: this.clientForm.phone,
         new_call_status: this.clientForm.new_call_status,
-        execute_user_id: this.userId,
+        execute_user_id: this.clientForm.execute_user_id,
         new_source: this.clientForm.new_source,
         son_source: this.clientForm.son_source,
         qq: '',
@@ -2258,7 +2263,7 @@ export default {
       return this.$store.state.event.user.role_id
     },
     isHasPower() { // 是否有权限编辑
-      if (this.isAdmin === 12) {
+      if (this.isAdmin >= 12) {
         return true
       } else {
         return false
