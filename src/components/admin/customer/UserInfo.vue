@@ -300,8 +300,8 @@
                         </div>
                       </div>
                       <div class="design-li-footer">
-                        <span>确认设计需求</span>
-                        <span><i class="fx fx-icon-time"></i>2019-03-16</span>
+                        <span>{{d.stage | getProgessStatus}}</span>
+                        <span><i class="fx fx-icon-time"></i></span>
                         <span class="fr" @click="boolStage = true">查看进度</span>
                       </div>
                       <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
@@ -1734,11 +1734,11 @@ export default {
             this.$message.error('请填写联系人')
             return
           }
-          if (!this.userForm.phone) {
+          if (!this.clientForm.phone) {
             this.$message.error('请填写联系人电话')
             return
           }
-          if (this.userForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.userForm.phone)) {
+          if (this.clientForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.clientForm.phone)) {
             this.$message({
               message: '手机号格式不正确!',
               type: 'error',
@@ -2376,6 +2376,12 @@ export default {
       } else {
         return mix * 16
       }
+    },
+    getProgessStatus(val) {
+      let obj = JSON.parse(val)
+      let arr = Object.keys(obj)
+      let mix = Math.max(...arr)
+      return obj[mix].message
     }
   },
   created() {
