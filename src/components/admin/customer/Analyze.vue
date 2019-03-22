@@ -73,7 +73,7 @@
         <div class="bg-f7 padding20">
           <div class="clearfix content-head">
             <div class="fl padding-tb-7">
-              <h2 class="sub-title">趋势转化</h2>
+              <h2 class="sub-title">转化趋势</h2>
             </div>
             <div class="chart-block fr">
               <el-date-picker
@@ -155,7 +155,7 @@
               <li v-for="(ele, index) in rank.source" :key="index" class="clearfix rank-item bb-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
-                  <span class="tc-6 fz-14">{{ele.name}}</span>
+                  <span class="tc-6 fz-14">{{ele.name_value}}</span>
                 </div>
                 <div class="fr rank-r">
                   <span class="value fz-14">{{ele.number}}</span>
@@ -186,7 +186,7 @@
               <li v-for="(ele, index) in rank.budget" :key="index" class="clearfix rank-item bb-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
-                  <span class="tc-6 fz-14">{{ele.name}}</span>
+                  <span class="tc-6 fz-14">{{ele.name_value}}</span>
                 </div>
                 <div class="fr rank-r">
                   <span class="value fz-14">{{ele.number}}</span>
@@ -200,7 +200,7 @@
     </el-row>
     <el-row :gutter="20">
       <el-col :span="12">
-        <div class="sub-cont padding20">
+        <div class="sub-cont padding20 blank40">
           <div class="clearfix content-head line-height30">
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机类型排行</h2>
@@ -219,7 +219,7 @@
               <li v-for="(ele, index) in rank.itemType" :key="index" class="clearfix rank-item bb-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
-                  <span class="tc-6 fz-14">{{ele.name}}</span>
+                  <span class="tc-6 fz-14">{{ele.name_value}}</span>
                 </div>
                 <div class="fr rank-r">
                   <span class="value fz-14">{{ele.num}}</span>
@@ -231,7 +231,7 @@
         </div>
       </el-col>
       <el-col :span="12">
-        <div class="sub-cont padding20">
+        <div class="sub-cont padding20 blank40">
           <div class="clearfix content-head line-height30">
             <div class="fl padding-tb-7">
               <h2 class="sub-title">商机地区 Top10</h2>
@@ -262,6 +262,53 @@
         </div>
       </el-col>
     </el-row>
+    <div class="sub-cont padding20">
+      <div class="chart-header">
+        <h2 class="sub-title">落地页访问统计</h2>
+      </div>
+      <div class="promotion blank20">
+        <el-table
+          :data="tableData4"
+          style="width: 100%">
+          <el-table-column
+            prop="new_from_value"
+            label="来源"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="son_source_value"
+            label="子来源">
+          </el-table-column>
+          <el-table-column
+            prop="url"
+            width="285"
+            label="来源链接"
+            >
+          </el-table-column>
+          <!-- <el-table-column
+            prop="device"
+            label="设备">
+          </el-table-column> -->
+          <el-table-column
+            prop="app_count"
+            label="app数量"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="pc_count"
+            label="pc端数量">
+          </el-table-column>
+          <el-table-column
+            prop="wap_count"
+            label="移动端数量">
+          </el-table-column>
+          <el-table-column
+            prop="total_count"
+            label="总数">
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -271,6 +318,20 @@
     name: 'adminPotentialAnalyze',
     data () {
       return {
+        tableData4: [
+          {
+            app_count: 0,
+            pc_count: 0,
+            new_from: 0,
+            son_source: 0,
+            new_from_value: '',
+            son_source_value: '',
+            url: '',
+            wap_count: 0,
+            device: 0,
+            total_count: 0
+          }
+        ],
         polar: {
           color: ['#0A6DD9'],
           grid: {
@@ -284,7 +345,8 @@
             show: false
           },
           series: [{
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            data: [],
+            barMaxWidth: 55,
             type: 'bar'
           }],
           tooltip: {
@@ -305,7 +367,8 @@
             show: false
           },
           series: [{
-            data: [120, 200, 150, 80],
+            barMaxWidth: 55,
+            data: [],
             type: 'bar'
           }],
           tooltip: {
@@ -313,36 +376,50 @@
           }
         },
         option: {
-          color: ['#ff5a5f'],
+          color: ['#FF7575'],
           grid: {
             top: 20
           },
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            show: false
+            data: [],
+            axisLine: { // 坐标轴轴线相关设置。
+              show: false
+            },
+            axisTick: { // 是否显示坐标轴刻度标签
+              show: false
+            },
+            axisLabel: { // 是否显示坐标轴刻度文字，刻度标签
+              show: false
+            }
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '{c}%'
+            formatter: '{b}<br/> ● {c}%'
           },
           legend: {
           },
           yAxis: {
-            axisTick: {
+            axisLine: { // 坐标轴轴线相关设置。
               show: false
             },
-            axisLine: {
+            axisTick: { // 坐标轴刻度标签
               show: false
             },
-            axisLabel: {
+            axisLabel: { // 坐标轴刻度文字，刻度标签
               show: false
+            },
+            splitLine: {
+              lineStyle: {
+                type: 'dashed'
+              }
             }
           },
           series: [
             {
               type: 'line',
-              data: [123, 234, 111, 222],
+              data: [],
               areaStyle: {}
             }
           ]
@@ -355,31 +432,43 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            show: false
+            data: [],
+            axisLine: { // 坐标轴轴线相关设置。
+              show: false
+            },
+            axisTick: { // 是否显示坐标轴刻度标签
+              show: false
+            },
+            axisLabel: { // 是否显示坐标轴刻度文字，刻度标签
+              show: false
+            }
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '{c}%'
+            formatter: '{b}<br/> ● {c}%'
           },
           legend: {
-            bottom: '0',
-            data: ['收入']
           },
           yAxis: {
-            axisTick: {
+            axisLine: { // 坐标轴轴线相关设置。
               show: false
             },
-            axisLine: {
+            axisTick: { // 坐标轴刻度标签
               show: false
             },
-            axisLabel: {
+            axisLabel: { // 坐标轴刻度文字，刻度标签
               show: false
+            },
+            splitLine: {
+              lineStyle: {
+                type: 'dashed'
+              }
             }
           },
           series: [
             {
               type: 'line',
-              data: [123, 234, 111, 222],
+              data: [],
               areaStyle: {}
             }
           ]
@@ -521,6 +610,27 @@
       }
     },
     methods: {
+      // 落地页统计列表
+      getList() {
+        this.$http.get(api.adminGeneralizeLists).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data && response.data.data.length) {
+              let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
+              // let device = ['', 'pc端', '移动端', 'app']
+              response.data.data.forEach(item => {
+                item.new_from = from[item.new_from]
+                // item.device = device[item.device]
+              })
+            }
+            this.tableData4 = response.data.data
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch (function (error) {
+          this.$message.error(error.message)
+        })
+      },
       changeTimes(num) {
         this.times = [this.getLastDate(num), this.getLastDate(0)]
         this.getAdminAnalysisConversionTrend(this.getLastDate(num), this.getLastDate(0))
@@ -543,15 +653,17 @@
           let trend = res.data.data.trend
           this.setTrend(trend)
           let conversionRate = res.data.data.conversion_rate
+          this.option.xAxis.data = []
           this.option.series[0].data = []
-          this.polar2.xAxis.data = []
           conversionRate.forEach(item => {
-            this.polar2.xAxis.data.push(item.date)
+            this.option.xAxis.data.push(item.date)
             this.option.series[0].data.push(item.value)
           })
           let lossRate = res.data.data.loss_rate
+          this.option2.xAxis.data = []
           this.option2.series[0].data = []
           lossRate.forEach(item => {
+            this.option2.xAxis.data.push(item.date)
             this.option2.series[0].data.push(item.value)
           })
           // res.data.data.conversion_rate
@@ -643,10 +755,12 @@
       this.getBusinessOpportunity()
       this.getAdminAnalysisTrend()
       this.times = [this.getLastDate(30), this.getLastDate(0)]
+      this.getAdminAnalysisConversionTrend(this.getLastDate(30), this.getLastDate(0))
       this.getSource()
       this.getProvince()
       this.getItemType()
       this.getBudget()
+      this.getList()
     },
     watch: {
       times(val) {
@@ -674,6 +788,7 @@
     padding-left: 14px;
     position: relative;
     margin: 0;
+    line-height: 20px;
   }
   .sub-title:before {
     content: '';
