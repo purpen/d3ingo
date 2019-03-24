@@ -289,7 +289,7 @@
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">职务</span>
-                          <span class="fz-14">{{d.contact_name}}</span>
+                          <span class="fz-14">{{d.position}}</span> `
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">电话</span>
@@ -1548,6 +1548,8 @@ export default {
           this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
             query: {page: this.query.page}})
           this.option = 'project'
+          this.boolProjectList = true
+          this.boolDesigeList = true
           this.getUserInfo()
           this.getLogList()
           this.getUserProject()
@@ -1565,6 +1567,8 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
           this.option = 'project'
+          this.boolProjectList = true
+          this.boolDesigeList = true
           this.getUserInfo()
           this.getLogList()
           this.getUserProject()
