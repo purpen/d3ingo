@@ -300,11 +300,11 @@
                           <span class="fz-14">{{d.wx}}</span>
                         </div>
                       </div>
-                      <!-- <div class="design-li-footer">
+                      <div class="design-li-footer">
                         <span>{{d.stage | getProgessStatus}}</span>
                         <span><i class="fx fx-icon-time"></i></span>
-                        <span class="fr" @click="boolStage = true">查看进度</span>
-                      </div> -->
+                        <span class="fr" @click="showProgessDesign(d.stage)">查看进度</span>
+                      </div>
                       <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
                     </li>
                   </ul>
@@ -893,11 +893,16 @@
       </span>
     </el-dialog>
 
-    <!-- <el-dialog
+    <el-dialog
       title="对接进度"
       :visible.sync="boolStage"
       width="380px">
-    </el-dialog> -->
+      <el-steps direction="vertical" :active="stageArr.length - 2">
+        <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time? item.time : ''"></el-step>
+        <!-- <el-step :title="stageObj['2'].message" :description="stageObj['2'].time.date_format().format('yyyy-MM-dd hh:mm:ss')"></el-step>
+        <el-step :title="stageObj['3'].message" :description="stageObj['3'].time || stageObj['3'].time.date_format().format('yyyy-MM-dd hh:mm:ss')"></el-step> -->
+      </el-steps>
+    </el-dialog>
 
 
   </div>
@@ -1388,7 +1393,8 @@ export default {
       boolClueStatus2: true, // 显示无效后者流失
       isOpen: true,
 
-      boolStage: false
+      boolStage: false,
+      stageArr: []
     }
   },
   methods: {
@@ -1452,6 +1458,24 @@ export default {
     },
     showTabProgress(val) {
       this.activeName = val
+    },
+    showProgessDesign(d) { // 查看进度
+      this.boolStage = true
+      let obj = JSON.parse(d)
+      let arr = Object.keys(obj)
+      let mixKey = Math.max(...arr)
+      console.log(mixKey)
+      let stageArr = []
+      for (let i = 1; i <= mixKey; i++) {
+        stageArr.push(obj[i])
+      }
+      stageArr.forEach(d => {
+        if (d.time) {
+          d.time = d.time.date_format().format('yyyy-MM-dd hh:mm:ss')
+        }
+      })
+      this.stageArr = stageArr
+      console.log(stageArr)
     },
     importWeb() { // 导入社区
       if (this.userForm.is_thn) {
@@ -2592,8 +2616,8 @@ export default {
 }
 .design-li {
   /* width: 680px; */
-  height: 142px;
-  padding: 10px 18px 0 20px;
+  /* height: 142px; */
+  padding: 10px 18px 18px 20px;
 }
 .design-info > div {
   width: 150px;
@@ -3277,6 +3301,16 @@ export default {
 }
 .el-form-item__label:before {
   display: inline !important;
+}
+.el-step__title.is-finish,
+.el-step__description.is-finish {
+  color: #222 !important;
+}
+.el-step__icon.is-text {
+  /* border-color: #00ac84 !important;*/
+}
+.el-step__line {
+  background-color: #00ac84 !important;
 }
 </style>
 
