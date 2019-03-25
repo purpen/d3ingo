@@ -1,5 +1,5 @@
 <template>
-  <div class="container" ref="container">
+  <div v-if="false" class="container" ref="container">
 
     <v-progress :baseStep="true" :itemId="form.id" :step="form.stage_status"></v-progress>
 

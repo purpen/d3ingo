@@ -298,10 +298,10 @@
   }
 
   .el-table th .cell {
-    font-size: 12px;
+    font-size: 14px;
   }
   .el-table .cell, .el-table th>div {
-      font-size: 12px;
+      font-size: 14px;
   }
   .el-pagination__sizes .el-input .el-input__inner:hover {
     border-color: #ff5a5f

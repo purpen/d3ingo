@@ -73,7 +73,7 @@
         </el-menu>
       </div>
     </header>
-    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -263,7 +263,7 @@
         </el-menu>
       </div>
     </section>
-    <section v-else :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-else :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -793,11 +793,15 @@
     color: #666;
     cursor: pointer;
   }
-  .admin-menu img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px
+  .admin-menu {
+    border: none
   }
+  .admin-menu img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    margin-left: -5px;
+}
 
   @media screen and (min-width: 768px) {
     .menu-list {
@@ -841,6 +845,7 @@
     }
   }
   .el-menu-item {
+    width: 55px;
     height: 50px;
     line-height: 1;
     padding: 0 15px;
@@ -849,6 +854,7 @@
     justify-content: flex-start;
   }
   .admin-menu .el-submenu .el-menu-item {
-    padding-left: 50px!important
+    padding-left: 50px!important;
+    width: 100%;
   }
 </style>
