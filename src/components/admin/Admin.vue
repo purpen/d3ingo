@@ -85,7 +85,7 @@
               </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="客户管理" placement="right">
-          <el-menu-item index="adminPotentialUserList" :route="{name: 'adminPotentialUserList'}">
+          <el-menu-item index="adminPotentialUserList" :route="{name: 'adminPotentialUserList', params: {type: 1}}">
             <img :src="require('assets/images/admin/menu/Customer@2x.png')" alt="客户管理">
           </el-menu-item>
           </el-tooltip>
@@ -698,8 +698,8 @@
     padding-right: 30px;
   }
   .menu-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     cursor: pointer;
     background: url(../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
     background-size: 24px;
@@ -709,7 +709,7 @@
     background-size: 24px;
   }
   .home-icon {
-    height: 60px;
+    height: 70px;
     padding:0 20px;
     display: flex;
     align-items: center;
