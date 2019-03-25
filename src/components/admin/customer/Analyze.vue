@@ -372,7 +372,7 @@
             show: false
           },
           series: [{
-            barMaxWidth: 55,
+            barMaxWidth: 100,
             data: [],
             type: 'bar',
             emphasis: {
