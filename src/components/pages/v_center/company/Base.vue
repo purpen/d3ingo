@@ -1522,7 +1522,7 @@
       change(obj) {
         this.province = this.form.province = obj.province
         this.city = this.form.city = obj.city
-        this.district = this.form.area = obj.district
+        this.district = this.form.area = obj.district || 0
       },
       avatarProgress() {
         this.avatarStr = '上传中...'
@@ -1688,10 +1688,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
-            if (!that.form.area) {
-              that.$message.error('请选择所在区县')
-              return false
-            }
+            // if (!that.form.area) {
+            //   that.$message.error('请选择所在区县')
+            //   return false
+            // }
             if (!that.fileList.length) {
               that.$message.error('请上传公司营业执照')
               return false
