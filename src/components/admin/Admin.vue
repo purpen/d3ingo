@@ -851,6 +851,7 @@
     justify-content: flex-start;
   }
   .admin-menu .el-submenu .el-menu-item {
-    padding-left: 50px!important
+    padding-left: 50px!important;
+    width: 100%;
   }
 </style>

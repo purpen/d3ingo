@@ -236,7 +236,7 @@ export default {
       self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
       self.query.evt = self.$route.query.evt || '2'
       self.query.val = self.$route.query.val
-      self.menuType = parseInt(self.$route.query.type)
+      self.menuType = parseInt(self.query.type)
       self.isLoading = true
       self.$http.get(api.jdDemandCompanyLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {

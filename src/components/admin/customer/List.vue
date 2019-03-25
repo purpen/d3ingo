@@ -1962,7 +1962,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
@@ -1971,7 +1972,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -2716,6 +2718,7 @@ export default {
   background: url('../../../assets/images/tools/cloud_drive/operate/add@2x.png') no-repeat center / 24px 24px;
 }
 .new-button {
+  font-size: 14px;
   background-color: #ff5a5f;
   color: #fff;
   width: 110px;
@@ -2978,10 +2981,10 @@ export default {
 }
 .options-trigger .el-input__inner {
   background-color: #f7f7f7;
-  width: 67px;
+  width: 80px;
   padding: 0px 15px 0px 0px;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
 }
 .options-trigger input::input-placeholder {
   color: #222;
@@ -2989,7 +2992,7 @@ export default {
 .options-trigger, .options-trigger .el-cascader__label, .options-trigger .el-input__icon {
   height: 40px;
   line-height: 40px;
-  font-size: 12px;
+  font-size: 14px;
   padding-left: 0px;
   color: #222;
 }
