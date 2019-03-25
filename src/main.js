@@ -10,7 +10,7 @@ import phenix from '@/assets/js/base'
 import VueLazyload from 'vue-lazyload'
 
 // 兼容 IE
-import 'babel-polyfill'
+// import 'babel-polyfill'
 
 // 样式表导入
 // import 'element-ui/lib/theme-chalk/index.css'
