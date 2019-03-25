@@ -85,7 +85,7 @@
               </el-menu-item>
           </el-tooltip>
           <el-tooltip class="item" content="客户管理" placement="right">
-          <el-menu-item index="adminPotentialUserList" :route="{name: 'adminPotentialUserList'}">
+          <el-menu-item index="adminPotentialUserList" :route="{name: 'adminPotentialUserList', params: {type: 1}}">
             <img :src="require('assets/images/admin/menu/Customer@2x.png')" alt="客户管理">
           </el-menu-item>
           </el-tooltip>
