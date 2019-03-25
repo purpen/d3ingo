@@ -793,12 +793,14 @@
     color: #666;
     cursor: pointer;
   }
+  .admin-menu {
+    border: none
+  }
   .admin-menu img {
     width: 25px;
     height: 25px;
     margin-right: 10px;
     margin-left: -5px;
-    border: none
 }
 
   @media screen and (min-width: 768px) {
