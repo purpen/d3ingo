@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="false" class="container">
 
     <v-progress :companyStep="true" :itemId="form.id" :step="form.stage_status"></v-progress>
     <el-row :gutter="24" type="flex" justify="center">

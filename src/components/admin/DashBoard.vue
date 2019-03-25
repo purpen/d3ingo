@@ -306,6 +306,7 @@
           ]
         },
         option: {
+          color: ['#3E95EB', '#01B4BD', '#6DD3A0', '#FFA64B', '#FDD27A'],
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b}: {c} ({d}%)',

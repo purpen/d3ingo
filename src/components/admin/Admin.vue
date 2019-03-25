@@ -73,7 +73,7 @@
         </el-menu>
       </div>
     </header>
-    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -263,7 +263,7 @@
         </el-menu>
       </div>
     </section>
-    <section v-else :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-else :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -792,6 +792,9 @@
     position: relative;
     color: #666;
     cursor: pointer;
+  }
+  .admin-menu {
+    border: none
   }
   .admin-menu img {
     width: 25px;
