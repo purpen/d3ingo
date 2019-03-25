@@ -66,16 +66,18 @@
     <!-- 列表 -->
     <div class="bottom">
       <div class="bottom-top flex-center-space">
-        <el-select v-model="designReault" placeholder="请选择" class="sever-icon">
-          <el-option
-            v-for="item in designChoose"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <div class="sever-round">
+          <el-select v-model="designReault" placeholder="请选择" class="sever-icon">
+            <el-option
+              v-for="item in designChoose"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
 
-        <div class="sever-right">
+        <div class="sever-right flex-center">
           <el-select v-model="companyReault" placeholder="请选择" class="sever-right-left">
             <el-option
               v-for="item in companyChoose"
@@ -85,7 +87,83 @@
               popper-class="drop-down">
             </el-option>
           </el-select>
+          <input placeholder="在当前列表下搜索" class="sever-right-select"/>
+          <div class="select-img"></div>
         </div>
+      </div>
+    </div>
+    <div class="table-round">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        >
+        <el-table-column
+          prop="zip"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="公司名称"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          label="公司地区"
+          column-key="province"
+          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+          :filter-method="filterHandler"
+          width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.province}}</span>·<span>{{scope.row.city}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="tag"
+          label="公司规模"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="日期"
+          sortable
+          width="100">
+        </el-table-column>
+        <el-table-column
+          label="状态"
+          width="100">
+          <template slot-scope="scope">
+            <div class="flex-center">
+              <div class="state-border"></div>
+              <span>{{scope.row.type}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="navgiteTo(scope.row.type)">查看</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 分页 -->
+    <div class="flex-center-space pad-top-15 pad-left-30">
+      <div class="count">
+        共 {{}} 条
+      </div>
+      <div>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage2"
+          :page-sizes="[10, 20, 50]"
+          :page-size="10"
+          layout="sizes, prev, pager, next"
+          :total="1000">
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -121,7 +199,59 @@ export default {
         value: '3',
         label: '按公司编号'
       }],
-      companyReault: '1'
+      companyReault: '1',
+      tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333,
+        tag: '家',
+        type: 1
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1517 弄',
+        zip: 200333,
+        tag: '公司',
+        type: 2
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1519 弄',
+        zip: 200333,
+        tag: '家',
+        type: 3
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1516 弄',
+        zip: 200333,
+        tag: '公司',
+        type: 4
+      }],
+      currentPage2: 5
+    }
+  },
+  methods: {
+    navgiteTo(id) {
+      this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+    },
+    filterHandler() {
+      console.log(2)
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
     }
   }
 }
@@ -174,7 +304,8 @@ export default {
   }
   .bottom {
     padding-top: 60px;
-    padding-left: 20px;
+    margin-left: 20px;
+    border-bottom: 1px solid #D8D8D8;
   }
   .bottom-top {
     height: 60px;
@@ -195,6 +326,28 @@ export default {
     width: 112px;
     border-right: 1px solid #D8D8D8;
   }
+  .sever-right-select {
+    width: 205px;
+    height: 32px;
+    border: none;
+    padding-left: 10px;
+  }
+  .select-img {
+    height: 18px;
+    width: 18px;
+    background: url('../../../assets/images/design_admin/search@2x.png') no-repeat center / contain;
+  }
+  .table-round {
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+  .state-border {
+    height: 12px;
+    width: 12px;
+    background: #73D13D;
+    border-radius: 50%;
+    margin-right: 7px;
+  }
 
 
 
@@ -205,6 +358,19 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .flex-center {
+    display: flex;
+    align-items: center;
+  }
+  .flex {
+    display: flex;
+  }
+  .pad-top-15 {
+    padding-top: 15px;
+  }
+  .pad-left-30 {
+    padding-left: 30px;
   }
 </style>
 

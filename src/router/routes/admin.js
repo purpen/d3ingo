@@ -255,6 +255,16 @@ module.exports = [
         },
         component: require('@/components/admin/company/Home')
       },
+      {
+        path: '/admin/company/detail/:id',
+        name: 'adminCompanyDetail',
+        meta: {
+          title: '设计服务商详情',
+          requireAuth: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/company/Detail')
+      },
       // 设计服务商列表<弃用>
       {
         path: '/admin/company/list',

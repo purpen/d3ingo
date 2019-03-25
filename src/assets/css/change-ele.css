@@ -1018,6 +1018,9 @@
     line-height: 20px;
     padding: 15px 15px 15px 30px;
   }
+  .sever-round .el-input__inner{
+    height: 36px;
+  }
   .sever-right .el-input__inner {
     padding: 15px 15px 15px 15px;
     height: 34px;
