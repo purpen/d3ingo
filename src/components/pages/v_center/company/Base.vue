@@ -777,8 +777,8 @@
             <el-row>
               <el-col>
                 <div class="form-footer">
-                  <div class="form-btn">
-                    <el-button @click="dialogVisible = false">取消</el-button>
+                  <div class="form-btn fz-0">
+                    <el-button class="margin-r-15" @click="dialogVisible = false">取消</el-button>
                     <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
                     </el-button>
                   </div>
@@ -1705,7 +1705,7 @@
               email: that.form.email,
               phone: that.form.phone + '',
               province: that.form.province,
-              area: that.form.area,
+              area: that.form.area || 0,
               city: that.form.city,
               address: that.form.address,
               account_name: that.form.account_name,
@@ -1870,7 +1870,7 @@
                 email: data.email,
                 phone: data.phone + '',
                 province: data.province,
-                area: data.area,
+                area: data.area || '',
                 city: data.city,
                 establish_time: this.form.establish_time,
                 address: data.address,

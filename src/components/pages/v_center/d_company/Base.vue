@@ -341,8 +341,8 @@
               <el-row>
                 <el-col>
                   <div class="form-footer">
-                    <div class="form-btn">
-                      <el-button @click="returnBase">返回</el-button>
+                    <div class="form-btn fz-0">
+                      <el-button class="margin-r-15" @click="returnBase">返回</el-button>
                       <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
                       </el-button>
                     </div>
@@ -718,7 +718,7 @@
               email: that.form.email,
               address: that.form.address,
               province: that.form.province,
-              area: that.form.area,
+              area: that.form.area || 0,
               city: that.form.city,
               account_name: that.form.account_name,
               bank_name: that.form.bank_name,
@@ -934,7 +934,7 @@
                   email: dataDemand.email,
                   address: dataDemand.address,
                   province: dataDemand.province,
-                  area: dataDemand.area,
+                  area: dataDemand.area || '',
                   city: dataDemand.city,
                   account_name: dataDemand.account_name,
                   bank_name: dataDemand.bank_name,
