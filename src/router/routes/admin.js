@@ -246,6 +246,17 @@ module.exports = [
       },
       // 设计服务商列表
       {
+        path: '/admin/company/home',
+        name: 'adminCompanyHome',
+        meta: {
+          title: '设计服务商列表',
+          requireAuth: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/company/Home')
+      },
+      // 设计服务商列表<弃用>
+      {
         path: '/admin/company/list',
         name: 'adminCompanyList',
         meta: {
