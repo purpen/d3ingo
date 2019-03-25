@@ -73,7 +73,7 @@
         </el-menu>
       </div>
     </header>
-    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -263,7 +263,7 @@
         </el-menu>
       </div>
     </section>
-    <section v-else :class="['menuHide', 'scroll-bar2', {'menuHide-mini': leftWidth === 2}]">
+    <section v-else :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -798,6 +798,7 @@
     height: 25px;
     margin-right: 10px;
     margin-left: -5px;
+    border: none
 }
 
   @media screen and (min-width: 768px) {
