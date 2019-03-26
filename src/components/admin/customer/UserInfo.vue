@@ -4,7 +4,7 @@
           <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
-            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red" @click="getNextUser"></i>
+            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red margin-r0" @click="getNextUser"></i>
           </div>
     </div>
     <div class="card-box" v-loading="userLoading">
@@ -1562,7 +1562,7 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
-            query: {page: this.query.page}})
+            query: this.query})
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
@@ -1582,6 +1582,8 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
+          this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
+            query: this.query})
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
@@ -1664,6 +1666,7 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
+        console.log('11111')
         this.userLoading = false
       })
     },
@@ -1964,12 +1967,12 @@ export default {
     getUserProject() { // 项目列表
       this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
-        if (res.data.meta.status_code === 200 && res.data.data.length) {
+        if (res.data.meta.status_code === 200) {
           const data = res.data.data
           this.projectList = data
           this.userProjectLoading = false
           this.boolallDesign = true
-          const {crm_design_company: designList} = data[0]
+          const {crm_design_company: designList} = data[0] || []
           if (designList.length > 3) {
             this.crmDesignCompanyList1 = designList.slice(0, 3)
           } else {
@@ -2514,6 +2517,9 @@ export default {
 }
 .margin-l0 {
   margin-left: 0 !important;
+}
+.margin-r0 {
+  margin-right: 0 !important;
 }
 .margin-l20 {
   margin-left: 20px;
