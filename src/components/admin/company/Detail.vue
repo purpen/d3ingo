@@ -60,21 +60,37 @@
     
     <div class="bot">
       <div class="directory flex-center">
-        <div class="directory-title mar-right-36">客户列表</div>
-        <div class="directory-title mar-right-36">设计案例</div>
-        <div class="directory-title mar-right-36">设计服务</div>
-        <div class="directory-title mar-right-36">实名认证</div>
-        <div class="directory-title">公司简介</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" @click="getType(1)">客户列表</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">设计案例</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" @click="getType(3)">设计服务</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 4}" @click="getType(4)">实名认证</div>
+        <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
+    <server v-if="type === 3"></server>
+    <certificate v-if="type === 4"></certificate>
+    <introduction v-if="type === 5"></introduction>
   </div>
 </template>
 <script>
+import server from './server'
+import certificate from './certificate'
+import introduction from './introduction'
 export default {
   data() {
     return {
-
+      type: 1
     }
+  },
+  methods: {
+    getType(type) {
+      this.type = type
+    }
+  },
+  components: {
+    server,
+    certificate,
+    introduction
   }
 }
 </script>
@@ -206,6 +222,10 @@ export default {
     height: 50px;
   }
   .directory-title:hover {
+    color: #ff5a5f;
+    border-bottom: 4px solid #ff5a5f;
+  }
+  .directory-activer {
     color: #ff5a5f;
     border-bottom: 4px solid #ff5a5f;
   }

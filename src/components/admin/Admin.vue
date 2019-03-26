@@ -186,6 +186,7 @@
             <img :src="require('assets/images/admin/menu/DesignCompany@2x.png')" alt="设计服务商管理">设计服务商管理
               </template>
               <el-menu-item index="adminCompanyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
+              <el-menu-item index="adminCompanyHome" :route="{name: 'adminCompanyHome'}">新列表</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
