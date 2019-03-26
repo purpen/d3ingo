@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <div class="edit-header" v-show="isCheck">
+      <div class="edit-header" v-if="isCheck">
         <div class="check-all">
           已选中 {{multipleSelection.length}} 条
           <i class="el-icon-close fz-16" @click="downCheck"></i>
@@ -354,15 +354,17 @@
         @row-click="getLookUserInfo">
         <el-table-column
           type="selection"
-          width="40">
+          min-width="40">
         </el-table-column>
         <el-table-column
           prop="name"
           label="姓名"
+          min-width="80"
           >
         </el-table-column>
         <el-table-column
           label="状态"
+          min-width="100"
           prop="call_status_value"
           :filters="statusList"
           column-key="call_status_value"
@@ -380,6 +382,7 @@
         </el-table-column>
         <el-table-column
           label="客户级别"
+          min-width="100"
           prop="rank"
           :filters="[
             {text: '一级', value: '1' },
@@ -401,7 +404,7 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="150px"
+          min-width="120px"
           label="来源渠道"
           :render-header="renderHeader"
           >
@@ -413,6 +416,8 @@
                 <span v-if="scope.row.son_source === 'b'">360</span>
                 <span v-if="scope.row.son_source === 'c'">知乎</span>
                 <span v-if="scope.row.son_source === 'd'">今日头条</span>
+                <span v-if="scope.row.son_source === 'edm'">邮件</span>
+                <span v-if="scope.row.son_source === 'sms'">短信</span>
                 <span v-if="!scope.row.son_source">网络广告</span>
               </div>
               <div v-else-if="scope.row.new_source === 2" class="fz-14 tc-3">
@@ -420,6 +425,9 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-if="scope.row.son_source === 'c'">App</span>
+                <span v-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
+                <span v-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
+                <span v-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
                 <span v-if="!scope.row.son_source">官方</span>
               </div>
               <div v-else-if="scope.row.new_source === 3" class="fz-14 tc-3">
@@ -445,6 +453,8 @@
                 <span v-if="scope.row.son_source === 'a'">微信公众号</span>
                 <span v-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-if="scope.row.son_source === 'c'">百家号</span>
+                <span v-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
+                
                 <span v-if="!scope.row.son_source">新媒体</span>
               </div>
               <div v-else-if="scope.row.new_source === 7" class="fz-14 tc-3">
@@ -471,11 +481,13 @@
         <el-table-column
           prop="created_at"
           label="创建时间"
-          v-show="typeId !== 4"
+          v-if="typeId !== 4"
+          key="created_at1"
+          min-width="120"
           >
         </el-table-column>
         <el-table-column
-          width="129"
+          min-width="129"
           prop="execute_user_name"
           label="商机所有人"
           :filters="userIds"
@@ -494,9 +506,10 @@
         <el-table-column
           v-if="typeId !== 4"
           label="最后跟进日"
+          min-width="120"
           >
           <template slot-scope="scope">
-            <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time.slice(0, 10)}}</p>
+            <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time}}</p>
           </template>
         </el-table-column>
         <el-table-column
@@ -515,13 +528,14 @@
           prop="invalid_time"
           label="删除时间"
           key="invalidTime"
+          min-width="120"
           >
         </el-table-column>
         <el-table-column
           v-if="typeId&&typeId === 4"
           prop="label_cause"
           label="删除原因"
-          width="120px"
+          min-width="120"
           key="labelCause"
           >
           <template slot-scope="scope">
@@ -785,6 +799,7 @@ export default {
   },
   data() {
     return {
+      isFirst: false,
       selectedOptions2: [], // 筛选来源2
       statusList: [], // 筛选状态数组
       assignUser: {},
@@ -1544,6 +1559,7 @@ export default {
           this['query' + this.typeId].phone = ''
           this['query' + this.typeId].number = this.isSearch.value
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
     },
@@ -1572,8 +1588,12 @@ export default {
         })
         return
       }
-      if (!this.clientForm.new_source || !this.clientForm.son_source) {
+      if ((!this.clientForm.new_source || !this.clientForm.son_source) && this.clientForm.new_source !== 0) {
         this.$message.error('请选择来源渠道和子来源渠道')
+        return
+      }
+      if (!this.clientForm.rank) {
+        this.$message.error('请至少选择一级客户级别')
         return
       }
       this.boolCreateUser = true
@@ -1685,6 +1705,7 @@ export default {
         } else {
           this['query' + this.typeId].rank = ''
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       if (value.call_status_value) {
@@ -1701,6 +1722,7 @@ export default {
             this['query' + this.typeId].new_call_status = ''
           }
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       if (value.execute_user_name) {
@@ -1709,6 +1731,7 @@ export default {
         } else {
           this['query' + this.typeId].execute_user_id = ''
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
       // let value = Object.values(row).toString()
@@ -1739,6 +1762,7 @@ export default {
     // 清空下面的筛选
     emptySearch() {
       this.$refs.tableData.clearFilter()
+      this.selectedOptions2 = []
       this['query' + this.typeId].son_status = ''
       this['query' + this.typeId].new_call_status = ''
       this['query' + this.typeId].rank = ''
@@ -1752,6 +1776,10 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
+      if (this.isFirst) {
+        this.isFirst = false
+        return
+      }
       this.multipleSelection = val
       this.isCheck = true
     },
@@ -1875,9 +1903,12 @@ export default {
           let ids = []
           this.tableData.forEach(item => {
             if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd hh:mm')
             }
-            item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
+            if (item.end_time) {
+              item.end_time = item.end_time.date_format().format('yyyy-MM-dd hh:mm')
+            }
             if (item.id) {
               ids.push(item.id)
             }
@@ -1931,7 +1962,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
@@ -1940,7 +1972,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -2297,11 +2330,11 @@ export default {
         search: '',
         valueDate: []
       }
-      this.isCheck = false
       this.isSearch = {
         label: 1,
         value: ''
       }
+      this.multipleSelection = []
       if (this.typeId) {
         if (this.typeId === 1) {
           this.statusList = [
@@ -2376,7 +2409,9 @@ export default {
           ]
         }
       }
+      this.isFirst = true
       this.$refs.tableData.clearFilter()
+      this.isCheck = false
       this.getClueList()
     }
   }
@@ -2683,6 +2718,7 @@ export default {
   background: url('../../../assets/images/tools/cloud_drive/operate/add@2x.png') no-repeat center / 24px 24px;
 }
 .new-button {
+  font-size: 14px;
   background-color: #ff5a5f;
   color: #fff;
   width: 110px;
@@ -2945,10 +2981,10 @@ export default {
 }
 .options-trigger .el-input__inner {
   background-color: #f7f7f7;
-  width: 67px;
+  width: 80px;
   padding: 0px 15px 0px 0px;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
 }
 .options-trigger input::input-placeholder {
   color: #222;
@@ -2956,7 +2992,7 @@ export default {
 .options-trigger, .options-trigger .el-cascader__label, .options-trigger .el-input__icon {
   height: 40px;
   line-height: 40px;
-  font-size: 12px;
+  font-size: 14px;
   padding-left: 0px;
   color: #222;
 }

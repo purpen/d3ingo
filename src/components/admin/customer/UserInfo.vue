@@ -49,7 +49,8 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
-                <span class="fz-14  text-overflow">{{sourceValue + '/' + sonSourceValue}}</span>
+                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue"  >{{sourceValue + '/' + sonSourceValue}}</span>
+                <span class="fz-14  text-overflow" v-else>--</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
@@ -230,15 +231,15 @@
                     </el-col>
                     <el-col :md="6" :lg="6">
                       <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item.item_id)" class="pointer">添加备注</span>
-                        <i @click="editRemarks(item.item_id)" v-if="isHasPower" class="el-icon-edit pointer"></i>
+                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+                        <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
                     </el-col>
                     <el-col :md="10" :lg="10" v-if="boolRemarks && item.item_id === editRemarksId">
                       <el-input v-model="remarksValue" autofocus size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
                     </el-col>
                     <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
-                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false"></i>
+                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
                     </el-col>
 
                   </el-row>
@@ -299,11 +300,11 @@
                           <span class="fz-14">{{d.wx}}</span>
                         </div>
                       </div>
-                      <div class="design-li-footer">
-                        <span>确认设计需求</span>
-                        <span><i class="fx fx-icon-time"></i>2019-03-16</span>
+                      <!-- <div class="design-li-footer">
+                        <span>{{d.stage | getProgessStatus}}</span>
+                        <span><i class="fx fx-icon-time"></i></span>
                         <span class="fr" @click="boolStage = true">查看进度</span>
-                      </div>
+                      </div> -->
                       <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
                     </li>
                   </ul>
@@ -1734,11 +1735,11 @@ export default {
             this.$message.error('请填写联系人')
             return
           }
-          if (!this.userForm.phone) {
+          if (!this.clientForm.phone) {
             this.$message.error('请填写联系人电话')
             return
           }
-          if (this.userForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.userForm.phone)) {
+          if (this.clientForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.clientForm.phone)) {
             this.$message({
               message: '手机号格式不正确!',
               type: 'error',
@@ -1867,8 +1868,9 @@ export default {
         this.createProjectLoading = false
       })
     },
-    editRemarks(id) {
-      this.editRemarksId = id
+    editRemarks(d) {
+      this.editRemarksId = d.item_id
+      this.remarksValue = d.remarks
       this.boolRemarks = true
     },
     submitRemarks(d) { // 更新项目备注
@@ -2376,6 +2378,12 @@ export default {
       } else {
         return mix * 16
       }
+    },
+    getProgessStatus(val) {
+      let obj = JSON.parse(val)
+      let arr = Object.keys(obj)
+      let mix = Math.max(...arr)
+      return obj[mix].message
     }
   },
   created() {
@@ -2584,7 +2592,7 @@ export default {
 }
 .design-li {
   /* width: 680px; */
-  height: 170px;
+  height: 142px;
   padding: 10px 18px 0 20px;
 }
 .design-info > div {

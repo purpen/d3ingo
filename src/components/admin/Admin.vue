@@ -170,7 +170,7 @@
             <el-menu-item index="adminPotentialUserList1" :route="{name: 'adminPotentialUserList', params: {type: 1}}">商机</el-menu-item>
             <el-menu-item index="adminPotentialUserList2" :route="{name: 'adminPotentialUserList', params: {type: 2}}">潜在客户</el-menu-item>
             <el-menu-item index="adminPotentialUserList3" :route="{name: 'adminPotentialUserList', params: {type: 3}}">客户</el-menu-item>
-            <el-menu-item index="adminPotentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">回收站</el-menu-item>
+            <el-menu-item index="adminPotentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">无效客户</el-menu-item>
             <el-menu-item index="adminCustomerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
             <el-menu-item index="adminPotentialAnalyze" :route="{name: 'adminPotentialAnalyze'}">商机分析</el-menu-item>
           </el-submenu>
@@ -238,11 +238,11 @@
             <img :src="require('assets/images/admin/menu/Content@2x.png')" alt="内容管理">内容管理
             </template>
             <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
-            <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
+            <el-menu-item index="adminColumnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
             <el-menu-item index="adminBlockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
             <el-menu-item index="adminArticleList" :route="{name: 'adminArticleList'}">文章列表</el-menu-item>
             <el-menu-item index="adminWorksList" :route="{name: 'adminWorksList'}">作品列表</el-menu-item>
-            <el-menu-item index="awardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
+            <el-menu-item index="adminAwardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
             <el-menu-item index="adminTrendReportList" :route="{name: 'adminTrendReportList'}">趋势/报告列表</el-menu-item>
             <el-menu-item index="adminCommonlySiteList" :route="{name: 'adminCommonlySiteList'}">常用网站列表</el-menu-item>
             <el-menu-item index="adminAwardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
@@ -794,10 +794,11 @@
     cursor: pointer;
   }
   .admin-menu img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px
-  }
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    margin-left: -5px;
+}
 
   @media screen and (min-width: 768px) {
     .menu-list {
@@ -841,6 +842,7 @@
     }
   }
   .el-menu-item {
+    width: 55px;
     height: 50px;
     line-height: 1;
     padding: 0 15px;
@@ -849,6 +851,7 @@
     justify-content: flex-start;
   }
   .admin-menu .el-submenu .el-menu-item {
-    padding-left: 50px!important
+    padding-left: 50px!important;
+    width: 100%;
   }
 </style>
