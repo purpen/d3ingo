@@ -800,6 +800,7 @@
       },
       typeOptions() {
         let items = []
+        if (!typeData.COMPANY_TYPE) return []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
             value: typeData.COMPANY_TYPE[i]['id'],
@@ -827,6 +828,7 @@
         } else {
           return []
         }
+        if (!typeData.COMPANY_TYPE[index].field) return []
         for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
           let item = {
             value: typeData.COMPANY_TYPE[index].field[i]['id'],
@@ -838,6 +840,7 @@
       },
       industryOptions() {
         let items = []
+        if (!typeData.INDUSTRY) return []
         for (let i = 0; i < typeData.INDUSTRY.length; i++) {
           let item = {
             value: typeData.INDUSTRY[i]['id'],
@@ -849,6 +852,7 @@
       },
       prizeOptions() {
         let items = []
+        if (!typeData.DESIGN_CASE_PRICE_OPTIONS) return []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {
             value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
@@ -860,6 +864,7 @@
       },
       patentOptions() {
         let items = []
+        if (!typeData.PATENT_FOR_INVENTION) return []
         for (let i = 0; i < typeData.PATENT_FOR_INVENTION.length; i++) {
           let item = {
             value: typeData.PATENT_FOR_INVENTION[i]['id'],
@@ -871,6 +876,7 @@
       },
       saleOptions() {
         let items = []
+        if (!typeData.DESIGN_CASE_SALE_OPTIONS) return []
         for (let i = 0; i < typeData.DESIGN_CASE_SALE_OPTIONS.length; i++) {
           let item = {
             value: typeData.DESIGN_CASE_SALE_OPTIONS[i]['id'],
