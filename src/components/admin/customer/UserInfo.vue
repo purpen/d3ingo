@@ -49,7 +49,7 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
-                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue"  >{{sourceValue + '/' + sonSourceValue}}</span>
+                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{sourceValue + '/' + sonSourceValue}}</span>
                 <span class="fz-14  text-overflow" v-else>--</span>
               </div>
             </el-col>
@@ -71,8 +71,8 @@
 
       <div class="user-progress contant-border margin-t15">
         <div class="progress-top">
-          <div class="fl padding-t8">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'margin-t8', 'fx-icon-lower', 'fz-20', {'t270-before': !boolProgressContant}]"></i>
+          <div class="fl">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-36', {'t270-before': !boolProgressContant}]"></i>
           </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
@@ -152,12 +152,12 @@
       </div>
 
       <div class="user-body margin-t15 clearfix">
-        <div class="user-info-left fl contant-border  margin-r-10">
+        <div class="user-info-left fl contant-border margin-r-15">
           <div class="card-body-header">
             <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目信息</span>
             <span @click="changeOption('user')" :class="{'active': option === 'user'}">客户信息</span>
           </div>
-          <div v-if="option === 'project'" v-loading="userProjectLoading">
+          <div v-if="option === 'project'" v-loading="userProjectLoading" class="max-h-500 scroll-bar2">
             <div class="project-title">
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
@@ -181,7 +181,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">设计类型</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.type_value}}</span>
                     </el-col>
                   </el-row>
@@ -189,7 +189,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目预算</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.design_cost_value}}</span>
                     </el-col>
                   </el-row>
@@ -197,7 +197,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">交付时间</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.cycle_value}}</span>
                     </el-col>
                   </el-row>
@@ -206,7 +206,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">行业领域</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.industry_value}}</span>
                     </el-col>
                   </el-row>
@@ -214,7 +214,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目工作地点</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.item_province_value}}{{item.item_city_value}}</span>
                     </el-col>
                   </el-row>
@@ -222,22 +222,22 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目描述</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.summary}}</span>
                     </el-col>
                   </el-row>
                   
-                  <el-row>
+                  <el-row class="padding-b10">
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">备注</span>
                     </el-col>
-                    <el-col :md="6" :lg="6">
+                    <el-col :md="20" :lg="20">
                       <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
                       <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
                         <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
                     </el-col>
-                    <el-col :md="10" :lg="10" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <el-input v-model="remarksValue" autofocus size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+                    <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
+                      <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
                     </el-col>
                     <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
@@ -250,7 +250,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">创建人</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span v-if="item.user_name">{{item.user_name}}</span>
                       <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
                     </el-col>
@@ -259,7 +259,7 @@
                     <el-col :md="4" :lg="4">
                       <span class="tc-9">修改人</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span class="item.update_user_name">{{item.update_user_name}}</span>
                       <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
                     </el-col>
@@ -268,7 +268,7 @@
                   <div>
                     <p class="add-design clearfix design-title">
                     <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                    <el-button size="small" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                    <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                     </p>
                   </div>
                   <ul v-if="boolDesigeList">
@@ -330,9 +330,9 @@
             </div>
           </div>
 
-          <div v-if="option === 'user'" class="fz-14">
+          <div v-if="option === 'user'" class="fz-14 max-h-500 scroll-bar2 padding-r20">
             <div class="bb-e6">
-              <p class="padding-l30 padding-r40 clearfix line-height40">
+              <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
                 <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span>
               </p>
@@ -342,7 +342,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">客户姓名</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.name}}</span>
                 </el-col>
               </el-row>
@@ -351,8 +351,9 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">客户来源</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
-                  <span>{{sourceValue + '/' + sonSourceValue}}</span>
+                <el-col :md="20" :lg="20">
+                  <span v-if="sourceValue || sonSourceValue">{{sourceValue + '/' + sonSourceValue}}</span>
+                  <span v-else>--</span>
                 </el-col>
               </el-row>
               
@@ -360,7 +361,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">客户所有人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.execute_user_name}}</span>
                 </el-col>
               </el-row>
@@ -370,7 +371,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">职位</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.position}}</span>
                 </el-col>
               </el-row>
@@ -379,7 +380,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">公司</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.company}}</span>
                 </el-col>
               </el-row>
@@ -388,7 +389,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">公司地址</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.province_value}}{{clientList.city_value}}</span>
                 </el-col>
               </el-row>
@@ -398,7 +399,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">电话</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.phone}}</span>
                 </el-col>
               </el-row>
@@ -407,7 +408,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">微信</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.wx}}</span>
                 </el-col>
               </el-row>
@@ -416,7 +417,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">QQ</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.qq}}</span>
                 </el-col>
               </el-row>
@@ -425,7 +426,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">备注</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.summary}}</span>
                 </el-col>
               </el-row>
@@ -441,7 +442,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">客户编号</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.number}}</span>
                 </el-col>
               </el-row>
@@ -450,7 +451,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">创建人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span v-if="clientList.user_id_name">{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
                 </el-col>
               </el-row>
@@ -459,7 +460,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">修改人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span v-if="updateTime">{{clientList.update_user_name}}  &nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
                 </el-col>
               </el-row>
@@ -473,7 +474,7 @@
             <span @click="changeOption1('event')" :class="{'active': option1 === 'event'}">事件</span>
           </div> -->
           <p class="log-title">记录</p>
-          <div v-if="option1 === 'log'">
+          <div class="log-box scroll-bar2">
             <div class="padding20 bb-e6">
               <div class="progress">
                 <el-input type="textarea"
@@ -942,7 +943,6 @@ export default {
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
       option: '',
-      option1: 'log',
       activeName: 1,
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -1538,9 +1538,6 @@ export default {
     changeOption(e) {
       this.option = e
     },
-    changeOption1(e) {
-      this.option1 = e
-    },
     changeStatus() {
     },
     editClientUser() {
@@ -1641,9 +1638,9 @@ export default {
             new_call_status: data.new_call_status || '',
             is_thn: data.is_thn
           }
-          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
           if (data.update_user_time) {
-            this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss')
+            this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
           }
           if (this.userForm.new_source) {
             let id = this.userForm.new_source
@@ -1975,6 +1972,8 @@ export default {
           const {crm_design_company: designList} = data[0]
           if (designList.length > 3) {
             this.crmDesignCompanyList1 = designList.slice(0, 3)
+          } else {
+            this.crmDesignCompanyList1 = designList
           }
           this.crmDesignCompanyList = designList
         } else {
@@ -2415,12 +2414,6 @@ export default {
         this.getUserProject()
         this.boolAddProject = false
       }
-    },
-    option1(val) {
-      if (val === 'log') {
-        this.getLogList()
-      } else {
-      }
     }
   },
   filters: {
@@ -2479,6 +2472,9 @@ export default {
 .t270-before::before {
   display: inline-block;
   transform: rotate(270deg);
+}
+.line-height50 {
+  line-height: 50px;
 }
 .fz-12 {
   font-size: 12px !important;
@@ -2549,8 +2545,14 @@ export default {
 .padding-l40 {
   padding-left: 40px;
 }
+.padding-r20 {
+  padding-right: 20px;
+}
 .padding-r40 {
   padding-right: 40px;
+}
+.padding-b10 {
+  padding-bottom: 10px;
 }
 .flex-a-c {
   display: flex;
@@ -2643,7 +2645,12 @@ export default {
 
 .user-info-left {
   width: 64%;
-  min-height: 500px;
+  transition: 268ms all ease;
+  padding-bottom: 20px;
+}
+.max-h-500 {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .project-name {
@@ -2681,7 +2688,7 @@ export default {
 .design-li-footer span {
   display: inline-block;
 }
-.design-li-footer span:first-child {
+.design-li-footer > span:first-child {
   margin-right: 60px;
 }
 .design-progress {
@@ -2689,11 +2696,11 @@ export default {
   margin: 0 -18px 0 -20px;
 }
 .project-title {
-  padding: 5px 30px 5px 30px;
+  padding: 10px 20px 10px 30px;
   border-bottom: 1px solid #e6e6e6;
 }
 .design-title {
-  padding: 5px 30px 5px 20px;
+  padding: 5px 20px 5px 20px;
   border-bottom: 1px solid #e6e6e6;
 }
 .progess-box {
@@ -2725,10 +2732,12 @@ export default {
 
 .check-progess:focus + .steps {
   display: block;
+  margin-bottom: 20px;
 }
 .user-log {
   overflow: hidden;
-  min-height: 500px;
+  transition: 268ms all ease;
+  padding-bottom: 20px;
 }
 
 .bg-blue01 {
@@ -2796,10 +2805,13 @@ export default {
 .log-title {
   line-height: 40px;
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 14px;
   color: #222222;
 }
-
+.log-box {
+  overflow-y: auto;
+  max-height: 500px;
+}
 
 
 
@@ -2832,8 +2844,6 @@ export default {
   padding-right: 30px;
   height: 40px;
   align-items: center;
-  background: #fafafa;
-  border-bottom: 1px solid #e6e6ee;
   font-size: 14px;
 }
 .card-body-header span {
@@ -2968,18 +2978,16 @@ export default {
   /* border-bottom: 1px solid #e6e6e6; */
 }
 .project-li {
-  border-bottom: 1px solid #e6e6e6;
+  /* border-bottom: 1px solid #e6e6e6; */
   padding: 20px 20px 20px 30px;
 }
-.project-li:nth-child(even) {
-  background-color: #FAFAFA;
-}
+
 .edit-project {
   position: relative;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+  background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
 
 .edit-project:hover .edit-project-tag {
@@ -2989,8 +2997,8 @@ export default {
   display: none;
   position: absolute;
   top: 26px;
-  left: -70px;
-  width: 150px;
+  left: -54px;
+  width: 100px;
   z-index: 99;
   border: 1px solid #e6e6e6;
   background: #ffffff;
