@@ -1,6 +1,8 @@
 <template>
   <div>
     <div class="content">
+      <a class="go-top" @click="goToTop()">
+      </a>
       <div class="edit-header" v-if="isCheck">
         <div class="check-all">
           已选中 {{multipleSelection.length}} 条
@@ -19,6 +21,9 @@
             <li v-for="(u,indexu) in userList" :key="indexu" @click="addAssign(u)">{{u.user_name}}</li>
             <li class="random-allot" @click="randomAssign = true">随机自动分配</li>
           </ul>
+        </div>
+        <div class="renew-btn" @click="renewDialog=true"  v-if="typeId &&typeId === 4">
+          恢复
         </div>
         <div class="export-del" tabindex="-1" @blur="isexportShow = false" @click="isexportShow=true">
           <i class="el-icon-more"></i>
@@ -413,68 +418,65 @@
               <div v-if="scope.row.new_source === 1">
                 <p class="fz-12 tc-6">网络广告</p>
                 <span v-if="scope.row.son_source === 'a'">百度</span>
-                <span v-if="scope.row.son_source === 'b'">360</span>
-                <span v-if="scope.row.son_source === 'c'">知乎</span>
-                <span v-if="scope.row.son_source === 'd'">今日头条</span>
-                <span v-if="scope.row.son_source === 'edm'">邮件</span>
-                <span v-if="scope.row.son_source === 'sms'">短信</span>
-                <span v-if="!scope.row.son_source">网络广告</span>
+                <span v-else-if="scope.row.son_source === 'b'">360</span>
+                <span v-else-if="scope.row.son_source === 'c'">知乎</span>
+                <span v-else-if="scope.row.son_source === 'd'">今日头条</span>
+                <span v-else-if="scope.row.son_source === 'edm'">邮件</span>
+                <span v-else-if="scope.row.son_source === 'sms'">短信</span>
+                <span v-else>网络广告</span>
               </div>
-              <div v-else-if="scope.row.new_source === 2" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">官方</p>
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
-                <span v-if="scope.row.son_source === 'b'">小程序</span>
-                <span v-if="scope.row.son_source === 'c'">App</span>
-                <span v-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
-                <span v-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
-                <span v-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
-                <span v-if="!scope.row.son_source">官方</span>
+                <span v-else-if="scope.row.son_source === 'b'">小程序</span>
+                <span v-else-if="scope.row.son_source === 'c'">App</span>
+                <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
+                <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
+                <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
+                <span v-else>官方</span>
               </div>
-              <div v-else-if="scope.row.new_source === 3" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">合作伙伴</p>
                 <span v-if="scope.row.son_source === 'a'">京东</span>
-                <span v-if="scope.row.son_source === 'b'">优客工场</span>
-                <span v-if="!scope.row.son_source">合作伙伴</span>
+                <span v-else-if="scope.row.son_source === 'b'">优客工场</span>
+                <span v-else>合作伙伴</span>
               </div>
-              <div v-else-if="scope.row.new_source === 4" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">内部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">雷总/公司员工推...</span>
                 <!-- 雷总/公司员工推荐的熟人客户 -->
-                <span v-if="!scope.row.son_source">内部推荐</span>
+                <span v-else>内部推荐</span>
               </div>
-              <div v-else-if="scope.row.new_source === 5" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">外部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">朋友/其他公司推...</span>
                 <!-- 朋友/其他公司推荐的客户 -->
-                <span v-if="!scope.row.son_source">外部推荐</span>
+                <span v-else>外部推荐</span>
               </div>
-              <div v-else-if="scope.row.new_source === 6" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">新媒体</p>
                 <span v-if="scope.row.son_source === 'a'">微信公众号</span>
-                <span v-if="scope.row.son_source === 'b'">头条号</span>
-                <span v-if="scope.row.son_source === 'c'">百家号</span>
-                <span v-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
+                <span v-else-if="scope.row.son_source === 'b'">头条号</span>
+                <span v-else-if="scope.row.son_source === 'c'">百家号</span>
+                <span v-else-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
                 
-                <span v-if="!scope.row.son_source">新媒体</span>
+                <span v-else>新媒体</span>
               </div>
-              <div v-else-if="scope.row.new_source === 7" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">展销会</p>
                 <span v-if="scope.row.son_source === 'a'">参展</span>
-                <span v-if="scope.row.son_source === 'b'">业界活动、论坛</span>
-                <span v-if="!scope.row.son_source">展销会</span>
+                <span v-else-if="scope.row.son_source === 'b'">业界活动、论坛</span>
+                <span v-else>展销会</span>
               </div>
-              <div v-else-if="scope.row.new_source === 0" class="fz-14 tc-3">
+              <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">其他</p>
                 <span v-if="scope.row.son_source === 'a'">无法归类的小群体</span>
-                <span v-if="!scope.row.son_source">其他</span>
-              </div>
-              <div v-else>
-                <p class="fz-12 tc-6">&nbsp;</p>
-                <span>&nbsp;</span>
+                <span v-else>其他</span>
               </div>
             </div>
             <div v-else>
-              <p>{{scope.row.son_source}}</p>
+              <p class="fz-12 tc-6">&nbsp;</p>
+              <span>&nbsp;</span>
             </div>
           </template>
         </el-table-column>
@@ -682,6 +684,17 @@
       </div>
     </el-dialog>
     <el-dialog
+      width="350px"
+      title="恢复客户"
+      :visible.sync="renewDialog"
+      center>
+      <span class="d-d-content">确认将 <span class="tc-red">{{multipleSelection.length}}</span> 个无效客户恢复为正常客户?</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="renewDialog = false">取 消</el-button>
+        <el-button type="primary" @click="renewUser">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
       title="新增商机"
       :visible.sync="dialogAddUser"
       class="user-add"
@@ -799,6 +812,7 @@ export default {
   },
   data() {
     return {
+      renewDialog: false, // 恢复成员弹窗
       isFirst: false,
       selectedOptions2: [], // 筛选来源2
       statusList: [], // 筛选状态数组
@@ -1444,6 +1458,45 @@ export default {
     }
   },
   methods: {
+    // 回到顶部
+    goToTop() {
+      // document.body.scrollTop = 0
+      // document.documentElement.scrollTop = 0
+      let t1 = ''
+      document.body.scrollTop = 0
+      if (document.documentElement.scrollTop > 0) {
+        t1 = window.setInterval(function() {
+          if (document.documentElement.scrollTop > 500) {
+            document.documentElement.scrollTop -= 500
+          } else {
+            document.documentElement.scrollTop = 0
+            window.clearInterval(t1)
+          }
+        }, 50)
+      }
+      // console.log('bottom', bottom, bottom2)
+    },
+    // 恢复客户
+    renewUser() {
+      let clueId = []
+      clueId = this.multipleSelection.map(item => {
+        return item.id
+      })
+      this.$http.post(api.adminClueRecoverClue, {clue_ids: clueId}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.$message.success('恢复客户成功')
+          this.renewDialog = false
+          this.getClueList()
+          this.downCheck()
+        } else {
+          this.$message.error(response.data.message)
+        }
+      }).catch(error => {
+        this.tableLoading = false
+        this.$message.error(error.message)
+      })
+    },
+    // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
         <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
@@ -1776,10 +1829,10 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      if (this.isFirst) {
-        this.isFirst = false
-        return
-      }
+      // if (this.isFirst) {
+      //   this.isFirst = false
+      //   return
+      // }
       this.multipleSelection = val
       this.isCheck = true
     },
@@ -1903,11 +1956,11 @@ export default {
           let ids = []
           this.tableData.forEach(item => {
             if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd hh:mm')
+              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
             }
-            item.created_at = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
             if (item.end_time) {
-              item.end_time = item.end_time.date_format().format('yyyy-MM-dd hh:mm')
+              item.end_time = item.end_time.date_format().format('yyyy-MM-dd')
             }
             if (item.id) {
               ids.push(item.id)
@@ -2408,8 +2461,9 @@ export default {
         }
       }
       this.isFirst = true
+      this.downCheck()
       this.$refs.tableData.clearFilter()
-      this.isCheck = false
+      // this.isCheck = false
       this.getClueList()
     }
   }
@@ -2909,6 +2963,7 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   padding-left: 5px;
+  line-height: 34px;
 }
 .check-all {
   width: 200px;
@@ -2998,22 +3053,43 @@ export default {
   height: 40px;
 }
 .options-trigger .el-input__inner::-webkit-input-placeholder { /* WebKit browsers */
-    color: #222!important;
+  color: #222!important;
 }
 .options-trigger .el-input__inner:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: #999!important;
+  color: #999!important;
 }
 .options-trigger .el-input__inner::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: #222!important;
+  color: #222!important;
 }
 .options-trigger .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #222!important;
 }
 .options-trigger .el-input__icon {
-  color: #65A6FF;
+  color: #666;
   font-size: 12px;
-  -webkit-transform: scale(0.70);
-  transform: scale(0.70);
+  -webkit-transform: scale(0.85);
+  transform: scale(0.85);
+}
+.renew-btn {
+  border: 1px solid #e6e6e6;
+  /* border-radius: 4px; */
+  padding: 10px 16px;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+.go-top {
+  display: block;
+  width: 35px;
+  height: 35px;
+  background: rgba(255,255,255,1);
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.3);
+  border-radius: 50%;
+  position: fixed;
+  bottom: 10%;
+  right: 3%;
+  z-index: 1;
 }
 </style>
 
