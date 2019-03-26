@@ -4,10 +4,10 @@
 module.exports = [
   {
     path: '/admin',
-    name: 'admin',
     meta: {
       requireAuth: true,
-      hideFooter: true
+      hideFooter: true,
+      hideCustomer: true
     },
     component: require('@/components/admin/Admin'),
     children: [
@@ -18,6 +18,7 @@ module.exports = [
         meta: {
           title: '控制台',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/DashBoard')
@@ -29,17 +30,19 @@ module.exports = [
         meta: {
           title: '客户统计',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/customer/Statistics')
       },
       // 潜在用户列表
       {
-        path: '/admin/customer/list',
+        path: '/admin/customer/list/:type',
         name: 'adminPotentialUserList',
         meta: {
           title: '潜在用户列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/customer/List')
@@ -51,6 +54,7 @@ module.exports = [
         meta: {
           title: '潜在用户编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/customer/UserInfo')
@@ -62,9 +66,22 @@ module.exports = [
         meta: {
           title: '潜在用户编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/customer/UserInfo')
+      },
+      // 商机分析
+      {
+        path: '/admin/customer/analyze',
+        name: 'adminPotentialAnalyze',
+        meta: {
+          title: '商机分析',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/customer/Analyze')
       },
       // 说明列表
       {
@@ -73,6 +90,7 @@ module.exports = [
         meta: {
           title: '说明列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/content_manage/List')
@@ -84,6 +102,7 @@ module.exports = [
         meta: {
           title: '编辑说明',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         // 按需加载
@@ -98,6 +117,7 @@ module.exports = [
         meta: {
           title: '添加栏目',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/column/Submit')
@@ -109,6 +129,7 @@ module.exports = [
         meta: {
           title: '编辑栏目',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/column/Submit')
@@ -120,6 +141,7 @@ module.exports = [
         meta: {
           title: '栏目列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/column/List')
@@ -131,6 +153,7 @@ module.exports = [
         meta: {
           title: '项目列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/item/List')
@@ -142,6 +165,7 @@ module.exports = [
         meta: {
           title: '小程序列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/item/Sltem')
@@ -153,6 +177,7 @@ module.exports = [
         meta: {
           title: '项目详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/item/Show')
@@ -164,6 +189,7 @@ module.exports = [
         meta: {
           title: '项目详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/item/show0')
@@ -175,6 +201,7 @@ module.exports = [
         meta: {
           title: '项目匹配',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/item/Match')
@@ -186,6 +213,7 @@ module.exports = [
         meta: {
           title: '订单列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/order/List')
@@ -197,6 +225,7 @@ module.exports = [
         meta: {
           title: '推荐公司列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/recommend/list')
@@ -208,6 +237,7 @@ module.exports = [
         meta: {
           title: '权重配置',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/recommend/Submit')
@@ -219,6 +249,7 @@ module.exports = [
         meta: {
           title: '提现列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/with_draw/List')
@@ -230,6 +261,7 @@ module.exports = [
         meta: {
           title: '发票列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/invoice/List')
@@ -240,6 +272,7 @@ module.exports = [
         meta: {
           title: '发票列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/invoice/List')
@@ -272,6 +305,7 @@ module.exports = [
         meta: {
           title: '设计服务商列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/company/List')
@@ -283,6 +317,7 @@ module.exports = [
         meta: {
           title: '设计服务商详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/company/Show')
@@ -294,6 +329,7 @@ module.exports = [
         meta: {
           title: '成果列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trade_fairs/AchievmentList')
@@ -305,6 +341,7 @@ module.exports = [
         meta: {
           title: '需求列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trade_fairs/DemandtList')
@@ -316,6 +353,7 @@ module.exports = [
         meta: {
           title: '订单列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trade_fairs/1SdorderList')
@@ -327,6 +365,7 @@ module.exports = [
         meta: {
           title: '需求公司列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/demand_company/List')
@@ -338,6 +377,7 @@ module.exports = [
         meta: {
           title: '需求公司详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/demand_company/Show')
@@ -349,6 +389,7 @@ module.exports = [
         meta: {
           title: '案例列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/design_case/List')
@@ -360,6 +401,7 @@ module.exports = [
         meta: {
           title: '用户列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/user/List')
@@ -371,6 +413,7 @@ module.exports = [
         meta: {
           title: '用户编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/user/Submit')
@@ -382,6 +425,7 @@ module.exports = [
         meta: {
           title: '分类列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/category/List')
@@ -393,6 +437,7 @@ module.exports = [
         meta: {
           title: '分类编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/category/Submit')
@@ -404,6 +449,7 @@ module.exports = [
         meta: {
           title: '分类详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/category/Show')
@@ -415,6 +461,7 @@ module.exports = [
         meta: {
           title: '文章列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/article/List')
@@ -426,6 +473,7 @@ module.exports = [
         meta: {
           title: '文章编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         // 按需加载
@@ -440,6 +488,7 @@ module.exports = [
         meta: {
           title: '文章详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/article/Show')
@@ -451,6 +500,7 @@ module.exports = [
         meta: {
           title: '作品列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/works/List')
@@ -462,6 +512,7 @@ module.exports = [
         meta: {
           title: '作品详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/works/Show')
@@ -473,6 +524,7 @@ module.exports = [
         meta: {
           title: '日历列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/awards/List')
@@ -484,6 +536,7 @@ module.exports = [
         meta: {
           title: '日历编辑',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/awards/Submit')
@@ -495,6 +548,7 @@ module.exports = [
         meta: {
           title: '添加趋势报告',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trend_report/Submit')
@@ -506,6 +560,7 @@ module.exports = [
         meta: {
           title: '编辑趋势报告',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trend_report/Submit')
@@ -517,6 +572,7 @@ module.exports = [
         meta: {
           title: '趋势报告列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/trend_report/List')
@@ -528,6 +584,7 @@ module.exports = [
         meta: {
           title: '添加常用网站',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/commonly_site/Submit')
@@ -539,6 +596,7 @@ module.exports = [
         meta: {
           title: '编辑常用网站',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/commonly_site/Submit')
@@ -550,6 +608,7 @@ module.exports = [
         meta: {
           title: '常用网站列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/commonly_site/List')
@@ -561,6 +620,7 @@ module.exports = [
         meta: {
           title: '添加奖项案例',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         // 按需加载
@@ -575,6 +635,7 @@ module.exports = [
         meta: {
           title: '编辑奖项案例',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         // 按需加载
@@ -589,6 +650,7 @@ module.exports = [
         meta: {
           title: '奖项案例列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/award_case/List')
@@ -600,6 +662,7 @@ module.exports = [
         meta: {
           title: '添加系统通知',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/notice/Submit')
@@ -611,6 +674,7 @@ module.exports = [
         meta: {
           title: '编辑系统通知',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/notice/Submit')
@@ -622,6 +686,7 @@ module.exports = [
         meta: {
           title: '系统通知列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/notice/List')
@@ -633,6 +698,7 @@ module.exports = [
         meta: {
           title: '添加区块',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/block/Submit')
@@ -644,6 +710,7 @@ module.exports = [
         meta: {
           title: '编辑区块',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/block/Submit')
@@ -655,9 +722,91 @@ module.exports = [
         meta: {
           title: '区块列表',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/block/List')
+      },
+      // 艺火后台路由
+      // 项目列表
+      {
+        path: '/b_admin/item/list',
+        name: 'bAdminItemList',
+        meta: {
+          title: '项目列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/item/List')
+      },
+      // 项目详情
+      {
+        path: '/b_admin/item/show/:id',
+        name: 'bAdminItemShow',
+        meta: {
+          title: '项目详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/item/Show')
+      },
+      // 订单列表
+      {
+        path: '/b_admin/order/list',
+        name: 'bAdminOrderList',
+        meta: {
+          title: '订单列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/order/List')
+      },
+      // 设计服务商列表
+      {
+        path: '/b_admin/company/list',
+        name: 'bAdminCompanyList',
+        meta: {
+          title: '设计服务商列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/company/List')
+      },
+      // 设计服务商详情
+      {
+        path: '/b_admin/company/show/:id',
+        name: 'bAdminCompanyShow',
+        meta: {
+          title: '设计服务商详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/company/Show')
+      },
+      // 需求公司列表
+      {
+        path: '/b_admin/demand_company/list',
+        name: 'bAdminDemandCompanyList',
+        meta: {
+          title: '需求公司列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/demand_company/List')
+      },
+      // 需求公司详情
+      {
+        path: '/b_admin/demand_company/show/:id',
+        name: 'bAdminDemandCompanyShow',
+        meta: {
+          title: '需求公司详情',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/demand_company/Show')
+      },
+      // 用户列表
+      {
+        path: '/b_admin/user/list',
+        name: 'bAdminUserList',
+        meta: {
+          title: '用户列表',
+          requireAuth: true
+        },
+        component: require('@/components/b_admin/user/List')
       }
     ]
   }

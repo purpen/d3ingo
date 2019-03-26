@@ -86,9 +86,9 @@
     position: fixed;
     z-index: 99;
     left: 0;
-    top: 60px;
+    top: 70px;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 70px);
     background: #fff;
     transform: translateY(-150%);
     -vendor-animation-duration: 500ms;

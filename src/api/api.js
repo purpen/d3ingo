@@ -248,6 +248,16 @@ export default {
   adminGeneralizeLists: '/admin/generalize/lists', // GET 落地页点击统计表
   adminClueCustomerProfile: '/admin/clue/customerProfile', // GET 潜在客户-客户概况
   adminClueSearch: '/admin/clue/search', // GET 潜在客户-统计搜索
+  adminClueClueLatentList: '/admin/clue/clueLatentList', // GET 潜在客户-潜在列表
+  adminClueClueLowList: '/admin/clue/clueLowList', // GET 潜在客户-低价列表
+  adminClueClueSignList: '/admin/clue/clueSignList', // GET 潜在客户-客户列表
+  adminBusinessOpportunity: '/admin/analysis/businessOpportunity', // GET 商机分析-今日、本周
+  adminAnalysisProvince: '/admin/analysis/province', // GET 商机分析-商机地区
+  adminAnalysisSource: '/admin/analysis/source', // GET 商机分析-商机来源
+  adminAnalysisItemType: '/admin/analysis/itemType', // GET 商机分析-商机类型
+  adminAnalysisBudget: '/admin/analysis/budget', // GET 商机分析-商机预算
+  adminAnalysisTrend: '/admin/analysis/trend', // GET 商机分析-趋势
+  adminAnalysisConversionTrend: '/admin/analysis/conversionTrend', // 商机分析-转化趋势
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
@@ -618,6 +628,7 @@ export default {
 
   // 推广
   pcAdd: '/wechat/demand/pcAdd',   // POST PC
+  pcAdd2: '/wechat/demand/pcAdd2',   // POST PC 需要验证码
   appAdd: '/wechat/demand/userAdd',   // POST APP
   userMessage: '/wechat/demand/users',   // POST APP消息滚动
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量

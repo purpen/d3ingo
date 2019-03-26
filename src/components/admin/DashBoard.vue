@@ -76,6 +76,9 @@
             </div> -->
           </div>
           <div>
+            <p class="count-number">￥{{IncomeStatistics}}</p>
+          </div>
+          <div>
             <ECharts :options="polar" class="line-echarts">
             </ECharts>
           </div>
@@ -88,7 +91,7 @@
               <h2 class="sub-title">收入类型分布</h2>
             </div>
           </div>
-          <div>
+          <div class="blank13">
             <ECharts :options="option" class="line-echarts">
             </ECharts>
           </div>
@@ -105,16 +108,16 @@
           </div>
           <div class="height-260 flex">
             <div class="content-item flex1">
-              <img :src="require('assets/images/admin/SettledInDemand@2x.png')" alt="">
-              <div class="tc-6 fz-14" v-if="AdminOverviewCompany.demand_company">
+              <img :src="require('assets/images/admin/dash_board/SettledInDemand@2x.png')" alt="">
+              <div class="tc-6 fz-14">
                 <p>已认证需求公司</p>
                 <p class="count-number">{{AdminOverviewCompany.demand_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.demand_company.uncertified}}</p>
               </div>
             </div>
             <div class="content-item flex1">
-              <img :src="require('assets/images/admin/SettledInDesign@2x.png')" alt="">
-              <div class="tc-6 fz-14" v-if="AdminOverviewCompany.design_company">
+              <img :src="require('assets/images/admin/dash_board/SettledInDesign@2x.png')" alt="">
+              <div class="tc-6 fz-14">
                 <p>已认证设计服务商</p>
                 <p class="count-number">{{AdminOverviewCompany.design_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.design_company.uncertified}}</p>
@@ -132,34 +135,42 @@
           </div>
           <el-row>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{item.not_withdraw}}</span>
-                <img :src="require('assets/images/admin/RemindCashWithdrawal@2x.png')" alt="">
-              </div>
-              <p>提现订单等待审核</p>
+              <router-link :to="{name: 'adminWithDrawList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{item.not_withdraw}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindCashWithdrawal@2x.png')" alt="">
+                </div>
+                <p>提现订单等待审核</p>
+              </router-link>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{item.bank_pay}}</span>
-                <img :src="require('assets/images/admin/RemindOrder@2x.png')" alt="">
-              </div>
-              <p>订单申请对公打款</p>
+              <router-link :to="{name: 'adminOrderList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{item.bank_pay}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindOrder@2x.png')" alt="">
+                </div>
+                <p>订单申请对公打款</p>
+              </router-link>
             </el-col>
           </el-row>
           <el-row>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img" v-if="AdminOverviewCompany.demand_company">
-                <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
-                <img :src="require('assets/images/admin/RemindDemand Company@2x.png')" alt="">
-              </div>
-              <p>需求公司等待认证</p>
+              <router-link :to="{name: 'adminDemandCompanyList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindDemand Company@2x.png')" alt="">
+                </div>
+                <p>需求公司等待认证</p>
+              </router-link>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img" v-if="AdminOverviewCompany.design_company">
-                <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
-                <img :src="require('assets/images/admin/RemindDesign Company@2x.png')" alt="">
-              </div>
-              <p>设计服务商等待认证</p>
+              <router-link :to="{name: 'adminCompanyList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindDesign Company@2x.png')" alt="">
+                </div>
+                <p>设计服务商等待认证</p>
+              </router-link>
             </el-col>
           </el-row>
         </div>
@@ -171,11 +182,11 @@
     <div>
       <el-table
         :data="tableItemData"
-        border
         v-loading="isItemLoading"
         class="admin-table"
         @selection-change="handleSelectionChange"
-        style="width: 100%">
+        style="width: 100%"
+        @row-click="redirect">
         <el-table-column
           prop="item.id"
           label=""
@@ -185,7 +196,7 @@
           label="客户姓名">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.user.username }}</a>
+              <span>{{ scope.row.item.user.username || scope.row.item.user.realname || scope.row.item.user.account }}</span>
             </p>
           </template>
         </el-table-column>
@@ -193,7 +204,7 @@
           label="项目名称">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.name }}</a>
+              <span>{{ scope.row.item.name }}</span>
             </p>
           </template>
         </el-table-column>
@@ -201,7 +212,7 @@
           label="设计类型">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.design_types_value  }}</a>
+              <span>{{ scope.row.item.type_value || '—' }}</span>
             </p>
           </template>
         </el-table-column>
@@ -209,7 +220,7 @@
           label="项目预算">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.type  }}</a>
+              <span>{{ scope.row.item.design_cost_value || '无明确预算' }}</span>
             </p>
           </template>
         </el-table-column>
@@ -217,7 +228,7 @@
           label="状态">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.type }}</a>
+              <span>{{ scope.row.item.status_value }}</span>
             </p>
           </template>
         </el-table-column>
@@ -225,7 +236,7 @@
           label="创建日期">
           <template slot-scope="scope">
             <p>
-              <a href="#">{{ scope.row.item.created_at }}</a>
+              <span>{{ scope.row.item.created_at }}</span>
             </p>
           </template>
         </el-table-column>
@@ -268,7 +279,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '{c}万元'
+            formatter: '￥{c}'
           },
           legend: {
             bottom: '0',
@@ -297,7 +308,8 @@
         option: {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
+            formatter: '{a} <br/>{b}: {c} ({d}%)',
+            enterable: true
           },
           legend: {
             bottom: 0,
@@ -316,7 +328,7 @@
                 },
                 emphasis: {
                   show: true,
-                  formatter: '{b}\n{normal|{c}万元}',
+                  formatter: '{b}\n {normal|¥{c}}',
                   textStyle: {
                     fontSize: '30',
                     fontWeight: 'bold'
@@ -344,13 +356,41 @@
             }
           ]
         },
-        AdminOverviewCompany: {},
-        AdminOverviewOrderStatistics: {},
-        AdminOverviewItemStatistics: {},
-        AdminOverviewClueStatistics: {}
+        AdminOverviewCompany: {
+          demand_company: {
+            authentication: 0,
+            uncertified: 0
+          },
+          design_company: {
+            authentication: 0,
+            uncertified: 0
+          }
+        },
+        AdminOverviewOrderStatistics: {
+          total: 0,
+          unpaid: 0,
+          paid: 0,
+          close: 0
+        },
+        AdminOverviewItemStatistics: {
+          total: 0,
+          execution: 0,
+          complete: 0,
+          close: 0
+        },
+        AdminOverviewClueStatistics: {
+          cooperation: 0,
+          customer: 0,
+          potential: 0,
+          maintain: 0
+        },
+        IncomeStatistics: '0.00'
       }
     },
     methods: {
+      redirect(row) {
+        this.$router.push({name: 'adminItemShow0', params: {id: row.item.id}})
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -367,7 +407,6 @@
               item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               this.tableItemData.push(item)
             } // endfor
-            console.log(this.tableItemData)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -397,7 +436,6 @@
       getAdminOverviewCompany() {
         this.$http.get(api.adminOverviewCompany)
         .then(res => {
-          console.log(res)
           this.AdminOverviewCompany = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -406,7 +444,6 @@
       getAdminOverviewRevenueType() {
         this.$http.get(api.adminOverviewRevenueType)
         .then(res => {
-          console.log('adminOverviewRevenueType', res.data.data)
           this.option.series[0].data = []
           res.data.data.forEach(item => {
             switch (item.type) {
@@ -422,15 +459,16 @@
                 item.name = '平面设计'
                 break
               }
-              case 4: {
+              case 5: {
                 item.name = '包装设计'
                 break
               }
-              case 5: {
+              case 6: {
                 item.name = '插画设计'
                 break
               }
             }
+            item.value = item.value.toFixed(2)
             this.option.series[0].data.push({name: item.name, value: item.value})
           })
         }).catch(err => {
@@ -441,9 +479,13 @@
         this.$http.get(api.adminOverviewIncomeStatistics)
         .then(res => {
           this.polar.series[0].data = []
+          this.IncomeStatistics = 0
           res.data.data.forEach(item => {
+            item.value = Number(item.value).toFixed(2)
+            this.IncomeStatistics += Number(item.value)
             this.polar.series[0].data.push(item.value)
           })
+          this.IncomeStatistics = Number(this.IncomeStatistics).toFixed(2)
         }).catch(err => {
           console.error(err.message)
         })
@@ -451,7 +493,6 @@
       getAdminOverviewClueStatistics() {
         this.$http.get(api.adminOverviewClueStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewClueStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -460,7 +501,6 @@
       getAdminOverviewOrderStatistics() {
         this.$http.get(api.adminOverviewOrderStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewOrderStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -469,7 +509,6 @@
       getAdminOverviewItemStatistics() {
         this.$http.get(api.adminOverviewItemStatistics)
         .then(res => {
-          console.log(res)
           this.AdminOverviewItemStatistics = res.data.data
         }).catch(err => {
           console.error(err.message)
@@ -672,6 +711,7 @@
   .sub-img {
     width: 60px;
     position: relative;
+    margin: auto
   }
   .sub-img img {
     width: 60px;
@@ -694,7 +734,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120px;
+    height: 160px;
     flex-direction: column
   }
   .margin-b_0 {
