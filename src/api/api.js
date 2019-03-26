@@ -251,6 +251,7 @@ export default {
   adminClueClueLatentList: '/admin/clue/clueLatentList', // GET 潜在客户-潜在列表
   adminClueClueLowList: '/admin/clue/clueLowList', // GET 潜在客户-低价列表
   adminClueClueSignList: '/admin/clue/clueSignList', // GET 潜在客户-客户列表
+  adminClueRecoverClue: '/admin/clue/recoverClue', // POST 恢复失败客户
   adminBusinessOpportunity: '/admin/analysis/businessOpportunity', // GET 商机分析-今日、本周
   adminAnalysisProvince: '/admin/analysis/province', // GET 商机分析-商机地区
   adminAnalysisSource: '/admin/analysis/source', // GET 商机分析-商机来源
