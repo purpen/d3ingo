@@ -1,5 +1,5 @@
 <template>
-  <section class="hid no-select">
+  <section v-if="false" class="hid no-select">
     <section class="cover" ref="cover">
       <el-row class="progress-box" type="flex" justify="center">
         <el-col :span="5">

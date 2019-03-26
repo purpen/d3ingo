@@ -298,10 +298,10 @@
   }
 
   .el-table th .cell {
-    font-size: 12px;
+    font-size: 14px;
   }
   .el-table .cell, .el-table th>div {
-      font-size: 12px;
+      font-size: 14px;
   }
   .el-pagination__sizes .el-input .el-input__inner:hover {
     border-color: #ff5a5f
@@ -1093,6 +1093,23 @@
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
   }
+  .options-trigger .el-input__inner:focus {
+    border: none;
+  }
+  .options-trigger .el-input--suffix .el-input__inner {
+    padding-right: 15px
+  }
+  .options-trigger .el-input--suffix {
+    padding-left:0px;
+  }
+  .options-trigger .el-icon-arrow-down.is-reverse {
+    -webkit-transform: scale(0.70);
+    transform: scale(0.70);
+  }
+  .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
+    background-color: #f7f7f7;
+    color: #666;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -1138,6 +1155,7 @@
 .height30-datepicker.el-input__inner {
   height: 30px;
   line-height: 30px;
+  width: 235px
 }
 .height30-datepicker.el-date-editor .el-range__icon,
 .height30-datepicker.el-date-editor .el-range-separator,

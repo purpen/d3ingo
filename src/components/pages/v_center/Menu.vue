@@ -686,8 +686,8 @@
     padding-right: 30px;
   }
   .menu-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     cursor: pointer;
     background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
     background-size: 24px;
@@ -697,7 +697,7 @@
     background-size: 24px;
   }
   .home-icon {
-    height: 60px;
+    height: 70px;
     padding:0 20px;
     display: flex;
     align-items: center;
@@ -767,8 +767,8 @@
     display: block
   }
   .menu-header .icon.active span {
-    top: 20px;
-    right: 20px;
+    top: 24px;
+    right: 22px;
   }
   .mine {
     font-size: 16px;

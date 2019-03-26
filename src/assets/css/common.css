@@ -172,32 +172,6 @@
 .fw-normal {
   font-family: PingFangSC-Light
 }
-.blank5 {
-  padding-top: 5px;
-}
-.blank10 {
-  padding-top: 10px;
-}
-
-.blank20 {
-  padding-top: 20px;
-}
-
-.blank30 {
-  padding-top: 30px;
-}
-
-.blank40 {
-  padding-top: 40px;
-}
-
-.blank50 {
-  padding-top: 50px;
-}
-
-.blank60 {
-  padding-top: 60px;
-}
 .margin0 {
   margin: 0
 }
@@ -233,6 +207,35 @@
 }
 .margin-b-20 {
   margin-bottom: 20px
+}
+.blank5 {
+  padding-top: 5px;
+}
+.blank10 {
+  padding-top: 10px;
+}
+.blank13 {
+  padding-top: 13px;
+}
+
+.blank20 {
+  padding-top: 20px;
+}
+
+.blank30 {
+  padding-top: 30px;
+}
+
+.blank40 {
+  padding-top: 40px;
+}
+
+.blank50 {
+  padding-top: 50px;
+}
+
+.blank60 {
+  padding-top: 60px;
 }
 .text-center {
   text-align: center
