@@ -176,7 +176,7 @@
         </div>
       </el-col>
     </el-row>
-    <div class="count-content margin-b_0 padding-b_15">
+    <div class="count-content margin-b_0 padding-b_15 padding-l_0">
       <h2 class="sub-title">最近的项目</h2>
     </div>
     <div>
@@ -667,7 +667,8 @@
   }
   .sub-title {
     color: #222;
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 28px;
     padding-left: 14px;
     position: relative;
     margin: 0;
@@ -746,5 +747,8 @@
   }
   .line-echarts {
     width: 100%;
+  }
+  .padding-l_0 {
+    padding-left: 0
   }
 </style>

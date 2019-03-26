@@ -26,7 +26,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">优客工场联合太火鸟，首推B2B设计对接服务</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>免费提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求，尊享全单6折优惠</div>
           </div>
           <div class="swiper">

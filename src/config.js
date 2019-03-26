@@ -216,21 +216,6 @@ const COMPANY_TYPE = [
     ]
   },
   {
-    id: 4,
-    name: 'H5',
-    designType: [
-      {
-        id: 1,
-        key: 'item_4_1',
-        name: 'H5设计'
-      }
-    ],
-    field: [
-    ],
-    industry: [
-    ]
-  },
-  {
     id: 5,
     name: '包装设计',
     designType: [
@@ -506,23 +491,6 @@ const COMPANY_TYPE3 = [
         key: 'item_3_3',
         val: 'a',
         name: '画册、书装'
-      }
-    ],
-    field: [
-    ],
-    industry: [
-    ]
-  },
-  {
-    id: 4,
-    name: 'H5',
-    val: 'h',
-    designType: [
-      {
-        id: 1,
-        key: 'item_4_1',
-        val: 'h',
-        name: 'H5设计'
       }
     ],
     field: [

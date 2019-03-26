@@ -7,12 +7,12 @@
         <el-row :gutter="10" type="flex" align="middle" class="head-round">
             <el-col :span="13">
                 <el-col :span="20" class="design-font">设计从未如此简单</el-col>
-                <el-col :span="20" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
+                <el-col :span="20" class="free-round"><span class="free-font"></span>发布需求，全程管家服务</el-col>
             </el-col>
             <el-col :span="11">
               <el-col :span="24" class="header-style">
                 <el-col :span="24" class="ius-round">
-                  <span class="free-color">免费</span>发布项目需求
+                  <span class="free-color"></span>发布项目需求
                 </el-col>
                 <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
                   <el-row>
@@ -194,7 +194,7 @@
         <div class="wait">您还在等什么？快来发布需求吧！</div>
         <div class="wait-intro">
           <div class="z-index-5">
-            <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+            <div class="pc-wait-border-title"><span class="red-text"></span>发布项目需求</div>
             <input type="text" class="pc-wait-input-round" placeholder="请输入您的需求">
             <input type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入联系人">
             <div class="pc-send-code-90">
