@@ -1016,6 +1016,7 @@ input:-webkit-autofill {
     padding: 0 0 0 40px;
     -webkit-transition: all 86ms ease-out;
     transition: all 86ms ease-out;
+    width: 100%;
   }
 
 
