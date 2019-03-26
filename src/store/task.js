@@ -1,9 +1,10 @@
 let getPotentialIds = function () {
-  let ids = localStorage.getItem('potentialIds')
-  if (ids) {
-    return JSON.parse(ids)
+  let ids = localStorage.getItem('potentialIds') || []
+  let arr = JSON.parse(ids)
+  if (arr) {
+    return arr
   } else {
-    return false
+    return []
   }
 }
 let state = {
@@ -248,7 +249,8 @@ let mutations = {
     state.mineView = str
   },
   setPotentialIds(state, ids) {
-    state.potentialIds = window.localStorage.setItem('potentialIds', JSON.stringify(ids))
+    state.potentialIds = ids
+    window.localStorage.setItem('potentialIds', JSON.stringify(ids))
   }
 }
 export default {

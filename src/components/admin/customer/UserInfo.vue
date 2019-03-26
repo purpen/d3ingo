@@ -4,7 +4,7 @@
           <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
-            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red" @click="getNextUser"></i>
+            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red margin-r0" @click="getNextUser"></i>
           </div>
     </div>
     <div class="card-box" v-loading="userLoading">
@@ -304,7 +304,8 @@
                       </div>
                       <div class="design-li-footer">
                         <span>{{d.status_value}}</span>
-                        <span><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
+                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
+                        <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
                         <div class="progess-box">
                           <span class="fr check-progess" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
                           <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
@@ -314,7 +315,7 @@
                           </div>
                         </div>
                       </div>
-                      <el-progress :percentage="d.status * 16" :show-text="false" class="design-progress"></el-progress>
+                      <el-progress :percentage="d.status | getProgess" :show-text="false" class="design-progress"></el-progress>
                     </li>
                     <li>
                       <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
@@ -1466,27 +1467,23 @@ export default {
     showProgessDesign(d) { // 查看进度
       this.nowDesignId = d.design_company_id
       let obj = JSON.parse(d.stage)
-      console.log(typeof obj['3'].time)
-      let arrKey = Object.keys(obj)
-      let mixKey = Math.max(...arrKey)
       let stageArr = []
-      for (let i = 1; i <= mixKey; i++) {
+      for (let i in obj) {
         stageArr.push(obj[i])
       }
-      let index = stageArr.length - 1
-      if (index && stageArr[index].status === 0) {
-        let overdueTime = (new Date().getTime().toString().substr(0, 10) - stageArr[index - 1].time) / 24 / 60 / 60
-        if (parseInt(overdueTime) >= 1) {
-          stageArr[index].time = `停滞${parseInt(overdueTime)}天`
-        }
-        this.stageActive = parseInt(index - 1)
-        console.log(overdueTime)
-      } else {
-        this.stageActive = parseInt(index)
-      }
+      this.stageActive = stageArr.length - 1
       stageArr.forEach((d, index, arr) => {
-        if (d.status) {
-          d.time = d.time.date_format().format('yyyy-MM-dd hh:mm:ss')
+        if (d.status === 0) {
+          let overdueTime = (new Date().getTime().toString().substr(0, 10) - arr[index - 1].time) / 24 / 60 / 60
+          if (parseInt(overdueTime) >= 1) {
+            arr[index].time = `停滞${parseInt(overdueTime)}天`
+          }
+          this.stageActive = index - 1
+        }
+      })
+      stageArr.forEach((d, index, arr) => {
+        if (d.status !== 0) {
+          d.time = d.time.date_format().format('yyyy-MM-dd hh:mm')
         }
         if (d.time === 0) {
           d.time = ''
@@ -1562,7 +1559,7 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
-            query: {page: this.query.page}})
+            query: this.query})
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
@@ -1582,6 +1579,8 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
+          this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
+            query: this.query})
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
@@ -1664,6 +1663,7 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
+        console.log('11111')
         this.userLoading = false
       })
     },
@@ -1964,12 +1964,12 @@ export default {
     getUserProject() { // 项目列表
       this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
-        if (res.data.meta.status_code === 200 && res.data.data.length) {
+        if (res.data.meta.status_code === 200) {
           const data = res.data.data
           this.projectList = data
           this.userProjectLoading = false
           this.boolallDesign = true
-          const {crm_design_company: designList} = data[0]
+          const {crm_design_company: designList} = data[0] || []
           if (designList.length > 3) {
             this.crmDesignCompanyList1 = designList.slice(0, 3)
           } else {
@@ -2421,13 +2421,10 @@ export default {
       return nameToAvatar(val)
     },
     getProgess(val) {
-      let obj = JSON.parse(val)
-      let arr = Object.keys(obj)
-      let mix = Math.max(...arr)
-      if (mix > 5) {
+      if (val > 5) {
         return 100
       } else {
-        return mix * 16
+        return val * 16
       }
     },
     getProgessTime(d) {
@@ -2514,6 +2511,9 @@ export default {
 }
 .margin-l0 {
   margin-left: 0 !important;
+}
+.margin-r0 {
+  margin-right: 0 !important;
 }
 .margin-l20 {
   margin-left: 20px;
@@ -3288,6 +3288,10 @@ export default {
   position: absolute;
   top: 7px !important;
   left: 5px !important;
+}
+.steps .el-step__head.is-finish {
+  color: #00ac84 !important;
+  border-color: #00ac84 !important;
 }
 </style>
 
