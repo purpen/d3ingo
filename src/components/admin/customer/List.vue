@@ -3111,9 +3111,9 @@ export default {
   position: fixed;
   bottom: 10%;
   right: 3%;
-  z-index: 1;
+  z-index: 2;
   cursor: pointer;
-  background: url('../../../assets/images/icon/Open@2x.png') no-repeat center/ 28px 28px;
+  background: url('../../../assets/images/icon/Open@2x.png') no-repeat center/ 28px 28px #fff;
 }
 </style>
 
