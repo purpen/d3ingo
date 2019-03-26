@@ -136,7 +136,7 @@ function showProd() {
         logo: require('assets/images/new_home/logo@2x.png'),
         login: '太火鸟',
         info: '太火鸟',
-        title: '太火鸟-产品创新SaaS平台',
+        title: '太火鸟-B2B工业设计和产品创新SaaS平台',
         url: 'taihuoniao.com',
         fullurl: 'https://taihuoniao.com',
         license: '太火鸟【京ICP备14025430号】',
