@@ -332,7 +332,7 @@
 
           <div v-if="option === 'user'" class="fz-14">
             <div class="bb-e6">
-              <p class="padding-l30 padding-r40 clearfix line-height40">
+              <p class="padding-l30 padding-r40 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
                 <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span>
               </p>
@@ -2480,6 +2480,9 @@ export default {
   display: inline-block;
   transform: rotate(270deg);
 }
+.line-height50 {
+  line-height: 50px;
+}
 .fz-12 {
   font-size: 12px !important;
 }
@@ -2643,6 +2646,7 @@ export default {
 .user-info-left {
   width: 64%;
   min-height: 500px;
+  padding-bottom: 20px;
 }
 
 .project-name {
@@ -2688,7 +2692,7 @@ export default {
   margin: 0 -18px 0 -20px;
 }
 .project-title {
-  padding: 5px 30px 5px 30px;
+  padding: 10px 30px 10px 30px;
   border-bottom: 1px solid #e6e6e6;
 }
 .design-title {
@@ -2728,6 +2732,7 @@ export default {
 .user-log {
   overflow: hidden;
   min-height: 500px;
+  padding-bottom: 20px;
 }
 
 .bg-blue01 {
@@ -2795,7 +2800,7 @@ export default {
 .log-title {
   line-height: 40px;
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 14px;
   color: #222222;
 }
 
@@ -2831,8 +2836,6 @@ export default {
   padding-right: 30px;
   height: 40px;
   align-items: center;
-  background: #fafafa;
-  border-bottom: 1px solid #e6e6ee;
   font-size: 14px;
 }
 .card-body-header span {
@@ -2970,15 +2973,13 @@ export default {
   border-bottom: 1px solid #e6e6e6;
   padding: 20px 20px 20px 30px;
 }
-.project-li:nth-child(even) {
-  background-color: #FAFAFA;
-}
+
 .edit-project {
   position: relative;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+  background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
 
 .edit-project:hover .edit-project-tag {
