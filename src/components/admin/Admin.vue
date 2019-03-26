@@ -799,7 +799,6 @@
   .admin-menu img {
     width: 25px;
     height: 25px;
-    margin-right: 10px;
     margin-left: -5px;
 }
 
