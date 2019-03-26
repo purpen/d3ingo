@@ -1924,8 +1924,8 @@ export default {
       // let url = api.adminClueClueList
       let url = api.adminClueClueList
       let row = {}
-      let typeId = Number(this.$route.params.type)
-      this.typeId = Number(this.$route.params.type)
+      let typeId = Number(this.$route.params.type) || 1
+      this.typeId = Number(this.$route.params.type) || 1
       if (typeId === 1) {
         url = api.adminClueClueList
         Object.assign(row, this.query1)
@@ -2254,8 +2254,8 @@ export default {
     this.uploadUrl = api.adminClueImportExcel
   },
   created() {
-    this.bigType = 'potentialUserList' + this.$route.params.type
-    this.typeId = Number(this.$route.params.type)
+    this.bigType = 'potentialUserList' + this.$route.params.type || 1
+    this.typeId = Number(this.$route.params.type) || 1
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     if (this.typeId) {
       if (this.typeId === 1) {
@@ -2362,7 +2362,7 @@ export default {
   watch: {
     $route(to, form) {
       // 对路由变化做出相应...
-      this.typeId = Number(this.$route.params.type)
+      this.typeId = Number(this.$route.params.type) || 1
       this['query' + this.typeId] = {
         page: 1,
         per_page: 50,
