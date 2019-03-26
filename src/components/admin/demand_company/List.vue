@@ -298,10 +298,10 @@ export default {
       self.query.page = parseInt(self.$route.query.page || 1)
       self.query.sort = self.$route.query.sort
       self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
+      self.menuType = parseInt(self.query.type)
       self.query.source = self.$route.query.source || 0
       self.query.evt = self.$route.query.evt || '2'
       self.query.val = self.$route.query.val
-      self.menuType = parseInt(self.$route.query.type)
       self.isLoading = true
       self.$http.get(api.adminDemandCompanyList, {params: {
         page: self.query.page,

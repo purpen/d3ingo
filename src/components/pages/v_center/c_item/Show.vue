@@ -10,7 +10,7 @@
 
     <el-row :gutter="24" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
-                       :progressItem="progressItem"></v-item-progress>
+                       :progressItem="progressItem" class="item-progress"></v-item-progress>
 
       <el-col :span="isMob ? 24 : 18">
         <div class="content">
@@ -2329,7 +2329,7 @@
     border-color: #00ac84!important;
     background-color: #00ac84 !important;
   }
-  .el-step__head .el-step__line {
+  .item-progress .el-step__head .el-step__line {
     position: absolute;
     top: 4px !important;
     left: 5px !important;

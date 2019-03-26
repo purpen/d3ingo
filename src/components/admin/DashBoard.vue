@@ -176,7 +176,7 @@
         </div>
       </el-col>
     </el-row>
-    <div class="count-content margin-b_0 padding-b_15">
+    <div class="count-content margin-b_0 padding-b_15 padding-l_0">
       <h2 class="sub-title">最近的项目</h2>
     </div>
     <div>
@@ -190,7 +190,7 @@
         <el-table-column
           prop="item.id"
           label=""
-          width="50">
+          width="80">
         </el-table-column>
         <el-table-column
           label="客户姓名">
@@ -306,6 +306,7 @@
           ]
         },
         option: {
+          color: ['#3E95EB', '#01B4BD', '#6DD3A0', '#FFA64B', '#FDD27A'],
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b}: {c} ({d}%)',
@@ -666,7 +667,8 @@
   }
   .sub-title {
     color: #222;
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 28px;
     padding-left: 14px;
     position: relative;
     margin: 0;
@@ -745,5 +747,8 @@
   }
   .line-echarts {
     width: 100%;
+  }
+  .padding-l_0 {
+    padding-left: 0
   }
 </style>

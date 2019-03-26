@@ -298,10 +298,10 @@
   }
 
   .el-table th .cell {
-    font-size: 12px;
+    font-size: 14px;
   }
   .el-table .cell, .el-table th>div {
-      font-size: 12px;
+      font-size: 14px;
   }
   .el-pagination__sizes .el-input .el-input__inner:hover {
     border-color: #ff5a5f
@@ -1103,8 +1103,8 @@
     padding-left:0px;
   }
   .options-trigger .el-icon-arrow-down.is-reverse {
-    -webkit-transform: scale(0.70);
-    transform: scale(0.70);
+    -webkit-transform: scale(0.90);
+    transform: scale(0.90);
   }
   .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
     background-color: #f7f7f7;
