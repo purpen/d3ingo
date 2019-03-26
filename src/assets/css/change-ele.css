@@ -298,10 +298,10 @@
   }
 
   .el-table th .cell {
-    font-size: 12px;
+    font-size: 14px;
   }
   .el-table .cell, .el-table th>div {
-      font-size: 12px;
+      font-size: 14px;
   }
   .el-pagination__sizes .el-input .el-input__inner:hover {
     border-color: #ff5a5f
@@ -1075,7 +1075,8 @@
     background-color: #ff5a5f;
   }
   .el-date-table td.in-range div, .el-date-table td.in-range div:hover, .el-date-table.is-week-mode .el-date-table__row.current div, .el-date-table.is-week-mode .el-date-table__row:hover div {
-    background-color: #fafafa;
+    background-color: #e6e6e6;
+    background-color: rgba(255,90,95,0.1);
   }
   .el-range-editor.is-active, .el-range-editor.is-active:hover {
     border-color: #e6e6e6;
@@ -1135,4 +1136,29 @@
 }
 .admin-menu .el-submenu__title {
   text-align: left
+}
+.el-select--customer-mini {
+  width: 110px;
+}
+.el-select--customer-mini .el-input__inner {
+  height: 30px
+}
+.el-select--customer-mini .el-input__suffix {
+  position: absolute;
+  height: 40px;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.height30-datepicker.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  width: 235px
+}
+.height30-datepicker.el-date-editor .el-range__icon,
+.height30-datepicker.el-date-editor .el-range-separator,
+.height30-datepicker.el-date-editor .el-range__close-icon {
+  line-height: 24px;
 }

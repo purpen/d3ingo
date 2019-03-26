@@ -91,7 +91,7 @@
               <h2 class="sub-title">收入类型分布</h2>
             </div>
           </div>
-          <div>
+          <div class="blank13">
             <ECharts :options="option" class="line-echarts">
             </ECharts>
           </div>
@@ -135,40 +135,48 @@
           </div>
           <el-row>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{item.not_withdraw}}</span>
-                <img :src="require('assets/images/admin/dash_board/RemindCashWithdrawal@2x.png')" alt="">
-              </div>
-              <p>提现订单等待审核</p>
+              <router-link :to="{name: 'adminWithDrawList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{item.not_withdraw}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindCashWithdrawal@2x.png')" alt="">
+                </div>
+                <p>提现订单等待审核</p>
+              </router-link>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{item.bank_pay}}</span>
-                <img :src="require('assets/images/admin/dash_board/RemindOrder@2x.png')" alt="">
-              </div>
-              <p>订单申请对公打款</p>
+              <router-link :to="{name: 'adminOrderList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{item.bank_pay}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindOrder@2x.png')" alt="">
+                </div>
+                <p>订单申请对公打款</p>
+              </router-link>
             </el-col>
           </el-row>
           <el-row>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
-                <img :src="require('assets/images/admin/dash_board/RemindDemand Company@2x.png')" alt="">
-              </div>
-              <p>需求公司等待认证</p>
+              <router-link :to="{name: 'adminDemandCompanyList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindDemand Company@2x.png')" alt="">
+                </div>
+                <p>需求公司等待认证</p>
+              </router-link>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <div class="relative sub-img">
-                <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
-                <img :src="require('assets/images/admin/dash_board/RemindDesign Company@2x.png')" alt="">
-              </div>
-              <p>设计服务商等待认证</p>
+              <router-link :to="{name: 'adminCompanyList'}">
+                <div class="relative sub-img">
+                  <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
+                  <img :src="require('assets/images/admin/dash_board/RemindDesign Company@2x.png')" alt="">
+                </div>
+                <p>设计服务商等待认证</p>
+              </router-link>
             </el-col>
           </el-row>
         </div>
       </el-col>
     </el-row>
-    <div class="count-content margin-b_0 padding-b_15">
+    <div class="count-content margin-b_0 padding-b_15 padding-l_0">
       <h2 class="sub-title">最近的项目</h2>
     </div>
     <div>
@@ -298,9 +306,11 @@
           ]
         },
         option: {
+          color: ['#3E95EB', '#01B4BD', '#6DD3A0', '#FFA64B', '#FDD27A'],
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
+            formatter: '{a} <br/>{b}: {c} ({d}%)',
+            enterable: true
           },
           legend: {
             bottom: 0,
@@ -450,11 +460,11 @@
                 item.name = '平面设计'
                 break
               }
-              case 4: {
+              case 5: {
                 item.name = '包装设计'
                 break
               }
-              case 5: {
+              case 6: {
                 item.name = '插画设计'
                 break
               }
@@ -657,7 +667,8 @@
   }
   .sub-title {
     color: #222;
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 28px;
     padding-left: 14px;
     position: relative;
     margin: 0;
@@ -702,6 +713,7 @@
   .sub-img {
     width: 60px;
     position: relative;
+    margin: auto
   }
   .sub-img img {
     width: 60px;
@@ -735,5 +747,8 @@
   }
   .line-echarts {
     width: 100%;
+  }
+  .padding-l_0 {
+    padding-left: 0
   }
 </style>

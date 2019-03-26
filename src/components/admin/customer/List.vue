@@ -2015,7 +2015,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
@@ -2024,7 +2025,8 @@ export default {
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
       })
-      window.open(href, '_blank')
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -2666,6 +2668,25 @@ export default {
 }
 .admin-table .over-date .el-table-column--selection {
   border-left: 4px solid #FF5A5F;
+  position: relative;
+}
+.admin-table .over-date .el-table-column--selection::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: #fff;
+  position: absolute;
+  left: -4px;
+  top: -1px;
+}
+.admin-table .over-date .el-table-column--selection::after {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: #fff;
+  position: absolute;
+  left: -4px;
+  bottom: -1px;
 }
 .admin-table .el-table-column--selection {
   border-left: 4px solid transparent;
@@ -2770,6 +2791,7 @@ export default {
   background: url('../../../assets/images/tools/cloud_drive/operate/add@2x.png') no-repeat center / 24px 24px;
 }
 .new-button {
+  font-size: 14px;
   background-color: #ff5a5f;
   color: #fff;
   width: 110px;
@@ -3033,10 +3055,10 @@ export default {
 }
 .options-trigger .el-input__inner {
   background-color: #f7f7f7;
-  width: 67px;
+  width: 80px;
   padding: 0px 15px 0px 0px;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
 }
 .options-trigger input::input-placeholder {
   color: #222;
@@ -3044,7 +3066,7 @@ export default {
 .options-trigger, .options-trigger .el-cascader__label, .options-trigger .el-input__icon {
   height: 40px;
   line-height: 40px;
-  font-size: 12px;
+  font-size: 14px;
   padding-left: 0px;
   color: #222;
 }
@@ -3083,13 +3105,15 @@ export default {
   display: block;
   width: 35px;
   height: 35px;
-  background: rgba(255,255,255,1);
+  background-color: #fff;
   box-shadow:0px 0px 4px 0px rgba(0,0,0,0.3);
   border-radius: 50%;
   position: fixed;
   bottom: 10%;
   right: 3%;
   z-index: 1;
+  cursor: pointer;
+  background: url('../../../assets/images/icon/Open@2x.png') no-repeat center/ 28px 28px;
 }
 </style>
 

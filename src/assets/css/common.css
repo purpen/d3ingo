@@ -57,6 +57,9 @@
 .fz-22 {
   font-size: 22px;
 }
+.fz-36 {
+  font-size: 36px;
+}
 .tc-2 {
   color: #222
 }
@@ -74,6 +77,9 @@
 }
 .tc-red {
   color: #ff5a5f
+}
+.tc-green {
+  color: #20AD1E
 }
 .tc-hover-red:hover {
   color: #ff5a5f !important;
@@ -169,11 +175,53 @@
 .fw-normal {
   font-family: PingFangSC-Light
 }
+.margin0 {
+  margin: 0
+}
+.margin-t-10 {
+  margin-top: 10px;
+}
+.margin-l-10 {
+  margin-left: 10px;
+}
+.margin-r-10 {
+  margin-right: 10px;
+}
+.margin-r-15 {
+  margin-right: 15px!important;
+}
+.margin-r-20 {
+  margin-right: 20px;
+}
+.padding10 {
+  padding: 10px
+}
+.padding15 {
+  padding: 15px
+}
+.padding20 {
+  padding: 20px
+}
+.padding26 {
+  padding-bottom: 26px;
+}
+.padding-b15 {
+  padding-bottom: 15px;
+}
+.margin-b-10 {
+  margin-bottom: 10px
+}
+.margin-b-20 {
+  margin-bottom: 20px
+}
 .blank5 {
   padding-top: 5px;
 }
 .blank10 {
   padding-top: 10px;
+}
+.blank13 {
+  padding-top: 13px;
 }
 
 .blank20 {
@@ -195,31 +243,12 @@
 .blank60 {
   padding-top: 60px;
 }
-.margin0 {
-  margin: 0
-}
-.margin-t-10 {
-  margin-top: 10px;
-}
-.margin-r-10 {
-  margin-right: 10px;
-}
-.margin-r-15 {
-  margin-right: 15px!important;
-}
-.margin-r-20 {
-  margin-right: 20px;
-}
-.padding26 {
-  padding-bottom: 26px;
-}
-.padding-b15 {
-  padding-bottom: 15px;
-}
 .text-center {
   text-align: center
 }
-
+.va-bottom {
+  vertical-align: bottom
+}
 .fw-4 {
   font-weight: 400;
 }
@@ -242,6 +271,12 @@
 }
 .pointer {
   cursor: pointer;
+}
+.text-overflow {
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* 发布需求 */
 .project-cover {
@@ -556,6 +591,9 @@ button.el-button.is-custom.is-disabled,
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+.option-item80 {
+  width: 80px
 }
 .option-item:hover, .option-item.active {
   background: #ff5a5f;

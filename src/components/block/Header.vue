@@ -284,7 +284,7 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <li>
+            <li v-if="!custom.name">
               <router-link :to="menu.mobile_login">成果交易会</router-link>
             </li>
             <li>

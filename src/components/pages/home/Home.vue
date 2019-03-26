@@ -5,7 +5,7 @@
         <div class="container clearfix" style="height:100%;">
           <div class="left">
             <h3 :class="{'m-h3' : isMob}">太火鸟</h3>
-            <p :class="{'m-p' : isMob}">中国领先的工业设计和产品创新SaaS平台</p>
+            <p :class="{'m-p' : isMob}">工业设计和产品创新SaaS平台</p>
             <p :class="{'m-p' : isMob}">为创新者提供高效的设计交易服务</p>
             <router-link to="/login" v-if="!token">发布项目需求</router-link>
             <router-link to="/item/submit_one" v-if="user.type === 1 && token">发布项目需求</router-link>

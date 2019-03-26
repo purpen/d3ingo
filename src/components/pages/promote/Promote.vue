@@ -285,7 +285,7 @@
         <div class="wait-intro">
           <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3" class="center-form2">
             <div class="z-index-5">
-              <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+              <div class="pc-wait-border-title"><span class="red-text"></span>发布项目需求</div>
               <el-form-item prop="demand">
                 <input v-model="form3.demand" name="username" type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入您的需求">
               </el-form-item>
@@ -978,7 +978,7 @@
             }
             this.btn3 = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
@@ -1010,7 +1010,7 @@
             }
             this.isLoadingBtn = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
@@ -1045,7 +1045,7 @@
             }
             this.appBtn = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
@@ -1079,7 +1079,7 @@
             }
             this.appBtn2 = true
             let url = this.identifying_code ? api.pcAdd : api.pcAdd2
-            this.$http.post(url, {row})
+            this.$http.post(url, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
