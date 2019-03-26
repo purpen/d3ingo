@@ -1103,8 +1103,8 @@
     padding-left:0px;
   }
   .options-trigger .el-icon-arrow-down.is-reverse {
-    -webkit-transform: scale(0.70);
-    transform: scale(0.70);
+    -webkit-transform: scale(0.90);
+    transform: scale(0.90);
   }
   .el-table-filter__list-item.is-active, .el-table-filter__list-item:hover {
     background-color: #f7f7f7;
