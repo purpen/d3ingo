@@ -604,16 +604,18 @@
     computed: {
       BusinessOpportunityRateDay() {
         if (this.BusinessOpportunity.today) {
+          let yesterday = this.BusinessOpportunity.yesterday || 1
           let r = this.BusinessOpportunity.today - this.BusinessOpportunity.yesterday
-          return ((r / this.BusinessOpportunity.yesterday) * 100).toFixed(2)
+          return ((r / yesterday) * 100).toFixed(2)
         } else {
           return 0
         }
       },
       BusinessOpportunityRateWeek() {
+        let lastWeek = this.BusinessOpportunity.last_week || 1
         if (this.BusinessOpportunity.this_week) {
           let r = this.BusinessOpportunity.this_week - this.BusinessOpportunity.last_week
-          return ((r / this.BusinessOpportunity.last_week) * 100).toFixed(2)
+          return ((r / lastWeek) * 100).toFixed(2)
         } else {
           return 0
         }
