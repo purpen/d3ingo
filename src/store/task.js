@@ -1,5 +1,5 @@
 let getPotentialIds = function () {
-  let ids = localStorage.getItem('potentialIds') || []
+  let ids = localStorage.getItem('potentialIds') || '[]'
   let arr = JSON.parse(ids)
   if (arr) {
     return arr
