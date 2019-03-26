@@ -78,6 +78,16 @@
         <el-menu
           class="admin-menu"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff" active-background-color="#000">
+          <el-tooltip v-for="(ele, index) in adminMenu" :key="index" :content="ele.name" placement="right">
+            <el-menu-item :index="ele.route" :route="{name: ele.route, params: ele.statement.params, query: ele.statement.query}">
+            <img :src="ele.icon" :alt="ele.name">
+              </el-menu-item>
+          </el-tooltip>
+        </el-menu>
+        <!-- <el-menu
+          class="admin-menu"
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
           <el-tooltip class="item" content="控制台" placement="right">
             <el-menu-item index="adminDashBoard" :route="{name: 'adminDashBoard'}">
@@ -149,10 +159,25 @@
             <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理">
             </el-menu-item>
           </el-tooltip>
-        </el-menu>
+        </el-menu> -->
       </div>
       <div v-if="leftWidth === 4">
         <el-menu
+          class="admin-menu"
+          :default-active="selectedName"
+          @select="handleSelect" @open="handleOpen" @close="handleClose" router
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
+            <el-submenu v-for="(ele, index) in adminMenu" :key="index" :index="index + ''">
+            <template slot="title">
+              <img :src="ele.icon" :alt="ele.name">
+              <span class="margin-l-10">{{ele.name}}</span>
+              </template>
+              <el-menu-item v-for="(e, i) in ele.children" :key="i"
+                :index="e.route+e.subRouter" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
+            </el-submenu>
+        </el-menu>
+
+        <!-- <el-menu
           class="admin-menu"
           :default-active="selectedName"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
@@ -260,7 +285,7 @@
             </template>
             <el-menu-item index="adminUserList" :route="{name: 'adminUserList'}">列表</el-menu-item>
           </el-submenu>
-        </el-menu>
+        </el-menu> -->
       </div>
     </section>
     <section v-else :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
@@ -268,7 +293,7 @@
         <el-menu
           class="admin-menu"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
-          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff" active-background-color="#000">
           <el-tooltip class="item" content="项目管理" placement="right">
             <el-menu-item index="bAdminItemList" :route="{name:'bAdminItemList'}">
               <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理">
@@ -296,7 +321,7 @@
           class="admin-menu"
           :default-active="selectedName2"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
-          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#333">
+          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
           <el-menu-item index="bAdminItemList" :route="{name:'bAdminItemList'}">
             <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理"><span class="margin-l-10">项目管理</span>
           </el-menu-item>
@@ -330,6 +355,7 @@
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
+  import { ADMINMENU } from '@/config'
   export default {
     name: 'Admin',
     props: {
@@ -426,6 +452,9 @@
       localStorage.setItem('selectedName2', this.selectedName2)
     },
     computed: {
+      adminMenu() {
+        return ADMINMENU
+      },
       isCompany() {
         return this.$store.state.event.user.type === 2
       },
@@ -580,11 +609,11 @@
 
   .menu-list .item:hover {
     color: #fff;
-    background: #333;
+    background: #000;
   }
 
   .item.is-active {
-    background: #333;
+    background: #000;
     color: #fff;
     /* font-weight: bold; */
     border-color: #ff5a5f
