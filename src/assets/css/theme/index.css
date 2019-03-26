@@ -15871,11 +15871,12 @@
     display: inline-block;
     line-height: 34px;
     cursor: pointer; }
-    .el-table__column-filter-trigger i {
-      color: #65A6FF;
-      font-size: 12px;
-      -webkit-transform: scale(0.75);
-      transform: scale(0.75); }
+  .el-table__column-filter-trigger i {
+    color: #666;
+    font-size: 12px;
+    -webkit-transform: scale(1);
+    transform: scale(1); 
+  }
   .el-table--enable-row-transition .el-table__body td {
     -webkit-transition: background-color .25s ease;
     transition: background-color .25s ease; }

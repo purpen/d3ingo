@@ -190,7 +190,7 @@
         <el-table-column
           prop="item.id"
           label=""
-          width="50">
+          width="80">
         </el-table-column>
         <el-table-column
           label="客户姓名">
