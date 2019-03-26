@@ -23,7 +23,7 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button type="primary" class="margin-r-15" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button type="primary" class="" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button> 
             <!-- <div class="edit-project fr">
               <div class="edit-project-tag">
                 <span>删除</span>
@@ -32,7 +32,7 @@
           </div>
 
         </div>
-        <div class="margin-l20 head-c-content">
+        <div class="margin-l20 head-c-content fz-14">
           <el-row :gutter="10">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
@@ -71,19 +71,21 @@
 
       <div class="user-progress contant-border margin-t15">
         <div class="progress-top">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-18', {'fx-icon-upper': boolProgressContant}]"></i>
+          <div class="fl padding-t8">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'margin-t8', 'fx-icon-lower', 'fz-20', {'t270-before': !boolProgressContant}]"></i>
+          </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
           <span @click="showTabProgress(3)" :class="{'bg-blue02': userForm.new_status === 3, 'bg-green02': userForm.new_status > 3, 'bg-gray02': userForm.new_status < 3 }">对接设计</span>
           <span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
           <div class="fr">
             <el-dropdown @command="showClueDialog">
-                <el-button type="primary" :disabled="!isHasPower">标记当前客户状态</el-button>
+                <el-button type="primary" class="fz-12" :disabled="!isHasPower">标记当前客户状态</el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1">转化</el-dropdown-item>
-                <el-dropdown-item  command="3">无效商机</el-dropdown-item>
-                <el-dropdown-item  command="4">低价客户</el-dropdown-item>
-                <el-dropdown-item  command="2">流失客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1" command="1">转化为潜在客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1" command="3">无效商机</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status !== 4" command="4">低价客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 3"  command="2">流失客户</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -158,13 +160,13 @@
           <div v-if="option === 'project'" v-loading="userProjectLoading">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t180-before': boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
             <div class="project-list" v-show="boolProjectList && projectList.length">
               <ul>
-                <li v-for="(item, index) in projectList" :key="index" class="project-li">
+                <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
                   <el-row>
                     <el-col>
                       <h5 class="project-name fl">{{item.name}}</h5>
@@ -265,13 +267,13 @@
                   <!-- 对接设计公司 -->
                   <div>
                     <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i class="fx fx-icon-nothing-lower"></i>设计服务商</span>
+                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
                     <el-button size="small" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                     </p>
                   </div>
                   <ul v-if="boolDesigeList">
-                    <li v-for="(d, i) in item.crm_design_company" :key="i" class="design-li contant-border margin-t20">
-                      <div class="">
+                    <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
+                      <div class="margin-b-10">
                         <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
                         <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
                         <span class="padding-l10">{{d.company_name}}</span>
@@ -289,7 +291,7 @@
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">职务</span>
-                          <span class="fz-14">{{d.contact_name}}</span>
+                          <span class="fz-14">{{d.position}}</span>
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">电话</span>
@@ -300,12 +302,22 @@
                           <span class="fz-14">{{d.wx}}</span>
                         </div>
                       </div>
-                      <!-- <div class="design-li-footer">
-                        <span>{{d.stage | getProgessStatus}}</span>
-                        <span><i class="fx fx-icon-time"></i></span>
-                        <span class="fr" @click="boolStage = true">查看进度</span>
-                      </div> -->
-                      <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
+                      <div class="design-li-footer">
+                        <span>{{d.status_value}}</span>
+                        <span><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
+                        <div class="progess-box">
+                          <span class="fr check-progess" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                          <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                            <el-steps :active="stageActive" class="steps-item">
+                              <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step>
+                            </el-steps>
+                          </div>
+                        </div>
+                      </div>
+                      <el-progress :percentage="d.status * 16" :show-text="false" class="design-progress"></el-progress>
+                    </li>
+                    <li>
+                      <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
                     </li>
                   </ul>
                 </li>
@@ -313,12 +325,12 @@
             </div>
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
-              <p class="text-center tc-2">客户备注</p>
+              <p class="text-center tc-2 margin-t20">客户备注</p>
               <p class="text-center tc-6 line-height20">{{clientList.summary}}</p>
             </div>
           </div>
 
-          <div v-if="option === 'user'">
+          <div v-if="option === 'user'" class="fz-14">
             <div class="bb-e6">
               <p class="padding-l30 padding-r40 clearfix line-height40">
                 <span class="tc-3 fl fw-5">基本信息</span>
@@ -892,14 +904,6 @@
         <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保 存</el-button>
       </span>
     </el-dialog>
-
-    <!-- <el-dialog
-      title="对接进度"
-      :visible.sync="boolStage"
-      width="380px">
-    </el-dialog> -->
-
-
   </div>
 </template>
 
@@ -946,6 +950,7 @@ export default {
       boolFollowLog: false,
       createProjectLoading: false,
       boolCreateUser: false,
+      boolallDesign: true,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
       clientForm: {
@@ -1333,6 +1338,8 @@ export default {
       isFirstRegion: true,
 
       projectList: [],
+      crmDesignCompanyList1: [], // 对接设计公司列表前三个
+      crmDesignCompanyList: [], // 对接设计公司列表
       boolAddProject: false,
       boolEditProject: false,
       currentProjectId: '',
@@ -1347,7 +1354,7 @@ export default {
         wx: '',
         summary: ''
       },
-      designCompanyList: [],
+      designCompanyList: [], // 设计公司列表
       currentDesignId: '',
       boolDesignCompany: false,
       boolEditDesignCompany: false,
@@ -1388,7 +1395,10 @@ export default {
       boolClueStatus2: true, // 显示无效后者流失
       isOpen: true,
 
-      boolStage: false
+      boolStage: false,
+      stageArr: [],
+      stageActive: 0,
+      nowDesignId: ''
     }
   },
   methods: {
@@ -1453,6 +1463,39 @@ export default {
     showTabProgress(val) {
       this.activeName = val
     },
+    showProgessDesign(d) { // 查看进度
+      this.nowDesignId = d.design_company_id
+      let obj = JSON.parse(d.stage)
+      console.log(typeof obj['3'].time)
+      let arrKey = Object.keys(obj)
+      let mixKey = Math.max(...arrKey)
+      let stageArr = []
+      for (let i = 1; i <= mixKey; i++) {
+        stageArr.push(obj[i])
+      }
+      let index = stageArr.length - 1
+      if (index && stageArr[index].status === 0) {
+        let overdueTime = (new Date().getTime().toString().substr(0, 10) - stageArr[index - 1].time) / 24 / 60 / 60
+        if (parseInt(overdueTime) >= 1) {
+          stageArr[index].time = `停滞${parseInt(overdueTime)}天`
+        }
+        this.stageActive = parseInt(index - 1)
+        console.log(overdueTime)
+      } else {
+        this.stageActive = parseInt(index)
+      }
+      stageArr.forEach((d, index, arr) => {
+        if (d.status) {
+          d.time = d.time.date_format().format('yyyy-MM-dd hh:mm:ss')
+        }
+        if (d.time === 0) {
+          d.time = ''
+        }
+      })
+      this.stageArr = stageArr
+      console.log(stageArr)
+      this.boolStage = true
+    },
     importWeb() { // 导入社区
       if (this.userForm.is_thn) {
         this.$message.error('已导入到社区,无需重复操作')
@@ -1512,7 +1555,7 @@ export default {
       })
     },
     getNextUser() { // 下一条
-      if (this.currentId) {
+      if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
@@ -1524,6 +1567,8 @@ export default {
           this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
             query: {page: this.query.page}})
           this.option = 'project'
+          this.boolProjectList = true
+          this.boolDesigeList = true
           this.getUserInfo()
           this.getLogList()
           this.getUserProject()
@@ -1531,7 +1576,7 @@ export default {
       }
     },
     getPreviousUser() { // 上一条
-      if (this.currentId) {
+      if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
           this.$message.info('已经是第一条,返回列表页,获取最新数据')
@@ -1541,6 +1586,8 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
           this.option = 'project'
+          this.boolProjectList = true
+          this.boolDesigeList = true
           this.getUserInfo()
           this.getLogList()
           this.getUserProject()
@@ -1920,9 +1967,16 @@ export default {
     getUserProject() { // 项目列表
       this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.projectList = res.data.data
+        if (res.data.meta.status_code === 200 && res.data.data.length) {
+          const data = res.data.data
+          this.projectList = data
           this.userProjectLoading = false
+          this.boolallDesign = true
+          const {crm_design_company: designList} = data[0]
+          if (designList.length > 3) {
+            this.crmDesignCompanyList1 = designList.slice(0, 3)
+          }
+          this.crmDesignCompanyList = designList
         } else {
           this.$message.error(res.data.meta.message)
           this.userProjectLoading = false
@@ -1931,6 +1985,10 @@ export default {
         this.$message.error(error.message)
         this.userProjectLoading = false
       })
+    },
+    showAllDesign() {
+      this.boolallDesign = false
+      this.crmDesignCompanyList1 = [...this.crmDesignCompanyList]
     },
     addDesignCompany(id) {
       if (id) {
@@ -2379,11 +2437,14 @@ export default {
         return mix * 16
       }
     },
-    getProgessStatus(val) {
-      let obj = JSON.parse(val)
-      let arr = Object.keys(obj)
-      let mix = Math.max(...arr)
-      return obj[mix].message
+    getProgessTime(d) {
+      let nowTime = new Date().getTime().toString().substr(0, 10)
+      let gap = parseInt((nowTime - d) / 24 / 60 / 60)
+      if (gap < 1) {
+        return d.date_format().format('yyyy-MM-dd') + ''
+      } else {
+        return `停滞${gap}天`
+      }
     }
   },
   created() {
@@ -2415,9 +2476,12 @@ export default {
 .client-line {
   border-top: 1px solid #e6e6e6;
 }
-.t180-before::before {
+.t270-before::before {
   display: inline-block;
-  transform: rotate(180deg);
+  transform: rotate(270deg);
+}
+.fz-12 {
+  font-size: 12px !important;
 }
 .flex-right {
   justify-content: flex-end !important;
@@ -2466,6 +2530,9 @@ export default {
 }
 .margin-t10 {
   margin-top: 10px;
+}
+.padding-t8 {
+  padding-top: 8px;
 }
 .padding20 {
   padding: 20px;
@@ -2518,13 +2585,13 @@ export default {
   color: #000;
 }
 .head-c-top {
-  padding: 20px 25px 20px 30px;
+  padding: 20px 20px 20px 30px;
 }
 .head-c-content {
   /* display: flex; */
   height: 60px;
   margin: 0 30px 0 30px;
-  padding-top: 10px;
+  padding: 10px 0 20px 0;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
@@ -2536,9 +2603,10 @@ export default {
 .base-info {
   box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
   border-radius:4px;
+  padding-bottom: 10px;
 }
 .user-progress {
-  padding: 15px 30px 15px 30px;
+  padding: 15px 20px 15px 30px;
 }
 .progress-top > span {
   display: inline-block;
@@ -2593,14 +2661,22 @@ export default {
 }
 .design-li {
   /* width: 680px; */
-  height: 142px;
-  padding: 10px 18px 0 20px;
+  /* height: 142px; */
+  padding: 10px 18px 4px 20px;
 }
 .design-info > div {
   width: 150px;
 }
+.design-info span {
+  line-height: 28px;
+}
 .design-li-footer {
-
+  position: relative;
+}
+.design-li-footer .div {
+  position: absolute;
+  right: 0;
+  top: 8px;
 }
 .design-li-footer span {
   display: inline-block;
@@ -2609,12 +2685,46 @@ export default {
   margin-right: 60px;
 }
 .design-progress {
-  top: 18px;
+  top: 4px;
   margin: 0 -18px 0 -20px;
 }
-.project-title, .design-title {
+.project-title {
   padding: 5px 30px 5px 30px;
   border-bottom: 1px solid #e6e6e6;
+}
+.design-title {
+  padding: 5px 30px 5px 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.progess-box {
+	position: absolute;
+	right: 0;
+	bottom: 14px;
+  height: 20px;
+	width: 100%;
+  z-index: 5;
+}
+.steps {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
+  padding: 10px 18px 4px 20px;
+  transition: all 1s ease-out;
+  margin-left: -20px;
+  margin-right: -18px;
+}
+.all-design-btn {
+  position: relative;
+  z-index: 4;
+}
+
+
+.check-progess:focus + .steps {
+  display: block;
 }
 .user-log {
   overflow: hidden;
@@ -2730,7 +2840,6 @@ export default {
   display: inline-block;
   height: 40px;
   line-height: 40px;
-  padding: 0px 8px;
   margin-right: 20px;
   color: #666666;
   cursor: pointer;
@@ -2826,87 +2935,12 @@ export default {
 
 
 
-/* feedback end */
-
-/* user-rank */
-/* .user-rank {
-  max-width: 110px;
-}
-.select-parent {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  cursor: pointer;
-}
-.select-level {
-  display: block;
-  width: 88px;
-  height: 24px;
-  line-height: 22px;
-  border-radius: 11px;
-  padding-left: 30px;
-  border: 1px solid #e6e6e6;
-  color: #ffffff;
-}
-.select-parent:focus .stage-list {
-  display: block;
-}
-.stage-list {
-  display: none;
-  background: #fff;
-  width: 110px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.10);
-  position: absolute;
-  right: -10px;
-  top: 30px;
-  z-index: 2;
-}
-.stage-list li {
-  position: relative;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 10px 0 10px;
-  cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.select-parent .select-level {
-  background: url(../../../assets/images/icon/commonly01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #d2d2d2;
-}
-.select-parent .select-level2 {
-  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #999999;
-}
-.select-parent .select-level3 {
-  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #f9d718;
-}
-.select-parent .select-level4 {
-  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #ffa748;
-}
-.select-parent .select-level5 {
-  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #fe5b5f;
-} */
-/* user-rank end */
-
 .user-status {
   width: 200px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
 }
 
-/* .user-status-bg {
-  position: absolute;
-  left: 12px;
-  top: 8px;
-  z-index: 99;
-  width: 20px;
-  height: 20px;
-} */
 .user-info-center {
   margin-top: 12px;
 }
@@ -2925,23 +2959,6 @@ export default {
   background: url(../../../assets/images/icon/label.png) no-repeat left;
   background-size: 18px;
 }
-/* 标签start */
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-/* 标签end */
 
 /* card-body */
 .add-project {
@@ -2952,7 +2969,7 @@ export default {
 }
 .project-li {
   border-bottom: 1px solid #e6e6e6;
-  padding: 20px;
+  padding: 20px 20px 20px 30px;
 }
 .project-li:nth-child(even) {
   background-color: #FAFAFA;
@@ -3073,12 +3090,6 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-/* .link-item-name:hover i {
-  background: rgba(0,0,0,.6);
-  color: #ffffff;
-  opacity: 1;
-} */
-
 .p-t-summary {
   line-height: 1.5;
   font-size: 14px;
@@ -3130,12 +3141,6 @@ export default {
   /* margin-left: 20px; */
   /* color: #666666; */
 }
-/* .log-li-top .log-next-time {
-  padding: 0px 10px;
-  height: 30px;
-  line-height: 30px;
-  background-color: #EFEFEF;
-} */
 .log-next-time span {
   margin-right: 20px;
 }
@@ -3143,12 +3148,6 @@ export default {
   padding: 0px 5px;
   cursor: pointer;
 }
-/* .log-li-top > p > span {
-  color: #9E9E9E;
-}
-.log-li-top .carry-out {
-  background: url(../../../assets/images/icon/Success@2x.png) no-repeat right / 18px 18px;
-} */
 .log-contant {
   border-top: 1px solid #e6e6e6;
   min-height: 40px;
@@ -3173,9 +3172,6 @@ export default {
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
-}
-.edit-log {
-
 }
 
 .no-head {
@@ -3236,21 +3232,6 @@ export default {
   padding-left: 0px;
 }
 
-.user-status.status1 input {
-  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status2 input {
-  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status5 input {
-  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status3 input {
-  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status4 input {
-  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
-}
 .user-info-center .call-status-select .el-select {
   width: 136px;
 }
@@ -3278,6 +3259,27 @@ export default {
 }
 .el-form-item__label:before {
   display: inline !important;
+}
+.steps .el-step__title.is-finish,
+.steps  .el-step__description.is-finish {
+  color: #222 !important;
+}
+.steps .is-finish .el-step__icon.is-text {
+  border-color: #00ac84 !important;
+}
+.steps .el-step__line {
+  background-color: #00ac84 !important;
+}
+.steps .el-step__main {
+  padding-bottom: 10px;
+}
+.steps-item > .el-step {
+  flex-basis: 20% !important;
+}
+.steps-item .el-step__head .el-step__line {
+  position: absolute;
+  top: 7px !important;
+  left: 5px !important;
 }
 </style>
 

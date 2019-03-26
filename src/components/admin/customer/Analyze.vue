@@ -795,11 +795,11 @@
   }
   .sub-title {
     color: #222;
-    font-size: 16px;
+    font-size: 20px;
     padding-left: 14px;
     position: relative;
     margin: 0;
-    line-height: 20px;
+    line-height: 28px;
   }
   .sub-title:before {
     content: '';

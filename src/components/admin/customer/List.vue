@@ -2616,7 +2616,7 @@ export default {
   border-left: 4px solid #FF5A5F;
   position: relative;
 }
-/* .admin-table .over-date .el-table-column--selection::before {
+.admin-table .over-date .el-table-column--selection::before {
   content: '';
   width: 4px;
   height: 20px;
@@ -2633,7 +2633,7 @@ export default {
   position: absolute;
   left: -4px;
   bottom: -1px;
-} */
+}
 .admin-table .el-table-column--selection {
   border-left: 4px solid transparent;
 }
