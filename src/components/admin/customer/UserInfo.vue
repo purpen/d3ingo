@@ -470,7 +470,7 @@
                   <span class="tc-9">修改人</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span v-if="updateTime">{{clientList.update_user_name}}  &nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
+                  <span v-if="clientList.update_user_name">{{clientList.update_user_name}}&nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
                 </el-col>
               </el-row>
             </div>
@@ -623,7 +623,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="商机来源" class="is-required">
               <el-cascader
-                :options="sourceArr2"
+                :options="sourceArr"
                 v-model="selectedsource"
                 @change="handleSourceChange">
               </el-cascader>
@@ -1014,148 +1014,6 @@ export default {
       createdTime: '',
       updateTime: '',
       sourceArr: [
-        {
-          id: 1,
-          name: '网络广告',
-          son_source: [
-            {
-              key: 'a',
-              name: '百度'
-            },
-            {
-              key: 'b',
-              name: '360'
-            },
-            {
-              key: 'c',
-              name: '知乎'
-            },
-            {
-              key: 'd',
-              name: '今日头条'
-            },
-            {
-              key: 'edm',
-              name: '邮件'
-            },
-            {
-              key: 'sms',
-              name: '短信'
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: '官⽅',
-          son_source: [
-            {
-              key: 'a',
-              name: 'PC/WAP官网'
-            },
-            {
-              key: 'b',
-              name: '小程序'
-            },
-            {
-              key: 'c',
-              name: 'App'
-            },
-            {
-              key: 'topic_view_h',
-              name: '文章详情头部'
-            },
-            {
-              key: 'topic_view_f',
-              name: '文章详情底部'
-            },
-            {
-              key: 'topic_view_r',
-              name: '文章详情右侧'
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: '合作伙伴',
-          son_source: [
-            {
-              key: 'a',
-              name: '京东'
-            },
-            {
-              key: 'b',
-              name: '优客工场'
-            }
-          ]
-        },
-        {
-          id: 4,
-          name: '内部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '雷总/公司员工推荐的熟人客户'
-            }
-          ]
-        },
-        {
-          id: 5,
-          name: '外部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '朋友/其他公司推荐的客户'
-            }
-          ]
-        },
-        {
-          id: 6,
-          name: '新媒体',
-          son_source: [
-            {
-              key: 'a',
-              name: '微信公众号'
-            },
-            {
-              key: 'b',
-              name: '头条号菜单'
-            },
-            {
-              key: 'c',
-              name: '百家号'
-            },
-            {
-              key: 'toutiao_ad',
-              name: '头条文章广告位'
-            }
-          ]
-        },
-        {
-          id: 7,
-          name: '展销会',
-          son_source: [
-            {
-              key: 'a',
-              name: '参展'
-            },
-            {
-              key: 'b',
-              name: '业界活动、论坛 '
-            }
-          ]
-        },
-        {
-          id: 0,
-          name: '其他',
-          son_source: [
-            {
-              key: 'a',
-              name: '⽆法归类的小群体'
-            }
-          ]
-        }
-      ],
-      sourceArr2: [
         {
           value: 1,
           label: '网络广告',
@@ -1681,12 +1539,12 @@ export default {
           if (this.userForm.new_source) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
-              if (item.id === id) {
-                this.sonSource = item.son_source
-                this.sourceValue = item.name
-                item.son_source.forEach(d => {
-                  if (d.key === this.userForm.son_source) {
-                    this.sonSourceValue = d.name
+              if (item.value === id) {
+                this.sonSource = item.children
+                this.sourceValue = item.label
+                item.children.forEach(d => {
+                  if (d.value === this.userForm.son_source) {
+                    this.sonSourceValue = d.label
                   }
                 })
               }
