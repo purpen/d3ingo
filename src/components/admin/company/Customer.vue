@@ -1,125 +1,132 @@
 <template>
   <div class="contain">
-    <div class="sever-round">
-      <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectDesign()">
-        <el-option
-          v-for="item in designChoose"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="down-btn">
-        <div class="down-icon"></div>
-        <div class="down-text">下载报表</div>
+    <template v-if="customer && customer.length">
+      <div class="sever-round">
+        <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectDesign()">
+          <el-option
+            v-for="item in designChoose"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <div class="down-btn">
+          <div class="down-icon"></div>
+          <div class="down-text">下载报表</div>
+        </div>
       </div>
-    </div>
 
-    <div class="table-round">
-      <el-table
-        :data="customer"
-        stripe
-        style="width: 100%">
-        <el-table-column
-          prop="id"
-          width="80">
-        </el-table-column>
-        <el-table-column
-          label="客户信息"
-          width="180">
-          <template slot-scope="scope">
-            <div>
+      <div class="table-round">
+        <el-table
+          :data="customer"
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="id"
+            width="80">
+          </el-table-column>
+          <el-table-column
+            label="客户信息"
+            width="180">
+            <template slot-scope="scope">
+              <div>
+                <div class="flex-center">
+                  <div class="info-title">姓名：</div>
+                  <div class="info-text">{{scope.row.clue_name}}</div>
+                </div>
+                <div class="flex-center pad-top-4">
+                  <div class="info-title">电话：</div>
+                  <div class="info-text">{{scope.row.clue_phone}}</div>
+                </div>
+                <div class="flex-center pad-top-4">
+                  <div class="info-title">公司：</div>
+                  <div class="info-text">{{scope.row.clue_company}}</div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="项目信息"
+            width="180">
+            <template slot-scope="scope">
+              <div>
+                <div class="flex-center">
+                  <div class="info-title">项目：</div>
+                  <div class="info-text text-hidden">{{scope.row.crm_item_name}}</div>
+                </div>
+                <div class="flex-center pad-top-4">
+                  <div class="info-title">类型：</div>
+                  <div class="info-text">{{scope.row.crm_item_type}}</div>
+                </div>
+                <div class="flex-center pad-top-4">
+                  <div class="info-title">预算：</div>
+                  <div class="info-text">{{scope.row.crm_item_design_cost}}</div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="订单金额(万元)"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="对接日期"
+            width="80">
+          </el-table-column>
+          <el-table-column
+            label="项目进度"
+            width="180">
+            <template slot-scope="scope">
               <div class="flex-center">
-                <div class="info-title">姓名：</div>
-                <div class="info-text">{{scope.row.clue_name}}</div>
+                <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
+                <div class="dot" v-else></div><div>{{scope.row.status_value}}</div>
               </div>
-              <div class="flex-center pad-top-4">
-                <div class="info-title">电话：</div>
-                <div class="info-text">{{scope.row.clue_phone}}</div>
-              </div>
-              <div class="flex-center pad-top-4">
-                <div class="info-title">公司：</div>
-                <div class="info-text">{{scope.row.clue_company}}</div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="项目信息"
-          width="180">
-          <template slot-scope="scope">
-            <div>
-              <div class="flex-center">
-                <div class="info-title">项目：</div>
-                <div class="info-text text-hidden">{{scope.row.crm_item_name}}</div>
-              </div>
-              <div class="flex-center pad-top-4">
-                <div class="info-title">类型：</div>
-                <div class="info-text">{{scope.row.crm_item_type}}</div>
-              </div>
-              <div class="flex-center pad-top-4">
-                <div class="info-title">预算：</div>
-                <div class="info-text">{{scope.row.crm_item_design_cost}}</div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="price"
-          label="订单金额(万元)"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="created_at"
-          label="对接日期"
-          width="80">
-        </el-table-column>
-        <el-table-column
-          label="项目进度"
-          width="180">
-          <template slot-scope="scope">
-            <div class="flex-center">
-              <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
-              <div class="dot" v-else></div><div>{{scope.row.status_value}}</div>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="备注">
-          <template slot-scope="scope">
-            <el-popover
-              placement="top"
-              width="160"
-              trigger="click"
-              :content="scope.row.summary"
-              v-if="scope.row.summary">
-              <div class="click-show" slot="reference">点击查看</div>
-            </el-popover>
-            <el-popover
-              placement="top"
-              width="160"
-              trigger="click"
-              content="无备注内容"
-              v-else>
-              <div class="click-show" slot="reference">点击查看</div>
-            </el-popover>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="备注">
+            <template slot-scope="scope">
+              <el-popover
+                placement="top"
+                width="160"
+                trigger="click"
+                :content="scope.row.summary"
+                v-if="scope.row.summary">
+                <div class="click-show" slot="reference">点击查看</div>
+              </el-popover>
+              <el-popover
+                placement="top"
+                width="160"
+                trigger="click"
+                content="无备注内容"
+                v-else>
+                <div class="click-show" slot="reference">点击查看</div>
+              </el-popover>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
-    <div class="bot-round flex-center-space">
-      <div class="count-size">共{{query.totalCount}}条</div>
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="query.page"
-      :page-sizes="[10, 20, 50]"
-      :page-size="query.pageSize"
-      layout="sizes, prev, pager, next"
-      :total="query.totalCount"
-      v-if="query.totalCount > query.pageSize">
-    </el-pagination>
+      <div class="bot-round flex-center-space">
+        <div class="count-size">共{{query.totalCount}}条</div>
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="query.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query.pageSize"
+        layout="sizes, prev, pager, next"
+        :total="query.totalCount"
+        v-if="query.totalCount > query.pageSize">
+      </el-pagination>
+      </div>
+    </template>
+    <div v-else class="empty flex-center-center">
+      <div class="empty-img"></div>
+      <div class="empty-title">暂未对接过客户</div>
+      <div class="empty-text">入驻日期：2019.01.22</div>
     </div>
   </div>
 </template>
@@ -302,10 +309,37 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+  .flex-center-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+  }
   .text-hidden {
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-all;
     white-space: nowrap;
+  }
+  .empty-img {
+    width: 100px;
+    height: 100px;
+    background: rgba(216,216,216,1);
+    border-radius: 50%;
+  }
+  .empty-title {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    padding-top: 10px;
+  }
+  .empty-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-top: 10px;
   }
 </style>
