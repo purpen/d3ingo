@@ -92,15 +92,8 @@
           </el-select>
         </div>
         <div class="select-date">
-          <p class="select-icon" @click="updateSorts()">
-            <i :class="['el-icon-sort-up','tc-9',{
-              'tc-red': query1.sort === 1
-            }]"></i>
-            <i :class="['el-icon-sort-down','tc-9',{
-              'tc-red': query1.sort === 2
-            }]"></i>
-          </p>
-          <el-select v-model="query1.sort_evt" @change="getClueList">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
@@ -161,16 +154,9 @@
           </el-select>
         </div>
         <div class="select-date">
-          <p class="select-icon" @click="updateSorts()">
-            <i :class="['el-icon-sort-up','tc-9',{
-              'tc-red': query2.sort === 1
-            }]"></i>
-            <i :class="['el-icon-sort-down','tc-9',{
-              'tc-red': query2.sort === 2
-            }]"></i>
-          </p>
-          <el-select v-model="query2.sort_evt" @change="getClueList">
-            <el-option v-for="c in optionLatentCondition" :key="c.value" :value="c.value" :label="c.label">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
+            <el-option v-for="c in optionCondition2" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -231,16 +217,9 @@
           </el-select>
         </div>
         <div class="select-date">
-          <p class="select-icon" @click="updateSorts()">
-            <i :class="['el-icon-sort-up','tc-9',{
-              'tc-red': query3.sort === 1
-            }]"></i>
-            <i :class="['el-icon-sort-down','tc-9',{
-              'tc-red': query3.sort === 2
-            }]"></i>
-          </p>
-          <el-select v-model="query3.sort_evt" @change="getClueList">
-            <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
+            <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -300,15 +279,8 @@
           </el-select>
         </div> -->
         <div class="select-date">
-          <p class="select-icon" @click="updateSorts()">
-            <i :class="['el-icon-sort-up','tc-9',{
-              'tc-red': query4.sort === 1
-            }]"></i>
-            <i :class="['el-icon-sort-down','tc-9',{
-              'tc-red': query4.sort === 2
-            }]"></i>
-          </p>
-          <el-select v-model="query4.sort_evt" @change="getClueList">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
@@ -341,15 +313,8 @@
           </div>
         </div>
         <div class="select-date">
-          <p class="select-icon" @click="updateSorts()">
-            <i :class="['el-icon-sort-up','tc-9',{
-              'tc-red': query5.sort === 1
-            }]"></i>
-            <i :class="['el-icon-sort-down','tc-9',{
-              'tc-red': query5.sort === 2
-            }]"></i>
-          </p>
-          <el-select v-model="query5.sort_evt" @change="getClueList">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientRecycle" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
@@ -1343,33 +1308,80 @@ export default {
       ],
       // 商机搜索条件
       optionCondition: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
         {
-          value: 1,
-          label: '按姓名'
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
         },
         {
           value: 2,
-          label: '按客户级别'
+          label: '按客户级别(5-1)'
         },
-        {
-          value: 3,
-          label: '按创建时间'
-        },
-        {
-          value: 4,
-          label: '按商机来源'
-        },
+        // {
+        //   value: 4,
+        //   label: '按商机来源'
+        // },
         {
           value: 5,
           label: '按商机所有人'
         },
         {
           value: 6,
-          label: '按状态'
+          label: '按优先级'
         },
         {
           value: 7,
-          label: '按最后跟进日'
+          label: '按最后跟进日(最近)'
+        },
+        {
+          value: 8,
+          label: '按最后跟进日(最早)'
+        }
+      ],
+      // 商机搜索条件
+      optionCondition2: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
+        {
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
+        },
+        {
+          value: 2,
+          label: '按客户级别(5-1)'
+        },
+        // {
+        //   value: 4,
+        //   label: '按商机来源'
+        // },
+        {
+          value: 5,
+          label: '按客户所有人'
+        },
+        {
+          value: 6,
+          label: '按优先级'
+        },
+        {
+          value: 7,
+          label: '按最后跟进日(最近)'
+        },
+        {
+          value: 8,
+          label: '按最后跟进日(最早)'
         }
       ],
       // 潜在客户条件
@@ -1405,33 +1417,41 @@ export default {
       ],
       // 客户
       optionClientCondition: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
         {
-          value: 1,
-          label: '按姓名'
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
         },
         {
           value: 2,
-          label: '按客户级别'
+          label: '按客户级别(5-1)'
         },
-        {
-          value: 3,
-          label: '按创建时间'
-        },
-        {
-          value: 4,
-          label: '按客户来源'
-        },
+        // {
+        //   value: 4,
+        //   label: '按客户来源'
+        // },
         {
           value: 5,
           label: '按客户所有人'
         },
         {
           value: 6,
-          label: '按状态'
+          label: '按优先级'
         },
         {
           value: 7,
-          label: '按最后跟进日'
+          label: '按无效时间(最近)'
+        },
+        {
+          value: 8,
+          label: '按无效时间(最早)'
         }
       ],
       optionClient: [
@@ -1472,25 +1492,41 @@ export default {
         }
       ],
       optionClientRecycle: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
         {
-          value: 1,
-          label: '按姓名'
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
         },
         {
           value: 2,
-          label: '按客户级别'
+          label: '按客户级别(5-1)'
         },
+        // {
+        //   value: 4,
+        //   label: '按客户来源'
+        // },
         {
-          value: 3,
-          label: '按客户来源'
-        },
-        {
-          value: 4,
+          value: 5,
           label: '按客户所有人'
         },
         {
-          value: 5,
-          label: '按创建时间'
+          value: 6,
+          label: '按优先级'
+        },
+        {
+          value: 7,
+          label: '按删除时间(最近)'
+        },
+        {
+          value: 8,
+          label: '按删除时间(最早)'
         }
       ],
       optionBusiness: [
@@ -1636,10 +1672,39 @@ export default {
       belongIdLength: '',
       // followVal: '',
       label_cause: 1,
-      isOpen: true
+      isOpen: true,
+      sortEvts: ''
     }
   },
   methods: {
+    // 更改时间
+    updateAt(val) {
+      this['query' + this.typeId].sort_evt = val
+      if (val === 2) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 3) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 5) {
+        this['query' + this.typeId].sort = 1
+      }
+      if (val === 6) {
+        this['query' + this.typeId].sort = 1
+      }
+      if (val === 7) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 8) {
+        this['query' + this.typeId].sort = 1
+        this['query' + this.typeId].sort_evt = 7
+      }
+      if (val === 9) {
+        this['query' + this.typeId].sort_evt = 3
+        this['query' + this.typeId].sort = 1
+      }
+      this.getClueList()
+    },
     // 升降序
     updateSorts() {
       if (this['query' + this.typeId].sort === 1) {
@@ -2173,6 +2238,7 @@ export default {
       }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
+      this.sortEvts = this['query' + this.typeId].sort_evt
       this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
@@ -2183,8 +2249,12 @@ export default {
           }
           let ids = []
           this.tableData.forEach(item => {
-            if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+            if (this.typeId === 4) {
+              // if (item.invalid_time) {
+              //   item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+              // } else {
+              item.invalid_time = item.updated_at.date_format().format('yyyy-MM-dd')
+              // }
             }
             item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
             if (item.end_time) {
@@ -2571,6 +2641,10 @@ export default {
         ]
       }
     }
+    // 搜索条件默认
+    if (this.typeId > 4) {
+      this['query' + this.typeId].sort_evt = 7
+    }
     this.getClueList()
     this.getAdminList()
     this.getUsers()
@@ -2623,9 +2697,9 @@ export default {
         search: '',
         valueDate: []
       }
-      if (this.typeId === 5) {
+      if (this.typeId === 5 || this.typeId === 4) {
         delete this['query' + this.typeId].evt
-        this['query' + this.typeId].sort_evt = 5
+        this['query' + this.typeId].sort_evt = 7
       }
       if (this.typeId === 4) {
         this['query' + this.typeId].new_status = ''
@@ -3141,8 +3215,8 @@ export default {
   width: 25px;
   height: 36px;
   line-height: 36px;
-  text-align: center;
   font-size: 14px;
+  padding-left: 8px;
 }
 .select-icon .el-icon-sort-down {
   position: absolute;
