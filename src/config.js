@@ -1841,6 +1841,16 @@ const ADMINMENU = [
         }
       },
       {
+        name: '回收站',
+        route: 'adminPotentialUserList',
+        subRouter: 5,
+        title: '回收站',
+        statement: {
+          params: {type: 5},
+          query: {}
+        }
+      },
+      {
         name: '客户统计',
         route: 'adminCustomerStatistics',
         statement: {
