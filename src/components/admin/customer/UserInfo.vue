@@ -308,15 +308,22 @@
                         <span v-if="d.status < 5"><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
                         <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
                         <div class="progess-box">
-                          <span class="fr check-progess" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                          <span class="fr check-progess pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
                           <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                             <el-steps :active="stageActive" class="steps-item">
-                              <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step>
+                              <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                              <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                              <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                              <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
                             </el-steps>
                           </div>
                         </div>
                       </div>
-                      <el-progress :percentage="d.status | getProgess" :show-text="false" class="design-progress"></el-progress>
+                      <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
                     </li>
                     <li>
                       <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
@@ -1489,6 +1496,9 @@ export default {
             arr[index].time = `停滞${parseInt(overdueTime)}天`
           }
           this.stageActive = index - 1
+        }
+        if (d.status === -1) {
+          this.stageActive = index
         }
       })
       stageArr.forEach((d, index, arr) => {
@@ -3563,17 +3573,33 @@ export default {
 .steps .el-step__main {
   padding-bottom: 10px;
 }
-.steps-item > .el-step {
+.steps .steps-item > .el-step {
   flex-basis: 20% !important;
 }
-.steps-item .el-step__head .el-step__line {
+.steps .steps-item .el-step__head .el-step__line {
   position: absolute;
-  top: 7px !important;
+  top: 6px !important;
   left: 5px !important;
 }
 .steps .el-step__head.is-finish {
   color: #00ac84 !important;
   border-color: #00ac84 !important;
+}
+.steps .el-step__head .el-step__icon-inner {
+  display: inline-block;
+}
+.steps .el-step__icon-inner[class*=el-icon]:not(.is-status) {
+  font-size: 20px;
+}
+.steps .el-step__head.is-process .el-step__icon {
+  background-color: #fff;
+	border-color: #fff;
+}
+.steps .el-step__icon-inner.el-icon-error {
+  color: #ff5a5f; 
+}
+.steps .el-step__head.is-process {
+  color: #00ac84;
 }
 </style>
 
