@@ -828,8 +828,8 @@
         <el-button @click="boolProject = false, boolAddProject = false">取 消</el-button>
         <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保 存</el-button>
       </span>
-      <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
-        <el-button class="margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
+      <span v-else  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolProject = false">取 消</el-button>
         <el-button type="primary" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
       </span>
@@ -1220,7 +1220,6 @@ export default {
       crmDesignCompanyList1: [], // 对接设计公司列表前三个
       crmDesignCompanyList: [], // 对接设计公司列表
       boolAddProject: false,
-      boolEditProject: false,
       currentProjectId: '',
       projectForm: {
         item_province: '',
@@ -1741,21 +1740,21 @@ export default {
             phone: data.phone,
             rank: data.rank,
             position: data.position,
-            new_source: data.new_source || '',
+            new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || '',
+            new_call_status: data.new_call_status,
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
           if (data.update_user_time) {
             this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
           }
-          if (this.userForm.new_source) {
+          if (this.userForm.new_source || this.userForm.new_source === 0) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
               if (item.value === id) {
@@ -2025,7 +2024,6 @@ export default {
           this.boolAddProject = false
           this.createProjectLoading = false
           this.boolProject = false
-          this.boolEditProject = false
           this.boolRemarks = false
           if (request === 'api.adminClueAddCrmItem') {
             this.getLogList()
@@ -2237,11 +2235,11 @@ export default {
     },
     editProject(d) { // 编辑项目
       this.dialogProjectTitle = '编辑项目'
+      this.boolAddProject = false
       this.projectForm = {}
       const id = d.item_id
       if (d && id) {
         this.currentProjectId = id
-        this.boolEditProject = true
         this.boolProject = true
         this.$nextTick(_ => {
           this.projectList.forEach(item => {
@@ -2545,7 +2543,6 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
-        this.boolAddProject = false
       }
     }
   },
