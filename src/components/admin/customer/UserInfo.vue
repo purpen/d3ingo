@@ -23,8 +23,9 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button type="primary" class="margin-r10" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button> 
-            <div v-if ="userForm.new_status === 1" class="edit-project fr">
+            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
+            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
                 <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
@@ -739,6 +740,21 @@
           </el-row>
           
           <el-row :gutter="20">
+            <el-col :xs="24" :sm="20" :md="24" :lg="24">
+              <el-form-item label="项目紧急度" prop="grate">
+                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
+                  <el-option
+                    v-for="(d, index) in grateArr"
+                    :key="index"
+                    :label="d.label"
+                    :value="d.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="24" :lg="24">
               <el-form-item label="交付时间" prop="cycle">
                 <el-select v-model="projectForm.cycle" placeholder="请选择交付时间">
@@ -778,33 +794,19 @@
                   >
             </region-picker>
           </div>
-          <el-row :gutter="20">
-            <el-col :xs="24" :sm="20" :md="24" :lg="24">
-              <el-form-item label="项目紧急度" prop="grate">
-                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
-                  <el-option
-                    v-for="(d, index) in grateArr"
-                    :key="index"
-                    :label="d.label"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="项目描述" prop="summary">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
             </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> 
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="备注" prop="remarks">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
             </el-form-item>
             </el-col>
           </el-row>
@@ -1559,6 +1561,20 @@ export default {
         this.clientForm.city = city
       })
     },
+    restoreUser() { // 恢复客户
+      let row = []
+      row.push(this.currentId)
+      this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
     getNextUser() { // 下一条
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
@@ -1674,7 +1690,6 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
-        console.log('11111')
         this.userLoading = false
       })
     },
@@ -2417,7 +2432,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12) {
+        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
           return true
         }
       }
@@ -2467,7 +2482,7 @@ export default {
         return `停滞${gap}天`
       }
     },
-    processor(val) {
+    processor(val) { // 来源处理斜杠
       if (typeof val === 'string') {
         let arr = val.split('/')
         let parent = arr[0]
@@ -2495,7 +2510,6 @@ export default {
     } else {
       this.userForm.execute_user_id = this.userId
     }
-    // this.getTypeList()
     this.getAdminVoIpList()
   },
   directives: {Clickoutside},
@@ -2555,6 +2569,9 @@ export default {
 }
 .margin-l0 {
   margin-left: 0 !important;
+}
+.margin-l10 {
+  margin-left: 10px;
 }
 .margin-r0 {
   margin-right: 0 !important;
