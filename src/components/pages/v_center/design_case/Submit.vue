@@ -553,6 +553,19 @@
       },
       submit(formName) {
         const that = this
+        if (!that.fileList || !that.fileList.length) {
+          that.coverId = 0
+        } else {
+          let bool = false
+          that.fileList.forEach(item => {
+            if (item.id === (that.coverId - 0)) {
+              bool = true
+            }
+          })
+          if (!bool) {
+            that.coverId = 0
+          }
+        }
         if (!that.coverId) {
           that.$message.error ('必须设置一张封面图!')
           return false
@@ -604,7 +617,6 @@
             } else {
               row.patents = '[]'
             }
-            console.log(row)
             // if (that.is_apply && that.form.patent_time) {
             //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
             //   row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
@@ -624,7 +636,6 @@
               }
             }
             that.isLoadingBtn = true
-            console.log('row', row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -977,9 +988,6 @@
                   files.push (item)
                 }
                 that.fileList = files
-              }
-              if (!that.fileList || !that.fileList.length) {
-                that.coverId = 0
               }
               that.prizes = response.data.data.prizes || []
               that.patents = response.data.data.patent || []
