@@ -3,7 +3,7 @@
     <div class="top flex-center">
       <div class="top-left">
         <div class="top-left-img">
-          <img src="../../../assets/images/design_admin/Authentication@2x.png">
+          <img :src="item.logo_url">
         </div>
         <div class="top-left-btn flex-center-center">
           <div class="top-left-btn-icon"></div>
@@ -13,8 +13,8 @@
       <div class="top-right">
         <div class="top-right-top flex-center-space">
           <div class="top-right-top-left">
-            <div class="referred">凸凹设计</div>
-            <div class="name">杭州凸凹工业设计有限公司</div>
+            <div class="referred">{{item.company_abbreviation}}</div>
+            <div class="name">{{item.company_name}}</div>
           </div>
           <div class="top-right-top-right flex-center">
             <div class="certification flex-center-center">
@@ -28,30 +28,30 @@
             <div class="flex-center">
               <div class="top-right-bot-title min-width">网址</div>
               <div class="top-right-bot-title color-333 pad-left-20">
-                <a href="www.zcodesign.com">www.zcodesign.com</a>
+                <a :href="item.web">{{item.web}}</a>
               </div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">地址</div>
-              <div class="top-right-bot-title color-333 pad-left-20">北京西城区新街口外大街28号院主楼139</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.address}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">规模</div>
-              <div class="top-right-bot-title color-333 pad-left-20">50-100人</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.company_size_value}}</div>
             </div>
           </div>
           <div class="contact-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width">联系人</div>
-              <div class="top-right-bot-title color-333 pad-left-20">郑平平</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">职位</div>
-              <div class="top-right-bot-title color-333 pad-left-20">总经理助理</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '未填写'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">电话</div>
-              <div class="top-right-bot-title color-333 pad-left-20">18611733715</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone}}</div>
             </div>
           </div>
         </div>
@@ -67,19 +67,26 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <server v-if="type === 3"></server>
-    <certificate v-if="type === 4"></certificate>
-    <introduction v-if="type === 5"></introduction>
+    <customer v-if="type === 1" :id="item.id"></customer>
+    <cases v-if="type === 2"></cases>
+    <server v-if="type === 3" :designItem="designItem"></server>
+    <certificate v-if="type === 4" :item="item"></certificate>
+    <introduction v-if="type === 5" :item="item"></introduction>
   </div>
 </template>
 <script>
+import api from '@/api/api'
+import customer from './customer'
 import server from './server'
 import certificate from './certificate'
+import cases from './case'
 import introduction from './introduction'
 export default {
   data() {
     return {
-      type: 1
+      type: 1,
+      item: '',
+      designItem: ''
     }
   },
   methods: {
@@ -87,10 +94,50 @@ export default {
       this.type = type
     }
   },
+  created: function() {
+    var id = this.$route.params.id
+    const self = this
+    self.$http.get(api.adminCompanyShow, {params: {id: id}})
+    .then (function(response) {
+      if (response.data.meta.status_code === 200) {
+        self.item = response.data.data
+        self.designItem = response.data.data.users.design_item
+        if (self.item.logo_image) {
+          self.item.logo_url = self.item.logo_image.big
+        } else {
+          self.item.logo_url = false
+        }
+        switch (self.item.company_size) {
+          case 1:
+            self.item.company_size_value = '20人以下'
+            break
+          case 2:
+            self.item.company_size_value = '20-50人'
+            break
+          case 3:
+            self.item.company_size_value = '50-100人'
+            break
+          case 4:
+            self.item.company_size_value = '100-300人'
+            break
+          case 5:
+            self.item.company_size_value = '300人以上'
+            break
+        }
+      } else {
+        self.$message.error(response.data.meta.message)
+      }
+    })
+    .catch (function(error) {
+      self.$message.error(error.message)
+    })
+  },
   components: {
     server,
     certificate,
-    introduction
+    introduction,
+    cases,
+    customer
   }
 }
 </script>
@@ -129,7 +176,7 @@ export default {
     background: url('../../../assets/images/design_admin/Authentication@2x.png') no-repeat center / contain;
   }
   .top-left-btn-text {
-    font-size: 13px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(250,173,21,1);
@@ -172,7 +219,7 @@ export default {
     border: 1px solid rgba(245,33,45,1);
   }
   .certification-text {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,77,79,1);

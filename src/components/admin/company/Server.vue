@@ -1,22 +1,56 @@
 <template>
   <div class="contain">
-    <div class="round">
+    <div class="round" v-if="product.length">
       <div class="server-left">产品设计</div>
       <div class="server-right">
-        <div class="flex-center">
-          <div class="server-text">产品设计&nbsp;/</div>
-          <div class="server-text">&nbsp;1个月内&nbsp;/</div>
-          <div class="server-text">&nbsp;￥60000 起</div>
+        <div class="flex-center" v-for="(item, index) in product" :key="index">
+          <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
         </div>
       </div>
     </div>
-    <div class="round">
-      <div class="server-left">产品设计</div>
+
+    <div class="round" v-if="ui.length">
+      <div class="server-left">UI/UX设计</div>
       <div class="server-right">
-        <div class="flex-center">
-          <div class="server-text">产品设计&nbsp;/</div>
-          <div class="server-text">&nbsp;1个月内&nbsp;/</div>
-          <div class="server-text">&nbsp;￥60000 起</div>
+        <div class="flex-center" v-for="(item, index) in ui" :key="index">
+          <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="round" v-if="plane.length">
+      <div class="server-left">平面设计</div>
+      <div class="server-right">
+        <div class="flex-center" v-for="(item, index) in plane" :key="index">
+          <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="round" v-if="packaging.length">
+      <div class="server-left">包装设计</div>
+      <div class="server-right">
+        <div class="flex-center" v-for="(item, index) in packaging" :key="index">
+          <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="round" v-if="illustrations.length">
+      <div class="server-left">插画设计</div>
+      <div class="server-right">
+        <div class="flex-center" v-for="(item, index) in illustrations" :key="index">
+          <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
+          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
         </div>
       </div>
     </div>
@@ -24,7 +58,42 @@
 </template>
 <script>
 export default {
-  name: 'server'
+  name: 'server',
+  props: ['designItem'],
+  data() {
+    return {
+      product: [],
+      ui: [],
+      plane: [],
+      packaging: [],
+      illustrations: []
+    }
+  },
+  created() {
+    let that = this
+    if (that.designItem) {
+      for (let index in that.designItem) {
+        that.designItem[index].min_price = that.designItem[index].min_price.substring(0, that.designItem[index].min_price.length - 3)
+        switch (that.designItem[index].type) {
+          case 1:
+            that.product.push(that.designItem[index])
+            break
+          case 2:
+            that.ui.push(that.designItem[index])
+            break
+          case 3:
+            that.plane.push(that.designItem[index])
+            break
+          case 5:
+            that.packaging.push(that.designItem[index])
+            break
+          case 6:
+            that.illustrations.push(that.designItem[index])
+            break
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -37,11 +106,11 @@ export default {
     display: flex;
     padding: 17px 0;
   }
-  .container .round:not(:nth-last-child(1)) {
+  .contain .round:not(:nth-last-child(1)) {
     border-bottom: 1px solid #D8D8D8;
   }
   .server-left {
-    font-size: 13px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(145,145,145,1);
@@ -53,11 +122,14 @@ export default {
     align-items: center;
   }
   .server-text {
-    font-size: 13px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
     line-height: 19px;
+  }
+  .round .flex-center:not(:nth-child(1)) {
+    padding-top: 15px;
   }
 </style>
 

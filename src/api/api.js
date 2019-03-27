@@ -304,6 +304,7 @@ export default {
   adminCompanySetTest: '/admin/designCompany/isTest',  // PUT 设置为测试账号（不会系统推荐）
   adminCompanyInvoice: '/admin/invoice/pullLists', // GET 设计服务商给平台开具发票
   adminCompanyConfirmInvoice: '/admin/invoice/trueInvoice', // GET 确认收到设计服务商发票
+  adminDesignCompanyClueList: '/admin/designCompany/clueList', // GET 设计公司客户列表
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表

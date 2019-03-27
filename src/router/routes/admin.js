@@ -284,7 +284,8 @@ module.exports = [
         meta: {
           title: '设计服务商列表',
           requireAuth: true,
-          hideFooter: true
+          hideFooter: true,
+          hideCustomer: true
         },
         component: require('@/components/admin/company/Home')
       },
@@ -294,6 +295,7 @@ module.exports = [
         meta: {
           title: '设计服务商详情',
           requireAuth: true,
+          hideCustomer: true,
           hideFooter: true
         },
         component: require('@/components/admin/company/Detail')

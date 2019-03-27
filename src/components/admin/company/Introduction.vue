@@ -3,34 +3,34 @@
     <div class="round">
       <div class="flex-center">
         <div class="cer-left">公司名称</div>
-        <div class="cer-right">杭州飞鱼工业设计有限公司</div>
+        <div class="cer-right">{{item.company_name}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">公司简称</div>
-        <div class="cer-right">多证合一(含信用代码)</div>
+        <div class="cer-right">{{item.company_abbreviation}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">公司简介</div>
-        <div class="cer-right">91110102575182861C</div>
+        <div class="cer-right">{{item.company_profile}}</div>
       </div>
     </div>
 
     <div class="round">
       <div class="flex-center">
         <div class="cer-left">网址</div>
-        <div class="cer-right">杭州飞鱼工业设计有限公司</div>
+        <div class="cer-right">{{item.web}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">地址</div>
-        <div class="cer-right">多证合一(含信用代码)</div>
+        <div class="cer-right">{{item.address}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">规模</div>
-        <div class="cer-right">91110102575182861C</div>
+        <div class="cer-right">{{item.company_size_value}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">分公司数量</div>
-        <div class="cer-right">营业执照</div>
+        <div class="cer-right">{{item.branch_office}}</div>
       </div>
     </div>
 
@@ -38,8 +38,7 @@
       <div class="flex-center">
         <div class="cer-left">专业优势</div>
         <div class="cer-right adveg-flex">
-          <div>工业设计</div>
-          <div>&nbsp;/&nbsp;</div>
+          <div>{{item.professional_advantage}}</div>
         </div>
       </div>
       <div class="flex-center">
@@ -51,12 +50,12 @@
     <div class="round-bot">
       <div class="flex-center">
         <div class="cer-left">创新力指数</div>
-        <div class="cer-right">杭州飞鱼工业设计有限公司</div>
+        <div class="cer-right">{{item.ave_score}}</div>
       </div>
-      <div class="flex-center">
+      <!-- <div class="flex-center">
         <div class="cer-left">排名</div>
         <div class="cer-right">多证合一(含信用代码)</div>
-      </div>
+      </div> -->
       <div class="flex">
         <div class="cer-left">其他指数</div>
         <div class="bot-index">
@@ -65,21 +64,21 @@
               <div class="bot-img1"></div>
               <div class="bot-right">
                 <div class="bot-right-title">基础交付力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-number">{{item.base_average}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
               <div class="bot-img2"></div>
               <div class="bot-right">
                 <div class="bot-right-title">创新交付力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-number">{{item.innovate_average}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
               <div class="bot-img3"></div>
               <div class="bot-right">
                 <div class="bot-right-title">商业决策力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-number">{{item.business_average}}</div>
               </div>
             </div>
           </div>
@@ -87,22 +86,22 @@
             <div class="bot-border">
               <div class="bot-img1"></div>
               <div class="bot-right">
-                <div class="bot-right-title">基础交付力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-title">品牌溢价力指数</div>
+                <div class="bot-right-number">{{item.design_average}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
               <div class="bot-img2"></div>
               <div class="bot-right">
-                <div class="bot-right-title">创新交付力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-title">客观公信力指数</div>
+                <div class="bot-right-number">{{item.effect_average}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
               <div class="bot-img3"></div>
               <div class="bot-right">
-                <div class="bot-right-title">商业决策力指数</div>
-                <div class="bot-right-number">89</div>
+                <div class="bot-right-title">风险应激力指数</div>
+                <div class="bot-right-number">{{item.credit_average}}</div>
               </div>
             </div>
           </div>
@@ -113,7 +112,8 @@
 </template>
 <script>
 export default {
-  name: 'introduction'
+  name: 'introduction',
+  props: ['item']
 }
 </script>
 
@@ -142,7 +142,7 @@ export default {
     align-items: center;
   }
   .cer-left {
-    font-size: 13px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(145,145,145,1);
@@ -150,7 +150,7 @@ export default {
     min-width: 120px;
   }
   .cer-right {
-    font-size: 13px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
@@ -171,14 +171,14 @@ export default {
     padding-left: 10px
   }
   .bot-right-title {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
     line-height: 17px;
   }
   .bot-right-number {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
     color: rgba(51,51,51,1);

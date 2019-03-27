@@ -24,7 +24,7 @@
           color="#0A6DD9"
           class="header-progress"
           status="text">
-          <span class="progress-top">设计服务商</span>
+          <span class="progress-top">已对接服务商</span>
           <span class="progress-bot">1281</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="已至少对接过一个客户的 设计服务商" placement="right-start">
@@ -39,7 +39,7 @@
           color="#0A6DD9"
           class="header-progress"
           status="text">
-          <span class="progress-top">设计服务商</span>
+          <span class="progress-top">未对接服务商</span>
           <span class="progress-bot">1281</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="成功入驻平台后，从未对 接过客户的设计服务商" placement="right-start">
@@ -54,7 +54,7 @@
           color="#0A6DD9"
           class="header-progress"
           status="text">
-          <span class="progress-top">设计服务商</span>
+          <span class="progress-top">待审核服务商</span>
           <span class="progress-bot">1281</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="Right Center 提示文字" placement="right-start">
@@ -99,11 +99,11 @@
         :default-sort = "{prop: 'date', order: 'descending'}"
         >
         <el-table-column
-          prop="zip"
+          prop="id"
           width="80">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="company_name"
           label="公司名称"
           width="180">
         </el-table-column>
@@ -112,18 +112,23 @@
           column-key="province"
           :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
           :filter-method="filterHandler"
+          :filter-multiple="false"
           width="180">
           <template slot-scope="scope">
-            <span>{{scope.row.province}}</span>·<span>{{scope.row.city}}</span>
+            <span>{{scope.row.province_value}}</span>·<span>{{scope.row.city_value}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="tag"
+          prop="company_size_val"
           label="公司规模"
+          column-key="tag"
+          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+          :filter-method="filterHandler"
+          :filter-multiple="false"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="created_at"
           label="日期"
           sortable
           width="100">
@@ -133,8 +138,11 @@
           width="100">
           <template slot-scope="scope">
             <div class="flex-center">
-              <div class="state-border"></div>
-              <span>{{scope.row.type}}</span>
+              <div class="state-border" v-if="scope.row.verify_status === 0"></div>
+              <div class="state-border" v-if="scope.row.verify_status === 1"></div>
+              <div class="state-border bg-CF1322" v-if="scope.row.verify_status === 2"></div>
+              <div class="state-border bg-096DD9" v-if="scope.row.verify_status === 3"></div>
+              <span>{{scope.row.verify_status_value}}</span>
             </div>
           </template>
         </el-table-column>
@@ -143,7 +151,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="navgiteTo(scope.row.type)">查看</el-button>
+              @click="navgiteTo(scope.row.id)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -169,6 +177,7 @@
   </div>
 </template>
 <script>
+import api from '@/api/api'
 export default {
   data() {
     return {
@@ -200,45 +209,22 @@ export default {
         label: '按公司编号'
       }],
       companyReault: '1',
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333,
-        tag: '家',
-        type: 1
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1517 弄',
-        zip: 200333,
-        tag: '公司',
-        type: 2
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1519 弄',
-        zip: 200333,
-        tag: '家',
-        type: 3
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1516 弄',
-        zip: 200333,
-        tag: '公司',
-        type: 4
-      }],
-      currentPage2: 5
+      currentPage2: 5,
+      tableData: [],
+      query: {
+        page: 1,
+        pageSize: 10,
+        totalCount: 0,
+        sort: 1,
+        type: 0,
+        evt: '',
+        val: '',
+        test: null
+      }
     }
+  },
+  created() {
+    this.loadList()
   },
   methods: {
     navgiteTo(id) {
@@ -252,6 +238,62 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    loadList() {
+      const self = this
+      // 查询条件
+      self.query.page = parseInt(this.$route.query.page || 1)
+      self.query.sort = self.$route.query.sort || 0
+      self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
+      self.menuType = parseInt(self.query.type)
+      self.query.evt = self.$route.query.evt || '2'
+      self.query.val = self.$route.query.val
+      self.isLoading = true
+      self.$http.get(api.adminCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
+      .then (function(response) {
+        self.tableData = []
+        if (response.data.meta.status_code === 200) {
+          self.itemList = response.data.data
+          self.query.totalCount = parseInt(response.data.meta.pagination.total)
+          for (var i = 0; i < self.itemList.length; i++) {
+            var item = self.itemList[i]
+            if (!item.users) {
+              item.users = {
+                'account': ''
+              }
+            }
+            item.logo_url = require ('@/assets/images/df_100x100.png')
+            if (item.logo_image) {
+              item.logo_url = item.logo_image.logo
+            }
+            item['created_at'] = item.created_at.date_format().format('yyyy.MM.dd')
+            if (item.status !== 0) {
+              switch (item.verify_status) {
+                case 0:
+                  item['verify_status_value'] = '未审核'
+                  break
+                case 1:
+                  item['verify_status_value'] = '已通过'
+                  break
+                case 2:
+                  item['verify_status_value'] = '未通过'
+                  break
+                case 3:
+                  item['verify_status_value'] = '待审核'
+                  break
+              }
+            } else {
+              item['verify_status_value'] = '已禁用'
+            }
+            self.tableData.push(item)
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+      })
     }
   }
 }
@@ -347,6 +389,15 @@ export default {
     background: #73D13D;
     border-radius: 50%;
     margin-right: 7px;
+  }
+  .bg-CF1322 {
+    background: #CF1322;
+  }
+  .bg-096DD9 {
+    background: #096DD9;
+  }
+  .bg-D8D8D8 {
+    background: #D8D8D8;
   }
 
 
