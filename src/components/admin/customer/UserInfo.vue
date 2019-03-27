@@ -304,8 +304,8 @@
                         </div>
                       </div>
                       <div class="design-li-footer">
-                        <span>{{d.status_value}}</span>
-                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
+                        <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
                         <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
                         <div class="progess-box">
                           <span class="fr check-progess pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
@@ -315,11 +315,15 @@
                               <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
                               <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
                               <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                              <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" icon="el-icon-success"></el-step>
-                              <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                              <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
                               <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
                               <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
                             </el-steps>
+                            <div class="steps-remarks" v-if="d.status > 6">
+                              <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                              <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2649,12 +2653,12 @@ export default {
   top: 60px;
   left: 0;
   right: 0;
-  background-color: #fff;
-  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
-  padding: 10px 18px 4px 20px;
-  transition: all 1s ease-out;
+  padding: 20px 18px 4px 20px;
   margin-left: -20px;
   margin-right: -18px;
+  background-color: #fff;
+  transition: all 1s ease-out;
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
 }
 .all-design-btn {
   position: relative;
@@ -2745,7 +2749,10 @@ export default {
   max-height: 500px; */
 }
 
-
+.steps-remarks {
+  border-top: 1px solid #D8D8D8;
+  padding: 10px 0 15px 0;
+}
 
 
 
