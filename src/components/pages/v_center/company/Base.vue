@@ -491,7 +491,9 @@
                     <el-button type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
                   </el-col>
                 </el-row>
-                <p v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length" v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                <div v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length">
+                  <p v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                </div>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
                 <p>无</p>
