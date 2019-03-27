@@ -2202,17 +2202,17 @@ const ADMINMENU = [
 
 const OTHERADMINMENU = [
   {
-    name: '控制台',
-    route: 'adminDashBoard',
-    icon: require('assets/images/admin/menu/Console@2x.png'),
+    name: '项目管理',
+    route: 'bAdminItemList',
+    icon: require('assets/images/admin/menu/Project@2x.png'),
     statement: {
       params: {},
       query: {}
     },
     children: [
       {
-        name: '概览',
-        route: 'adminDashBoard',
+        name: '项目管理',
+        route: 'bAdminItemList',
         statement: {
           params: {},
           query: {}
@@ -2221,62 +2221,55 @@ const OTHERADMINMENU = [
     ]
   },
   {
-    name: '客户管理',
-    route: 'adminPotentialUserList',
-    icon: require('assets/images/admin/menu/Customer@2x.png'),
-    subRouter: 1,
+    name: '需求公司管理',
+    route: 'bAdminDemandCompanyList',
+    icon: require('assets/images/admin/menu/DemandCompany@2x.png'),
     statement: {
-      params: {type: 1},
+      params: {},
       query: {}
     },
     children: [
       {
-        name: '商机',
-        route: 'adminPotentialUserList',
-        subRouter: 1,
-        statement: {
-          params: {type: 1},
-          query: {}
-        }
-      },
-      {
-        name: '潜在客户',
-        route: 'adminPotentialUserList',
-        subRouter: 2,
-        statement: {
-          params: {type: 2},
-          query: {}
-        }
-      },
-      {
-        name: '客户',
-        route: 'adminPotentialUserList',
-        subRouter: 3,
-        statement: {
-          params: {type: 3},
-          query: {}
-        }
-      },
-      {
-        name: '无效客户',
-        route: 'adminPotentialUserList',
-        subRouter: 4,
-        statement: {
-          params: {type: 4},
-          query: {}
-        }
-      },
-      {
-        name: '客户统计',
-        route: 'adminCustomerStatistics',
+        name: '需求公司管理',
+        route: 'bAdminDemandCompanyList',
         statement: {
           params: {},
           query: {}
         }
-      },
+      }
+    ]
+  },
+  {
+    name: '订单管理',
+    route: 'bAdminOrderList',
+    icon: require('assets/images/admin/menu/Order@2x.png'),
+    statement: {
+      params: {},
+      query: {}
+    },
+    children: [
       {
-        name: '商机分析',
-        route: 'adminPotentialAnalyze',
+        name: '订单管理',
+        route: 'bAdminOrderList',
+        statement: {
+          params: {},
+          query: {}
+        }
+      }
+    ]
+  },
+  {
+    name: '用户管理',
+    route: 'bAdminItemList',
+    icon: require('assets/images/admin/menu/User@2x.png'),
+    statement: {
+      params: {},
+      query: {}
+    },
+    children: [
+      {
+        name: '用户管理',
+        route: 'bAdminUserList',
         statement: {
           params: {},
           query: {}

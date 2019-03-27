@@ -77,6 +77,7 @@
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
+          :default-active="selectedName"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff" active-background-color="#000">
           <el-tooltip v-for="(ele, index) in adminMenu" :key="index" :content="ele.name" placement="right">
@@ -85,81 +86,6 @@
               </el-menu-item>
           </el-tooltip>
         </el-menu>
-        <!-- <el-menu
-          class="admin-menu"
-          @select="handleSelect" @open="handleOpen" @close="handleClose" router
-          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff">
-          <el-tooltip class="item" content="控制台" placement="right">
-            <el-menu-item index="adminDashBoard" :route="{name: 'adminDashBoard'}">
-            <img :src="require('assets/images/admin/menu/Console@2x.png')" alt="控制台">
-              </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="客户管理" placement="right">
-          <el-menu-item index="adminPotentialUserList" :route="{name: 'adminPotentialUserList', params: {type: 1}}">
-            <img :src="require('assets/images/admin/menu/Customer@2x.png')" alt="客户管理">
-          </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="项目管理" placement="right">
-          <el-menu-item index="adminItemList" :route="{name:'adminItemList'}">
-            <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理">
-          </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="设计服务商管理" placement="right">
-          <el-menu-item index="adminCompanyList" :route="{name: 'adminCompanyList'}">
-            <img :src="require('assets/images/admin/menu/DesignCompany@2x.png')" alt="设计服务商管理">
-          </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="需求公司管理" placement="right">
-          <el-menu-item index="adminDemandCompanyList" :route="{name:'adminDemandCompanyList'}">
-            <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="顺德交易会" placement="right">
-          <el-menu-item index="adminAchievmentList" :route="{name:'adminAchievmentList'}">
-            <img :src="require('assets/images/admin/menu/ShunDe@2x.png')" alt="顺德交易会">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="订单管理" placement="right">
-          <el-menu-item index="adminOrderList" :route="{name:'adminOrderList'}">
-            <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="推荐配置" placement="right">
-          <el-menu-item index="adminRecommendList" :route="{name:'adminRecommendList'}">
-            <img :src="require('assets/images/admin/menu/Recommend@2x.png')" alt="推荐配置">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="提现管理" placement="right">
-          <el-menu-item index="adminWithDrawList" :route="{name: 'adminWithDrawList'}">
-            <img :src="require('assets/images/admin/menu/CashWithdrawal@2x.png')" alt="提现管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="发票管理" placement="right">
-          <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">
-            <img :src="require('assets/images/admin/menu/Invoice@2x.png')" alt="发票管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="案例管理" placement="right">
-          <el-menu-item index="adminDesignCaseList" :route="{name: 'adminDesignCaseList'}">
-            <img :src="require('assets/images/admin/menu/Case@2x.png')" alt="案例管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="内容管理" placement="right">
-          <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">
-            <img :src="require('assets/images/admin/menu/Content@2x.png')" alt="内容管理">
-          </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="系统管理" placement="right">
-          <el-menu-item index="adminCategoryList" :route="{name: 'adminCategoryList'}">
-            <img :src="require('assets/images/admin/menu/System@2x.png')" alt="系统管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="用户管理" placement="right">
-          <el-menu-item index="adminUserList" :route="{name: 'adminUserList'}">
-            <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理">
-            </el-menu-item>
-          </el-tooltip>
-        </el-menu> -->
       </div>
       <div v-if="leftWidth === 4">
         <el-menu
@@ -169,151 +95,25 @@
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
             <el-submenu v-for="(ele, index) in adminMenu" :key="index" :index="index + ''">
             <template slot="title">
-              <img :src="ele.icon" :alt="ele.name">
-              <span class="margin-l-10">{{ele.name}}</span>
+              <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
               </template>
               <el-menu-item v-for="(e, i) in ele.children" :key="i"
-                :index="e.route+e.subRouter" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
+                :index="e.route + (e.subRouter || '')" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
             </el-submenu>
         </el-menu>
-
-        <!-- <el-menu
-          class="admin-menu"
-          :default-active="selectedName"
-          @select="handleSelect" @open="handleOpen" @close="handleClose" router
-          background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#333">
-          <el-submenu index="1">
-          <template slot="title">
-            <img :src="require('assets/images/admin/menu/Console@2x.png')" alt="控制台"><span class="margin-l-10">控制台</span>
-            </template>
-            <el-menu-item index="adminDashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
-          </el-submenu>
-          <el-submenu index="10">
-            <template slot="title">
-              <img :src="require('assets/images/admin/menu/Customer@2x.png')" alt="客户管理"><span class="margin-l-10">客户管理</span>
-            </template>
-            <el-menu-item index="adminPotentialUserList1" :route="{name: 'adminPotentialUserList', params: {type: 1}}">商机</el-menu-item>
-            <el-menu-item index="adminPotentialUserList2" :route="{name: 'adminPotentialUserList', params: {type: 2}}">潜在客户</el-menu-item>
-            <el-menu-item index="adminPotentialUserList3" :route="{name: 'adminPotentialUserList', params: {type: 3}}">客户</el-menu-item>
-            <el-menu-item index="adminPotentialUserList4" :route="{name: 'adminPotentialUserList', params: {type: 4}}">无效客户</el-menu-item>
-            <el-menu-item index="adminPotentialUserList5" :route="{name: 'adminPotentialUserList', params: {type: 5}}">回收站</el-menu-item>
-            <el-menu-item index="adminCustomerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
-            <el-menu-item index="adminPotentialAnalyze" :route="{name: 'adminPotentialAnalyze'}">商机分析</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理"><span class="margin-l-10">项目管理</span>
-              </template>
-              <el-menu-item index="adminItemList" :route="{name:'adminItemList'}">列表</el-menu-item>
-              <el-menu-item index="adminItemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/DesignCompany@2x.png')" alt="设计服务商管理"><span class="margin-l-10">设计服务商管理</span>
-              </template>
-              <el-menu-item index="adminCompanyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理"><span class="margin-l-10">需求公司管理</span>
-              </template>
-              <el-menu-item index="adminDemandCompanyList" :route="{name:'adminDemandCompanyList'}">列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="30">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/ShunDe@2x.png')" alt="顺德交易会"><span class="margin-l-10">顺德交易会</span>
-              </template>
-              <el-menu-item index="adminAchievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
-              <el-menu-item index="adminDemandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
-              <el-menu-item index="sdOrderList" :route="{name:'adminSdOrderList'}">订单列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理"><span class="margin-l-10">订单管理</span>
-              </template>
-              <el-menu-item index="adminOrderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="21">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Recommend@2x.png')" alt="推荐配置"><span class="margin-l-10">推荐配置</span>
-              </template>
-              <el-menu-item index="adminRecommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
-              <el-menu-item index="adminRecommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
-          </el-submenu>
-          <el-submenu index="6">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/CashWithdrawal@2x.png')" alt="提现管理"><span class="margin-l-10">提现管理</span>
-              </template>
-              <el-menu-item index="adminWithDrawList" :route="{name: 'adminWithDrawList'}">列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="7">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Invoice@2x.png')" alt="发票管理"><span class="margin-l-10">发票管理</span>
-              </template>
-              <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
-              <el-menu-item index="adminIssueInvoicetList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
-          </el-submenu>
-          <el-submenu index="8">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Case@2x.png')" alt="案例管理"><span class="margin-l-10">案例管理</span>
-              </template>
-              <el-menu-item index="adminDesignCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="15">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/Content@2x.png')" alt="内容管理"><span class="margin-l-10">内容管理</span>
-            </template>
-            <el-menu-item index="adminContentList" :route="{name: 'adminContentList'}">帮助中心</el-menu-item>
-            <el-menu-item index="adminColumnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
-            <el-menu-item index="adminBlockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
-            <el-menu-item index="adminArticleList" :route="{name: 'adminArticleList'}">文章列表</el-menu-item>
-            <el-menu-item index="adminWorksList" :route="{name: 'adminWorksList'}">作品列表</el-menu-item>
-            <el-menu-item index="adminAwardsList" :route="{name: 'adminAwardsList'}">日历列表</el-menu-item>
-            <el-menu-item index="adminTrendReportList" :route="{name: 'adminTrendReportList'}">趋势/报告列表</el-menu-item>
-            <el-menu-item index="adminCommonlySiteList" :route="{name: 'adminCommonlySiteList'}">常用网站列表</el-menu-item>
-            <el-menu-item index="adminAwardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="18">
-            <template slot="title">
-            <img :src="require('assets/images/admin/menu/System@2x.png')" alt="系统管理"><span class="margin-l-10">系统管理</span>
-              </template>
-              <el-menu-item index="adminCategoryList" :route="{name: 'adminCategoryList'}">分类列表</el-menu-item>
-              <el-menu-item index="adminNoticeList" :route="{name: 'adminNoticeList'}">通知列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="20">
-            <template slot="title">
-              <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理"><span class="margin-l-10">用户管理</span>
-            </template>
-            <el-menu-item index="adminUserList" :route="{name: 'adminUserList'}">列表</el-menu-item>
-          </el-submenu>
-        </el-menu> -->
       </div>
     </section>
     <section v-else :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
+          :default-active="selectedName2"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#fff" active-background-color="#000">
-          <el-tooltip class="item" content="项目管理" placement="right">
-            <el-menu-item index="bAdminItemList" :route="{name:'bAdminItemList'}">
-              <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="需求公司管理" placement="right">
-            <el-menu-item index="bAdminDemandCompanyList" :route="{name:'bAdminDemandCompanyList'}">
-              <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="订单管理" placement="right">
-            <el-menu-item index="bAdminOrderList" :route="{name:'bAdminOrderList'}">
-              <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理">
-            </el-menu-item>
-          </el-tooltip>
-          <el-tooltip class="item" content="用户管理" placement="right">
-          <el-menu-item index="bAdminUserList" :route="{name: 'bAdminUserList'}">
-            <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理">
-            </el-menu-item>
+          <el-tooltip v-for="(ele, index) in otherAdminMenu" :key="index" :content="ele.name" placement="right">
+            <el-menu-item :index="ele.route" :route="{name: ele.route, params: ele.statement.params, query: ele.statement.query}">
+            <img :src="ele.icon" :alt="ele.name">
+              </el-menu-item>
           </el-tooltip>
         </el-menu>
       </div>
@@ -323,18 +123,13 @@
           :default-active="selectedName2"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
-          <el-menu-item index="bAdminItemList" :route="{name:'bAdminItemList'}">
-            <img :src="require('assets/images/admin/menu/Project@2x.png')" alt="项目管理"><span class="margin-l-10">项目管理</span>
-          </el-menu-item>
-          <el-menu-item index="bAdminDemandCompanyList" :route="{name:'bAdminDemandCompanyList'}">
-            <img :src="require('assets/images/admin/menu/DemandCompany@2x.png')" alt="需求公司管理">需求<span class="margin-l-10">公司管理</span>
-          </el-menu-item>
-          <el-menu-item index="bAdminOrderList" :route="{name:'bAdminOrderList'}">
-            <img :src="require('assets/images/admin/menu/Order@2x.png')" alt="订单管理"><span class="margin-l-10">订单管理</span>
-          </el-menu-item>
-          <el-menu-item index="bAdminUserList" :route="{name:'bAdminUserList'}">
-            <img :src="require('assets/images/admin/menu/User@2x.png')" alt="用户管理"><span class="margin-l-10">用户管理</span>
-          </el-menu-item>
+            <el-submenu v-for="(ele, index) in otherAdminMenu" :key="index" :index="index + ''">
+            <template slot="title">
+              <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
+              </template>
+              <el-menu-item v-for="(e, i) in ele.children" :key="i"
+                :index="e.route + (e.subRouter || '')" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
+            </el-submenu>
         </el-menu>
       </div>
     </section>
@@ -351,12 +146,11 @@
 </template>
 
 <script>
-  // import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
-  import { ADMINMENU } from '@/config'
+  import { ADMINMENU, OTHERADMINMENU } from '@/config'
   export default {
     name: 'Admin',
     props: {
@@ -451,10 +245,14 @@
       }
       localStorage.setItem('selectedName', this.selectedName)
       localStorage.setItem('selectedName2', this.selectedName2)
+      console.log(this.selectedName, this.selectedName2)
     },
     computed: {
       adminMenu() {
         return ADMINMENU
+      },
+      otherAdminMenu() {
+        return OTHERADMINMENU
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
