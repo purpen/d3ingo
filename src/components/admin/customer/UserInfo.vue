@@ -1525,21 +1525,21 @@ export default {
             phone: data.phone,
             rank: data.rank,
             position: data.position,
-            new_source: data.new_source || '',
+            new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || '',
+            new_call_status: data.new_call_status,
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
           if (data.update_user_time) {
             this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
           }
-          if (this.userForm.new_source) {
+          if (this.userForm.new_source || this.userForm.new_source === 0) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
               if (item.value === id) {
