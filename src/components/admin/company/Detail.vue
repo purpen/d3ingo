@@ -68,7 +68,7 @@
       </div>
     </div>
     <customer v-if="type === 1" :id="item.id"></customer>
-    <cases v-if="type === 2"></cases>
+    <cases v-if="type === 2" :tableDatas="tableDatas" :pageCount="pageCount"></cases>
     <server v-if="type === 3" :designItem="designItem"></server>
     <certificate v-if="type === 4" :item="item"></certificate>
     <introduction v-if="type === 5" :item="item"></introduction>
@@ -86,51 +86,98 @@ export default {
     return {
       type: 1,
       item: '',
-      designItem: ''
+      designItem: '',
+      tableDatas: '',
+      pageCount: '',
+      customer: ''
     }
   },
   methods: {
     getType(type) {
       this.type = type
+    },
+    getList(id) {
+      let obj = {}
+      let that = this
+      that.$http.get(api.adminDesignCaseDesignCaseList, {params: {design_company_id: id, page: 1, per_page: 10, status: 0}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          obj = response.data.data
+          that.pageCount = response.data.meta.pagination
+          for (let index in obj) {
+            if (obj[index].status === 0) {
+              obj[index].status_value = '未公开显示'
+            } else {
+              obj[index].status_value = '已公开显示'
+            }
+            obj[index]['created_at'] = obj[index].created_at.date_format().format('yyyy.MM.dd')
+          }
+          that.tableDatas = obj
+        } else {
+          that.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        that.$message.error(error.message)
+      })
+    },
+    companyShow(id) {
+      const self = this
+      self.$http.get(api.adminCompanyShow, {params: {id: id}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          self.item = response.data.data
+          self.designItem = response.data.data.users.design_item
+          if (self.item.logo_image) {
+            self.item.logo_url = self.item.logo_image.big
+          } else {
+            self.item.logo_url = false
+          }
+          switch (self.item.company_size) {
+            case 1:
+              self.item.company_size_value = '20人以下'
+              break
+            case 2:
+              self.item.company_size_value = '20-50人'
+              break
+            case 3:
+              self.item.company_size_value = '50-100人'
+              break
+            case 4:
+              self.item.company_size_value = '100-300人'
+              break
+            case 5:
+              self.item.company_size_value = '300人以上'
+              break
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+      })
+    },
+    getCustomer(id) {
+      const self = this
+      self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: 1, per_page: 10, status: 0}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          self.customer = response.data.data
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+      })
     }
   },
   created: function() {
     var id = this.$route.params.id
-    const self = this
-    self.$http.get(api.adminCompanyShow, {params: {id: id}})
-    .then (function(response) {
-      if (response.data.meta.status_code === 200) {
-        self.item = response.data.data
-        self.designItem = response.data.data.users.design_item
-        if (self.item.logo_image) {
-          self.item.logo_url = self.item.logo_image.big
-        } else {
-          self.item.logo_url = false
-        }
-        switch (self.item.company_size) {
-          case 1:
-            self.item.company_size_value = '20人以下'
-            break
-          case 2:
-            self.item.company_size_value = '20-50人'
-            break
-          case 3:
-            self.item.company_size_value = '50-100人'
-            break
-          case 4:
-            self.item.company_size_value = '100-300人'
-            break
-          case 5:
-            self.item.company_size_value = '300人以上'
-            break
-        }
-      } else {
-        self.$message.error(response.data.meta.message)
-      }
-    })
-    .catch (function(error) {
-      self.$message.error(error.message)
-    })
+    this.companyShow(id)
+    this.getList(id)
+    this.getCustomer(id)
   },
   components: {
     server,

@@ -5,12 +5,12 @@
         <el-progress 
           type="circle"
           :stroke-width="15"
-          :percentage="25"
+          :percentage="100"
           color="#0A6DD9"
           class="header-progress"
           status="text">
           <span class="progress-top">设计服务商</span>
-          <span class="progress-bot">1281</span>
+          <span class="progress-bot">{{statistical.total}}</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="通过平台审核入驻的设计 服务商" placement="right-start">
           <div class="header-img"></div>
@@ -20,12 +20,12 @@
         <el-progress 
           type="circle"
           :stroke-width="15"
-          :percentage="25"
+          :percentage="Math.round(statistical.docking / statistical.total * 10000) / 100"
           color="#0A6DD9"
           class="header-progress"
           status="text">
           <span class="progress-top">已对接服务商</span>
-          <span class="progress-bot">1281</span>
+          <span class="progress-bot">{{statistical.docking}}</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="已至少对接过一个客户的 设计服务商" placement="right-start">
           <div class="header-img"></div>
@@ -35,12 +35,12 @@
         <el-progress 
           type="circle"
           :stroke-width="15"
-          :percentage="25"
+          :percentage="Math.round(statistical.no_docking / statistical.total * 10000) / 100"
           color="#0A6DD9"
           class="header-progress"
           status="text">
           <span class="progress-top">未对接服务商</span>
-          <span class="progress-bot">1281</span>
+          <span class="progress-bot">{{statistical.no_docking}}</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="成功入驻平台后，从未对 接过客户的设计服务商" placement="right-start">
           <div class="header-img"></div>
@@ -50,12 +50,12 @@
         <el-progress 
           type="circle"
           :stroke-width="15"
-          :percentage="25"
+          :percentage="Math.round(statistical.to_be_audited / statistical.total * 10000) / 100"
           color="#0A6DD9"
           class="header-progress"
           status="text">
           <span class="progress-top">待审核服务商</span>
-          <span class="progress-bot">1281</span>
+          <span class="progress-bot">{{statistical.to_be_audited}}</span>
         </el-progress>
         <el-tooltip class="mark-tooltop" effect="add-tooltop" content="Right Center 提示文字" placement="right-start">
           <div class="header-img"></div>
@@ -220,11 +220,13 @@ export default {
         evt: '',
         val: '',
         test: null
-      }
+      },
+      statistical: ''
     }
   },
   created() {
     this.loadList()
+    this.getDesignCount()
   },
   methods: {
     navgiteTo(id) {
@@ -238,6 +240,15 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    getDesignCount() {
+      let self = this
+      self.$http.get(api.adminDesignCompanyStatistics)
+      .then (res => {
+        if (res.data.meta.status_code === 200) {
+          self.statistical = res.data.data
+        }
+      })
     },
     loadList() {
       const self = this

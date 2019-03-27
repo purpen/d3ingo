@@ -138,18 +138,6 @@ export default {
     }
   },
   created() {
-    const self = this
-    self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: self.id, page: self.query.page, per_page: self.query.pageSize, status: self.query.status}})
-    .then (function(response) {
-      if (response.data.meta.status_code === 200) {
-        self.customer = response.data.data
-      } else {
-        self.$message.error(response.data.meta.message)
-      }
-    })
-    .catch (function(error) {
-      self.$message.error(error.message)
-    })
   },
   methods: {
     handleSizeChange(val) {
@@ -157,6 +145,20 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    getCustomer(id) {
+      const self = this
+      self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.query.status}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          self.customer = response.data.data
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+      })
     }
   }
 }
