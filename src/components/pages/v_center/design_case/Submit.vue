@@ -481,8 +481,9 @@
     },
     methods: {
       addLabel(label) {
-        if (!this.form.label) this.form.label = []
-        console.error(this.form.label)
+        if (!this.form.label) {
+          this.form.label = []
+        }
         if (this.form.label.indexOf(label + '') === -1) {
           this.form.label.push(label + '')
         }
@@ -536,7 +537,6 @@
       },
       // 清空类别
       upType() {
-        console.log(111)
         this.form.design_types = []
       },
       // 删除奖项
@@ -571,36 +571,40 @@
               title: that.form.title,
               customer: that.form.customer,
               mass_production: that.form.mass_production,
-              sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
+              sales_volume: !that.form.sales_volume ? 0 : that.form.sales_volume,
               profile: that.form.profile,
               label: that.form.label
             }
             row.cover_id = that.coverId
-            if (that.form.design_types && !that.form.design_types.length) {
+            if (that.form.design_types && that.form.design_types.length) {
               row.design_types = JSON.stringify(that.form.design_types)
-            } else row.design_types = ''
+            } else {
+              row.design_types = '[]'
+            }
             if (this.prizes && this.prizes.length) {
               for (var i = 0; i < this.prizes.length; i++) {
-                if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+                if (!this.prizes[i].time || !this.prizes[i].type) {
                   this.prizes.splice(i, 1)
                 }
                 this.prizes[i].time = this.prizes[i].time.format ('yyyy-MM-dd')
               }
               row.prizes = JSON.stringify(this.prizes)
             } else {
-              row.prizes = null
+              row.prizes = '[]'
             }
+
             if (this.patents && this.patents.length) {
               for (var c = 0; c < this.patents.length; c++) {
-                if (this.patents[c].time === '' || this.patents[c].type === '') {
+                if (!this.patents[c].time || !this.patents[c].type) {
                   this.patents.splice(c, 1)
                 }
                 this.patents[c].time = this.patents[c].time.format ('yyyy-MM-dd')
               }
               row.patent = JSON.stringify(this.patents)
             } else {
-              row.patents = null
+              row.patents = '[]'
             }
+            console.log(row)
             // if (that.is_apply && that.form.patent_time) {
             //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
             //   row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
@@ -711,7 +715,7 @@
         let id = event.currentTarget.getAttribute ('item_id')
         let index = event.currentTarget.getAttribute ('index')
         let summary = this.fileList[index].summary
-        if (summary === '' || summary === null) {
+        if (!summary) {
           this.$message.error ('描述信息不能为空!')
           return false
         }
@@ -735,7 +739,7 @@
         this.coverId = id
       },
       handleRemove(file, fileList) {
-        if (file === null) {
+        if (!file) {
           return false
         }
 
@@ -937,26 +941,22 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              if (that.form.prizes) {
-                if (that.form.prizes.length) {
-                  that.$set(that, 'is_prize', true)
-                  that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-                  that.$set(that.form, 'prize', that.form.prizes[0].type)
-                }
+              if (that.form.prizes && that.form.prizes.length) {
+                that.$set(that, 'is_prize', true)
+                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+                that.$set(that.form, 'prize', that.form.prizes[0].type)
               }
-              if (that.form.patent) {
-                if (that.form.patent.length) {
-                  that.$set(that, 'is_apply', true)
-                  that.$set(that.form, 'patent_time', that.form.patent[0].time)
-                  that.$set(that.form, 'patent_info', that.form.patent[0].type)
-                }
+              if (that.form.patent && that.form.patent.length) {
+                that.$set(that, 'is_apply', true)
+                that.$set(that.form, 'patent_time', that.form.patent[0].time)
+                that.$set(that.form, 'patent_info', that.form.patent[0].type)
               } else {
                 that.$set(that, 'is_apply', false)
               }
               if (that.form.cover_id) {
                 that.coverId = that.form.cover_id
               }
-              if (response.data.data.sales_volume === 0) {
+              if (!response.data.data.sales_volume) {
                 that.form.sales_volume = ''
                 that.form.mass_production = 0
               } else {
