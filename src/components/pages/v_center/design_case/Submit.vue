@@ -225,42 +225,44 @@
               </el-row>
 
               <el-form-item label="所获奖项">
-                <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
-                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
-                    <el-radio-group v-model="is_prize" @change="isPrize">
-                      <el-radio :label="false">否</el-radio>
-                      <el-radio :label="true">是</el-radio>
-                    </el-radio-group>
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item prop="" class="line-hei-20">
-                      <el-date-picker
-                        key="p.time"
-                        class="fullwidth"
-                        v-model="p.time"
-                        popper-class="hover-color"
-                        type="month"
-                        placeholder="获奖日期">
-                      </el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item prop="prize">
-                      <el-select v-model.number="p.type" placeholder="所属奖项">
-                        <el-option
-                          v-for="item in prizeOptions"
-                          :label="item.label"
-                          :key="item.index"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <div class="p-after" @click="deletePrize(indexp)">
-                  </div>
-                </el-row>
+                <div v-if="prizes && prizes.length > 0">
+                  <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp">
+                    <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                      <el-radio-group v-model="is_prize" @change="isPrize">
+                        <el-radio :label="false">否</el-radio>
+                        <el-radio :label="true">是</el-radio>
+                      </el-radio-group>
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item prop="" class="line-hei-20">
+                        <el-date-picker
+                          key="p.time"
+                          class="fullwidth"
+                          v-model="p.time"
+                          popper-class="hover-color"
+                          type="month"
+                          placeholder="获奖日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item prop="prize">
+                        <el-select v-model.number="p.type" placeholder="所属奖项">
+                          <el-option
+                            v-for="item in prizeOptions"
+                            :label="item.label"
+                            :key="item.index"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <div class="p-after" @click="deletePrize(indexp)">
+                    </div>
+                  </el-row>
+                </div>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
                     <el-button class="red-button" @click="getPrize()">添加奖项</el-button>
@@ -269,41 +271,43 @@
               </el-form-item>
 
               <el-form-item label="申请专利" >
-                <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
-                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
-                    <el-radio-group v-model="is_apply" @change="isApplication">
-                      <el-radio :label="false">否</el-radio>
-                      <el-radio :label="true">是</el-radio>
-                    </el-radio-group>
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item class="line-hei-20">
-                      <el-date-picker
-                        key="t.time"
-                        class="fullwidth"
-                        v-model="t.time"
-                        popper-class="hover-color"
-                        type="month"
-                        placeholder="选择日期">
-                      </el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item>
-                      <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
-                        key="t.type">
-                        <el-option
-                          v-for="item in patentOptions"
-                          :label="item.label"
-                          :key="item.index"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <div class="p-after"  @click="deletePatent(indext)">
-                  </div>
-                </el-row>
+                <div v-if="patents && patents.length > 0">
+                  <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext">
+                    <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                      <el-radio-group v-model="is_apply" @change="isApplication">
+                        <el-radio :label="false">否</el-radio>
+                        <el-radio :label="true">是</el-radio>
+                      </el-radio-group>
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item class="line-hei-20">
+                        <el-date-picker
+                          key="t.time"
+                          class="fullwidth"
+                          v-model="t.time"
+                          popper-class="hover-color"
+                          type="month"
+                          placeholder="选择日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item>
+                        <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
+                          key="t.type">
+                          <el-option
+                            v-for="item in patentOptions"
+                            :label="item.label"
+                            :key="item.index"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <div class="p-after"  @click="deletePatent(indext)">
+                    </div>
+                  </el-row>
+                </div>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
                     <el-button class="red-button" @click="getPatent()">添加专利</el-button>
@@ -522,6 +526,8 @@
               return false
             }
           }
+        } else {
+          this.patents = []
         }
         this.patents.push({
           'type': '',
@@ -972,12 +978,8 @@
                 }
                 that.fileList = files
               }
-              if (response.data.data.prizes && !response.data.data.prizes.length) {
-                that.prizes = response.data.data.prizes || []
-              }
-              if (response.data.data.patent && !response.data.data.patent.length) {
-                that.patents = response.data.data.patent || []
-              }
+              that.prizes = response.data.data.prizes || []
+              that.patents = response.data.data.patent || []
               that.form.design_types = response.data.data.design_types || []
               // if (des_types && des_types.length !== 0) {
               //   that.form.design_types = des_types
