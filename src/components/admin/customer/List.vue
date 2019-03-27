@@ -410,7 +410,7 @@
         </el-table-column>
         <el-table-column
           label="状态"
-          min-width="100"
+          min-width="120"
           prop="call_status_value"
           :filters="statusList"
           column-key="call_status_value"
