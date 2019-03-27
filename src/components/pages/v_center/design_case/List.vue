@@ -129,7 +129,7 @@
           if (response.data.meta.status_code === 200) {
             that.designCases = response.data.data
             for (let i of that.designCases) {
-              if (i.cover.created_at) {
+              if (i.cover && i.cover.created_at) {
                 i.date = i.cover.created_at.date_format().format('yyyy-MM-dd')
               }
             }
