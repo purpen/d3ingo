@@ -118,10 +118,10 @@ export default {
     position: absolute;
     z-index: 1;
     width: 100%;
-    height: 60px;
+    height: 70px;
     left: 0;
     right: 0;
-    top: -60px;
+    top: -70px;
     display: flex;
     max-width: 1180px;
     margin: auto;
@@ -137,7 +137,7 @@ export default {
   }
   .logo {
     border-bottom: 3px solid transparent;
-    height: 60px;
+    height: 70px;
     display: flex;
     align-items: center
   }
@@ -214,5 +214,7 @@ export default {
     background: url(../../../assets/images/project/SelectionDesignPartyClick.png)
       no-repeat center / contain
   }
-
+  .el-menu-item.logo img {
+    margin-top: 0
+  }
 </style>
