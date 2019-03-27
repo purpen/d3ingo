@@ -70,7 +70,7 @@
     <div class="bottom">
       <div class="bottom-top flex-center-space">
         <div class="sever-round">
-          <el-select v-model="designReault" placeholder="请选择" class="sever-icon">
+          <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="loadList()">
             <el-option
               v-for="item in designChoose"
               :key="item.value"
@@ -90,8 +90,8 @@
               popper-class="drop-down">
             </el-option>
           </el-select>
-          <input placeholder="在当前列表下搜索" class="sever-right-select"/>
-          <div class="select-img"></div>
+          <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue"/>
+          <div class="select-img" @click="loadList()"></div>
         </div>
       </div>
     </div>
@@ -109,6 +109,15 @@
           prop="company_name"
           label="公司名称"
           width="180">
+          <template slot-scope="scope">
+            <div class="flex-center home-img-round">
+              <img :src="scope.row.logo_url" />
+              <div class="pad-left-15">
+                <div class="com-abb text-overflow">{{scope.row.company_abbreviation}}</div>
+                <div class="com-name text-overflow">{{scope.row.company_name}}</div>
+              </div>
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           label="公司地区"
@@ -163,17 +172,17 @@
     <!-- 分页 -->
     <div class="flex-center-space pad-top-15 pad-left-30">
       <div class="count">
-        共 {{}} 条
+        共 {{query.totalCount}} 条
       </div>
-      <div>
+      <div v-if="query.totalCount > query.pageSize">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage2"
+          :current-page.sync="query.page"
           :page-sizes="[10, 20, 50]"
           :page-size="10"
           layout="sizes, prev, pager, next"
-          :total="1000">
+          :total="query.totalCount">
         </el-pagination>
       </div>
     </div>
@@ -185,22 +194,22 @@ export default {
   data() {
     return {
       designChoose: [{
-        value: '1',
+        value: '0',
         label: '全部设计服务商'
       }, {
-        value: '2',
+        value: '1',
         label: '待审核的设计服务商'
       }, {
-        value: '3',
+        value: '2',
         label: '已通过的设计服务商'
       }, {
-        value: '4',
+        value: '3',
         label: '未通过的设计服务商'
       }, {
-        value: '5',
+        value: '4',
         label: '已禁用的设计服务商'
       }],
-      designReault: '1',
+      designReault: '0',
       companyChoose: [{
         value: '1',
         label: '按公司名称'
@@ -211,20 +220,21 @@ export default {
         value: '3',
         label: '按公司编号'
       }],
-      companyReault: '1',
+      companyReault: '',
       currentPage2: 5,
       tableData: [],
       query: {
         page: 1,
         pageSize: 10,
         totalCount: 0,
-        sort: 1,
+        sort: 0,
         type: 0,
         evt: '',
         val: '',
         test: null
       },
-      statistical: ''
+      statistical: '',
+      seleValue: ''
     }
   },
   created() {
@@ -239,10 +249,12 @@ export default {
       console.log(2)
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
+      this.query.pageSize = parseInt(val)
+      this.loadList()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      this.query.page = parseInt(val)
+      this.loadList()
     },
     getDesignCount() {
       let self = this
@@ -255,14 +267,9 @@ export default {
     },
     loadList() {
       const self = this
-      // 查询条件
-      self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = self.$route.query.sort || 0
-      self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
-      self.menuType = parseInt(self.query.type)
-      self.query.evt = self.$route.query.evt || '2'
-      self.query.val = self.$route.query.val
-      self.isLoading = true
+      self.query.type = self.designReault
+      self.query.evt = self.companyReault
+      self.query.val = self.seleValue
       self.$http.get(api.adminCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.tableData = []
@@ -392,6 +399,7 @@ export default {
     height: 18px;
     width: 18px;
     background: url('../../../assets/images/design_admin/search@2x.png') no-repeat center / contain;
+    cursor: pointer;
   }
   .table-round {
     padding-top: 20px;
@@ -403,6 +411,23 @@ export default {
     background: #73D13D;
     border-radius: 50%;
     margin-right: 7px;
+  }
+  .home-img-round img{
+    height: 44px;
+    width: 44px;
+  }
+  .com-abb {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+  .com-name {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    white-space: nowrap;
   }
   .bg-CF1322 {
     background: #CF1322;
@@ -428,6 +453,12 @@ export default {
     display: flex;
     align-items: center;
   }
+  .text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
   .flex {
     display: flex;
   }
@@ -436,6 +467,9 @@ export default {
   }
   .pad-left-30 {
     padding-left: 30px;
+  }
+  .pad-left-15 {
+    padding-left: 15px;
   }
 </style>
 
