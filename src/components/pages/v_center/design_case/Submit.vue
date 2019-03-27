@@ -85,7 +85,7 @@
                 </el-col>
               </el-row>
 
-              <!-- <el-form-item label="设计类型" prop="type">
+              <!-- <el-form-item label="设计类别" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -166,8 +166,8 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="设计类型" prop="type">
-                    <el-select v-model.number="form.type" placeholder="设计类型" 
+                  <el-form-item label="设计类别" prop="type">
+                    <el-select v-model.number="form.type" placeholder="设计类别" 
                     @change="typec"
                     >
                       <el-option
@@ -439,7 +439,7 @@
         },
         ruleForm: {
           type: [
-            {type: 'number', message: '请选择设计类型', trigger: 'change'}
+            {type: 'number', message: '请选择设计类别', trigger: 'change'}
           ],
           // design_type: [
           //   {type: 'array', validator: designTypeval, trigger: 'blur'}
@@ -566,12 +566,13 @@
             that.coverId = 0
           }
         }
+        console.log(that.fileList)
         if (!that.coverId) {
           that.$message.error ('必须设置一张封面图!')
           return false
         }
         if (!that.form.design_types || !that.form.design_types.length) {
-          that.$message.error ('请选择至少一个设计类型!')
+          that.$message.error ('请选择至少一个设计类别!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -794,7 +795,8 @@
           summary: '',
           response: {
             asset_id: add.response.asset_id
-          }
+          },
+          id: add.response.asset_id
         }
         this.fileList.push (item)
       },
