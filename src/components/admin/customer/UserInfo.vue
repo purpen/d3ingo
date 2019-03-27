@@ -1399,7 +1399,8 @@ export default {
       boolStage: false,
       stageArr: [],
       stageActive: 0,
-      nowDesignId: ''
+      nowDesignId: '',
+      isOpenNext: true // 下一条
     }
   },
   methods: {
@@ -1549,6 +1550,8 @@ export default {
       })
     },
     getNextUser() { // 下一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
@@ -1563,13 +1566,120 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
     getPreviousUser() { // 上一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
@@ -1584,9 +1694,114 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
