@@ -16,8 +16,9 @@
       <div class="flex">
         <div class="cer-left">营业执照</div>
         <template v-if="item.license_image && item.license_image.length">
-          <div class="cer-right" v-for="(img, index) in item.license_image" :key="index">
-            <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
+          <div class="img-round pos-rea" v-for="(img, index) in item.license_image" :key="index">
+            <img :src="img.file" class="img-style" />
+            <div class="fiex" @click="showImg(img.file)">点击预览</div>
           </div>
         </template>
         <div class="no-input" v-else></div>
@@ -40,8 +41,9 @@
       <div class="flex">
         <div class="cer-left">法人证件附件</div>
         <template v-if="item.document_image && item.document_image.length">
-          <div class="cer-right" v-for="(img, index) in item.document_image" :key="index">
+          <div class="img-round pos-rea" v-for="(img, index) in item.document_image" :key="index">
             <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
+            <div class="fiex" @click="showImg(img.file)">点击预览</div>
           </div>
         </template>
         <div class="no-input" v-else></div>
@@ -157,12 +159,41 @@ export default {
     background: url('../../../assets/images/design_admin/DefaultGraph@2x.png') no-repeat center / contain;
     margin-left: 10px;
   }
+  .img-round {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
   .img-style {
     width: 80px;
     height: 80px;
     cursor: pointer;
     border: 1px solid #e6e6e6;
     border-radius: 4px;
+  }
+  .pos-rea .fiex {
+    display: none;
+  }
+  .pos-rea:hover .fiex {
+    display: flex;
+  }
+  .fiex {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    border-radius: 4px;
+    font-weight: 400;
   }
   .fiexd-img {
     position: fixed;
@@ -192,6 +223,9 @@ export default {
     right: 100px;
     top: 50px;
     background: url('../../../assets/images/design_admin/CloseHover@2x.png') no-repeat center / contain;
+  }
+  .pos-rea {
+    position: relative;
   }
 </style>
 
