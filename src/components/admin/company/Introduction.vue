@@ -43,7 +43,7 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">荣誉奖项</div>
-        <div class="cer-right">多证合一(含信用代码)</div>
+        <div class="cer-right" v-for="(item, index) in item.prizes" :key="index">{{item}}</div>
       </div>
     </div>
 

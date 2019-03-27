@@ -13,7 +13,7 @@
           width="180">
           <template slot-scope="scope">
             <div class="flex-center desimg-round">
-              <img :src="scope.row.cover.file || scope.row.case_image[0].file"/>
+              <img :src="scope.row.logoUrl"/>
               <div class="tit-text">{{scope.row.profile}}</div>
             </div>
           </template>
@@ -128,6 +128,20 @@ export default {
         if (response.data.meta.status_code === 200) {
           that.tableData = response.data.data
           that.query.totalCount = parseInt(response.data.meta.pagination.total)
+          for (let index in that.tableData) {
+            if (that.tableData[index].cover) {
+              that.tableData[index].logoUrl = that.tableData[index].cover.file
+            } else if (that.tableData[index].case_image.length) {
+              that.tableData[index].logoUrl = that.tableData[index].case_image[0].file
+            } else {
+              that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
+            }
+            if (that.tableData[index].status === 0) {
+              that.tableData[index].status_value = '未公开显示'
+            } else {
+              that.tableData[index].status_value = '已公开显示'
+            }
+          }
         } else {
           that.$message.error(response.data.meta.message)
         }

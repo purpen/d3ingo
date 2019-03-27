@@ -15,10 +15,12 @@
       </div>
       <div class="flex">
         <div class="cer-left">营业执照</div>
-        <div class="cer-right no-input" v-if="!item.license_image"></div>
-        <div class="cer-right" v-else v-for="(img, index) in item.license_image" :key="index">
-          <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
-        </div>
+        <template v-if="item.license_image && item.license_image.length">
+          <div class="cer-right" v-for="(img, index) in item.license_image" :key="index">
+            <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
+          </div>
+        </template>
+        <div class="no-input" v-else></div>
       </div>
     </div>
 
@@ -37,10 +39,12 @@
       </div>
       <div class="flex">
         <div class="cer-left">法人证件附件</div>
-        <div class="cer-right no-input" v-if="!item.document_image"></div>
-        <div class="cer-right" v-else v-for="(img, index) in item.document_image" :key="index">
-          <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
-        </div>
+        <template v-if="item.document_image && item.document_image.length">
+          <div class="cer-right" v-for="(img, index) in item.document_image" :key="index">
+            <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
+          </div>
+        </template>
+        <div class="no-input" v-else></div>
       </div>
     </div>
 
@@ -151,6 +155,7 @@ export default {
     width: 80px;
     height: 80px;
     background: url('../../../assets/images/design_admin/DefaultGraph@2x.png') no-repeat center / contain;
+    margin-left: 10px;
   }
   .img-style {
     width: 80px;
