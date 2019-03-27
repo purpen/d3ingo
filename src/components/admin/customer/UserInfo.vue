@@ -23,12 +23,13 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button type="primary" class="" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button> 
-            <!-- <div class="edit-project fr">
+            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
+            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
-                <span>删除</span>
+                <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
-            </div> -->
+            </div>
           </div>
 
         </div>
@@ -49,7 +50,7 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
-                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{sourceValue + '/' + sonSourceValue}}</span>
+                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
                 <span class="fz-14  text-overflow" v-else>--</span>
               </div>
             </el-col>
@@ -115,7 +116,7 @@
             </div>
             <div class="note-right">
               <p class="fw-5">成功指南</p>
-              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户。为预算大于一万的潜在客户匹配最适合的设计公司</p>
+              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户。为预算大于一万的潜在客户匹配最适合的设计服务商</p>
             </div>
           </div>
           
@@ -353,7 +354,7 @@
                   <span class="tc-9">客户来源</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span v-if="sourceValue || sonSourceValue">{{sourceValue + '/' + sonSourceValue}}</span>
+                  <span v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
                   <span v-else>--</span>
                 </el-col>
               </el-row>
@@ -739,6 +740,21 @@
           </el-row>
           
           <el-row :gutter="20">
+            <el-col :xs="24" :sm="20" :md="24" :lg="24">
+              <el-form-item label="项目紧急度" prop="grate">
+                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
+                  <el-option
+                    v-for="(d, index) in grateArr"
+                    :key="index"
+                    :label="d.label"
+                    :value="d.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="24" :lg="24">
               <el-form-item label="交付时间" prop="cycle">
                 <el-select v-model="projectForm.cycle" placeholder="请选择交付时间">
@@ -778,33 +794,19 @@
                   >
             </region-picker>
           </div>
-          <el-row :gutter="20">
-            <el-col :xs="24" :sm="20" :md="24" :lg="24">
-              <el-form-item label="项目紧急度" prop="grate">
-                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
-                  <el-option
-                    v-for="(d, index) in grateArr"
-                    :key="index"
-                    :label="d.label"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="项目描述" prop="summary">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
             </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> 
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="备注" prop="remarks">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
             </el-form-item>
             </el-col>
           </el-row>
@@ -876,7 +878,14 @@
               <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
             </el-form-item>
           </el-col>
-          
+        </el-row>
+        
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人职位" prop="position">
+              <el-input v-model="designCompanyForm.position" :maxlength="20" placeholder="请填写联系人职位"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row :gutter="20">
@@ -1399,7 +1408,8 @@ export default {
       boolStage: false,
       stageArr: [],
       stageActive: 0,
-      nowDesignId: ''
+      nowDesignId: '',
+      isOpenNext: true // 下一条
     }
   },
   methods: {
@@ -1483,9 +1493,13 @@ export default {
       })
       stageArr.forEach((d, index, arr) => {
         if (d.status !== 0) {
-          d.time = d.time.date_format().format('yyyy-MM-dd hh:mm')
+          if (d.time === 0) {
+            d.time = ''
+          } else {
+            d.time = d.time.date_format().format('yyyy-MM-dd hh:mm')
+          }
         }
-        if (d.time === 0) {
+        if (d.status === 0 && d.time === 0) {
           d.time = ''
         }
       })
@@ -1548,7 +1562,23 @@ export default {
         this.clientForm.city = city
       })
     },
+    restoreUser() { // 恢复客户
+      let row = []
+      row.push(this.currentId)
+      this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
     getNextUser() { // 下一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
@@ -1563,13 +1593,120 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
     getPreviousUser() { // 上一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
@@ -1584,9 +1721,114 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
@@ -1663,7 +1905,6 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
-        console.log('11111')
         this.userLoading = false
       })
     },
@@ -1707,7 +1948,6 @@ export default {
           if (status === 1) {
             this.$message.success('成功转化为潜在客户')
           }
-          this.followVal = ''
           this.getUserInfo()
           this.getLogList()
         } else {
@@ -1715,6 +1955,22 @@ export default {
         }
       }).catch(error => {
         this.isOpen = true
+        this.$message.error(error.message)
+      })
+    },
+    setClueStatus4(d) { // 加入回收站
+      let row = {
+        new_status: d,
+        clue_ids: [this.currentId]
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+          this.getNextUser()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
         this.$message.error(error.message)
       })
     },
@@ -2000,6 +2256,7 @@ export default {
         summary: ''
       }
       this.boolDesignCompany = true
+      this.boolEditDesignCompany = false
       this.getDesignCompanyList()
     },
     getDesignCompanyList() {
@@ -2019,6 +2276,7 @@ export default {
           this.$set(this.designCompanyForm, 'contact_name', item.contact_name)
           this.$set(this.designCompanyForm, 'phone', item.phone)
           this.$set(this.designCompanyForm, 'company_name', item.company_name)
+          this.$set(this.designCompanyForm, 'position', item.position ? item.position : '')
         }
       })
     },
@@ -2123,6 +2381,7 @@ export default {
               this.$set(this.projectForm, 'design_cost', d.design_cost)
               this.$set(this.projectForm, 'summary', d.summary)
               this.$set(this.projectForm, 'industry', d.industry)
+              this.$set(this.projectForm, 'remarks', d.remarks)
               this.projectForm.item_province = d.item_province
               this.projectForm.item_city = d.item_city
             }
@@ -2388,7 +2647,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12) {
+        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
           return true
         }
       }
@@ -2437,6 +2696,19 @@ export default {
       } else {
         return `停滞${gap}天`
       }
+    },
+    processor(val) { // 来源处理斜杠
+      if (typeof val === 'string') {
+        let arr = val.split('/')
+        let parent = arr[0]
+        let son = arr[1]
+        if (!son && parent) {
+          return `${parent}`
+        }
+        if (parent && son) {
+          return `${parent}/${son}`
+        }
+      }
     }
   },
   created() {
@@ -2453,7 +2725,6 @@ export default {
     } else {
       this.userForm.execute_user_id = this.userId
     }
-    // this.getTypeList()
     this.getAdminVoIpList()
   },
   directives: {Clickoutside},
@@ -2513,6 +2784,9 @@ export default {
 }
 .margin-l0 {
   margin-left: 0 !important;
+}
+.margin-l10 {
+  margin-left: 10px;
 }
 .margin-r0 {
   margin-right: 0 !important;
@@ -3019,6 +3293,9 @@ export default {
 }
 .edit-project-tag> p:hover {
   color: #484848;
+}
+.edit-project-tag > .delete {
+
 }
 .project-failure {
   color: #FF5A5F;
