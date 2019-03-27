@@ -978,6 +978,9 @@
                 }
                 that.fileList = files
               }
+              if (!that.fileList || !that.fileList.length) {
+                that.coverId = 0
+              }
               that.prizes = response.data.data.prizes || []
               that.patents = response.data.data.patent || []
               that.form.design_types = response.data.data.design_types || []
