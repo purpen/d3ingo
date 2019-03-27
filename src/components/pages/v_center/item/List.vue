@@ -22,48 +22,50 @@
                 <div class="empty"></div>
                 <p class="prompt">暂时没有待完善项目， 请发布需求～</p>
               </div>
-              <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
-                <div class="banner" v-if="contentShowIndex === index">
-                  <p>
-                    <span>进行中</span>
-                  </p>
-                </div>
-                <div class="content">
-                  <div class="pre"> 
-                    <p class="c-title-pro">
-                      <span v-if="d.item.name">{{ d.item.name }}</span>
-                      <span v-else>未命名项目</span>
+              <div v-if="itemIngList.length">
+                <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
+                  <div class="banner" v-if="contentShowIndex === index">
+                    <p>
+                      <span>进行中</span>
                     </p>
-                    <p class="progress-line">
-                      <el-progress
-                        :text-inside="true"
-                        :show-text="false"
-                        :stroke-width="6"
-                        :percentage="d.item.progress"
-                        status="exception">
-                      </el-progress>
-                    </p>
-                    <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
+                  </div>
+                  <div class="content">
+                    <div class="pre"> 
+                      <p class="c-title-pro">
+                        <span v-if="d.item.name">{{ d.item.name }}</span>
+                        <span v-else>未命名项目</span>
+                      </p>
+                      <p class="progress-line">
+                        <el-progress
+                          :text-inside="true"
+                          :show-text="false"
+                          :stroke-width="6"
+                          :percentage="d.item.progress"
+                          status="exception">
+                        </el-progress>
+                      </p>
+                      <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
 
-                    <p v-if="d.item.status === -1">
-                      <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
-                        删除项目
-                      </el-button>
-                    </p>
-                    <p class="buttons" v-else>   
-                      <el-button class="is-custom"
-                      size="small"
-                      :progress="d.item.stage_status"
-                      :item_id="d.item.id"
-                      :item_type="d.item.type" @click="editItem" type="primary"> 
-                        <i class="el-icon-edit"></i> 完善项目
-                      </el-button>
-                      <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
-                        <el-button class="" @click="closeItemBtnOngo" :item_id="d.item.id" :index="index" size="small">
-                          关闭项目
+                      <p v-if="d.item.status === -1">
+                        <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
+                          删除项目
                         </el-button>
-                      </el-tooltip>
-                    </p>
+                      </p>
+                      <p class="buttons" v-else>   
+                        <el-button class="is-custom"
+                        size="small"
+                        :progress="d.item.stage_status"
+                        :item_id="d.item.id"
+                        :item_type="d.item.type" @click="editItem(d.item.stage_status, d.item.id, d.item.type)" type="primary"> 
+                          <i class="el-icon-edit"></i> 完善项目
+                        </el-button>
+                        <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
+                          <el-button class="" @click="closeItemBtnOngo" :item_id="d.item.id" :index="index" size="small">
+                            关闭项目
+                          </el-button>
+                        </el-tooltip>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -663,14 +665,14 @@
           self.sureDialogDock = false
         }
       },
-      editItem(event) {
-        let progress = parseInt(event.currentTarget.getAttribute('progress'))
-        let itemId = event.currentTarget.getAttribute('item_id')
+      editItem(progress, itemId, type) {
+        // let progress = parseInt(event.currentTarget.getAttribute('progress'))
+        // let itemId = event.currentTarget.getAttribute('item_id')
         // let type = parseInt(event.currentTarget.getAttribute('item_type'))
         let name = null
         switch (progress) {
           case 0:
-            name = 'itemSubmitTwo'
+            name = 'projectCreate'
             break
           case 1:
             name = 'projectSelect'
@@ -687,7 +689,11 @@
             name = 'projectInfo'
             break
         }
-        this.$router.push({name: name, params: {id: itemId}})
+        if (progress) {
+          this.$router.push({name: name, params: {id: itemId}})
+        } else {
+          this.$router.push({name: name, query: {id: itemId}})
+        }
       },
       // 匹配失败后重新编辑项目
       restartBtn(itemId) {
