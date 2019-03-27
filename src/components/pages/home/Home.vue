@@ -817,7 +817,6 @@
   .slide p {
     font-size: 2rem;
     color: #FFFFFF;
-    font-weight: 300;
     padding: 0;
     font-family: PingFangSC-Regular;
     font-weight: 400;

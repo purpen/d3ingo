@@ -478,6 +478,7 @@
     methods: {
       addLabel(label) {
         if (!this.form.label) this.form.label = []
+        console.error(this.form.label)
         if (this.form.label.indexOf(label + '') === -1) {
           this.form.label.push(label + '')
         }
@@ -504,6 +505,8 @@
               return false
             }
           }
+        } else {
+          this.prizes = []
         }
         this.prizes.push({
           'type': '',
@@ -970,12 +973,12 @@
                 that.fileList = files
               }
               if (response.data.data.prizes && !response.data.data.prizes.length) {
-                that.prizes = response.data.data.prizes
+                that.prizes = response.data.data.prizes || []
               }
               if (response.data.data.patent && !response.data.data.patent.length) {
-                that.patents = response.data.data.patent
+                that.patents = response.data.data.patent || []
               }
-              that.form.design_types = response.data.data.design_types
+              that.form.design_types = response.data.data.design_types || []
               // if (des_types && des_types.length !== 0) {
               //   that.form.design_types = des_types
               // }
