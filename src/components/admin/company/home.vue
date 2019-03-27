@@ -180,7 +180,7 @@
           @current-change="handleCurrentChange"
           :current-page.sync="query.page"
           :page-sizes="[10, 20, 50]"
-          :page-size="10"
+          :page-size="query.pageSize"
           layout="sizes, prev, pager, next"
           :total="query.totalCount">
         </el-pagination>

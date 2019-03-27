@@ -2,7 +2,7 @@
   <div class="contain">
     <div class="case-top">
       <el-table
-        :data="tableDatas"
+        :data="tableData"
         style="width: 100%">
         <el-table-column
           prop="id"
@@ -62,16 +62,16 @@
     </div>
 
     <div class="bot-round flex-center-space">
-      <div class="count-size">共{{pageCount.count}}条</div>
+      <div class="count-size">共{{query.totalCount}}条</div>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage2"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page.sync="query.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query.pageSize"
         layout="sizes, prev, pager, next"
-        :total="1000"
-        v-if="pageCount.count > query.pageSize">
+        :total="query.totalCount"
+        v-if="query.totalCount > query.pageSize">
     </el-pagination>
     </div>
   </div>
@@ -80,26 +80,21 @@
 import api from '@/api/api'
 export default {
   name: 'cases',
-  props: ['tableDatas', 'pageCount'],
   data() {
     return {
       tableData: [],
-      currentPage2: 5,
       query: {
         page: 1,
         pageSize: 10,
-        totalCount: 0,
-        sort: 1,
-        type: 0,
-        evt: '',
-        val: '',
-        test: null
+        totalCount: 0
       },
-      datas: '',
-      pages: ''
+      cusId: ''
     }
   },
   created() {
+    let that = this
+    that.cusId = that.$route.params.id
+    that.getList()
   },
   methods: {
     getOpen(index, id, evt, value) {
@@ -107,8 +102,8 @@ export default {
       self.$http.put(api.adminDesignCaseOpenInfo, {case_id: id, is_open: evt})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          self.tableDatas[index].status = evt
-          self.tableDatas[index].status_value = value
+          self.tableData[index].status = evt
+          self.tableData[index].status_value = value
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
@@ -118,27 +113,27 @@ export default {
         self.$message.error(error.message)
       })
     },
-    closeOpen(id) {
-      console.log(id)
-    },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
+      this.query.pageSize = parseInt(val)
+      this.getList()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      this.query.page = parseInt(val)
+      this.getList()
     },
     getList() {
-      this.$http.get(api.adminDesignCaseDesignCaseList, {params: {design_company_id: this.id, page: this.query.page, per_page: this.query.pageSize, status: this.query.status}})
+      let that = this
+      that.$http.get(api.adminDesignCaseDesignCaseList, {params: {design_company_id: that.cusId, page: that.query.page, per_page: that.query.pageSize, status: that.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          this.datas = response.data.data
-          this.pages = response.data.meta.pagination
+          that.tableData = response.data.data
+          that.query.totalCount = parseInt(response.data.meta.pagination.total)
         } else {
-          this.$message.error(response.data.meta.message)
+          that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
-        this.$message.error(error.message)
+        that.$message.error(error.message)
       })
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <div class="sever-round">
-      <el-select v-model="designReault" placeholder="请选择" class="sever-icon">
+      <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectDesign()">
         <el-option
           v-for="item in designChoose"
           :key="item.value"
@@ -109,15 +109,16 @@
     </div>
 
     <div class="bot-round flex-center-space">
-      <div>共{{}}页</div>
+      <div>共{{query.totalCount}}条</div>
       <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage2"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
+      :current-page.sync="query.page"
+      :page-sizes="[10, 20, 50]"
+      :page-size="query.pageSize"
       layout="sizes, prev, pager, next"
-      :total="1000">
+      :total="query.totalCount"
+      v-if="query.totalCount > query.pageSize">
     </el-pagination>
     </div>
   </div>
@@ -129,47 +130,53 @@ export default {
   data() {
     return {
       designChoose: [{
-        value: '1',
+        value: '0',
         label: '全部客户'
       }, {
-        value: '2',
+        value: '1',
         label: '对接中的客户'
       }, {
-        value: '3',
+        value: '2',
         label: '签订合作的客户'
       }, {
-        value: '4',
+        value: '3',
         label: '对接失败的客户'
       }],
-      designReault: '1',
-      tableData: [],
-      currentPage2: 5,
+      designReault: '0',
       query: {
         page: 1,
         pageSize: 10,
-        status: 0
+        totalCount: 0
       },
+      cusId: '',
       customer: []
     }
   },
   created() {
     let that = this
     let id = that.$route.params.id
+    that.cusId = that.$route.params.id
     that.getCustomer(id)
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
+      this.query.pageSize = parseInt(val)
+      this.loadList(this.cusId)
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      this.query.page = parseInt(val)
+      this.loadList(this.cusId)
+    },
+    selectDesign() {
+      this.getCustomer(this.cusId)
     },
     getCustomer(id) {
       const self = this
-      self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.query.status}})
+      self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.customer = response.data.data
+          self.query.totalCount = parseInt(response.data.meta.pagination.total)
           for (let index in self.customer) {
             let obj = self.customer[index]
             obj['created_at'] = obj.created_at.date_format().format('yyyy.MM.dd')

@@ -67,11 +67,11 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <customer v-if="type === 1"></customer>
-    <cases v-if="type === 2" :tableDatas="tableDatas" :pageCount="pageCount"></cases>
-    <server v-if="type === 3" :designItem="designItem"></server>
-    <certificate v-if="type === 4" :item="item"></certificate>
-    <introduction v-if="type === 5" :item="item"></introduction>
+    <customer v-show="type === 1"></customer>
+    <cases v-show="type === 2"></cases>
+    <server v-show="type === 3" :designItem="designItem"></server>
+    <certificate v-show="type === 4" :item="item"></certificate>
+    <introduction v-show="type === 5" :item="item"></introduction>
   </div>
 </template>
 <script>
