@@ -259,6 +259,7 @@ export default {
   adminAnalysisBudget: '/admin/analysis/budget', // GET 商机分析-商机预算
   adminAnalysisTrend: '/admin/analysis/trend', // GET 商机分析-趋势
   adminAnalysisConversionTrend: '/admin/analysis/conversionTrend', // 商机分析-转化趋势
+  adminClueClueDelList: '/admin/clue/clueDelList', // 潜在客户-回收站列表/搜索
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
