@@ -1468,7 +1468,7 @@ export default {
       optionLatent: [
         {
           value: 0,
-          label: '全部'
+          label: '全部商家'
         },
         {
           value: 1,
@@ -3186,7 +3186,7 @@ export default {
 }
 .select-business {
   float: left;
-  width: 220px;
+  width: 180px;
   /* margin-left: 20px; */
   height: 36px;
   line-height: 36px;
@@ -3202,7 +3202,7 @@ export default {
   padding-left: 25px;
 }
 .select-date {
-  width: 142px;
+  width: 165px;
   float: left;
   margin-left: 10px;
   height: 36px;
