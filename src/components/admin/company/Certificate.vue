@@ -15,7 +15,7 @@
       </div>
       <div class="flex">
         <div class="cer-left">营业执照</div>
-        <div class="cer-right no-input" v-if="!item.license_image.length"></div>
+        <div class="cer-right no-input" v-if="!item.license_image"></div>
         <div class="cer-right" v-else v-for="(img, index) in item.license_image" :key="index">
           <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
         </div>
@@ -37,7 +37,7 @@
       </div>
       <div class="flex">
         <div class="cer-left">法人证件附件</div>
-        <div class="cer-right no-input" v-if="!item.document_image.length"></div>
+        <div class="cer-right no-input" v-if="!item.document_image"></div>
         <div class="cer-right" v-else v-for="(img, index) in item.document_image" :key="index">
           <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
         </div>

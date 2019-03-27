@@ -126,7 +126,9 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.item = response.data.data
-          self.designItem = response.data.data.users.design_item
+          if (response.data.data.users && response.data.data.users.design_item) {
+            self.designItem = response.data.data.users.design_item
+          }
           if (self.item.logo_image) {
             self.item.logo_url = self.item.logo_image.big
           } else {

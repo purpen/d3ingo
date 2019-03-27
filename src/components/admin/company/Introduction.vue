@@ -9,7 +9,7 @@
         <div class="cer-left">公司简称</div>
         <div class="cer-right">{{item.company_abbreviation}}</div>
       </div>
-      <div class="flex-center">
+      <div class="flex">
         <div class="cer-left">公司简介</div>
         <div class="cer-right">{{item.company_profile}}</div>
       </div>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="round">
-      <div class="flex-center">
+      <div class="flex">
         <div class="cer-left">专业优势</div>
         <div class="cer-right adveg-flex">
           <div>{{item.professional_advantage}}</div>

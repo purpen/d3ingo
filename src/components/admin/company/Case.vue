@@ -176,8 +176,8 @@ export default {
     padding-left: 5px;
   }
   .desimg-round img{
-    height: 90px;
-    width: 60px;
+    width: 90px;
+    height: 60px;
   }
   .count-size {
     font-size: 14px;

@@ -109,7 +109,7 @@
     </div>
 
     <div class="bot-round flex-center-space">
-      <div>共{{query.totalCount}}条</div>
+      <div class="count-size">共{{query.totalCount}}条</div>
       <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -275,6 +275,12 @@ export default {
     background: #CF1322;
     border-radius: 50%;
     margin-right: 7px;
+  }
+  .count-size {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
   }
   .click-show {
     width: 58px;
