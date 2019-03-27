@@ -973,10 +973,10 @@
                 that.fileList = files
               }
               if (response.data.data.prizes && !response.data.data.prizes.length) {
-                that.prizes = response.data.data.prizes
+                that.prizes = response.data.data.prizes || []
               }
               if (response.data.data.patent && !response.data.data.patent.length) {
-                that.patents = response.data.data.patent
+                that.patents = response.data.data.patent || []
               }
               that.form.design_types = response.data.data.design_types || []
               // if (des_types && des_types.length !== 0) {
