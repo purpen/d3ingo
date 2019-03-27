@@ -23,7 +23,8 @@
           :percentage="Math.round(statistical.docking / statistical.total * 10000) / 100"
           color="#0A6DD9"
           class="header-progress"
-          status="text">
+          status="text"
+          v-if="statistical">
           <span class="progress-top">已对接服务商</span>
           <span class="progress-bot">{{statistical.docking}}</span>
         </el-progress>
@@ -38,7 +39,8 @@
           :percentage="Math.round(statistical.no_docking / statistical.total * 10000) / 100"
           color="#0A6DD9"
           class="header-progress"
-          status="text">
+          status="text"
+          v-if="statistical">
           <span class="progress-top">未对接服务商</span>
           <span class="progress-bot">{{statistical.no_docking}}</span>
         </el-progress>
@@ -47,17 +49,18 @@
         </el-tooltip>
       </div>
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
-          :percentage="Math.round(statistical.to_be_audited / statistical.total * 10000) / 100"
+          :percentage="Math.round(statistical.to_be_audited / statistical.total * 10000) / 100 "
           color="#0A6DD9"
           class="header-progress"
-          status="text">
+          status="text"
+          v-if="statistical">
           <span class="progress-top">待审核服务商</span>
           <span class="progress-bot">{{statistical.to_be_audited}}</span>
         </el-progress>
-        <el-tooltip class="mark-tooltop" effect="add-tooltop" content="Right Center 提示文字" placement="right-start">
+        <el-tooltip class="mark-tooltop" effect="add-tooltop" content="等待审核的服务商" placement="right-start">
           <div class="header-img"></div>
         </el-tooltip>
       </div>

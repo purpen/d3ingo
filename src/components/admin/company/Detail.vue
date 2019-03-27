@@ -67,7 +67,7 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <customer v-if="type === 1" :id="item.id"></customer>
+    <customer v-if="type === 1"></customer>
     <cases v-if="type === 2" :tableDatas="tableDatas" :pageCount="pageCount"></cases>
     <server v-if="type === 3" :designItem="designItem"></server>
     <certificate v-if="type === 4" :item="item"></certificate>
@@ -88,8 +88,7 @@ export default {
       item: '',
       designItem: '',
       tableDatas: '',
-      pageCount: '',
-      customer: ''
+      pageCount: ''
     }
   },
   methods: {
@@ -174,10 +173,9 @@ export default {
     }
   },
   created: function() {
-    var id = this.$route.params.id
+    let id = this.$route.params.id
     this.companyShow(id)
     this.getList(id)
-    this.getCustomer(id)
   },
   components: {
     server,

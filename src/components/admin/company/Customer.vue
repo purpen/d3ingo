@@ -17,7 +17,7 @@
 
     <div class="table-round">
       <el-table
-        :data="tableData"
+        :data="customer"
         stripe
         style="width: 100%">
         <el-table-column
@@ -31,15 +31,15 @@
             <div>
               <div class="flex-center">
                 <div class="info-title">姓名：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text">{{scope.row.clue_name}}</div>
               </div>
               <div class="flex-center pad-top-4">
                 <div class="info-title">电话：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text">{{scope.row.clue_phone}}</div>
               </div>
               <div class="flex-center pad-top-4">
                 <div class="info-title">公司：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text">{{scope.row.clue_company}}</div>
               </div>
             </div>
           </template>
@@ -51,26 +51,26 @@
             <div>
               <div class="flex-center">
                 <div class="info-title">项目：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text text-hidden">{{scope.row.crm_item_name}}</div>
               </div>
               <div class="flex-center pad-top-4">
                 <div class="info-title">类型：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text">{{scope.row.crm_item_type}}</div>
               </div>
               <div class="flex-center pad-top-4">
                 <div class="info-title">预算：</div>
-                <div class="info-text">冯洋</div>
+                <div class="info-text">{{scope.row.crm_item_design_cost}}</div>
               </div>
             </div>
           </template>
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="price"
           label="订单金额(万元)"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="created_at"
           label="对接日期"
           width="80">
         </el-table-column>
@@ -79,14 +79,30 @@
           width="180">
           <template slot-scope="scope">
             <div class="flex-center">
-              <div class="dot"></div><div>签订合作</div>
+              <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
+              <div class="dot" v-else></div><div>{{scope.row.status_value}}</div>
             </div>
           </template>
         </el-table-column>
         <el-table-column
           label="备注">
           <template slot-scope="scope">
-            <div class="click-show">点击查看</div>
+            <el-popover
+              placement="top"
+              width="160"
+              trigger="click"
+              :content="scope.row.summary"
+              v-if="scope.row.summary">
+              <div class="click-show" slot="reference">点击查看</div>
+            </el-popover>
+            <el-popover
+              placement="top"
+              width="160"
+              trigger="click"
+              content="无备注内容"
+              v-else>
+              <div class="click-show" slot="reference">点击查看</div>
+            </el-popover>
           </template>
         </el-table-column>
       </el-table>
@@ -110,7 +126,6 @@
 import api from '@/api/api'
 export default {
   name: 'customer',
-  props: ['id'],
   data() {
     return {
       designChoose: [{
@@ -134,10 +149,13 @@ export default {
         pageSize: 10,
         status: 0
       },
-      customer: {}
+      customer: []
     }
   },
   created() {
+    let that = this
+    let id = that.$route.params.id
+    that.getCustomer(id)
   },
   methods: {
     handleSizeChange(val) {
@@ -152,6 +170,27 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.customer = response.data.data
+          for (let index in self.customer) {
+            let obj = self.customer[index]
+            obj['created_at'] = obj.created_at.date_format().format('yyyy.MM.dd')
+            if (obj.price === 0) {
+              obj.price = '-'
+            }
+            switch (obj.status) {
+              case 1:
+              case 2:
+              case 3:
+              case 4:
+              case 5:
+              case 6:
+                obj.status_value = '对接中'
+                break
+              case 7:
+              case 8:
+                obj.status_value = '对接失败'
+                break
+            }
+          }
         } else {
           self.$message.error(response.data.meta.message)
         }
@@ -207,6 +246,7 @@ export default {
     font-weight: 400;
     color: rgba(102,102,102,1);
     line-height: 17px;
+    white-space: nowrap;
   }
   .info-text {
     font-size: 14px;
@@ -222,7 +262,15 @@ export default {
     border-radius: 50%;
     margin-right: 7px;
   }
+  .dot-red {
+    width: 12px;
+    height: 12px;
+    background: #CF1322;
+    border-radius: 50%;
+    margin-right: 7px;
+  }
   .click-show {
+    width: 58px;
     cursor: pointer;
   }
   .bot-round {
@@ -240,5 +288,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .text-hidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
   }
 </style>
