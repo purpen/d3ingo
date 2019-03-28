@@ -71,7 +71,7 @@
       </div>
 
       <div class="user-progress contant-border margin-t15">
-        <div class="progress-top">
+        <div class="progress-top no-select">
           <div class="fl blank6">
           <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-24', {'t270-before': !boolProgressContant}]"></i>
           </div>
