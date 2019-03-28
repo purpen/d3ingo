@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="user-progress contant-border margin-t15">
+      <div class="user-progress contant-border margin-t15 fz-14">
         <div class="progress-top no-select">
           <div class="fl blank6">
           <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-24', {'t270-before': !boolProgressContant}]"></i>
@@ -1438,6 +1438,7 @@ export default {
       this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
+          this.getNextUser()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1615,19 +1616,30 @@ export default {
       })
     },
     setClueStatus4(d) { // 加入回收站
-      let row = {
-        new_status: d,
-        clue_ids: [this.currentId]
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success(res.data.meta.message)
-          this.getNextUser()
-        } else {
-          this.$message.error(res.data.meta.message)
+      this.$confirm('将此客户加入回收站, 是否继续', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let row = {
+          new_status: d,
+          clue_ids: [this.currentId]
         }
-      }).catch(error => {
-        this.$message.error(error.message)
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$message.success(res.data.meta.message)
+            this.getNextUser()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.$message.error(error.message)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     changeClient(obj) { // 改变城市组件值- 客户信息()
