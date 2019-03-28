@@ -57,6 +57,9 @@
 .fz-22 {
   font-size: 22px;
 }
+.fz-24 {
+  font-size: 24px;
+}
 .fz-36 {
   font-size: 36px;
 }
@@ -216,6 +219,9 @@
 }
 .blank5 {
   padding-top: 5px;
+}
+.blank6 {
+  padding-top: 6px;
 }
 .blank10 {
   padding-top: 10px;
@@ -621,4 +627,20 @@ button.el-button.is-custom.is-disabled,
     margin: 0;
     padding-top: 0
   }
+}
+.el-input-c8 .el-textarea__inner::-webkit-input-placeholder,
+.el-input-c8 .el-input__inner::-webkit-input-placeholder { /* WebKit browsers */
+  color: #c8c8c8 !important;
+}
+.el-input-c8 .el-textarea__inner:-moz-placeholder,
+.el-input-c8 .el-input__inner:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #999!important;
+}
+.el-input-c8 .el-textarea__inner::-moz-placeholder,
+.el-input-c8 .el-input__inner::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #c8c8c8!important;
+}
+.el-input-c8 .el-textarea__inner:-ms-input-placeholder,
+.el-input-c8 .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color: #c8c8c8!important;
 }

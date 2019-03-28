@@ -15,7 +15,7 @@
             <span class="fz-22 line-height30">{{userForm.name}}</span>
           </div>
           <div class="fl">
-            <p class="line-height20">状态</p>
+            <p class="line-height20 tc-9">状态</p>
             <span v-if="currentId" :class="['fz-22', 'line-height30', {
               'tc-red': userForm.new_call_status <= 8,
               'tc-orange': userForm.new_call_status === 9 || userForm.new_call_status === 10
@@ -23,9 +23,9 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
-            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
-            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
+            <el-button v-if="!(userForm.son_status === 4)" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" @click="restoreUser">恢复</el-button>
+            <div v-if="userForm.new_status === 1 && userForm.son_status !== 4" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
                 <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
@@ -70,10 +70,10 @@
         </div>
       </div>
 
-      <div class="user-progress contant-border margin-t15">
-        <div class="progress-top">
-          <div class="fl">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-36', {'t270-before': !boolProgressContant}]"></i>
+      <div class="user-progress contant-border margin-t15 fz-14">
+        <div class="progress-top no-select">
+          <div class="fl blank6">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-24', {'t270-before': !boolProgressContant}]"></i>
           </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
@@ -161,7 +161,7 @@
           <div v-if="option === 'project'" v-loading="userProjectLoading" class="project-box">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fz-12', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
@@ -268,7 +268,7 @@
                   <!-- 对接设计公司 -->
                   <div>
                     <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
                     <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                     </p>
                   </div>
@@ -308,7 +308,7 @@
                         <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
                         <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
                         <div class="progess-box">
-                          <span class="fr check-progess pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                          <span class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
                           <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                             <el-steps :active="stageActive" class="steps-item">
                               <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
@@ -497,7 +497,7 @@
                   @blur="blurInput"
                   @keydown.native.enter.shift="quickSubmit"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  :class="{'active': focusHeight}"
+                  :class="['el-input-c8', {'active': focusHeight}]"
                   :maxlength="500">
                 </el-input>
                 <div v-if="focusHeight">
@@ -1439,6 +1439,7 @@ export default {
       this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
+          this.getNextUser()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1507,29 +1508,30 @@ export default {
                 phone: data.phone,
                 rank: data.rank,
                 position: data.position,
-                new_source: data.new_source || '',
+                new_source: data.new_source,
                 son_source: data.son_source,
                 new_status: data.new_status,
+                son_status: data.son_status,
                 call_status_value: data.call_status_value,
                 execute_user_id: data.execute_user_id,
                 execute_user_name: data.execute_user_name,
                 created_at: data.created_at,
-                new_call_status: data.new_call_status || '',
+                new_call_status: data.new_call_status,
                 is_thn: data.is_thn
               }
               this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
               if (data.update_user_time) {
                 this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
               }
-              if (this.userForm.new_source) {
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
                 let id = this.userForm.new_source
                 this.sourceArr.forEach(item => {
-                  if (item.id === id) {
-                    this.sonSource = item.son_source
-                    this.sourceValue = item.name
-                    item.son_source.forEach(d => {
-                      if (d.key === this.userForm.son_source) {
-                        this.sonSourceValue = d.name
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
                       }
                     })
                   }
@@ -1635,29 +1637,30 @@ export default {
                 phone: data.phone,
                 rank: data.rank,
                 position: data.position,
-                new_source: data.new_source || '',
+                new_source: data.new_source,
                 son_source: data.son_source,
                 new_status: data.new_status,
+                son_status: data.son_status,
                 call_status_value: data.call_status_value,
                 execute_user_id: data.execute_user_id,
                 execute_user_name: data.execute_user_name,
                 created_at: data.created_at,
-                new_call_status: data.new_call_status || '',
+                new_call_status: data.new_call_status,
                 is_thn: data.is_thn
               }
               this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
               if (data.update_user_time) {
                 this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
               }
-              if (this.userForm.new_source) {
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
                 let id = this.userForm.new_source
                 this.sourceArr.forEach(item => {
-                  if (item.id === id) {
-                    this.sonSource = item.son_source
-                    this.sourceValue = item.name
-                    item.son_source.forEach(d => {
-                      if (d.key === this.userForm.son_source) {
-                        this.sonSourceValue = d.name
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
                       }
                     })
                   }
@@ -1743,6 +1746,7 @@ export default {
             new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
+            son_status: data.son_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
@@ -1830,19 +1834,30 @@ export default {
       })
     },
     setClueStatus4(d) { // 加入回收站
-      let row = {
-        new_status: d,
-        clue_ids: [this.currentId]
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success(res.data.meta.message)
-          this.getNextUser()
-        } else {
-          this.$message.error(res.data.meta.message)
+      this.$confirm('将此客户加入回收站, 是否继续', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let row = {
+          new_status: d,
+          clue_ids: [this.currentId]
         }
-      }).catch(error => {
-        this.$message.error(error.message)
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$message.success(res.data.meta.message)
+            this.getNextUser()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.$message.error(error.message)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     changeClient(obj) { // 改变城市组件值- 客户信息()
@@ -2736,9 +2751,9 @@ export default {
 }
 .head-c-content {
   /* display: flex; */
-  height: 60px;
+  /* height: 60px; */
   margin: 0 30px 0 30px;
-  padding: 10px 0 20px 0;
+  padding: 14px 0 10px 0;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
@@ -2781,11 +2796,22 @@ export default {
 .note-right > p:first-child {
   border-bottom: 1px solid #e6e6e6;
 }
+.note-left > p + p {
+  font-size: 12px;
+}
+.note-left > p:nth-child(2), 
+.note-right > p:nth-child(2) {
+  padding-top: 10px;
+}
+.note-right > p:not(:first-child) {
+  font-size: 12px;
+}
 .progress-contant {
   padding-top: 15px;
 }
 .progress-contant p {
-  line-height: 30px;
+  padding-bottom: 6px;
+  line-height: 1.5em;
 }
 
 .user-info-left {
@@ -3140,7 +3166,9 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
-
+.edit-project:hover {
+  background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left/30px;
+}
 .edit-project:hover .edit-project-tag {
   display: block;
 }
