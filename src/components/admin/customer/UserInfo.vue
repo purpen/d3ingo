@@ -165,177 +165,180 @@
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
-            <div class="project-list" v-show="boolProjectList && projectList.length">
-              <ul>
-                <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
-                  <el-row>
-                    <el-col>
-                      <h5 class="project-name fl">{{item.name}}</h5>
-                      <div class="edit-project fr">
-                        <div class="edit-project-tag" v-if="isHasPower">
-                          <p @click="editProject(item)">编辑项目</p>
-                        </div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">设计类型</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.type_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目预算</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.design_cost_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">交付时间</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.cycle_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <div class="line"></div>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">行业领域</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.industry_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目工作地点</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.item_province_value}}{{item.item_city_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目描述</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.summary}}</span>
-                    </el-col>
-                  </el-row>
-                  
-                  <el-row class="padding-b10">
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">备注</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-                        <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
-                    </el-col>
-                    <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
-                    </el-col>
-                    <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
-                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
-                    </el-col>
 
-                  </el-row>
-                  <div class="line"></div>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">创建人</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span v-if="item.user_name">{{item.user_name}}</span>
-                      <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :md="4" :lg="4">
-                      <span class="tc-9">修改人</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span class="item.update_user_name">{{item.update_user_name}}</span>
-                      <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
-                    </el-col>
-                  </el-row>
-                  <!-- 对接设计公司 -->
-                  <div>
-                    <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                    <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
-                    </p>
-                  </div>
-                  <ul v-if="boolDesigeList">
-                    <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
-                      <div class="margin-b-10">
-                        <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
-                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                        <span class="padding-l10">{{d.company_name}}</span>
-                        <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+            <el-collapse-transition>
+              <div class="project-list" v-show="boolProjectList && projectList.length">
+                <ul>
+                  <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
+                    <el-row>
+                      <el-col>
+                        <h5 class="project-name fl">{{item.name}}</h5>
+                        <div class="edit-project fr">
                           <div class="edit-project-tag" v-if="isHasPower">
-                            <!-- <p @click="deleteDesignProject(d)">删除</p> -->
-                            <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
+                            <p @click="editProject(item)">编辑项目</p>
                           </div>
                         </div>
-                      </div>
-                      <div class="flex design-info">
-                        <div class="flex-column">
-                          <span class="tc-9">联系人</span>
-                          <span class="fz-14">{{d.contact_name}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">职务</span>
-                          <span class="fz-14">{{d.position}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">电话</span>
-                          <span class="fz-14">{{d.phone}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">微信</span>
-                          <span class="fz-14">{{d.wx}}</span>
-                        </div>
-                      </div>
-                      <div class="design-li-footer">
-                        <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
-                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
-                        <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
-                        <div class="progess-box">
-                          <span class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-                          <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                            <el-steps :active="stageActive" class="steps-item">
-                              <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
-                              <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                              <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
-                              <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                              <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                              <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                              <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                              <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                            </el-steps>
-                            <div class="steps-remarks" v-if="d.status > 6">
-                              <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
-                              <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">设计类型</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.type_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目预算</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.design_cost_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">交付时间</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.cycle_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <div class="line"></div>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">行业领域</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.industry_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目工作地点</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.item_province_value}}{{item.item_city_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目描述</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.summary}}</span>
+                      </el-col>
+                    </el-row>
+                    
+                    <el-row class="padding-b10">
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">备注</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+                        <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+                          <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
+                      </el-col>
+                      <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
+                        <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+                      </el-col>
+                      <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
+                        <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
+                        <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
+                      </el-col>
+
+                    </el-row>
+                    <div class="line"></div>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">创建人</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span v-if="item.user_name">{{item.user_name}}</span>
+                        <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :md="4" :lg="4">
+                        <span class="tc-9">修改人</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span class="item.update_user_name">{{item.update_user_name}}</span>
+                        <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
+                      </el-col>
+                    </el-row>
+                    <!-- 对接设计公司 -->
+                    <div>
+                      <p class="add-design clearfix design-title">
+                      <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                      <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                      </p>
+                    </div>
+                    <ul v-if="boolDesigeList">
+                      <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
+                        <div class="margin-b-10">
+                          <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
+                          <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                          <span class="padding-l10">{{d.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                            <div class="edit-project-tag" v-if="isHasPower">
+                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                              <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
-                    </li>
-                    <li>
-                      <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+                        <div class="flex design-info">
+                          <div class="flex-column">
+                            <span class="tc-9">联系人</span>
+                            <span class="fz-14">{{d.contact_name}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">职务</span>
+                            <span class="fz-14">{{d.position}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">电话</span>
+                            <span class="fz-14">{{d.phone}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">微信</span>
+                            <span class="fz-14">{{d.wx}}</span>
+                          </div>
+                        </div>
+                        <div class="design-li-footer">
+                          <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                          <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
+                          <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
+                          <div class="progess-box">
+                            <span class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                            <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                              <el-steps :active="stageActive" class="steps-item">
+                                <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                                <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                                <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                                <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                                <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                                <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                              </el-steps>
+                              <div class="steps-remarks" v-if="d.status > 6">
+                                <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                                <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
+                      </li>
+                      <li>
+                        <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </el-collapse-transition>
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
               <p class="text-center tc-2 margin-t20">客户备注</p>
@@ -343,7 +346,7 @@
             </div>
           </div>
 
-          <div v-if="option === 'user'" class="fz-14 padding-r20">
+          <div v-if="option === 'user'" class="fz-14 padding-r20 padding-b20">
             <div class="bb-e6">
               <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
