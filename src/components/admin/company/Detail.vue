@@ -92,9 +92,9 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <customer v-show="type === 1" :creatDate="creatDate"></customer>
-    <cases v-show="type === 2" :creatDate="creatDate"></cases>
-    <server v-show="type === 3" :designItem="designItem" :creatDate="creatDate"></server>
+    <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate"></customer>
+    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate"></cases>
+    <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item"></introduction>
 
@@ -165,6 +165,9 @@ export default {
         if (response.data.meta.status_code === 200) {
           self.item = response.data.data
           self.creatDate = self.item.created_at.date_format().format('yyyy.MM.dd')
+          if (self.item.verify_status !== 1) {
+            self.type = 4
+          }
           if (response.data.data.users && response.data.data.users.design_item) {
             self.designItem = response.data.data.users.design_item
           }

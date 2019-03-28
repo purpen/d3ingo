@@ -80,7 +80,7 @@
             <template slot-scope="scope">
               <div class="flex-center">
                 <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
-                <div class="dot" v-else></div><div>{{scope.row.status_value}}</div>
+                <div class="dot-red" v-else></div><div>{{scope.row.status_value}}</div>
               </div>
             </template>
           </el-table-column>
@@ -166,11 +166,11 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.query.pageSize = parseInt(val)
-      this.loadList(this.cusId)
+      this.getCustomer(this.cusId)
     },
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
-      this.loadList(this.cusId)
+      this.getCustomer(this.cusId)
     },
     selectDesign() {
       this.getCustomer(this.cusId)
@@ -222,7 +222,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    padding-bottom: 15px;
   }
   .sever-icon {
     position: relative;

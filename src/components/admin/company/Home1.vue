@@ -68,7 +68,7 @@
 
     <!-- 列表 -->
     <div class="bottom">
-      <div class="bottom-top flex-center-space">
+      <div class="flex-center-space">
         <div class="sever-round">
           <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="loadList()">
             <el-option
@@ -149,10 +149,11 @@
           label="状态">
           <template slot-scope="scope">
             <div class="flex-center">
-              <div class="state-border" v-if="scope.row.verify_status === 0"></div>
-              <div class="state-border" v-if="scope.row.verify_status === 1"></div>
-              <div class="state-border bg-CF1322" v-if="scope.row.verify_status === 2"></div>
-              <div class="state-border bg-096DD9" v-if="scope.row.verify_status === 3"></div>
+              <div class="state-border bg-D8D8D8" v-if="scope.row.status === 0"></div>
+              <div class="state-border bg-000" v-if="scope.row.status === 1 && scope.row.verify_status === 0"></div>
+              <div class="state-border" v-if="scope.row.status === 1 && scope.row.verify_status === 1"></div>
+              <div class="state-border bg-CF1322" v-if="scope.row.status === 1 && scope.row.verify_status === 2"></div>
+              <div class="state-border bg-096DD9" v-if="scope.row.status === 1 && scope.row.verify_status === 3"></div>
               <span>{{scope.row.verify_status_value}}</span>
             </div>
           </template>
@@ -382,7 +383,7 @@ export default {
     padding: 20px 0 0 20px;
   }
   .header-border {
-    width: 270px;
+    width: 25%;
     height: 180px;
     background: rgba(255,255,255,1);
     border-radius: 8px;
@@ -412,8 +413,8 @@ export default {
   .header-img {
     cursor: pointer;
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 24px;
+    height: 24px;
     background: url('../../../assets/images/design_admin/Unchecked@2x.png') no-repeat center / contain;
     right: 11px;
     top: 11px;
@@ -424,10 +425,6 @@ export default {
   .bottom {
     padding-top: 60px;
     margin-left: 20px;
-    border-bottom: 1px solid #D8D8D8;
-  }
-  .bottom-top {
-    height: 60px;
   }
   .sever-icon {
     position: relative;
@@ -493,6 +490,9 @@ export default {
   }
   .bg-D8D8D8 {
     background: #D8D8D8;
+  }
+  .bg-000 {
+    background: #000;
   }
   .count {
     font-size: 14px;
