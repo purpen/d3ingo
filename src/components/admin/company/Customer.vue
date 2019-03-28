@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <template v-if="customer && customer.length">
+    <template v-if="customer && customer.length || designReault !== '0'">
       <div class="sever-round">
         <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectDesign()">
           <el-option
@@ -29,40 +29,40 @@
           </el-table-column>
           <el-table-column
             label="客户信息"
-            width="200">
+            width="300">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text">{{scope.row.clue_name}}</div>
+                  <div class="info-text">{{scope.row.clue_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
-                  <div class="info-text">{{scope.row.clue_phone}}</div>
+                  <div class="info-text">{{scope.row.clue_phone || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">公司：</div>
-                  <div class="info-text">{{scope.row.clue_company}}</div>
+                  <div class="info-text">{{scope.row.clue_company || '-'}}</div>
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             label="项目信息"
-            width="200">
+            width="300">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
                   <div class="info-title">项目：</div>
-                  <div class="info-text text-hidden">{{scope.row.crm_item_name}}</div>
+                  <div class="info-text text-hidden">{{scope.row.crm_item_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">类型：</div>
-                  <div class="info-text">{{scope.row.crm_item_type}}</div>
+                  <div class="info-text">{{scope.row.crm_item_type || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">预算：</div>
-                  <div class="info-text">{{scope.row.crm_item_design_cost}}</div>
+                  <div class="info-text">{{scope.row.crm_item_design_cost || '-'}}</div>
                 </div>
               </div>
             </template>
