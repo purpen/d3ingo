@@ -15,7 +15,7 @@
             <span class="fz-22 line-height30">{{userForm.name}}</span>
           </div>
           <div class="fl">
-            <p class="line-height20">状态</p>
+            <p class="line-height20 tc-9">状态</p>
             <span v-if="currentId" :class="['fz-22', 'line-height30', {
               'tc-red': userForm.new_call_status <= 8,
               'tc-orange': userForm.new_call_status === 9 || userForm.new_call_status === 10
@@ -72,8 +72,8 @@
 
       <div class="user-progress contant-border margin-t15">
         <div class="progress-top">
-          <div class="fl">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-36', {'t270-before': !boolProgressContant}]"></i>
+          <div class="fl blank6">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-24', {'t270-before': !boolProgressContant}]"></i>
           </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
@@ -161,7 +161,7 @@
           <div v-if="option === 'project'" v-loading="userProjectLoading" class="project-box">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fz-12', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
@@ -268,7 +268,7 @@
                   <!-- 对接设计公司 -->
                   <div>
                     <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
                     <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                     </p>
                   </div>
@@ -308,7 +308,7 @@
                         <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
                         <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
                         <div class="progess-box">
-                          <span class="fr check-progess pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                          <span class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
                           <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                             <el-steps :active="stageActive" class="steps-item">
                               <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
@@ -497,7 +497,7 @@
                   @blur="blurInput"
                   @keydown.native.enter.shift="quickSubmit"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  :class="{'active': focusHeight}"
+                  :class="['el-input-c8', {'active': focusHeight}]"
                   :maxlength="500">
                 </el-input>
                 <div v-if="focusHeight">
@@ -2521,9 +2521,9 @@ export default {
 }
 .head-c-content {
   /* display: flex; */
-  height: 60px;
+  /* height: 60px; */
   margin: 0 30px 0 30px;
-  padding: 10px 0 20px 0;
+  padding: 14px 0 10px 0;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
@@ -2566,11 +2566,22 @@ export default {
 .note-right > p:first-child {
   border-bottom: 1px solid #e6e6e6;
 }
+.note-left > p + p {
+  font-size: 12px;
+}
+.note-left > p:nth-child(2), 
+.note-right > p:nth-child(2) {
+  padding-top: 10px;
+}
+.note-right > p:not(:first-child) {
+  font-size: 12px;
+}
 .progress-contant {
   padding-top: 15px;
 }
 .progress-contant p {
-  line-height: 30px;
+  padding-bottom: 6px;
+  line-height: 1.5em;
 }
 
 .user-info-left {
@@ -2925,7 +2936,9 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
-
+.edit-project:hover {
+  background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left/30px;
+}
 .edit-project:hover .edit-project-tag {
   display: block;
 }
