@@ -309,6 +309,7 @@ export default {
   adminDesignCompanyClueList: '/admin/designCompany/clueList', // GET 设计公司客户列表
   adminDesignCaseDesignCaseList: '/admin/designCase/designCaseList', // GET 某个设计公司案例列表
   adminDesignCompanyStatistics: '/admin/designCompany/statistics', // GET 设计公司统计
+  adminDesignCompanyDownloadReport: 'admin/designCompany/downloadReport', // POST 设计公司下载客户报表
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表

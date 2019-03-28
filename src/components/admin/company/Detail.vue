@@ -5,16 +5,16 @@
         <div class="top-left-img">
           <img :src="item.logo_url">
         </div>
-        <div class="top-left-btn flex-center-center">
+        <!-- <div class="top-left-btn flex-center-center">
           <div class="top-left-btn-icon"></div>
           <div class="top-left-btn-text">金牌服务商</div>
-        </div>
+        </div> -->
       </div>
       <div class="top-right">
         <div class="top-right-top flex-center-space">
           <div class="top-right-top-left">
-            <div class="referred">{{item.company_abbreviation}}</div>
-            <div class="name">{{item.company_name}}</div>
+            <div class="referred">{{item.company_abbreviation || '-'}}</div>
+            <div class="name">{{item.company_name || '-'}}</div>
           </div>
           <div class="top-right-top-right flex-center">
             <div class="certification flex-center-center mar-right-10" @click="setRefuseRease(2)" v-if="item.verify_status === 0">
@@ -51,32 +51,32 @@
         <div class="top-right-bot flex-center">
           <div class="web-round">
             <div class="flex-center">
-              <div class="top-right-bot-title min-width">网址</div>
-              <div class="top-right-bot-title color-333 pad-left-20">
-                <a :href="item.web">{{item.web}}</a>
+              <div class="top-right-bot-title min-width-43">网址</div>
+              <div class="top-right-bot-title color-333 pad-left-10">
+                <a :href="item.web">{{item.web || '-'}}</a>
               </div>
             </div>
             <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width">地址</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.address}}</div>
+              <div class="top-right-bot-title min-width-43">地址</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
             </div>
             <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width">规模</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.company_size_value}}</div>
+              <div class="top-right-bot-title min-width-43">规模</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '-'}}</div>
             </div>
           </div>
           <div class="contact-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width">联系人</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '-'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">职位</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '未填写'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '-'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">电话</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '-'}}</div>
             </div>
           </div>
         </div>
@@ -85,9 +85,9 @@
     
     <div class="bot">
       <div class="directory flex-center">
-        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" @click="getType(1)">客户列表</div>
-        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">设计案例</div>
-        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" @click="getType(3)">设计服务</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" v-if="item.verify_status === 1" @click="getType(2)">设计案例</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" v-if="item.verify_status === 1" @click="getType(3)">设计服务</div>
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 4}" @click="getType(4)">实名认证</div>
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
@@ -98,7 +98,7 @@
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item"></introduction>
 
-    <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
+    <el-dialog title="请填写原因" :visible.sync="dialogVisible" width="380px">
       <el-input v-model="refuseRease"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
@@ -165,13 +165,16 @@ export default {
         if (response.data.meta.status_code === 200) {
           self.item = response.data.data
           self.creatDate = self.item.created_at.date_format().format('yyyy.MM.dd')
+          if (self.item.verify_status !== 1) {
+            self.type = 4
+          }
           if (response.data.data.users && response.data.data.users.design_item) {
             self.designItem = response.data.data.users.design_item
           }
           if (self.item.logo_image) {
             self.item.logo_url = self.item.logo_image.big
           } else {
-            self.item.logo_url = false
+            self.item.logo_url = require ('@/assets/images/df_100x100.png')
           }
           switch (self.item.company_size) {
             case 1:
@@ -304,6 +307,7 @@ export default {
     font-weight: 400;
     color: rgba(153,153,153,1);
     line-height: 20px;
+    text-align: left;
   }
   .top-left-img img{
     width: 120px;
@@ -473,7 +477,18 @@ export default {
     color: #ff5a5f;
     border-bottom: 4px solid #ff5a5f;
   }
-
+  .certification:hover {
+    background: rgba(255,90,95,0.30);
+    border: 1px solid #FF4559;
+    border-radius: 4px;
+  }
+  .certification:active {
+    background: #FF5A5F;
+    border-radius: 4px;
+  }
+  .certification:active .certification-text {
+    color: #fff;
+  }
 
   .flex-center-center {
     display: flex;
@@ -489,6 +504,9 @@ export default {
     display: flex;
     align-items: center;
   }
+  .min-width-43 {
+    min-width: 43px;
+  }
   .min-width {
     min-width: 43px;
     text-align: right;
@@ -501,6 +519,9 @@ export default {
   }
   .pad-left-20 {
     padding-left: 20px;
+  }
+  .pad-left-10 {
+    padding-left: 10px;
   }
   .mar-right-36 {
     margin-right: 36px;
