@@ -567,8 +567,9 @@
           filter-placement="bottom-end"
           column-key="new_status"
           v-if="typeId === 4"
+          :key="111"
           >
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="typeId === 4">
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
@@ -578,9 +579,10 @@
         </el-table-column>
         <el-table-column
           label="阶段"
+          :key="222"
           v-if="typeId && typeId !== 4"
           >
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="typeId && typeId !== 4">
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
@@ -1516,10 +1518,10 @@ export default {
           value: 5,
           label: '按客户所有人'
         },
-        {
-          value: 6,
-          label: '按优先级'
-        },
+        // {
+        //   value: 6,
+        //   label: '按优先级'
+        // },
         {
           value: 7,
           label: '按删除时间(最近)'
