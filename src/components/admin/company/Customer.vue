@@ -10,10 +10,12 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <div class="down-btn" @click="getReport()">
-          <div class="down-icon"></div>
-          <div class="down-text">下载报表</div>
-        </div>
+        <a :href="'http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=' + designReault + '&design_company_id=' + cusId">
+          <div class="down-btn">
+            <div class="down-icon"></div>
+            <div class="down-text">下载报表</div>
+          </div>
+        </a>
       </div>
 
       <div class="table-round">
@@ -153,6 +155,7 @@ export default {
         totalCount: 0
       },
       cusId: '',
+      urlIm: '',
       customer: []
     }
   },
@@ -175,15 +178,10 @@ export default {
       this.getCustomer(this.cusId)
     },
     getReport() {
-      let that = this
-      that.$http.post(api.adminDesignCompanyDownloadReport, {status: that.designReault, design_company_id: that.cusId})
-      .then (res => {
-        if (res.data.meta.status_code === 200) {
-        }
-      })
-      .catch (function(error) {
-        self.$message.error(error.message)
-      })
+      // window.download('http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=0&design_company_id=1')
+      // let self = this
+      // self.urlIm = `http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=${self.designReault}&design_company_id=${self.cusId}`
+      // window.open(url)
     },
     getCustomer(id) {
       let self = this
