@@ -491,7 +491,9 @@
                     <el-button type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
                   </el-col>
                 </el-row>
-                <p v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length" v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                <div v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length">
+                  <p v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                </div>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
                 <p>无</p>
@@ -932,6 +934,7 @@
       }
       return {
         oldName: '',
+        checkName: true, // 检查公司名称是否可用， 默认可用
         prizeArr: [], // 奖项
         editTag: false, // input标签
         oldVal: {},
@@ -1189,10 +1192,11 @@
         }
         this.$http.get(api.checkDesignCompany, {params: {company_name: name}})
         .then(res => {
-          if (res.data && res.data.meta.status_code === 200) {
+          if (res.data && res.data.data !== 1) {
+            this.checkName = false
             this.$message.error(res.data.meta.message)
           } else {
-            this.$message.error(res.data.meta.message)
+            this.checkName = true
           }
         })
         .catch(err => {
@@ -1662,6 +1666,10 @@
       },
       submit(formName) {
         const that = this
+        if (!that.checkName) {
+          that.$message.error('公司名称已存在，不能使用')
+          return false
+        }
         if (this.agreement !== true) {
           that.$message.error('公司认证之前请先确认条款!')
           return false

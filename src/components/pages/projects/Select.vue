@@ -4,16 +4,18 @@
     <div class="project-cover clearfix">
       <el-row class="project-item-box">
         <p class="title">请选择您需要的设计类型</p>
-        <el-tooltip class="tooltip" v-for="(ele, index) in COMPANY_TYPE"
-          :key="index"
-          :content="ele.type" placement="bottom">
-          <el-col :xs="12" :sm="4" :md="4" :lg="4"
-          :class="['item', {'active': item === ele.id}]"
-          @click.native="changeItemId(ele.id, index)">
-            <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
-            <p class="item-name">{{ele.name}}</p>
-          </el-col>
-        </el-tooltip>
+        <div class="full-width item-box">
+          <el-tooltip class="tooltip" v-for="(ele, index) in COMPANY_TYPE"
+            :key="index"
+            :content="ele.type" placement="bottom">
+            <el-col :xs="12" :sm="4" :md="4" :lg="4"
+            :class="['item', {'active': item === ele.id}]"
+            @click.native="changeItemId(ele.id, index)">
+              <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
+              <p class="item-name">{{ele.name}}</p>
+            </el-col>
+          </el-tooltip>
+        </div>
       </el-row>
       <div class="project-foot">
         div.
@@ -125,6 +127,14 @@ export default {
   .project-item-box {
     margin: 0 auto;
     padding-top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column
+  }
+  .item-box {
+    display: flex;
+    justify-content: center
   }
   /* .project-item-box .item:nth-child(n + 7) {
     cursor: not-allowed;

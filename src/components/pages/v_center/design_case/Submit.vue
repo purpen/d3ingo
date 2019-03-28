@@ -85,7 +85,7 @@
                 </el-col>
               </el-row>
 
-              <!-- <el-form-item label="设计类型" prop="type">
+              <!-- <el-form-item label="设计类别" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -166,8 +166,8 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="设计类型" prop="type">
-                    <el-select v-model.number="form.type" placeholder="设计类型" 
+                  <el-form-item label="设计类别" prop="type">
+                    <el-select v-model.number="form.type" placeholder="设计类别" 
                     @change="typec"
                     >
                       <el-option
@@ -225,42 +225,44 @@
               </el-row>
 
               <el-form-item label="所获奖项">
-                <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
-                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
-                    <el-radio-group v-model="is_prize" @change="isPrize">
-                      <el-radio :label="false">否</el-radio>
-                      <el-radio :label="true">是</el-radio>
-                    </el-radio-group>
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item prop="" class="line-hei-20">
-                      <el-date-picker
-                        key="p.time"
-                        class="fullwidth"
-                        v-model="p.time"
-                        popper-class="hover-color"
-                        type="month"
-                        placeholder="获奖日期">
-                      </el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item prop="prize">
-                      <el-select v-model.number="p.type" placeholder="所属奖项">
-                        <el-option
-                          v-for="item in prizeOptions"
-                          :label="item.label"
-                          :key="item.index"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <div class="p-after" @click="deletePrize(indexp)">
-                  </div>
-                </el-row>
+                <div v-if="prizes && prizes.length > 0">
+                  <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp">
+                    <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                      <el-radio-group v-model="is_prize" @change="isPrize">
+                        <el-radio :label="false">否</el-radio>
+                        <el-radio :label="true">是</el-radio>
+                      </el-radio-group>
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item prop="" class="line-hei-20">
+                        <el-date-picker
+                          key="p.time"
+                          class="fullwidth"
+                          v-model="p.time"
+                          popper-class="hover-color"
+                          type="month"
+                          placeholder="获奖日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item prop="prize">
+                        <el-select v-model.number="p.type" placeholder="所属奖项">
+                          <el-option
+                            v-for="item in prizeOptions"
+                            :label="item.label"
+                            :key="item.index"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <div class="p-after" @click="deletePrize(indexp)">
+                    </div>
+                  </el-row>
+                </div>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
                     <el-button class="red-button" @click="getPrize()">添加奖项</el-button>
@@ -269,41 +271,43 @@
               </el-form-item>
 
               <el-form-item label="申请专利" >
-                <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
-                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
-                    <el-radio-group v-model="is_apply" @change="isApplication">
-                      <el-radio :label="false">否</el-radio>
-                      <el-radio :label="true">是</el-radio>
-                    </el-radio-group>
-                  </el-col> -->
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item class="line-hei-20">
-                      <el-date-picker
-                        key="t.time"
-                        class="fullwidth"
-                        v-model="t.time"
-                        popper-class="hover-color"
-                        type="month"
-                        placeholder="选择日期">
-                      </el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item>
-                      <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
-                        key="t.type">
-                        <el-option
-                          v-for="item in patentOptions"
-                          :label="item.label"
-                          :key="item.index"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <div class="p-after"  @click="deletePatent(indext)">
-                  </div>
-                </el-row>
+                <div v-if="patents && patents.length > 0">
+                  <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext">
+                    <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                      <el-radio-group v-model="is_apply" @change="isApplication">
+                        <el-radio :label="false">否</el-radio>
+                        <el-radio :label="true">是</el-radio>
+                      </el-radio-group>
+                    </el-col> -->
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item class="line-hei-20">
+                        <el-date-picker
+                          key="t.time"
+                          class="fullwidth"
+                          v-model="t.time"
+                          popper-class="hover-color"
+                          type="month"
+                          placeholder="选择日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-form-item>
+                        <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
+                          key="t.type">
+                          <el-option
+                            v-for="item in patentOptions"
+                            :label="item.label"
+                            :key="item.index"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <div class="p-after"  @click="deletePatent(indext)">
+                    </div>
+                  </el-row>
+                </div>
                 <el-row>
                   <el-col :xs="4" :sm="4" :md="4" :lg="4">
                     <el-button class="red-button" @click="getPatent()">添加专利</el-button>
@@ -435,7 +439,7 @@
         },
         ruleForm: {
           type: [
-            {type: 'number', message: '请选择设计类型', trigger: 'change'}
+            {type: 'number', message: '请选择设计类别', trigger: 'change'}
           ],
           // design_type: [
           //   {type: 'array', validator: designTypeval, trigger: 'blur'}
@@ -477,7 +481,9 @@
     },
     methods: {
       addLabel(label) {
-        if (!this.form.label) this.form.label = []
+        if (!this.form.label) {
+          this.form.label = []
+        }
         if (this.form.label.indexOf(label + '') === -1) {
           this.form.label.push(label + '')
         }
@@ -504,6 +510,8 @@
               return false
             }
           }
+        } else {
+          this.prizes = []
         }
         this.prizes.push({
           'type': '',
@@ -519,6 +527,8 @@
               return false
             }
           }
+        } else {
+          this.patents = []
         }
         this.patents.push({
           'type': '',
@@ -527,7 +537,6 @@
       },
       // 清空类别
       upType() {
-        console.log(111)
         this.form.design_types = []
       },
       // 删除奖项
@@ -544,12 +553,26 @@
       },
       submit(formName) {
         const that = this
+        if (!that.fileList || !that.fileList.length) {
+          that.coverId = 0
+        } else {
+          let bool = false
+          that.fileList.forEach(item => {
+            if (item.id === (that.coverId - 0)) {
+              bool = true
+            }
+          })
+          if (!bool) {
+            that.coverId = 0
+          }
+        }
+        console.log(that.fileList)
         if (!that.coverId) {
           that.$message.error ('必须设置一张封面图!')
           return false
         }
-        if (!that.form.design_types || that.form.design_types.length === 0) {
-          that.$message.error ('请选择至少一个设计类型!')
+        if (!that.form.design_types || !that.form.design_types.length) {
+          that.$message.error ('请选择至少一个设计类别!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -562,35 +585,38 @@
               title: that.form.title,
               customer: that.form.customer,
               mass_production: that.form.mass_production,
-              sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
+              sales_volume: !that.form.sales_volume ? 0 : that.form.sales_volume,
               profile: that.form.profile,
               label: that.form.label
             }
             row.cover_id = that.coverId
-            if (that.form.design_types && that.form.design_types.length !== 0) {
+            if (that.form.design_types && that.form.design_types.length) {
               row.design_types = JSON.stringify(that.form.design_types)
-            } else row.design_types = ''
+            } else {
+              row.design_types = '[]'
+            }
             if (this.prizes && this.prizes.length) {
               for (var i = 0; i < this.prizes.length; i++) {
-                if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+                if (!this.prizes[i].time || !this.prizes[i].type) {
                   this.prizes.splice(i, 1)
                 }
                 this.prizes[i].time = this.prizes[i].time.format ('yyyy-MM-dd')
               }
               row.prizes = JSON.stringify(this.prizes)
             } else {
-              row.prizes = null
+              row.prizes = '[]'
             }
+
             if (this.patents && this.patents.length) {
               for (var c = 0; c < this.patents.length; c++) {
-                if (this.patents[c].time === '' || this.patents[c].type === '') {
+                if (!this.patents[c].time || !this.patents[c].type) {
                   this.patents.splice(c, 1)
                 }
                 this.patents[c].time = this.patents[c].time.format ('yyyy-MM-dd')
               }
               row.patent = JSON.stringify(this.patents)
             } else {
-              row.patents = null
+              row.patents = '[]'
             }
             // if (that.is_apply && that.form.patent_time) {
             //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
@@ -611,7 +637,6 @@
               }
             }
             that.isLoadingBtn = true
-            console.log('row', row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -702,7 +727,7 @@
         let id = event.currentTarget.getAttribute ('item_id')
         let index = event.currentTarget.getAttribute ('index')
         let summary = this.fileList[index].summary
-        if (summary === '' || summary === null) {
+        if (!summary) {
           this.$message.error ('描述信息不能为空!')
           return false
         }
@@ -726,7 +751,7 @@
         this.coverId = id
       },
       handleRemove(file, fileList) {
-        if (file === null) {
+        if (!file) {
           return false
         }
 
@@ -770,7 +795,8 @@
           summary: '',
           response: {
             asset_id: add.response.asset_id
-          }
+          },
+          id: add.response.asset_id
         }
         this.fileList.push (item)
       },
@@ -778,7 +804,7 @@
         const arr = ['image/jpeg', 'image/gif', 'image/png']
         const isLt5M = file.size / 1024 / 1024 < 5
 
-        if (arr.indexOf (file.type) === -1) {
+        if (arr.indexOf(file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
           return false
         }
@@ -800,6 +826,7 @@
       },
       typeOptions() {
         let items = []
+        if (!typeData.COMPANY_TYPE) return []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
             value: typeData.COMPANY_TYPE[i]['id'],
@@ -827,6 +854,7 @@
         } else {
           return []
         }
+        if (!typeData.COMPANY_TYPE[index].field) return []
         for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
           let item = {
             value: typeData.COMPANY_TYPE[index].field[i]['id'],
@@ -838,6 +866,7 @@
       },
       industryOptions() {
         let items = []
+        if (!typeData.INDUSTRY) return []
         for (let i = 0; i < typeData.INDUSTRY.length; i++) {
           let item = {
             value: typeData.INDUSTRY[i]['id'],
@@ -849,6 +878,7 @@
       },
       prizeOptions() {
         let items = []
+        if (!typeData.DESIGN_CASE_PRICE_OPTIONS) return []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {
             value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
@@ -860,6 +890,7 @@
       },
       patentOptions() {
         let items = []
+        if (!typeData.PATENT_FOR_INVENTION) return []
         for (let i = 0; i < typeData.PATENT_FOR_INVENTION.length; i++) {
           let item = {
             value: typeData.PATENT_FOR_INVENTION[i]['id'],
@@ -871,6 +902,7 @@
       },
       saleOptions() {
         let items = []
+        if (!typeData.DESIGN_CASE_SALE_OPTIONS) return []
         for (let i = 0; i < typeData.DESIGN_CASE_SALE_OPTIONS.length; i++) {
           let item = {
             value: typeData.DESIGN_CASE_SALE_OPTIONS[i]['id'],
@@ -922,26 +954,22 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              if (that.form.prizes) {
-                if (that.form.prizes.length) {
-                  that.$set(that, 'is_prize', true)
-                  that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-                  that.$set(that.form, 'prize', that.form.prizes[0].type)
-                }
+              if (that.form.prizes && that.form.prizes.length) {
+                that.$set(that, 'is_prize', true)
+                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+                that.$set(that.form, 'prize', that.form.prizes[0].type)
               }
-              if (that.form.patent) {
-                if (that.form.patent.length) {
-                  that.$set(that, 'is_apply', true)
-                  that.$set(that.form, 'patent_time', that.form.patent[0].time)
-                  that.$set(that.form, 'patent_info', that.form.patent[0].type)
-                }
+              if (that.form.patent && that.form.patent.length) {
+                that.$set(that, 'is_apply', true)
+                that.$set(that.form, 'patent_time', that.form.patent[0].time)
+                that.$set(that.form, 'patent_info', that.form.patent[0].type)
               } else {
                 that.$set(that, 'is_apply', false)
               }
               if (that.form.cover_id) {
                 that.coverId = that.form.cover_id
               }
-              if (response.data.data.sales_volume === 0) {
+              if (!response.data.data.sales_volume) {
                 that.form.sales_volume = ''
                 that.form.mass_production = 0
               } else {
@@ -963,13 +991,9 @@
                 }
                 that.fileList = files
               }
-              if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
-                that.prizes = response.data.data.prizes
-              }
-              if (response.data.data.patent && response.data.data.patent.length !== 0) {
-                that.patents = response.data.data.patent
-              }
-              that.form.design_types = response.data.data.design_types
+              that.prizes = response.data.data.prizes || []
+              that.patents = response.data.data.patent || []
+              that.form.design_types = response.data.data.design_types || []
               // if (des_types && des_types.length !== 0) {
               //   that.form.design_types = des_types
               // }

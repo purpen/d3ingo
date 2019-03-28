@@ -2752,7 +2752,7 @@
   .el-pagination span:not([class*=suffix]),
   .el-pagination button {
     display: inline-block;
-    font-size: 13px;
+    font-size: 14px;
     min-width: 35.5px;
     height: 28px;
     line-height: 28px;

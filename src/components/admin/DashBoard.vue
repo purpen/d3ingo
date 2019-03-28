@@ -4,18 +4,18 @@
       <el-col :span="8">
         <div class="count-content">
           <h2 class="sub-title">总订单</h2>
-          <p class="count-number">{{AdminOverviewOrderStatistics.total}}</p>
+          <p class="count-number protrude">{{AdminOverviewOrderStatistics.total}}</p>
           <div class="flex">
             <div class="flex1">
-              <p class="fz-12">待支付</p>
+              <p class="fz-12 tc-9">待支付</p>
               <span class="fz-16 line-height28">{{AdminOverviewOrderStatistics.unpaid}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">已支付</p>
+              <p class="fz-12 tc-9">已支付</p>
               <span class="fz-16 line-height28">{{AdminOverviewOrderStatistics.paid}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">已关闭</p>
+              <p class="fz-12 tc-9">已关闭</p>
               <span class="fz-16 line-height28">{{AdminOverviewOrderStatistics.close}}</span>
             </div>
           </div>
@@ -24,18 +24,18 @@
       <el-col :span="8">
         <div class="count-content">
           <h2 class="sub-title">总项目</h2>
-          <p class="count-number">{{AdminOverviewItemStatistics.total}}</p>
+          <p class="count-number protrude">{{AdminOverviewItemStatistics.total}}</p>
           <div class="flex">
             <div class="flex1">
-              <p class="fz-12">进行中</p>
+              <p class="fz-12 tc-9">进行中</p>
               <span class="fz-16 line-height28">{{AdminOverviewItemStatistics.execution}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">已完成</p>
+              <p class="fz-12 tc-9">已完成</p>
               <span class="fz-16 line-height28">{{AdminOverviewItemStatistics.complete}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">已关闭</p>
+              <p class="fz-12 tc-9">已关闭</p>
               <span class="fz-16 line-height28">{{AdminOverviewItemStatistics.close}}</span>
             </div>
           </div>
@@ -44,18 +44,18 @@
       <el-col :span="8">
         <div class="count-content">
           <h2 class="sub-title">客户总数</h2>
-          <p class="count-number">{{AdminOverviewClueStatistics.cooperation}}</p>
+          <p class="count-number protrude">{{AdminOverviewClueStatistics.cooperation}}</p>
           <div class="flex">
             <div class="flex1">
-              <p class="fz-12">商机</p>
+              <p class="fz-12 tc-9">商机</p>
               <span class="fz-16 line-height28">{{AdminOverviewClueStatistics.customer}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">潜在客户</p>
+              <p class="fz-12 tc-9">潜在客户</p>
               <span class="fz-16 line-height28">{{AdminOverviewClueStatistics.potential}}</span>
             </div>
             <div class="flex1">
-              <p class="fz-12">对接设计</p>
+              <p class="fz-12 tc-9">对接设计</p>
               <span class="fz-16 line-height28">{{AdminOverviewClueStatistics.maintain}}</span>
             </div>
           </div>
@@ -76,7 +76,7 @@
             </div> -->
           </div>
           <div>
-            <p class="count-number">￥{{IncomeStatistics}}</p>
+            <p class="count-number protrude">￥{{IncomeStatistics}}</p>
           </div>
           <div>
             <ECharts :options="polar" class="line-echarts">
@@ -111,7 +111,7 @@
               <img :src="require('assets/images/admin/dash_board/SettledInDemand@2x.png')" alt="">
               <div class="tc-6 fz-14">
                 <p>已认证需求公司</p>
-                <p class="count-number">{{AdminOverviewCompany.demand_company.authentication}}</p>
+                <p class="count-number protrude">{{AdminOverviewCompany.demand_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.demand_company.uncertified}}</p>
               </div>
             </div>
@@ -119,7 +119,7 @@
               <img :src="require('assets/images/admin/dash_board/SettledInDesign@2x.png')" alt="">
               <div class="tc-6 fz-14">
                 <p>已认证设计服务商</p>
-                <p class="count-number">{{AdminOverviewCompany.design_company.authentication}}</p>
+                <p class="count-number protrude">{{AdminOverviewCompany.design_company.authentication}}</p>
                 <p>待认证: {{AdminOverviewCompany.design_company.uncertified}}</p>
               </div>
             </div>
@@ -176,7 +176,7 @@
         </div>
       </el-col>
     </el-row>
-    <div class="count-content margin-b_0 padding-b_15">
+    <div class="count-content margin-b_0 padding-b_15 padding-l_0">
       <h2 class="sub-title">最近的项目</h2>
     </div>
     <div>
@@ -190,7 +190,7 @@
         <el-table-column
           prop="item.id"
           label=""
-          width="50">
+          width="80">
         </el-table-column>
         <el-table-column
           label="客户姓名">
@@ -265,16 +265,23 @@
             top: 20
           },
           xAxis: {
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             type: 'category',
             boundaryGap: false,
-            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             axisTick: {
               // show: false
               alignWithLabel: true,
               inside: true
             },
             axisLine: {
-              // show: false
+              lineStyle: {
+                color: '#999'
+              }
+            },
+            nameTextStyle: {
+              color: '#999',
+              fontSize: 30,
+              backgroundColor: '#ff5a5f'
             }
           },
           tooltip: {
@@ -294,6 +301,11 @@
             },
             axisLabel: {
               show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#e6e6e6'
+              }
             }
           },
           series: [
@@ -667,7 +679,8 @@
   }
   .sub-title {
     color: #222;
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 22px;
     padding-left: 14px;
     position: relative;
     margin: 0;
@@ -746,5 +759,8 @@
   }
   .line-echarts {
     width: 100%;
+  }
+  .padding-l_0 {
+    padding-left: 0
   }
 </style>

@@ -468,7 +468,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active,
 .menuHide .el-menu-item.is-active {
-  background-color: #1b1b1b!important
+  background-color: #000!important
+}
+.admin-menu .el-menu-item:hover {
+  background-color: #000!important;
+  color: #fff!important
+}
+.admin-menu .el-menu-item.is-active:hover {
+  color: #ff5a5f!important
 }
 .el-submenu .el-menu-item:hover, .el-submenu__title:hover {
   color: #222;
@@ -1016,6 +1023,7 @@ input:-webkit-autofill {
     padding: 0 0 0 40px;
     -webkit-transition: all 86ms ease-out;
     transition: all 86ms ease-out;
+    width: 100%;
   }
 
 
