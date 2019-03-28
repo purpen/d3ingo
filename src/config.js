@@ -2295,7 +2295,7 @@ const OTHERADMINMENU = {
       }
     ]
   },
-  {
+  adminUserList: {
     name: '铟果后台',
     route: 'adminUserList',
     icon: require('assets/images/admin/menu/User@2x.png'),
