@@ -109,11 +109,11 @@
 </template>
 <script>
 import api from '@/api/api'
-import customer from './customer'
-import server from './server'
-import certificate from './certificate'
-import cases from './case'
-import introduction from './introduction'
+import customer from 'admin/company/Customer'
+import server from 'admin/company/Server'
+import certificate from 'admin/company/Certificate'
+import cases from 'admin/company/Case'
+import introduction from 'admin/company/Introduction'
 export default {
   data() {
     return {
