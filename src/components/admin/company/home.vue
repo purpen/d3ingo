@@ -109,7 +109,7 @@
         <el-table-column
           prop="company_name"
           label="公司名称"
-          width="180">
+          width="320">
           <template slot-scope="scope">
             <div class="flex-center home-img-round">
               <img :src="scope.row.logo_url" />
@@ -126,7 +126,7 @@
           column-key="province_value"
           :filters="provinces"
           :filter-multiple="false"
-          width="180"
+          width="140"
           class="add-style">
           <template slot-scope="scope">
             <span>{{scope.row.province_value}}</span>·<span>{{scope.row.city_value}}</span>
@@ -138,17 +138,17 @@
           column-key="company_size"
           :filters="companySizes"
           :filter-multiple="false"
-          width="100">
+          width="140">
         </el-table-column>
         <el-table-column
           prop="created_at"
           label="日期"
           sortable
-          width="100">
+          width="140">
         </el-table-column>
         <el-table-column
           label="状态"
-          width="100">
+          width="140">
           <template slot-scope="scope">
             <div class="flex-center">
               <div class="state-border" v-if="scope.row.verify_status === 0"></div>
@@ -495,6 +495,12 @@ export default {
   }
   .bg-D8D8D8 {
     background: #D8D8D8;
+  }
+  .count {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
   }
 
 
