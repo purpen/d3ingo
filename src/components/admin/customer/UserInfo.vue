@@ -23,9 +23,9 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="!(userForm.son_status === 4)" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
             <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
-            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
+            <div v-if="userForm.new_status === 1 && userForm.son_status !== 4" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
                 <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
@@ -2314,7 +2314,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
+        if (this.isAdmin >= 12 && this.userForm.son_status === 4) {
           return true
         }
       }
