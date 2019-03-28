@@ -10,7 +10,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <a :href="'http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=' + designReault + '&design_company_id=' + cusId">
+        <a :href="httpUrl + '/api/admin/designCompany/downloadReport?token=' + token +'&status=' + designReault + '&design_company_id=' + cusId">
           <div class="down-btn">
             <div class="down-icon"></div>
             <div class="down-text">下载报表</div>
@@ -156,13 +156,17 @@ export default {
       },
       cusId: '',
       urlIm: '',
-      customer: []
+      customer: [],
+      httpUrl: '',
+      tokens: ''
     }
   },
   created() {
     let that = this
     let id = that.$route.params.id
     that.cusId = that.$route.params.id
+    that.httpUrl = location.origin
+    that.token = that.$store.state.event.token
     that.getCustomer(id)
   },
   methods: {
