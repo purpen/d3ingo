@@ -1443,10 +1443,10 @@ export default {
           value: 5,
           label: '按客户所有人'
         },
-        {
-          value: 6,
-          label: '按优先级'
-        },
+        // {
+        //   value: 6,
+        //   label: '按优先级'
+        // },
         {
           value: 7,
           label: '按无效时间(最近)'
@@ -2000,7 +2000,7 @@ export default {
       //   }
       // }
       let callStatus = row.new_call_status - 0
-      if (this.typeId === 4) {
+      if (this.typeId === 4 || this.typeId === 5) {
         return
       }
       if (callStatus < 9) {
