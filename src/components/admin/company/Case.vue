@@ -6,12 +6,14 @@
           :data="tableData"
           style="width: 100%">
           <el-table-column
-            prop="id"
             width="80">
+            <template slot-scope="scope">
+              <div class="text-cen">{{scope.row.id}}</div>
+            </template>
           </el-table-column>
           <el-table-column
             label="标题"
-            width="180">
+            width="300">
             <template slot-scope="scope">
               <div class="flex-center desimg-round">
                 <img :src="scope.row.logoUrl"/>
@@ -31,13 +33,15 @@
             label="标签">
             <template slot-scope="scope">
               <div class="flex-center label-round">
-                <div class="label-style" v-for="(label, index) in scope.row.label" :key="index">#{{label}}</div>
+                <template v-if="scope.row.label && scope.row.label.length">
+                  <div class="label-style" v-for="(label, index) in scope.row.label" :key="index">#{{label}}</div>
+                </template>
+                <div class="label-style" v-else>{{line}}</div>
               </div>
             </template>
           </el-table-column>
           <el-table-column
-            label="状态"
-            width="100">
+            label="状态">
             <template slot-scope="scope">
               <div class="flex-center">
                 <div class="dot"></div><div>{{scope.row.status_value}}</div>
@@ -96,7 +100,8 @@ export default {
         pageSize: 10,
         totalCount: 0
       },
-      cusId: ''
+      cusId: '',
+      line: '-'
     }
   },
   created() {
@@ -106,7 +111,7 @@ export default {
   },
   methods: {
     getOpen(index, id, evt, value) {
-      var self = this
+      let self = this
       self.$http.put(api.adminDesignCaseOpenInfo, {case_id: id, is_open: evt})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -149,6 +154,7 @@ export default {
             } else {
               that.tableData[index].status_value = '已公开显示'
             }
+            that.tableData[index]['created_at'] = that.tableData[index].created_at.date_format().format('yyyy.MM.dd')
           }
         } else {
           that.$message.error(response.data.meta.message)
@@ -233,5 +239,8 @@ export default {
     font-weight: 400;
     color: rgba(102,102,102,1);
     padding-top: 10px;
+  }
+  .text-cen {
+    text-align: center;
   }
 </style>

@@ -608,6 +608,9 @@
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
+            <p v-else-if="scope.row.label_cause === 3">预算过低</p>
+            <p v-else-if="scope.row.label_cause === 4">因竞争丢失</p>
+            <p v-else-if="scope.row.label_cause === 5">其他</p>
             <p v-else>无</p>
           </template>
         </el-table-column>
@@ -723,7 +726,7 @@
         <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
-          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          <el-button type="primary" @click="setClueStatus(1)">确 定</el-button>
         </span>
     </el-dialog>
 
@@ -1017,7 +1020,7 @@ export default {
             },
             {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -2294,10 +2297,11 @@ export default {
           clue_ids: idArr,
           label_cause: this.label_cause
         }
-        if (type) {
+        if (type === 4) {
           row.new_status = type
           row.label_cause = ''
         }
+        console.log(row)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
@@ -3204,7 +3208,7 @@ export default {
   padding-left: 25px;
 }
 .select-date {
-  width: 165px;
+  width: 180px;
   float: left;
   margin-left: 10px;
   height: 36px;
