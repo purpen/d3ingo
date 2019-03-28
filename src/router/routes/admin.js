@@ -287,7 +287,7 @@ module.exports = [
           hideFooter: true,
           hideCustomer: true
         },
-        component: require('@/components/admin/company/Home')
+        component: require('@/components/admin/company/Home1')
       },
       {
         path: '/admin/company/detail/:id',
