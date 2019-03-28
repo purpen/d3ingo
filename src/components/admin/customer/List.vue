@@ -608,6 +608,9 @@
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
+            <p v-else-if="scope.row.label_cause === 3">预算过低</p>
+            <p v-else-if="scope.row.label_cause === 4">因竞争丢失</p>
+            <p v-else-if="scope.row.label_cause === 5">其他</p>
             <p v-else>无</p>
           </template>
         </el-table-column>
@@ -1017,7 +1020,7 @@ export default {
             },
             {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -3205,7 +3208,7 @@ export default {
   padding-left: 25px;
 }
 .select-date {
-  width: 165px;
+  width: 180px;
   float: left;
   margin-left: 10px;
   height: 36px;
