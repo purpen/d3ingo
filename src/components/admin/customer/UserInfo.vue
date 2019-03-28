@@ -24,7 +24,7 @@
           </div>
           <div class="fr">
             <el-button v-if="!(userForm.son_status === 4)" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
-            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" @click="restoreUser">恢复</el-button>
             <div v-if="userForm.new_status === 1 && userForm.son_status !== 4" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
                 <p @click="setClueStatus4(4)" class="delete">删除</p>
@@ -1508,29 +1508,30 @@ export default {
                 phone: data.phone,
                 rank: data.rank,
                 position: data.position,
-                new_source: data.new_source || '',
+                new_source: data.new_source,
                 son_source: data.son_source,
                 new_status: data.new_status,
+                son_status: data.son_status,
                 call_status_value: data.call_status_value,
                 execute_user_id: data.execute_user_id,
                 execute_user_name: data.execute_user_name,
                 created_at: data.created_at,
-                new_call_status: data.new_call_status || '',
+                new_call_status: data.new_call_status,
                 is_thn: data.is_thn
               }
               this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
               if (data.update_user_time) {
                 this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
               }
-              if (this.userForm.new_source) {
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
                 let id = this.userForm.new_source
                 this.sourceArr.forEach(item => {
-                  if (item.id === id) {
-                    this.sonSource = item.son_source
-                    this.sourceValue = item.name
-                    item.son_source.forEach(d => {
-                      if (d.key === this.userForm.son_source) {
-                        this.sonSourceValue = d.name
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
                       }
                     })
                   }
@@ -1636,29 +1637,30 @@ export default {
                 phone: data.phone,
                 rank: data.rank,
                 position: data.position,
-                new_source: data.new_source || '',
+                new_source: data.new_source,
                 son_source: data.son_source,
                 new_status: data.new_status,
+                son_status: data.son_status,
                 call_status_value: data.call_status_value,
                 execute_user_id: data.execute_user_id,
                 execute_user_name: data.execute_user_name,
                 created_at: data.created_at,
-                new_call_status: data.new_call_status || '',
+                new_call_status: data.new_call_status,
                 is_thn: data.is_thn
               }
               this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
               if (data.update_user_time) {
                 this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
               }
-              if (this.userForm.new_source) {
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
                 let id = this.userForm.new_source
                 this.sourceArr.forEach(item => {
-                  if (item.id === id) {
-                    this.sonSource = item.son_source
-                    this.sourceValue = item.name
-                    item.son_source.forEach(d => {
-                      if (d.key === this.userForm.son_source) {
-                        this.sonSourceValue = d.name
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
                       }
                     })
                   }
@@ -1744,6 +1746,7 @@ export default {
             new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
+            son_status: data.son_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
@@ -2529,7 +2532,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12 && this.userForm.son_status === 4) {
+        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
           return true
         }
       }
