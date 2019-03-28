@@ -100,6 +100,7 @@
         :data="tableData"
         style="width: 100%"
         :default-sort = "{prop: 'date', order: 'descending'}"
+        @filter-change = "filterProvinces"
         >
         <el-table-column
           prop="id"
@@ -120,12 +121,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="province_value"
           label="公司地区"
-          column-key="province"
-          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-          :filter-method="filterHandler"
+          column-key="province_value"
+          :filters="provinces"
           :filter-multiple="false"
-          width="180">
+          width="180"
+          class="add-style">
           <template slot-scope="scope">
             <span>{{scope.row.province_value}}</span>·<span>{{scope.row.city_value}}</span>
           </template>
@@ -133,9 +135,8 @@
         <el-table-column
           prop="company_size_val"
           label="公司规模"
-          column-key="tag"
-          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-          :filter-method="filterHandler"
+          column-key="company_size"
+          :filters="companySizes"
           :filter-multiple="false"
           width="100">
         </el-table-column>
@@ -169,6 +170,7 @@
       </el-table>
     </div>
 
+
     <!-- 分页 -->
     <div class="flex-center-space pad-top-15 pad-left-30">
       <div class="count">
@@ -189,8 +191,10 @@
   </div>
 </template>
 <script>
+import REGION_DATA from 'china-area-data'
 import api from '@/api/api'
 export default {
+  region: REGION_DATA,
   data() {
     return {
       designChoose: [{
@@ -230,20 +234,57 @@ export default {
         sort: 0,
         type: 0,
         evt: '',
+        province: 0,
+        scale: 0,
         val: '',
         test: null
       },
+      companySizes: [{text: '20人以下', value: '1'}, {text: '20-50人', value: '2'}, {text: '50-100人', value: '3'}, {text: '100-300人', value: '4'}, {text: '300人以上', value: '5'}],
       statistical: '',
-      seleValue: ''
+      seleValue: '',
+      rootCode: 86
     }
   },
   created() {
     this.loadList()
     this.getDesignCount()
   },
+  computed: {
+    provinces () {
+      let code = this._filter(this.rootCode)
+      let arr = []
+      for (let index in code) {
+        let obj = {}
+        obj.value = code[index][0]
+        obj.text = code[index][1]
+        arr.push(obj)
+      }
+      return arr
+    }
+  },
   methods: {
+    _filter (pid) {
+      const result = []
+      const items = this.$options.region[pid]
+      if (this.isEmpty) {
+        result.push([-1, '不限'])
+      }
+      for (let code in items) {
+        result.push([parseInt(code, 10), items[code]])
+      }
+      return result
+    },
     navgiteTo(id) {
       this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+    },
+    filterProvinces(value) {
+      if (value.company_size) {
+        this.query.scale = value.company_size[0]
+      }
+      if (value.province_value) {
+        this.query.province = value.province_value[0]
+      }
+      this.loadList()
     },
     filterHandler() {
       console.log(2)
@@ -270,7 +311,7 @@ export default {
       self.query.type = self.designReault
       self.query.evt = self.companyReault
       self.query.val = self.seleValue
-      self.$http.get(api.adminCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.adminCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val, province: self.query.province, scale: self.query.scale}})
       .then (function(response) {
         self.tableData = []
         if (response.data.meta.status_code === 200) {
@@ -305,6 +346,23 @@ export default {
               }
             } else {
               item['verify_status_value'] = '已禁用'
+            }
+            switch (item.company_size) {
+              case 1:
+                item['company_size_val'] = '20人以下'
+                break
+              case 2:
+                item['company_size_val'] = '20-50人'
+                break
+              case 3:
+                item['company_size_val'] = '50-100人'
+                break
+              case 4:
+                item['company_size_val'] = '100-300人'
+                break
+              case 5:
+                item['company_size_val'] = '300人以上'
+                break
             }
             self.tableData.push(item)
           }

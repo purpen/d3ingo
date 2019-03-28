@@ -56,15 +56,15 @@
     </div>
     <div v-if="!product.length && !ui.length && !plane.length && !packaging.length && !illustrations.length" class="empty flex-center-center">
       <div class="empty-img"></div>
-      <div class="empty-title">暂未设计服务</div>
-      <div class="empty-text">入驻日期：2019.01.22</div>
+      <div class="empty-title">暂无设计服务</div>
+      <div class="empty-text">入驻日期：{{creatDate}}</div>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: 'server',
-  props: ['designItem'],
+  props: ['designItem', 'creatDate'],
   data() {
     return {
       product: [],
@@ -146,8 +146,8 @@ export default {
   .empty-img {
     width: 100px;
     height: 100px;
-    background: rgba(216,216,216,1);
     border-radius: 50%;
+    background: url('../../../assets/images/design_admin/Remarks@2x.png') no-repeat center / contain;
   }
   .empty-title {
     font-size: 16px;

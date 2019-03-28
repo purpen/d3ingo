@@ -126,7 +126,7 @@
     <div v-else class="empty flex-center-center">
       <div class="empty-img"></div>
       <div class="empty-title">暂未对接过客户</div>
-      <div class="empty-text">入驻日期：2019.01.22</div>
+      <div class="empty-text">入驻日期：{{creatDate}}</div>
     </div>
   </div>
 </template>
@@ -134,6 +134,7 @@
 import api from '@/api/api'
 export default {
   name: 'customer',
+  props: ['creatDate'],
   data() {
     return {
       designChoose: [{
@@ -325,8 +326,8 @@ export default {
   .empty-img {
     width: 100px;
     height: 100px;
-    background: rgba(216,216,216,1);
     border-radius: 50%;
+    background: url('../../../assets/images/design_admin/CustomerDefaultGraph@2x.png') no-repeat center / contain;
   }
   .empty-title {
     font-size: 16px;
