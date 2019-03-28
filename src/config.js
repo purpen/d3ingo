@@ -2294,6 +2294,25 @@ const OTHERADMINMENU = {
         }
       }
     ]
+  },
+  adminUserList: {
+    name: '铟果后台',
+    route: 'adminUserList',
+    icon: require('assets/images/admin/menu/User@2x.png'),
+    statement: {
+      params: {},
+      query: {}
+    },
+    children: [
+      {
+        name: '列表',
+        route: 'adminUserList',
+        statement: {
+          params: {},
+          query: {}
+        }
+      }
+    ]
   }
 }
 // test

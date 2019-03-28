@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <template v-if="customer && customer.length">
+    <template v-if="customer && customer.length || designReault !== '0'">
       <div class="sever-round">
         <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectDesign()">
           <el-option
@@ -10,16 +10,17 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <div class="down-btn">
-          <div class="down-icon"></div>
-          <div class="down-text">下载报表</div>
-        </div>
+        <a :href="'http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=' + designReault + '&design_company_id=' + cusId">
+          <div class="down-btn">
+            <div class="down-icon"></div>
+            <div class="down-text">下载报表</div>
+          </div>
+        </a>
       </div>
 
       <div class="table-round">
         <el-table
           :data="customer"
-          stripe
           style="width: 100%">
           <el-table-column
             width="80">
@@ -29,40 +30,40 @@
           </el-table-column>
           <el-table-column
             label="客户信息"
-            width="200">
+            width="300">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text">{{scope.row.clue_name}}</div>
+                  <div class="info-text">{{scope.row.clue_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
-                  <div class="info-text">{{scope.row.clue_phone}}</div>
+                  <div class="info-text">{{scope.row.clue_phone || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">公司：</div>
-                  <div class="info-text">{{scope.row.clue_company}}</div>
+                  <div class="info-text">{{scope.row.clue_company || '-'}}</div>
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             label="项目信息"
-            width="200">
+            width="300">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
                   <div class="info-title">项目：</div>
-                  <div class="info-text text-hidden">{{scope.row.crm_item_name}}</div>
+                  <div class="info-text text-hidden">{{scope.row.crm_item_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">类型：</div>
-                  <div class="info-text">{{scope.row.crm_item_type}}</div>
+                  <div class="info-text">{{scope.row.crm_item_type || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">预算：</div>
-                  <div class="info-text">{{scope.row.crm_item_design_cost}}</div>
+                  <div class="info-text">{{scope.row.crm_item_design_cost || '-'}}</div>
                 </div>
               </div>
             </template>
@@ -80,7 +81,7 @@
             <template slot-scope="scope">
               <div class="flex-center">
                 <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
-                <div class="dot" v-else></div><div>{{scope.row.status_value}}</div>
+                <div class="dot-red" v-else></div><div>{{scope.row.status_value}}</div>
               </div>
             </template>
           </el-table-column>
@@ -154,6 +155,7 @@ export default {
         totalCount: 0
       },
       cusId: '',
+      urlIm: '',
       customer: []
     }
   },
@@ -166,17 +168,23 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.query.pageSize = parseInt(val)
-      this.loadList(this.cusId)
+      this.getCustomer(this.cusId)
     },
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
-      this.loadList(this.cusId)
+      this.getCustomer(this.cusId)
     },
     selectDesign() {
       this.getCustomer(this.cusId)
     },
+    getReport() {
+      // window.download('http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=0&design_company_id=1')
+      // let self = this
+      // self.urlIm = `http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=${self.designReault}&design_company_id=${self.cusId}`
+      // window.open(url)
+    },
     getCustomer(id) {
-      const self = this
+      let self = this
       self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -222,7 +230,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    padding-bottom: 15px;
   }
   .sever-icon {
     position: relative;
@@ -233,12 +241,17 @@ export default {
     cursor: pointer;
     width: 90px;
     height: 30px;
-    background: rgba(9,109,217,1);
+    background: #FF5A5F;
     border-radius: 4px;
-    border: 1px solid rgba(0,141,255,1);
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .down-btn:hover {
+    background: #D23C46;
+  }
+  .down-btn:active {
+    background: #A02832;
   }
   .text-cen {
     text-align: center;
