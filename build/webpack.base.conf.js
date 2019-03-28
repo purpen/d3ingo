@@ -37,7 +37,8 @@ module.exports = {
       'components': resolve('src/components'),
       'assets': resolve('src/assets'),
       'static': resolve('/static'),
-      'pages': resolve('src/components/pages')
+      'pages': resolve('src/components/pages'),
+      'admin': resolve('src/components/admin')
     }
   },
   // 增加一个plugins
