@@ -98,7 +98,7 @@
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item"></introduction>
 
-    <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
+    <el-dialog title="请填写原因" :visible.sync="dialogVisible" width="380px">
       <el-input v-model="refuseRease"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
@@ -174,7 +174,7 @@ export default {
           if (self.item.logo_image) {
             self.item.logo_url = self.item.logo_image.big
           } else {
-            self.item.logo_url = false
+            self.item.logo_url = require ('@/assets/images/df_100x100.png')
           }
           switch (self.item.company_size) {
             case 1:
@@ -477,7 +477,18 @@ export default {
     color: #ff5a5f;
     border-bottom: 4px solid #ff5a5f;
   }
-
+  .certification:hover {
+    background: rgba(255,90,95,0.30);
+    border: 1px solid #FF4559;
+    border-radius: 4px;
+  }
+  .certification:active {
+    background: #FF5A5F;
+    border-radius: 4px;
+  }
+  .certification:active .certification-text {
+    color: #fff;
+  }
 
   .flex-center-center {
     display: flex;

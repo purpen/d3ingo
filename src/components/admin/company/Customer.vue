@@ -10,7 +10,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <div class="down-btn">
+        <div class="down-btn" @click="getReport()">
           <div class="down-icon"></div>
           <div class="down-text">下载报表</div>
         </div>
@@ -19,7 +19,6 @@
       <div class="table-round">
         <el-table
           :data="customer"
-          stripe
           style="width: 100%">
           <el-table-column
             width="80">
@@ -175,8 +174,19 @@ export default {
     selectDesign() {
       this.getCustomer(this.cusId)
     },
+    getReport() {
+      let that = this
+      that.$http.post(api.adminDesignCompanyDownloadReport, {status: that.designReault, design_company_id: that.cusId})
+      .then (res => {
+        if (res.data.meta.status_code === 200) {
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+      })
+    },
     getCustomer(id) {
-      const self = this
+      let self = this
       self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -233,12 +243,17 @@ export default {
     cursor: pointer;
     width: 90px;
     height: 30px;
-    background: rgba(9,109,217,1);
+    background: #FF5A5F;
     border-radius: 4px;
-    border: 1px solid rgba(0,141,255,1);
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .down-btn:hover {
+    background: #D23C46;
+  }
+  .down-btn:active {
+    background: #A02832;
   }
   .text-cen {
     text-align: center;
