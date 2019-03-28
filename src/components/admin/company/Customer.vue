@@ -22,12 +22,14 @@
           stripe
           style="width: 100%">
           <el-table-column
-            prop="id"
             width="80">
+            <template slot-scope="scope">
+              <div class="text-cen">{{scope.row.id}}</div>
+            </template>
           </el-table-column>
           <el-table-column
             label="客户信息"
-            width="180">
+            width="200">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
@@ -47,7 +49,7 @@
           </el-table-column>
           <el-table-column
             label="项目信息"
-            width="180">
+            width="200">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
@@ -67,17 +69,14 @@
           </el-table-column>
           <el-table-column
             prop="price"
-            label="订单金额(万元)"
-            width="180">
+            label="订单金额(万元)">
           </el-table-column>
           <el-table-column
             prop="created_at"
-            label="对接日期"
-            width="80">
+            label="对接日期">
           </el-table-column>
           <el-table-column
-            label="项目进度"
-            width="180">
+            label="项目进度">
             <template slot-scope="scope">
               <div class="flex-center">
                 <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
@@ -90,7 +89,6 @@
             <template slot-scope="scope">
               <el-popover
                 placement="top"
-                width="160"
                 trigger="click"
                 :content="scope.row.summary"
                 v-if="scope.row.summary">
@@ -98,7 +96,6 @@
               </el-popover>
               <el-popover
                 placement="top"
-                width="160"
                 trigger="click"
                 content="无备注内容"
                 v-else>
@@ -242,6 +239,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .text-cen {
+    text-align: center;
   }
   .down-icon {
     width: 14px;

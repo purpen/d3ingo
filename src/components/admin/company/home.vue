@@ -103,8 +103,10 @@
         @filter-change = "filterProvinces"
         >
         <el-table-column
-          prop="id"
           width="80">
+          <template slot-scope="scope">
+            <div class="text-cen">{{scope.row.id}}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="company_name"
@@ -126,7 +128,6 @@
           column-key="province_value"
           :filters="provinces"
           :filter-multiple="false"
-          width="140"
           class="add-style">
           <template slot-scope="scope">
             <span>{{scope.row.province_value}}</span>·<span>{{scope.row.city_value}}</span>
@@ -137,18 +138,15 @@
           label="公司规模"
           column-key="company_size"
           :filters="companySizes"
-          :filter-multiple="false"
-          width="140">
+          :filter-multiple="false">
         </el-table-column>
         <el-table-column
           prop="created_at"
           label="日期"
-          sortable
-          width="140">
+          sortable>
         </el-table-column>
         <el-table-column
-          label="状态"
-          width="140">
+          label="状态">
           <template slot-scope="scope">
             <div class="flex-center">
               <div class="state-border" v-if="scope.row.verify_status === 0"></div>
@@ -502,7 +500,9 @@ export default {
     font-weight: 400;
     color: rgba(102,102,102,1);
   }
-
+  .text-cen {
+    text-align: center;
+  }
 
 
 
@@ -522,6 +522,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-all;
+    width: 240px;
   }
   .flex {
     display: flex;
