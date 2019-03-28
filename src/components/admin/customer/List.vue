@@ -723,7 +723,7 @@
         <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
-          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          <el-button type="primary" @click="setClueStatus(1)">确 定</el-button>
         </span>
     </el-dialog>
 
@@ -2294,10 +2294,11 @@ export default {
           clue_ids: idArr,
           label_cause: this.label_cause
         }
-        if (type) {
+        if (type === 4) {
           row.new_status = type
           row.label_cause = ''
         }
+        console.log(row)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
