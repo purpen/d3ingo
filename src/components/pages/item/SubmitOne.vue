@@ -1,5 +1,5 @@
 <template>
-  <section class="submit_one">
+  <section v-if="false" class="submit_one">
     <div class="pub-content" :style="{ height: calcHeight }">
       <div class="shade-cover" v-if="isMob"></div>
       <div class="shade">

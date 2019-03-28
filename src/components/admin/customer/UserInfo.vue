@@ -4,7 +4,7 @@
           <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
           <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
-            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red" @click="getNextUser"></i>
+            <i class="border-t10 fx fx-icon-nothing-right tc-hover-red margin-r0" @click="getNextUser"></i>
           </div>
     </div>
     <div class="card-box" v-loading="userLoading">
@@ -23,16 +23,17 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button type="primary" class="margin-r-15" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
-            <!-- <div class="edit-project fr">
+            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
+            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
-                <span>删除</span>
+                <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
-            </div> -->
+            </div>
           </div>
 
         </div>
-        <div class="margin-l20 head-c-content">
+        <div class="margin-l20 head-c-content fz-14">
           <el-row :gutter="10">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
@@ -49,7 +50,7 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
-                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue"  >{{sourceValue + '/' + sonSourceValue}}</span>
+                <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
                 <span class="fz-14  text-overflow" v-else>--</span>
               </div>
             </el-col>
@@ -71,19 +72,21 @@
 
       <div class="user-progress contant-border margin-t15">
         <div class="progress-top">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-18', {'fx-icon-upper': boolProgressContant}]"></i>
+          <div class="fl">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-36', {'t270-before': !boolProgressContant}]"></i>
+          </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
           <span @click="showTabProgress(3)" :class="{'bg-blue02': userForm.new_status === 3, 'bg-green02': userForm.new_status > 3, 'bg-gray02': userForm.new_status < 3 }">对接设计</span>
           <span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
           <div class="fr">
             <el-dropdown @command="showClueDialog">
-                <el-button type="primary" :disabled="!isHasPower">标记当前客户状态</el-button>
+                <el-button type="primary" class="fz-12" :disabled="!isHasPower">标记当前客户状态</el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1">转化</el-dropdown-item>
-                <el-dropdown-item  command="3">无效商机</el-dropdown-item>
-                <el-dropdown-item  command="4">低价客户</el-dropdown-item>
-                <el-dropdown-item  command="2">流失客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1" command="1">转化为潜在客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1" command="3">无效商机</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status !== 4" command="4">低价客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 3"  command="2">流失客户</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -113,7 +116,7 @@
             </div>
             <div class="note-right">
               <p class="fw-5">成功指南</p>
-              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户。为预算大于一万的潜在客户匹配最适合的设计公司</p>
+              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户。为预算大于一万的潜在客户匹配最适合的设计服务商</p>
             </div>
           </div>
           
@@ -150,21 +153,21 @@
       </div>
 
       <div class="user-body margin-t15 clearfix">
-        <div class="user-info-left fl contant-border  margin-r-10">
+        <div class="user-info-left fl contant-border margin-r-15">
           <div class="card-body-header">
             <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目信息</span>
             <span @click="changeOption('user')" :class="{'active': option === 'user'}">客户信息</span>
           </div>
-          <div v-if="option === 'project'" v-loading="userProjectLoading">
+          <div v-if="option === 'project'" v-loading="userProjectLoading" class="project-box">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t180-before': boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
             <div class="project-list" v-show="boolProjectList && projectList.length">
               <ul>
-                <li v-for="(item, index) in projectList" :key="index" class="project-li">
+                <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
                   <el-row>
                     <el-col>
                       <h5 class="project-name fl">{{item.name}}</h5>
@@ -179,7 +182,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">设计类型</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.type_value}}</span>
                     </el-col>
                   </el-row>
@@ -187,7 +190,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目预算</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.design_cost_value}}</span>
                     </el-col>
                   </el-row>
@@ -195,7 +198,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">交付时间</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.cycle_value}}</span>
                     </el-col>
                   </el-row>
@@ -204,7 +207,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">行业领域</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.industry_value}}</span>
                     </el-col>
                   </el-row>
@@ -212,7 +215,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目工作地点</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.item_province_value}}{{item.item_city_value}}</span>
                     </el-col>
                   </el-row>
@@ -220,22 +223,22 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">项目描述</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span>{{item.summary}}</span>
                     </el-col>
                   </el-row>
                   
-                  <el-row>
+                  <el-row class="padding-b10">
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">备注</span>
                     </el-col>
-                    <el-col :md="6" :lg="6">
+                    <el-col :md="20" :lg="20">
                       <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
                       <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
                         <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
                     </el-col>
-                    <el-col :md="10" :lg="10" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <el-input v-model="remarksValue" autofocus size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+                    <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
+                      <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
                     </el-col>
                     <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
                       <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
@@ -248,7 +251,7 @@
                     <el-col  :md="4" :lg="4">
                       <span class="tc-9">创建人</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span v-if="item.user_name">{{item.user_name}}</span>
                       <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
                     </el-col>
@@ -257,7 +260,7 @@
                     <el-col :md="4" :lg="4">
                       <span class="tc-9">修改人</span>
                     </el-col>
-                    <el-col :md="16" :lg="16">
+                    <el-col :md="20" :lg="20">
                       <span class="item.update_user_name">{{item.update_user_name}}</span>
                       <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
                     </el-col>
@@ -265,13 +268,13 @@
                   <!-- 对接设计公司 -->
                   <div>
                     <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i class="fx fx-icon-nothing-lower"></i>设计服务商</span>
-                    <el-button size="small" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                    <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                     </p>
                   </div>
                   <ul v-if="boolDesigeList">
-                    <li v-for="(d, i) in item.crm_design_company" :key="i" class="design-li contant-border margin-t20">
-                      <div class="">
+                    <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
+                      <div class="margin-b-10">
                         <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
                         <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
                         <span class="padding-l10">{{d.company_name}}</span>
@@ -289,7 +292,7 @@
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">职务</span>
-                          <span class="fz-14">{{d.contact_name}}</span>
+                          <span class="fz-14">{{d.position}}</span>
                         </div>
                         <div class="flex-column">
                           <span class="tc-9">电话</span>
@@ -300,12 +303,34 @@
                           <span class="fz-14">{{d.wx}}</span>
                         </div>
                       </div>
-                      <!-- <div class="design-li-footer">
-                        <span>{{d.stage | getProgessStatus}}</span>
-                        <span><i class="fx fx-icon-time"></i></span>
-                        <span class="fr" @click="boolStage = true">查看进度</span>
-                      </div> -->
-                      <el-progress :percentage="d.stage | getProgess" :show-text="false" class="design-progress"></el-progress>
+                      <div class="design-li-footer">
+                        <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
+                        <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
+                        <div class="progess-box">
+                          <span class="fr check-progess pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                          <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                            <el-steps :active="stageActive" class="steps-item">
+                              <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                              <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                              <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                              <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                              <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                              <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                              <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                            </el-steps>
+                            <div class="steps-remarks" v-if="d.status > 6">
+                              <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                              <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
+                    </li>
+                    <li>
+                      <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
                     </li>
                   </ul>
                 </li>
@@ -313,14 +338,14 @@
             </div>
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
-              <p class="text-center tc-2">客户备注</p>
+              <p class="text-center tc-2 margin-t20">客户备注</p>
               <p class="text-center tc-6 line-height20">{{clientList.summary}}</p>
             </div>
           </div>
 
-          <div v-if="option === 'user'">
+          <div v-if="option === 'user'" class="fz-14 padding-r20">
             <div class="bb-e6">
-              <p class="padding-l30 padding-r40 clearfix line-height40">
+              <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
                 <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span>
               </p>
@@ -330,7 +355,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">客户姓名</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.name}}</span>
                 </el-col>
               </el-row>
@@ -339,8 +364,9 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">客户来源</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
-                  <span>{{sourceValue + '/' + sonSourceValue}}</span>
+                <el-col :md="20" :lg="20">
+                  <span v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
+                  <span v-else>--</span>
                 </el-col>
               </el-row>
               
@@ -348,7 +374,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">客户所有人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.execute_user_name}}</span>
                 </el-col>
               </el-row>
@@ -358,7 +384,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">职位</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.position}}</span>
                 </el-col>
               </el-row>
@@ -367,7 +393,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">公司</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.company}}</span>
                 </el-col>
               </el-row>
@@ -376,7 +402,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">公司地址</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.province_value}}{{clientList.city_value}}</span>
                 </el-col>
               </el-row>
@@ -386,7 +412,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">电话</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.phone}}</span>
                 </el-col>
               </el-row>
@@ -395,7 +421,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">微信</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.wx}}</span>
                 </el-col>
               </el-row>
@@ -404,7 +430,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">QQ</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.qq}}</span>
                 </el-col>
               </el-row>
@@ -413,7 +439,7 @@
                 <el-col  :md="4" :lg="4">
                   <span class="tc-9">备注</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.summary}}</span>
                 </el-col>
               </el-row>
@@ -429,7 +455,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">客户编号</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span>{{clientList.number}}</span>
                 </el-col>
               </el-row>
@@ -438,7 +464,7 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">创建人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
+                <el-col :md="20" :lg="20">
                   <span v-if="clientList.user_id_name">{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
                 </el-col>
               </el-row>
@@ -447,8 +473,8 @@
                 <el-col :md="4" :lg="4">
                   <span class="tc-9">修改人</span>
                 </el-col>
-                <el-col :md="16" :lg="16">
-                  <span v-if="updateTime">{{clientList.update_user_name}}  &nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
+                <el-col :md="20" :lg="20">
+                  <span v-if="clientList.update_user_name">{{clientList.update_user_name}}&nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
                 </el-col>
               </el-row>
             </div>
@@ -461,7 +487,7 @@
             <span @click="changeOption1('event')" :class="{'active': option1 === 'event'}">事件</span>
           </div> -->
           <p class="log-title">记录</p>
-          <div v-if="option1 === 'log'">
+          <div class="log-box">
             <div class="padding20 bb-e6">
               <div class="progress">
                 <el-input type="textarea"
@@ -601,7 +627,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="商机来源" class="is-required">
               <el-cascader
-                :options="sourceArr2"
+                :options="sourceArr"
                 v-model="selectedsource"
                 @change="handleSourceChange">
               </el-cascader>
@@ -725,6 +751,21 @@
           </el-row>
           
           <el-row :gutter="20">
+            <el-col :xs="24" :sm="20" :md="24" :lg="24">
+              <el-form-item label="项目紧急度" prop="grate">
+                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
+                  <el-option
+                    v-for="(d, index) in grateArr"
+                    :key="index"
+                    :label="d.label"
+                    :value="d.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="24" :lg="24">
               <el-form-item label="交付时间" prop="cycle">
                 <el-select v-model="projectForm.cycle" placeholder="请选择交付时间">
@@ -764,33 +805,19 @@
                   >
             </region-picker>
           </div>
-          <el-row :gutter="20">
-            <el-col :xs="24" :sm="20" :md="24" :lg="24">
-              <el-form-item label="项目紧急度" prop="grate">
-                <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
-                  <el-option
-                    v-for="(d, index) in grateArr"
-                    :key="index"
-                    :label="d.label"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="项目描述" prop="summary">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
             </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> 
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="备注" prop="remarks">
-              <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
+              <el-input type="textarea" :maxlength="500" :rows="2" v-model="projectForm.remarks" placeholder="添加备注"></el-input>
             </el-form-item>
             </el-col>
           </el-row>
@@ -801,8 +828,8 @@
         <el-button @click="boolProject = false, boolAddProject = false">取 消</el-button>
         <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保 存</el-button>
       </span>
-      <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
-        <el-button class="margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
+      <span v-else  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolProject = false">取 消</el-button>
         <el-button type="primary" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
       </span>
@@ -862,7 +889,14 @@
               <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
             </el-form-item>
           </el-col>
-          
+        </el-row>
+        
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人职位" prop="position">
+              <el-input v-model="designCompanyForm.position" :maxlength="20" placeholder="请填写联系人职位"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row :gutter="20">
@@ -892,14 +926,6 @@
         <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保 存</el-button>
       </span>
     </el-dialog>
-
-    <!-- <el-dialog
-      title="对接进度"
-      :visible.sync="boolStage"
-      width="380px">
-    </el-dialog> -->
-
-
   </div>
 </template>
 
@@ -938,7 +964,6 @@ export default {
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
       option: '',
-      option1: 'log',
       activeName: 1,
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -946,6 +971,7 @@ export default {
       boolFollowLog: false,
       createProjectLoading: false,
       boolCreateUser: false,
+      boolallDesign: true,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
       clientForm: {
@@ -992,148 +1018,6 @@ export default {
       createdTime: '',
       updateTime: '',
       sourceArr: [
-        {
-          id: 1,
-          name: '网络广告',
-          son_source: [
-            {
-              key: 'a',
-              name: '百度'
-            },
-            {
-              key: 'b',
-              name: '360'
-            },
-            {
-              key: 'c',
-              name: '知乎'
-            },
-            {
-              key: 'd',
-              name: '今日头条'
-            },
-            {
-              key: 'edm',
-              name: '邮件'
-            },
-            {
-              key: 'sms',
-              name: '短信'
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: '官⽅',
-          son_source: [
-            {
-              key: 'a',
-              name: 'PC/WAP官网'
-            },
-            {
-              key: 'b',
-              name: '小程序'
-            },
-            {
-              key: 'c',
-              name: 'App'
-            },
-            {
-              key: 'topic_view_h',
-              name: '文章详情头部'
-            },
-            {
-              key: 'topic_view_f',
-              name: '文章详情底部'
-            },
-            {
-              key: 'topic_view_r',
-              name: '文章详情右侧'
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: '合作伙伴',
-          son_source: [
-            {
-              key: 'a',
-              name: '京东'
-            },
-            {
-              key: 'b',
-              name: '优客工场'
-            }
-          ]
-        },
-        {
-          id: 4,
-          name: '内部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '雷总/公司员工推荐的熟人客户'
-            }
-          ]
-        },
-        {
-          id: 5,
-          name: '外部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '朋友/其他公司推荐的客户'
-            }
-          ]
-        },
-        {
-          id: 6,
-          name: '新媒体',
-          son_source: [
-            {
-              key: 'a',
-              name: '微信公众号'
-            },
-            {
-              key: 'b',
-              name: '头条号菜单'
-            },
-            {
-              key: 'c',
-              name: '百家号'
-            },
-            {
-              key: 'toutiao_ad',
-              name: '头条文章广告位'
-            }
-          ]
-        },
-        {
-          id: 7,
-          name: '展销会',
-          son_source: [
-            {
-              key: 'a',
-              name: '参展'
-            },
-            {
-              key: 'b',
-              name: '业界活动、论坛 '
-            }
-          ]
-        },
-        {
-          id: 0,
-          name: '其他',
-          son_source: [
-            {
-              key: 'a',
-              name: '⽆法归类的小群体'
-            }
-          ]
-        }
-      ],
-      sourceArr2: [
         {
           value: 1,
           label: '网络广告',
@@ -1333,8 +1217,9 @@ export default {
       isFirstRegion: true,
 
       projectList: [],
+      crmDesignCompanyList1: [], // 对接设计公司列表前三个
+      crmDesignCompanyList: [], // 对接设计公司列表
       boolAddProject: false,
-      boolEditProject: false,
       currentProjectId: '',
       projectForm: {
         item_province: '',
@@ -1347,7 +1232,7 @@ export default {
         wx: '',
         summary: ''
       },
-      designCompanyList: [],
+      designCompanyList: [], // 设计公司列表
       currentDesignId: '',
       boolDesignCompany: false,
       boolEditDesignCompany: false,
@@ -1388,7 +1273,11 @@ export default {
       boolClueStatus2: true, // 显示无效后者流失
       isOpen: true,
 
-      boolStage: false
+      boolStage: false,
+      stageArr: [],
+      stageActive: 0,
+      nowDesignId: '',
+      isOpenNext: true // 下一条
     }
   },
   methods: {
@@ -1453,6 +1342,42 @@ export default {
     showTabProgress(val) {
       this.activeName = val
     },
+    showProgessDesign(d) { // 查看进度
+      this.nowDesignId = d.design_company_id
+      let obj = JSON.parse(d.stage)
+      let stageArr = []
+      for (let i in obj) {
+        stageArr.push(obj[i])
+      }
+      this.stageActive = stageArr.length - 1
+      stageArr.forEach((d, index, arr) => {
+        if (d.status === 0) {
+          let overdueTime = (new Date().getTime().toString().substr(0, 10) - arr[index - 1].time) / 24 / 60 / 60
+          if (parseInt(overdueTime) >= 1) {
+            arr[index].time = `停滞${parseInt(overdueTime)}天`
+          }
+          this.stageActive = index - 1
+        }
+        if (d.status === -1) {
+          this.stageActive = index
+        }
+      })
+      stageArr.forEach((d, index, arr) => {
+        if (d.status !== 0) {
+          if (d.time === 0) {
+            d.time = ''
+          } else {
+            d.time = d.time.date_format().format('yyyy-MM-dd hh:mm')
+          }
+        }
+        if (d.status === 0 && d.time === 0) {
+          d.time = ''
+        }
+      })
+      this.stageArr = stageArr
+      console.log(stageArr)
+      this.boolStage = true
+    },
     importWeb() { // 导入社区
       if (this.userForm.is_thn) {
         this.$message.error('已导入到社区,无需重复操作')
@@ -1495,9 +1420,6 @@ export default {
     changeOption(e) {
       this.option = e
     },
-    changeOption1(e) {
-      this.option1 = e
-    },
     changeStatus() {
     },
     editClientUser() {
@@ -1511,8 +1433,24 @@ export default {
         this.clientForm.city = city
       })
     },
+    restoreUser() { // 恢复客户
+      let row = []
+      row.push(this.currentId)
+      this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
     getNextUser() { // 下一条
-      if (this.currentId) {
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
+      if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
@@ -1522,16 +1460,125 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
-            query: {page: this.query.page}})
+            query: this.query})
           this.option = 'project'
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.boolProjectList = true
+          this.boolDesigeList = true
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
     getPreviousUser() { // 上一条
-      if (this.currentId) {
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
+      if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
           this.$message.info('已经是第一条,返回列表页,获取最新数据')
@@ -1540,10 +1587,119 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
+          this.$router.push({path: `/admin/customer/userinfo/${this.currentId}`,
+            query: this.query})
           this.option = 'project'
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.boolProjectList = true
+          this.boolDesigeList = true
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source || '',
+                son_source: data.son_source,
+                new_status: data.new_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status || '',
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.id === id) {
+                    this.sonSource = item.son_source
+                    this.sourceValue = item.name
+                    item.son_source.forEach(d => {
+                      if (d.key === this.userForm.son_source) {
+                        this.sonSourceValue = d.name
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
@@ -1584,29 +1740,29 @@ export default {
             phone: data.phone,
             rank: data.rank,
             position: data.position,
-            new_source: data.new_source || '',
+            new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || '',
+            new_call_status: data.new_call_status,
             is_thn: data.is_thn
           }
-          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
+          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
           if (data.update_user_time) {
-            this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss')
+            this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
           }
-          if (this.userForm.new_source) {
+          if (this.userForm.new_source || this.userForm.new_source === 0) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
-              if (item.id === id) {
-                this.sonSource = item.son_source
-                this.sourceValue = item.name
-                item.son_source.forEach(d => {
-                  if (d.key === this.userForm.son_source) {
-                    this.sonSourceValue = d.name
+              if (item.value === id) {
+                this.sonSource = item.children
+                this.sourceValue = item.label
+                item.children.forEach(d => {
+                  if (d.value === this.userForm.son_source) {
+                    this.sonSourceValue = d.label
                   }
                 })
               }
@@ -1663,7 +1819,6 @@ export default {
           if (status === 1) {
             this.$message.success('成功转化为潜在客户')
           }
-          this.followVal = ''
           this.getUserInfo()
           this.getLogList()
         } else {
@@ -1671,6 +1826,22 @@ export default {
         }
       }).catch(error => {
         this.isOpen = true
+        this.$message.error(error.message)
+      })
+    },
+    setClueStatus4(d) { // 加入回收站
+      let row = {
+        new_status: d,
+        clue_ids: [this.currentId]
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+          this.getNextUser()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
         this.$message.error(error.message)
       })
     },
@@ -1853,7 +2024,6 @@ export default {
           this.boolAddProject = false
           this.createProjectLoading = false
           this.boolProject = false
-          this.boolEditProject = false
           this.boolRemarks = false
           if (request === 'api.adminClueAddCrmItem') {
             this.getLogList()
@@ -1921,8 +2091,19 @@ export default {
       this.userProjectLoading = true
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectList = res.data.data
+          const data = res.data.data
+          this.projectList = data
           this.userProjectLoading = false
+          this.boolallDesign = true
+          if (data[0]) {
+            const {crm_design_company: designList} = data[0]
+            if (designList.length > 3) {
+              this.crmDesignCompanyList1 = designList.slice(0, 3)
+            } else {
+              this.crmDesignCompanyList1 = designList
+            }
+            this.crmDesignCompanyList = designList
+          }
         } else {
           this.$message.error(res.data.meta.message)
           this.userProjectLoading = false
@@ -1931,6 +2112,10 @@ export default {
         this.$message.error(error.message)
         this.userProjectLoading = false
       })
+    },
+    showAllDesign() {
+      this.boolallDesign = false
+      this.crmDesignCompanyList1 = [...this.crmDesignCompanyList]
     },
     addDesignCompany(id) {
       if (id) {
@@ -1941,6 +2126,7 @@ export default {
         summary: ''
       }
       this.boolDesignCompany = true
+      this.boolEditDesignCompany = false
       this.getDesignCompanyList()
     },
     getDesignCompanyList() {
@@ -1960,6 +2146,7 @@ export default {
           this.$set(this.designCompanyForm, 'contact_name', item.contact_name)
           this.$set(this.designCompanyForm, 'phone', item.phone)
           this.$set(this.designCompanyForm, 'company_name', item.company_name)
+          this.$set(this.designCompanyForm, 'position', item.position ? item.position : '')
         }
       })
     },
@@ -2048,11 +2235,11 @@ export default {
     },
     editProject(d) { // 编辑项目
       this.dialogProjectTitle = '编辑项目'
+      this.boolAddProject = false
       this.projectForm = {}
       const id = d.item_id
       if (d && id) {
         this.currentProjectId = id
-        this.boolEditProject = true
         this.boolProject = true
         this.$nextTick(_ => {
           this.projectList.forEach(item => {
@@ -2064,6 +2251,7 @@ export default {
               this.$set(this.projectForm, 'design_cost', d.design_cost)
               this.$set(this.projectForm, 'summary', d.summary)
               this.$set(this.projectForm, 'industry', d.industry)
+              this.$set(this.projectForm, 'remarks', d.remarks)
               this.projectForm.item_province = d.item_province
               this.projectForm.item_city = d.item_city
             }
@@ -2329,7 +2517,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12) {
+        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
           return true
         }
       }
@@ -2355,13 +2543,6 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
-        this.boolAddProject = false
-      }
-    },
-    option1(val) {
-      if (val === 'log') {
-        this.getLogList()
-      } else {
       }
     }
   },
@@ -2370,20 +2551,33 @@ export default {
       return nameToAvatar(val)
     },
     getProgess(val) {
-      let obj = JSON.parse(val)
-      let arr = Object.keys(obj)
-      let mix = Math.max(...arr)
-      if (mix > 5) {
+      if (val > 5) {
         return 100
       } else {
-        return mix * 16
+        return val * 16
       }
     },
-    getProgessStatus(val) {
-      let obj = JSON.parse(val)
-      let arr = Object.keys(obj)
-      let mix = Math.max(...arr)
-      return obj[mix].message
+    getProgessTime(d) {
+      let nowTime = new Date().getTime().toString().substr(0, 10)
+      let gap = parseInt((nowTime - d) / 24 / 60 / 60)
+      if (gap < 1) {
+        return d.date_format().format('yyyy-MM-dd') + ''
+      } else {
+        return `停滞${gap}天`
+      }
+    },
+    processor(val) { // 来源处理斜杠
+      if (typeof val === 'string') {
+        let arr = val.split('/')
+        let parent = arr[0]
+        let son = arr[1]
+        if (!son && parent) {
+          return `${parent}`
+        }
+        if (parent && son) {
+          return `${parent}/${son}`
+        }
+      }
     }
   },
   created() {
@@ -2400,7 +2594,6 @@ export default {
     } else {
       this.userForm.execute_user_id = this.userId
     }
-    // this.getTypeList()
     this.getAdminVoIpList()
   },
   directives: {Clickoutside},
@@ -2415,9 +2608,15 @@ export default {
 .client-line {
   border-top: 1px solid #e6e6e6;
 }
-.t180-before::before {
+.t270-before::before {
   display: inline-block;
-  transform: rotate(180deg);
+  transform: rotate(270deg);
+}
+.line-height50 {
+  line-height: 50px;
+}
+.fz-12 {
+  font-size: 12px !important;
 }
 .flex-right {
   justify-content: flex-end !important;
@@ -2455,6 +2654,12 @@ export default {
 .margin-l0 {
   margin-left: 0 !important;
 }
+.margin-l10 {
+  margin-left: 10px;
+}
+.margin-r0 {
+  margin-right: 0 !important;
+}
 .margin-l20 {
   margin-left: 20px;
 }
@@ -2466,6 +2671,9 @@ export default {
 }
 .margin-t10 {
   margin-top: 10px;
+}
+.padding-t8 {
+  padding-top: 8px;
 }
 .padding20 {
   padding: 20px;
@@ -2482,8 +2690,14 @@ export default {
 .padding-l40 {
   padding-left: 40px;
 }
+.padding-r20 {
+  padding-right: 20px;
+}
 .padding-r40 {
   padding-right: 40px;
+}
+.padding-b10 {
+  padding-bottom: 10px;
 }
 .flex-a-c {
   display: flex;
@@ -2508,7 +2722,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 40px;
+  /* height: 60px; */
 }
 .right-icon > i {
   color: #999;
@@ -2517,13 +2732,13 @@ export default {
   color: #000;
 }
 .head-c-top {
-  padding: 20px 25px 20px 30px;
+  padding: 20px 20px 20px 30px;
 }
 .head-c-content {
   /* display: flex; */
   height: 60px;
   margin: 0 30px 0 30px;
-  padding-top: 10px;
+  padding: 10px 0 20px 0;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
@@ -2535,9 +2750,10 @@ export default {
 .base-info {
   box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
   border-radius:4px;
+  padding-bottom: 10px;
 }
 .user-progress {
-  padding: 15px 30px 15px 30px;
+  padding: 15px 20px 15px 30px;
 }
 .progress-top > span {
   display: inline-block;
@@ -2574,7 +2790,15 @@ export default {
 
 .user-info-left {
   width: 64%;
-  min-height: 500px;
+  transition: 268ms all ease;
+  padding-bottom: 20px;
+}
+.project-box {
+  transition: 268ms all ease;
+}
+.max-h-500 {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .project-name {
@@ -2592,32 +2816,76 @@ export default {
 }
 .design-li {
   /* width: 680px; */
-  height: 142px;
-  padding: 10px 18px 0 20px;
+  /* height: 142px; */
+  padding: 10px 18px 4px 20px;
 }
 .design-info > div {
   width: 150px;
 }
+.design-info span {
+  line-height: 28px;
+}
 .design-li-footer {
-
+  position: relative;
+}
+.design-li-footer .div {
+  position: absolute;
+  right: 0;
+  top: 8px;
 }
 .design-li-footer span {
   display: inline-block;
 }
-.design-li-footer span:first-child {
+.design-li-footer > span:first-child {
   margin-right: 60px;
 }
 .design-progress {
-  top: 18px;
+  top: 4px;
   margin: 0 -18px 0 -20px;
 }
-.project-title, .design-title {
-  padding: 5px 30px 5px 30px;
+.project-title {
+  padding: 10px 20px 10px 30px;
   border-bottom: 1px solid #e6e6e6;
+}
+.design-title {
+  padding: 5px 20px 5px 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.progess-box {
+	position: absolute;
+	right: 0;
+	bottom: 14px;
+  height: 20px;
+	width: 100%;
+  z-index: 5;
+}
+.steps {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  padding: 20px 18px 4px 20px;
+  margin-left: -20px;
+  margin-right: -18px;
+  background-color: #fff;
+  transition: all 1s ease-out;
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
+}
+.all-design-btn {
+  position: relative;
+  z-index: 4;
+}
+
+
+.check-progess:focus + .steps {
+  display: block;
+  margin-bottom: 20px;
 }
 .user-log {
   overflow: hidden;
-  min-height: 500px;
+  transition: 268ms all ease;
+  padding-bottom: 20px;
 }
 
 .bg-blue01 {
@@ -2680,17 +2948,23 @@ export default {
 }
 
 .event-title {
-  padding: 20px 0 10px 20px;
+  padding: 20px 0 10px 0;
 }
 .log-title {
   line-height: 40px;
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 14px;
   color: #222222;
 }
+.log-box {
+  /* overflow-y: auto;
+  max-height: 500px; */
+}
 
-
-
+.steps-remarks {
+  border-top: 1px solid #D8D8D8;
+  padding: 10px 0 15px 0;
+}
 
 
 
@@ -2721,15 +2995,12 @@ export default {
   padding-right: 30px;
   height: 40px;
   align-items: center;
-  background: #fafafa;
-  border-bottom: 1px solid #e6e6ee;
   font-size: 14px;
 }
 .card-body-header span {
   display: inline-block;
   height: 40px;
   line-height: 40px;
-  padding: 0px 8px;
   margin-right: 20px;
   color: #666666;
   cursor: pointer;
@@ -2825,87 +3096,12 @@ export default {
 
 
 
-/* feedback end */
-
-/* user-rank */
-/* .user-rank {
-  max-width: 110px;
-}
-.select-parent {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  cursor: pointer;
-}
-.select-level {
-  display: block;
-  width: 88px;
-  height: 24px;
-  line-height: 22px;
-  border-radius: 11px;
-  padding-left: 30px;
-  border: 1px solid #e6e6e6;
-  color: #ffffff;
-}
-.select-parent:focus .stage-list {
-  display: block;
-}
-.stage-list {
-  display: none;
-  background: #fff;
-  width: 110px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.10);
-  position: absolute;
-  right: -10px;
-  top: 30px;
-  z-index: 2;
-}
-.stage-list li {
-  position: relative;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 10px 0 10px;
-  cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.select-parent .select-level {
-  background: url(../../../assets/images/icon/commonly01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #d2d2d2;
-}
-.select-parent .select-level2 {
-  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #999999;
-}
-.select-parent .select-level3 {
-  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #f9d718;
-}
-.select-parent .select-level4 {
-  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #ffa748;
-}
-.select-parent .select-level5 {
-  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #fe5b5f;
-} */
-/* user-rank end */
-
 .user-status {
   width: 200px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
 }
 
-/* .user-status-bg {
-  position: absolute;
-  left: 12px;
-  top: 8px;
-  z-index: 99;
-  width: 20px;
-  height: 20px;
-} */
 .user-info-center {
   margin-top: 12px;
 }
@@ -2924,23 +3120,6 @@ export default {
   background: url(../../../assets/images/icon/label.png) no-repeat left;
   background-size: 18px;
 }
-/* 标签start */
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-/* 标签end */
 
 /* card-body */
 .add-project {
@@ -2950,18 +3129,16 @@ export default {
   /* border-bottom: 1px solid #e6e6e6; */
 }
 .project-li {
-  border-bottom: 1px solid #e6e6e6;
-  padding: 20px;
+  /* border-bottom: 1px solid #e6e6e6; */
+  padding: 20px 20px 20px 30px;
 }
-.project-li:nth-child(even) {
-  background-color: #FAFAFA;
-}
+
 .edit-project {
   position: relative;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+  background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
 
 .edit-project:hover .edit-project-tag {
@@ -2971,8 +3148,8 @@ export default {
   display: none;
   position: absolute;
   top: 26px;
-  left: -70px;
-  width: 150px;
+  left: -54px;
+  width: 100px;
   z-index: 99;
   border: 1px solid #e6e6e6;
   background: #ffffff;
@@ -2988,6 +3165,9 @@ export default {
 }
 .edit-project-tag> p:hover {
   color: #484848;
+}
+.edit-project-tag > .delete {
+
 }
 .project-failure {
   color: #FF5A5F;
@@ -3072,12 +3252,6 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-/* .link-item-name:hover i {
-  background: rgba(0,0,0,.6);
-  color: #ffffff;
-  opacity: 1;
-} */
-
 .p-t-summary {
   line-height: 1.5;
   font-size: 14px;
@@ -3129,12 +3303,6 @@ export default {
   /* margin-left: 20px; */
   /* color: #666666; */
 }
-/* .log-li-top .log-next-time {
-  padding: 0px 10px;
-  height: 30px;
-  line-height: 30px;
-  background-color: #EFEFEF;
-} */
 .log-next-time span {
   margin-right: 20px;
 }
@@ -3142,12 +3310,6 @@ export default {
   padding: 0px 5px;
   cursor: pointer;
 }
-/* .log-li-top > p > span {
-  color: #9E9E9E;
-}
-.log-li-top .carry-out {
-  background: url(../../../assets/images/icon/Success@2x.png) no-repeat right / 18px 18px;
-} */
 .log-contant {
   border-top: 1px solid #e6e6e6;
   min-height: 40px;
@@ -3172,9 +3334,6 @@ export default {
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
-}
-.edit-log {
-
 }
 
 .no-head {
@@ -3235,21 +3394,6 @@ export default {
   padding-left: 0px;
 }
 
-.user-status.status1 input {
-  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status2 input {
-  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status5 input {
-  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status3 input {
-  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status4 input {
-  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
-}
 .user-info-center .call-status-select .el-select {
   width: 136px;
 }
@@ -3277,6 +3421,47 @@ export default {
 }
 .el-form-item__label:before {
   display: inline !important;
+}
+.steps .el-step__title.is-finish,
+.steps  .el-step__description.is-finish {
+  color: #222 !important;
+}
+.steps .is-finish .el-step__icon.is-text {
+  border-color: #00ac84 !important;
+}
+.steps .el-step__line {
+  background-color: #00ac84 !important;
+}
+.steps .el-step__main {
+  padding-bottom: 10px;
+}
+.steps .steps-item > .el-step {
+  flex-basis: 20% !important;
+}
+.steps .steps-item .el-step__head .el-step__line {
+  position: absolute;
+  top: 6px !important;
+  left: 5px !important;
+}
+.steps .el-step__head.is-finish {
+  color: #00ac84 !important;
+  border-color: #00ac84 !important;
+}
+.steps .el-step__head .el-step__icon-inner {
+  display: inline-block;
+}
+.steps .el-step__icon-inner[class*=el-icon]:not(.is-status) {
+  font-size: 20px;
+}
+.steps .el-step__head.is-process .el-step__icon {
+  background-color: #fff;
+	border-color: #fff;
+}
+.steps .el-step__icon-inner.el-icon-error {
+  color: #ff5a5f; 
+}
+.steps .el-step__head.is-process {
+  color: #00ac84;
 }
 </style>
 

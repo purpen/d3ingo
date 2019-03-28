@@ -285,7 +285,7 @@
         <div class="wait-intro">
           <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3" class="center-form2">
             <div class="z-index-5">
-              <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+              <div class="pc-wait-border-title"><span class="red-text"></span>发布项目需求</div>
               <el-form-item prop="demand">
                 <input v-model="form3.demand" name="username" type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入您的需求">
               </el-form-item>

@@ -491,7 +491,9 @@
                     <el-button type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
                   </el-col>
                 </el-row>
-                <p v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length" v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                <div v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length">
+                  <p v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                </div>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
                 <p>无</p>
@@ -777,8 +779,8 @@
             <el-row>
               <el-col>
                 <div class="form-footer">
-                  <div class="form-btn">
-                    <el-button @click="dialogVisible = false">取消</el-button>
+                  <div class="form-btn fz-0">
+                    <el-button class="margin-r-15" @click="dialogVisible = false">取消</el-button>
                     <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
                     </el-button>
                   </div>
@@ -932,6 +934,7 @@
       }
       return {
         oldName: '',
+        checkName: true, // 检查公司名称是否可用， 默认可用
         prizeArr: [], // 奖项
         editTag: false, // input标签
         oldVal: {},
@@ -1189,10 +1192,11 @@
         }
         this.$http.get(api.checkDesignCompany, {params: {company_name: name}})
         .then(res => {
-          if (res.data && res.data.meta.status_code === 200) {
+          if (res.data && res.data.data !== 1) {
+            this.checkName = false
             this.$message.error(res.data.meta.message)
           } else {
-            this.$message.error(res.data.meta.message)
+            this.checkName = true
           }
         })
         .catch(err => {
@@ -1522,7 +1526,7 @@
       change(obj) {
         this.province = this.form.province = obj.province
         this.city = this.form.city = obj.city
-        this.district = this.form.area = obj.district
+        this.district = this.form.area = obj.district || 0
       },
       avatarProgress() {
         this.avatarStr = '上传中...'
@@ -1662,6 +1666,10 @@
       },
       submit(formName) {
         const that = this
+        if (!that.checkName) {
+          that.$message.error('公司名称已存在，不能使用')
+          return false
+        }
         if (this.agreement !== true) {
           that.$message.error('公司认证之前请先确认条款!')
           return false
@@ -1688,10 +1696,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
-            if (!that.form.area) {
-              that.$message.error('请选择所在区县')
-              return false
-            }
+            // if (!that.form.area) {
+            //   that.$message.error('请选择所在区县')
+            //   return false
+            // }
             if (!that.fileList.length) {
               that.$message.error('请上传公司营业执照')
               return false
@@ -1705,7 +1713,7 @@
               email: that.form.email,
               phone: that.form.phone + '',
               province: that.form.province,
-              area: that.form.area,
+              area: that.form.area || 0,
               city: that.form.city,
               address: that.form.address,
               account_name: that.form.account_name,
@@ -1870,7 +1878,7 @@
                 email: data.email,
                 phone: data.phone + '',
                 province: data.province,
-                area: data.area,
+                area: data.area || '',
                 city: data.city,
                 establish_time: this.form.establish_time,
                 address: data.address,
