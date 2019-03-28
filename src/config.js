@@ -1911,6 +1911,14 @@ const ADMINMENU = {
           params: {},
           query: {}
         }
+      },
+      {
+        name: '新列表',
+        route: 'adminCompanyHome',
+        statement: {
+          params: {},
+          query: {}
+        }
       }
     ]
   },
