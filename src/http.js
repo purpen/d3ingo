@@ -47,7 +47,8 @@ axiosInstance.interceptors.request.use(
 // http response 拦截器
 axiosInstance.interceptors.response.use(
   response => {
-    return response
+    // return response
+    return Promise.resolve(response)
   },
   error => {
     var msg = ''
