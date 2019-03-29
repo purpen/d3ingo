@@ -103,7 +103,7 @@
         @filter-change = "filterProvinces"
         >
         <el-table-column
-          width="80">
+          width="60">
           <template slot-scope="scope">
             <div class="text-cen">{{scope.row.id}}</div>
           </template>
