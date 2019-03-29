@@ -85,7 +85,7 @@
         </el-menu>
       </div>
     </header>
-    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name||isSaaS" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -252,17 +252,33 @@
         console.log(key, keyPath)
       },
       getRouter() {
-        let object = {}
-        for (let i in ADMINMENU) {
-          object = ADMINMENU[i].children.find((k, val) => {
-            if (k.route === this.$route.name) {
-              this.routerSelect = ADMINMENU[i]
-              return ADMINMENU[i].children[val]
+        if (this.isSaaS) {
+          let object = {}
+          for (let i in ADMINMENU) {
+            object = ADMINMENU[i].children.find((k, val) => {
+              if (k.route === this.$route.name) {
+                this.routerSelect = ADMINMENU[i]
+                return ADMINMENU[i].children[val]
+              }
+            })
+            if (object) {
+              this.subRouter = object
+              break
             }
-          })
-          if (object) {
-            this.subRouter = object
-            break
+          }
+        } else {
+          let object = {}
+          for (let i in OTHERADMINMENU) {
+            object = OTHERADMINMENU[i].children.find((k, val) => {
+              if (k.route === this.$route.name) {
+                this.routerSelect = OTHERADMINMENU[i]
+                return OTHERADMINMENU[i].children[val]
+              }
+            })
+            if (object) {
+              this.subRouter = object
+              break
+            }
           }
         }
       }
@@ -272,7 +288,7 @@
       this.selectedName = this.$route.name
       this.selectedName2 = this.$route.name
       this.getRouter()
-      console.log('this.subRouter', this.subRouter)
+      console.log('this.subRouter', this.$store.state.event.prod)
       if (this.$route.name === 'adminPotentialUserList') {
         this.selectedName = this.$route.name + this.$route.params.type
         this.selectedName2 = this.$route.name + this.$route.params.type
@@ -294,6 +310,14 @@
       console.log(this.selectedName, this.selectedName2)
     },
     computed: {
+      isSaaS() {
+        let saas = false
+        let rou = this.$route.path.split('/')
+        if (rou[1] === 'admin') {
+          saas = true
+        }
+        return saas
+      },
       adminMenu() {
         return ADMINMENU
       },
@@ -393,6 +417,7 @@
         }
       },
       prod() {
+        console.log(this.$store.state.event.prod)
         return this.$store.state.event.prod
       }
     },

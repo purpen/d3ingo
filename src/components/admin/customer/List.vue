@@ -1708,6 +1708,7 @@ export default {
         this['query' + this.typeId].sort_evt = 3
         this['query' + this.typeId].sort = 1
       }
+      console.log(val)
       this.getClueList()
     },
     // 升降序
@@ -1774,7 +1775,7 @@ export default {
     // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' clearable placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -2243,7 +2244,6 @@ export default {
       }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
-      this.sortEvts = this['query' + this.typeId].sort_evt
       this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
@@ -2301,7 +2301,6 @@ export default {
           row.new_status = type
           row.label_cause = ''
         }
-        console.log(row)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
@@ -2574,7 +2573,7 @@ export default {
     this.typeId = Number(this.$route.params.type) || 1
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     if (this.typeId) {
-      if (this.typeId === 1) {
+      if (this.typeId === 1 || this.typeId === 5) {
         this.statusList = [
           {
             'text': '待初次沟通',
@@ -2651,6 +2650,8 @@ export default {
     if (this.typeId > 4) {
       this['query' + this.typeId].sort_evt = 7
     }
+    this.selectedOptions2 = []
+    this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
     this.getAdminList()
     this.getUsers()
@@ -2680,6 +2681,9 @@ export default {
     }
   },
   watch: {
+    selectedOptions2(val) {
+      console.log('val', val)
+    },
     $route(to, form) {
       // 对路由变化做出相应...
       this.typeId = Number(this.$route.params.type) || 1
@@ -2716,7 +2720,7 @@ export default {
       }
       this.multipleSelection = []
       if (this.typeId) {
-        if (this.typeId === 1) {
+        if (this.typeId === 1 || this.typeId === 5) {
           this.statusList = [
             {
               'text': '待初次沟通',
@@ -2792,6 +2796,12 @@ export default {
       this.isFirst = true
       this.downCheck()
       this.$refs.tableData.clearFilter()
+      // 搜索条件默认
+      if (this.typeId > 4) {
+        this['query' + this.typeId].sort_evt = 7
+      }
+      this.sortEvts = this['query' + this.typeId].sort_evt
+      this.selectedOptions2 = []
       // this.isCheck = false
       this.getClueList()
     }
