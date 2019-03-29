@@ -93,8 +93,8 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate"></customer>
-    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate"></cases>
+    <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate" :load="1"></customer>
+    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
     <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item"></introduction>
@@ -106,7 +106,7 @@
         <el-button size="small" type="primary" @click="setVerify(evt)">确 定</el-button>
       </span>
     </el-dialog>
-    <div v-if="detailLoading" class="loadingFiexd">
+    <div v-if="detailLoading" class="loading-fiexd">
       <div class="fiex-content" v-loading="detailLoading"></div>
     </div>
   </div>
