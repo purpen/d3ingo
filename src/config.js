@@ -948,7 +948,7 @@ const DESIGN_CASE_PRICE_OPTIONS = [
   {
     id: 20,
     name: '其他',
-    img: require('assets/images/prize_logo/20.png')
+    img: require('assets/images/prize_logo/20.jpg')
   }
 ]
 
