@@ -185,7 +185,6 @@
         this.$router.push(obj)
         this.openRouter = false
         this.$refs.routerBtn.blur()
-        console.log(this.$refs.routerBtn)
       },
       alick(e) {
         sessionStorage.setItem('MENU_BAR', e.target.offsetLeft)
@@ -252,11 +251,15 @@
         console.log(key, keyPath)
       },
       getRouter() {
+        let names = this.$route.name
+        if (this.$route.name === 'adminPotentialUserInfo') {
+          names = 'adminPotentialUserList'
+        }
         if (this.isSaaS) {
           let object = {}
           for (let i in ADMINMENU) {
             object = ADMINMENU[i].children.find((k, val) => {
-              if (k.route === this.$route.name) {
+              if (k.route === names) {
                 this.routerSelect = ADMINMENU[i]
                 return ADMINMENU[i].children[val]
               }
@@ -288,7 +291,6 @@
       this.selectedName = this.$route.name
       this.selectedName2 = this.$route.name
       this.getRouter()
-      console.log('this.subRouter', this.$store.state.event.prod)
       if (this.$route.name === 'adminPotentialUserList') {
         this.selectedName = this.$route.name + this.$route.params.type
         this.selectedName2 = this.$route.name + this.$route.params.type
@@ -301,7 +303,7 @@
         this.selectedName = localStorage.getItem('selectedName')
         this.selectedName2 = localStorage.getItem('selectedName2')
         let set = this.routerSelect.children.find(item => {
-          return item.subRouter === Number(this.$route.params.type)
+          return item.subRouter === Number(this.$route.query.type)
         })
         this.subRouter = set
       }
@@ -417,7 +419,6 @@
         }
       },
       prod() {
-        console.log(this.$store.state.event.prod)
         return this.$store.state.event.prod
       }
     },
@@ -444,7 +445,7 @@
           this.selectedName = localStorage.getItem('selectedName')
           this.selectedName2 = localStorage.getItem('selectedName2')
           let set = this.routerSelect.children.find(item => {
-            return item.subRouter === Number(this.$route.params.type)
+            return item.subRouter === Number(this.$route.query.type)
           })
           this.subRouter = set
         }
