@@ -2365,7 +2365,7 @@ export default {
   }
   .chart-header {
     height: 70px;
-    padding: 15px 0px 15px 20px;
+    padding: 15px 0px 15px 0px;
   }
   .chart-header2::after {
     content: '';

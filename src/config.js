@@ -2297,7 +2297,7 @@ const OTHERADMINMENU = {
   },
   adminUserList: {
     name: '铟果后台',
-    route: 'adminUserList',
+    route: 'adminDashBoard',
     icon: require('assets/images/admin/menu/User@2x.png'),
     statement: {
       params: {},
@@ -2306,7 +2306,7 @@ const OTHERADMINMENU = {
     children: [
       {
         name: '列表',
-        route: 'adminUserList',
+        route: 'adminDashBoard',
         statement: {
           params: {},
           query: {}

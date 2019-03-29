@@ -31,7 +31,7 @@
         <div class="export-del" tabindex="-1" @blur="isexportShow = false" @click="isexportShow=true">
           <i class="el-icon-more"></i>
           <ul v-show="isexportShow">
-            <li @click="exportForm">导出报表</li>
+            <li @click="exportFormPost">导出报表</li>
             <li v-if="typeId === 1" @click="delBusiness = true">删除</li>
           </ul>
         </div>
@@ -1708,6 +1708,7 @@ export default {
         this['query' + this.typeId].sort_evt = 3
         this['query' + this.typeId].sort = 1
       }
+      console.log(val)
       this.getClueList()
     },
     // 升降序
@@ -1774,7 +1775,7 @@ export default {
     // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' clearable placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -2243,7 +2244,6 @@ export default {
       }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
-      this.sortEvts = this['query' + this.typeId].sort_evt
       this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
@@ -2301,7 +2301,6 @@ export default {
           row.new_status = type
           row.label_cause = ''
         }
-        console.log(row)
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
@@ -2489,6 +2488,37 @@ export default {
       downloadUrl = url + '?' + urlStr + '&status=' + this.typeId
       window.open(decodeURI(downloadUrl))
     },
+    exportFormPost() {
+      let ids = this.arrayExportIds()
+      const data = {
+        token: this.token
+      }
+      let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      let node2 = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      node2.name = 'clue_id'
+      node2.value = ids.join(',')
+      form.appendChild(node2.cloneNode())
+      // 表单元素需要添加到主文档中.
+      console.log(node2.value)
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
+    },
     arrayExportIds() {
       var idArr = []
       for (var i = 0; i < this.multipleSelection.length; i++) {
@@ -2574,7 +2604,7 @@ export default {
     this.typeId = Number(this.$route.params.type) || 1
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     if (this.typeId) {
-      if (this.typeId === 1) {
+      if (this.typeId === 1 || this.typeId === 5) {
         this.statusList = [
           {
             'text': '待初次沟通',
@@ -2651,6 +2681,8 @@ export default {
     if (this.typeId > 4) {
       this['query' + this.typeId].sort_evt = 7
     }
+    this.selectedOptions2 = []
+    this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
     this.getAdminList()
     this.getUsers()
@@ -2680,6 +2712,9 @@ export default {
     }
   },
   watch: {
+    selectedOptions2(val) {
+      console.log('val', val)
+    },
     $route(to, form) {
       // 对路由变化做出相应...
       this.typeId = Number(this.$route.params.type) || 1
@@ -2716,7 +2751,7 @@ export default {
       }
       this.multipleSelection = []
       if (this.typeId) {
-        if (this.typeId === 1) {
+        if (this.typeId === 1 || this.typeId === 5) {
           this.statusList = [
             {
               'text': '待初次沟通',
@@ -2792,6 +2827,12 @@ export default {
       this.isFirst = true
       this.downCheck()
       this.$refs.tableData.clearFilter()
+      // 搜索条件默认
+      if (this.typeId > 4) {
+        this['query' + this.typeId].sort_evt = 7
+      }
+      this.sortEvts = this['query' + this.typeId].sort_evt
+      this.selectedOptions2 = []
       // this.isCheck = false
       this.getClueList()
     }
