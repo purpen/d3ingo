@@ -103,7 +103,7 @@
         @filter-change = "filterProvinces"
         >
         <el-table-column
-          width="80">
+          width="60">
           <template slot-scope="scope">
             <div class="text-cen">{{scope.row.id}}</div>
           </template>
@@ -189,6 +189,9 @@
         </el-pagination>
       </div>
     </div>
+    <div v-if="homeLoading" class="loading-fiexd">
+      <div class="fiex-content" v-loading="homeLoading"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -216,17 +219,18 @@ export default {
       }],
       designReault: '0',
       companyChoose: [{
-        value: '1',
+        value: '2',
         label: '按公司名称'
       }, {
-        value: '2',
+        value: '3',
         label: '按公司简称'
       }, {
-        value: '3',
+        value: '1',
         label: '按公司编号'
       }],
       companyReault: '',
       currentPage2: 5,
+      homeLoading: false,
       tableData: [],
       query: {
         page: 1,
@@ -313,6 +317,7 @@ export default {
     },
     loadList() {
       const self = this
+      self.homeLoading = true
       self.query.type = self.designReault
       self.query.evt = self.companyReault
       self.query.val = self.seleValue
@@ -371,11 +376,14 @@ export default {
             }
             self.tableData.push(item)
           }
+          self.homeLoading = false
         } else {
+          self.homeLoading = false
           self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        self.homeLoading = false
         self.$message.error(error.message)
       })
     }
@@ -508,6 +516,18 @@ export default {
   }
   .text-cen {
     text-align: center;
+  }
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
   }
 
 

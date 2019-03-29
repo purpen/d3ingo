@@ -1014,8 +1014,7 @@
     height: 15px;
     background: url('../../assets/images/design_admin/menu@2x.png') no-repeat center / contain;
   }
-  .sever-icon .el-input__inner, 
-   .el-input__inner {
+  .sever-icon .el-input__inner {
     font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1070,6 +1069,9 @@
   }
   .el-table-filter__list {
     max-height: 200px;
+  }
+  .fiex-content .el-loading-spinner {
+    top: 40%;
   }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {

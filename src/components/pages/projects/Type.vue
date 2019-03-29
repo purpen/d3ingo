@@ -55,7 +55,7 @@
                 @click="addArray(ele.id, 'complete_content')">{{ele.name}}</i>
             </span>
             <span :class="['hidden', {'show': form.complete_content.indexOf(5) !== -1}]">
-              <el-input type="text" v-model="form.other_content" placeholder="请输入..."></el-input>
+              <el-input type="text" v-model="form.other_content" placeholder="请输入设计内容..."></el-input>
             </span>
           </div>
         </section>
@@ -81,7 +81,7 @@
                 @click="addArray(ec.id, 'existing_content')">{{ec.name}}</i>
             </span>
             <span :class="['hidden', {'show': form.existing_content.indexOf(3) !== -1}]">
-              <el-input v-model="form.other_content2" placeholder="请输入..."></el-input>
+              <el-input v-model="form.other_content2" placeholder="请输入设计内容..."></el-input>
             </span>
           </div>
         </section>
@@ -121,7 +121,7 @@
                 @click="addArray(ec.id, 'existing_content')">{{ec.name}}</i>
             </span>
             <span :class="['hidden', {'show': form.existing_content.indexOf(3) !== -1}]">
-              <el-input type="text" v-model="form.other_content2" placeholder="请输入..."></el-input>
+              <el-input type="text" v-model="form.other_content2" placeholder="请输入设计内容..."></el-input>
             </span>
           </div>
         </section>
@@ -402,7 +402,8 @@ export default {
       this.$http.put(url, row)
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.$router.push({name: 'projectInfo', params: {id: this.id}})
+          // this.$router.push({name: 'projectInfo', params: {id: this.id}})
+          this.$router.push({name: 'projectRelease', params: {id: this.id}})
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -500,8 +501,10 @@ export default {
   .items-radio span i::before {
     content: "";
     position: absolute;
-    left: 4px;
-    top: 12px;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -510,8 +513,8 @@ export default {
   .items-radio span i::after {
     content: "";
     position: absolute;
-    left: 10px;
-    top: 14px;
+    left: 11px;
+    top: 13px;
     width: 5px;
     height: 10px;
     border: 1px solid transparent;
