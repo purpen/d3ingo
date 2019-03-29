@@ -181,6 +181,9 @@
       }
     },
     created() {
+      this.province = this.provinceProp || ''
+      this.city = this.cityProp || ''
+      this.district = this.districtProp || ''
     },
     watch: {
       provinceProp(d) {
