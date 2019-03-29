@@ -101,7 +101,7 @@
     <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
     <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
-    <introduction v-show="type === 5" :item="item"></introduction>
+    <introduction v-show="type === 5" :item="item" :prizeArr="prizeArr"></introduction>
 
     <el-dialog title="请填写原因" :visible.sync="dialogVisible" width="380px">
       <el-input v-model="refuseRease"></el-input>
@@ -122,6 +122,7 @@ import server from 'admin/company/Server'
 import certificate from 'admin/company/Certificate'
 import cases from 'admin/company/Case'
 import introduction from 'admin/company/Introduction'
+import typeData from '@/config'
 export default {
   data() {
     return {
@@ -130,6 +131,7 @@ export default {
       designItem: '',
       dialogVisible: false,
       detailLoading: false,
+      prizeArr: [],
       tableDatas: '',
       refuseRease: '',
       itemId: '',
@@ -202,6 +204,39 @@ export default {
               self.item.company_size_value = '300人以上'
               break
           }
+          let arrIds = []
+          let arr = []
+          if (self.item.prizes && self.item.prizes.length) {
+            self.item.prizes.forEach(item => {
+              let index = arrIds.indexOf(item.type)
+              if (index === -1 || !item.type) {
+                arrIds.push(item.type)
+                let i = {}
+                i = {
+                  type: item.type,
+                  count: 1,
+                  name: '',
+                  times: []
+                }
+                self.prizeOptions.find(p => {
+                  if (p.value === item.type) {
+                    i.name = p.label
+                    i.img = p.img
+                  }
+                })
+                if (item.time) {
+                  i.times.push(item.time)
+                }
+                arr.push(i)
+              } else {
+                arr[index].count++
+                if (item.time) {
+                  arr[index].times.push(item.time)
+                }
+              }
+            })
+          }
+          self.prizeArr = arr
           self.detailLoading = false
         } else {
           self.detailLoading = false
@@ -297,6 +332,20 @@ export default {
     that.itemId = that.$route.params.id
     that.companyShow(id)
     // that.getList(id)
+  },
+  computed: {
+    prizeOptions() {
+      let items = []
+      for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
+        let item = {
+          value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
+          label: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['name'],
+          img: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['img']
+        }
+        items.push (item)
+      }
+      return items
+    }
   },
   components: {
     server,
