@@ -126,6 +126,9 @@
       <div class="empty-title">暂未对接过客户</div>
       <div class="empty-text">入驻日期：{{creatDate}}</div>
     </div>
+    <div v-if="customLoading" class="loading-fiexd">
+      <div class="fiex-content" v-loading="customLoading"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -156,6 +159,7 @@ export default {
       },
       cusId: '',
       urlIm: '',
+      customLoading: false,
       customer: [],
       httpUrl: '',
       tokens: ''
@@ -179,6 +183,7 @@ export default {
       this.getCustomer(this.cusId)
     },
     selectDesign() {
+      this.query.page = 1
       this.getCustomer(this.cusId)
     },
     getReport() {
@@ -189,6 +194,7 @@ export default {
     },
     getCustomer(id) {
       let self = this
+      self.customLoading = true
       self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: self.query.page, per_page: self.query.pageSize, status: self.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -215,11 +221,14 @@ export default {
                 break
             }
           }
+          self.customLoading = false
         } else {
+          self.customLoading = false
           self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        self.customLoading = false
         self.$message.error(error.message)
       })
     }
@@ -359,5 +368,17 @@ export default {
     font-weight: 400;
     color: rgba(102,102,102,1);
     padding-top: 10px;
+  }
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
   }
 </style>

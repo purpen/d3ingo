@@ -32,7 +32,7 @@
           <el-table-column
             label="标签">
             <template slot-scope="scope">
-              <div class="flex-center label-round">
+              <div class="flex-center label-round flex-warp">
                 <template v-if="scope.row.label && scope.row.label.length">
                   <div class="label-style" v-for="(label, index) in scope.row.label" :key="index">#{{label}}</div>
                 </template>
@@ -200,7 +200,10 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
-  .label-round .label-style:not(:nth-last-child(1)) {
+  .label-style {
+    white-space: nowrap;
+  }
+  .label-round .label-style {
     padding-left: 5px;
   }
   .desimg-round img{
@@ -242,5 +245,8 @@ export default {
   }
   .text-cen {
     text-align: center;
+  }
+  .flex-warp {
+    flex-flow: wrap;
   }
 </style>
