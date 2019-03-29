@@ -284,7 +284,6 @@ export default {
       this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
     },
     filterProvinces(value) {
-      console.log(value)
       if (value.company_size) {
         this.query.scale = value.company_size[0]
       }
