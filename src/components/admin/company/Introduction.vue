@@ -43,7 +43,7 @@
       </div>
       <div class="flex">
         <div class="cer-left">荣誉奖项</div>
-        <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
+        <template v-if="prizeArr && prizeArr.length">
           <div class="prizeRound">
             <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
               <img :src="item.img" alt="">
