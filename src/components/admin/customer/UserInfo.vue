@@ -1068,6 +1068,10 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS项目'
+            },
+            {
               value: 'topic_view_h',
               label: '文章详情头部'
             },
