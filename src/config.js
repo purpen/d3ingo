@@ -1774,8 +1774,8 @@ const CONTRACT_SCALE = {
   test: ''
 }
 
-const ADMINMENU = [
-  {
+const ADMINMENU = {
+  adminDashBoard: {
     name: '控制台',
     route: 'adminDashBoard',
     icon: require('assets/images/admin/menu/Console@2x.png'),
@@ -1794,7 +1794,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminPotentialUserList: {
     name: '客户管理',
     route: 'adminPotentialUserList',
     icon: require('assets/images/admin/menu/Customer@2x.png'),
@@ -1868,7 +1868,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminItemList: {
     name: '项目管理',
     route: 'adminItemList',
     icon: require('assets/images/admin/menu/Project@2x.png'),
@@ -1895,7 +1895,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminCompanyList: {
     name: '设计服务商管理',
     route: 'adminCompanyList',
     icon: require('assets/images/admin/menu/DesignCompany@2x.png'),
@@ -1904,9 +1904,17 @@ const ADMINMENU = [
       query: {}
     },
     children: [
+      // {
+      //   name: '列表',
+      //   route: 'adminCompanyList',
+      //   statement: {
+      //     params: {},
+      //     query: {}
+      //   }
+      // },
       {
-        name: '列表',
-        route: 'adminCompanyList',
+        name: '服务商列表',
+        route: 'adminCompanyHome',
         statement: {
           params: {},
           query: {}
@@ -1914,7 +1922,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminDemandCompanyList: {
     name: '需求公司管理',
     route: 'adminDemandCompanyList',
     icon: require('assets/images/admin/menu/DemandCompany@2x.png'),
@@ -1933,7 +1941,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminAchievmentList: {
     name: '顺德交易会',
     route: 'adminAchievmentList',
     icon: require('assets/images/admin/menu/ShunDe@2x.png'),
@@ -1968,7 +1976,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminOrderList: {
     name: '订单管理',
     route: 'adminOrderList',
     icon: require('assets/images/admin/menu/Order@2x.png'),
@@ -1987,7 +1995,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminRecommendList: {
     name: '推荐配置',
     route: 'adminRecommendList',
     icon: require('assets/images/admin/menu/Recommend@2x.png'),
@@ -2014,7 +2022,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminWithDrawList: {
     name: '提现管理',
     route: 'adminWithDrawList',
     icon: require('assets/images/admin/menu/CashWithdrawal@2x.png'),
@@ -2033,7 +2041,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminReceiveInvoicetList: {
     name: '发票管理',
     route: 'adminReceiveInvoicetList',
     icon: require('assets/images/admin/menu/Invoice@2x.png'),
@@ -2060,7 +2068,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminDesignCaseList: {
     name: '案例管理',
     route: 'adminDesignCaseList',
     icon: require('assets/images/admin/menu/Case@2x.png'),
@@ -2079,7 +2087,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminContentList: {
     name: '内容管理',
     route: 'adminContentList',
     icon: require('assets/images/admin/menu/Content@2x.png'),
@@ -2162,7 +2170,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminCategoryList: {
     name: '系统管理',
     route: 'adminCategoryList',
     icon: require('assets/images/admin/menu/System@2x.png'),
@@ -2189,7 +2197,7 @@ const ADMINMENU = [
       }
     ]
   },
-  {
+  adminUserList: {
     name: '用户管理',
     route: 'adminUserList',
     icon: require('assets/images/admin/menu/User@2x.png'),
@@ -2208,10 +2216,10 @@ const ADMINMENU = [
       }
     ]
   }
-]
+}
 
-const OTHERADMINMENU = [
-  {
+const OTHERADMINMENU = {
+  bAdminItemList: {
     name: '项目管理',
     route: 'bAdminItemList',
     icon: require('assets/images/admin/menu/Project@2x.png'),
@@ -2230,7 +2238,7 @@ const OTHERADMINMENU = [
       }
     ]
   },
-  {
+  bAdminDemandCompanyList: {
     name: '需求公司管理',
     route: 'bAdminDemandCompanyList',
     icon: require('assets/images/admin/menu/DemandCompany@2x.png'),
@@ -2249,7 +2257,7 @@ const OTHERADMINMENU = [
       }
     ]
   },
-  {
+  bAdminOrderList: {
     name: '订单管理',
     route: 'bAdminOrderList',
     icon: require('assets/images/admin/menu/Order@2x.png'),
@@ -2268,9 +2276,9 @@ const OTHERADMINMENU = [
       }
     ]
   },
-  {
+  bAdminUserList: {
     name: '用户管理',
-    route: 'bAdminItemList',
+    route: 'bAdminUserList',
     icon: require('assets/images/admin/menu/User@2x.png'),
     statement: {
       params: {},
@@ -2287,7 +2295,7 @@ const OTHERADMINMENU = [
       }
     ]
   },
-  {
+  adminUserList: {
     name: '铟果后台',
     route: 'adminDashBoard',
     icon: require('assets/images/admin/menu/User@2x.png'),
@@ -2306,7 +2314,7 @@ const OTHERADMINMENU = [
       }
     ]
   }
-]
+}
 // test
 const TEST = {}
 

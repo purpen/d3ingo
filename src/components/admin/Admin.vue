@@ -105,7 +105,7 @@
           :default-active="selectedName"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
-            <el-submenu v-for="(ele, index) in adminMenu" :key="index" :index="index + ''">
+            <el-submenu v-for="(ele, index) in adminMenu" :key="index" :index="index">
             <template slot="title">
               <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
               </template>
@@ -135,7 +135,7 @@
           :default-active="selectedName2"
           @select="handleSelect" @open="handleOpen" @close="handleClose" router
           background-color="#222" text-color="rgba(255, 255, 255, 0.5)" active-text-color="#ff5a5f" active-background-color="#000">
-            <el-submenu v-for="(ele, index) in otherAdminMenu" :key="index" :index="index + ''">
+            <el-submenu v-for="(ele, index) in otherAdminMenu" :key="index" :index="index">
             <template slot="title">
               <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
               </template>

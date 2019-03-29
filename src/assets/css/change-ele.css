@@ -972,6 +972,105 @@
   .phone-el-pad-bot .el-form-item {
     margin-bottom: 0;
   }
+  .header-border .el-progress--circle .el-progress-circle__path {
+    stroke: #0A6DD9;
+  }
+  .header-progress .el-progress__text {
+    display: flex;
+    flex-direction: column;
+  }
+  .is-add-tooltop {
+    width: 163px;
+    height: auto;
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+  }
+  .el-tooltip__popper.is-add-tooltop[x-placement^="right"] .popper__arrow::after {
+    border-right-color: #fff;
+  }
+  .el-tooltip__popper[x-placement^=right] .popper__arrow, .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
+    border-color: transparent;
+    border-right-color: #C8C8C8;
+  }
+  .el-tooltip__popper.is-add-tooltop[x-placement^="right"] {
+    margin-left: 14px;
+    margin-top: -6px;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+  }
+  .sever-icon .el-input:before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 20px;
+    height: 15px;
+    background: url('../../assets/images/design_admin/menu@2x.png') no-repeat center / contain;
+  }
+  .sever-icon .el-input__inner, 
+   .el-input__inner {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    line-height: 20px;
+    padding: 15px 15px 15px 30px;
+  }
+  .sever-round .el-input__inner{
+    height: 36px;
+  }
+  .sever-right .el-input__inner {
+    padding: 15px 15px 15px 15px;
+    height: 34px;
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+  .sever-right .el-input__inner:hover {
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+  .sever-right .el-select .el-input.is-focus .el-input__inner {
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+  .sever-right .el-select:hover .el-input__inner {
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+  .sever-right .el-input .el-input__inner:focus {
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+  .sever-right .el-input__icon {
+    line-height: 34px;
+  }
+  .sever-right .el-input__suffix {
+    right: 2px;
+  }
+  .el-table-filter {
+    max-height: 200px;
+    overflow-x: hidden;
+  }
+  .el-table-filter__list {
+    max-height: 200px;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;
