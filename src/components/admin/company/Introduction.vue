@@ -170,6 +170,7 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 19px;
     padding-left: 10px;
+    word-break: break-all;
   }
   .prizeRound .cer-right:not(:nth-child(1)) {
     padding-top: 5px;
