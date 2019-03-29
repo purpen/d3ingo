@@ -1904,16 +1904,16 @@ const ADMINMENU = {
       query: {}
     },
     children: [
+      // {
+      //   name: '列表',
+      //   route: 'adminCompanyList',
+      //   statement: {
+      //     params: {},
+      //     query: {}
+      //   }
+      // },
       {
-        name: '列表',
-        route: 'adminCompanyList',
-        statement: {
-          params: {},
-          query: {}
-        }
-      },
-      {
-        name: '新列表',
+        name: '服务商列表',
         route: 'adminCompanyHome',
         statement: {
           params: {},

@@ -70,7 +70,7 @@
     <div class="bottom">
       <div class="flex-center-space">
         <div class="sever-round">
-          <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="loadList()">
+          <el-select v-model="designReault" placeholder="请选择" class="sever-icon" @change="selectLoad()">
             <el-option
               v-for="item in designChoose"
               :key="item.value"
@@ -90,8 +90,8 @@
               popper-class="drop-down">
             </el-option>
           </el-select>
-          <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue"/>
-          <div class="select-img" @click="loadList()"></div>
+          <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue" @keyup.enter="selectLoad()"/>
+          <div class="select-img" @click="selectLoad()"></div>
         </div>
       </div>
     </div>
@@ -116,8 +116,8 @@
             <div class="flex-center home-img-round">
               <img :src="scope.row.logo_url" />
               <div class="pad-left-15">
-                <div class="com-abb text-overflow">{{scope.row.company_abbreviation}}</div>
-                <div class="com-name text-overflow">{{scope.row.company_name}}</div>
+                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '-'}}</div>
+                <div class="com-name text-overflow">{{scope.row.company_name || '-'}}</div>
               </div>
             </div>
           </template>
@@ -130,15 +130,17 @@
           :filter-multiple="false"
           class="add-style">
           <template slot-scope="scope">
-            <span>{{scope.row.province_value}}</span>·<span>{{scope.row.city_value}}</span>
+            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '-'}}<span>{{scope.row.city_value}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="company_size_val"
           label="公司规模"
           column-key="company_size"
           :filters="companySizes"
           :filter-multiple="false">
+            <template slot-scope="scope">
+              <span>{{scope.row.company_size_val || '-'}}</span>
+            </template>
         </el-table-column>
         <el-table-column
           prop="created_at"
@@ -304,6 +306,10 @@ export default {
           self.statistical = res.data.data
         }
       })
+    },
+    selectLoad() {
+      this.query.page = 1
+      this.loadList()
     },
     loadList() {
       const self = this
