@@ -35,7 +35,7 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text">{{scope.row.clue_name || '-'}}</div>
+                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.id)">{{scope.row.clue_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
@@ -55,15 +55,15 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">项目：</div>
-                  <div class="info-text text-hidden">{{scope.row.crm_item_name || '-'}}</div>
+                  <div class="info-text text-hidden cursor-poin" @click="toItemDetail(scope.row.item_id)">{{scope.row.item_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">类型：</div>
-                  <div class="info-text">{{scope.row.crm_item_type || '-'}}</div>
+                  <div class="info-text">{{scope.row.crm_item_type_value || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">预算：</div>
-                  <div class="info-text">{{scope.row.crm_item_design_cost || '-'}}</div>
+                  <div class="info-text">{{scope.row.design_cost_value || '-'}}</div>
                 </div>
               </div>
             </template>
@@ -191,6 +191,16 @@ export default {
       // let self = this
       // self.urlIm = `http://localhost:8082/api/admin/designCompany/downloadReport?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhLnRhaWh1b25pYW8uY29tL2F1dGgvbG9naW4iLCJpYXQiOjE1NTM1Njk1MDEsImV4cCI6MTU1NjE2MTUwMSwibmJmIjoxNTUzNTY5NTAxLCJqdGkiOiI1MENKcjVkT0FUazVoZHdkIiwic3ViIjo0MjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vGMaPzb9XPInjGOOF1P651wTKY3xieiBC2CP7uPA4OI&status=${self.designReault}&design_company_id=${self.cusId}`
       // window.open(url)
+    },
+    toItemDetail(id) {
+      this.$router.push({name: 'adminItemShow0', params: {id: id}})
+    },
+    toCustemDetail(id) {
+      const {href} = this.$router.resolve({
+        path: `/admin/customer/userinfo/${id}`,
+        query: {isService: 1}
+      })
+      this.$router.push(href)
     },
     getCustomer(id) {
       let self = this
@@ -380,5 +390,11 @@ export default {
   .fiex-content {
     width: 100%;
     height: 100%;
+  }
+  .cursor-poin {
+    cursor: pointer;
+  }
+  .cursor-poin:hover {
+    color: #ff5a5f;
   }
 </style>
