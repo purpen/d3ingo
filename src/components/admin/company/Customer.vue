@@ -202,10 +202,10 @@ export default {
     toCustemDetail(id) {
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {isService: 1}
+        query: {isService: 1, type: 1}
       })
-      window.open(href, '_blank')
-      // this.$router.push(href)
+      // window.open(href, '_blank')
+      this.$router.push(href)
     },
     getCustomer(id) {
       let self = this
