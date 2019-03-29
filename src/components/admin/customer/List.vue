@@ -1020,6 +1020,10 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
               label: '文章详情头部'
             },
@@ -1190,7 +1194,7 @@ export default {
             },
             {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
