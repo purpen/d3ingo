@@ -1460,7 +1460,8 @@ export default {
       this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
-        if (index === 49) {
+        let maxIndex = this.potentialIds.length - 1
+        if (index === maxIndex) {
           this.$message.info('返回列表页,获取最新数据')
           this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
