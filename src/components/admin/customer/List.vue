@@ -31,7 +31,7 @@
         <div class="export-del" tabindex="-1" @blur="isexportShow = false" @click="isexportShow=true">
           <i class="el-icon-more"></i>
           <ul v-show="isexportShow">
-            <li @click="exportForm">导出报表</li>
+            <li @click="exportFormPost">导出报表</li>
             <li v-if="typeId === 1" @click="delBusiness = true">删除</li>
           </ul>
         </div>
@@ -2487,6 +2487,37 @@ export default {
       }
       downloadUrl = url + '?' + urlStr + '&status=' + this.typeId
       window.open(decodeURI(downloadUrl))
+    },
+    exportFormPost() {
+      let ids = this.arrayExportIds()
+      const data = {
+        token: this.token
+      }
+      let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      let node2 = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      node2.name = 'clue_id'
+      node2.value = ids.join(',')
+      form.appendChild(node2.cloneNode())
+      // 表单元素需要添加到主文档中.
+      console.log(node2.value)
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
     },
     arrayExportIds() {
       var idArr = []
