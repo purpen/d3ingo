@@ -162,7 +162,7 @@
           <div v-if="option === 'project'" v-loading="userProjectLoading" class="project-box">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fz-12', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
@@ -1222,7 +1222,7 @@ export default {
           label: '电话'
         }
       ],
-      toolValue: '',
+      toolValue: 1,
       isFirstRegion: true,
 
       projectList: [],
@@ -2637,9 +2637,9 @@ export default {
 .client-line {
   border-top: 1px solid #e6e6e6;
 }
-.t270-before::before {
+.t270-before {
   display: inline-block;
-  transform: rotate(270deg);
+  transform: rotate(90deg);
 }
 .line-height50 {
   line-height: 50px;
@@ -2761,12 +2761,12 @@ export default {
   color: #000;
 }
 .head-c-top {
-  padding: 20px 20px 20px 30px;
+  padding: 20px 20px 20px 20px;
 }
 .head-c-content {
   /* display: flex; */
   /* height: 60px; */
-  margin: 0 30px 0 30px;
+  margin: 0 20px 0 20px;
   padding: 14px 0 10px 0;
   border-top: 1px solid #e6e6e6;
 }
@@ -2782,7 +2782,7 @@ export default {
   padding-bottom: 10px;
 }
 .user-progress {
-  padding: 15px 20px 15px 30px;
+  padding: 20px;
 }
 .progress-top > span {
   display: inline-block;
@@ -2831,7 +2831,6 @@ export default {
 .user-info-left {
   width: 64%;
   transition: 268ms all ease;
-  padding-bottom: 20px;
 }
 .project-box {
   transition: 268ms all ease;
@@ -3008,7 +3007,9 @@ export default {
 .user-body span {
   word-wrap:break-word;
 }
-
+.item-arrow {
+  transition: transform .3s;
+}
 
 
 
@@ -3033,8 +3034,8 @@ export default {
 }
 .card-body-header {
   display: flex;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   height: 40px;
   align-items: center;
   font-size: 14px;
