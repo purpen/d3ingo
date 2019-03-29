@@ -2304,7 +2304,7 @@ export default {
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
-            if (type) {
+            if (type === 4) {
               this.$message.success('删除成功')
             } else {
               this.$message.success('标记成功')
