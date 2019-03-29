@@ -45,7 +45,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -108,7 +108,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -170,7 +170,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -233,7 +233,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <!-- <div class="export-upload">
@@ -295,7 +295,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="search-sort">
@@ -381,7 +381,7 @@
           <el-button size="small" >批量导入</el-button>
         </el-upload>
         <el-button size="small" @click="exportForm">导出</el-button>
-        <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
+        <el-button size="small"  @click="exportFormPost(2)">导入模板下载</el-button>
         <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
         <el-button size="small" @click="showClueDialog">无效</el-button>
       </div> -->
@@ -471,6 +471,7 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-else-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-else-if="scope.row.son_source === 'c'">App</span>
+                <span v-else-if="scope.row.son_source === 'd'">SaaS</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
@@ -1019,6 +1020,10 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
               label: '文章详情头部'
             },
@@ -1184,8 +1189,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -1729,9 +1738,15 @@ export default {
       this.$http.delete(api.adminClueDelete, {params: {clue_ids: clueIds}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.permanentDialog = false
+          this.$message.success('删除成功')
           this.downCheck()
           this.getClueList()
+        } else {
+          this.$message.error(response.data.meta.message)
         }
+      })
+      .catch((error) => {
+        this.$message.error(error)
       })
     },
     // 回到顶部
@@ -1775,7 +1790,7 @@ export default {
     // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' clearable placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1841,6 +1856,7 @@ export default {
             this['query' + this.typeId].son_source = ''
           }
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
     },
@@ -2488,14 +2504,14 @@ export default {
       downloadUrl = url + '?' + urlStr + '&status=' + this.typeId
       window.open(decodeURI(downloadUrl))
     },
-    exportFormPost() {
-      let ids = this.arrayExportIds()
-      const data = {
-        token: this.token
-      }
+    exportFormPost(type) {
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
       if (conf.ENV === 'prod') {
         url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let ids = this.arrayExportIds()
+      const data = {
+        token: this.token
       }
       let form = document.createElement('form')
       let node = document.createElement('input')
@@ -2508,8 +2524,13 @@ export default {
         node.value = data[name].toString()
         form.appendChild(node.cloneNode())
       }
-      node2.name = 'clue_id'
-      node2.value = ids.join(',')
+      if (type === 2) {
+        node2.name = 'type'
+        node2.value = type
+      } else {
+        node2.name = 'clue_id'
+        node2.value = ids.join(',')
+      }
       form.appendChild(node2.cloneNode())
       // 表单元素需要添加到主文档中.
       console.log(node2.value)

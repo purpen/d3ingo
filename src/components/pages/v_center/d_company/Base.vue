@@ -560,6 +560,12 @@
       }
     },
     methods: {
+      updateUser() {
+        this.$http.get(api.user).then(res => {
+          console.log(res)
+          auth.write_user(res.data.data)
+        })
+      },
       saveOldName(name) {
         this.oldName = name
       },
@@ -756,6 +762,7 @@
                     city: row.city
                   }
                   that.dialogVisible = false
+                  auth.write_user(response.data.data)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
@@ -964,6 +971,7 @@
         return
       }
       this.getDemandCompany()
+      this.updateUser()
       let {params = {}} = this.$route
       if (params.id === 1) {
         this.dialogVisible = true

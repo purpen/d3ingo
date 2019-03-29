@@ -1183,6 +1183,12 @@
       }
     },
     methods: {
+      updateUser() {
+        this.$http.get(api.user).then(res => {
+          console.log(res)
+          auth.write_user(res.data.data)
+        })
+      },
       saveOldName(name) {
         this.oldName = name
       },
@@ -1753,6 +1759,7 @@
                   }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
+                  auth.write_user(response.data.data)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
@@ -1939,6 +1946,7 @@
         this.$router.replace({name: 'vcenterBase'})
         return
       }
+      this.updateUser()
       this.getdesignCompanyInfo()
       let {params = {}} = this.$route
       if (params.id === 2) {

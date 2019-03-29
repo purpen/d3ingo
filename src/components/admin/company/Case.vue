@@ -6,7 +6,7 @@
           :data="tableData"
           style="width: 100%">
           <el-table-column
-            width="80">
+            width="60">
             <template slot-scope="scope">
               <div class="text-cen">{{scope.row.id}}</div>
             </template>
@@ -32,7 +32,7 @@
           <el-table-column
             label="标签">
             <template slot-scope="scope">
-              <div class="flex-center label-round">
+              <div class="flex-center label-round flex-warp">
                 <template v-if="scope.row.label && scope.row.label.length">
                   <div class="label-style" v-for="(label, index) in scope.row.label" :key="index">#{{label}}</div>
                 </template>
@@ -85,13 +85,16 @@
       <div class="empty-title">暂未上传设计案例</div>
       <div class="empty-text">入驻日期：{{creatDate}}</div>
     </div>
+    <div v-if="caseLoading && type === 2" class="loading-fiexd">
+      <div class="fiex-content" v-loading="caseLoading"></div>
+    </div>
   </div>
 </template>
 <script>
 import api from '@/api/api'
 export default {
   name: 'cases',
-  props: ['creatDate'],
+  props: ['creatDate', 'type'],
   data() {
     return {
       tableData: [],
@@ -101,6 +104,7 @@ export default {
         totalCount: 0
       },
       cusId: '',
+      caseLoading: false,
       line: '-'
     }
   },
@@ -136,6 +140,7 @@ export default {
     },
     getList() {
       let that = this
+      that.caseLoading = true
       that.$http.get(api.adminDesignCaseDesignCaseList, {params: {design_company_id: that.cusId, page: that.query.page, per_page: that.query.pageSize, status: that.designReault}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -156,11 +161,14 @@ export default {
             }
             that.tableData[index]['created_at'] = that.tableData[index].created_at.date_format().format('yyyy.MM.dd')
           }
+          that.caseLoading = false
         } else {
+          that.caseLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        that.caseLoading = false
         that.$message.error(error.message)
       })
     }
@@ -200,7 +208,10 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
-  .label-round .label-style:not(:nth-last-child(1)) {
+  .label-style {
+    white-space: nowrap;
+  }
+  .label-round .label-style {
     padding-left: 5px;
   }
   .desimg-round img{
@@ -242,5 +253,20 @@ export default {
   }
   .text-cen {
     text-align: center;
+  }
+  .flex-warp {
+    flex-flow: wrap;
+  }
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
   }
 </style>

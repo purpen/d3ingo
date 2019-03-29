@@ -93,8 +93,8 @@
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
-    <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate"></customer>
-    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate"></cases>
+    <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate" :load="1"></customer>
+    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
     <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item"></introduction>
@@ -106,6 +106,9 @@
         <el-button size="small" type="primary" @click="setVerify(evt)">确 定</el-button>
       </span>
     </el-dialog>
+    <div v-if="detailLoading" class="loading-fiexd">
+      <div class="fiex-content" v-loading="detailLoading"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -122,8 +125,8 @@ export default {
       item: '',
       designItem: '',
       dialogVisible: false,
+      detailLoading: false,
       tableDatas: '',
-      pageCount: '',
       refuseRease: '',
       itemId: '',
       evt: '',
@@ -161,6 +164,7 @@ export default {
     },
     companyShow(id) {
       const self = this
+      self.detailLoading = true
       self.$http.get(api.adminCompanyShow, {params: {id: id}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -194,11 +198,14 @@ export default {
               self.item.company_size_value = '300人以上'
               break
           }
+          self.detailLoading = false
         } else {
+          self.detailLoading = false
           self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        self.detailLoading = false
         self.$message.error(error.message)
       })
     },
@@ -285,7 +292,7 @@ export default {
     let id = that.$route.params.id
     that.itemId = that.$route.params.id
     that.companyShow(id)
-    that.getList(id)
+    // that.getList(id)
   },
   components: {
     server,
@@ -533,5 +540,17 @@ export default {
   }
   .mar-right-10 {
     margin-right: 10px;
+  }
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
   }
 </style>

@@ -22,7 +22,7 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">地址</div>
-        <div class="cer-right">{{item.address || '-'}}</div>
+        <div class="cer-right">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">规模</div>
@@ -41,12 +41,14 @@
           <div>{{item.professional_advantage || '-'}}</div>
         </div>
       </div>
-      <div class="flex-center">
+      <div class="flex">
         <div class="cer-left">荣誉奖项</div>
-        <template v-if="item.prizes && item.prizes.length">
-          <div class="cer-right" v-for="(item, index) in item.prizes" :key="index">{{item}}</div>
+        <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
+          <div class="prizeRound">
+            <div class="cer-right" v-for="(item, index) in item.high_tech_enterprises" :key="index">{{item.val}}</div>
+          </div>
         </template>
-          <div class="cer-right">{{line}}</div>
+          <div class="cer-right" v-else>{{line}}</div>
       </div>
     </div>
 
@@ -87,21 +89,21 @@
           </div>
           <div class="bot-round pad-top-10">
             <div class="bot-border">
-              <div class="bot-img1"></div>
+              <div class="bot-img4"></div>
               <div class="bot-right">
                 <div class="bot-right-title">品牌溢价力指数</div>
                 <div class="bot-right-number">{{item.design_average || '-'}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
-              <div class="bot-img2"></div>
+              <div class="bot-img5"></div>
               <div class="bot-right">
                 <div class="bot-right-title">客观公信力指数</div>
                 <div class="bot-right-number">{{item.effect_average || '-'}}</div>
               </div>
             </div>
             <div class="bot-border mar-left-20">
-              <div class="bot-img3"></div>
+              <div class="bot-img6"></div>
               <div class="bot-right">
                 <div class="bot-right-title">风险应激力指数</div>
                 <div class="bot-right-number">{{item.credit_average || '-'}}</div>
@@ -157,6 +159,10 @@ export default {
     line-height: 18px;
     min-width: 120px;
   }
+  .prizeRound {
+    display: flex;
+    flex-direction: column;
+  }
   .cer-right {
     font-size: 14px;
     font-family: PingFangSC-Regular;
@@ -164,6 +170,10 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 19px;
     padding-left: 10px;
+    word-break: break-all;
+  }
+  .prizeRound .cer-right:not(:nth-child(1)) {
+    padding-top: 5px;
   }
   .bot-border {
     width: 180px;
