@@ -43,15 +43,13 @@
       </div>
       <div class="flex">
         <div class="cer-left">荣誉奖项</div>
-        <template v-if="prizeArr && prizeArr.length">
-          <div class="prizeRound">
-            <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
-              <img :src="item.img" alt="">
-              <span v-if="item.type" class="img-text-pri">X{{item.count}}</span>
-            </div>
+        <div class="prizeRound" v-if="item.prizes && item.prizes.length">
+          <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
+            <img :src="item.img" alt="">
+            <span v-if="item.type" class="img-text-pri">X{{item.count}}</span>
           </div>
-        </template>
-          <div class="cer-right" v-else>{{line}}</div>
+        </div>
+        <div class="cer-right" v-else>{{line}}</div>
       </div>
     </div>
 
@@ -119,64 +117,12 @@
   </div>
 </template>
 <script>
-import typeData from '@/config'
 export default {
   name: 'introduction',
-  props: ['item'],
+  props: ['item', 'prizeArr'],
   data() {
     return {
-      line: '-',
-      prizeArr: []
-    }
-  },
-  created() {
-    let arrIds = []
-    let arr = []
-    let that = this
-    if (that.item.prizes && that.item.prizes.length) {
-      that.item.prizes.forEach(item => {
-        let index = arrIds.indexOf(item.type)
-        if (index === -1 || !item.type) {
-          arrIds.push(item.type)
-          let i = {}
-          i = {
-            type: item.type,
-            count: 1,
-            name: '',
-            times: []
-          }
-          this.prizeOptions.find(p => {
-            if (p.value === item.type) {
-              i.name = p.label
-              i.img = p.img
-            }
-          })
-          if (item.time) {
-            i.times.push(item.time)
-          }
-          arr.push(i)
-        } else {
-          arr[index].count++
-          if (item.time) {
-            arr[index].times.push(item.time)
-          }
-        }
-      })
-    }
-    that.prizeArr = arr
-  },
-  computed: {
-    prizeOptions() {
-      let items = []
-      for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
-        let item = {
-          value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
-          label: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['name'],
-          img: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['img']
-        }
-        items.push (item)
-      }
-      return items
+      line: '-'
     }
   }
 }
