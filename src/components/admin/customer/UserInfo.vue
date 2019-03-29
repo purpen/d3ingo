@@ -1352,6 +1352,7 @@ export default {
       this.activeName = val
     },
     showProgessDesign(d) { // 查看进度
+      if (!d) return
       this.nowDesignId = d.design_company_id
       let obj = JSON.parse(d.stage)
       let stageArr = []
@@ -2542,7 +2543,7 @@ export default {
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
-        if (this.isAdmin >= 12 && this.userForm.son_status !== 4) {
+        if (this.isAdmin >= 12 && this.userForm.son_status === null) {
           return true
         }
       }
@@ -3004,7 +3005,9 @@ export default {
   border-top: 1px solid #D8D8D8;
   padding: 10px 0 15px 0;
 }
-
+.user-body span {
+  word-wrap:break-word;
+}
 
 
 
