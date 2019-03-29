@@ -822,107 +822,133 @@ const COMPANY_TYPE2 = [
 const DESIGN_CASE_PRICE_OPTIONS = [
   {
     id: 1,
-    name: '德国红点设计奖'
+    name: '德国红点设计奖',
+    img: require('assets/images/prize_logo/1.jpg')
   },
   {
     id: 2,
-    name: '德国IF设计奖'
+    name: '德国IF设计奖',
+    img: require('assets/images/prize_logo/2.jpg')
   },
   {
     id: 3,
-    name: 'IDEA工业设计奖'
+    name: 'IDEA工业设计奖',
+    img: require('assets/images/prize_logo/3.jpg')
   },
   {
     id: 4,
-    name: '中国红星奖'
+    name: '中国红星奖',
+    img: require('assets/images/prize_logo/4.jpg')
   },
   {
     id: 5,
-    name: '中国红棉奖'
+    name: '中国红棉奖',
+    img: require('assets/images/prize_logo/5.jpg')
   },
   {
     id: 6,
-    name: '台湾金点奖'
+    name: '台湾金点奖',
+    img: require('assets/images/prize_logo/6.jpg')
   },
   {
     id: 7,
-    name: '香港DFA设计奖 '
+    name: '香港DFA设计奖 ',
+    img: require('assets/images/prize_logo/7.jpg')
   },
   {
     id: 8,
-    name: '日本G-Mark设计奖'
+    name: '日本G-Mark设计奖',
+    img: require('assets/images/prize_logo/8.jpg')
   },
   {
     id: 9,
-    name: '韩国好设计奖'
+    name: '韩国好设计奖',
+    img: require('assets/images/prize_logo/9.jpg')
   },
   {
     id: 10,
-    name: '新加坡设计奖'
+    name: '新加坡设计奖',
+    img: require('assets/images/prize_logo/10.jpg')
   },
   {
     id: 11,
-    name: '意大利—Compasso d`Oro设计奖'
+    name: '意大利—Compasso d`Oro设计奖',
+    img: require('assets/images/prize_logo/11.jpg')
   },
   {
     id: 12,
-    name: '英国设计奖'
+    name: '英国设计奖',
+    img: require('assets/images/prize_logo/12.jpg')
   },
   {
     id: 13,
-    name: '中国优秀工业设计奖'
+    name: '中国优秀工业设计奖',
+    img: require('assets/images/prize_logo/13.jpg')
   },
   {
     id: 14,
-    name: 'DIA中国设计智造大奖'
+    name: 'DIA中国设计智造大奖',
+    img: require('assets/images/prize_logo/14.jpg')
   },
   {
     id: 15,
-    name: '中国好设计奖'
+    name: '中国好设计奖',
+    img: require('assets/images/prize_logo/15.jpg')
   },
   {
     id: 16,
-    name: '澳大利亚国际设计奖'
+    name: '澳大利亚国际设计奖',
+    img: require('assets/images/prize_logo/16.jpg')
   },
   {
     id: 17,
-    name: '奥地利ADOLF LOOS国家设计奖'
+    name: '奥地利ADOLF LOOS国家设计奖',
+    img: require('assets/images/prize_logo/17.jpg')
   },
   {
     id: 18,
-    name: '法国Janus奖'
+    name: '法国Janus奖',
+    img: require('assets/images/prize_logo/18.jpg')
   },
   {
     id: 19,
-    name: '丹麦设计奖'
+    name: '丹麦设计奖',
+    img: require('assets/images/prize_logo/19.jpg')
   },
   {
     id: 21,
-    name: '西班牙国家设计奖'
+    name: '西班牙国家设计奖',
+    img: require('assets/images/prize_logo/21.jpg')
   },
   {
     id: 22,
-    name: '法国Observeur设计奖'
+    name: '法国Observeur设计奖',
+    img: require('assets/images/prize_logo/22.jpg')
   },
   {
     id: 23,
-    name: '比利时Henry van de Velde设计奖'
+    name: '比利时Henry van de Velde设计奖',
+    img: require('assets/images/prize_logo/23.jpg')
   },
   {
     id: 24,
-    name: '荷兰设计奖'
+    name: '荷兰设计奖',
+    img: require('assets/images/prize_logo/24.jpg')
   },
   {
     id: 25,
-    name: '芬兰设计奖'
+    name: '芬兰设计奖',
+    img: require('assets/images/prize_logo/25.jpg')
   },
   {
     id: 26,
-    name: '意大利A`Design Award设计奖'
+    name: '意大利A`Design Award设计奖',
+    img: require('assets/images/prize_logo/26.jpg')
   },
   {
     id: 20,
-    name: '其他'
+    name: '其他',
+    img: require('assets/images/prize_logo/20.png')
   }
 ]
 
@@ -1904,9 +1930,17 @@ const ADMINMENU = {
       query: {}
     },
     children: [
+      // {
+      //   name: '列表',
+      //   route: 'adminCompanyList',
+      //   statement: {
+      //     params: {},
+      //     query: {}
+      //   }
+      // },
       {
-        name: '列表',
-        route: 'adminCompanyList',
+        name: '服务商列表',
+        route: 'adminCompanyHome',
         statement: {
           params: {},
           query: {}
