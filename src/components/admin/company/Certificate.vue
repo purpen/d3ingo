@@ -218,8 +218,8 @@ export default {
   .close-img {
     cursor: pointer;
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     right: 100px;
     top: 50px;
     background: url('../../../assets/images/design_admin/CloseHover@2x.png') no-repeat center / contain;

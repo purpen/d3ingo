@@ -45,7 +45,10 @@
         <div class="cer-left">荣誉奖项</div>
         <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
           <div class="prizeRound">
-            <div class="cer-right" v-for="(item, index) in item.high_tech_enterprises" :key="index">{{item.val}}</div>
+            <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
+              <img :src="item.img" alt="">
+              <span v-if="item.type" class="img-text-pri">X{{item.count}}</span>
+            </div>
           </div>
         </template>
           <div class="cer-right" v-else>{{line}}</div>
@@ -116,12 +119,64 @@
   </div>
 </template>
 <script>
+import typeData from '@/config'
 export default {
   name: 'introduction',
   props: ['item'],
   data() {
     return {
-      line: '-'
+      line: '-',
+      prizeArr: []
+    }
+  },
+  created() {
+    let arrIds = []
+    let arr = []
+    let that = this
+    if (that.item.prizes && that.item.prizes.length) {
+      that.item.prizes.forEach(item => {
+        let index = arrIds.indexOf(item.type)
+        if (index === -1 || !item.type) {
+          arrIds.push(item.type)
+          let i = {}
+          i = {
+            type: item.type,
+            count: 1,
+            name: '',
+            times: []
+          }
+          this.prizeOptions.find(p => {
+            if (p.value === item.type) {
+              i.name = p.label
+              i.img = p.img
+            }
+          })
+          if (item.time) {
+            i.times.push(item.time)
+          }
+          arr.push(i)
+        } else {
+          arr[index].count++
+          if (item.time) {
+            arr[index].times.push(item.time)
+          }
+        }
+      })
+    }
+    that.prizeArr = arr
+  },
+  computed: {
+    prizeOptions() {
+      let items = []
+      for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
+        let item = {
+          value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
+          label: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['name'],
+          img: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['img']
+        }
+        items.push (item)
+      }
+      return items
     }
   }
 }
@@ -161,7 +216,6 @@ export default {
   }
   .prizeRound {
     display: flex;
-    flex-direction: column;
   }
   .cer-right {
     font-size: 14px;
@@ -171,9 +225,6 @@ export default {
     line-height: 19px;
     padding-left: 10px;
     word-break: break-all;
-  }
-  .prizeRound .cer-right:not(:nth-child(1)) {
-    padding-top: 5px;
   }
   .bot-border {
     width: 180px;
@@ -242,5 +293,23 @@ export default {
   }
   .mar-left-20 {
     margin-left: 20px;
+  }
+  .prizeRound .img-round-pri:not(:nth-child(1)) {
+    padding-left: 15px;
+  }
+  .img-round-pri {
+    display: flex;
+    align-items: center;
+  }
+  .img-round-pri img {
+    height: 50px;
+    width: 50px;
+  }
+  .img-text-pri {
+    padding-left: 5px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
   }
 </style>

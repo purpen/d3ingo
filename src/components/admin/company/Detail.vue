@@ -15,6 +15,10 @@
           <div class="top-right-top-left">
             <div class="referred">{{item.company_abbreviation || '-'}}</div>
             <div class="name">{{item.company_name || '-'}}</div>
+            <div class="enter-flex">
+              <div v-for="(item, index) in item.industrial_design_center" :key="index" class="prize-blue">{{item.val}}</div>
+              <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'" class="prize-blue">{{item.val}}</div>
+            </div>
           </div>
           <div class="top-right-top-right flex-center">
             <div class="certification flex-center-center mar-right-10" @click="setRefuseRease(2)" v-if="item.verify_status === 0">
@@ -323,7 +327,7 @@ export default {
   .top-left-img img{
     width: 120px;
     height: 120px;
-    border: 1px solid rgba(250,173,21,1);
+    border: 1px solid #d8d8d8;
   }
   .top-left-btn {
     width: 120px;
@@ -552,5 +556,25 @@ export default {
   .fiex-content {
     width: 100%;
     height: 100%;
+  }
+  .enter-flex {
+    display: flex;
+    overflow-y: hidden;
+    padding-top: 9px;
+  }
+  .prize-blue {
+    width: 150px;
+    height: 24px;
+    background: rgba(10,109,217,0.15);
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(10,109,217,1);
+    line-height: 24px;
+    text-align: center;
+  }
+  .enter-flex .prize-blue:not(:nth-child(1)) {
+    margin-left: 10px;
   }
 </style>
