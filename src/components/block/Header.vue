@@ -374,6 +374,12 @@
       }
     },
     methods: {
+      updateUser() {
+        this.$http.get(api.user).then(res => {
+          console.log(res)
+          auth.write_user(res.data.data)
+        })
+      },
       initPage() {
         this.$store.commit('INIT_PAGE')
       },
@@ -591,6 +597,7 @@
       }
     },
     created: function () {
+      this.updateUser()
       const self = this
       if (self.isLogin) {
         self.fetchMessageCount()
