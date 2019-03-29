@@ -52,8 +52,9 @@
           <div class="web-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width-43">网址</div>
-              <div class="top-right-bot-title color-333 pad-left-10">
-                <a :href="item.web">{{item.web || '-'}}</a>
+              <div class="top-right-bot-title pad-left-10">
+                <span @click="toNewWeb" v-if="item.web">{{item.web}}</span>
+                <div v-else>{{'-'}}</div>
               </div>
             </div>
             <div class="flex-center pad-top-14">
@@ -261,6 +262,9 @@ export default {
         self.$message.error(error.message)
       })
     },
+    toNewWeb() {
+      window.open('http://' + this.item.web)
+    },
     getCustomer(id) {
       let self = this
       self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: 1, per_page: 10, status: 0}})
@@ -437,8 +441,9 @@ export default {
     background: url('../../../assets/images/design_admin/start-up@2x.png') no-repeat center / contain;
     margin-left: 11px;
   }
-  .top-right-bot-title a {
-    color: #0A6DD9;
+  .top-right-bot-title span {
+    color: #ff5a5f;
+    cursor: pointer;
   }
   .top-right-top {
     padding-bottom: 10px;

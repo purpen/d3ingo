@@ -30,7 +30,7 @@
           </el-table-column>
           <el-table-column
             label="客户信息"
-            width="300">
+            width="220">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column
             label="项目信息"
-            width="300">
+            width="220">
             <template slot-scope="scope">
               <div>
                 <div class="flex-center">
