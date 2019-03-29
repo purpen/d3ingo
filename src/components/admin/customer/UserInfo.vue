@@ -15,7 +15,7 @@
             <span class="fz-22 line-height30">{{userForm.name}}</span>
           </div>
           <div class="fl">
-            <p class="line-height20">状态</p>
+            <p class="line-height20 tc-9">状态</p>
             <span v-if="currentId" :class="['fz-22', 'line-height30', {
               'tc-red': userForm.new_call_status <= 8,
               'tc-orange': userForm.new_call_status === 9 || userForm.new_call_status === 10
@@ -23,9 +23,9 @@
             <span class="tc-red fz-22" v-else>待初次沟通</span>
           </div>
           <div class="fr">
-            <el-button v-if="userForm.new_status !== 5" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
-            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" :disabled="!isHasPower" @click="restoreUser">恢复</el-button>
-            <div v-if ="userForm.new_status === 1" class="edit-project fr margin-l10">
+            <el-button v-if="!(userForm.son_status === 4)" type="primary" size="mini" :disabled="!isHasPower" @click="editClientUser">编辑</el-button>
+            <el-button v-if="userForm.son_status === 4" type="primary" size="mini" @click="restoreUser">恢复</el-button>
+            <div v-if="userForm.new_status === 1 && userForm.son_status !== 4" class="edit-project fr margin-l10">
               <div class="edit-project-tag">
                 <p @click="setClueStatus4(4)" class="delete">删除</p>
               </div>
@@ -70,10 +70,10 @@
         </div>
       </div>
 
-      <div class="user-progress contant-border margin-t15">
-        <div class="progress-top">
-          <div class="fl">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-36', {'t270-before': !boolProgressContant}]"></i>
+      <div class="user-progress contant-border margin-t15 fz-14">
+        <div class="progress-top no-select">
+          <div class="fl blank6">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'fz-24', {'t270-before': !boolProgressContant}]"></i>
           </div>
           <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
           <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
@@ -161,170 +161,184 @@
           <div v-if="option === 'project'" v-loading="userProjectLoading" class="project-box">
             <div class="project-title">
               <p class="add-project clearfix">
-                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fx', 'fx-icon-nothing-lower']"></i>项目详情</span>
+                <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'t270-before': !boolProjectList}, 'fz-12', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
               </p>
             </div>
-            <div class="project-list" v-show="boolProjectList && projectList.length">
-              <ul>
-                <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
-                  <el-row>
-                    <el-col>
-                      <h5 class="project-name fl">{{item.name}}</h5>
-                      <div class="edit-project fr">
-                        <div class="edit-project-tag" v-if="isHasPower">
-                          <p @click="editProject(item)">编辑项目</p>
-                        </div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">设计类型</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.type_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目预算</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.design_cost_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">交付时间</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.cycle_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <div class="line"></div>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">行业领域</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.industry_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目工作地点</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.item_province_value}}{{item.item_city_value}}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">项目描述</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span>{{item.summary}}</span>
-                    </el-col>
-                  </el-row>
-                  
-                  <el-row class="padding-b10">
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">备注</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-                        <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
-                    </el-col>
-                    <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
-                    </el-col>
-                    <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
-                      <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
-                      <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
-                    </el-col>
 
-                  </el-row>
-                  <div class="line"></div>
-                  <el-row>
-                    <el-col  :md="4" :lg="4">
-                      <span class="tc-9">创建人</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span v-if="item.user_name">{{item.user_name}}</span>
-                      <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :md="4" :lg="4">
-                      <span class="tc-9">修改人</span>
-                    </el-col>
-                    <el-col :md="20" :lg="20">
-                      <span class="item.update_user_name">{{item.update_user_name}}</span>
-                      <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
-                    </el-col>
-                  </el-row>
-                  <!-- 对接设计公司 -->
-                  <div>
-                    <p class="add-design clearfix design-title">
-                    <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fx', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                    <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
-                    </p>
-                  </div>
-                  <ul v-if="boolDesigeList">
-                    <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
-                      <div class="margin-b-10">
-                        <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
-                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                        <span class="padding-l10">{{d.company_name}}</span>
-                        <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+            <el-collapse-transition>
+              <div class="project-list" v-show="boolProjectList && projectList.length">
+                <ul>
+                  <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
+                    <el-row>
+                      <el-col>
+                        <h5 class="project-name fl">{{item.name}}</h5>
+                        <div class="edit-project fr">
                           <div class="edit-project-tag" v-if="isHasPower">
-                            <!-- <p @click="deleteDesignProject(d)">删除</p> -->
-                            <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
+                            <p @click="editProject(item)">编辑项目</p>
                           </div>
                         </div>
-                      </div>
-                      <div class="flex design-info">
-                        <div class="flex-column">
-                          <span class="tc-9">联系人</span>
-                          <span class="fz-14">{{d.contact_name}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">职务</span>
-                          <span class="fz-14">{{d.position}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">电话</span>
-                          <span class="fz-14">{{d.phone}}</span>
-                        </div>
-                        <div class="flex-column">
-                          <span class="tc-9">微信</span>
-                          <span class="fz-14">{{d.wx}}</span>
-                        </div>
-                      </div>
-                      <div class="design-li-footer">
-                        <span>{{d.status_value}}</span>
-                        <span v-if="d.status < 5"><i class="fx fx-icon-time"></i>{{d.updated_at | getProgessTime}}</span>
-                        <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
-                        <div class="progess-box">
-                          <span class="fr check-progess" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-                          <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                            <el-steps :active="stageActive" class="steps-item">
-                              <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step>
-                            </el-steps>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">设计类型</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.type_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目预算</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.design_cost_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">交付时间</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.cycle_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <div class="line"></div>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">行业领域</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.industry_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目工作地点</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.item_province_value}}{{item.item_city_value}}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">项目描述</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span>{{item.summary}}</span>
+                      </el-col>
+                    </el-row>
+                    
+                    <el-row class="padding-b10">
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">备注</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+                        <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+                          <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
+                      </el-col>
+                      <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
+                        <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+                      </el-col>
+                      <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
+                        <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
+                        <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
+                      </el-col>
+
+                    </el-row>
+                    <div class="line"></div>
+                    <el-row>
+                      <el-col  :md="4" :lg="4">
+                        <span class="tc-9">创建人</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span v-if="item.user_name">{{item.user_name}}</span>
+                        <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :md="4" :lg="4">
+                        <span class="tc-9">修改人</span>
+                      </el-col>
+                      <el-col :md="20" :lg="20">
+                        <span class="item.update_user_name">{{item.update_user_name}}</span>
+                        <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
+                      </el-col>
+                    </el-row>
+                    <!-- 对接设计公司 -->
+                    <div>
+                      <p class="add-design clearfix design-title">
+                      <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'fx-icon-nothing-lower', {'t270-before': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                      <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                      </p>
+                    </div>
+                    <ul v-if="boolDesigeList">
+                      <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
+                        <div class="margin-b-10">
+                          <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
+                          <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                          <span class="padding-l10">{{d.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                            <div class="edit-project-tag" v-if="isHasPower">
+                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                              <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <el-progress :percentage="d.status | getProgess" :show-text="false" class="design-progress"></el-progress>
-                    </li>
-                    <li>
-                      <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+                        <div class="flex design-info">
+                          <div class="flex-column">
+                            <span class="tc-9">联系人</span>
+                            <span class="fz-14">{{d.contact_name}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">职务</span>
+                            <span class="fz-14">{{d.position}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">电话</span>
+                            <span class="fz-14">{{d.phone}}</span>
+                          </div>
+                          <div class="flex-column">
+                            <span class="tc-9">微信</span>
+                            <span class="fz-14">{{d.wx}}</span>
+                          </div>
+                        </div>
+                        <div class="design-li-footer">
+                          <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                          <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
+                          <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
+                          <div class="progess-box">
+                            <span class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                            <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                              <el-steps :active="stageActive" class="steps-item">
+                                <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                                <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                                <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                                <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                                <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                                <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                              </el-steps>
+                              <div class="steps-remarks" v-if="d.status > 6">
+                                <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                                <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
+                      </li>
+                      <li>
+                        <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </el-collapse-transition>
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
               <p class="text-center tc-2 margin-t20">客户备注</p>
@@ -332,7 +346,7 @@
             </div>
           </div>
 
-          <div v-if="option === 'user'" class="fz-14 padding-r20">
+          <div v-if="option === 'user'" class="fz-14 padding-r20 padding-b20">
             <div class="bb-e6">
               <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
@@ -463,7 +477,7 @@
                   <span class="tc-9">修改人</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span v-if="updateTime">{{clientList.update_user_name}}  &nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
+                  <span v-if="clientList.update_user_name">{{clientList.update_user_name}}&nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
                 </el-col>
               </el-row>
             </div>
@@ -486,7 +500,7 @@
                   @blur="blurInput"
                   @keydown.native.enter.shift="quickSubmit"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  :class="{'active': focusHeight}"
+                  :class="['el-input-c8', {'active': focusHeight}]"
                   :maxlength="500">
                 </el-input>
                 <div v-if="focusHeight">
@@ -616,7 +630,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="商机来源" class="is-required">
               <el-cascader
-                :options="sourceArr2"
+                :options="sourceArr"
                 v-model="selectedsource"
                 @change="handleSourceChange">
               </el-cascader>
@@ -817,8 +831,8 @@
         <el-button @click="boolProject = false, boolAddProject = false">取 消</el-button>
         <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保 存</el-button>
       </span>
-      <span v-if="boolEditProject"  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
-        <el-button class="margin-r-15" @click="boolEditProject = false, boolProject = false">取 消</el-button>
+      <span v-else  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolProject = false">取 消</el-button>
         <el-button type="primary" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
       </span>
@@ -1008,148 +1022,6 @@ export default {
       updateTime: '',
       sourceArr: [
         {
-          id: 1,
-          name: '网络广告',
-          son_source: [
-            {
-              key: 'a',
-              name: '百度'
-            },
-            {
-              key: 'b',
-              name: '360'
-            },
-            {
-              key: 'c',
-              name: '知乎'
-            },
-            {
-              key: 'd',
-              name: '今日头条'
-            },
-            {
-              key: 'edm',
-              name: '邮件'
-            },
-            {
-              key: 'sms',
-              name: '短信'
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: '官⽅',
-          son_source: [
-            {
-              key: 'a',
-              name: 'PC/WAP官网'
-            },
-            {
-              key: 'b',
-              name: '小程序'
-            },
-            {
-              key: 'c',
-              name: 'App'
-            },
-            {
-              key: 'topic_view_h',
-              name: '文章详情头部'
-            },
-            {
-              key: 'topic_view_f',
-              name: '文章详情底部'
-            },
-            {
-              key: 'topic_view_r',
-              name: '文章详情右侧'
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: '合作伙伴',
-          son_source: [
-            {
-              key: 'a',
-              name: '京东'
-            },
-            {
-              key: 'b',
-              name: '优客工场'
-            }
-          ]
-        },
-        {
-          id: 4,
-          name: '内部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '雷总/公司员工推荐的熟人客户'
-            }
-          ]
-        },
-        {
-          id: 5,
-          name: '外部推荐',
-          son_source: [
-            {
-              key: 'a',
-              name: '朋友/其他公司推荐的客户'
-            }
-          ]
-        },
-        {
-          id: 6,
-          name: '新媒体',
-          son_source: [
-            {
-              key: 'a',
-              name: '微信公众号'
-            },
-            {
-              key: 'b',
-              name: '头条号菜单'
-            },
-            {
-              key: 'c',
-              name: '百家号'
-            },
-            {
-              key: 'toutiao_ad',
-              name: '头条文章广告位'
-            }
-          ]
-        },
-        {
-          id: 7,
-          name: '展销会',
-          son_source: [
-            {
-              key: 'a',
-              name: '参展'
-            },
-            {
-              key: 'b',
-              name: '业界活动、论坛 '
-            }
-          ]
-        },
-        {
-          id: 0,
-          name: '其他',
-          son_source: [
-            {
-              key: 'a',
-              name: '⽆法归类的小群体'
-            }
-          ]
-        }
-      ],
-      sourceArr2: [
-        {
           value: 1,
           label: '网络广告',
           children: [
@@ -1194,6 +1066,10 @@ export default {
             {
               value: 'c',
               label: 'App'
+            },
+            {
+              value: 'd',
+              label: 'SaaS项目'
             },
             {
               value: 'topic_view_h',
@@ -1351,7 +1227,6 @@ export default {
       crmDesignCompanyList1: [], // 对接设计公司列表前三个
       crmDesignCompanyList: [], // 对接设计公司列表
       boolAddProject: false,
-      boolEditProject: false,
       currentProjectId: '',
       projectForm: {
         item_province: '',
@@ -1408,7 +1283,8 @@ export default {
       boolStage: false,
       stageArr: [],
       stageActive: 0,
-      nowDesignId: ''
+      nowDesignId: '',
+      isOpenNext: true // 下一条
     }
   },
   methods: {
@@ -1489,6 +1365,9 @@ export default {
           }
           this.stageActive = index - 1
         }
+        if (d.status === -1) {
+          this.stageActive = index
+        }
       })
       stageArr.forEach((d, index, arr) => {
         if (d.status !== 0) {
@@ -1567,6 +1446,7 @@ export default {
       this.$http.post(api.adminClueRecoverClue, {clue_ids: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
+          this.getNextUser()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1576,6 +1456,8 @@ export default {
       })
     },
     getNextUser() { // 下一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 49) {
@@ -1590,13 +1472,121 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getUserProject()
-          this.getLogList()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source,
+                son_source: data.son_source,
+                new_status: data.new_status,
+                son_status: data.son_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status,
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
     getPreviousUser() { // 上一条
+      if (!this.isOpenNext) return
+      this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
@@ -1611,9 +1601,115 @@ export default {
           this.option = 'project'
           this.boolProjectList = true
           this.boolDesigeList = true
-          this.getUserInfo()
-          this.getLogList()
-          this.getUserProject()
+          this.userLoading = true
+          this.userProjectLoading = true
+          this.userLogLoading = true
+          let row = {
+            clue_id: this.currentId
+          }
+          Promise.all([
+            this.$http.get(api.adminClueShow, {params: row}),
+            this.$http.get(api.adminClueShowCrmItem, {params: row}),
+            this.$http.get(api.adminClueShowTrackLog, {params: row})
+          ]).then(([res1, res2, res3]) => {
+            this.isOpenNext = true
+            if (res1.data.meta.status_code === 200) {
+              const data = res1.data.data
+              this.activeName = data.new_status
+              this.clientForm = {
+                company: data.company,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                province: data.province,
+                province_value: data.province_value,
+                city: data.city,
+                city_value: data.city_value,
+                qq: data.qq,
+                son_source: data.son_source,
+                new_source: data.new_source,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                rank: data.rank,
+                number: data.number,
+                wx: data.wx,
+                summary: data.summary,
+                position: data.position,
+                user_id_name: data.user_id_name,
+                update_user_name: data.update_user_name
+              }
+              this.currentUser = data.name
+              this.userForm = {
+                name: data.name,
+                phone: data.phone,
+                rank: data.rank,
+                position: data.position,
+                new_source: data.new_source,
+                son_source: data.son_source,
+                new_status: data.new_status,
+                son_status: data.son_status,
+                call_status_value: data.call_status_value,
+                execute_user_id: data.execute_user_id,
+                execute_user_name: data.execute_user_name,
+                created_at: data.created_at,
+                new_call_status: data.new_call_status,
+                is_thn: data.is_thn
+              }
+              this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
+              if (data.update_user_time) {
+                this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
+              }
+              if (this.userForm.new_source || this.userForm.new_source === 0) {
+                let id = this.userForm.new_source
+                this.sourceArr.forEach(item => {
+                  if (item.value === id) {
+                    this.sonSource = item.children
+                    this.sourceValue = item.label
+                    item.children.forEach(d => {
+                      if (d.value === this.userForm.son_source) {
+                        this.sonSourceValue = d.label
+                      }
+                    })
+                  }
+                })
+              }
+              this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+              this.userLoading = false
+            } else {
+              this.$message.error(res1.data.meta.message)
+              this.userLoading = false
+            }
+
+            if (res2.data.meta.status_code === 200) {
+              const data = res2.data.data
+              this.projectList = data
+              this.userProjectLoading = false
+              this.boolallDesign = true
+              if (data[0]) {
+                const {crm_design_company: designList} = data[0]
+                if (designList.length > 3) {
+                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                } else {
+                  this.crmDesignCompanyList1 = designList
+                }
+                this.crmDesignCompanyList = designList
+              }
+            } else {
+              this.$message.error(res2.data.meta.message)
+              this.userProjectLoading = false
+            }
+
+            if (res3.data.meta.status_code === 200) {
+              this.followLogList = res3.data.data
+              this.followLogList.forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+              })
+              this.userLogLoading = false
+            } else {
+              this.$message.error(res3.data.meta.message)
+              this.userLogLoading = false
+            }
+          }) // all
         }
       }
     },
@@ -1654,29 +1750,30 @@ export default {
             phone: data.phone,
             rank: data.rank,
             position: data.position,
-            new_source: data.new_source || '',
+            new_source: data.new_source,
             son_source: data.son_source,
             new_status: data.new_status,
+            son_status: data.son_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
             execute_user_name: data.execute_user_name,
             created_at: data.created_at,
-            new_call_status: data.new_call_status || '',
+            new_call_status: data.new_call_status,
             is_thn: data.is_thn
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm')
           if (data.update_user_time) {
             this.updateTime = data.update_user_time.date_format().format('yyyy-MM-dd hh:mm')
           }
-          if (this.userForm.new_source) {
+          if (this.userForm.new_source || this.userForm.new_source === 0) {
             let id = this.userForm.new_source
             this.sourceArr.forEach(item => {
-              if (item.id === id) {
-                this.sonSource = item.son_source
-                this.sourceValue = item.name
-                item.son_source.forEach(d => {
-                  if (d.key === this.userForm.son_source) {
-                    this.sonSourceValue = d.name
+              if (item.value === id) {
+                this.sonSource = item.children
+                this.sourceValue = item.label
+                item.children.forEach(d => {
+                  if (d.value === this.userForm.son_source) {
+                    this.sonSourceValue = d.label
                   }
                 })
               }
@@ -1744,19 +1841,30 @@ export default {
       })
     },
     setClueStatus4(d) { // 加入回收站
-      let row = {
-        new_status: d,
-        clue_ids: [this.currentId]
-      }
-      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success(res.data.meta.message)
-          this.getNextUser()
-        } else {
-          this.$message.error(res.data.meta.message)
+      this.$confirm('将此客户加入回收站, 是否继续', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let row = {
+          new_status: d,
+          clue_ids: [this.currentId]
         }
-      }).catch(error => {
-        this.$message.error(error.message)
+        this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$message.success(res.data.meta.message)
+            this.getNextUser()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.$message.error(error.message)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     changeClient(obj) { // 改变城市组件值- 客户信息()
@@ -1938,7 +2046,6 @@ export default {
           this.boolAddProject = false
           this.createProjectLoading = false
           this.boolProject = false
-          this.boolEditProject = false
           this.boolRemarks = false
           if (request === 'api.adminClueAddCrmItem') {
             this.getLogList()
@@ -2150,11 +2257,11 @@ export default {
     },
     editProject(d) { // 编辑项目
       this.dialogProjectTitle = '编辑项目'
+      this.boolAddProject = false
       this.projectForm = {}
       const id = d.item_id
       if (d && id) {
         this.currentProjectId = id
-        this.boolEditProject = true
         this.boolProject = true
         this.$nextTick(_ => {
           this.projectList.forEach(item => {
@@ -2458,7 +2565,6 @@ export default {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
-        this.boolAddProject = false
       }
     }
   },
@@ -2652,9 +2758,9 @@ export default {
 }
 .head-c-content {
   /* display: flex; */
-  height: 60px;
+  /* height: 60px; */
   margin: 0 30px 0 30px;
-  padding: 10px 0 20px 0;
+  padding: 14px 0 10px 0;
   border-top: 1px solid #e6e6e6;
 }
 .head-c-content > div {
@@ -2697,11 +2803,22 @@ export default {
 .note-right > p:first-child {
   border-bottom: 1px solid #e6e6e6;
 }
+.note-left > p + p {
+  font-size: 12px;
+}
+.note-left > p:nth-child(2), 
+.note-right > p:nth-child(2) {
+  padding-top: 10px;
+}
+.note-right > p:not(:first-child) {
+  font-size: 12px;
+}
 .progress-contant {
   padding-top: 15px;
 }
 .progress-contant p {
-  line-height: 30px;
+  padding-bottom: 6px;
+  line-height: 1.5em;
 }
 
 .user-info-left {
@@ -2781,12 +2898,12 @@ export default {
   top: 60px;
   left: 0;
   right: 0;
-  background-color: #fff;
-  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
-  padding: 10px 18px 4px 20px;
-  transition: all 1s ease-out;
+  padding: 20px 18px 4px 20px;
   margin-left: -20px;
   margin-right: -18px;
+  background-color: #fff;
+  transition: all 1s ease-out;
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.2);
 }
 .all-design-btn {
   position: relative;
@@ -2877,7 +2994,10 @@ export default {
   max-height: 500px; */
 }
 
-
+.steps-remarks {
+  border-top: 1px solid #D8D8D8;
+  padding: 10px 0 15px 0;
+}
 
 
 
@@ -3053,7 +3173,9 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover2@2x.png) no-repeat left/30px;
 }
-
+.edit-project:hover {
+  background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left/30px;
+}
 .edit-project:hover .edit-project-tag {
   display: block;
 }
@@ -3348,17 +3470,33 @@ export default {
 .steps .el-step__main {
   padding-bottom: 10px;
 }
-.steps-item > .el-step {
+.steps .steps-item > .el-step {
   flex-basis: 20% !important;
 }
-.steps-item .el-step__head .el-step__line {
+.steps .steps-item .el-step__head .el-step__line {
   position: absolute;
-  top: 7px !important;
+  top: 6px !important;
   left: 5px !important;
 }
 .steps .el-step__head.is-finish {
   color: #00ac84 !important;
   border-color: #00ac84 !important;
+}
+.steps .el-step__head .el-step__icon-inner {
+  display: inline-block;
+}
+.steps .el-step__icon-inner[class*=el-icon]:not(.is-status) {
+  font-size: 20px;
+}
+.steps .el-step__head.is-process .el-step__icon {
+  background-color: #fff;
+	border-color: #fff;
+}
+.steps .el-step__icon-inner.el-icon-error {
+  color: #ff5a5f; 
+}
+.steps .el-step__head.is-process {
+  color: #00ac84;
 }
 </style>
 

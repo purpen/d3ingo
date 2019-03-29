@@ -491,7 +491,9 @@
                     <el-button type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
                   </el-col>
                 </el-row>
-                <p v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length" v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                <div v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length">
+                  <p v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
+                </div>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
                 <p>无</p>
@@ -1181,6 +1183,12 @@
       }
     },
     methods: {
+      updateUser() {
+        this.$http.get(api.user).then(res => {
+          console.log(res)
+          auth.write_user(res.data.data)
+        })
+      },
       saveOldName(name) {
         this.oldName = name
       },
@@ -1751,6 +1759,7 @@
                   }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
+                  auth.write_user(response.data.data)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
@@ -1937,6 +1946,7 @@
         this.$router.replace({name: 'vcenterBase'})
         return
       }
+      this.updateUser()
       this.getdesignCompanyInfo()
       let {params = {}} = this.$route
       if (params.id === 2) {

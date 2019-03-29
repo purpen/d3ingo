@@ -22,14 +22,17 @@
             <li class="random-allot" @click="randomAssign = true">随机自动分配</li>
           </ul>
         </div>
-        <div class="renew-btn" @click="renewDialog=true"  v-if="typeId &&typeId === 4">
+        <div class="renew-btn" @click="renewDialog=true" v-if="typeId &&typeId >= 4">
           恢复
+        </div>
+        <div class="permanent-del" v-if="typeId &&typeId === 5" @click="permanentDialog = true">
+          彻底删除
         </div>
         <div class="export-del" tabindex="-1" @blur="isexportShow = false" @click="isexportShow=true">
           <i class="el-icon-more"></i>
           <ul v-show="isexportShow">
-            <li @click="exportForm">导出报表</li>
-            <!-- <li>删除</li> -->
+            <li @click="exportFormPost">导出报表</li>
+            <li v-if="typeId === 1" @click="delBusiness = true">删除</li>
           </ul>
         </div>
       </div>
@@ -42,7 +45,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -89,7 +92,8 @@
           </el-select>
         </div>
         <div class="select-date">
-          <el-select v-model="query1.sort_evt" @change="getClueList">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
@@ -104,7 +108,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -150,8 +154,9 @@
           </el-select>
         </div>
         <div class="select-date">
-          <el-select v-model="query2.sort_evt" @change="getClueList">
-            <el-option v-for="c in optionLatentCondition" :key="c.value" :value="c.value" :label="c.label">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
+            <el-option v-for="c in optionCondition2" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -165,7 +170,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <div class="export-upload">
@@ -212,8 +217,9 @@
           </el-select>
         </div>
         <div class="select-date">
-          <el-select v-model="query3.sort_evt" @change="getClueList">
-            <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
+            <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -227,7 +233,7 @@
             <li @click="randomAssign = true">随机分配</li>
             <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
-            <li @click="exportForm(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
         </div>
         <!-- <div class="export-upload">
@@ -273,8 +279,43 @@
           </el-select>
         </div> -->
         <div class="select-date">
-          <el-select v-model="query4.sort_evt" @change="getClueList">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="business-header" v-if="typeId === 5">
+        <div class="edit-i" @blur="isDown" tabindex="-1">
+          <i @click="isEdits = true"></i>
+          <ul v-show="isEdits">
+            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
+            <li @click="exportForm">导出</li>
+            <li @click="randomAssign = true">随机分配</li>
+            <li @click="showClueDialog">无效</li> -->
+            <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+            <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
+          </ul>
+        </div>
+        <div class="search-sort">
+          <div class="search-select">
+            <el-select v-model="isSearch.label" placeholder="请选择">
+              <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
+
+              </el-option>
+            </el-select>
+          </div>
+          <div class="search-input">
+            <el-input placeholder="在当前列表下搜索" v-model="isSearch.value" @keyup.enter="updateSort">
+            </el-input>
+            <i class="icon-search" @click="updateSort"></i>
+          </div>
+        </div>
+        <div class="select-date">
+          <i class="select-icon el-icon-sort"></i>
+          <el-select v-model="sortEvts" @change="updateAt">
+            <el-option v-for="c in optionClientRecycle" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
         </div>
@@ -340,7 +381,7 @@
           <el-button size="small" >批量导入</el-button>
         </el-upload>
         <el-button size="small" @click="exportForm">导出</el-button>
-        <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
+        <el-button size="small"  @click="exportFormPost(2)">导入模板下载</el-button>
         <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
         <el-button size="small" @click="showClueDialog">无效</el-button>
       </div> -->
@@ -369,7 +410,7 @@
         </el-table-column>
         <el-table-column
           label="状态"
-          min-width="100"
+          min-width="120"
           prop="call_status_value"
           :filters="statusList"
           column-key="call_status_value"
@@ -430,6 +471,7 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-else-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-else-if="scope.row.son_source === 'c'">App</span>
+                <span v-else-if="scope.row.son_source === 'd'">SaaS</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
@@ -506,7 +548,7 @@
         </el-table-column>
         -->
         <el-table-column
-          v-if="typeId !== 4"
+          v-if="typeId !== 4 && typeId !== 5"
           label="最后跟进日"
           min-width="120"
           >
@@ -517,12 +559,36 @@
         <el-table-column
           prop="new_status"
           label="阶段"
+          :filters="[
+            {text: '商机', value: '1' },
+            { text: '潜在客户', value: '2' },
+            { text: '对接设计', value: '3' }
+          ]"
+          :filter-multiple="false"
+          filter-placement="bottom-end"
+          column-key="new_status"
+          v-if="typeId === 4"
+          :key="111"
           >
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="typeId === 4">
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
-              <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
-              <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-              <p class="status5 status"  v-else>签约合作</p>
+              <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
+              <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
+              <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
+              <p class="status5 status" v-else>签约合作</p>
+            </template>
+        </el-table-column>
+        <el-table-column
+          label="阶段"
+          :key="222"
+          v-if="typeId && typeId !== 4"
+          >
+          <template slot-scope="scope" v-if="typeId && typeId !== 4">
+              <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
+              <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
+              <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
+              <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
+              <p class="status5 status" v-else>签约合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -543,8 +609,19 @@
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
+            <p v-else-if="scope.row.label_cause === 3">预算过低</p>
+            <p v-else-if="scope.row.label_cause === 4">因竞争丢失</p>
+            <p v-else-if="scope.row.label_cause === 5">其他</p>
             <p v-else>无</p>
           </template>
+        </el-table-column>
+        <el-table-column
+          v-if="typeId&&typeId === 5"
+          prop="updated_at"
+          label="删除时间"
+          key="updatedAt"
+          min-width="120"
+          >
         </el-table-column>
         <!-- <el-table-column
           prop="new_status"
@@ -611,13 +688,35 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="query4.totalCount">
       </el-pagination>
+      <el-pagination
+        v-else-if="typeId === 5&&tableData.length && query5.totalCount > query5.per_page"
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query5.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="query5.per_page"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query5.totalCount">
+      </el-pagination>
       <div v-else>
         <p v-if="tableData.length" class="tc-2 pagination">共{{tableData.length}}条</p>
       </div>
     </div>
-
     <el-dialog
-      title="确认"
+      title="移入回收站"
+      :visible.sync="delBusiness"
+      width="380px">
+      <p>确认将<span> {{multipleSelection.length}} </span>个商机移入回收站么?</p>
+        <!-- <p class="line-height30">无效客户备注原因</p> -->
+        <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="delBusiness = false">取 消</el-button>
+          <el-button type="primary" @click="setClueStatus(4)">确 定</el-button>
+        </span>
+    </el-dialog>
+    <el-dialog
+      title="移入无效"
       :visible.sync="boolClueStatus"
       width="380px">
         <el-radio-group v-model="label_cause">
@@ -628,7 +727,7 @@
         <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
-          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          <el-button type="primary" @click="setClueStatus(1)">确 定</el-button>
         </span>
     </el-dialog>
 
@@ -671,7 +770,18 @@
         <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
       </span> -->
     </el-dialog>
-
+    <el-dialog
+      title="彻底删除"
+      :visible.sync="permanentDialog"
+      width="350px">
+      <span>确认彻底删除
+        <span class="tc-red">{{multipleSelection.length}}</span> 个客户么？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="permanentDialog = false">取 消</el-button>
+        <!-- :disabled="!noAllot" -->
+        <el-button type="primary" @click="permanentDel" :disabled="!multipleSelection.length" >确 定</el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       width="350px"
       title="移除业务人员"
@@ -688,7 +798,7 @@
       title="恢复客户"
       :visible.sync="renewDialog"
       center>
-      <span class="d-d-content">确认将 <span class="tc-red">{{multipleSelection.length}}</span> 个无效客户恢复为正常客户?</span>
+      <span class="d-d-content">确认将 <span class="tc-red">{{multipleSelection.length}}</span> 个客户状态恢复为正常 ?</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="renewDialog = false">取 消</el-button>
         <el-button type="primary" @click="renewUser">确 定</el-button>
@@ -812,6 +922,8 @@ export default {
   },
   data() {
     return {
+      delBusiness: false, // 移入回收站
+      permanentDialog: false, // 移入回收站
       renewDialog: false, // 恢复成员弹窗
       isFirst: false,
       selectedOptions2: [], // 筛选来源2
@@ -908,8 +1020,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -1073,8 +1189,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -1202,33 +1322,80 @@ export default {
       ],
       // 商机搜索条件
       optionCondition: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
         {
-          value: 1,
-          label: '按姓名'
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
         },
         {
           value: 2,
-          label: '按客户级别'
+          label: '按客户级别(5-1)'
         },
-        {
-          value: 3,
-          label: '按创建时间'
-        },
-        {
-          value: 4,
-          label: '按商机来源'
-        },
+        // {
+        //   value: 4,
+        //   label: '按商机来源'
+        // },
         {
           value: 5,
           label: '按商机所有人'
         },
         {
           value: 6,
-          label: '按状态'
+          label: '按优先级'
         },
         {
           value: 7,
-          label: '按最后跟进日'
+          label: '按最后跟进日(最近)'
+        },
+        {
+          value: 8,
+          label: '按最后跟进日(最早)'
+        }
+      ],
+      // 商机搜索条件
+      optionCondition2: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
+        {
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
+        },
+        {
+          value: 2,
+          label: '按客户级别(5-1)'
+        },
+        // {
+        //   value: 4,
+        //   label: '按商机来源'
+        // },
+        {
+          value: 5,
+          label: '按客户所有人'
+        },
+        {
+          value: 6,
+          label: '按优先级'
+        },
+        {
+          value: 7,
+          label: '按最后跟进日(最近)'
+        },
+        {
+          value: 8,
+          label: '按最后跟进日(最早)'
         }
       ],
       // 潜在客户条件
@@ -1264,33 +1431,41 @@ export default {
       ],
       // 客户
       optionClientCondition: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
         {
-          value: 1,
-          label: '按姓名'
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
         },
         {
           value: 2,
-          label: '按客户级别'
+          label: '按客户级别(5-1)'
         },
-        {
-          value: 3,
-          label: '按创建时间'
-        },
-        {
-          value: 4,
-          label: '按客户来源'
-        },
+        // {
+        //   value: 4,
+        //   label: '按客户来源'
+        // },
         {
           value: 5,
           label: '按客户所有人'
         },
-        {
-          value: 6,
-          label: '按状态'
-        },
+        // {
+        //   value: 6,
+        //   label: '按优先级'
+        // },
         {
           value: 7,
-          label: '按最后跟进日'
+          label: '按无效时间(最近)'
+        },
+        {
+          value: 8,
+          label: '按无效时间(最早)'
         }
       ],
       optionClient: [
@@ -1307,7 +1482,7 @@ export default {
       optionLatent: [
         {
           value: 0,
-          label: '全部'
+          label: '全部商家'
         },
         {
           value: 1,
@@ -1328,6 +1503,44 @@ export default {
         {
           value: 5,
           label: '我的对接设计'
+        }
+      ],
+      optionClientRecycle: [
+        // {
+        //   value: 1,
+        //   label: '按姓名'
+        // },
+        {
+          value: 3,
+          label: '最近创建'
+        },
+        {
+          value: 9,
+          label: '最早创建'
+        },
+        {
+          value: 2,
+          label: '按客户级别(5-1)'
+        },
+        // {
+        //   value: 4,
+        //   label: '按客户来源'
+        // },
+        {
+          value: 5,
+          label: '按客户所有人'
+        },
+        // {
+        //   value: 6,
+        //   label: '按优先级'
+        // },
+        {
+          value: 7,
+          label: '按删除时间(最近)'
+        },
+        {
+          value: 8,
+          label: '按删除时间(最早)'
         }
       ],
       optionBusiness: [
@@ -1438,6 +1651,25 @@ export default {
         status: 5,
         // totalCount: 0,
         search: '',
+        new_status: '',
+        valueDate: []
+      },
+      query5: {
+        page: 1,
+        per_page: 50,
+        sort: 2,
+        sort_evt: 5, // 排序条件 1.姓名 2.客户级别 3.来源渠道 4.负责人 5.创建时间
+        search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
+        number: '', // 编号
+        name: '', // 姓名
+        phone: '', // 手机号
+        execute_user_id: '', // 所属人
+        rank: '', // 客户级别
+        new_source: '', // 来源渠道
+        son_source: '', // 子来源渠道
+        new_call_status: '', // 沟通状态
+        // totalCount: 0,
+        search: '',
         valueDate: []
       },
       dateArr: [], // 格式化
@@ -1454,10 +1686,63 @@ export default {
       belongIdLength: '',
       // followVal: '',
       label_cause: 1,
-      isOpen: true
+      isOpen: true,
+      sortEvts: ''
     }
   },
   methods: {
+    // 更改时间
+    updateAt(val) {
+      this['query' + this.typeId].sort_evt = val
+      if (val === 2) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 3) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 5) {
+        this['query' + this.typeId].sort = 1
+      }
+      if (val === 6) {
+        this['query' + this.typeId].sort = 1
+      }
+      if (val === 7) {
+        this['query' + this.typeId].sort = 2
+      }
+      if (val === 8) {
+        this['query' + this.typeId].sort = 1
+        this['query' + this.typeId].sort_evt = 7
+      }
+      if (val === 9) {
+        this['query' + this.typeId].sort_evt = 3
+        this['query' + this.typeId].sort = 1
+      }
+      console.log(val)
+      this.getClueList()
+    },
+    // 升降序
+    updateSorts() {
+      if (this['query' + this.typeId].sort === 1) {
+        this['query' + this.typeId].sort = 2
+        this.getClueList()
+      } else if (this['query' + this.typeId].sort === 2) {
+        this['query' + this.typeId].sort = 1
+        this.getClueList()
+      }
+    },
+    // 彻底删除
+    permanentDel() {
+      let clueIds = this.multipleSelection.map(item => {
+        return item.id
+      })
+      this.$http.delete(api.adminClueDelete, {params: {clue_ids: clueIds}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.permanentDialog = false
+          this.downCheck()
+          this.getClueList()
+        }
+      })
+    },
     // 回到顶部
     goToTop() {
       // document.body.scrollTop = 0
@@ -1499,7 +1784,7 @@ export default {
     // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' clearable placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1588,6 +1873,9 @@ export default {
         // totalCount: 0,
         search: '',
         valueDate: []
+      }
+      if (this.typeId === 5) {
+        delete this['query' + this.typeId].evt
       }
       this.isSearch = {
         value: '',
@@ -1725,7 +2013,7 @@ export default {
       //   }
       // }
       let callStatus = row.new_call_status - 0
-      if (this.typeId === 4) {
+      if (this.typeId === 4 || this.typeId === 5) {
         return
       }
       if (callStatus < 9) {
@@ -1787,6 +2075,15 @@ export default {
         this['query' + this.typeId].page = 1
         this.getClueList()
       }
+      if (value.new_status) {
+        if (value.new_status.length) {
+          this['query' + this.typeId].new_status = Number(value.new_status[0])
+        } else {
+          this['query' + this.typeId].new_status = ''
+        }
+        this['query' + this.typeId].page = 1
+        this.getClueList()
+      }
       // let value = Object.values(row).toString()
       // switch (value) {
       //   case '1':
@@ -1820,6 +2117,9 @@ export default {
       this['query' + this.typeId].new_call_status = ''
       this['query' + this.typeId].rank = ''
       this['query' + this.typeId].execute_user_id = ''
+      if (this.typeId === 4) {
+        this['query' + this.typeId].new_status = ''
+      }
       this.getClueList()
     },
     // 取消多选操作
@@ -1834,7 +2134,11 @@ export default {
       //   return
       // }
       this.multipleSelection = val
-      this.isCheck = true
+      if (!val.length) {
+        this.isCheck = false
+      } else {
+        this.isCheck = true
+      }
     },
     // 删除用户
     multipleDelItem() {
@@ -1943,6 +2247,10 @@ export default {
         url = api.adminClueClueLowList
         Object.assign(row, this.query4)
       }
+      if (typeId === 5) {
+        url = api.adminClueClueDelList
+        Object.assign(row, this.query5)
+      }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
       this.$http.get(url, {params: row}).then(res => {
@@ -1955,12 +2263,19 @@ export default {
           }
           let ids = []
           this.tableData.forEach(item => {
-            if (item.invalid_time) {
-              item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+            if (this.typeId === 4) {
+              // if (item.invalid_time) {
+              //   item.invalid_time = item.invalid_time.date_format().format('yyyy-MM-dd')
+              // } else {
+              item.invalid_time = item.updated_at.date_format().format('yyyy-MM-dd')
+              // }
             }
             item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
             if (item.end_time) {
               item.end_time = item.end_time.date_format().format('yyyy-MM-dd')
+            }
+            if (this.typeId === 5 && item.updated_at) {
+              item.updated_at = item.updated_at.date_format().format('yyyy-MM-dd')
             }
             if (item.id) {
               ids.push(item.id)
@@ -1982,7 +2297,7 @@ export default {
       }
       this.boolClueStatus = true
     },
-    setClueStatus() { // 多选标记无效
+    setClueStatus(type) { // 多选标记无效
       if (this.isOpen) {
         this.isOpen = false
         let idArr = this.arrayExportIds()
@@ -1991,11 +2306,20 @@ export default {
           clue_ids: idArr,
           label_cause: this.label_cause
         }
+        if (type === 4) {
+          row.new_status = type
+          row.label_cause = ''
+        }
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
-            this.$message.success('标记成功')
+            if (type === 4) {
+              this.$message.success('删除成功')
+            } else {
+              this.$message.success('标记成功')
+            }
             this.boolClueStatus = false
+            this.delBusiness = false
             this.getClueList()
           } else {
             this.$message.error(res.data.meta.message)
@@ -2009,7 +2333,7 @@ export default {
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
@@ -2020,7 +2344,7 @@ export default {
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
@@ -2173,6 +2497,42 @@ export default {
       downloadUrl = url + '?' + urlStr + '&status=' + this.typeId
       window.open(decodeURI(downloadUrl))
     },
+    exportFormPost(type) {
+      let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let ids = this.arrayExportIds()
+      const data = {
+        token: this.token
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      let node2 = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      if (type === 2) {
+        node2.name = 'type'
+        node2.value = type
+      } else {
+        node2.name = 'clue_id'
+        node2.value = ids.join(',')
+      }
+      form.appendChild(node2.cloneNode())
+      // 表单元素需要添加到主文档中.
+      console.log(node2.value)
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
+    },
     arrayExportIds() {
       var idArr = []
       for (var i = 0; i < this.multipleSelection.length; i++) {
@@ -2258,7 +2618,7 @@ export default {
     this.typeId = Number(this.$route.params.type) || 1
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     if (this.typeId) {
-      if (this.typeId === 1) {
+      if (this.typeId === 1 || this.typeId === 5) {
         this.statusList = [
           {
             'text': '待初次沟通',
@@ -2331,6 +2691,12 @@ export default {
         ]
       }
     }
+    // 搜索条件默认
+    if (this.typeId > 4) {
+      this['query' + this.typeId].sort_evt = 7
+    }
+    this.selectedOptions2 = []
+    this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
     this.getAdminList()
     this.getUsers()
@@ -2360,6 +2726,9 @@ export default {
     }
   },
   watch: {
+    selectedOptions2(val) {
+      console.log('val', val)
+    },
     $route(to, form) {
       // 对路由变化做出相应...
       this.typeId = Number(this.$route.params.type) || 1
@@ -2383,13 +2752,20 @@ export default {
         search: '',
         valueDate: []
       }
+      if (this.typeId === 5 || this.typeId === 4) {
+        delete this['query' + this.typeId].evt
+        this['query' + this.typeId].sort_evt = 7
+      }
+      if (this.typeId === 4) {
+        this['query' + this.typeId].new_status = ''
+      }
       this.isSearch = {
         label: 1,
         value: ''
       }
       this.multipleSelection = []
       if (this.typeId) {
-        if (this.typeId === 1) {
+        if (this.typeId === 1 || this.typeId === 5) {
           this.statusList = [
             {
               'text': '待初次沟通',
@@ -2465,6 +2841,12 @@ export default {
       this.isFirst = true
       this.downCheck()
       this.$refs.tableData.clearFilter()
+      // 搜索条件默认
+      if (this.typeId > 4) {
+        this['query' + this.typeId].sort_evt = 7
+      }
+      this.sortEvts = this['query' + this.typeId].sort_evt
+      this.selectedOptions2 = []
       // this.isCheck = false
       this.getClueList()
     }
@@ -2865,7 +3247,7 @@ export default {
 }
 .select-business {
   float: left;
-  width: 220px;
+  width: 180px;
   /* margin-left: 20px; */
   height: 36px;
   line-height: 36px;
@@ -2877,12 +3259,39 @@ export default {
 .select-date .el-input__icon, .select-business .el-input__icon {
   line-height: 36px;
 }
+.select-date .el-input__inner {
+  padding-left: 25px;
+}
 .select-date {
-  width: 132px;
+  width: 180px;
   float: left;
   margin-left: 10px;
   height: 36px;
   line-height: 36px;
+  position: relative;
+}
+.select-date .select-icon {
+  position: absolute;
+  z-index: 1;
+  width: 25px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+  padding-left: 8px;
+}
+.select-icon .el-icon-sort-down {
+  position: absolute;
+  transform:rotate(180deg);
+  font-size: 18px;
+  left: -4px;
+  top: 9px;
+}
+.select-icon .el-icon-sort-up {
+  position: absolute;
+  transform:rotate(180deg);
+  font-size: 18px;
+  left: 12px;
+  top: 9px;
 }
 .select-date .el-input__inner {
   height: 36px;
@@ -2940,7 +3349,7 @@ export default {
   top: 0px;
   left: 0px;
   background-color: #f7f7f7;
-  z-index: 1;
+  z-index: 2;
   border-bottom: 1px solid #e6e6e6;
   display: flex;
   align-items: center;
@@ -2986,6 +3395,7 @@ export default {
   border-radius: 4px;
   padding-left: 5px;
   line-height: 34px;
+  cursor: pointer;
 }
 .check-all {
   width: 200px;
@@ -3115,6 +3525,17 @@ export default {
   cursor: pointer;
   background: url('../../../assets/images/icon/Open@2x.png') no-repeat center/ 28px 28px #fff;
   transform: rotate(180deg);
+}
+.go-top:hover {
+  background-color: #f7f7f7;
+}
+.permanent-del {
+  border: 1px solid #e6e6e6;
+  padding: 11px 20px;
+  background-color: #fff;
+  margin-right: 15px;
+  cursor: pointer;
+  font-size: 14px;
 }
 </style>
 

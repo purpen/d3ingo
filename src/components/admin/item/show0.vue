@@ -2185,13 +2185,13 @@ export default {
   .company-show {
     margin-top: 20px;
     clear: both;
-    border: 1px solid #ccc;
+    border: 1px solid #e6e6e6;
     padding: 10px 20px 20px 20px;
     min-height: 350px;
   }
   .item {
     padding: 5px;
-    border-bottom: solid 1px #ccc;
+    border-bottom: solid 1px #e6e6e6;
   }
   .item p {
     color: #666666;

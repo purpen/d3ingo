@@ -259,6 +259,7 @@ export default {
   adminAnalysisBudget: '/admin/analysis/budget', // GET 商机分析-商机预算
   adminAnalysisTrend: '/admin/analysis/trend', // GET 商机分析-趋势
   adminAnalysisConversionTrend: '/admin/analysis/conversionTrend', // 商机分析-转化趋势
+  adminClueClueDelList: '/admin/clue/clueDelList', // 潜在客户-回收站列表/搜索
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
@@ -305,6 +306,10 @@ export default {
   adminCompanySetTest: '/admin/designCompany/isTest',  // PUT 设置为测试账号（不会系统推荐）
   adminCompanyInvoice: '/admin/invoice/pullLists', // GET 设计服务商给平台开具发票
   adminCompanyConfirmInvoice: '/admin/invoice/trueInvoice', // GET 确认收到设计服务商发票
+  adminDesignCompanyClueList: '/admin/designCompany/clueList', // GET 设计公司客户列表
+  adminDesignCaseDesignCaseList: '/admin/designCase/designCaseList', // GET 某个设计公司案例列表
+  adminDesignCompanyStatistics: '/admin/designCompany/statistics', // GET 设计公司统计
+  adminDesignCompanyDownloadReport: 'admin/designCompany/downloadReport', // POST 设计公司下载客户报表
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表

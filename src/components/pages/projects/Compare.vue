@@ -3,13 +3,14 @@
     <menu-sub status="select"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
-        <h3>选择设计服务商，发送项目邀约</h3>
+        <h3>根据您的需求，筛选出 <span class="tc-red">4</span> 家设计服务商</h3>
         <div class="item">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
-                <div class="logo" @click="clickSelf(ele.id)">
-                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i>
+                <!-- <div class="logo" @click="clickSelf(ele.id)"> -->
+                <div class="logo">
+                  <!-- <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i> -->
                   <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                     <img v-else :src="require('assets/images/avatar_100.png')"/>
@@ -60,9 +61,16 @@
         </div>
       </div>
       <div class="project-foot">
-        <div class="buttons">
+        <!-- <div class="buttons">
           <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计服务商</span>
           <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
+        </div> -->
+        <div class="foot-content">
+          <img class="qr-code margin-r-20" :src="require('assets/images/df_100x100.png')" alt="">
+          <div>
+            <p class="line-height24 fz-16">请用微信扫一扫小程序码</p>
+            <p class="line-height24 fz-16">查看并管理您的项目</p>
+          </div>
         </div>
       </div>
     </div>
@@ -325,12 +333,12 @@ export default {
   .company-info {
     border-radius: 4px;
     background: #fff;
-    border: 3px solid transparent;
+    /* border: 3px solid transparent; */
   }
-  .company-info:hover {
+  /* .company-info:hover {
     border-radius: 4px;
     border: 3px solid rgba(255, 90, 95,.4);
-  }
+  } */
   .company-info.active {
     border: 3px solid;
     border-image: -webkit-linear-gradient( #6637FFed, #FF5A5F) 30 30;
@@ -441,6 +449,9 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  .project-foot {
+    height: 140px;
+  }
   .project-foot .buttons {
     height: 100%;
     padding: 0 30px;
@@ -474,6 +485,21 @@ export default {
     width: 100%;
     height: 100%;
     padding: 20px 10px
+  }
+  .foot-content {
+    width: 880px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto
+  }
+  .qr-code {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%
+  }
+  .project-cover {
+    padding-bottom: 140px
   }
 </style>
 

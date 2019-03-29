@@ -181,7 +181,7 @@
             
             <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
-                <p>公司实名认证</p>
+                <p>实名认证</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
                 <div v-if="form.verify_status === 0" class="font14">点此
@@ -398,6 +398,7 @@
       }
       return {
         oldName: '',
+        checkName: true, // 检查公司名称是否可用， 默认可用
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
         contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
@@ -559,6 +560,12 @@
       }
     },
     methods: {
+      updateUser() {
+        this.$http.get(api.user).then(res => {
+          console.log(res)
+          auth.write_user(res.data.data)
+        })
+      },
       saveOldName(name) {
         this.oldName = name
       },
@@ -568,10 +575,11 @@
         }
         this.$http.get(api.checkDesmandCompany, {params: {company_name: name}})
         .then(res => {
-          if (res.data && res.data.meta.status_code === 200) {
+          if (res.data && res.data.data !== 1) {
+            this.checkName = false
             this.$message.error(res.data.meta.message)
           } else {
-            this.$message.error(res.data.meta.message)
+            this.checkName = true
           }
         })
         .catch(err => {
@@ -689,6 +697,10 @@
       },
       submit(formName) {
         const that = this
+        if (!that.checkName) {
+          that.$message.error('公司名称已存在，不能使用')
+          return false
+        }
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
@@ -750,6 +762,7 @@
                     city: row.city
                   }
                   that.dialogVisible = false
+                  auth.write_user(response.data.data)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
@@ -958,6 +971,7 @@
         return
       }
       this.getDemandCompany()
+      this.updateUser()
       let {params = {}} = this.$route
       if (params.id === 1) {
         this.dialogVisible = true
