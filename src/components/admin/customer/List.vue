@@ -471,6 +471,7 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-else-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-else-if="scope.row.son_source === 'c'">App</span>
+                <span v-else-if="scope.row.son_source === 'd'">SaaS</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
@@ -1019,6 +1020,10 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
               label: '文章详情头部'
             },
@@ -1184,8 +1189,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',

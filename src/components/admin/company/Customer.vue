@@ -126,7 +126,7 @@
       <div class="empty-title">暂未对接过客户</div>
       <div class="empty-text">入驻日期：{{creatDate}}</div>
     </div>
-    <div v-if="customLoading" class="loading-fiexd">
+    <div v-if="customLoading && load === 1" class="loading-fiexd">
       <div class="fiex-content" v-loading="customLoading"></div>
     </div>
   </div>
@@ -135,7 +135,7 @@
 import api from '@/api/api'
 export default {
   name: 'customer',
-  props: ['creatDate'],
+  props: ['creatDate', 'load'],
   data() {
     return {
       designChoose: [{
