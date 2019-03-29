@@ -83,6 +83,9 @@
           <p class="find">{{custom.info}} 正在从 1000+ 设计服务商为您寻找</p>
           <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计服务商</p>
         </section>
+        <section v-if="matchComplete && designList.length">
+            <p class="num">根据您的需求筛选出<i>{{designList.length}}家</i>设计服务商</p>
+        </section>
         <div v-if="matchComplete && !designList.length">
           <p class="num">智能匹配未筛选到合适的设计服务商</p>
           <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
@@ -153,7 +156,7 @@
           <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
         </div> -->
         <div class="foot-content">
-          <img class="qr-code margin-r-20" :src="require('assets/images/df_100x100.png')" alt="">
+          <img class="qr-code margin-r-20" :src="require('assets/images/THN-WX-Assistant.jpg')" alt="">
           <div>
             <p class="line-height24 fz-16">请用微信扫一扫小程序码</p>
             <p class="line-height24 fz-16">查看并管理您的项目</p>
