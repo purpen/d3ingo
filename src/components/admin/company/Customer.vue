@@ -35,7 +35,7 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.id)">{{scope.row.clue_name || '-'}}</div>
+                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.crm_clue_id)">{{scope.row.clue_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
