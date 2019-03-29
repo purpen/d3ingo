@@ -2304,7 +2304,7 @@ export default {
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
-            if (type) {
+            if (type === 4) {
               this.$message.success('删除成功')
             } else {
               this.$message.success('标记成功')
@@ -2324,7 +2324,7 @@ export default {
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
@@ -2335,7 +2335,7 @@ export default {
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
