@@ -134,6 +134,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="company_size"
           label="公司规模"
           column-key="company_size"
           :filters="companySizes"
@@ -283,6 +284,7 @@ export default {
       this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
     },
     filterProvinces(value) {
+      console.log(value)
       if (value.company_size) {
         this.query.scale = value.company_size[0]
       }
@@ -455,10 +457,12 @@ export default {
   .sever-right-left {
     width: 112px;
     border-right: 1px solid #D8D8D8;
+    height: 34px;
   }
   .sever-right-select {
     width: 205px;
-    height: 32px;
+    height: 34px;
+    line-height: 34px;
     border: none;
     padding-left: 10px;
   }
