@@ -22,7 +22,7 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">地址</div>
-        <div class="cer-right">{{item.address || '-'}}</div>
+        <div class="cer-right">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">规模</div>
