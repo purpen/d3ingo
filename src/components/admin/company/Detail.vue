@@ -559,8 +559,7 @@ export default {
   }
   .enter-flex {
     display: flex;
-    overflow-y: hidden;
-    padding-top: 9px;
+    flex-wrap: wrap;
   }
   .prize-blue {
     width: 150px;
@@ -573,8 +572,12 @@ export default {
     color: rgba(10,109,217,1);
     line-height: 24px;
     text-align: center;
+    margin-top: 9px;
   }
-  .enter-flex .prize-blue:not(:nth-child(1)) {
+  /* .enter-flex .prize-blue:not(:nth-child(1)) {
     margin-left: 10px;
+  } */
+  .enter-flex .prize-blue {
+    margin-right: 10px;
   }
 </style>
