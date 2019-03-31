@@ -3239,8 +3239,9 @@ export default {
 .edit-project {
   position: relative;
   width: 30px;
-  height: 30px;
+  height: 40px;
   cursor: pointer;
+  border-bottom: 10px solid transparent;
   background: url(../../../assets/images/design_admin/MoreHover@2x.png) no-repeat left/30px;
 }
 .edit-project:hover {
@@ -3252,7 +3253,7 @@ export default {
 .edit-project-tag {
   display: none;
   position: absolute;
-  top: 26px;
+  top: 32px;
   left: -54px;
   width: 100px;
   z-index: 99;
@@ -3260,8 +3261,8 @@ export default {
   background: #ffffff;
 }
 .edit-project .edit-project-tag> p {
-  height: 40px;
-  line-height: 40px;
+  height: 30px;
+  line-height: 29px;
   color: #AAAAAA;
   margin-bottom: 0px;
   text-align: center;
