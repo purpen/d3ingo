@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="top flex-center">
+    <div class="top flex-start">
       <div class="top-left">
         <div class="top-left-img">
           <img :src="item.logo_url">
@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="top-right-bot flex-center">
+        <div class="top-right-bot flex-start">
           <div class="web-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width-43">网址</div>
@@ -359,10 +359,10 @@ export default {
 <style scoped>
   .top {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
   }
   .top-left {
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
   }
   .top-right-bot-title {
@@ -401,7 +401,7 @@ export default {
   }
   .top-right {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
     flex: 1 1 auto;
   }
@@ -520,6 +520,7 @@ export default {
   }
   .bot {
     padding-left: 30px;
+    padding-top: 30px;
   }
   .directory {
     height: 50px;
@@ -568,6 +569,10 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
   .min-width-43 {
     min-width: 43px;
@@ -628,5 +633,9 @@ export default {
   } */
   .enter-flex .prize-blue {
     margin-right: 10px;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
 </style>
