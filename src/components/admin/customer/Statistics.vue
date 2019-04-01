@@ -2031,7 +2031,7 @@ export default {
             this.chanceData = res
           } else if (type === 3) {
             // 来源渠道
-            this.polar3.series[0].data = [res.advertising.number, res.cooperation.number, res.exhibition.number, res.external_push.number, res.internal_push.number, res.new_media.number, res.official.number, res.other.number]
+            this.polar3.series[0].data = [res.advertising.number, res.official.number, res.cooperation.number, res.internal_push.number, res.external_push.number, res.new_media.number, res.exhibition.number, res.other.number]
             let channel = {
               advertising: {
                 'a': '百度',
@@ -2046,6 +2046,7 @@ export default {
                 'a': 'Pc/Wap官网',
                 'b': '小程序',
                 'c': 'App',
+                'd': 'SaaS',
                 'topic_view_h': '文章详情头部',
                 'topic_view_f': '文章详情底部',
                 'topic_view_r': '文章详情右侧',
@@ -2081,6 +2082,7 @@ export default {
                 'name': '其他'
               }
             }
+            console.log(res)
             for (let k in res) {
               res[k].name = channel[k].name
               for (let kk in res[k]) {
@@ -2365,7 +2367,7 @@ export default {
   }
   .chart-header {
     height: 70px;
-    padding: 15px 0px 15px 20px;
+    padding: 15px 0px 15px 0px;
   }
   .chart-header2::after {
     content: '';

@@ -483,6 +483,19 @@ let routes = [
     },
     component: require('@/components/pages/projects/Info')
   },
+  // 发布
+  {
+    path: '/projects/release/:id',
+    name: 'projectRelease',
+    meta: {
+      title: '补全需求信息',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Release')
+  },
   // 匹配公司
   {
     path: '/projects/match/:id',

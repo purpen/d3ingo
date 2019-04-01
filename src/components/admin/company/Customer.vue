@@ -35,7 +35,7 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.id)">{{scope.row.clue_name || '-'}}</div>
+                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.crm_clue_id)">{{scope.row.clue_name || '-'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
@@ -193,13 +193,18 @@ export default {
       // window.open(url)
     },
     toItemDetail(id) {
-      this.$router.push({name: 'adminItemShow0', params: {id: id}})
+      const {href} = this.$router.resolve({
+        path: `/admin/item/show0/${id}`
+      })
+      window.open(href, '_blank')
+      // this.$router.push({name: 'adminItemShow0', params: {id: id}})
     },
     toCustemDetail(id) {
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {isService: 1}
+        query: {isService: 1, type: 6}
       })
+      // window.open(href, '_blank')
       this.$router.push(href)
     },
     getCustomer(id) {

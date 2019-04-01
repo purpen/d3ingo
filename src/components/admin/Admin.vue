@@ -8,6 +8,18 @@
             <img :src="prod.logo" alt="logo">
           </router-link>
         </p>
+        <div class="router-btn"
+          ref="routerBtn"
+          @click="openRouter = true" tabindex="-1"
+          @blur="openRouter = false">
+        <!-- <div class="router-btn" @click="openRouter = true" tabindex="-1"> -->
+          <span class="router-name">{{subRouter.name}}<i class="el-icon-arrow-down"></i></span>
+          <ul class="router-children" v-if="openRouter">
+            <li v-for="(c, indexc) in routerSelect.children" :key="indexc">
+              <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="menu-right">
         <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
@@ -73,7 +85,7 @@
         </el-menu>
       </div>
     </header>
-    <section v-if="!prod.name" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
+    <section v-if="!prod.name||isSaaS" :class="['menuHide', 'scroll-bar3', {'menuHide-mini': leftWidth === 2}]">
       <div v-if="leftWidth === 2">
         <el-menu
           class="admin-menu"
@@ -158,6 +170,9 @@
     },
     data () {
       return {
+        openRouter: false, // 打开路由列表
+        subRouter: {}, // 小路由
+        routerSelect: {}, // 当前大路由
         selectedName: '',
         selectedName2: '',
         isEmpty: false,
@@ -166,6 +181,11 @@
       }
     },
     methods: {
+      redirect(obj) {
+        this.$router.push(obj)
+        this.openRouter = false
+        this.$refs.routerBtn.blur()
+      },
       alick(e) {
         sessionStorage.setItem('MENU_BAR', e.target.offsetLeft)
         this.$router.push(e.target.getAttribute('to'))
@@ -229,25 +249,77 @@
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath)
+      },
+      getRouter() {
+        let names = this.$route.name
+        if (this.$route.name === 'adminPotentialUserInfo') {
+          names = 'adminPotentialUserList'
+        }
+        if (this.isSaaS) {
+          let object = {}
+          for (let i in ADMINMENU) {
+            object = ADMINMENU[i].children.find((k, val) => {
+              if (k.route === names) {
+                this.routerSelect = ADMINMENU[i]
+                return ADMINMENU[i].children[val]
+              }
+            })
+            if (object) {
+              this.subRouter = object
+              break
+            }
+          }
+        } else {
+          let object = {}
+          for (let i in OTHERADMINMENU) {
+            object = OTHERADMINMENU[i].children.find((k, val) => {
+              if (k.route === this.$route.name) {
+                this.routerSelect = OTHERADMINMENU[i]
+                return OTHERADMINMENU[i].children[val]
+              }
+            })
+            if (object) {
+              this.subRouter = object
+              break
+            }
+          }
+        }
       }
     },
     created() {
       this.leftValue = this.leftWidth
       this.selectedName = this.$route.name
       this.selectedName2 = this.$route.name
+      this.getRouter()
       if (this.$route.name === 'adminPotentialUserList') {
         this.selectedName = this.$route.name + this.$route.params.type
         this.selectedName2 = this.$route.name + this.$route.params.type
+        let set = this.routerSelect.children.find(item => {
+          return item.subRouter === Number(this.$route.params.type)
+        })
+        this.subRouter = set
       }
       if (this.$route.name === 'adminPotentialUserInfo') {
         this.selectedName = localStorage.getItem('selectedName')
         this.selectedName2 = localStorage.getItem('selectedName2')
+        let set = this.routerSelect.children.find(item => {
+          return item.subRouter === Number(this.$route.query.type)
+        })
+        this.subRouter = set
       }
       localStorage.setItem('selectedName', this.selectedName)
       localStorage.setItem('selectedName2', this.selectedName2)
       console.log(this.selectedName, this.selectedName2)
     },
     computed: {
+      isSaaS() {
+        let saas = false
+        let rou = this.$route.path.split('/')
+        if (rou[1] === 'admin') {
+          saas = true
+        }
+        return saas
+      },
       adminMenu() {
         return ADMINMENU
       },
@@ -360,13 +432,22 @@
         this.leftValue = this.leftWidth
         this.selectedName = this.$route.name
         this.selectedName2 = this.$route.name
+        this.getRouter()
         if (this.$route.name === 'adminPotentialUserList') {
           this.selectedName = this.$route.name + this.$route.params.type
           this.selectedName2 = this.$route.name + this.$route.params.type
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.params.type)
+          })
+          this.subRouter = set
         }
         if (this.$route.name === 'adminPotentialUserInfo') {
           this.selectedName = localStorage.getItem('selectedName')
           this.selectedName2 = localStorage.getItem('selectedName2')
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.query.type)
+          })
+          this.subRouter = set
         }
         localStorage.setItem('selectedName', this.selectedName)
         localStorage.setItem('selectedName2', this.selectedName2)
@@ -630,6 +711,44 @@
     margin-left: -5px;
 }
 
+  .router-btn {
+    position: relative;
+  }
+  .router-btn>span {
+  }
+  .router-children {
+    position: absolute;
+    width: 150px;
+    border: 1px solid #e6e6e6;
+    line-height: 40px;
+    background-color: #fff;
+    top: 30px;
+    left: 0px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+  .router-children li {
+    cursor: pointer;
+  }
+  .router-children li a {
+    display: block;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  .active-router {
+    background-color: #f7f7f7;
+    color: #ff5a5f;
+  }
+  .router-children li:hover {
+    background-color: #f7f7f7;
+  }
+  .router-name {
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .router-name i {
+    margin-left: 10px;
+    line-height: 24px;
+  }
   @media screen and (min-width: 768px) {
     .menu-list {
       width: inherit;

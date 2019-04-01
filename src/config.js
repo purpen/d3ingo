@@ -948,7 +948,7 @@ const DESIGN_CASE_PRICE_OPTIONS = [
   {
     id: 20,
     name: '其他',
-    img: require('assets/images/prize_logo/20.png')
+    img: require('assets/images/prize_logo/20.jpg')
   }
 ]
 
@@ -2314,6 +2314,25 @@ const OTHERADMINMENU = {
       {
         name: '用户管理',
         route: 'bAdminUserList',
+        statement: {
+          params: {},
+          query: {}
+        }
+      }
+    ]
+  },
+  adminUserList: {
+    name: '铟果后台',
+    route: 'adminDashBoard',
+    icon: require('assets/images/admin/menu/User@2x.png'),
+    statement: {
+      params: {},
+      query: {}
+    },
+    children: [
+      {
+        name: '列表',
+        route: 'adminDashBoard',
         statement: {
           params: {},
           query: {}

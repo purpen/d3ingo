@@ -471,6 +471,7 @@
                 <span v-if="scope.row.son_source === 'a'">PC/WAP官网</span>
                 <span v-else-if="scope.row.son_source === 'b'">小程序</span>
                 <span v-else-if="scope.row.son_source === 'c'">App</span>
+                <span v-else-if="scope.row.son_source === 'd'">SaaS</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
@@ -608,6 +609,9 @@
           <template slot-scope="scope">
             <p v-if="scope.row.label_cause === 1">虚假商机</p>
             <p v-else-if="scope.row.label_cause === 2">设计需求无法满足</p>
+            <p v-else-if="scope.row.label_cause === 3">预算过低</p>
+            <p v-else-if="scope.row.label_cause === 4">因竞争丢失</p>
+            <p v-else-if="scope.row.label_cause === 5">其他</p>
             <p v-else>无</p>
           </template>
         </el-table-column>
@@ -723,7 +727,7 @@
         <!-- <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input> -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
-          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          <el-button type="primary" @click="setClueStatus(1)">确 定</el-button>
         </span>
     </el-dialog>
 
@@ -1016,8 +1020,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -1181,8 +1189,12 @@ export default {
               label: 'App'
             },
             {
+              value: 'd',
+              label: 'SaaS'
+            },
+            {
               value: 'topic_view_h',
-              label: '.文章详情头部'
+              label: '文章详情头部'
             },
             {
               value: 'topic_view_f',
@@ -1705,6 +1717,7 @@ export default {
         this['query' + this.typeId].sort_evt = 3
         this['query' + this.typeId].sort = 1
       }
+      console.log(val)
       this.getClueList()
     },
     // 升降序
@@ -1725,9 +1738,15 @@ export default {
       this.$http.delete(api.adminClueDelete, {params: {clue_ids: clueIds}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.permanentDialog = false
+          this.$message.success('删除成功')
           this.downCheck()
           this.getClueList()
+        } else {
+          this.$message.error(response.data.meta.message)
         }
+      })
+      .catch((error) => {
+        this.$message.error(error)
       })
     },
     // 回到顶部
@@ -1837,6 +1856,7 @@ export default {
             this['query' + this.typeId].son_source = ''
           }
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
     },
@@ -2240,7 +2260,6 @@ export default {
       }
       row.valueDate = [...this.dateArr]
       this.tableLoading = true
-      this.sortEvts = this['query' + this.typeId].sort_evt
       this.$http.get(url, {params: row}).then(res => {
         this.tableLoading = false
         if (res.data.meta.status_code === 200) {
@@ -2294,14 +2313,14 @@ export default {
           clue_ids: idArr,
           label_cause: this.label_cause
         }
-        if (type) {
+        if (type === 4) {
           row.new_status = type
           row.label_cause = ''
         }
         this.$http.post(api.adminClueSetClueStatus, row).then(res => {
           this.isOpen = true
           if (res.data.meta.status_code === 200) {
-            if (type) {
+            if (type === 4) {
               this.$message.success('删除成功')
             } else {
               this.$message.success('标记成功')
@@ -2321,7 +2340,7 @@ export default {
     editUserInfo(id, name) {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
@@ -2332,7 +2351,7 @@ export default {
     },
     getLookUserInfo({id = {}, name = {}}) {
       this['query' + this.typeId].id = id
-      this['query' + this.typeId].name = name
+      // this['query' + this.typeId].name = name
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
         query: {page: this['query' + this.typeId].page, type: this.typeId}
@@ -2606,7 +2625,7 @@ export default {
     this.typeId = Number(this.$route.params.type) || 1
     this['query' + this.typeId].page = parseInt(this.$route.query.page || 1)
     if (this.typeId) {
-      if (this.typeId === 1) {
+      if (this.typeId === 1 || this.typeId === 5) {
         this.statusList = [
           {
             'text': '待初次沟通',
@@ -2683,6 +2702,8 @@ export default {
     if (this.typeId > 4) {
       this['query' + this.typeId].sort_evt = 7
     }
+    this.selectedOptions2 = []
+    this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
     this.getAdminList()
     this.getUsers()
@@ -2712,6 +2733,9 @@ export default {
     }
   },
   watch: {
+    selectedOptions2(val) {
+      console.log('val', val)
+    },
     $route(to, form) {
       // 对路由变化做出相应...
       this.typeId = Number(this.$route.params.type) || 1
@@ -2748,7 +2772,7 @@ export default {
       }
       this.multipleSelection = []
       if (this.typeId) {
-        if (this.typeId === 1) {
+        if (this.typeId === 1 || this.typeId === 5) {
           this.statusList = [
             {
               'text': '待初次沟通',
@@ -2824,6 +2848,12 @@ export default {
       this.isFirst = true
       this.downCheck()
       this.$refs.tableData.clearFilter()
+      // 搜索条件默认
+      if (this.typeId > 4) {
+        this['query' + this.typeId].sort_evt = 7
+      }
+      this.sortEvts = this['query' + this.typeId].sort_evt
+      this.selectedOptions2 = []
       // this.isCheck = false
       this.getClueList()
     }
@@ -3240,7 +3270,7 @@ export default {
   padding-left: 25px;
 }
 .select-date {
-  width: 165px;
+  width: 180px;
   float: left;
   margin-left: 10px;
   height: 36px;
