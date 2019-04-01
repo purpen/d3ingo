@@ -16,8 +16,15 @@
             <div class="referred">{{item.company_abbreviation || '-'}}</div>
             <div class="name">{{item.company_name || '-'}}</div>
             <div class="enter-flex">
-              <div v-for="(item, index) in item.industrial_design_center" :key="index" class="prize-blue">{{item.val}}</div>
-              <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'" class="prize-blue">{{item.val}}</div>
+              <template v-if="item.industrial_design_center && item.industrial_design_center.length">
+                <div v-for="(item, index) in item.industrial_design_center" :key="index">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div></div>
+              </template>
+              <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
+                <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div>
+                </div>
+              </template>
             </div>
           </div>
           <div class="top-right-top-right flex-center">
@@ -309,7 +316,11 @@ export default {
       })
     },
     toNewWeb() {
-      window.open('http://' + this.item.web)
+      if (this.item.web.includes('http')) {
+        window.open(this.item.web)
+      } else {
+        window.open('http://' + this.item.web)
+      }
     },
     getCustomer(id) {
       let self = this
@@ -534,6 +545,7 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 50px;
     height: 50px;
+    transition: 268ms all ease;
   }
   .directory-title:hover {
     color: #ff5a5f;

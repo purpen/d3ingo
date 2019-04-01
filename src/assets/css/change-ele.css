@@ -1003,6 +1003,24 @@
     font-weight: 400;
     color: rgba(51,51,51,1);
   }
+  .el-tooltip__popper.is-add-tooltop[x-placement^="left"] .popper__arrow::after {
+    border-left-color: #fff;
+  }
+  .el-tooltip__popper[x-placement^=left] .popper__arrow, .el-tooltip__popper[x-placement^=left] .popper__arrow::after {
+    border-color: transparent;
+    border-left-color: #C8C8C8;
+  }
+  .el-tooltip__popper.is-add-tooltop[x-placement^="left"] {
+    margin-left: 14px;
+    margin-top: -6px;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+  }
   .sever-icon .el-input:before {
     content: '';
     position: absolute;
