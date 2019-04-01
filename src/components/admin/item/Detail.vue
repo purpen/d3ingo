@@ -102,9 +102,49 @@
           </div>
         </div>
       </div>
+
+
+      <div class="bot pad-top-50">
+        <div class="directory flex-center">
+          <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" @click="getType(1)">项目阶段</div>
+          <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">订单详情</div>
+          <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" @click="getType(3)">项目信息</div>
+        </div>
+      </div>
+
+      <info v-show="type === 1"></info>
+      <detail v-show="type === 2"></detail>
+      <phase v-show="type === 3"></phase>
     </div>
   </div>
 </template>
+<script>
+import info from 'admin/item/DetailInfo'
+import detail from 'admin/item/DetailDetail'
+import phase from 'admin/item/DetailPhase'
+export default {
+  data() {
+    return {
+      type: 1
+    }
+  },
+  created() {
+    let that = this
+    that.type = 1
+  },
+  methods: {
+    getType(type) {
+      this.type = type
+    }
+  },
+  components: {
+    detail,
+    info,
+    phase
+  }
+}
+</script>
+
 <style scoped>
   .flex {
     display: flex;
@@ -203,12 +243,28 @@
     border-radius: 55px;
     border: 1px solid rgba(230,230,230,1);
   }
-  .small-logo {
-    width: 49px;
-    height: 49px;
-    border-radius: 42px;
-    border: 1px solid rgba(230,230,230,1);
+  .directory {
+    height: 40px;
+    border-bottom: 1px solid #D8D8D8;
   }
+  .directory-title {
+    cursor: pointer;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    line-height: 40px;
+    height: 40px;
+  }
+  .directory-title:hover {
+    color: #ff5a5f;
+    border-bottom: 4px solid #ff5a5f;
+  }
+  .directory-activer {
+    color: #ff5a5f;
+    border-bottom: 4px solid #ff5a5f;
+  }
+
 
 
 
@@ -219,6 +275,9 @@
   .pad-top-20 {
     padding-top: 20px;
   }
+  .pad-top-50 {
+    padding-top: 50px;
+  }
   .pad-right-40 {
     padding-right: 40px;
   }
@@ -227,6 +286,9 @@
   }
   .pad-left-40 {
     padding-left: 40px;
+  }
+  .mar-right-36 {
+    margin-right: 36px;
   }
   .one-left {
     height: 34px;
@@ -245,5 +307,8 @@
   }
   .flex-1 {
     flex: 1;
+  }
+  .color-ff5a5f {
+    color: #FF5A5F;
   }
 </style>
