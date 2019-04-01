@@ -13,7 +13,7 @@
         <div class="clearfix head-c-top padding-b20">
           <div class="fl margin-r120">
             <el-rate v-model="userForm.rank" disabled @change="changeLevel()"></el-rate>
-            <span class="fz-22 line-height30">{{userForm.name}}</span>
+            <span v-if="userForm.name" class="fz-22 line-height30">{{userForm.name}}</span>
           </div>
           <div class="fl">
             <p class="line-height20 tc-9">状态</p>
@@ -39,32 +39,36 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">电话</span>
-                <span class="fz-14  text-overflow">{{userForm.phone}}</span>
+                <span v-if="userForm.phone" class="fz-14  text-overflow">{{userForm.phone}}</span>
+								<span v-else>——</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">职位</span>
-                <span class="fz-14  text-overflow">{{userForm.position}}</span>
+                <span v-if="userForm.position" class="fz-14  text-overflow">{{userForm.position}}</span>
+								<span v-else>——</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
                 <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
-                <span class="fz-14  text-overflow" v-else>--</span>
+                <span v-else>——</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户所有人</span>
-                <span class="fz-14  text-overflow">{{userForm.execute_user_name}}</span>
+                <span v-if="userForm.execute_user_name" class="fz-14  text-overflow">{{userForm.execute_user_name}}</span>
+                <span v-else>——</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">创建时间</span>
-                <span class="fz-14  text-overflow">{{createdTime}}</span>
+                <span v-if="createdTime" class="fz-14  text-overflow">{{createdTime}}</span>
+                <span v-else>——</span>
               </div>
             </el-col>
           </el-row>
@@ -187,7 +191,8 @@
                         <span class="tc-9">设计类型</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.type_value}}</span>
+                        <span v-if="item.type_value">{{item.type_value}}</span>
+												 <span v-else>——</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -195,7 +200,8 @@
                         <span class="tc-9">项目预算</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.design_cost_value}}</span>
+                        <span v-if="item.design_cost_value">{{item.design_cost_value}}</span>
+												<span v-else>——</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -203,7 +209,8 @@
                         <span class="tc-9">交付时间</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.cycle_value}}</span>
+                        <span v-if="item.cycle_value">{{item.cycle_value}}</span>
+												<span v-else>——</span>
                       </el-col>
                     </el-row>
                     <div class="line"></div>
@@ -212,7 +219,8 @@
                         <span class="tc-9">行业领域</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.industry_value}}</span>
+                        <span v-if="item.industry_value">{{item.industry_value}}</span>
+												<span v-else>——</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -220,7 +228,8 @@
                         <span class="tc-9">项目工作地点</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.item_province_value}}{{item.item_city_value}}</span>
+                        <span v-if="item.item_province_value || item.item_city_value">{{item.item_province_value}}{{item.item_city_value}}</span>
+												<span v-else>——</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -228,7 +237,8 @@
                         <span class="tc-9">项目描述</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span>{{item.summary}}</span>
+                        <span v-if="item.summary">{{item.summary}}</span>
+												<span v-else>——</span>
                       </el-col>
                     </el-row>
                     
@@ -269,8 +279,13 @@
                         <span class="tc-9">创建人</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span v-if="item.user_name">{{item.user_name}}</span>
-                        <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
+												<div  v-if="item.user_name || item.created_at">
+													<span v-if="item.user_name">{{item.user_name}}</span>
+													<span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
+												</div>
+												<div v-else>
+													<span>——</span>
+												</div>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -278,8 +293,11 @@
                         <span class="tc-9">修改人</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span class="item.update_user_name">{{item.update_user_name}}</span>
-                        <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
+												<div v-if="item.update_user_name || item.update_user_time">
+													<span class="item.update_user_name">{{item.update_user_name}}</span>
+													<span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
+												</div>
+												<div v-else>——</div>
                       </el-col>
                     </el-row>
                     <!-- 对接设计公司 -->
@@ -303,29 +321,33 @@
                               </div>
                             </div>
                           </div>
-                          <el-row>
+                          <el-row :gutter="10">
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">联系人</span>
-                                <span class="fz-14">{{d.contact_name}}</span>
+                                <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+																<span v-else>——</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">职务</span>
-                                <span class="fz-14">{{d.position}}</span>
+                                <span v-if="d.position" class="fz-14">{{d.position}}</span>
+																<span v-else>——</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">电话</span>
-                                <span class="fz-14">{{d.phone}}</span>
+                                <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+																<span v-else>——</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">微信</span>
-                                <span class="fz-14">{{d.wx}}</span>
+                                <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+																<span v-else>——</span>
                               </div>
                             </el-col>
                           </el-row>
@@ -399,7 +421,8 @@
                   <span class="tc-9">客户姓名</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.name}}</span>
+                  <span v-if="clientList.name">{{clientList.name}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -409,7 +432,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
-                  <span v-else>--</span>
+                  <span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -418,7 +441,8 @@
                   <span class="tc-9">客户所有人</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.execute_user_name}}</span>
+                  <span v-if="clientList.execute_user_name">{{clientList.execute_user_name}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -428,7 +452,8 @@
                   <span class="tc-9">职位</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.position}}</span>
+                  <span v-if="clientList.position">{{clientList.position}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -437,7 +462,8 @@
                   <span class="tc-9">公司</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.company}}</span>
+                  <span v-if="clientList.company">{{clientList.company}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -446,7 +472,8 @@
                   <span class="tc-9">公司地址</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.province_value}}{{clientList.city_value}}</span>
+                  <span v-if="clientList.province_value">{{clientList.province_value}}{{clientList.city_value}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -456,7 +483,8 @@
                   <span class="tc-9">电话</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.phone}}</span>
+                  <span v-if="clientList.phone">{{clientList.phone}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -465,7 +493,8 @@
                   <span class="tc-9">微信</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.wx}}</span>
+                  <span v-if="clientList.wx">{{clientList.wx}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -474,7 +503,8 @@
                   <span class="tc-9">QQ</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.qq}}</span>
+                  <span v-if="clientList.qq">{{clientList.qq}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -483,7 +513,8 @@
                   <span class="tc-9">备注</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.summary}}</span>
+                  <span v-if="clientList.summary">{{clientList.summary}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
             </div>
@@ -499,7 +530,8 @@
                   <span class="tc-9">客户编号</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
-                  <span>{{clientList.number}}</span>
+                  <span v-if="clientList.number">{{clientList.number}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -509,6 +541,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.user_id_name">{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
               
@@ -518,6 +551,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.update_user_name">{{clientList.update_user_name}}&nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
+									<span v-else>——</span>
                 </el-col>
               </el-row>
             </div>
