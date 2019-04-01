@@ -2243,7 +2243,47 @@ const ADMINMENU = {
     ]
   }
 }
-
+const ADMINDETAIL = {
+  adminCompanyDetail: {
+    redirect: 'adminCompanyHome'
+  },
+  adminDemandCompanyShow: {
+    redirect: 'adminDemandCompanyList'
+  },
+  adminContentSubmit: {
+    redirect: 'adminContentList'
+  },
+  adminColumnEdit: {
+    redirect: 'adminColumnList'
+  },
+  adminBlockEdit: {
+    redirect: 'adminBlockList'
+  },
+  adminArticleSubmit: {
+    redirect: 'adminArticleList'
+  },
+  adminAwardsSubmit: {
+    redirect: 'adminAwardsList'
+  },
+  adminTrendReportEdit: {
+    redirect: 'adminTrendReportList'
+  },
+  adminCommonlySiteEdit: {
+    redirect: 'adminCommonlySiteList'
+  },
+  adminAwardCaseEdit: {
+    redirect: 'adminAwardCaseList'
+  },
+  adminCategorySubmit: {
+    redirect: 'adminCategoryList'
+  },
+  adminNoticeEdit: {
+    redirect: 'adminNoticeList'
+  },
+  adminUserSubmit: {
+    redirect: 'adminUserList'
+  }
+}
 const OTHERADMINMENU = {
   bAdminItemList: {
     name: '项目管理',
@@ -2382,5 +2422,6 @@ module.exports = {
   LOGISTICS_OPTIONS,
   ADMINMENU,
   OTHERADMINMENU,
+  ADMINDETAIL,
   TEST
 }

@@ -41,10 +41,10 @@
         <el-table-column
           prop="match_id"
           label="大赛ID"
-          width="60">
+          width="80">
         </el-table-column>
         <el-table-column
-          width="60"
+          width="80"
           label="用户ID">
             <template slot-scope="scope">
               <p>
@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="created_at"
-          width="100"
+          width="120"
           label="创建时间">
         </el-table-column>
         <el-table-column
