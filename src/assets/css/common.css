@@ -483,11 +483,13 @@
 .red-button:focus,
 .red-button:focus a {
   background-color: #ffacaf;
+  border-color: #ff5a5f;
   color: #fff;
 }
 .red-button:active,
 .red-button:active a {
   background-color: #ff5a5f;
+  border-color: #ff5a5f;
   color: #fff;
 }
 .full-red-button,

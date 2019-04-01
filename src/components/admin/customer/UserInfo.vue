@@ -168,7 +168,7 @@
             <div class="project-title">
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'i-active': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
-                <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
+                <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button>
               </p>
             </div>
 
@@ -304,11 +304,11 @@
                     <div>
                       <p class="add-design clearfix design-title">
                       <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                      <el-button size="small" type="primary" class="fr" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                      <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
                       </p>
                     </div>
                     <el-collapse-transition>
-                      <ul v-if="boolDesigeList" class="padding-b20">
+                      <ul v-if="boolDesigeList" class="design-parent">
                         <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
                           <div class="margin-b-10">
                             <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
@@ -359,8 +359,8 @@
                             </el-col>
                             
                             <el-col :span="6">
-                            <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.updated_at | getProgessTime}}</span></span>
-                            <span v-else><i class="fx fx-icon-time"></i>{{d.updated_at.date_format().format('yyyy-MM-dd')}}</span>
+                            <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.status_time | getProgessTime}}</span></span>
+                            <span v-else><i class="fx fx-icon-time"></i>{{d.status_time.date_format().format('yyyy-MM-dd')}}</span>
                             </el-col>
                             
                             <el-col :span="6">
@@ -2942,6 +2942,9 @@ export default {
   border-bottom: 1px solid #e6e6e6;
   margin-right: -30px;
   margin-left: -30px;
+}
+.design-parent > .design-li:nth-last-of-type(2) {
+	margin-bottom: 20px;
 }
 .design-li {
   /* width: 680px; */
