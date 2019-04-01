@@ -22,7 +22,7 @@
       </el-table-column>
       <!-- <el-table-column prop="page_view" label="浏览量" width="60">
       </el-table-column> -->
-      <el-table-column prop="created_at" width="100" label="创建时间">
+      <el-table-column prop="created_at" width="120" label="创建时间">
       </el-table-column>
       <el-table-column width="100" label="操作">
         <template slot-scope="scope">
