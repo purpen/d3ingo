@@ -40520,7 +40520,6 @@
 .el-cascader-menu {
   display: inline-block;
   vertical-align: top;
-  height: 204px;
   overflow: auto;
   border-right: solid 1px #e4e7ed;
   background-color: #fff;
