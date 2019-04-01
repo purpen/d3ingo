@@ -367,7 +367,7 @@
                             <div class="progess-box">
                               <el-popover
                                 placement="top-end"
-                                width="600"
+                                width="680"
                                 trigger="click">
                                   <div class="steps padding20" v-if="boolStage && d.design_company_id === nowDesignId">
                                     <el-steps :active="stageActive" class="steps-item">
