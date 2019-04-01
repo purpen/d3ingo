@@ -597,7 +597,9 @@
       }
     },
     created: function () {
-      this.updateUser()
+      if (this.token) {
+        this.updateUser()
+      }
       const self = this
       if (self.isLogin) {
         self.fetchMessageCount()
