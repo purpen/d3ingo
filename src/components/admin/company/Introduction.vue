@@ -22,7 +22,7 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">地址</div>
-        <div class="cer-right">{{item.address || '-'}}</div>
+        <div class="cer-right">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">规模</div>
@@ -43,12 +43,13 @@
       </div>
       <div class="flex">
         <div class="cer-left">荣誉奖项</div>
-        <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
-          <div class="prizeRound">
-            <div class="cer-right" v-for="(item, index) in item.high_tech_enterprises" :key="index">{{item.val}}</div>
+        <div class="prizeRound" v-if="item.prizes && item.prizes.length">
+          <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
+            <img :src="item.img" alt="">
+            <span v-if="item.type" class="img-text-pri">X{{item.count}}</span>
           </div>
-        </template>
-          <div class="cer-right" v-else>{{line}}</div>
+        </div>
+        <div class="cer-right" v-else>{{line}}</div>
       </div>
     </div>
 
@@ -118,7 +119,7 @@
 <script>
 export default {
   name: 'introduction',
-  props: ['item'],
+  props: ['item', 'prizeArr'],
   data() {
     return {
       line: '-'
@@ -161,7 +162,6 @@ export default {
   }
   .prizeRound {
     display: flex;
-    flex-direction: column;
   }
   .cer-right {
     font-size: 14px;
@@ -171,9 +171,6 @@ export default {
     line-height: 19px;
     padding-left: 10px;
     word-break: break-all;
-  }
-  .prizeRound .cer-right:not(:nth-child(1)) {
-    padding-top: 5px;
   }
   .bot-border {
     width: 180px;
@@ -242,5 +239,23 @@ export default {
   }
   .mar-left-20 {
     margin-left: 20px;
+  }
+  .prizeRound .img-round-pri:not(:nth-child(1)) {
+    padding-left: 15px;
+  }
+  .img-round-pri {
+    display: flex;
+    align-items: center;
+  }
+  .img-round-pri img {
+    height: 50px;
+    width: 50px;
+  }
+  .img-text-pri {
+    padding-left: 5px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
   }
 </style>

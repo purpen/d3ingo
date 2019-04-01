@@ -134,6 +134,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="company_size"
           label="公司规模"
           column-key="company_size"
           :filters="companySizes"
@@ -144,7 +145,7 @@
         </el-table-column>
         <el-table-column
           prop="created_at"
-          label="日期"
+          label="申请日期"
           sortable>
         </el-table-column>
         <el-table-column
@@ -222,13 +223,10 @@ export default {
         value: '2',
         label: '按公司名称'
       }, {
-        value: '3',
-        label: '按公司简称'
-      }, {
         value: '1',
         label: '按公司编号'
       }],
-      companyReault: '',
+      companyReault: '2',
       currentPage2: 5,
       homeLoading: false,
       tableData: [],
@@ -427,8 +425,8 @@ export default {
   .header-img {
     cursor: pointer;
     position: absolute;
-    width: 24px;
-    height: 24px;
+    width: 14px;
+    height: 14px;
     background: url('../../../assets/images/design_admin/Unchecked@2x.png') no-repeat center / contain;
     right: 11px;
     top: 11px;
@@ -455,10 +453,12 @@ export default {
   .sever-right-left {
     width: 112px;
     border-right: 1px solid #D8D8D8;
+    height: 34px;
   }
   .sever-right-select {
-    width: 205px;
-    height: 32px;
+    width: 195px;
+    height: 34px;
+    line-height: 34px;
     border: none;
     padding-left: 10px;
   }

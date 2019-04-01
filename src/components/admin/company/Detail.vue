@@ -15,6 +15,10 @@
           <div class="top-right-top-left">
             <div class="referred">{{item.company_abbreviation || '-'}}</div>
             <div class="name">{{item.company_name || '-'}}</div>
+            <div class="enter-flex">
+              <div v-for="(item, index) in item.industrial_design_center" :key="index" class="prize-blue">{{item.val}}</div>
+              <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'" class="prize-blue">{{item.val}}</div>
+            </div>
           </div>
           <div class="top-right-top-right flex-center">
             <div class="certification flex-center-center mar-right-10" @click="setRefuseRease(2)" v-if="item.verify_status === 0">
@@ -97,7 +101,7 @@
     <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
     <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
-    <introduction v-show="type === 5" :item="item"></introduction>
+    <introduction v-show="type === 5" :item="item" :prizeArr="prizeArr"></introduction>
 
     <el-dialog title="请填写原因" :visible.sync="dialogVisible" width="380px">
       <el-input v-model="refuseRease"></el-input>
@@ -118,6 +122,7 @@ import server from 'admin/company/Server'
 import certificate from 'admin/company/Certificate'
 import cases from 'admin/company/Case'
 import introduction from 'admin/company/Introduction'
+import typeData from '@/config'
 export default {
   data() {
     return {
@@ -126,6 +131,7 @@ export default {
       designItem: '',
       dialogVisible: false,
       detailLoading: false,
+      prizeArr: [],
       tableDatas: '',
       refuseRease: '',
       itemId: '',
@@ -198,6 +204,39 @@ export default {
               self.item.company_size_value = '300人以上'
               break
           }
+          let arrIds = []
+          let arr = []
+          if (self.item.prizes && self.item.prizes.length) {
+            self.item.prizes.forEach(item => {
+              let index = arrIds.indexOf(item.type)
+              if (index === -1 || !item.type) {
+                arrIds.push(item.type)
+                let i = {}
+                i = {
+                  type: item.type,
+                  count: 1,
+                  name: '',
+                  times: []
+                }
+                self.prizeOptions.find(p => {
+                  if (p.value === item.type) {
+                    i.name = p.label
+                    i.img = p.img
+                  }
+                })
+                if (item.time) {
+                  i.times.push(item.time)
+                }
+                arr.push(i)
+              } else {
+                arr[index].count++
+                if (item.time) {
+                  arr[index].times.push(item.time)
+                }
+              }
+            })
+          }
+          self.prizeArr = arr
           self.detailLoading = false
         } else {
           self.detailLoading = false
@@ -294,6 +333,20 @@ export default {
     that.companyShow(id)
     // that.getList(id)
   },
+  computed: {
+    prizeOptions() {
+      let items = []
+      for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
+        let item = {
+          value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
+          label: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['name'],
+          img: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['img']
+        }
+        items.push (item)
+      }
+      return items
+    }
+  },
   components: {
     server,
     certificate,
@@ -323,7 +376,7 @@ export default {
   .top-left-img img{
     width: 120px;
     height: 120px;
-    border: 1px solid rgba(250,173,21,1);
+    border: 1px solid #d8d8d8;
   }
   .top-left-btn {
     width: 120px;
@@ -552,5 +605,28 @@ export default {
   .fiex-content {
     width: 100%;
     height: 100%;
+  }
+  .enter-flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .prize-blue {
+    width: 150px;
+    height: 24px;
+    background: rgba(10,109,217,0.15);
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(10,109,217,1);
+    line-height: 24px;
+    text-align: center;
+    margin-top: 9px;
+  }
+  /* .enter-flex .prize-blue:not(:nth-child(1)) {
+    margin-left: 10px;
+  } */
+  .enter-flex .prize-blue {
+    margin-right: 10px;
   }
 </style>

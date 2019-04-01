@@ -1,8 +1,9 @@
 <template>
   <div class="user-contant">
     <div class="head-content">
-          <i class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
-          <div class="right-icon">
+          <i v-if="!isService" class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
+          <i v-else class="fx fx-icon-nothing-close-error" @click="$router.go(-1)"></i>
+          <div class="right-icon" v-if="!isService">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
             <i class="border-t10 fx fx-icon-nothing-right tc-hover-red margin-r0" @click="getNextUser"></i>
           </div>
@@ -949,6 +950,7 @@ export default {
   data() {
     return {
       query: {},
+      isService: false,
       currentUser: '新建客户',
       currentId: '',
       userLoading: false,
@@ -1460,7 +1462,8 @@ export default {
       this.isOpenNext = false
       if (this.currentId && this.potentialIds.length) {
         let index = this.potentialIds.indexOf(this.currentId - 0)
-        if (index === 49) {
+        let maxIndex = this.potentialIds.length - 1
+        if (index === maxIndex) {
           this.$message.info('返回列表页,获取最新数据')
           this.$router.push({name: 'adminPotentialUserList', params: this.query})
           return
@@ -2606,6 +2609,9 @@ export default {
     let {query = {}} = this.$route
     if (query.page) {
       this.query = this.$route.query
+    }
+    if (query.isService) {
+      this.isService = query.isService
     }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id

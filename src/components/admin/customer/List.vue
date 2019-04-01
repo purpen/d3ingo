@@ -1738,9 +1738,15 @@ export default {
       this.$http.delete(api.adminClueDelete, {params: {clue_ids: clueIds}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.permanentDialog = false
+          this.$message.success('删除成功')
           this.downCheck()
           this.getClueList()
+        } else {
+          this.$message.error(response.data.meta.message)
         }
+      })
+      .catch((error) => {
+        this.$message.error(error)
       })
     },
     // 回到顶部
@@ -1784,7 +1790,7 @@ export default {
     // 自定义来源
     renderHeader(h, { column, $index }, index) {
       return (<span class="header-box">
-        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' clearable placeholder="来源渠道"></el-cascader>
+        <el-cascader expand-trigger="hover" options={this.options} v-model={this.selectedOptions2} on-change={this.renderChange} class='options-trigger' placeholder="来源渠道"></el-cascader>
       </span>)
     },
     searchUpdate() {
@@ -1850,6 +1856,7 @@ export default {
             this['query' + this.typeId].son_source = ''
           }
         }
+        this['query' + this.typeId].page = 1
         this.getClueList()
       }
     },
