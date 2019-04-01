@@ -112,9 +112,9 @@
         </div>
       </div>
 
-      <info v-show="type === 1"></info>
+      <phase v-show="type === 1"></phase>
       <detail v-show="type === 2"></detail>
-      <phase v-show="type === 3"></phase>
+      <info v-show="type === 3"></info>
     </div>
   </div>
 </template>
