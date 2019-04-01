@@ -174,7 +174,7 @@
 
 
     <!-- 分页 -->
-    <div class="flex-center-space pad-top-15 pad-left-30">
+    <div class="flex-center-center pad-top-15 pad-left-30">
       <div class="count">
         共 {{query.totalCount}} 条
       </div>
@@ -278,7 +278,11 @@ export default {
       return result
     },
     navgiteTo(id) {
-      this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+      const {href} = this.$router.resolve({
+        path: `/admin/company/detail/${id}`
+      })
+      window.open(href, '_blank')
+      // this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
     },
     filterProvinces(value) {
       if (value.company_size) {
@@ -513,6 +517,7 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
+    padding-right: 12px;
   }
   .text-cen {
     text-align: center;
@@ -542,6 +547,11 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+  }
+  .flex-center-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .text-overflow {
     white-space: nowrap;

@@ -13,10 +13,15 @@
           @click="openRouter = true" tabindex="-1"
           @blur="openRouter = false">
         <!-- <div class="router-btn" @click="openRouter = true" tabindex="-1"> -->
-          <span class="router-name">{{subRouter.name}}<i class="el-icon-arrow-down"></i></span>
-          <ul class="router-children" v-if="openRouter">
+          <span class="router-name">{{subRouter && subRouter.name ? subRouter.name : '服务商列表'}}<i class="el-icon-arrow-down"></i></span>
+          <ul class="router-children" v-if="openRouter && subRouter && subRouter.name">
             <li v-for="(c, indexc) in routerSelect.children" :key="indexc">
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
+            </li>
+          </ul>
+          <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
+            <li>
+              <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
             </li>
           </ul>
         </div>
