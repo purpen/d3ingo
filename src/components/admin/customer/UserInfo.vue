@@ -3301,7 +3301,7 @@ export default {
   height: 40px;
   cursor: pointer;
   border-bottom: 10px solid transparent;
-  background: url(../../../assets/images/icon/MoreHover@2x.png) no-repeat left/30px;
+  background: url(../../../assets/images/icon/moreHover@2x.png) no-repeat left/30px;
 }
 .edit-project:hover {
   background: url(../../../assets/images/icon/MoreHover02@2x.png) no-repeat left/30px;
