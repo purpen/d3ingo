@@ -77,13 +77,16 @@
 
       <div class="user-progress contant-border margin-t15 fz-14">
         <div class="progress-top no-select">
-          <div class="fl blank6">
-          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'item-arrow', 'fz-24', {'i-active': !boolProgressContant}]"></i>
+          <div class="fl blank4">
+          <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'item-arrow', 'fz-28', {'i-active': !boolProgressContant}]"></i>
           </div>
-          <span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
-          <span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
-          <span @click="showTabProgress(3)" :class="{'bg-blue02': userForm.new_status === 3, 'bg-green02': userForm.new_status > 3, 'bg-gray02': userForm.new_status < 3 }">对接设计</span>
-          <span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
+					<!-- <div> -->
+						<span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
+						<span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
+						<span @click="showTabProgress(3)" :class="{'bg-blue02': userForm.new_status === 3, 'bg-green02': userForm.new_status > 3, 'bg-gray02': userForm.new_status < 3 }">对接设计</span>
+						<span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
+
+					<!-- </div> -->
           <div class="fr">
             <el-dropdown @command="showClueDialog" trigger="hover">
               <!-- <span class="">标记当前商机状态</span> -->
@@ -360,7 +363,7 @@
                             
                             <el-col :span="6">
                             <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.status_time | getProgessTime}}</span></span>
-                            <span v-else><i class="fx fx-icon-time"></i>{{d.status_time.date_format().format('yyyy-MM-dd')}}</span>
+                            <span v-else><i class="fx fx-icon-time"></i>{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
                             </el-col>
                             
                             <el-col :span="6">
@@ -369,7 +372,7 @@
                                 placement="top-end"
                                 width="680"
                                 trigger="click">
-                                  <div class="steps padding20" v-if="boolStage && d.design_company_id === nowDesignId">
+                                  <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                                     <el-steps :active="stageActive" class="steps-item">
                                       <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
                                       <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
@@ -438,7 +441,7 @@
               
               <el-row> 
                 <el-col  :md="4" :lg="4">
-                  <span class="tc-9">客户所有人</span>
+                  <span class="tc-9">商机所有人</span>
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.execute_user_name">{{clientList.execute_user_name}}</span>
@@ -663,7 +666,7 @@
                     ref="ruleClientForm" label-width="100px">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
-            <el-form-item label="负责人" prop="execute_user_id">
+            <el-form-item label="商机所有人" prop="execute_user_id">
               <el-select v-model="clientForm.execute_user_id" :disabled="!isHasPower">
                 <el-option
                   v-for="(item, index) in adminVoIpList"
@@ -1071,11 +1074,11 @@ export default {
       ruleClientForm: {
         name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
-        execute_user_id: [{ required: true, message: '请选择负责人', trigger: 'blur' }],
+        execute_user_id: [{ required: true, message: '请选择商机所有人', trigger: 'blur' }],
         rank: [{ required: true, message: '请选择级别', trigger: 'blur' }]
       },
       ruleProjectForm: {
-        name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请填写项目名称', trigger: 'blur' }],
         grate: [{ type: 'number', required: true, message: '请选择项目紧急度', trigger: 'blur' }],
         type: [{ type: 'number', required: true, message: '请选择设计类型', trigger: 'blur' }],
         design_cost: [{type: 'number', required: true, message: '请选择项目预算', trigger: 'blur'}]
@@ -2659,12 +2662,14 @@ export default {
       }
     },
     getProgessTime(d) {
-      let nowTime = new Date().getTime().toString().substr(0, 10)
-      let gap = parseInt((nowTime - d) / 24 / 60 / 60)
-      if (gap < 1) {
-        return d.date_format().format('yyyy-MM-dd') + ''
-      } else {
-        return `停滞${gap}天`
+      if (d) {
+        let nowTime = new Date().getTime().toString().substr(0, 10)
+        let gap = parseInt((nowTime - d) / 24 / 60 / 60)
+        if (gap < 1) {
+          return d.date_format().format('yyyy-MM-dd') + ''
+        } else {
+          return `停滞${gap}天`
+        }
       }
     },
     processor(val) { // 来源处理斜杠
@@ -2992,6 +2997,7 @@ export default {
   z-index: 5;
 }
 .steps {
+	padding: 20px 20px 0 20px;
   /* display: none; */
   /* position: absolute;
   top: 60px;
@@ -3085,7 +3091,7 @@ export default {
 .log-title {
   line-height: 40px;
   padding-left: 30px;
-  font-size: 14px;
+  font-size: 16px;
   color: #222222;
 }
 .log-box {
@@ -3118,7 +3124,7 @@ export default {
   /* height: calc(80vh - 120px); */
   min-height: 30vh;
   max-height: 70vh;
-  padding: 30px 60px 30px 50px;
+  padding: 30px 60px 0 50px;
 }
 .change-status {
   padding: 0 10px;
@@ -3151,7 +3157,7 @@ export default {
   padding-right: 30px;
   height: 40px;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
 }
 .card-body-header span {
   display: inline-block;
@@ -3295,10 +3301,10 @@ export default {
   height: 40px;
   cursor: pointer;
   border-bottom: 10px solid transparent;
-  background: url(../../../assets/images/design_admin/MoreHover@2x.png) no-repeat left/30px;
+  background: url(../../../assets/images/icon/moreHover@2x.png) no-repeat left/30px;
 }
 .edit-project:hover {
-  background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left/30px;
+  background: url(../../../assets/images/icon/MoreHover02@2x.png) no-repeat left/30px;
 }
 .edit-project:hover .edit-project-tag {
   display: block;
@@ -3306,7 +3312,7 @@ export default {
 .edit-project-tag {
   display: none;
   position: absolute;
-  top: 32px;
+  top: 34px;
   left: -54px;
   width: 100px;
   z-index: 99;
@@ -3628,12 +3634,18 @@ export default {
   /* overflow: hidden; */
 }
 .userinfo-dialog .el-dialog__header {
-  padding: 17px 20px;
-  text-align: left;
+  padding: 20px 20px 18px 20px;
 }
 .userinfo-dialog .el-dialog__body {
   padding: 0;
 }
-
+.userinfo-dialog  .el-dialog__footer {
+	padding: 20px 60px 20px 20px;
+	/* border-top: 1px solid #e6e6e6; */
+	box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1);
+}
+.userinfo-dialog  .el-dialog__footer .el-button + .el-button {
+	margin-right: 0;
+}
 </style>
 
