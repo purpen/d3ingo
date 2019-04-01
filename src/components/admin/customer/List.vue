@@ -2280,6 +2280,8 @@ export default {
             item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
             if (item.end_time) {
               item.end_time = item.end_time.date_format().format('yyyy-MM-dd')
+            } else {
+              item.end_time = '——'
             }
             if (this.typeId === 5 && item.updated_at) {
               item.updated_at = item.updated_at.date_format().format('yyyy-MM-dd')

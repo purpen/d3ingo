@@ -1066,11 +1066,11 @@
     right: 2px;
   }
   .el-table-filter {
-    max-height: 200px;
-    overflow-x: hidden;
+    /* max-height: 200px; */
+    /* overflow-x: hidden; */
   }
   .el-table-filter__list {
-    max-height: 200px;
+    /* max-height: 200px; */
   }
   .fiex-content .el-loading-spinner {
     top: 40%;

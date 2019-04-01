@@ -19,11 +19,12 @@
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
             </li>
           </ul>
-          <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
+          <!-- <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
             <li>
               <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
             </li>
-          </ul>
+          </ul> -->
+          {{selectedName}}
         </div>
       </div>
       <div class="menu-right">
@@ -114,7 +115,7 @@
             <template slot="title">
               <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
               </template>
-              <el-menu-item v-for="(e, i) in ele.children" :key="i"
+              <el-menu-item v-if="!e.hide" v-for="(e, i) in ele.children" :key="i"
                 :index="e.route + (e.subRouter || '')" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
             </el-submenu>
         </el-menu>
@@ -167,7 +168,7 @@
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
-  import { ADMINMENU, OTHERADMINMENU } from '@/config'
+  import { ADMINMENU, OTHERADMINMENU, ADMINDETAIL } from '@/config'
   export default {
     name: 'Admin',
     props: {
@@ -312,6 +313,12 @@
         })
         this.subRouter = set
       }
+      for (let i in this.adminDetail) {
+        if (this.selectedName === i) {
+          this.selectedName = this.adminDetail[i].redirect
+          this.selectedName2 = this.adminDetail[i].redirect
+        }
+      }
       localStorage.setItem('selectedName', this.selectedName)
       localStorage.setItem('selectedName2', this.selectedName2)
       console.log(this.selectedName, this.selectedName2)
@@ -330,6 +337,9 @@
       },
       otherAdminMenu() {
         return OTHERADMINMENU
+      },
+      adminDetail() {
+        return ADMINDETAIL
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
@@ -453,6 +463,12 @@
             return item.subRouter === Number(this.$route.query.type)
           })
           this.subRouter = set
+        }
+        for (let i in this.adminDetail) {
+          if (this.selectedName === i) {
+            this.selectedName = this.adminDetail[i].redirect
+            this.selectedName2 = this.adminDetail[i].redirect
+          }
         }
         localStorage.setItem('selectedName', this.selectedName)
         localStorage.setItem('selectedName2', this.selectedName2)
@@ -612,7 +628,7 @@
     padding-right: 30px;
   }
   .menu-icon {
-    width: 70px;
+    width: 60px;
     height: 70px;
     cursor: pointer;
     background: url(../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
@@ -713,7 +729,7 @@
   .admin-menu img {
     width: 25px;
     height: 25px;
-    margin-left: -5px;
+    margin-left: -4px;
 }
 
   .router-btn {
@@ -751,8 +767,9 @@
     cursor: pointer;
   }
   .router-name i {
-    margin-left: 10px;
+    margin-left: 4px;
     line-height: 24px;
+    font-size: 16px;
   }
   @media screen and (min-width: 768px) {
     .menu-list {
@@ -796,7 +813,7 @@
     }
   }
   .el-menu-item {
-    width: 55px;
+    width: 60px;
     height: 50px;
     line-height: 1;
     padding: 0 15px;
