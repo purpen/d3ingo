@@ -309,7 +309,11 @@ export default {
       })
     },
     toNewWeb() {
-      window.open('http://' + this.item.web)
+      if (this.item.web.includes('http')) {
+        window.open(this.item.web)
+      } else {
+        window.open('http://' + this.item.web)
+      }
     },
     getCustomer(id) {
       let self = this
