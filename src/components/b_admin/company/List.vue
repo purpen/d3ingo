@@ -98,7 +98,7 @@
       <el-table-column
         align="center"
         prop="created_at"
-        width="100"
+        width="120"
         label="创建时间">
       </el-table-column>
       <el-table-column
