@@ -19,11 +19,12 @@
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
             </li>
           </ul>
-          <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
+          <!-- <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
             <li>
               <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
             </li>
-          </ul>
+          </ul> -->
+          {{selectedName}}
         </div>
       </div>
       <div class="menu-right">
@@ -167,7 +168,7 @@
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
-  import { ADMINMENU, OTHERADMINMENU } from '@/config'
+  import { ADMINMENU, OTHERADMINMENU, ADMINDETAIL } from '@/config'
   export default {
     name: 'Admin',
     props: {
@@ -312,6 +313,12 @@
         })
         this.subRouter = set
       }
+      for (let i in this.adminDetail) {
+        if (this.selectedName === i) {
+          this.selectedName = this.adminDetail[i].redirect
+          this.selectedName2 = this.adminDetail[i].redirect
+        }
+      }
       localStorage.setItem('selectedName', this.selectedName)
       localStorage.setItem('selectedName2', this.selectedName2)
       console.log(this.selectedName, this.selectedName2)
@@ -330,6 +337,9 @@
       },
       otherAdminMenu() {
         return OTHERADMINMENU
+      },
+      adminDetail() {
+        return ADMINDETAIL
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
@@ -453,6 +463,12 @@
             return item.subRouter === Number(this.$route.query.type)
           })
           this.subRouter = set
+        }
+        for (let i in this.adminDetail) {
+          if (this.selectedName === i) {
+            this.selectedName = this.adminDetail[i].redirect
+            this.selectedName2 = this.adminDetail[i].redirect
+          }
         }
         localStorage.setItem('selectedName', this.selectedName)
         localStorage.setItem('selectedName2', this.selectedName2)
