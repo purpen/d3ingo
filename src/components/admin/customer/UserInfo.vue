@@ -82,7 +82,8 @@
           <span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
           <div class="fr">
             <el-dropdown @command="showClueDialog" trigger="hover">
-                <span>标记当前客户状态</span>
+              <!-- <span class="">标记当前商机状态</span> -->
+              <el-button type="primary" size="small" class="change-status">标记当前商机状态</el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="userForm.new_status === 1" command="1">转化为潜在客户</el-dropdown-item>
                 <el-dropdown-item v-if="userForm.new_status === 1" command="3">无效商机</el-dropdown-item>
@@ -236,16 +237,29 @@
                         <span class="tc-9">备注</span>
                       </el-col>
                       <el-col :md="20" :lg="20">
-                        <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+												<el-row>
+													<el-col :md="24" :lg="24" v-if="!boolRemarks">
+														<span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+														<span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+														<i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
+													</el-col>
+													
+													<el-col  :md="20" :lg="20" v-if="boolRemarks && item.item_id === editRemarksId">
+														<el-input  
+															v-model="remarksValue" 
+															:autosize="{minRows: 1, maxRows: 6}" 
+															autofocus 
+															type="textarea" 
+															@keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+													</el-col>
+													<el-col  :md="4" :lg="4" v-if="boolRemarks && item.item_id === editRemarksId" class="remarks-icon">
+														<i class="el-icon-success fz-20" @click="submitRemarks(item)"></i>
+														<i class="el-icon-circle-close-outline fz-20" @click="boolRemarks = false, remarksValue = ''"></i>
+													</el-col>
+												</el-row>
+                        <!-- <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
                         <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-                          <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
-                      </el-col>
-                      <el-col :offset="4" :md="16" :lg="16" v-if="boolRemarks && item.item_id === editRemarksId">
-                        <el-input v-model="remarksValue" autofocus type="textarea" size="small" @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
-                      </el-col>
-                      <el-col :md="4" :lg="4" class="remarks-icon" v-if="boolRemarks && item.item_id === editRemarksId">
-                        <i class="el-icon-success fz-18" @click="submitRemarks(item)"></i>
-                        <i class="el-icon-circle-close-outline fz-18" @click="boolRemarks = false, remarksValue = ''"></i>
+                          <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i> -->
                       </el-col>
 
                     </el-row>
@@ -330,7 +344,7 @@
                             <el-col :span="6">
                             <div class="progess-box">
                               <el-popover
-                                placement="bottom-end"
+                                placement="top-end"
                                 width="600"
                                 trigger="click">
                                   <div class="steps padding20" v-if="boolStage && d.design_company_id === nowDesignId">
@@ -3069,7 +3083,9 @@ export default {
   max-height: 70vh;
   padding: 30px 60px 30px 50px;
 }
-
+.change-status {
+  padding: 0 10px;
+}
 
 
 
