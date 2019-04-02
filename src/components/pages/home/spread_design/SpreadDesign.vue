@@ -52,7 +52,7 @@
                 <div class="advantage-title">
                   <p class="">商机推送</p>
                   <p class="advantage-txt">入驻平台设计公司，</p>
-                  <p  class="advantage-txt">一年节省X万推广预算。</p>
+                  <p  class="advantage-txt">一年节省100万推广预算。</p>
                 </div>
               </el-col>
               
