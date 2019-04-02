@@ -196,7 +196,7 @@
           label="客户姓名">
           <template slot-scope="scope">
             <p>
-              <span>{{ scope.row.item.user.username || scope.row.item.user.realname || scope.row.item.user.account }}</span>
+              <span>{{ scope.row.item.contact_name || '——' }}</span>
             </p>
           </template>
         </el-table-column>
