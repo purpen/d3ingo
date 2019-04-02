@@ -120,6 +120,30 @@
           <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
           <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
         </div>
+        <div class="progess-box">
+          <el-popover
+            placement="top-end"
+            width="680"
+            trigger="click">
+              <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                <el-steps :active="stageActive" class="steps-item">
+                  <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                  <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                  <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                  <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                  <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                  <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                  <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                  <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                </el-steps>
+                <div class="steps-remarks" v-if="d.status > 6">
+                  <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                  <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                </div>
+              </div>
+            <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+          </el-popover>
+        </div>
         <div class="flex-center">
           <div class="show-img"></div>
           <div class="show-text pad-left-5">查看进度</div>
@@ -139,7 +163,11 @@
 export default {
   data() {
     return {
-      server: true
+      server: true,
+      nowDesignId: '',
+      stageActive: 0,
+      stageArr: [],
+      boolStage: false
     }
   },
   methods: {
@@ -148,6 +176,42 @@ export default {
     },
     closeServer() {
       this.server = false
+    },
+    showProgessDesign(d) { // 查看进度
+      if (!d) return
+      this.nowDesignId = d.design_company_id
+      let obj = JSON.parse(d.stage)
+      let stageArr = []
+      for (let i in obj) {
+        stageArr.push(obj[i])
+      }
+      this.stageActive = stageArr.length - 1
+      stageArr.forEach((d, index, arr) => {
+        if (d.status === 0) {
+          let overdueTime = (new Date().getTime().toString().substr(0, 10) - arr[index - 1].time) / 24 / 60 / 60
+          if (parseInt(overdueTime) >= 1) {
+            arr[index].time = `停滞${parseInt(overdueTime)}天`
+          }
+          this.stageActive = index - 1
+        }
+        if (d.status === -1) {
+          this.stageActive = index
+        }
+      })
+      stageArr.forEach((d, index, arr) => {
+        if (d.status !== 0) {
+          if (d.time === 0) {
+            d.time = ''
+          } else {
+            d.time = d.time.date_format().format('yyyy-MM-dd hh:mm')
+          }
+        }
+        if (d.status === 0 && d.time === 0) {
+          d.time = ''
+        }
+      })
+      this.stageArr = stageArr
+      this.boolStage = true
     }
   }
 }
@@ -284,6 +348,14 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,90,95,1);
+  }
+  .progess-box {
+    position: absolute;
+    right: 0;
+    bottom: 14px;
+    height: 20px;
+    /* width: 100%; */
+    z-index: 5;
   }
 
 
