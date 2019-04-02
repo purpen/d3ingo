@@ -18,7 +18,7 @@
             <li v-for="(c, indexc) in routerSelect.children" :key="indexc">
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
             </li>
-          </ul>{{selectedName}}
+          </ul>
           <!-- <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
             <li>
               <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
