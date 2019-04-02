@@ -907,8 +907,8 @@ export default {
         name: ''      // app 联系人
       },
       query: {
-        from: 2,
-        mark: ''
+        from: 3,
+        mark: 'a'
       },
       // swiper
       // swiperOption: {
@@ -1159,6 +1159,7 @@ export default {
         new_from: this.query.from || 3
       }).then(res => {
         console.log(res)
+        this.$message.error(res.data.meta.message)
       }).catch(err => {
         console.error(err)
       })
