@@ -418,6 +418,7 @@ export default {
   }
   .web-round {
     flex: 1;
+    padding-right: 30px;
   }
   .contact-round {
     flex: 1;
@@ -455,13 +456,13 @@ export default {
   .dot {
     cursor: pointer;
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
     position: relative;
   }
   .dot:hover {
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
   }
   .dot:hover .dot-hover {
@@ -469,7 +470,7 @@ export default {
   }
   .dot-hover {
     position: absolute;
-    top: 30px;
+    top: 35px;
     bottom: 0;
     right: 8px;
     width: 130px;
