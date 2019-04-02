@@ -154,9 +154,9 @@ export default {
           that.query.totalCount = parseInt(response.data.meta.pagination.total)
           for (let index in that.tableData) {
             if (that.tableData[index].cover) {
-              that.tableData[index].logoUrl = that.tableData[index].cover.file
+              that.tableData[index].logoUrl = that.tableData[index].cover.small
             } else if (that.tableData[index].case_image.length) {
-              that.tableData[index].logoUrl = that.tableData[index].case_image[0].file
+              that.tableData[index].logoUrl = that.tableData[index].case_image[0].small
             } else {
               that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
             }
