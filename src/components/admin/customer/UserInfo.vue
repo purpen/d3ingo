@@ -633,7 +633,7 @@
                 </li>
               </ul>
             </div>
-            <div class="padding-l30  tc-6">
+            <div class="padding-l30  tc-6" v-if="eventLogList.length">
               <p class="event-title bb-e6">事件</p>
               <ul class="">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
@@ -1677,6 +1677,10 @@ export default {
             }
           }) // all
         }
+        if (index === -1) {
+          let {type = 1} = this.query
+          this.$router.push({name: 'adminPotentialUserList', params: {type: type}})
+        }
       }
     },
     getPreviousUser() { // 上一条
@@ -1805,6 +1809,10 @@ export default {
               this.userLogLoading = false
             }
           }) // all
+        }
+        if (index === -1) {
+          let {type = 1} = this.query
+          this.$router.push({name: 'adminPotentialUserList', params: {type: type}})
         }
       }
     },
