@@ -3138,7 +3138,6 @@ export default {
 
 
 
-
 .like-btn > i {
   margin-right: 6px;
 }
@@ -3655,8 +3654,11 @@ export default {
 }
 .userinfo-dialog  .el-dialog__footer {
 	padding: 20px 60px 20px 20px;
-	/* border-top: 1px solid #e6e6e6; */
-	box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1);
+	border-top: 1px solid #e6e6e6;
+	/* box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1); */
+}
+.userinfo-dialog  .el-dialog__footer .client-btn {
+  padding-right: 6px;
 }
 .userinfo-dialog  .el-dialog__footer .el-button + .el-button {
 	margin-right: 0;
