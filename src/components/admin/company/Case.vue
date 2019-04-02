@@ -17,7 +17,7 @@
             <template slot-scope="scope">
               <div class="flex-center desimg-round">
                 <img :src="scope.row.logoUrl"/>
-                <div class="tit-text">{{scope.row.profile}}</div>
+                <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.profile}}</div>
               </div>
             </template>
           </el-table-column>
@@ -66,7 +66,7 @@
         </el-table>
       </div>
 
-      <div class="bot-round flex-center-space">
+      <div class="bot-round">
         <div class="count-size">共{{query.totalCount}}条</div>
         <el-pagination
           @size-change="handleSizeChange"
@@ -114,6 +114,12 @@ export default {
     that.getList()
   },
   methods: {
+    toCaseDetail(id) {
+      const {href} = this.$router.resolve({
+        path: `/design_case/show/${id}`
+      })
+      window.open(href, '_target')
+    },
     getOpen(index, id, evt, value) {
       let self = this
       self.$http.put(api.adminDesignCaseOpenInfo, {case_id: id, is_open: evt})
@@ -148,9 +154,9 @@ export default {
           that.query.totalCount = parseInt(response.data.meta.pagination.total)
           for (let index in that.tableData) {
             if (that.tableData[index].cover) {
-              that.tableData[index].logoUrl = that.tableData[index].cover.file
+              that.tableData[index].logoUrl = that.tableData[index].cover.small
             } else if (that.tableData[index].case_image.length) {
-              that.tableData[index].logoUrl = that.tableData[index].case_image[0].file
+              that.tableData[index].logoUrl = that.tableData[index].case_image[0].small
             } else {
               that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
             }
@@ -191,6 +197,7 @@ export default {
     align-items: center;
   }
   .tit-text {
+    cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -199,9 +206,15 @@ export default {
     word-break: break-all;
     padding-left: 15px;
   }
+  .tit-text:hover {
+    color: #ff5a5f;
+  }
   .bot-round {
     height: 50px;
     padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .flex-center-space {
     display: flex;
@@ -217,12 +230,13 @@ export default {
   .desimg-round img{
     width: 90px;
     height: 60px;
+    display: block;
   }
   .count-size {
     font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(102,102,102,1);
+    color: rgba(102,102,102,1);padding-right: 12px;
   }
   .flex-center-center {
     display: flex;

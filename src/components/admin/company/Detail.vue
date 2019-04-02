@@ -98,15 +98,15 @@
     <div class="bot">
       <div class="directory flex-center">
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>
-        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" v-if="item.verify_status === 1" @click="getType(2)">设计案例</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">设计案例</div>
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" v-if="item.verify_status === 1" @click="getType(3)">设计服务</div>
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 4}" @click="getType(4)">实名认证</div>
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
     <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate" :load="1"></customer>
-    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
-    <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
+    <cases v-show="type === 2" :creatDate="creatDate" :type="type"></cases>
+    <server v-if="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item" :prizeArr="prizeArr"></introduction>
 
@@ -418,6 +418,7 @@ export default {
   }
   .web-round {
     flex: 1;
+    padding-right: 30px;
   }
   .contact-round {
     flex: 1;
@@ -455,13 +456,13 @@ export default {
   .dot {
     cursor: pointer;
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
     position: relative;
   }
   .dot:hover {
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
   }
   .dot:hover .dot-hover {
@@ -469,7 +470,7 @@ export default {
   }
   .dot-hover {
     position: absolute;
-    top: 30px;
+    top: 35px;
     bottom: 0;
     right: 8px;
     width: 130px;

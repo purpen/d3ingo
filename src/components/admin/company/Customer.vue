@@ -191,13 +191,12 @@ export default {
         path: `/admin/item/show0/${id}`
       })
       window.open(href, '_blank')
-      // this.$router.push({name: 'adminItemShow0', params: {id: id}})
     },
     toCustemDetail(id, companyId) {
       let that = this
       const {href} = that.$router.resolve({
-        path: `/admin/customer/userinfo/${id}?companyId=${companyId}`,
-        query: {isService: 1, type: 6}
+        path: `/admin/customer/userinfo/${id}`,
+        query: {type: 3}
       })
       window.open(href, '_blank')
       // this.$router.push(href)
