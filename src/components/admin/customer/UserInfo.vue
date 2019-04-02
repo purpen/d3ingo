@@ -77,7 +77,7 @@
 
       <div class="user-progress contant-border margin-t15 fz-14">
         <div class="progress-top no-select">
-          <div class="margin-r10">
+          <div class="padding-r4">
           <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'item-arrow', 'fz-28', {'i-active': !boolProgressContant}]"></i>
           </div>
 					<div class="status-model">
@@ -667,7 +667,7 @@
     </el-dialog>
 
     <el-dialog
-      width="580px"
+      width="680px"
       title="编辑客户"
       class="userinfo-dialog"
       :visible.sync="BoolEditUserInfo">
@@ -797,7 +797,7 @@
     </el-dialog>
     
     <el-dialog
-      width="580px"
+      width="680px"
       :title="dialogProjectTitle"
       class="userinfo-dialog"
       :visible.sync="boolProject">
@@ -949,7 +949,7 @@
       title="匹配设计公司"
       class="userinfo-dialog"
       :visible.sync="boolDesignCompany"
-      width="580px">
+      width="680px">
       <el-form  label-width="140px" :model="designCompanyForm" class="userinfo-form scroll-bar" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
@@ -2814,6 +2814,9 @@ export default {
 .padding-l40 {
   padding-left: 40px;
 }
+.padding-r4 {
+  padding-right: 4px;
+}
 .padding-r20 {
   padding-right: 20px;
 }
@@ -2925,6 +2928,8 @@ export default {
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
   border-right: 18px solid;
+  background-color: #d8d8d8;
+  border-color: #d8d8d8;
 }
 .status-model > .current:last-child {
   background-color: #096DD9;
@@ -2934,11 +2939,12 @@ export default {
   background-color: #73D13D;
   border-color:#73D13D;
 }
+
 .nav-item::before,
 .nav-item::after {
   position: absolute;
   content: '';
-  left: 4px;
+  left: 6px;
   cursor: pointer;
 }
 .nav-item::before {
@@ -2975,10 +2981,11 @@ export default {
 }
 .last-nav-item::before,
 .last-nav-item::after {
-  left: -4px;
+  left: -6px;
 }
 .last-nav-item {
-  margin-left: 9px;
+  margin-left: 12px;
+  margin-right: 0;
 }
 
 .nav-item > span {
@@ -2992,7 +2999,7 @@ export default {
 
 
 .status-right {
-  margin-left: 20px;
+  margin-left: 120px;
 }
 
 
