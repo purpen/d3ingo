@@ -90,7 +90,7 @@
                 <div class="text pad-left-40">19520234183</div>
               </div>
               <div class="flex-center height-34">
-                <div class="navegete-round flex-center">
+                <div class="navegete-round flex-center" @click="navgiteTo(1)">
                   <div class="navegete-to">查看设计服务商</div>
                   <div class="arrow-right"></div>
                 </div>
@@ -112,9 +112,9 @@
         </div>
       </div>
 
-      <info v-show="type === 1"></info>
+      <phase v-show="type === 1"></phase>
       <detail v-show="type === 2"></detail>
-      <phase v-show="type === 3"></phase>
+      <info v-show="type === 3"></info>
     </div>
   </div>
 </template>
@@ -135,6 +135,22 @@ export default {
   methods: {
     getType(type) {
       this.type = type
+    },
+    // 查看服务商详情
+    navgiteTo(id) {
+      const {href} = this.$router.resolve({
+        path: `/admin/company/detail/${id}`
+      })
+      window.open(href, '_blank')
+    },
+    // 查看客户详情
+    toCustemDetail(id, companyId) {
+      let that = this
+      const {href} = that.$router.resolve({
+        path: `/admin/customer/userinfo/${id}`,
+        query: {type: 3}
+      })
+      window.open(href, '_blank')
     }
   },
   components: {
