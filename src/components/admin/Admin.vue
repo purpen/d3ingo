@@ -24,7 +24,6 @@
               <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
             </li>
           </ul> -->
-          {{selectedName}}
         </div>
       </div>
       <div class="menu-right">
