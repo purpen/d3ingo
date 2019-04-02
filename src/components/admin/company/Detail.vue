@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="top flex-center">
+    <div class="top flex-start">
       <div class="top-left">
         <div class="top-left-img">
           <img :src="item.logo_url">
@@ -16,8 +16,15 @@
             <div class="referred">{{item.company_abbreviation || '-'}}</div>
             <div class="name">{{item.company_name || '-'}}</div>
             <div class="enter-flex">
-              <div v-for="(item, index) in item.industrial_design_center" :key="index" class="prize-blue">{{item.val}}</div>
-              <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'" class="prize-blue">{{item.val}}</div>
+              <template v-if="item.industrial_design_center && item.industrial_design_center.length">
+                <div v-for="(item, index) in item.industrial_design_center" :key="index">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div></div>
+              </template>
+              <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
+                <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div>
+                </div>
+              </template>
             </div>
           </div>
           <div class="top-right-top-right flex-center">
@@ -52,7 +59,7 @@
             </div>
           </div>
         </div>
-        <div class="top-right-bot flex-center">
+        <div class="top-right-bot flex-start">
           <div class="web-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width-43">网址</div>
@@ -91,15 +98,15 @@
     <div class="bot">
       <div class="directory flex-center">
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>
-        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" v-if="item.verify_status === 1" @click="getType(2)">设计案例</div>
+        <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">设计案例</div>
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" v-if="item.verify_status === 1" @click="getType(3)">设计服务</div>
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 4}" @click="getType(4)">实名认证</div>
         <div class="directory-title" :class="{'directory-activer' : type === 5}" @click="getType(5)">公司简介</div>
       </div>
     </div>
     <customer v-show="type === 1 && item.verify_status === 1" :creatDate="creatDate" :load="1"></customer>
-    <cases v-show="type === 2 && item.verify_status === 1" :creatDate="creatDate" :type="type"></cases>
-    <server v-show="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
+    <cases v-show="type === 2" :creatDate="creatDate" :type="type"></cases>
+    <server v-if="type === 3 && item.verify_status === 1" :designItem="designItem" :creatDate="creatDate"></server>
     <certificate v-show="type === 4" :item="item"></certificate>
     <introduction v-show="type === 5" :item="item" :prizeArr="prizeArr"></introduction>
 
@@ -309,7 +316,11 @@ export default {
       })
     },
     toNewWeb() {
-      window.open('http://' + this.item.web)
+      if (this.item.web.includes('http')) {
+        window.open(this.item.web)
+      } else {
+        window.open('http://' + this.item.web)
+      }
     },
     getCustomer(id) {
       let self = this
@@ -359,10 +370,10 @@ export default {
 <style scoped>
   .top {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
   }
   .top-left {
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
   }
   .top-right-bot-title {
@@ -401,12 +412,13 @@ export default {
   }
   .top-right {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
     flex: 1 1 auto;
   }
   .web-round {
     flex: 1;
+    padding-right: 30px;
   }
   .contact-round {
     flex: 1;
@@ -444,13 +456,13 @@ export default {
   .dot {
     cursor: pointer;
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
     position: relative;
   }
   .dot:hover {
     width: 30px;
-    height: 30px;
+    height: 35px;
     background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
   }
   .dot:hover .dot-hover {
@@ -458,7 +470,7 @@ export default {
   }
   .dot-hover {
     position: absolute;
-    top: 30px;
+    top: 35px;
     bottom: 0;
     right: 8px;
     width: 130px;
@@ -520,6 +532,7 @@ export default {
   }
   .bot {
     padding-left: 30px;
+    padding-top: 30px;
   }
   .directory {
     height: 50px;
@@ -533,6 +546,7 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 50px;
     height: 50px;
+    transition: 268ms all ease;
   }
   .directory-title:hover {
     color: #ff5a5f;
@@ -568,6 +582,10 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
   .min-width-43 {
     min-width: 43px;
@@ -628,5 +646,9 @@ export default {
   } */
   .enter-flex .prize-blue {
     margin-right: 10px;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
 </style>

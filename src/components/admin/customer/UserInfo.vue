@@ -1,9 +1,8 @@
 <template>
   <div class="user-contant">
     <div class="head-content">
-          <i v-if="!isService" class="fx fx-icon-nothing-close-error" @click="$router.push({name: 'adminPotentialUserList', params: query})"></i>
-          <i v-else class="fx fx-icon-nothing-close-error" @click="$router.go(-1)"></i>
-          <div class="right-icon" v-if="!isService">
+          <i class="fx fx-icon-nothing-close-error" @click="redirect"></i>
+          <div class="right-icon">
             <i class="border-t10 fx fx-icon-nothing-left tc-hover-red"  @click="getPreviousUser"></i>
             <i class="border-t10 fx fx-icon-nothing-right tc-hover-red margin-r0" @click="getNextUser"></i>
           </div>
@@ -1040,7 +1039,6 @@ export default {
   data() {
     return {
       query: {},
-      isService: false,
       currentUser: '新建客户',
       currentId: '',
       userLoading: false,
@@ -1380,6 +1378,9 @@ export default {
     }
   },
   methods: {
+    redirect() {
+      this.$router.push({name: 'adminPotentialUserList', params: this.query})
+    },
     getLink(projectId, designId) {
       let row = {
         type: 1,
@@ -2699,13 +2700,7 @@ export default {
     }
   },
   created() {
-    let {query = {}} = this.$route
-    if (query.page) {
-      this.query = this.$route.query
-    }
-    if (query.isService) {
-      this.isService = query.isService
-    }
+    this.query = this.$route.query
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
@@ -2717,8 +2712,7 @@ export default {
     }
     this.getAdminVoIpList()
   },
-  directives: {Clickoutside},
-  mounted() {}
+  directives: {Clickoutside}
 }
 </script>
 <style scoped>

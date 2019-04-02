@@ -14,11 +14,16 @@
           @blur="openRouter = false">
         <!-- <div class="router-btn" @click="openRouter = true" tabindex="-1"> -->
           <span class="router-name">{{subRouter.name}}<i class="el-icon-arrow-down"></i></span>
-          <ul class="router-children" v-if="openRouter">
+          <ul class="router-children" v-if="openRouter && subRouter && subRouter.name">
             <li v-for="(c, indexc) in routerSelect.children" :key="indexc">
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
             </li>
           </ul>
+          <!-- <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
+            <li>
+              <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
+            </li>
+          </ul> -->
         </div>
       </div>
       <div class="menu-right">
@@ -109,7 +114,7 @@
             <template slot="title">
               <img :src="ele.icon" :alt="ele.name"><span class="margin-l-10">{{ele.name}}</span>
               </template>
-              <el-menu-item v-for="(e, i) in ele.children" :key="i"
+              <el-menu-item v-if="!e.hide" v-for="(e, i) in ele.children" :key="i"
                 :index="e.route + (e.subRouter || '')" :route="{name: e.route, params: e.statement.params, query: e.statement.query}">{{e.name}}</el-menu-item>
             </el-submenu>
         </el-menu>
@@ -162,7 +167,7 @@
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
   import mineView from 'components/tools_block/Mine'
-  import { ADMINMENU, OTHERADMINMENU } from '@/config'
+  import { ADMINMENU, OTHERADMINMENU, ADMINDETAIL } from '@/config'
   export default {
     name: 'Admin',
     props: {
@@ -284,32 +289,39 @@
             }
           }
         }
+      },
+      changeName() {
+        this.leftValue = this.leftWidth
+        this.selectedName = this.$route.name
+        this.selectedName2 = this.$route.name
+        this.getRouter()
+        for (let i in this.adminDetail) {
+          if (this.selectedName === i) {
+            this.selectedName = this.adminDetail[i].redirect
+            this.selectedName2 = this.adminDetail[i].redirect
+            break
+          }
+        }
+        if (this.$route.name === 'adminPotentialUserList') {
+          this.selectedName = this.$route.name + this.$route.params.type
+          this.selectedName2 = this.$route.name + this.$route.params.type
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.params.type)
+          })
+          this.subRouter = set
+        }
+        if (this.$route.name === 'adminPotentialUserInfo') {
+          this.selectedName = 'adminPotentialUserList' + this.$route.query.type
+          this.selectedName2 = 'adminPotentialUserList' + this.$route.query.type
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.query.type)
+          })
+          this.subRouter = set
+        }
       }
     },
     created() {
-      this.leftValue = this.leftWidth
-      this.selectedName = this.$route.name
-      this.selectedName2 = this.$route.name
-      this.getRouter()
-      if (this.$route.name === 'adminPotentialUserList') {
-        this.selectedName = this.$route.name + this.$route.params.type
-        this.selectedName2 = this.$route.name + this.$route.params.type
-        let set = this.routerSelect.children.find(item => {
-          return item.subRouter === Number(this.$route.params.type)
-        })
-        this.subRouter = set
-      }
-      if (this.$route.name === 'adminPotentialUserInfo') {
-        this.selectedName = localStorage.getItem('selectedName')
-        this.selectedName2 = localStorage.getItem('selectedName2')
-        let set = this.routerSelect.children.find(item => {
-          return item.subRouter === Number(this.$route.query.type)
-        })
-        this.subRouter = set
-      }
-      localStorage.setItem('selectedName', this.selectedName)
-      localStorage.setItem('selectedName2', this.selectedName2)
-      console.log(this.selectedName, this.selectedName2)
+      this.changeName()
     },
     computed: {
       isSaaS() {
@@ -325,6 +337,9 @@
       },
       otherAdminMenu() {
         return OTHERADMINMENU
+      },
+      adminDetail() {
+        return ADMINDETAIL
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
@@ -429,28 +444,7 @@
       $route (to, from) {
         this.showCover = ''
         this.showCover2 = ''
-        this.leftValue = this.leftWidth
-        this.selectedName = this.$route.name
-        this.selectedName2 = this.$route.name
-        this.getRouter()
-        if (this.$route.name === 'adminPotentialUserList') {
-          this.selectedName = this.$route.name + this.$route.params.type
-          this.selectedName2 = this.$route.name + this.$route.params.type
-          let set = this.routerSelect.children.find(item => {
-            return item.subRouter === Number(this.$route.params.type)
-          })
-          this.subRouter = set
-        }
-        if (this.$route.name === 'adminPotentialUserInfo') {
-          this.selectedName = localStorage.getItem('selectedName')
-          this.selectedName2 = localStorage.getItem('selectedName2')
-          let set = this.routerSelect.children.find(item => {
-            return item.subRouter === Number(this.$route.query.type)
-          })
-          this.subRouter = set
-        }
-        localStorage.setItem('selectedName', this.selectedName)
-        localStorage.setItem('selectedName2', this.selectedName2)
+        this.changeName()
       }
     },
     components: {
@@ -607,7 +601,7 @@
     padding-right: 30px;
   }
   .menu-icon {
-    width: 70px;
+    width: 60px;
     height: 70px;
     cursor: pointer;
     background: url(../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
@@ -708,7 +702,7 @@
   .admin-menu img {
     width: 25px;
     height: 25px;
-    margin-left: -5px;
+    margin-left: -4px;
 }
 
   .router-btn {
@@ -746,8 +740,9 @@
     cursor: pointer;
   }
   .router-name i {
-    margin-left: 10px;
+    margin-left: 4px;
     line-height: 24px;
+    font-size: 16px;
   }
   @media screen and (min-width: 768px) {
     .menu-list {
@@ -791,7 +786,7 @@
     }
   }
   .el-menu-item {
-    width: 55px;
+    width: 60px;
     height: 50px;
     line-height: 1;
     padding: 0 15px;

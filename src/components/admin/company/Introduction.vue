@@ -63,7 +63,7 @@
         <div class="cer-right">多证合一(含信用代码)</div>
       </div> -->
       <div class="flex">
-        <div class="cer-left">其他指数</div>
+        <div class="cer-left"></div>
         <div class="bot-index">
           <div class="bot-round">
             <div class="bot-border">
@@ -257,5 +257,8 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
+  }
+  .bot-index {
+    padding-left: 10px;
   }
 </style>

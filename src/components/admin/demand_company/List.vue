@@ -83,7 +83,7 @@
           </template>
       </el-table-column>
       <el-table-column
-        width="120"
+        width="150"
         label="创建人">
           <template slot-scope="scope">
             <p v-if="scope.row.user">
@@ -116,7 +116,7 @@
 
       <el-table-column
         prop="created_at"
-        width="100"
+        width="120"
         label="创建时间">
       </el-table-column>
       <el-table-column
