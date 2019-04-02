@@ -66,7 +66,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="120"
+          width="150"
           label="创建人">
           <template slot-scope="scope">
             <p>
@@ -85,7 +85,7 @@
         </el-table-column>
         <el-table-column
           prop="item.created_at"
-          width="100"
+          width="120"
           label="创建时间">
         </el-table-column>
         <el-table-column
@@ -97,7 +97,7 @@
                   @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
             </p> -->
             <p>
-              <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+              <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item.id}}">查看
               </router-link>
             </p>
           </template>

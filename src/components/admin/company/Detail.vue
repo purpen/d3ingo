@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="top flex-center">
+    <div class="top flex-start">
       <div class="top-left">
         <div class="top-left-img">
           <img :src="item.logo_url">
@@ -16,8 +16,15 @@
             <div class="referred">{{item.company_abbreviation || '-'}}</div>
             <div class="name">{{item.company_name || '-'}}</div>
             <div class="enter-flex">
-              <div v-for="(item, index) in item.industrial_design_center" :key="index" class="prize-blue">{{item.val}}</div>
-              <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'" class="prize-blue">{{item.val}}</div>
+              <template v-if="item.industrial_design_center && item.industrial_design_center.length">
+                <div v-for="(item, index) in item.industrial_design_center" :key="index">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div></div>
+              </template>
+              <template v-if="item.high_tech_enterprises && item.high_tech_enterprises.length">
+                <div v-for="(item, index) in item.high_tech_enterprises" :key="index + 'pai'">
+                  <div class="prize-blue" v-if="item.val">{{item.val}}</div>
+                </div>
+              </template>
             </div>
           </div>
           <div class="top-right-top-right flex-center">
@@ -52,7 +59,7 @@
             </div>
           </div>
         </div>
-        <div class="top-right-bot flex-center">
+        <div class="top-right-bot flex-start">
           <div class="web-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width-43">网址</div>
@@ -309,7 +316,11 @@ export default {
       })
     },
     toNewWeb() {
-      window.open('http://' + this.item.web)
+      if (this.item.web.includes('http')) {
+        window.open(this.item.web)
+      } else {
+        window.open('http://' + this.item.web)
+      }
     },
     getCustomer(id) {
       let self = this
@@ -359,10 +370,10 @@ export default {
 <style scoped>
   .top {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
   }
   .top-left {
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
   }
   .top-right-bot-title {
@@ -401,7 +412,7 @@ export default {
   }
   .top-right {
     padding-left: 30px;
-    height: 240px;
+    /* height: 240px; */
     padding-top: 20px;
     flex: 1 1 auto;
   }
@@ -520,6 +531,7 @@ export default {
   }
   .bot {
     padding-left: 30px;
+    padding-top: 30px;
   }
   .directory {
     height: 50px;
@@ -533,6 +545,7 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 50px;
     height: 50px;
+    transition: 268ms all ease;
   }
   .directory-title:hover {
     color: #ff5a5f;
@@ -568,6 +581,10 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
   .min-width-43 {
     min-width: 43px;
@@ -628,5 +645,9 @@ export default {
   } */
   .enter-flex .prize-blue {
     margin-right: 10px;
+  }
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
   }
 </style>
