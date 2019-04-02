@@ -6,7 +6,7 @@
         <div class="flex-center" v-for="(item, index) in product" :key="index">
           <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
           <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
-          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+          <div class="server-text">&nbsp;￥{{item.prices}} 起</div>
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
         <div class="flex-center" v-for="(item, index) in ui" :key="index">
           <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
           <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
-          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+          <div class="server-text">&nbsp;￥{{item.prices}} 起</div>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         <div class="flex-center" v-for="(item, index) in plane" :key="index">
           <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
           <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
-          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+          <div class="server-text">&nbsp;￥{{item.prices}} 起</div>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
         <div class="flex-center" v-for="(item, index) in packaging" :key="index">
           <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
           <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
-          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+          <div class="server-text">&nbsp;￥{{item.prices}} 起</div>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="flex-center" v-for="(item, index) in illustrations" :key="index">
           <div class="server-text">{{item.design_type_val || item.type_val}}&nbsp;/</div>
           <div class="server-text">&nbsp;{{item.project_cycle_val}}&nbsp;/</div>
-          <div class="server-text">&nbsp;￥{{item.min_price}} 起</div>
+          <div class="server-text">&nbsp;￥{{item.prices}} 起</div>
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@ export default {
     let that = this
     if (that.designItem) {
       for (let index in that.designItem) {
-        that.designItem[index].min_price = that.designItem[index].min_price.substring(0, that.designItem[index].min_price.length - 3)
+        that.designItem[index].prices = that.designItem[index].min_price.substring(0, that.designItem[index].min_price.length - 3)
         switch (that.designItem[index].type) {
           case 1:
             that.product.push(that.designItem[index])

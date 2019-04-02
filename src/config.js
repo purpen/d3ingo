@@ -2282,6 +2282,9 @@ const ADMINDETAIL = {
   },
   adminUserSubmit: {
     redirect: 'adminUserList'
+  },
+  adminItemShow0: {
+    redirect: 'adminItemList'
   }
 }
 const OTHERADMINMENU = {

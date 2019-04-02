@@ -117,7 +117,7 @@
               <img :src="scope.row.logo_url" />
               <div class="pad-left-15">
                 <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '-'}}</div>
-                <div class="com-name text-overflow">{{scope.row.company_name || '-'}}</div>
+                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '-'}}</div>
               </div>
             </div>
           </template>
@@ -234,7 +234,7 @@ export default {
         page: 1,
         pageSize: 10,
         totalCount: 0,
-        sort: 0,
+        sort: 1,
         type: 0,
         evt: '',
         province: 0,
@@ -276,6 +276,12 @@ export default {
         result.push([parseInt(code, 10), items[code]])
       }
       return result
+    },
+    toCompanyHome(id) {
+      const {href} = this.$router.resolve({
+        path: `/company/${id}`
+      })
+      window.open(href, '_blank')
     },
     navgiteTo(id) {
       const {href} = this.$router.resolve({
@@ -486,6 +492,7 @@ export default {
   .home-img-round img{
     height: 44px;
     width: 44px;
+    display: block;
   }
   .com-abb {
     font-size: 14px;
@@ -494,11 +501,15 @@ export default {
     color: rgba(102,102,102,1);
   }
   .com-name {
+    cursor: pointer;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
     white-space: nowrap;
+  }
+  .com-name:hover {
+    color: #ff5a5f;
   }
   .bg-CF1322 {
     background: #CF1322;

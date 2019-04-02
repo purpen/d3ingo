@@ -13,12 +13,12 @@
           @click="openRouter = true" tabindex="-1"
           @blur="openRouter = false">
         <!-- <div class="router-btn" @click="openRouter = true" tabindex="-1"> -->
-          <span class="router-name">{{subRouter && subRouter.name ? subRouter.name : '服务商列表'}}<i class="el-icon-arrow-down"></i></span>
+          <span class="router-name">{{subRouter.name}}<i class="el-icon-arrow-down"></i></span>
           <ul class="router-children" v-if="openRouter && subRouter && subRouter.name">
             <li v-for="(c, indexc) in routerSelect.children" :key="indexc">
               <a @click.stop="redirect({name: c.route, params:c.statement.params, query:c.statement.query})" :class="{'active-router': subRouter.name === c.name}" >{{c.name}}</a>
             </li>
-          </ul>
+          </ul>{{selectedName}}
           <!-- <ul class="router-children" v-if="openRouter && (!subRouter || !subRouter.name)">
             <li>
               <a @click.stop="redirect({name: 'adminCompanyDetail', params: {id : $route.query.companyId}})">服务商列表</a>
@@ -289,38 +289,39 @@
             }
           }
         }
+      },
+      changeName() {
+        this.leftValue = this.leftWidth
+        this.selectedName = this.$route.name
+        this.selectedName2 = this.$route.name
+        this.getRouter()
+        for (let i in this.adminDetail) {
+          if (this.selectedName === i) {
+            this.selectedName = this.adminDetail[i].redirect
+            this.selectedName2 = this.adminDetail[i].redirect
+            break
+          }
+        }
+        if (this.$route.name === 'adminPotentialUserList') {
+          this.selectedName = this.$route.name + this.$route.params.type
+          this.selectedName2 = this.$route.name + this.$route.params.type
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.params.type)
+          })
+          this.subRouter = set
+        }
+        if (this.$route.name === 'adminPotentialUserInfo') {
+          this.selectedName = 'adminPotentialUserList' + this.$route.query.type
+          this.selectedName2 = 'adminPotentialUserList' + this.$route.query.type
+          let set = this.routerSelect.children.find(item => {
+            return item.subRouter === Number(this.$route.query.type)
+          })
+          this.subRouter = set
+        }
       }
     },
     created() {
-      this.leftValue = this.leftWidth
-      this.selectedName = this.$route.name
-      this.selectedName2 = this.$route.name
-      this.getRouter()
-      if (this.$route.name === 'adminPotentialUserList') {
-        this.selectedName = this.$route.name + this.$route.params.type
-        this.selectedName2 = this.$route.name + this.$route.params.type
-        let set = this.routerSelect.children.find(item => {
-          return item.subRouter === Number(this.$route.params.type)
-        })
-        this.subRouter = set
-      }
-      if (this.$route.name === 'adminPotentialUserInfo') {
-        this.selectedName = localStorage.getItem('selectedName')
-        this.selectedName2 = localStorage.getItem('selectedName2')
-        let set = this.routerSelect.children.find(item => {
-          return item.subRouter === Number(this.$route.query.type)
-        })
-        this.subRouter = set
-      }
-      for (let i in this.adminDetail) {
-        if (this.selectedName === i) {
-          this.selectedName = this.adminDetail[i].redirect
-          this.selectedName2 = this.adminDetail[i].redirect
-        }
-      }
-      localStorage.setItem('selectedName', this.selectedName)
-      localStorage.setItem('selectedName2', this.selectedName2)
-      console.log(this.selectedName, this.selectedName2)
+      this.changeName()
     },
     computed: {
       isSaaS() {
@@ -443,34 +444,7 @@
       $route (to, from) {
         this.showCover = ''
         this.showCover2 = ''
-        this.leftValue = this.leftWidth
-        this.selectedName = this.$route.name
-        this.selectedName2 = this.$route.name
-        this.getRouter()
-        if (this.$route.name === 'adminPotentialUserList') {
-          this.selectedName = this.$route.name + this.$route.params.type
-          this.selectedName2 = this.$route.name + this.$route.params.type
-          let set = this.routerSelect.children.find(item => {
-            return item.subRouter === Number(this.$route.params.type)
-          })
-          this.subRouter = set
-        }
-        if (this.$route.name === 'adminPotentialUserInfo') {
-          this.selectedName = localStorage.getItem('selectedName')
-          this.selectedName2 = localStorage.getItem('selectedName2')
-          let set = this.routerSelect.children.find(item => {
-            return item.subRouter === Number(this.$route.query.type)
-          })
-          this.subRouter = set
-        }
-        for (let i in this.adminDetail) {
-          if (this.selectedName === i) {
-            this.selectedName = this.adminDetail[i].redirect
-            this.selectedName2 = this.adminDetail[i].redirect
-          }
-        }
-        localStorage.setItem('selectedName', this.selectedName)
-        localStorage.setItem('selectedName2', this.selectedName2)
+        this.changeName()
       }
     },
     components: {
