@@ -76,30 +76,32 @@
             <div>
               <div class="one-right">
                 <div class="title width-56">公司</div>
-                <div class="text pad-left-40">{{designCompany.company_name || '—'}}</div>
+                <div class="text pad-left-40">{{trueDesign.company_name || '—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">公司地址</div>
-                <div class="text pad-left-40" v-if="designCompany.province_value">{{designCompany.province_value}}·{{designCompany.city_value}}</div>
+                <div class="text pad-left-40" v-if="trueDesign.province_value">{{trueDesign.province_value}}·{{trueDesign.city_value}}</div>
                  <div class="text pad-left-40" v-else>{{'—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">联系人</div>
-                <div class="text pad-left-40">{{designCompany.contact_name || '—'}}</div>
+                <div class="text pad-left-40">{{trueDesign.contact_name || '—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">联系电话</div>
-                <div class="text pad-left-40">{{designCompany.phone || '—'}}</div>
+                <div class="text pad-left-40">{{trueDesign.phone || '—'}}</div>
               </div>
               <div class="flex-center height-34">
-                <div class="navegete-round flex-center" @click="navgiteTo(designCompany.design_company_id)">
+                <div class="navegete-round flex-center" @click="navgiteTo(trueDesign.design_company_id)">
                   <div class="navegete-to">查看设计服务商</div>
                   <div class="arrow-right"></div>
                 </div>
               </div>
             </div>
             <div>
-              <div class="big-logo"></div>
+              <div class="big-logo">
+                <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
+              </div>
             </div>
           </div>
         </div>
@@ -114,9 +116,9 @@
         </div>
       </div>
 
-      <phase v-show="type === 1"></phase>
-      <detail v-show="type === 2"></detail>
-      <info v-show="type === 3"></info>
+      <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name"></phase>
+      <detail v-if="type === 2"></detail>
+      <info v-if="type === 3"></info>
     </div>
   </div>
 </template>
@@ -138,7 +140,8 @@ export default {
       payOrders: '', // 订单
       quotation: '', // 报价
       itemStage: '', // 项目阶段
-      designCompany: '' // 设计公司
+      designCompany: '', // 设计公司列表
+      trueDesign: '' // 合作的设计公司
     }
   },
   created() {
@@ -173,6 +176,7 @@ export default {
           that.quotation = obj.quotation
           that.itemStage = obj.item_stage
           that.designCompany = obj.designCompany
+          that.trueDesign = obj.true_design
         } else {
           that.$message.error(response.data.meta.message)
         }
@@ -308,6 +312,11 @@ export default {
     height: 70px;
     border-radius: 55px;
     border: 1px solid rgba(230,230,230,1);
+  }
+  .big-logo img {
+    width: 70px;
+    height: 70px;
+    border-radius: 55px;
   }
   .directory {
     height: 40px;

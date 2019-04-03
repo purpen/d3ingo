@@ -5,8 +5,10 @@
     <div class="evaluation pad-top-40">
       <div class="width-40">
         <div class="flex-center">
-          <div class="logo"></div>
-          <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+          <div class="logo">
+            <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
+          </div>
+          <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
         </div>
       </div>
       <div class="evaluation-round">
@@ -15,27 +17,27 @@
             <div class="eval-title">设计水平</div>
             <div class="white-space">
               <el-rate
-                v-model="value5"
+                v-model="comments.designLevel"
                 disabled
                 text-color="#ff9900">
               </el-rate>
             </div>
           </div>
           <div class="pad-right-20 width-30">
-            <div class="eval-title">设计水平</div>
+            <div class="eval-title">响应速度</div>
             <div class="white-space">
               <el-rate
-                v-model="value5"
+                v-model="comments.responseSpeed"
                 disabled
                 text-color="#ff9900">
               </el-rate>
             </div>
           </div>
           <div class="width-30">
-            <div class="eval-title">设计水平</div>
+            <div class="eval-title">服务态度</div>
             <div class="white-space">
               <el-rate
-                v-model="value5"
+                v-model="comments.service"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -43,7 +45,7 @@
           </div>
         </div>
         <div class="eval-title pad-top-17">客户评价</div>
-        <div class="evaluation-text">很满意，设计公司服务很棒！设计很厉害</div>
+        <div class="evaluation-text">{{evaluate.content || '—'}}</div>
       </div>
     </div>
 
@@ -51,8 +53,8 @@
 
     <div>
       <div class="flex-center">
-        <div class="title pad-right-20">第三阶段：圣甲虫游戏鼠标结构设计</div>
-        <div class="sure-green">已确认</div>
+        <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
       <div class="date-12">2019-03-30 09:11:02</div>
 
@@ -75,8 +77,8 @@
 
     <div class="pad-top-70">
       <div class="flex-center">
-        <div class="title pad-right-20">第二阶段：圣甲虫游戏鼠标结构设计</div>
-        <div class="sure-green">已确认</div>
+        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
       <div class="date-12">2019-03-30 09:11:02</div>
 
@@ -99,24 +101,26 @@
 
     <div class="pad-top-70">
       <div class="flex-center">
-        <div class="title pad-right-20">第一阶段：圣甲虫游戏鼠标结构设计</div>
-        <div class="sure-green">已确认</div>
+        <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
-      <div class="date-12">2019-03-30 09:11:02</div>
+      <div class="date-12">{{itemStage[0].created_at || '—' |timeFormat}}</div>
 
-      <div class="flex pad-top-40">
-        <div class="file-img"></div>
-        <div class="file-round pad-right-110 pad-left-26">
-          <div class="file-title">文件名</div>
-          <div class="file-text pad-top-6">DS00132421.png</div>
-        </div>
-        <div class="file-round pad-right-110">
-          <div class="file-title">文件大小</div>
-          <div class="file-text pad-top-6">4.3M</div>
-        </div>
-        <div class="file-round">
-          <div class="file-title">提交时间</div>
-          <div class="file-text pad-top-6">2019-03-30 09:11:02</div>
+      <div class="pad-top-36" v-for="(item, index) in itemStage.item_stage_image" :key="index">
+        <div class="flex">
+          <div class="file-img"></div>
+          <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-title">文件名</div>
+            <div class="file-text pad-top-6">{{item.name || '—'}}</div>
+          </div>
+          <div class="file-round pad-right-110">
+            <div class="file-title">文件大小</div>
+            <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+          </div>
+          <div class="file-round">
+            <div class="file-title">提交时间</div>
+            <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -125,14 +129,16 @@
 
 
     <div class="title">已签订合作</div>
-    <div class="date-12">2019-03-30 09:11:02</div>
+    <div class="date-12">{{contract.true_time || '—' |timeFormat}}</div>
     <div class="pad-top-30 flex-center-space">
       <div class="flex-center">
         <div class="flex-center flex-0-1-265">
-          <div class="logo"></div>
-          <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+          <div class="logo">
+            <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
+          </div>
+          <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
         </div>
-        <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
+        <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at|| '—' |timeFormat2}}</div>
         <div class="evaluation-text pad-left-40 white-space">沟通天数：13</div>
       </div>
       <div class="flex-center">
@@ -145,42 +151,44 @@
 
     <div class="tansition" :class="{'hei-0': !server}">
       <div class="title">对接过的服务商</div>
-      <div class="date-12">共 2 家</div>
-      <div class="pad-top-30 flex-center-space">
-        <div class="flex-center">
-          <div class="flex-center flex-0-1-265">
-            <div class="logo"></div>
-            <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+      <div class="date-12">共 {{designCompany.length}} 家</div>
+      <div class="pad-top-10">
+        <div class="pad-top-20 flex-center-space">
+          <div class="flex-center">
+            <div class="flex-center flex-0-1-265">
+              <div class="logo"></div>
+              <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+            </div>
+            <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
+            <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
           </div>
-          <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
-          <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
-        </div>
-        <div>
-          <el-popover
-            placement="top-end"
-            width="680"
-            trigger="click">
-              <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                <el-steps :active="stageActive" class="steps-item">
-                  <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                  <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
-                  <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                  <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                  <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                  <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                  <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                </el-steps>
-                <div class="steps-remarks" v-if="d.status > 6">
-                  <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
-                  <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+          <div>
+            <el-popover
+              placement="top-end"
+              width="680"
+              trigger="click">
+                <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                  <el-steps :active="stageActive" class="steps-item">
+                    <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                    <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                    <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                    <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                    <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                    <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                    <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                  </el-steps>
+                  <div class="steps-remarks" v-if="d.status > 6">
+                    <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                    <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                  </div>
                 </div>
-              </div>
-            <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-          </el-popover>
-        </div>
-        <div class="flex-center">
-          <div class="show-img"></div>
-          <div class="show-text pad-left-5">查看进度</div>
+              <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+            </el-popover>
+          </div>
+          <div class="flex-center">
+            <div class="show-img"></div>
+            <div class="show-text pad-left-5">查看进度</div>
+          </div>
         </div>
       </div>
     </div>
@@ -190,7 +198,10 @@
       <div class="close-img"></div>
     </div>
 
-    <div @click="showServer" v-else class="cursor-point pad-top-30">查看设计服务商</div>
+    <div class="flex-center cursor-point pad-top-30" @click="showServer" v-else>
+      <div class="close-text">查看设计服务商</div>
+      <div class="open-img"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -202,7 +213,27 @@ export default {
       stageActive: 0,
       stageArr: [],
       boolStage: false,
-      value5: 5
+      value5: 5,
+      comments: {
+        service: 0,
+        designLevel: 0,
+        responseSpeed: 0
+      }
+    }
+  },
+  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName'],
+  created() {
+    let that = this
+    if (that.evaluate && that.evaluate.user_score) {
+      if (that.evaluate.user_score.service) {
+        that.comments.service = that.evaluate.user_score.service - 0
+      }
+      if (that.evaluate.user_score.designLevel) {
+        that.comments.designLevel = that.evaluate.user_score.designLevel - 0
+      }
+      if (that.evaluate.user_score.responseSpeed) {
+        that.comments.responseSpeed = that.evaluate.user_score.responseSpeed - 0
+      }
     }
   },
   methods: {
@@ -247,6 +278,18 @@ export default {
       })
       this.stageArr = stageArr
       this.boolStage = true
+    }
+  },
+  filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy-MM-dd hh:mm:ss')
+      }
+    },
+    timeFormat2(val) {
+      if (val) {
+        return val.date_format().format('yyyy-MM-dd')
+      }
     }
   }
 }
@@ -306,6 +349,11 @@ export default {
     border-radius: 42px;
     border: 1px solid rgba(230,230,230,1);
   }
+  .logo img {
+    width: 49px;
+    height: 49px;
+    border-radius: 42px;
+  }
   .name {
     font-size: 14px;
     font-family: PingFangSC-Regular;
@@ -364,7 +412,7 @@ export default {
   .show-img {
     height: 16px;
     width: 16px;
-    border: 1px solid #e6e6e6;
+    background: url('../../../assets/images/icon/hide@2x.png') no-repeat center / contain;
   }
   .refused-text {
     font-size: 14px;
@@ -375,7 +423,12 @@ export default {
   .close-img {
     height: 16px;
     width: 16px;
-    border: 1px solid #e6e6e6;
+    background: url('../../../assets/images/icon/upper@2x.png') no-repeat center / contain;
+  }
+  .open-img {
+    height: 16px;
+    width: 16px;
+    background: url('../../../assets/images/icon/lower@2x.png') no-repeat center / contain;
   }
   .close-text {
     font-size: 12px;
@@ -419,11 +472,17 @@ export default {
   .pad-top-10 {
     padding-top: 10px;
   }
+  .pad-top-20 {
+    padding-top: 20px;
+  }
   .pad-top-17 {
     padding-top: 17px;
   }
   .pad-top-30 {
     padding-top: 30px;
+  }
+  .pad-top-36 {
+    padding-top: 36px;
   }
   .pad-top-40 {
     padding-top: 40px;
