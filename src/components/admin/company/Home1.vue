@@ -2,7 +2,7 @@
   <div>
     <div class="header">
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="100"
@@ -17,7 +17,7 @@
         </el-tooltip>
       </div>
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.docking / statistical.total * 10000) / 100"
@@ -33,7 +33,7 @@
         </el-tooltip>
       </div>
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.no_docking / statistical.total * 10000) / 100"
@@ -563,4 +563,3 @@ export default {
     padding-left: 15px;
   }
 </style>
-

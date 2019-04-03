@@ -158,6 +158,28 @@ module.exports = [
         },
         component: require('@/components/admin/item/List')
       },
+      {
+        path: '/admin/item/orderlist',
+        name: 'orderlist',
+        meta: {
+          title: '订单详情',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/item/Orderlist')
+      },
+      {
+        path: '/admin/item/ordershow',
+        name: 'ordershow',
+        meta: {
+          title: '订单详情',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/item/Ordershow')
+      },
       // 小程序列表
       {
         path: '/admin/item/Sltem',

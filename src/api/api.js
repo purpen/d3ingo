@@ -640,5 +640,7 @@ export default {
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量
   generalize: '/generalize/create', // POST 推广统计
   // 服务号
-  fwhUser: '/fwh/user' // GET 获取服务号用户信息
+  fwhUser: '/fwh/user', // GET 获取服务号用户信息
+  // 新项目列表
+  newlist: '/admin/item/newItemList' // GET 新项目列表
 }
