@@ -76,17 +76,26 @@
 
       <div class="user-progress contant-border margin-t15 fz-14">
         <div class="progress-top no-select">
-          <div class="fl blank4">
+          <div class="padding-r4">
           <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'item-arrow', 'fz-28', {'i-active': !boolProgressContant}]"></i>
           </div>
-					<!-- <div> -->
-						<span @click="showTabProgress(1)" :class="['margin-l0', {'bg-blue01': userForm.new_status === 1, 'bg-green01': userForm.new_status !== 1}]">商机</span>
-						<span @click="showTabProgress(2)" :class="{'bg-blue02': userForm.new_status === 2, 'bg-green02': userForm.new_status > 2, 'bg-gray02': userForm.new_status < 2 }">潜在客户</span>
-						<span @click="showTabProgress(3)" :class="{'bg-blue02': userForm.new_status === 3, 'bg-green02': userForm.new_status > 3, 'bg-gray02': userForm.new_status < 3 }">对接设计</span>
-						<span  @click="showTabProgress(4)" :class="{'bg-blue03': userForm.new_status === 4, 'bg-gray03': userForm.new_status < 4 }">签订合作</span>
+					<div class="status-model">
 
-					<!-- </div> -->
-          <div class="fr">
+						<div @click="showTabProgress(1)" :class="['nav-item', {'current': userForm.new_status === 1, 'finish': userForm.new_status !== 1}]">
+              <span>商机</span>
+            </div>
+						<div @click="showTabProgress(2)" :class="['nav-item', {'current': userForm.new_status === 2, 'finish': userForm.new_status > 2}]">
+            <span>潜在客户</span>
+            </div>
+						<div @click="showTabProgress(3)" :class="['nav-item', {'current': userForm.new_status === 3, 'finish': userForm.new_status > 3}]">
+            <span>对接设计</span>
+            </div>
+						<div  @click="showTabProgress(4)" :class="['nav-item', 'last-nav-item', {'current': userForm.new_status === 4}]">
+              <span>签订合作</span>
+            </div>
+
+					</div>
+          <div class="status-right">
             <el-dropdown @command="showClueDialog" trigger="hover">
               <!-- <span class="">标记当前商机状态</span> -->
               <el-button type="primary" size="small" class="change-status">标记当前商机状态</el-button>
@@ -170,7 +179,8 @@
             <div class="project-title">
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'i-active': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
-                <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button>
+                <!-- <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button> -->
+                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
               </p>
             </div>
 
@@ -306,7 +316,8 @@
                     <div>
                       <p class="add-design clearfix design-title">
                       <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                      <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button>
+                      <!-- <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button> -->
+                      <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="addDesignCompany(item.item_id)"><i class="el-icon-circle-plus"></i>匹配设计服务商</span>
                       </p>
                     </div>
                     <el-collapse-transition>
@@ -414,7 +425,8 @@
             <div class="bb-e6 client-title">
               <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
-                <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span>
+                <!-- <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span> -->
+                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="editClientUser"><i class="el-icon-circle-plus"></i>编辑</span>
               </p>
             </div>
             <div class="client-info">
@@ -621,7 +633,7 @@
                 </li>
               </ul>
             </div>
-            <div class="padding-l30  tc-6">
+            <div class="padding-l30  tc-6" v-if="eventLogList.length">
               <p class="event-title bb-e6">事件</p>
               <ul class="">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
@@ -657,7 +669,7 @@
     </el-dialog>
 
     <el-dialog
-      width="580px"
+      width="680px"
       title="编辑客户"
       class="userinfo-dialog"
       :visible.sync="BoolEditUserInfo">
@@ -787,7 +799,7 @@
     </el-dialog>
     
     <el-dialog
-      width="580px"
+      width="680px"
       :title="dialogProjectTitle"
       class="userinfo-dialog"
       :visible.sync="boolProject">
@@ -939,7 +951,7 @@
       title="匹配设计公司"
       class="userinfo-dialog"
       :visible.sync="boolDesignCompany"
-      width="580px">
+      width="680px">
       <el-form  label-width="140px" :model="designCompanyForm" class="userinfo-form scroll-bar" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
@@ -1665,6 +1677,10 @@ export default {
             }
           }) // all
         }
+        if (index === -1) {
+          let {type = 1} = this.query
+          this.$router.push({name: 'adminPotentialUserList', params: {type: type}})
+        }
       }
     },
     getPreviousUser() { // 上一条
@@ -1793,6 +1809,10 @@ export default {
               this.userLogLoading = false
             }
           }) // all
+        }
+        if (index === -1) {
+          let {type = 1} = this.query
+          this.$router.push({name: 'adminPotentialUserList', params: {type: type}})
         }
       }
     },
@@ -2799,6 +2819,9 @@ export default {
 .padding-l40 {
   padding-left: 40px;
 }
+.padding-r4 {
+  padding-right: 4px;
+}
 .padding-r20 {
   padding-right: 20px;
 }
@@ -2868,6 +2891,123 @@ export default {
 .log-input {
   padding: 20px 30px 20px 30px;
 }
+.progress-top {
+  display: flex;
+  align-items: center;
+}
+.status-model {
+  position: relative;
+  width: 100%;
+  flex-basis: 1;
+  max-width: 100%;
+  display: flex;
+}
+.status-model > .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  flex: 1;
+  text-align: center;
+  /* background-color: #D8D8D8; */
+  margin-right: 5px;
+}
+.status-model > .nav-item + .nav-item {
+  /* margin-left: 10px; */
+}
+.status-model > .nav-item:first-child {
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+  border-left: 18px solid #d8d8d8;
+}
+.status-model > .finish:first-child {
+  background-color: #73D13D;
+  border-color:#73D13D;
+}
+.status-model > .current:first-child {
+  background-color: #096DD9;
+  border-color:#096DD9;
+}
+.status-model > .nav-item:last-child {
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+  border-right: 18px solid;
+  background-color: #d8d8d8;
+  border-color: #d8d8d8;
+}
+.status-model > .current:last-child {
+  background-color: #096DD9;
+  border-color: #096DD9;
+}
+.status-model > .finish:last-child {
+  background-color: #73D13D;
+  border-color:#73D13D;
+}
+
+.nav-item::before,
+.nav-item::after {
+  position: absolute;
+  content: '';
+  left: 6px;
+  cursor: pointer;
+}
+.nav-item::before {
+  width: 100%;
+  top: 0;
+  height: 50%;
+  transform: skew(32deg) translate3d(0, 0, 0);
+  background: #D8D8D8;
+}
+.nav-item::after {
+  width: 100%;
+  bottom: 0;
+  height: 50%;
+  transform: skew(-32deg) translate3d(0, 0, 0);
+  background: #D8D8D8;
+}
+.current::before,
+.current::after {
+  background: #096DD9;
+}
+.finish::before,
+.finish::after {
+  background-color: #73D13D;
+}
+
+.nav-item > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+	text-decoration: none;
+	z-index: 5;
+	cursor: pointer;
+}
+.last-nav-item::before,
+.last-nav-item::after {
+  left: -6px;
+}
+.last-nav-item {
+  margin-left: 12px;
+  margin-right: 0;
+}
+
+.nav-item > span {
+  color: #666;
+  line-height: 34px;
+}
+.nav-item.current > span, .nav-item.finish > span {
+  color: #fff;
+}
+
+
+
+.status-right {
+  margin-left: 120px;
+}
+
+
 .progress-top > span {
   display: inline-block;
   margin-left: -20px;
@@ -3020,7 +3160,7 @@ export default {
   padding-bottom: 20px;
 }
 
-.bg-blue01 {
+/* .bg-blue01 {
   background: url(../../../assets/images/crm/blue01.png) no-repeat left/cover;
 }
 .bg-blue02 {
@@ -3040,7 +3180,7 @@ export default {
 }
 .bg-gray03 {
   background: url(../../../assets/images/crm/gray03.png) no-repeat left/cover;
-}
+} */
 
 .el-dropdown-link {
   cursor: pointer;
@@ -3125,6 +3265,16 @@ export default {
 }
 
 
+
+
+
+
+.like-btn > i {
+  margin-right: 6px;
+}
+.like-btn:active {
+  opacity: 0.5;
+}
 
 
 
@@ -3635,8 +3785,11 @@ export default {
 }
 .userinfo-dialog  .el-dialog__footer {
 	padding: 20px 60px 20px 20px;
-	/* border-top: 1px solid #e6e6e6; */
-	box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1);
+	border-top: 1px solid #e6e6e6;
+	/* box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1); */
+}
+.userinfo-dialog  .el-dialog__footer .client-btn {
+  padding-right: 6px;
 }
 .userinfo-dialog  .el-dialog__footer .el-button + .el-button {
 	margin-right: 0;

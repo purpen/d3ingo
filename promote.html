@@ -1,0 +1,3454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>铟果推广-太火鸟-B2B工业设计和产品创新SaaS平台</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      .fr {
+        float: right;
+      }
+      .phone {
+        display: none;
+      }
+      .fiexd-logo {
+        display: none;
+      }
+      .back-bg {
+        background-color: #3052ac;
+        margin-bottom: -50px;
+      }
+      /* PC端 */
+      .pc-send,
+      .pc-dialog-send {
+        white-space: nowrap;
+        padding: 0 10px;
+      }
+      .pc-modal {
+        width: 500px;
+      }
+      .pc-dialog {
+        display: none;
+        width: 100%;
+        width: 100vw;
+        height: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.35);
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+
+      .pc-dialog:after {
+        display: inline-block;
+        content: "";
+        width: 0;
+        height: 100%;
+        vertical-align: middle;
+      }
+      .pc-dialog-box {
+        display: inline-block;
+        border: 1px solid #ccc;
+        text-align: center;
+        vertical-align: middle;
+        position: relative;
+        background-color: #fff;
+        width: 380px;
+        padding: 0 20px 20px 20px;
+      }
+      .field {
+        margin-bottom: 22px;
+      }
+      .field input {
+        width: 100%;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        padding: 15px;
+      }
+      .pc-dialog input {
+        height: 40px;
+        /* margin-top: 10px; */
+      }
+      .pc-sms-code1 {
+        height: 30px !important;
+      }
+      .fields {
+        text-align: left;
+      }
+      .fields .field {
+        display: inline-block;
+      }
+      .fields .field:first-child {
+        width: 60%;
+      }
+      .fields .field:last-child {
+        width: 30%;
+      }
+
+      .pc-get-code {
+        margin-left: 14px;
+      }
+      .dialog-btn {
+        display: inline-block;
+        background: #ff5a5f;
+        border: 1px solid #ff5a5f;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        min-width: 120px;
+        height: 34px;
+        line-height: 32px;
+        font-size: 14px;
+      }
+      .code-second {
+        display: none;
+      }
+      .pc-wait-border-title .dialog-close {
+        color: #666;
+        font-weight: 400;
+        cursor: pointer;
+        font-size: 12px;
+        z-index: 99;
+      }
+
+      .swiper-container {
+        max-width: 880px;
+        height: 300px;
+        border-radius: 4px;
+        margin: 0 auto;
+      }
+
+      .pc-header {
+        text-align: center;
+      }
+      .logo {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/logo.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 25px;
+      }
+      .logo:after {
+        content: "";
+        height: 31px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud01@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: 0;
+        bottom: 20px;
+        left: 230px;
+      }
+
+      .logo:before {
+        content: "";
+        height: 28px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud01@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: 0;
+        bottom: -15px;
+        left: -280px;
+      }
+      .header-text-one {
+        font-size: 20px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+      }
+      .one-min {
+        color: #ff5a5f;
+      }
+      .spectrum-img {
+        height: 110px;
+        max-width: 858px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/title@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+      }
+      .header-text-two {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
+      .logo-btn {
+        height: 57px;
+        width: 240px;
+        cursor: pointer;
+        background: url("https://s3.taihuoniao.com/promote/pc/Button@2x.png")
+          no-repeat center / contain #ff5a5f;
+        margin: 0 auto;
+        margin-top: 20px;
+        border-radius: 4px;
+      }
+      .logo-btn:hover {
+        background: url("https://s3.taihuoniao.com/promote/pc/ButtonHover@2x.png")
+          no-repeat center / contain #ff6f80;
+      }
+      .logo-btn:active {
+        background: url("https://s3.taihuoniao.com/promote/pc/ButtonClick@2x.png")
+          no-repeat center / contain #ff4d61;
+      }
+      .header-two-img {
+        position: relative;
+        margin-top: 10px;
+        height: 244px;
+        background: url("https://s3.taihuoniao.com/promote/pc/IllustrationHead.png")
+          no-repeat center;
+        display: flex;
+        flex-direction: row;
+      }
+      .header-two-img:before {
+        content: "";
+        height: 31px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud01@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        left: 90px;
+        top: -50px;
+      }
+      .header-title {
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+        padding-top: 60px;
+        text-align: center;
+      }
+      .six-img-round {
+        max-width: 1180px;
+        padding-top: 30px;
+        margin: 0 auto;
+      }
+      .six-one-round {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .six-border {
+        flex: 1;
+        margin: 0 10px;
+        height: 340px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+      }
+      .border-pad {
+        padding: 11px;
+      }
+      .six-text1 {
+        padding-top: 7px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+      }
+      .six-img1-jian {
+        font-size: 22px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 36px;
+        padding: 0 10px 0 5px;
+      }
+      .six-img1-sales {
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 30px;
+      }
+      .six-text2 {
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 36px;
+      }
+      .six-img1 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/01fifish@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-1 {
+        height: 36px;
+        width: 76px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/number/10000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img2 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/02shushi@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-2 {
+        height: 36px;
+        width: 28px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/10@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img3 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/03Amiro@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-3 {
+        height: 36px;
+        width: 60px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/number/1000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img4 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/04yunma@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-4 {
+        height: 36px;
+        width: 80px;
+        background: url("https://s3.taihuoniao.com/promote/number/3000+@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img5 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/05FIUbudaobei@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-5 {
+        height: 36px;
+        width: 76px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/number/10000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img6 {
+        height: 242px;
+        background: url("https://s3.taihuoniao.com/promote/pc/product/06sawwadika@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .six-img1-6 {
+        height: 36px;
+        width: 80px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/5000+@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .pad-5-10 {
+        padding: 0 10px 0 5px;
+      }
+      .pad-6-10 {
+        padding: 0 10px 0 6px;
+      }
+      .pad-10-10 {
+        padding: 0 10px;
+      }
+      .pad-rig-5 {
+        padding-right: 5px;
+      }
+      .pc-can {
+        height: 443px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      .pc-can-text {
+        padding-top: 50px;
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+      }
+      .pc-can-round {
+        height: 293px;
+        max-width: 1180px;
+        padding-top: 30px;
+        display: flex;
+        flex-direction: row;
+        margin: 0 auto;
+      }
+      .pc-can-border {
+        flex: 1;
+        height: 293px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        margin: 0 10px;
+        text-align: center;
+      }
+      .pc-can-img1 {
+        margin: 0 auto;
+        height: 180px;
+        width: 200px;
+        background: url("https://s3.taihuoniao.com/promote/pc/can/1MarketingIncubation.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-can-img2 {
+        margin: 0 auto;
+        height: 180px;
+        width: 200px;
+        background: url("https://s3.taihuoniao.com/promote/pc/can/2ChannelSales.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-can-img3 {
+        margin: 0 auto;
+        height: 180px;
+        width: 200px;
+        background: url("https://s3.taihuoniao.com/promote/pc/can/3MarketingPromotion.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-choose-img1 {
+        margin: 0 auto;
+        height: 160px;
+        width: 160px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/More@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-choose-img2 {
+        margin: 0 auto;
+        height: 160px;
+        width: 160px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/MoreAccurate@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-choose-img3 {
+        margin: 0 auto;
+        height: 160px;
+        width: 160px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/Faster@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .pc-can-text1 {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(21, 55, 140, 1);
+        line-height: 28px;
+        padding-top: 7px;
+      }
+      .pc-can-text2 {
+        padding-top: 12px;
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 22px;
+      }
+      .pc-trust-round {
+        text-align: center;
+      }
+      .pc-trust {
+        padding: 50px 0 20px 0;
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+      }
+      .pc-trust-three {
+        display: flex;
+        max-width: 1180px;
+        margin: 0 auto;
+        height: 275px;
+      }
+      .pc-trust-img-round {
+        flex: 1;
+        margin: 0 10px;
+      }
+      .pc-trust-1 {
+        width: 100%;
+        height: 240px;
+        background: url("https://s3.taihuoniao.com/promote/trust/TIA@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .pc-trust-2 {
+        width: 100%;
+        height: 240px;
+        background: url("https://s3.taihuoniao.com/promote/trust/shunde@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .pc-trust-3 {
+        width: 100%;
+        height: 240px;
+        background: url("https://s3.taihuoniao.com/promote/trust/DTech@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .pc-trust-text {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+        padding-top: 15px;
+      }
+      .pc-customer {
+        margin-top: 40px;
+        height: 410px;
+        background: rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+      .pc-customer-title {
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+        padding: 40px 0;
+      }
+      .pc-customer-imgs {
+        max-width: 1180px;
+        display: flex;
+        margin: 0 auto;
+        height: 60px;
+        padding: 0 10px;
+      }
+      .pc-hei-80 {
+        height: 80px;
+      }
+      .pc-prize-img1 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize01@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img2 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize02@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img3 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize03@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img4 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize04@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img5 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize05@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img6 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize06@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-prize-img7 {
+        flex: 1;
+        padding: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/prize/prize07@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img1 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/01@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img2 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/02@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img3 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/03@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img4 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/04@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img5 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/05@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img6 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/06@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-customer-img7 {
+        flex: 1;
+        margin: 0 11px;
+        background: url("https://s3.taihuoniao.com/promote/pc/customer/07@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-invest-img1 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T01@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img2 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T02@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img3 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T03@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img4 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T04@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img5 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T05@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img6 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T06@2x.png")
+          no-repeat center / contain;
+        margin-right: 22px;
+      }
+      .pc-invest-img7 {
+        flex: 1;
+        background: url("https://s3.taihuoniao.com/promote/pc/invest/T07@2x.png")
+          no-repeat center / contain;
+      }
+      .z-index-5 {
+        z-index: 5;
+        position: relative;
+        height: 100%;
+      }
+      .wait {
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+        padding-top: 40px;
+        text-align: center;
+        position: relative;
+      }
+      .wait:after {
+        content: "";
+        height: 31px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud03@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: 0;
+        bottom: -80px;
+        left: 60px;
+      }
+
+      .wait-intro {
+        width: 600px;
+        height: 300px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.06);
+        border-radius: 4px;
+        margin: 0 auto;
+        margin-top: 30px;
+        text-align: center;
+        position: relative;
+      }
+      .wait-intro:before {
+        content: "";
+        height: 28px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud03@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: 0;
+        bottom: 10px;
+        left: -100px;
+      }
+      .wait-intro:after {
+        content: "";
+        height: 28px;
+        width: 121px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/cloud03@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: -295px;
+        bottom: 44px;
+      }
+      .pc-wait-border-title {
+        padding-top: 20px;
+        font-size: 16px;
+        font-family: PingFangSC-Semibold;
+        font-weight: 600;
+        color: #222222;
+        line-height: 22px;
+        position: relative;
+      }
+      .pc-wait-border-title:after {
+        content: "";
+        height: 28px;
+        width: 120px;
+        position: absolute;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/clouds02@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        right: -140px;
+        bottom: -40px;
+      }
+      .red-text {
+        color: #ff5a5f;
+      }
+      .pc-wait-input-round {
+        width: 500px;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        /* padding: 15px; */
+      }
+      .mar-top-20 {
+        margin-top: 20px;
+      }
+      .pc-send-code-90 {
+        display: flex;
+        width: 500px;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+      .pc-wait-input-round2 {
+        /* width: 500px; */
+        width: 100%;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        padding: 15px;
+        margin-right: 10px;
+      }
+      .pc-code-90-round {
+        width: 180px;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        display: flex;
+        align-items: center;
+      }
+      .field input.pc-code-90 {
+        width: 90px;
+        border: none;
+        padding: 0 10px;
+        margin-top: 0;
+      }
+      .field input.pc-code-90:focus {
+        outline: none;
+      }
+      .pc-code-90-send {
+        cursor: pointer;
+        flex: 1 1 auto;
+        height: 20px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(102, 102, 102, 1);
+        line-height: 20px;
+        text-align: center;
+        border-left: 1px solid #e6e6e6;
+      }
+      .pc-send-btn-2 {
+        cursor: pointer;
+        width: 180px;
+        height: 40px;
+        background: rgba(255, 90, 95, 1);
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 30px;
+        margin: 0 auto;
+      }
+      .cursor-wait {
+        cursor: wait;
+      }
+      .pc-send-btn-text2 {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 40px;
+      }
+      .pc-new-curstomer {
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+        text-align: center;
+        padding: 48px 0 30px 0;
+      }
+      .pc-person {
+        width: 880px;
+        display: flex;
+        height: 110px;
+        margin: 0 auto;
+      }
+      .pc-person-left {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .pc-person-text {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
+      .border-2 {
+        border-left: 1px solid #ffffff;
+        margin: 0 60px;
+      }
+      .pc-call-btn {
+        margin: 0 auto;
+        margin-top: 42px;
+        display: flex;
+        width: 440px;
+      }
+      .pc-call-text {
+        font-size: 22px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #fff;
+        line-height: 46px;
+        padding-right: 10px;
+      }
+      .pc-call-img {
+        height: 36px;
+        width: 220px;
+        background: url("https://s3.taihuoniao.com/promote/long@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+      }
+      .call-phone-img {
+        height: 30px;
+        width: 30px;
+        background: url("https://s3.taihuoniao.com/promote/Telephone@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        margin: 0 10px 3px 20px;
+      }
+      .call-phone-text {
+        font-size: 24px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #fff;
+        line-height: 36px;
+      }
+      .pc-bot-bg {
+        height: 170px;
+        background: url("https://s3.taihuoniao.com/promote/pc/IllustrationFoot.png")
+          no-repeat;
+        background-size: 100% 100%;
+        margin-top: 47px;
+      }
+      .dialog-req {
+        text-align: left;
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(102, 102, 102, 1);
+        line-height: 20px;
+      }
+      .dialog-input {
+        width: 100%;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        margin-top: 10px;
+        padding: 15px;
+      }
+      .pad-top-20 {
+        padding-top: 20px;
+      }
+      .dialog-code-round {
+        display: flex;
+        padding-top: 10px;
+      }
+      .dialog-code {
+        width: 210px;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        margin-right: 10px;
+        padding: 15px;
+      }
+      .dialog-code-send {
+        width: 120px;
+        height: 40px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 90, 95, 1);
+        text-align: center;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .dialog-code.pc-sms-code2 {
+        width: auto;
+        flex: 1 1 auto;
+      }
+      .dialog-code-text {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 90, 95, 1);
+        line-height: 38px;
+      }
+      .dialog-code-send:hover {
+        background-color: rgba(255, 90, 95, 0.3);
+        border-radius: 4px;
+      }
+      .dialog-code-send:active {
+        background: #ff5a5f;
+      }
+      .dialog-code-text:active {
+        color: #fff;
+      }
+      .three-num-round {
+        width: 100%;
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+      }
+      .one-thn1 {
+        height: 60px;
+        width: 140px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/1000+@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+      }
+      .one-thn2 {
+        height: 60px;
+        width: 160px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/100+@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+      }
+      .one-thn3 {
+        height: 60px;
+        width: 140px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/24h@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+      }
+      .three-num-text {
+        font-size: 18px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+      }
+      .pc-prize-get {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        padding-bottom: 20px;
+      }
+      .pc-prize {
+        margin-top: 40px;
+        min-height: 240px;
+        background: rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+      .pc-pad-bot-10 {
+        padding-bottom: 10px;
+      }
+      .pc-choose-bot {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .pc-choose1 {
+        width: 76px;
+        height: 36px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/1000+@2x.png")
+          no-repeat center / contain;
+        margin-right: 3px;
+      }
+      .pc-choose2 {
+        width: 47px;
+        height: 36px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/24H@2x.png")
+          no-repeat center / contain;
+        margin-right: 3px;
+      }
+      .pc-choose3 {
+        width: 58px;
+        height: 36px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/30day@2x.png")
+          no-repeat center / contain;
+        margin-right: 3px;
+      }
+      .line-hei-28 {
+        line-height: 28px;
+      }
+      .line-hei-24 {
+        line-height: 24px;
+      }
+      .text-align-cen {
+        text-align: center;
+      }
+      .pc-investors-round {
+        display: flex;
+        margin: 0 auto;
+        max-width: 1180px;
+        justify-content: space-between;
+        padding: 0 10px;
+      }
+      .pc-investors-img1 {
+        height: 160px;
+        width: 224px;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/01@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-investors-img2 {
+        height: 160px;
+        width: 224px;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/02@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-investors-img3 {
+        height: 160px;
+        width: 224px;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/03@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-investors-img4 {
+        height: 160px;
+        width: 224px;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/04@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-investors-img5 {
+        height: 160px;
+        width: 224px;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/05@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-investors-text {
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        padding: 15px 0;
+      }
+      .fiexd-logo {
+        height: 70px;
+        background: rgba(27, 25, 95, 0.6);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 99;
+      }
+      .fiexd-logo-round {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        max-width: 1180px;
+        margin: 0 auto;
+        justify-content: space-between;
+      }
+      .fiexd-logo-btn {
+        cursor: pointer;
+        width: 140px;
+        height: 42px;
+        background: rgba(250, 105, 113, 1);
+        border-radius: 4px;
+        margin-right: 50px;
+      }
+      .fiexd-logo-img {
+        width: 156px;
+        height: 51px;
+        background: url("https://s3.taihuoniao.com/promote/pc/LogoWhite@2x.png")
+          no-repeat center / contain;
+        margin-left: 50px;
+      }
+      .fiexd-logo-text {
+        font-size: 18px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 42px;
+        text-align: center;
+      }
+      .fiexd-logo-btn:hover {
+        background: #d23c46;
+        border-radius: 4px;
+      }
+      .pc-sever-swipe-round {
+        padding: 0 10px 0 10px;
+        height: 300px;
+      }
+      .pc-sever-swipe {
+        max-width: 880px;
+        height: 240px;
+        border-radius: 4px;
+        margin: 0 auto;
+      }
+      .pc-sever-swipe-out {
+        position: relative;
+        height: 240px;
+      }
+      .pc-sever-swipe-tt {
+        font-size: 18px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: #ffffff;
+        text-align: center;
+        padding-top: 20px;
+      }
+      .pc-sever-swipe-text {
+        max-width: 800px;
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 24px;
+        margin: 0 auto;
+      }
+      .pc-sever-swipe-bd {
+        width: 30px;
+        margin: 14px auto;
+        border: 2px solid #ffffff;
+      }
+      .pc-left {
+        display: inline-block;
+        width: 11px;
+        height: 20px;
+        background: url("https://s3.taihuoniao.com/promote/pc/QuotationMarks01@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-right {
+        display: inline-block;
+        width: 11px;
+        height: 20px;
+        background: url("https://s3.taihuoniao.com/promote/pc/QuotationMarks02@2x.png")
+          no-repeat center / contain;
+      }
+      .pc-sever-swipe-bt-tt {
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #ffffff;
+        position: absolute;
+        bottom: 90px;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+      .pc-sever-swipe-bt {
+        position: absolute;
+        bottom: 70px;
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #ffffff;
+        text-align: center;
+      }
+      .pc-prod-mar {
+        margin: 0 auto;
+        max-width: 1180px;
+        text-align: center;
+      }
+      .pc-prod-tit {
+        padding: 50px 0 30px 0;
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+      }
+      .pc-prod-round {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+      }
+      .pc-prod-bd {
+        width: 16%;
+        max-width: 185px;
+        height: 180px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+      }
+      .pc-prod-img1 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/product@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-img2 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/brand@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-img3 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/Packing@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-img4 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/plane@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-img5 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/UI@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-img6 {
+        height: 120px;
+        width: 120px;
+        background: url("https://s3.taihuoniao.com/promote/pc/provide/Illustration@2x.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+      .pc-prod-tt {
+        text-align: center;
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(48, 82, 172, 1);
+        padding-top: 10px;
+      }
+
+      /* 移动端 */
+      .phone-head {
+        height: 335px;
+        background: url("https://s3.taihuoniao.com/promote/phone/H5Head@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .release-text {
+        height: 20px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+        text-align: center;
+        margin-top: 20px;
+      }
+      .release-text span {
+        color: #ff5a5f;
+      }
+      .release-input {
+        text-align: center;
+      }
+      .release-form {
+        padding: 15px;
+        width: 100%;
+        height: 40px;
+        border: none;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 8px;
+      }
+      .code1-send {
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 0 auto;
+      }
+      .round-btn {
+        padding-top: 10px;
+      }
+      .release-btn {
+        width: 180px;
+        height: 40px;
+        background: rgba(255, 90, 95, 1);
+        box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 60px;
+        margin: 0 auto;
+        text-align: center;
+        line-height: 40px;
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        letter-spacing: 1px;
+      }
+      .color-666 {
+        background-color: #c8c8c8;
+      }
+      .img-round-text {
+        padding-top: 30px;
+        height: 28px;
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+        text-align: center;
+      }
+      .img-round {
+        margin-top: 20px;
+        height: 160px;
+      }
+      .margin-top-10 {
+        margin-top: 10px;
+      }
+      .border-round {
+        padding: 0 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding-top: 30px;
+      }
+      .border {
+        width: 50%;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        height: 160px;
+      }
+      .in-border {
+        margin: 5px;
+        height: 150px;
+      }
+      .img-text {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+      }
+      .img-jian {
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 18px;
+        padding: 0 5px;
+      }
+      .img-sales {
+        font-size: 9px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 18px;
+      }
+      .img-bot-text {
+        font-size: 10px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .ph-serv-round {
+        background: rgba(255, 255, 255, 0.1);
+        min-height: 600px;
+        margin-top: 30px;
+      }
+      .img1 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/01fifish@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img1-1 {
+        height: 24px;
+        width: 48px;
+        background: url("https://s3.taihuoniao.com/promote/number/10000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img2 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/02shushi@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img2-1 {
+        height: 24px;
+        width: 18px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/10@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img3 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/03Amiro@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img3-1 {
+        height: 24px;
+        width: 37px;
+        background: url("https://s3.taihuoniao.com/promote/number/1000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img4 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/04yunma@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img4-1 {
+        height: 24px;
+        width: 41px;
+        background: url("https://s3.taihuoniao.com/promote/number/3000+@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img5 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/05FIUbudaobei@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img5-1 {
+        height: 24px;
+        width: 48px;
+        background: url("https://s3.taihuoniao.com/promote/number/10000@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img6 {
+        height: 110px;
+        background: url("https://s3.taihuoniao.com/promote/06sawwadika@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .img6-1 {
+        height: 24px;
+        width: 50px;
+        background: url("https://s3.taihuoniao.com/promote/pc/header/5000+@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .fu-can {
+        margin-top: 30px;
+        height: 243px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .can-text {
+        text-align: center;
+        padding-top: 30px;
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+      }
+      .can-img {
+        margin: 15px 10px;
+        height: 140px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .can-border {
+        height: 140px;
+        width: 32%;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+      }
+      .border-img1 {
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/1MarketingIncubation.png")
+          center / contain;
+        margin: 0 auto;
+      }
+      .border-img2 {
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/2ChannelSales.png")
+          no-repeat center / contain;
+        margin: 0 auto;
+      }
+      .border-img3 {
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/3MarketingPromotion.png")
+          center / contain;
+        margin: 0 auto;
+      }
+      .can-text1-1 {
+        font-size: 15px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(21, 55, 140, 1);
+        line-height: 21px;
+        text-align: center;
+      }
+      .can-text1-2 {
+        width: 85px;
+        font-size: 9px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 14px;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 5px;
+      }
+      .trust-around {
+        padding: 0 15px;
+        text-align: center;
+      }
+      .trust {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+        padding-top: 30px;
+      }
+      .trust-img1 {
+        height: 218px;
+        background: url("https://s3.taihuoniao.com/promote/trust/TIA@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        margin-top: 20px;
+      }
+      .trust-img2 {
+        height: 218px;
+        background: url("https://s3.taihuoniao.com/promote/trust/shunde@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        margin-top: 20px;
+      }
+      .trust-img3 {
+        height: 218px;
+        background: url("https://s3.taihuoniao.com/promote/trust/DTech@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+        margin-top: 20px;
+      }
+      .trust-text {
+        margin-top: 20px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
+      .serve-customer {
+        min-height: 365px;
+        background: rgba(255, 255, 255, 0.1);
+        text-align: center;
+        margin-top: 30px;
+      }
+      .serve-text {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+        padding-top: 30px;
+        text-align: center;
+      }
+      .serve-flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 20px 10px 0 10px;
+      }
+      .margin-top-10 {
+        margin-top: 10px;
+      }
+      .six-img-bg-color {
+        background: rgba(255, 255, 255, 0.1);
+        margin-top: 30px;
+        padding-bottom: 30px;
+      }
+      .serve-img1 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/01@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img2 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/02@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img3 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/03@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img4 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/04@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img5 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/05@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img6 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/06@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img7 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/07@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .serve-img8 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/serve/08@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img1 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T01@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img2 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T02@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img3 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T03@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img4 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T04@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img5 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T05@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img6 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T06@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img7 {
+        width: 22%;
+        height: 30px;
+        background: url("https://s3.taihuoniao.com/promote/phone/invest/T07@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .invest-img8 {
+        width: 22%;
+        height: 30px;
+      }
+      .later {
+        padding: 0 15px;
+        text-align: center;
+      }
+      .later-text {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 28px;
+        margin-top: 30px;
+      }
+      .margin-top-15 {
+        margin-top: 15px;
+      }
+      .input-style {
+        width: 100%;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 8px;
+        border: 2px solid rgba(230, 230, 230, 1);
+        padding: 15px;
+      }
+      .code-round {
+        width: 100%;
+        height: 40px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 8px;
+        border: 2px solid rgba(230, 230, 230, 1);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .code-input {
+        height: 36px;
+        padding: 15px;
+        width: 70%;
+      }
+      .code-input-phone {
+        height: 36px;
+        padding: 15px 15px 15px 10px;
+        width: 70%;
+      }
+      .send-code {
+        width: 29%;
+        height: 30px;
+        border-left: 2px solid rgba(230, 230, 230, 1);
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(102, 102, 102, 1);
+        line-height: 30px;
+        text-align: center;
+      }
+      .send-code-btn {
+        width: 180px;
+        height: 40px;
+        background: rgba(255, 90, 95, 1);
+        box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 60px;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+      .send-code-text {
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 40px;
+        letter-spacing: 1px;
+      }
+      .new-top {
+        padding-top: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .new-text {
+        width: 32%;
+        font-size: 14px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+      }
+      .left {
+        width: 32%;
+        height: 2px;
+        border: 1px solid #e6e6e6;
+      }
+      .right {
+        width: 32%;
+        height: 2px;
+        border: 1px solid #e6e6e6;
+      }
+      .person-round {
+        padding-top: 20px;
+        height: 180px;
+      }
+      .person {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 14px;
+      }
+      .person-text {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 24px;
+      }
+      .bg-bot-img {
+        margin-top: 30px;
+        height: 100px;
+        background: url("https://s3.taihuoniao.com/promote/phone/H5Foot@2x.png")
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      .phone-prod-tit {
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        padding: 30px 0 20px 0;
+      }
+      .phone-prod-round {
+        flex-wrap: wrap;
+        margin: 0 10px;
+      }
+      .phone-choose-img1 {
+        margin: 0 auto;
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/More@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .phone-choose-img2 {
+        margin: 0 auto;
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/MoreAccurate@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .phone-choose-img3 {
+        margin: 0 auto;
+        height: 77px;
+        width: 85px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/Faster@2x.png")
+          no-repeat center / contain;
+        padding-top: 14px;
+      }
+      .why-can {
+        margin-top: 30px;
+        height: 210px;
+      }
+      .phone-choose1 {
+        width: 36px;
+        height: 18px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/1000+@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-choose2 {
+        width: 24px;
+        height: 18px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/24H@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-choose3 {
+        width: 30px;
+        height: 18px;
+        background: url("https://s3.taihuoniao.com/promote/pc/choose/30day@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-can-text1 {
+        font-size: 9px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 14px;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 5px;
+      }
+      .phone-choose-bot {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+        max-width: 96px;
+        margin: 0 auto;
+      }
+      .phone-invest-round {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0 10px;
+        padding-top: 15px;
+      }
+      .phone-investors-img1 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/01@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-investors-img2 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/02@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-investors-img3 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/03@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-investors-img4 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/04@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-investors-img5 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/05@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-investors-img6 {
+        height: 80px;
+        width: 33%;
+        background: url("https://s3.taihuoniao.com/promote/pc/photo/06@2x.png")
+          no-repeat center / contain;
+      }
+      .phone-prize-img1 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize01@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img2 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize02@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img3 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize03@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img4 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize04@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img5 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize05@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img6 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize06@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img7 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize07@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-img8 {
+        height: 35px;
+        background: url("https://s3.taihuoniao.com/promote/phone/prize/prize08@2x.png")
+          no-repeat center / contain;
+        margin-top: 10px;
+      }
+      .phone-prize-pad {
+        width: 25%;
+        padding: 0 5px;
+      }
+      .phone-customer-imgs {
+        max-width: 1180px;
+        display: flex;
+        margin: 0 auto;
+        min-height: 70px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0 5px;
+      }
+      .phone-prize {
+        margin-top: 20px;
+        min-height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+      .phone-prize-get {
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+      }
+      .phone-sever-swipe-round {
+        height: 340px;
+        padding: 0 10px 30px 10px;
+      }
+      .phone-sever-swipe {
+        /* max-width: 320px; */
+        height: 310px;
+        border-radius: 4px;
+        margin: 0 10px;
+        margin-top: 15px;
+      }
+      .phone-sever-swipe-text {
+        max-width: 300px;
+        height: 179px;
+        font-size: 15px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #fff;
+        line-height: 24px;
+        margin: 0 auto;
+      }
+      .phone-sever-swipe-bt-tt {
+        font-size: 17px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #fff;
+        position: absolute;
+        bottom: 39px;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+      .phone-sever-swipe-tt {
+        font-size: 18px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: #fff;
+        text-align: center;
+        padding-top: 15px;
+      }
+      .phone-sever-swipe-bd {
+        width: 34px;
+        margin: 8px auto;
+        border-top: 5px solid #fff;
+      }
+      .phone-sever-swipe-bt {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+      }
+      .phone-sever-swipe-out {
+        position: relative;
+        height: 310px;
+      }
+      .phone-prod-bd {
+        width: 49%;
+        height: 180px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        border: 1px solid rgba(230, 230, 230, 1);
+        margin-top: 10px;
+      }
+
+      .bg-color {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .mar-left-5 {
+        margin-left: 5px;
+      }
+      .mar-right-10 {
+        margin-right: 10px;
+      }
+      .swiper-con {
+        height: 140px;
+        display: flex;
+        flex-direction: column;
+      }
+      .phone-form1 {
+        text-align: center;
+      }
+      .put-top-15 {
+        padding-top: 15px;
+      }
+      .center-text {
+        text-align: center;
+      }
+      .center-form2 {
+        padding: 0 50px;
+      }
+      .center-form2 input {
+        box-sizing: border-box;
+      }
+      input {
+        box-sizing: border-box;
+      }
+      .pc-bot-hei-125 {
+        height: 110px;
+        padding-bottom: 0;
+      }
+      .phone-form-round {
+        width: 100%;
+        padding: 10px 10px 0 10px;
+      }
+      .pad-10-phone {
+        padding: 0 10px;
+      }
+      .pc-person {
+        overflow: hidden;
+      }
+      .pc-person .wip-style {
+        width: 350px;
+        height: 28px;
+      }
+      .phone-mar-rig-5 {
+        margin: 5px 5px 5px 10px;
+      }
+      .phone-mar-lf-5 {
+        margin: 5px 10px 5px 5px;
+      }
+      .bot-0 {
+        padding-bottom: 0;
+      }
+      .border-none {
+        border: none;
+      }
+
+      .color-666 {
+        background-color: #c8c8c8;
+      }
+      .pad-top-0 {
+        padding-top: 0;
+      }
+      .mar-top-10 {
+        margin-top: 10px;
+      }
+      @media screen and (max-width: 1024px) {
+        .pc-investors-round {
+          overflow: scroll;
+        }
+        .pc-round-inves {
+          margin: 0 5px;
+        }
+      }
+      @media screen and (max-width: 767px) {
+        .phone-prod-round {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="back-bg">
+      <div class="pc">
+        <div class="pc-header">
+          <div class="logo"></div>
+          <div class="header-text-one">
+            智能匹配，<span class="one-min">一分钟</span>智能报价
+          </div>
+          <div class="spectrum-img"></div>
+          <div class="header-text-two">
+            现在<span class="one-min">发布设计</span
+            >项目需求，有机会获得投资孵化，进驻<span class="one-min"
+              >小米商城</span
+            >
+          </div>
+          <div class="logo-btn"></div>
+          <div class="header-two-img">
+            <div class="three-num-round">
+              <div>
+                <div class="one-thn1"></div>
+                <div class="three-num-text">设计公司随时待命</div>
+              </div>
+              <div>
+                <div class="one-thn2"></div>
+                <div class="three-num-text">原创设计项目落地销售额</div>
+              </div>
+              <div>
+                <div class="one-thn3"></div>
+                <div class="three-num-text">人工智能系统自动匹配</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fiexd-logo">
+          <div class="fiexd-logo-round">
+            <div class="fiexd-logo-img"></div>
+            <div class="fiexd-logo-btn">
+              <div class="fiexd-logo-text">发布项目需求</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-prod-mar">
+          <div class="pc-prod-tit">太火鸟提供的设计服务</div>
+          <div class="pc-prod-round">
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img1"></div>
+              <div class="pc-prod-tt">产品设计</div>
+            </div>
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img2"></div>
+              <div class="pc-prod-tt">品牌设计</div>
+            </div>
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img3"></div>
+              <div class="pc-prod-tt">包装设计</div>
+            </div>
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img4"></div>
+              <div class="pc-prod-tt">平面设计</div>
+            </div>
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img5"></div>
+              <div class="pc-prod-tt">UI/UX设计</div>
+            </div>
+            <div class="pc-prod-bd">
+              <div class="pc-prod-img6"></div>
+              <div class="pc-prod-tt">插画设计</div>
+            </div>
+          </div>
+        </div>
+        <div class="six-img-bg-color">
+          <div class="header-title">太火鸟设计服务的项目</div>
+          <div class="six-img-round">
+            <div class="six-one-round">
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img1"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-1"></div>
+                    <div class="six-img1-jian">件</div>
+                    <div class="six-img1-sales">销售量</div>
+                  </div>
+                  <div class="six-text2">飞行鱼 FIFISH P3</div>
+                </div>
+              </div>
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img2"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-2"></div>
+                    <div class="six-img1-jian pad-6-10">亿</div>
+                    <div class="six-img1-sales">销售额</div>
+                  </div>
+                  <div class="six-text2">素士声波电动牙刷</div>
+                </div>
+              </div>
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img3"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-3"></div>
+                    <div class="six-img1-jian pad-10-10">万</div>
+                    <div class="six-img1-sales">销售额</div>
+                  </div>
+                  <div class="six-text2">美妆镜 Amiro</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="six-img-round">
+            <div class="six-one-round">
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img4"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-4"></div>
+                    <div class="six-img1-jian pad-6-10">万</div>
+                    <div class="six-img1-sales">众筹</div>
+                  </div>
+                  <div class="six-text2">云马智能电单车</div>
+                </div>
+              </div>
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img5"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-5"></div>
+                    <div class="six-img1-jian">件</div>
+                    <div class="six-img1-sales">月销</div>
+                  </div>
+                  <div class="six-text2">FIU优雅不倒杯</div>
+                </div>
+              </div>
+              <div class="six-border">
+                <div class="border-pad">
+                  <div class="six-img6"></div>
+                  <div class="six-text1">
+                    <div class="six-img1-6"></div>
+                    <div class="six-img1-jian pad-5-10">件</div>
+                    <div class="six-img1-sales pad-rig-5">自媒体</div>
+                    <div class="six-img1-sales pad-rig-5">单篇文章</div>
+                    <div class="six-img1-sales">日销售</div>
+                  </div>
+                  <div class="six-text2">洒哇地卡无线手持电动擦地机</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-can">
+          <div class="pc-can-text">为什么选择太火鸟</div>
+          <div class="pc-can-round">
+            <div class="pc-can-border">
+              <div class="pc-choose-img1"></div>
+              <div class="pc-can-text1">更多</div>
+              <div class="pc-choose-bot">
+                <div class="pc-choose1"></div>
+                <div class="pc-can-text2 line-hei-28">
+                  家顶尖设计公司资源随时待命
+                </div>
+              </div>
+            </div>
+            <div class="pc-can-border">
+              <div class="pc-choose-img2"></div>
+              <div class="pc-can-text1">更准</div>
+              <div class="pc-choose-bot">
+                <div class="pc-choose2"></div>
+                <div class="pc-can-text2 line-hei-28">
+                  人工智能系统自动匹配设计公司
+                </div>
+              </div>
+            </div>
+            <div class="pc-can-border">
+              <div class="pc-choose-img3"></div>
+              <div class="pc-can-text1">更快</div>
+              <div class="pc-choose-bot">
+                <div class="pc-choose3"></div>
+                <div class="pc-can-text2 line-hei-28">
+                  打造真正个性化原创设计方案
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-can bg-color">
+          <div class="pc-can-text">太火鸟赋能</div>
+          <div class="pc-can-round">
+            <div class="pc-can-border">
+              <div class="pc-can-img1"></div>
+              <div class="pc-can-text1">孵化营销</div>
+              <div class="pc-can-text2">营销赋能创新产品及品牌</div>
+            </div>
+            <div class="pc-can-border">
+              <div class="pc-can-img2"></div>
+              <div class="pc-can-text1">渠道销售</div>
+              <div class="pc-can-text2">精准化社群及精选电商分销</div>
+            </div>
+            <div class="pc-can-border">
+              <div class="pc-can-img3"></div>
+              <div class="pc-can-text1">营销推广</div>
+              <div class="pc-can-text2">专业团队进行原创性内容传播</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-trust-round">
+          <div class="pc-trust">值得信赖</div>
+          <div class="pc-trust-three">
+            <div class="pc-trust-img-round">
+              <div class="pc-trust-1"></div>
+              <div class="pc-trust-text">
+                WIDC2018世界工业设计大会TIA设计服务平台大奖
+              </div>
+            </div>
+            <div class="pc-trust-img-round">
+              <div class="pc-trust-2"></div>
+              <div class="pc-trust-text">顺德第二季创新设计成果交易会</div>
+            </div>
+            <div class="pc-trust-img-round">
+              <div class="pc-trust-3"></div>
+              <div class="pc-trust-text">国际科技设计产业合作联盟成立仪式</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-prize">
+          <div class="pc-customer-title pc-pad-bot-10">所获奖项</div>
+          <div class="pc-prize-get">3000+ 全球设计大奖</div>
+          <div class="pc-customer-imgs pc-hei-80">
+            <div class="pc-prize-img1"></div>
+            <div class="pc-prize-img2"></div>
+            <div class="pc-prize-img3"></div>
+            <div class="pc-prize-img4"></div>
+            <div class="pc-prize-img5"></div>
+            <div class="pc-prize-img6"></div>
+            <div class="pc-prize-img7"></div>
+          </div>
+        </div>
+        <div class="pc-customer-title text-align-cen">服务客户</div>
+        <div class="pc-sever-swipe-round">
+          <div class="swiper-container swiper-pc-sever">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="pc-sever-swipe-tt">创意药贴</div>
+                <div class="pc-sever-swipe-bd"></div>
+                <div class="pc-sever-swipe-text">
+                  <div class="pc-left"></div>
+                  任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢太火鸟平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。
+                  <div class="pc-right"></div>
+                </div>
+                <div class="pc-sever-swipe-bt-tt">刘征</div>
+                <div class="pc-sever-swipe-bt">北京妥妥得生物科技</div>
+              </div>
+              <div class="swiper-slide">
+                <div class="pc-sever-swipe-tt">便携式户外音箱</div>
+                <div class="pc-sever-swipe-bd"></div>
+                <div class="pc-sever-swipe-text">
+                  <div class="pc-left"></div>
+                  市场上的音箱产品很多，我们需要快速迭代，并以创新打动用户，太火鸟平台在我们发出订单几天之内就从几个设计公司中为我们挑选了一家对音箱设计很有想法也有经验的团队，对接成功后马上开始设计，最后这款产品也成为我们公司一款明星产品，市场反响很好，供不应求。
+                  <div class="pc-right"></div>
+                </div>
+                <div class="pc-sever-swipe-bt-tt">李宏翔</div>
+                <div class="pc-sever-swipe-bt">深圳华海拓科技</div>
+              </div>
+
+              <div class="swiper-slide">
+                <div class="pc-sever-swipe-tt">不燃烧电子烟</div>
+                <div class="pc-sever-swipe-bd"></div>
+                <div class="pc-sever-swipe-text">
+                  <div class="pc-left"></div>
+                  电子烟产品最近大热，正是快速占领市场的好机会。我们在太火鸟平台上发单后马上有设计公司对接，确定团队后项目推进也很快很顺利。特别值得一提的是，太火鸟平台全程服务很好，在设计过程中还使用了他们特有的协作软件推进项目，给我们争取了很多时间。电子烟经过设计后净利润也提高了很多。
+                  <div class="pc-right"></div>
+                </div>
+                <div class="pc-sever-swipe-bt-tt">张宇</div>
+                <div class="pc-sever-swipe-bt">深圳锐莱客思</div>
+              </div>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+
+        <div class="pc-customer-imgs">
+          <div class="pc-customer-img1"></div>
+          <div class="pc-customer-img2"></div>
+          <div class="pc-customer-img3"></div>
+          <div class="pc-customer-img4"></div>
+          <div class="pc-customer-img5"></div>
+          <div class="pc-customer-img6"></div>
+          <div class="pc-customer-img7"></div>
+        </div>
+        <div class="pc-customer">
+          <div class="pc-customer-title">明星投资方</div>
+          <div class="pc-investors-round">
+            <div class="pc-round-inves">
+              <div class="pc-investors-img1"></div>
+              <div class="pc-investors-text">小米</div>
+            </div>
+            <div class="pc-round-inves">
+              <div class="pc-investors-img2"></div>
+              <div class="pc-investors-text">创新工场</div>
+            </div>
+            <div class="pc-round-inves">
+              <div class="pc-investors-img3"></div>
+              <div class="pc-investors-text">合影</div>
+            </div>
+            <div class="pc-round-inves">
+              <div class="pc-investors-img4"></div>
+              <div class="pc-investors-text">真格基金</div>
+            </div>
+            <div class="pc-round-inves">
+              <div class="pc-investors-img5"></div>
+              <div class="pc-investors-text">真格基金</div>
+            </div>
+          </div>
+          <div class="pc-customer-imgs">
+            <div class="pc-invest-img1"></div>
+            <div class="pc-invest-img2"></div>
+            <div class="pc-invest-img3"></div>
+            <div class="pc-invest-img4"></div>
+            <div class="pc-invest-img5"></div>
+            <div class="pc-invest-img6"></div>
+            <div class="pc-invest-img7"></div>
+          </div>
+        </div>
+        <div class="pc-wait-round">
+          <div class="wait">您还在等什么？快来发布需求吧！</div>
+          <div class="wait-intro">
+            <form class="center-form2 small" id="commentForm">
+              <div class="pc-wait-border-title">
+                <span class="red-text"></span>发布项目需求
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  name="item_name"
+                  title="请输入您的用户名（至少 3 个字符）"
+                  class="mar-top-20 pc-item_name1"
+                  placeholder="请输入您的需求"
+                />
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  name="user_name"
+                  id="user_name"
+                  class="pc-user_name1"
+                  required
+                  placeholder="请输入联系人"
+                />
+              </div>
+              <div class="fields">
+                <div class="field">
+                  <input
+                    type="text"
+                    name="phone"
+                    class="pc-phone1"
+                    required
+                    placeholder="手机号码"
+                  />
+                </div>
+                <div class="field pc-get-code">
+                  <div class="pc-code-90-round">
+                    <input
+                      type="text"
+                      class="pc-code-90 border-none pc-sms-code1"
+                      placeholder="验证码"
+                      name="smsCode"
+                    />
+                    <div class="pc-send fetchCode pc-code-90-send">
+                      获取验证码
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pc-send-btn-2">
+                <div class="pc-send-btn-text2">立即发布需求</div>
+              </div>
+            </form>
+          </div>
+          <div class="pc-new-curstomer">最新报名客户</div>
+
+          <div class="pc-person" id="pc-person"></div>
+        </div>
+        <div class="pc-call-btn">
+          <div class="pc-call-text protrude">太火鸟设计服务热线</div>
+          <div class="pc-call-img">
+            <div class="call-phone-img"></div>
+            <div class="call-phone-text">13031154842</div>
+          </div>
+        </div>
+        <div class="pc-bot-bg"></div>
+        <div class="pc-dialog">
+          <div class="pc-dialog-box">
+            <div class="content">
+              <form class="pc-dialog-form">
+                <div class="pc-wait-border-title">
+                  <span class="red-text"></span>发布项目需求
+                  <span class="fr dialog-close">X</span>
+                </div>
+                <div class="dialog-req">项目需求</div>
+                <div class="field">
+                  <input
+                    type="text"
+                    name="item_name"
+                    class="dialog-input pc-item_name2"
+                    placeholder="请输入您的需求"
+                  />
+                </div>
+                <div class="dialog-req">联系人</div>
+                <div class="field">
+                  <input
+                    type="text"
+                    name="user_name"
+                    class="dialog-input pc-user_name2"
+                    placeholder="请输入联系人"
+                  />
+                </div>
+                <div class="dialog-req">手机号</div>
+                <div class="field">
+                  <input
+                    type="text"
+                    name="phone"
+                    class="dialog-input pc-phone2"
+                    placeholder="手机号码"
+                  />
+                </div>
+                <div class="dialog-req">验证码</div>
+                <div class="dialog-code-round field">
+                  <div class="pc-code-90-round">
+                    <input
+                      type="text"
+                      class="dialog-code pc-sms-code2"
+                      placeholder="验证码"
+                      name="smsCode"
+                    />
+                    <div class="dialog-code-send">
+                      <div class="pc-dialog-send dialog-code-text">
+                        获取验证码
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a class="pc-dialog-btn dialog-btn">提交</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- phone -->
+      <div class="phone">
+        <div class="phone-head"></div>
+        <div class="release-text pad-10-phone">
+          现在<span>发布需求</span>，有机会获得投资孵化，进驻<span
+            >小米商城</span
+          >
+        </div>
+        <el-form
+          @submit.native.prevent
+          :model="form"
+          :rules="ruleForm"
+          ref="ruleForm"
+          class="phone-form1"
+        >
+          <div class="phone-form-round">
+            <el-form-item prop="demand">
+              <div class="release-input put-top-15">
+                <input
+                  v-model="form.demand"
+                  name="username"
+                  placeholder="请输入您的需求"
+                  class="release-form"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item prop="contact">
+              <div class="release-input">
+                <input
+                  type="text"
+                  class="release-form"
+                  placeholder="请输入联系人"
+                  v-model="form.contact"
+                  ref="contact"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item prop="account">
+              <div class="release-input">
+                <input type="text" placeholder="手机号码" />
+              </div>
+            </el-form-item>
+            <el-form-item prop="smsCode" v-if="!identifying_code">
+              <div class="code1-send">
+                <input
+                  type="text"
+                  placeholder="验证码"
+                  class="code-input-phone mar-left-5 border-none"
+                  v-model="form.smsCode"
+                  name="smsCode"
+                />
+                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
+                <div class="send-code" @click="fetchCode" v-else>
+                  {{ codeMsg }}
+                </div>
+              </div>
+            </el-form-item>
+          </div>
+        </el-form>
+        <div class="round-btn">
+          <div class="release-btn color-666" v-if="appBtn">发布项目需求</div>
+          <div class="release-btn" @click="submit_app('ruleForm')" v-else>
+            发布项目需求
+          </div>
+        </div>
+        <div class="pc-prod-mar">
+          <div class="phone-prod-tit">太火鸟提供的设计服务</div>
+          <div class="pc-prod-round phone-prod-round">
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img1"></div>
+              <div class="pc-prod-tt">产品设计</div>
+            </div>
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img2"></div>
+              <div class="pc-prod-tt">品牌设计</div>
+            </div>
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img3"></div>
+              <div class="pc-prod-tt">包装设计</div>
+            </div>
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img4"></div>
+              <div class="pc-prod-tt">平面设计</div>
+            </div>
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img5"></div>
+              <div class="pc-prod-tt">UI/UX设计</div>
+            </div>
+            <div class="phone-prod-bd">
+              <div class="pc-prod-img6"></div>
+              <div class="pc-prod-tt">插画设计</div>
+            </div>
+          </div>
+        </div>
+        <div class="ph-serv-round">
+          <div class="img-round-text">太火鸟设计服务的项目</div>
+          <div class="img-round">
+            <div class="border-round">
+              <div class="border mar-right-10">
+                <div class="in-border">
+                  <div class="img1"></div>
+                  <div class="img-text">
+                    <div class="img1-1"></div>
+                    <div class="img-jian">件</div>
+                    <div class="img-sales">销售量</div>
+                  </div>
+                  <div class="img-bot-text">飞行鱼 FIFISH P3</div>
+                </div>
+              </div>
+              <div class="border">
+                <div class="in-border">
+                  <div class="img2"></div>
+                  <div class="img-text">
+                    <div class="img2-1"></div>
+                    <div class="img-jian">亿</div>
+                    <div class="img-sales">2018年销售额</div>
+                  </div>
+                  <div class="img-bot-text">素士声波电动牙刷</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="img-round margin-top-10">
+            <div class="border-round">
+              <div class="border mar-right-10">
+                <div class="in-border">
+                  <div class="img3"></div>
+                  <div class="img-text">
+                    <div class="img3-1"></div>
+                    <div class="img-jian">万</div>
+                    <div class="img-sales">销售额</div>
+                  </div>
+                  <div class="img-bot-text">美妆镜 Amiro</div>
+                </div>
+              </div>
+              <div class="border">
+                <div class="in-border">
+                  <div class="img4"></div>
+                  <div class="img-text">
+                    <div class="img4-1"></div>
+                    <div class="img-jian">万</div>
+                    <div class="img-sales">众筹</div>
+                  </div>
+                  <div class="img-bot-text">云马智能电单车</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="img-round margin-top-10">
+            <div class="border-round">
+              <div class="border mar-right-10">
+                <div class="in-border">
+                  <div class="img5"></div>
+                  <div class="img-text">
+                    <div class="img5-1"></div>
+                    <div class="img-jian">件</div>
+                    <div class="img-sales">月销</div>
+                  </div>
+                  <div class="img-bot-text">FIU优雅不倒杯</div>
+                </div>
+              </div>
+              <div class="border">
+                <div class="in-border">
+                  <div class="img6"></div>
+                  <div class="img-text">
+                    <div class="img6-1"></div>
+                    <div class="img-jian">件</div>
+                    <!-- <div class="img-sales">自媒体</div> -->
+                    <!-- <div class="img-sales">单篇文章</div> -->
+                    <div class="img-sales">日销售</div>
+                  </div>
+                  <div class="img-bot-text">洒哇地卡无线手持电动擦地机</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="why-can">
+          <div class="can-text pad-top-0">为什么选择太火鸟</div>
+          <div class="can-img">
+            <div class="can-border">
+              <div class="phone-choose-img1"></div>
+              <div class="can-text1-1">更多</div>
+              <div class="phone-choose-bot">
+                <div class="phone-choose1"></div>
+                <div class="phone-can-text1">家顶尖设计</div>
+              </div>
+              <div class="phone-can-text1">公司资源随时待命</div>
+            </div>
+            <div class="can-border">
+              <div class="phone-choose-img2"></div>
+              <div class="can-text1-1">更准</div>
+              <div class="phone-choose-bot">
+                <div class="phone-choose2"></div>
+                <div class="phone-can-text1">人工智能系统</div>
+              </div>
+              <div class="phone-can-text1">自动匹配设计公司</div>
+            </div>
+            <div class="can-border">
+              <div class="phone-choose-img3"></div>
+              <div class="can-text1-1">更快</div>
+              <div class="phone-choose-bot">
+                <div class="phone-choose3"></div>
+                <div class="phone-can-text1">打造真正个</div>
+              </div>
+              <div class="phone-can-text1">性化原创设计方案</div>
+            </div>
+          </div>
+        </div>
+        <div class="fu-can">
+          <div class="can-text">太火鸟赋能</div>
+          <div class="can-img">
+            <div class="can-border">
+              <div class="border-img1"></div>
+              <div class="can-text1-1">孵化营销</div>
+              <div class="can-text1-2">营销赋能创新产品及品牌</div>
+            </div>
+            <div class="can-border">
+              <div class="border-img2"></div>
+              <div class="can-text1-1">渠道销售</div>
+              <div class="can-text1-2">精准化社群及精选电商分销</div>
+            </div>
+            <div class="can-border">
+              <div class="border-img3"></div>
+              <div class="can-text1-1">营销推广</div>
+              <div class="can-text1-2">专业团队进行原创性内容传播</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-around">
+          <div class="trust">值得信赖</div>
+          <div class="trust-img1"></div>
+          <div class="trust-text">
+            WIDC2018世界工业设计大会TIA设计服务平台大奖
+          </div>
+          <div class="trust-img2"></div>
+          <div class="trust-text">顺德第二季创新设计成果交易会</div>
+          <div class="trust-img3"></div>
+        </div>
+        <div class="phone-prize">
+          <div class="serve-text pc-pad-bot-10">所获奖项</div>
+          <div class="phone-prize-get">3000+ 全球设计大奖</div>
+          <div class="phone-customer-imgs">
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img1"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img2"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img3"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img4"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img5"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img6"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img7"></div>
+            </div>
+            <div class="phone-prize-pad">
+              <div class="phone-prize-img8"></div>
+            </div>
+          </div>
+        </div>
+        <div class="serve-text">服务客户</div>
+        <div class="phone-sever-swipe-round">
+          <div class="phone-sever-swipe">
+            <el-carousel
+              indicator-position="outside"
+              trigger="click"
+              arrow="never"
+            >
+              <el-carousel-item
+                v-for="(item, index) in serverList"
+                :key="index"
+              >
+                <div class="phone-sever-swipe-out">
+                  <div class="phone-sever-swipe-tt">{{ item.item }}</div>
+                  <div class="phone-sever-swipe-bd"></div>
+                  <div class="phone-sever-swipe-text">
+                    <div class="pc-left"></div>
+                    {{ item.content }}
+                    <div class="pc-right"></div>
+                  </div>
+                  <div class="phone-sever-swipe-bt-tt">{{ item.boss }}</div>
+                  <div class="phone-sever-swipe-bt">{{ item.company }}</div>
+                </div>
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </div>
+        <div class="serve-flex">
+          <div class="serve-img1"></div>
+          <div class="serve-img2"></div>
+          <div class="serve-img3"></div>
+          <div class="serve-img4"></div>
+        </div>
+        <div class="serve-flex margin-top-10">
+          <div class="serve-img5"></div>
+          <div class="serve-img6"></div>
+          <div class="serve-img7"></div>
+          <div class="serve-img8"></div>
+        </div>
+        <div class="serve-customer">
+          <div class="serve-text">明星投资方</div>
+          <div class="phone-invest-round">
+            <div class="phone-investors-img1"></div>
+            <div class="phone-investors-img2"></div>
+            <div class="phone-investors-img5"></div>
+            <div class="phone-investors-img3 mar-top-10"></div>
+            <div class="phone-investors-img4 mar-top-10"></div>
+            <div class="phone-investors-img6 mar-top-10"></div>
+          </div>
+          <div class="serve-flex">
+            <div class="invest-img1"></div>
+            <div class="invest-img2"></div>
+            <div class="invest-img3"></div>
+            <div class="invest-img4"></div>
+          </div>
+          <div class="serve-flex margin-top-10">
+            <div class="invest-img5"></div>
+            <div class="invest-img6"></div>
+            <div class="invest-img7"></div>
+            <div class="invest-img8"></div>
+          </div>
+        </div>
+        <div class="later">
+          <div class="later-text">您还在等什么？</div>
+          <div class="release-text margin-top-15">
+            现在<span>发布需求</span>，有机会获得投资孵化，进驻<span
+              >小米商城</span
+            >
+          </div>
+          <el-form
+            @submit.native.prevent
+            :model="form1"
+            :rules="ruleForm"
+            ref="ruleForm1"
+            class="text-center phone-el-pad-bot"
+          >
+            <el-form-item prop="demand">
+              <input
+                type="text"
+                placeholder="请输入您的需求"
+                class="input-style mar-top-20"
+                v-model="form1.demand"
+                name="username"
+              />
+            </el-form-item>
+            <el-form-item prop="contact">
+              <input
+                type="text"
+                placeholder="请输入联系人"
+                class="input-style margin-top-10"
+                v-model="form1.contact"
+                ref="contact"
+              />
+            </el-form-item>
+            <el-form-item prop="account">
+              <input
+                type="text"
+                placeholder="手机号码"
+                class="input-style margin-top-10"
+              />
+            </el-form-item>
+            <el-form-item prop="smsCode" v-if="!identifying_code">
+              <div class="code-round margin-top-10">
+                <input
+                  type="text"
+                  placeholder="验证码"
+                  class="code-input border-none"
+                  v-model="form1.smsCode"
+                  name="smsCode"
+                />
+                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
+                <div class="send-code" @click="fetchCode1" v-else>
+                  {{ codeMsg }}
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+          <div class="send-code-btn color-666" v-if="appBtn2">
+            <div class="send-code-text">立即发布需求</div>
+          </div>
+          <div class="send-code-btn" v-else>
+            <div class="send-code-text" @click="submit_app1('ruleForm1')">
+              立即发布需求
+            </div>
+          </div>
+          <div class="new-top">
+            <div class="left"></div>
+            <div class="new-text">最新报名客户</div>
+            <div class="right"></div>
+          </div>
+          <div class="person-round">
+            <swiper class="swiper-con bot-0" :options="swiperOption2">
+              <swiper-slide v-for="(item, index) of userList" :key="index">
+                <div class="person">
+                  <div v-text="item.user_name" class="person-text"></div>
+                  <div class="person-text" v-text="item.phone"></div>
+                  <div class="person-text">{{ item.created_at }}分钟前</div>
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
+          <div class="send-code-btn">
+            <div href="tel:13031154842" class="send-code-text">拨打电话</div>
+          </div>
+        </div>
+        <div class="bg-bot-img"></div>
+      </div>
+
+      <script type="text/html" id="pc-new-curstomer">
+        <div class="swiper-container swiper-curstomer1">
+            <div class="swiper-wrapper pc-bot-hei-125">
+              {{each}}
+                <div class="swiper-slide wip-style">
+                    <div class="pc-person-left">
+                        <div class="pc-person-text">{{$value.user_name}}</div>
+                        <div class="pc-person-text">{{$value.phone}}</div>
+                        <div class="pc-person-text">{{$value.created_at}}分钟前</div>
+                    </div>
+                </div>
+              {{/each}}
+              </div>
+        </div>
+
+        <div class="border-2"></div>
+
+        <div class="swiper-container swiper-curstomer2">
+            <div class="swiper-wrapper pc-bot-hei-125">
+              {{each}}
+                <div class="swiper-slide wip-style">
+                    <div class="pc-person-left">
+                        <div class="pc-person-text">{{$value.user_name}}</div>
+                        <div class="pc-person-text">{{$value.phone}}</div>
+                        <div class="pc-person-text">{{$value.created_at}}分钟前</div>
+                    </div>
+                </div>
+              {{/each}}
+              </div>
+        </div>
+      </script>
+    </section>
+  </body>
+  <script>
+      (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
+  </script>
+  <script src="https://s3.taihuoniao.com/javascript/jquery-2.min.js"></script>
+  <script src="http://s4.taihuoniao.com/template-web.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script>
+    // var api = location.origin + '/api'
+    var api = 'http://mc.taihuoniao.com/api'
+    var query = getQuery();
+    if (!query.from) {
+      query.from = 2
+    }
+    if (!query.mark) {
+      query.mark = 'a'
+    }
+
+    function IsMobile () {
+      let sUserAgent = navigator.userAgent
+      let mobileAgents = ['Android', 'iPhone', 'Symbian', 'WindowsPhone', 'iPod', 'Mobile Safari', 'Windows CE']
+      let ismob = 0
+
+      for (let i = 0; i < mobileAgents.length; i++) {
+      if (sUserAgent.indexOf(mobileAgents[i]) > -1 && document.documentElement.clientWidth < 768) {
+      ismob = 1
+      break
+      }
+      }
+
+      if (ismob) {
+      return 2
+      } else {
+      return 1
+      }
+    }
+    var isMob = IsMobile()
+    function generalize() {
+      $.post(api + '/generalize/create', {
+        url: location.href,
+        son_source: query.mark,
+        device: isMob,
+        new_from: query.from
+      }, function (res) {
+        if (res.meta && res.meta.status_code === 200) {
+          console.log(res)
+        } else {
+          console.error(res)
+        }
+      })
+    }
+    generalize()
+    function getQuery() {
+      let string = location.search.substr(1);
+      let obj = {};
+      if (string) {
+        let arr = string.split("&");
+        arr.forEach(function(ele) {
+          let eleArr = ele.split("=");
+          let key = eleArr[0];
+          let val = eleArr[1];
+          obj[key] = val;
+        });
+      }
+      return obj;
+    }
+    var obj = {
+      isReady1: true,
+      isReady2: true
+    };
+    // $('.pc-phone1').val('15525876866')
+    // $('.pc-phone2').val('15525876866')
+    function countDown(dom, index, bool) {
+      console.log(obj["isReady" + index], $(that).text());
+      if (bool) {
+        obj["isReady" + index] = true;
+      }
+      if (obj["isReady" + index]) {
+        if (timer) window.clearTimeout(timer);
+        obj["isReady" + index] = false;
+        var that = dom;
+        let val = $(that).text();
+        if (val > 0) {
+          var timer = setTimeout(function() {
+            val = val - 1;
+            $(that).text(val);
+            countDown(that, index, true);
+          }, 1000);
+        } else {
+          $(that).text("获取验证码");
+          obj["isReady" + index] = true;
+        }
+      }
+    }
+
+    $(function() {
+      let date = Math.round(new Date() / 1000);
+      $.get(api + "/wechat/demand/users", function(res) {
+        if (res.meta && res.meta.status_code === 200) {
+          let userList = res.data;
+          userList.forEach(function(item) {
+            item.created_at = parseInt((date - item.created_at) / 60);
+          });
+          $("#pc-person").html(template("pc-new-curstomer", userList));
+          var mySwiperCurstomer = new Swiper(".swiper-curstomer1", {
+            direction: "vertical",
+            autoplay: 5000,
+            loop: true,
+            slidesPerView: "auto",
+            mousewheelControl: true,
+            freeMode: true,
+            freeModeMomentumRatio: 2
+          });
+          var mySwiperCurstomer = new Swiper(".swiper-curstomer2", {
+            direction: "vertical",
+            autoplay: 5000,
+            loop: true,
+            slidesPerView: "auto",
+            mousewheelControl: true,
+            freeMode: true,
+            freeModeMomentumRatio: 2
+          });
+        }
+      });
+    });
+    var mySwiperPcSever = new Swiper(".swiper-pc-sever", {
+      direction: "horizontal",
+      loop: true,
+      autoplay: 1000,
+      // 如果需要分页器
+      pagination: ".swiper-pagination",
+      paginationClickable: true,
+
+      watchSlidesProgress: true,
+      watchSlidesVisibility: true
+    });
+
+    let sUserAgent = navigator.userAgent;
+    let mobileAgents = [
+      "Android",
+      "iPhone",
+      "Symbian",
+      "WindowsPhone",
+      "iPod",
+      "Mobile Safari",
+      "Windows CE"
+    ];
+    // for (let i = 0; i < mobileAgents.length; i++) {
+    //   if (sUserAgent.indexOf(mobileAgents[i]) > -1 && document.documentElement.clientWidth < 768) {
+    //     $('.pc').hide()
+    //     $('.phone').show()
+    //     break
+    //   }
+    // }
+    $(window).scroll(function (event) {
+      let fiexdHeight = $(this).scrollTop();
+      if (fiexdHeight < 690) {
+        $(".fiexd-logo").hide();
+      } else {
+        $(".fiexd-logo").show();
+      }
+    });
+    // 获取验证码
+    $(".fetchCode").on("click", function() {
+      if (
+        $(this)
+          .text()
+          .trim() != "获取验证码"
+      ) {
+        return;
+      }
+      let phone = $(".pc-phone1").val();
+      if (
+        phone.length !== 11 ||
+        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+      ) {
+        toastr.error("请输入正确的手机号");
+        return;
+      }
+      $(this).text(60);
+      if (obj.isReady1) {
+        countDown(this, 1);
+      }
+      $.ajax({
+        type: "POST",
+        data: { phone: phone },
+        url: "https://sa.taihuoniao.com/wechat/sms",
+        success: function(res) {}
+      });
+    });
+    $(".pc-dialog-send").on("click", function() {
+      if (
+        $(this)
+          .text()
+          .trim() != "获取验证码"
+      ) {
+        return;
+      }
+      let phone = $(".pc-phone2").val();
+      console.log(phone);
+      if (
+        phone.length !== 11 ||
+        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+      ) {
+        toastr.error("请输入正确的手机号");
+        return;
+      }
+      $(this).text(60);
+      if (obj.isReady2) {
+        countDown(this, 2);
+      }
+      $.post(api + "/wechat/sms", { phone: phone }, function(res) {
+        if (res.meta && res.meta.status_code === 200) {
+          console.log("获取成功");
+        } else {
+          toastr.error(res.meta.message);
+        }
+      });
+    });
+    // 发布项目需求弹框
+    $(".fiexd-logo-text, .logo-btn").on("click", function() {
+      $(".pc-dialog").show();
+    });
+    $(".dialog-close").on("click", function() {
+      $(".pc-dialog").hide();
+    });
+    $(".pc-dialog").on("click", function(event) {
+      $(".pc-dialog").hide();
+    });
+    $(".pc-dialog-box").on(
+      "click",
+      function(event) {
+        $(".pc-dialog").show();
+      },
+      false
+    );
+    // 发布需求, 表单提交
+    $(".pc-send-btn-text2").on("click", function() {
+      let itemName = $(".pc-item_name1").val();
+      let userName = $(".pc-user_name1").val();
+      let phone = $(".pc-phone1").val();
+      let smsCode = $(".pc-sms-code1").val();
+      
+      if (!itemName) {
+        toastr.error("请输入您的需求");
+        return;
+      }
+
+      if (!userName) {
+        toastr.error("请输入联系人");
+        return;
+      }
+
+      if (
+        phone.length !== 11 ||
+        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+      ) {
+        toastr.error("请输入正确的手机号");
+        return;
+      }
+      if (!smsCode) {
+        toastr.error("请输入验证码");
+        return;
+      }
+      let formDate = {
+        user_name: userName,
+        phone: phone,
+        item_name: itemName,
+        sms_code: smsCode,
+        son_source: query.mark,
+        source: query.from
+      };
+      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+        if (res.meta && res.meta.status_code === 200) {
+          toastr.success(res.meta.message);
+        } else {
+          // 失败
+          toastr.error(res.meta.message);
+        }
+      });
+    });
+
+    $(".pc-dialog-btn").on("click", function() {
+      let itemName = $(".pc-item_name2").val();
+      let userName = $(".pc-user_name2").val();
+      let phone = $(".pc-phone2").val();
+      let smsCode = $(".pc-sms-code2").val();
+
+      if (!itemName) {
+        toastr.error("请输入您的需求");
+        return;
+      }
+
+      if (!userName) {
+        toastr.error("请输入联系人");
+        return;
+      }
+      if (
+        phone.length !== 11 ||
+        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+      ) {
+        toastr.error("请输入正确的手机号");
+        return;
+      }
+
+      if (!smsCode) {
+        toastr.error("请输入验证码");
+        return;
+      }
+      let formDate = {
+        user_name: userName,
+        phone: phone,
+        item_name: itemName,
+        sms_code: smsCode,
+        son_source: query.mark,
+        source: query.from
+      };
+      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+        if (res.meta && res.meta.status_code === 200) {
+          toastr.success(res.meta.message);
+          $(".pc-dialog").hide();
+        } else {
+          // 失败
+          toastr.error(res.meta.message);
+        }
+      });
+    });
+  </script>
+</html>
