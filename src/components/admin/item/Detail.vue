@@ -6,7 +6,7 @@
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
-            <div class="text">{{item.type_value}}/产品结构、产品外观设计</div>
+            <div class="text">{{item.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
           </div>
           <div class="one-right">
             <div class="title">合同金额：</div>
@@ -20,7 +20,7 @@
           </div>
           <div class="one-right">
             <div class="title">项目编号：</div>
-            <div class="text width-150-right">03211527400004255</div>
+            <div class="text width-150-right">{{item.number}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">

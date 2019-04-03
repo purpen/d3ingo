@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title pad-top-30">已评价</div>
-    <div class="date-12">2019-03-30 09:11:02</div>
+    <div class="date-12">{{evaluate.created_at || '—' |timeFormat2}}</div>
     <div class="evaluation pad-top-40">
       <div class="width-40">
         <div class="flex-center">
@@ -17,7 +17,7 @@
             <div class="eval-title">设计水平</div>
             <div class="white-space">
               <el-rate
-                v-model="comments.designLevel"
+                v-model="designLevel"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -27,7 +27,7 @@
             <div class="eval-title">响应速度</div>
             <div class="white-space">
               <el-rate
-                v-model="comments.responseSpeed"
+                v-model="responseSpeed"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -37,7 +37,7 @@
             <div class="eval-title">服务态度</div>
             <div class="white-space">
               <el-rate
-                v-model="comments.service"
+                v-model="service"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -225,26 +225,24 @@ export default {
       stageActive: 0,
       stageArr: [],
       boolStage: false,
-      value5: 5,
-      comments: {
-        service: 0,
-        designLevel: 0,
-        responseSpeed: 0
-      }
+      service: 0,
+      designLevel: 0,
+      responseSpeed: 0
     }
   },
   props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName'],
   created() {
     let that = this
     if (that.evaluate && that.evaluate.user_score) {
-      if (that.evaluate.user_score.service) {
-        that.comments.service = that.evaluate.user_score.service - 0
+      let obj = JSON.parse(that.evaluate.user_score)
+      if (obj.service) {
+        that.service = obj.service - 0
       }
-      if (that.evaluate.user_score.design_level) {
-        that.comments.designLevel = that.evaluate.user_score.design_level - 0
+      if (obj.design_level) {
+        that.designLevel = obj.design_level - 0
       }
-      if (that.evaluate.user_score.response_speed) {
-        that.comments.responseSpeed = that.evaluate.user_score.response_speed - 0
+      if (obj.response_speed) {
+        that.responseSpeed = obj.response_speed - 0
       }
     }
   },
