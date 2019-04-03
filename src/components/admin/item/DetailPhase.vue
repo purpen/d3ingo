@@ -51,62 +51,15 @@
 
     <div class="grey-line"></div>
 
-    <div>
+    <div v-if="itemStage && itemStage[2]">
       <div class="flex-center">
-        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage && itemStage.length && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+        <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage && itemStage[2] && itemStage[2].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
-      <div class="date-12">2019-03-30 09:11:02</div>
+      <div class="date-12" v-if="itemStage && itemStage[2] && itemStage[2].created_at">{{itemStage[2].created_at || '—' |timeFormat}}</div>
 
-      <div class="flex pad-top-40">
-        <div class="file-img"></div>
-        <div class="file-round pad-right-110 pad-left-26">
-          <div class="file-title">文件名</div>
-          <div class="file-text pad-top-6">DS00132421.png</div>
-        </div>
-        <div class="file-round pad-right-110">
-          <div class="file-title">文件大小</div>
-          <div class="file-text pad-top-6">4.3M</div>
-        </div>
-        <div class="file-round">
-          <div class="file-title">提交时间</div>
-          <div class="file-text pad-top-6">2019-03-30 09:11:02</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="pad-top-70">
-      <div class="flex-center">
-        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage && itemStage.length && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
-      </div>
-      <div class="date-12">2019-03-30 09:11:02</div>
-
-      <div class="flex pad-top-40">
-        <div class="file-img"></div>
-        <div class="file-round pad-right-110 pad-left-26">
-          <div class="file-title">文件名</div>
-          <div class="file-text pad-top-6">DS00132421.png</div>
-        </div>
-        <div class="file-round pad-right-110">
-          <div class="file-title">文件大小</div>
-          <div class="file-text pad-top-6">4.3M</div>
-        </div>
-        <div class="file-round">
-          <div class="file-title">提交时间</div>
-          <div class="file-text pad-top-6">2019-03-30 09:11:02</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="pad-top-70">
-      <div class="flex-center">
-        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
-      </div>
-      <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].created_at">{{itemStage[0].created_at || '—' |timeFormat}}</div>
-
-      <div class="pad-top-36" v-for="(item, index) in itemStage.item_stage_image" :key="index">
+      <template v-if="itemStage && itemStage[2] && itemStage[2].item_stage_image">
+      <div class="pad-top-36" v-for="(item, index) in itemStage[2].item_stage_image" :key="index">
         <div class="flex">
           <div class="file-img"></div>
           <div class="file-round pad-right-110 pad-left-26">
@@ -123,6 +76,63 @@
           </div>
         </div>
       </div>
+      </template>
+    </div>
+
+    <div :class="{'pad-top-70': itemStage && itemStage[2]}">
+      <div class="flex-center">
+        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage && itemStage[1] && itemStage[1].confirm === 1 ? '已确认' : '未确认'}}</div>
+      </div>
+      <div class="date-12" v-if="itemStage && itemStage[1] && itemStage[1].created_at">{{itemStage[1].created_at || '—' |timeFormat}}</div>
+
+      <template v-if="itemStage && itemStage[1] && itemStage[1].item_stage_image">
+      <div class="pad-top-36" v-for="(item, index) in itemStage[1].item_stage_image" :key="index">
+        <div class="flex">
+          <div class="file-img"></div>
+          <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-title">文件名</div>
+            <div class="file-text pad-top-6">{{item.name || '—'}}</div>
+          </div>
+          <div class="file-round pad-right-110">
+            <div class="file-title">文件大小</div>
+            <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+          </div>
+          <div class="file-round">
+            <div class="file-title">提交时间</div>
+            <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
+          </div>
+        </div>
+      </div>
+      </template>
+    </div>
+
+    <div :class="{'pad-top-70': itemStage && itemStage[1]}">
+      <div class="flex-center">
+        <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+      </div>
+      <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].created_at">{{itemStage[0].created_at || '—' |timeFormat}}</div>
+
+      <template v-if="itemStage && itemStage[0] && itemStage[0].item_stage_image">
+      <div class="pad-top-36" v-for="(item, index) in itemStage[0].item_stage_image" :key="index">
+        <div class="flex">
+          <div class="file-img"></div>
+          <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-title">文件名</div>
+            <div class="file-text pad-top-6">{{item.name || '—'}}</div>
+          </div>
+          <div class="file-round pad-right-110">
+            <div class="file-title">文件大小</div>
+            <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+          </div>
+          <div class="file-round">
+            <div class="file-title">提交时间</div>
+            <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
+          </div>
+        </div>
+      </div>
+      </template>
     </div>
 
     <div class="grey-line mar-56-0-30-0"></div>
@@ -390,7 +400,7 @@ export default {
   .file-img {
     height: 34px;
     width: 34px;
-    border: 1px solid #e6e6e6;
+    background: url('../../../assets/images/icon/file@2x.png') no-repeat center / contain;
   }
   .file-title {
     font-size: 12px;

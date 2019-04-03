@@ -117,8 +117,8 @@
       </div>
 
       <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name"></phase>
-      <detail v-if="type === 2"></detail>
-      <info v-if="type === 3"></info>
+      <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem"></detail>
+      <info v-if="type === 3" :item="item" :contract="contract" :oldItem="oldItem"></info>
     </div>
   </div>
 </template>
@@ -177,6 +177,9 @@ export default {
           that.itemStage = obj.item_stage
           that.designCompany = obj.designCompany
           that.trueDesign = obj.true_design
+          if (that.contract) {
+            that.contract.item_stage = obj.item_stage
+          }
         } else {
           that.$message.error(response.data.meta.message)
         }
