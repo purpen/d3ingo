@@ -3267,6 +3267,12 @@
         $(".fiexd-logo").show();
       }
     });
+    var fiexdHeight = $(this).scrollTop();
+    if (fiexdHeight < 690) {
+      $(".fiexd-logo").hide();
+    } else {
+      $(".fiexd-logo").show();
+    }
     // 获取验证码
     $(".fetchCode").on("click", function() {
       if (
