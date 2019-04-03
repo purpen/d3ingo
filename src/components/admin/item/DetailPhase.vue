@@ -3,11 +3,46 @@
     <div class="title pad-top-30">已评价</div>
     <div class="date-12">2019-03-30 09:11:02</div>
     <div class="evaluation pad-top-40">
-      <div class="flex-center flex-0-1-235">
-        <div class="logo"></div>
-        <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+      <div class="width-40">
+        <div class="flex-center">
+          <div class="logo"></div>
+          <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+        </div>
       </div>
       <div class="evaluation-round">
+        <div class="eval-round">
+          <div class="pad-right-20 width-30">
+            <div class="eval-title">设计水平</div>
+            <div class="white-space">
+              <el-rate
+                v-model="value5"
+                disabled
+                text-color="#ff9900">
+              </el-rate>
+            </div>
+          </div>
+          <div class="pad-right-20 width-30">
+            <div class="eval-title">设计水平</div>
+            <div class="white-space">
+              <el-rate
+                v-model="value5"
+                disabled
+                text-color="#ff9900">
+              </el-rate>
+            </div>
+          </div>
+          <div class="width-30">
+            <div class="eval-title">设计水平</div>
+            <div class="white-space">
+              <el-rate
+                v-model="value5"
+                disabled
+                text-color="#ff9900">
+              </el-rate>
+            </div>
+          </div>
+        </div>
+        <div class="eval-title pad-top-17">客户评价</div>
         <div class="evaluation-text">很满意，设计公司服务很棒！设计很厉害</div>
       </div>
     </div>
@@ -120,14 +155,13 @@
           <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
           <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
         </div>
-        <div class="progess-box">
+        <div>
           <el-popover
             placement="top-end"
             width="680"
             trigger="click">
               <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                 <el-steps :active="stageActive" class="steps-item">
-                  <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
                   <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
                   <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
                   <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
@@ -167,7 +201,8 @@ export default {
       nowDesignId: '',
       stageActive: 0,
       stageArr: [],
-      boolStage: false
+      boolStage: false,
+      value5: 5
     }
   },
   methods: {
@@ -278,10 +313,9 @@ export default {
     color: rgba(51,51,51,1);
   }
   .evaluation-round {
-    flex: 1 1 auto;
+    width: 60%;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
   .grey-line {
     border: 1px solid #E6E6E6;
@@ -357,11 +391,24 @@ export default {
     /* width: 100%; */
     z-index: 5;
   }
+  .eval-round {
+    display: flex;
+  }
+  .eval-title {
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    padding-bottom: 8px;
+  }
 
 
 
-  .flex-0-1-235 {
-    flex: 0 1 235px;
+  .width-40 {
+    width: 40%;
+  }
+  .width-30 {
+    width: 30%;
   }
   .flex-0-1-265 {
     flex: 0 1 265px;
@@ -371,6 +418,9 @@ export default {
   }
   .pad-top-10 {
     padding-top: 10px;
+  }
+  .pad-top-17 {
+    padding-top: 17px;
   }
   .pad-top-30 {
     padding-top: 30px;
@@ -401,6 +451,9 @@ export default {
   }
   .pad-right-20 {
     padding-right: 20px;
+  }
+  .pad-right-96 {
+    padding-right: 96px;
   }
   .pad-right-110 {
     padding-right: 110px;
@@ -438,6 +491,50 @@ export default {
     height: 0;
     overflow: hidden;
     transition: 500ms all ease;
+  }
+
+
+  /* 查看详情样式 */
+  .steps .el-step__title.is-finish,
+  .steps .el-step__description.is-finish {
+    color: #222 !important;
+  }
+  .steps .is-finish .el-step__icon.is-text {
+    border-color: #00ac84 !important;
+  }
+  .steps .el-step__line {
+    background-color: #00ac84 !important;
+  }
+  .steps .el-step__main {
+    padding-bottom: 10px;
+  }
+  .steps .steps-item > .el-step {
+    flex-basis: 20% !important;
+  }
+  .steps .steps-item .el-step__head .el-step__line {
+    position: absolute;
+    top: 6px !important;
+    left: 5px !important;
+  }
+  .steps .el-step__head.is-finish {
+    color: #00ac84 !important;
+    border-color: #00ac84 !important;
+  }
+  .steps .el-step__head .el-step__icon-inner {
+    display: inline-block;
+  }
+  .steps .el-step__icon-inner[class*=el-icon]:not(.is-status) {
+    font-size: 20px;
+  }
+  .steps .el-step__head.is-process .el-step__icon {
+    background-color: #fff;
+    border-color: #fff;
+  }
+  .steps .el-step__icon-inner.el-icon-error {
+    color: #ff5a5f; 
+  }
+  .steps .el-step__head.is-process {
+    color: #00ac84;
   }
 </style>
 

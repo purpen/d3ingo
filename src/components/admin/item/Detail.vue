@@ -1,22 +1,22 @@
 <template>
   <div>
     <div class="pad-0-30">
-      <div class="big-title">圣甲虫游戏鼠标概念设计</div>
+      <div class="big-title">{{item.name || oldItem.name || '—'}}</div>
       <div class="header">
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
-            <div class="text">产品设计/产品结构、产品外观设计</div>
+            <div class="text">{{item.type_value}}/产品结构、产品外观设计</div>
           </div>
           <div class="one-right">
             <div class="title">合同金额：</div>
-            <div class="header-yellow width-150-right">￥326,000.00</div>
+            <div class="header-yellow width-150-right">￥{{contract.total}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
           <div class="one-left">
             <div class="title pad-right-40">项目预算</div>
-            <div class="text">5-10万元</div>
+            <div class="text">{{item.design_cost_value || oldItem.design_cost_value || '—'}}</div>
           </div>
           <div class="one-right">
             <div class="title">项目编号：</div>
@@ -26,11 +26,11 @@
         <div class="line-one flex-center-between">
           <div class="one-left">
             <div class="title pad-right-40">交付时间</div>
-            <div class="text">产品设计/产品结构、产品外观设计</div>
+            <div class="text">{{item.cycle_value || '—'}}</div>
           </div>
           <div class="one-right">
             <div class="title">签约日期：</div>
-            <div class="text width-150-right">2019年03月23日</div>
+            <div class="text width-150-right">{{contract.true_time || '—' |timeFormat}}</div>
           </div>
         </div>
       </div>
@@ -48,22 +48,23 @@
           <div class="curstomer-server-title pad-bot-20">客户</div>
           <div class="one-right">
             <div class="title width-56">公司</div>
-            <div class="text pad-left-40">杭州皓天明月科技有限公司</div>
+            <div class="text pad-left-40">{{clue.company || '—'}}</div>
           </div>
           <div class="one-right">
             <div class="title width-56">公司地址</div>
-            <div class="text pad-left-40">浙江省·杭州市</div>
+            <div class="text pad-left-40" v-if="clue.province_value">{{clue.province_value}}·{{clue.city_value}}</div>
+            <div class="text pad-left-40" v-else>{{'—'}}</div>
           </div>
           <div class="one-right">
             <div class="title width-56">联系人</div>
-            <div class="text pad-left-40">马秀英</div>
+            <div class="text pad-left-40">{{clue.name || '—'}}</div>
           </div>
           <div class="one-right">
             <div class="title width-56">联系电话</div>
-            <div class="text pad-left-40">19520234183</div>
+            <div class="text pad-left-40">{{clue.phone || '—'}}</div>
           </div>
           <div class="flex-center height-34">
-            <div class="navegete-round flex-center">
+            <div class="navegete-round flex-center" @click="toCustemDetail(clue.id)">
               <div class="navegete-to">查看客户</div>
               <div class="arrow-right"></div>
             </div>
@@ -75,22 +76,23 @@
             <div>
               <div class="one-right">
                 <div class="title width-56">公司</div>
-                <div class="text pad-left-40">杭州皓天明月科技有限公司</div>
+                <div class="text pad-left-40">{{designCompany.company_name || '—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">公司地址</div>
-                <div class="text pad-left-40">浙江省·杭州市</div>
+                <div class="text pad-left-40" v-if="designCompany.province_value">{{designCompany.province_value}}·{{designCompany.city_value}}</div>
+                 <div class="text pad-left-40" v-else>{{'—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">联系人</div>
-                <div class="text pad-left-40">马秀英</div>
+                <div class="text pad-left-40">{{designCompany.contact_name || '—'}}</div>
               </div>
               <div class="one-right">
                 <div class="title width-56">联系电话</div>
-                <div class="text pad-left-40">19520234183</div>
+                <div class="text pad-left-40">{{designCompany.phone || '—'}}</div>
               </div>
               <div class="flex-center height-34">
-                <div class="navegete-round flex-center" @click="navgiteTo(1)">
+                <div class="navegete-round flex-center" @click="navgiteTo(designCompany.design_company_id)">
                   <div class="navegete-to">查看设计服务商</div>
                   <div class="arrow-right"></div>
                 </div>
@@ -119,22 +121,65 @@
   </div>
 </template>
 <script>
+import api from '@/api/api'
 import info from 'admin/item/DetailInfo'
 import detail from 'admin/item/DetailDetail'
 import phase from 'admin/item/DetailPhase'
 export default {
   data() {
     return {
-      type: 1
+      type: 1,
+      item: '',
+      detail: '', // 新的项目详情
+      oldItem: '', // 线上项目详情
+      contract: '', // 合同
+      clue: '', // 潜在客户
+      evaluate: '', // 评价
+      payOrders: '', // 订单
+      quotation: '', // 报价
+      itemStage: '', // 项目阶段
+      designCompany: '' // 设计公司
     }
   },
   created() {
     let that = this
+    // if (!id) {
+    //   this.$message.error('缺少请求参数!')
+    //   this.$router.replace({name: 'home'})
+    //   return false
+    // }
+    // let id = that.$route.params.id
     that.type = 1
+    that.getDetail(1791)
   },
   methods: {
     getType(type) {
       this.type = type
+    },
+    getDetail(id) {
+      let that = this
+      that.$http.get(api.adminItemNewShow, {params: {id: id}})
+      .then (function(response) {
+        that.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          let obj = {}
+          obj = response.data.data
+          that.item = obj
+          that.oldItem = obj.item
+          that.contract = obj.contract
+          that.clue = obj.clue
+          that.evaluate = obj.evaluate
+          that.payOrders = obj.pay_orders
+          that.quotation = obj.quotation
+          that.itemStage = obj.item_stage
+          that.designCompany = obj.designCompany
+        } else {
+          that.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        that.$message.error(error.message)
+      })
     },
     // 查看服务商详情
     navgiteTo(id) {
@@ -144,13 +189,20 @@ export default {
       window.open(href, '_blank')
     },
     // 查看客户详情
-    toCustemDetail(id, companyId) {
+    toCustemDetail(id) {
       let that = this
       const {href} = that.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
         query: {type: 3}
       })
       window.open(href, '_blank')
+    }
+  },
+  filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy年MM月dd日')
+      }
     }
   },
   components: {

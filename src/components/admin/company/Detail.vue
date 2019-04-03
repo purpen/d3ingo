@@ -13,8 +13,8 @@
       <div class="top-right">
         <div class="top-right-top flex-center-space">
           <div class="top-right-top-left">
-            <div class="referred">{{item.company_abbreviation || '-'}}</div>
-            <div class="name">{{item.company_name || '-'}}</div>
+            <div class="referred">{{item.company_abbreviation || '—'}}</div>
+            <div class="name">{{item.company_name || '—'}}</div>
             <div class="enter-flex">
               <template v-if="item.industrial_design_center && item.industrial_design_center.length">
                 <div v-for="(item, index) in item.industrial_design_center" :key="index">
@@ -65,30 +65,30 @@
               <div class="top-right-bot-title min-width-43">网址</div>
               <div class="top-right-bot-title pad-left-10">
                 <span @click="toNewWeb" v-if="item.web">{{item.web}}</span>
-                <div v-else>{{'-'}}</div>
+                <div v-else>{{'—'}}</div>
               </div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width-43">地址</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width-43">规模</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '—'}}</div>
             </div>
           </div>
           <div class="contact-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width">联系人</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">职位</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">电话</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '—'}}</div>
             </div>
           </div>
         </div>

@@ -116,8 +116,8 @@
             <div class="flex-center home-img-round">
               <img :src="scope.row.logo_url" />
               <div class="pad-left-15">
-                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '-'}}</div>
-                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '-'}}</div>
+                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '—'}}</div>
+                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '—'}}</div>
               </div>
             </div>
           </template>
@@ -130,7 +130,7 @@
           :filter-multiple="false"
           class="add-style">
           <template slot-scope="scope">
-            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '-'}}<span>{{scope.row.city_value}}</span>
+            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '—'}}<span>{{scope.row.city_value}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -140,7 +140,7 @@
           :filters="companySizes"
           :filter-multiple="false">
             <template slot-scope="scope">
-              <span>{{scope.row.company_size_val || '-'}}</span>
+              <span>{{scope.row.company_size_val || '—'}}</span>
             </template>
         </el-table-column>
         <el-table-column
