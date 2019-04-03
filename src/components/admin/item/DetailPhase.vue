@@ -53,8 +53,8 @@
 
     <div>
       <div class="flex-center">
-        <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage && itemStage.length && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
       <div class="date-12">2019-03-30 09:11:02</div>
 
@@ -78,7 +78,7 @@
     <div class="pad-top-70">
       <div class="flex-center">
         <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+        <div class="sure-green">{{itemStage && itemStage.length && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
       <div class="date-12">2019-03-30 09:11:02</div>
 
@@ -101,10 +101,10 @@
 
     <div class="pad-top-70">
       <div class="flex-center">
-        <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
-        <div class="sure-green">{{itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+        <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
+        <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
       </div>
-      <div class="date-12">{{itemStage[0].created_at || '—' |timeFormat}}</div>
+      <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].created_at">{{itemStage[0].created_at || '—' |timeFormat}}</div>
 
       <div class="pad-top-36" v-for="(item, index) in itemStage.item_stage_image" :key="index">
         <div class="flex">
@@ -138,7 +138,7 @@
           </div>
           <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
         </div>
-        <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at|| '—' |timeFormat2}}</div>
+        <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at || '—' |timeFormat2}}</div>
         <div class="evaluation-text pad-left-40 white-space">沟通天数：13</div>
       </div>
       <div class="flex-center">
@@ -151,44 +151,46 @@
 
     <div class="tansition" :class="{'hei-0': !server}">
       <div class="title">对接过的服务商</div>
-      <div class="date-12">共 {{designCompany.length}} 家</div>
+      <div class="date-12">共 {{trueDesign ? designCompany.length - 1 : designCompany.length}} 家</div>
       <div class="pad-top-10">
-        <div class="pad-top-20 flex-center-space">
-          <div class="flex-center">
-            <div class="flex-center flex-0-1-265">
-              <div class="logo"></div>
-              <div class="name pad-left-15">杭州瑞德设计股份有限公司</div>
+        <div class="pad-top-20 flex-center-space" v-for="(item, index) in designCompany" :key="index">
+          <template v-if="item.id !== trueDesign.id">
+            <div class="flex-center">
+              <div class="flex-center flex-0-1-265">
+                <div class="logo"></div>
+                <div class="name pad-left-15">{{item.company_name || '—'}}</div>
+              </div>
+              <div class="evaluation-text pad-left-80 white-space">对接日期：{{item.created_at || '—' |timeFormat2}}</div>
+              <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
             </div>
-            <div class="evaluation-text pad-left-80 white-space">对接日期：2019-02-27</div>
-            <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
-          </div>
-          <div>
-            <el-popover
-              placement="top-end"
-              width="680"
-              trigger="click">
-                <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                  <el-steps :active="stageActive" class="steps-item">
-                    <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                    <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
-                    <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                    <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                    <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                    <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                    <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                  </el-steps>
-                  <div class="steps-remarks" v-if="d.status > 6">
-                    <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
-                    <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+            <div>
+              <el-popover
+                placement="top-end"
+                width="680"
+                trigger="click">
+                  <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                    <el-steps :active="stageActive" class="steps-item">
+                      <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                      <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                      <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                      <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                      <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                      <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                      <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                    </el-steps>
+                    <div class="steps-remarks" v-if="d.status > 6">
+                      <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                      <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                    </div>
                   </div>
-                </div>
-              <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-            </el-popover>
-          </div>
-          <div class="flex-center">
-            <div class="show-img"></div>
-            <div class="show-text pad-left-5">查看进度</div>
-          </div>
+                <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+              </el-popover>
+            </div>
+            <div class="flex-center">
+              <div class="show-img"></div>
+              <div class="show-text pad-left-5">查看进度</div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
