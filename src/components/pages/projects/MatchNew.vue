@@ -20,8 +20,8 @@
               </div>
             </section>
             <section v-else>
-              <p class="num">请用微信扫一扫小程序码</p>
-              <p class="verify fz-16">查看并管理您的项目</p>
+              <p class="find">{{custom.info}} 正在从 1000+ 设计服务商为您寻找</p>
+              <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计服务商</p>
             </section>
           </section>
           <section v-else>
