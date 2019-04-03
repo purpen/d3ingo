@@ -804,7 +804,8 @@ export default {
   .qr-code {
     width: 100px;
     height: 100px;
-    border-radius: 50%
+    border-radius: 50%;
+    border: 6px solid #fff
   }
   .project-cover {
     padding-bottom: 140px

@@ -507,7 +507,7 @@ let routes = [
       hideFooter: true,
       isDesignInc: 1
     },
-    component: require('@/components/pages/projects/Match')
+    component: require('@/components/pages/projects/MatchNew')
   },
   // 公司比较
   {
