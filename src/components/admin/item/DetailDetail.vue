@@ -3,7 +3,7 @@
     <div class="flex-center-between pad-top-30 pad-bot-30">
       <div class="big-title">订单已完成</div>
       <div class="flex-center">
-        <div class="navegete-round flex-center">
+        <div class="navegete-round flex-center" @click="navgiteTo(trueDesign.design_company_id)">
           <div class="navegete-to">查看设计服务商</div>
           <div class="arrow-right"></div>
         </div>
@@ -16,15 +16,15 @@
       <div class="flex-1 flex-center-center" :class="{'green-color': contract.first_payment}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
+      <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[0] && constractSort[0].pay_status}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
+      <div class="flex-1 flex-center-center" :class="[{'green-color': constractSort && constractSort[1] && constractSort[1].pay_status}, {'border-raduis-flex-right' : constractSort && constractSort.length && constractSort.length === 2}]">
         <div class="tick"></div>
       </div>
-      <!-- <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
+      <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[2] && constractSort[2].pay_status}" v-if="constractSort && constractSort.length && constractSort.length === 3">
         <div class="tick"></div>
-      </div> -->
+      </div>
     </div>
     <div class="flex">
       <div class="flex-column-center flex-1 pad-top-10">
@@ -38,19 +38,19 @@
       </div>
       <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">第一阶段款</div>
-        <div class="order-date pad-top-5" v-if="itemStage[0].pay_status">{{itemStage[0].order_created |timeFormat}}</div>
-        <div class="order-money pad-top-5" v-if="itemStage[0].pay_status">￥{{itemStage[0].amount}}</div>
+        <div class="order-date pad-top-5" v-if="constractSort && constractSort[0] && constractSort[0].pay_status">{{constractSort[0].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="constractSort && constractSort[0] && constractSort[0].pay_status">￥{{constractSort[0].amount}}</div>
       </div>
       <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">第二阶段款</div>
-        <div class="order-date pad-top-5" v-if="itemStage[1].pay_status">{{itemStage[1].order_created |timeFormat}}</div>
-        <div class="order-money pad-top-5" v-if="itemStage[1].pay_status">￥{{itemStage[1].amount}}</div>
+        <div class="order-date pad-top-5" v-if="constractSort && constractSort[1] && constractSort[1].pay_status">{{constractSort[1].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="constractSort && constractSort[1] && constractSort[1].pay_status">￥{{constractSort[1].amount}}</div>
       </div>
-      <!-- <div class="flex-column-center flex-1 pad-top-10">
+      <div class="flex-column-center flex-1 pad-top-10" v-if="constractSort && constractSort.length === 3">
         <div class="order-title">第三阶段款</div>
-        <div class="order-date pad-top-5" v-if="itemStage[2].pay_status">{{itemStage[2].order_created |timeFormat}}</div>
-        <div class="order-money pad-top-5" v-if="itemStage[2].pay_status">￥{{itemStage[2].amount}}</div>
-      </div> -->
+        <div class="order-date pad-top-5" v-if="constractSort && constractSort[2] && constractSort[2].pay_status">{{constractSort[2].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="constractSort && constractSort[2] && constractSort[2].pay_status">￥{{constractSort[2].amount}}</div>
+      </div>
     </div>
 
     <div class="grey-line"></div>
@@ -174,12 +174,13 @@ export default {
     vJdDemandContractView,
     vJdDesignContractView
   },
-  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage'],
+  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign'],
   data() {
     return {
       quotaDialog: false,
       contractDialog: false,
-      contractEvt: 0
+      contractEvt: 0,
+      constractSort: []
     }
   },
   created() {
@@ -196,9 +197,27 @@ export default {
           that.contract.source_value = '义乌'
           break
       }
+      for (let index in that.itemStage) {
+        if (that.itemStage[index].sort === 1) {
+          that.constractSort[0] = that.itemStage[index]
+        }
+        if (that.itemStage[index].sort === 2) {
+          that.constractSort[1] = that.itemStage[index]
+        }
+        if (that.itemStage[index].sort === 3) {
+          that.constractSort[2] = that.itemStage[index]
+        }
+      }
     }
   },
   methods: {
+    // 查看服务商详情
+    navgiteTo(id) {
+      const {href} = this.$router.resolve({
+        path: `/admin/company/detail/${id}`
+      })
+      window.open(href, '_blank')
+    },
     // 查看合同点击事件
     viewContractBtn(evt) {
       this.contractEvt = evt
@@ -340,6 +359,10 @@ export default {
   .border-raduis-flex {
     border-bottom-left-radius: 11px;
     border-top-left-radius: 11px;
+  }
+  .border-raduis-flex-right {
+    border-bottom-right-radius: 11px;
+    border-top-right-radius: 11px;
   }
   .pad-top-30 {
     padding-top: 30px;
