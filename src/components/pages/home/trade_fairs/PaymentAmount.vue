@@ -110,9 +110,9 @@
               
               <div class="outline-pay" v-if="item.source === 0 && item.status !== 1" v-show="item.pay_type === 5">
                 <p class="detail-banner">对公转账</p>
-                <p>收款公司: <span>北京太火红鸟科技有限公司</span></p>
-                <p>收款账户: <span>1109 1002 8310 202</span></p>
-                <p>开&nbsp;&nbsp;户&nbsp;行: <span>招商银行北京华贸中心支行</span></p>
+                <p>收款公司: <span>杭州太火鸟科技有限公司</span></p>
+                <p>收款账户: <span>2010 0019 4545 213</span></p>213
+                <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
               </div>
               <div class="outline-pay jd-pay" v-if="item.source === 1 && item.status !== 1" v-show="item.pay_type === 5">
                 <p class="detail-banner">京东云市场支付</p>

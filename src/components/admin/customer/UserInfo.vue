@@ -39,35 +39,35 @@
               <div class="flex-column">
                 <span class="tc-9">电话</span>
                 <span v-if="userForm.phone" class="fz-14  text-overflow">{{userForm.phone}}</span>
-								<span v-else>——</span>
+								<span v-else>—</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">职位</span>
                 <span v-if="userForm.position" class="fz-14  text-overflow">{{userForm.position}}</span>
-								<span v-else>——</span>
+								<span v-else>—</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户来源</span>
                 <span class="fz-14 text-overflow" v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">潜在客户所有人</span>
                 <span v-if="userForm.execute_user_name" class="fz-14  text-overflow">{{userForm.execute_user_name}}</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
             </el-col>
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="flex-column">
                 <span class="tc-9">创建时间</span>
                 <span v-if="createdTime" class="fz-14  text-overflow">{{createdTime}}</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
             </el-col>
           </el-row>
@@ -194,7 +194,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.type_value">{{item.type_value}}</span>
-												 <span v-else>——</span>
+												 <span v-else>—</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -203,7 +203,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.design_cost_value">{{item.design_cost_value}}</span>
-												<span v-else>——</span>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -212,7 +212,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.cycle_value">{{item.cycle_value}}</span>
-												<span v-else>——</span>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     <div class="line"></div>
@@ -222,7 +222,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.industry_value">{{item.industry_value}}</span>
-												<span v-else>——</span>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -231,7 +231,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.item_province_value || item.item_city_value">{{item.item_province_value}}{{item.item_city_value}}</span>
-												<span v-else>——</span>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -240,7 +240,7 @@
                       </el-col>
                       <el-col :md="20" :lg="20">
                         <span v-if="item.summary">{{item.summary}}</span>
-												<span v-else>——</span>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     
@@ -286,7 +286,7 @@
 													<span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
 												</div>
 												<div v-else>
-													<span>——</span>
+													<span>—</span>
 												</div>
                       </el-col>
                     </el-row>
@@ -299,7 +299,7 @@
 													<span class="item.update_user_name">{{item.update_user_name}}</span>
 													<span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
 												</div>
-												<div v-else>——</div>
+												<div v-else>—</div>
                       </el-col>
                     </el-row>
                     <!-- 对接设计公司 -->
@@ -328,28 +328,28 @@
                               <div class="flex-column">
                                 <span class="tc-9">联系人</span>
                                 <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
-																<span v-else>——</span>
+																<span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">职务</span>
                                 <span v-if="d.position" class="fz-14">{{d.position}}</span>
-																<span v-else>——</span>
+																<span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">电话</span>
                                 <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
-																<span v-else>——</span>
+																<span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">微信</span>
                                 <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
-																<span v-else>——</span>
+																<span v-else>—</span>
                               </div>
                             </el-col>
                           </el-row>
@@ -424,7 +424,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.name">{{clientList.name}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -434,7 +434,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="sourceValue || sonSourceValue">{{(sourceValue + '/' + sonSourceValue) | processor}}</span>
-                  <span v-else>——</span>
+                  <span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -444,7 +444,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.execute_user_name">{{clientList.execute_user_name}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -455,7 +455,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.position">{{clientList.position}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -465,7 +465,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.company">{{clientList.company}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -475,7 +475,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.province_value">{{clientList.province_value}}{{clientList.city_value}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -486,7 +486,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.phone">{{clientList.phone}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -496,7 +496,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.wx">{{clientList.wx}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -506,7 +506,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.qq">{{clientList.qq}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               <div class="client-line"></div>
@@ -516,7 +516,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.summary">{{clientList.summary}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
             </div>
@@ -533,7 +533,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.number">{{clientList.number}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -543,7 +543,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.user_id_name">{{clientList.user_id_name}} &nbsp;&nbsp;{{'(' + createdTime+ ')'}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
               
@@ -553,7 +553,7 @@
                 </el-col>
                 <el-col :md="20" :lg="20">
                   <span v-if="clientList.update_user_name">{{clientList.update_user_name}}&nbsp;&nbsp;{{'(' + updateTime + ')'}}</span>
-									<span v-else>——</span>
+									<span v-else>—</span>
                 </el-col>
               </el-row>
             </div>

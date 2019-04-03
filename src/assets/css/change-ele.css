@@ -351,6 +351,9 @@
   .el-menu--horizontal .el-submenu .el-submenu__icon-arrow {
     color: #999
   }
+  .project-item-box .el-select .el-input .el-input__icon {
+    color: #fff
+  }
   .el-date-picker__header-label.active, .el-date-picker__header-label:hover, .el-picker-panel__icon-btn:hover,
   .el-time-panel__btn.confirm {
     font-weight: 400;

@@ -464,7 +464,7 @@
                 <span v-else-if="scope.row.son_source === 'd'">今日头条</span>
                 <span v-else-if="scope.row.son_source === 'edm'">邮件</span>
                 <span v-else-if="scope.row.son_source === 'sms'">短信</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 2" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">官方</p>
@@ -475,25 +475,25 @@
                 <span v-else-if="scope.row.son_source === 'topic_view_h'">文章详情头部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_f'">文章详情底部</span>
                 <span v-else-if="scope.row.son_source === 'topic_view_r'">文章详情右侧</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">合作伙伴</p>
                 <span v-if="scope.row.son_source === 'a'">京东</span>
                 <span v-else-if="scope.row.son_source === 'b'">优客工场</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">内部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">雷总/公司员工推...</span>
                 <!-- 雷总/公司员工推荐的熟人客户 -->
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 5" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">外部推荐</p>
                 <span v-if="scope.row.son_source === 'a'">朋友/其他公司推...</span>
                 <!-- 朋友/其他公司推荐的客户 -->
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 6" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">新媒体</p>
@@ -502,23 +502,23 @@
                 <span v-else-if="scope.row.son_source === 'c'">百家号</span>
                 <span v-else-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
                 
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">展销会</p>
                 <span v-if="scope.row.son_source === 'a'">参展</span>
                 <span v-else-if="scope.row.son_source === 'b'">业界活动、论坛</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 0" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">其他</p>
                 <span v-if="scope.row.son_source === 'a'">无法归类的小群体</span>
-                <span v-else>——</span>
+                <span v-else>—</span>
               </div>
             </div>
             <div v-else>
-              <p class="fz-12 tc-6">——</p>
-              <span>——</span>
+              <p class="fz-12 tc-6">—</p>
+              <span>—</span>
             </div>
           </template>
         </el-table-column>
@@ -2281,7 +2281,7 @@ export default {
             if (item.end_time) {
               item.end_time = item.end_time.date_format().format('yyyy-MM-dd')
             } else {
-              item.end_time = '——'
+              item.end_time = '—'
             }
             if (this.typeId === 5 && item.updated_at) {
               item.updated_at = item.updated_at.date_format().format('yyyy-MM-dd')
