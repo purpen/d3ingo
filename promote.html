@@ -16,6 +16,9 @@
     <style>
       * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: 0
       }
       .fr {
         float: right;
@@ -144,7 +147,6 @@
           no-repeat center / contain;
         margin: 0 auto;
         position: relative;
-        margin-top: 25px;
       }
       .logo:after {
         content: "";
@@ -794,6 +796,10 @@
         display: flex;
         align-items: center;
       }
+      .pc-code-90-round2 {
+        flex: 1 1 auto;
+        border: none
+      }
       .field input.pc-code-90 {
         width: 90px;
         border: none;
@@ -894,12 +900,12 @@
         height: 30px;
         width: 30px;
         background: url("https://s3.taihuoniao.com/promote/Telephone@2x.png")
-          no-repeat;
-        background-size: 100% 100%;
+          no-repeat center;
+        background-size: 26px;
         margin: 0 10px 3px 20px;
       }
       .call-phone-text {
-        font-size: 24px;
+        font-size: 22px;
         font-family: PingFangSC-Regular;
         font-weight: 400;
         color: #fff;
@@ -2652,7 +2658,7 @@
                 </div>
                 <div class="dialog-req">验证码</div>
                 <div class="dialog-code-round field">
-                  <div class="pc-code-90-round">
+                  <div class="pc-code-90-round pc-code-90-round2">
                     <input
                       type="text"
                       class="dialog-code pc-sms-code2"
@@ -3132,7 +3138,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script>
     // var api = location.origin + '/api'
-    var api = 'http://mc.taihuoniao.com/api'
+    var api = 'http://saas.taihuoniao.com/api'
     var query = getQuery();
     if (!query.from) {
       query.from = 2
