@@ -686,7 +686,7 @@
     padding-right: 30px;
   }
   .menu-icon {
-    width: 70px;
+    width: 60px;
     height: 70px;
     cursor: pointer;
     background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;

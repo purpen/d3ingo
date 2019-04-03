@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="content">
+    <div class="content" v-loading="isLoading">
         <!-- 公司详情 -->
         <div class="companyinfo">
             <div class="companyname">
-              圣甲虫游戏鼠标概念设计
+              {{item.name || oldItem.name || '—'}}
             </div>
             <div class="companydetail">
                 <div class="formcont">
@@ -20,7 +20,7 @@
                       客户
                     </div>
                     <div class="titlecont">
-                      京东/艺火
+                      {{clue.company || '—'}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -28,7 +28,7 @@
                       服务商
                     </div>
                     <div class="titlecont">
-                      京东/艺火
+                      {{trueDesign.company_name || '—'}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -36,7 +36,7 @@
                       合同金额
                     </div>
                     <div class="titlecont">
-                      京东/艺火
+                      ￥{{contract.total}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -44,7 +44,7 @@
                       签约日期
                     </div>
                     <div class="titlecont">
-                      京东/艺火
+                      {{contract.true_time || '—' |timeFormat}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -85,27 +85,27 @@
               <div class="barcont">
                   <div class="bar_cont">
                       <p>签订合作</p>
-                      <p>2019-03-23 14:21:02</p>
+                      <p>{{payOrders[0].true_time || '—' |timeFormat2}}</p>
                   </div>
                   <div class="bar_cont">
                       <p>首付款</p>
-                      <p>2019-03-23 14:21:02</p>
-                      <p style="color:#FAAD15">￥116,000.00</p>
+                      <p>{{payOrders[0].true_time || '—' |timeFormat2}}</p>
+                      <p style="color:#FAAD15">￥{{payOrders[0].amount}}</p>
                   </div>
                   <div class="bar_cont">
                       <p>第一阶段款</p>
-                      <p>2019-03-23 14:21:02</p>
-                      <p style="color:#FAAD15">￥116,000.00</p>
+                      <p>{{payOrders[1].true_time || '—' |timeFormat2}}</p>
+                      <p style="color:#FAAD15">￥{{payOrders[1].amount}}</p>
                   </div>
                   <div class="bar_cont">
                       <p>第二阶段款</p>
-                      <p>2019-03-23 14:21:02</p>
-                      <p style="color:#FAAD15">￥116,000.00</p>
+                      <p>{{payOrders[2].true_time || '—' |timeFormat2}}</p>
+                      <p style="color:#FAAD15">￥{{payOrders[2].amount}}</p>
                   </div>
                   <div class="bar_cont">
                       <p>第三阶段款</p>
-                      <p>2019-03-23 14:21:02</p>
-                      <p style="color:#FAAD15">￥116,000.00</p>
+                      <p>{{payOrders[3].true_time || '—' |timeFormat2}}</p>
+                      <p style="color:#FAAD15">￥{{payOrders[3].amount}}</p>
                   </div>
               </div>
           </div>
@@ -124,7 +124,7 @@
                       订单金额
                     </div>
                     <div class="titlecont">
-                      ￥28,000.00
+                      ￥ {{payOrders.amount}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -481,7 +481,7 @@
                       订单金额
                     </div>
                     <div class="titlecont">
-                      ￥28,000.00
+                      ￥{{payOrders.amount}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -489,7 +489,7 @@
                       订单号
                     </div>
                     <div class="titlecont">
-                      ￥28,000.00
+                      {{payOrders.uid}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -536,7 +536,7 @@
                      </div>
                   </div>
                   <div class="formcont">
-                    <div class="titlelast">
+                    <div class="titlelast" @click="showTransfer()">
                       查看支付凭证
                       <img src="../../../assets/images/icon/ArrowRightHover@2x.png" alt="">
                     </div>
@@ -549,7 +549,7 @@
                       发票名称
                     </div>
                     <div class="titlecont">
-                      ￥28,000.00
+                      {{invoice.bank_name || '—'}}
                     </div>
                 </div>
                 <div class="formcont">
@@ -577,7 +577,7 @@
                      </div>
                   </div>
                   <div class="formcont">
-                    <div class="titlelast">
+                    <div class="titlelast" @click="Order()">
                       查看发票信息
                       <img src="../../../assets/images/icon/ArrowRightHover@2x.png" alt="">
                     </div>
@@ -587,6 +587,104 @@
           </div>
         </div>
     </div>
+    <el-dialog title="打款凭证" :visible.sync="transferDialog">
+      <img :src="imgUrl" width="100%" />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="transferDialog = false">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!-- 发票 -->
+    <el-dialog title="发票详情" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
+      <div class="invoice-one">
+        <p class="tc-2 fz-16">需求公司发票信息</p>
+        <el-row>
+          <el-col :span="4">
+            名称
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.company_name">{{invoice.company_name}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            注册地址
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.address">{{invoice.address}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            税号
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.duty_number">{{invoice.duty_number}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            开户银行
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.bank_name">{{invoice.bank_name}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            银行账户
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.account_number">{{invoice.account_number}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+        </el-row>
+        <p class="tc-2 fz-16">
+          发票快递地址
+        </p>
+        <el-row>
+          <el-col :span="4">
+            收件人姓名
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.contact_name">{{invoice.contact_name}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            收件人电话
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.phone">{{invoice.phone}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+          <el-col :span="4">
+            收件人地址
+          </el-col>
+          <el-col :span="20">
+            <p v-if="invoice.address">{{invoice.address}}</p>
+            <p v-else>&nbsp;</p>
+          </el-col>
+        </el-row>
+        <p class="tc-2 fz-16">
+          邮寄信息
+        </p>
+        <el-row>
+          <el-col :span="4">
+            快递公司
+          </el-col>
+          <el-col :span="20">
+            <p>{{invoice.logistics_label}}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            快递单号
+          </el-col>
+          <el-col :span="20">
+            <p>{{invoice.logistics_number}}</p>
+          </el-col>
+        </el-row>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" class="is-custom" @click="invoiceOneDialog = false">关闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -596,18 +694,15 @@
     name: 'admin_item_list',
     data () {
       return {
-        menuType: 0,
-        matchCompanyDialog: false,
-        itemList: [],
-        tableData: [],
-        currentMatchCompany: [],
-        multipleSelection: [],
         isLoading: false,
-        matchCompanyForm: {
-          itemId: '',
-          itemName: '',
-          companyIds: ''
-        },
+        transferDialog: false,
+        invoiceOneDialog: false,
+        contract: '',
+        item: '',
+        clue: '',
+        trueDesign: '',
+        payOrders: '', // 订单
+        invoice: '', // 发票
         query: {
           page: 1,
           pageSize: 20,
@@ -617,184 +712,67 @@
           source: 0,
           evt: '',
           val: '',
-
           test: null
-        },
-        msg: ''
+        }
       }
     },
     methods: {
-      // 查询
-      onSearch() {
-        this.query.page = 1
-        this.$router.push({name: this.$route.name, query: this.query})
-      },
-      // 多选
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      handleEdit() {
-      },
-      handleDelete() {
-      },
-      handleMatch(index, item) {
-        if (item.item.status !== 2) {
-          // this.$message.error('项目状态不允许推荐公司')
-          // return
-        }
-        this.currentMatchCompany = item.designCompany
-        this.matchCompanyForm.itemId = item.item.id
-        this.matchCompanyForm.itemStatus = item.item.status
-        this.matchCompanyForm.itemName = item.item.name
-        this.matchCompanyDialog = true
-      },
-      addMatchCompany() {
-        if (!this.matchCompanyForm.itemId || !this.matchCompanyForm.itemName || !this.matchCompanyForm.companyIds || !this.matchCompanyForm.itemStatus) {
-          this.$message.error('缺少请求参数!')
-          return
-        }
-        var companyIds = this.matchCompanyForm.companyIds.split(',')
-        var self = this
-        this.$http.post(api.addItemToCompany, {item_id: this.matchCompanyForm.itemId, recommend: companyIds})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              if (self.matchCompanyForm.itemStatus === 2) {
-                self.$http.post(api.ConfirmItemToCompany, {item_id: self.matchCompanyForm.itemId})
-                  .then(function (response1) {
-                    if (response1.data.meta.status_code === 200) {
-                      self.$message.success('添加成功!')
-                      self.matchCompanyDialog = false
-                      return
-                    } else {
-                      self.$message.error(response1.data.meta.message)
-                    }
-                  })
-                  .catch(function (error) {
-                    self.$message.error(error.message)
-                  })
-              } else {
-                self.$message.success('添加成功!')
-                self.matchCompanyDialog = false
-              }
-            } else {
-              self.$message.error(response.data.meta.message)
-              return
-            }
-          })
-          .catch(function (error) {
-            self.$message.error(error.message)
-          })
-      },
-      handleSizeChange(val) {
-        this.query.pageSize = parseInt(val)
-        this.loadList()
-      },
-      handleCurrentChange(val) {
-        this.query.page = parseInt(val)
-        this.$router.push({name: this.$route.name, query: this.query})
-      },
-      // 删除项目
-      multipleDelItem() {
-        if (this.multipleSelection.length === 0) {
-          this.$message.error('至少选择一个要删除的项目')
-          return false
-        }
-        var idArr = []
-        for (var i = 0; i < this.multipleSelection.length; i++) {
-          idArr.push(this.multipleSelection[i].item.id)
-        }
-        this.$http.delete(api.adminItemDeleteIds, {params: {ids: idArr}})
-          .then((response) => {
-            if (response.data.meta.status_code === 200) {
-              for (let i = 0; i < idArr.length; i++) {
-                for (let j = 0; j < this.tableData.length; j++) {
-                  if (idArr[i] === this.tableData[j].item.id) {
-                    this.tableData.splice(j, 1)
-                  }
-                }
-              }
-              this.$message.success('删除成功!')
-            } else {
-              this.$message.error(response.data.meta.message)
-              return
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-          })
-      },
-      loadList() {
-        const self = this
-        self.query.page = parseInt(this.$route.query.page) || 1
-        self.query.sort = this.$route.query.sort || 0
-        self.query.type = this.$route.query.type || 0
-        self.query.source = this.$route.query.source || ''
-        self.query.evt = this.$route.query.evt || '4'
-        self.query.val = this.$route.query.val || ''
-        this.menuType = 0
-        if (self.query.type) {
-          this.menuType = parseInt(self.query.type)
-        }
-        self.isLoading = true
-        self.$http.get(api.adminItemList, {
-          params: {
-            page: self.query.page,
-            per_page: self.query.pageSize,
-            sort: self.query.sort,
-            type: self.query.type,
-            source: self.query.source,
-            evt: self.query.evt,
-            val: self.query.val
+      getDetail(id) {
+        let that = this
+        that.$http.get(api.adminItemNewShow, {params: {id: id}})
+        .then (function(res) {
+          that.isLoading = false
+          if (res.data.meta.status_code === 200) {
+            let obj = {}
+            obj = res.data.data
+            that.item = obj
+            that.contract = obj.contract
+            that.clue = obj.clue
+            that.trueDesign = obj.true_design
+            that.payOrders = obj.pay_orders
+            that.invoice = obj.demand_invoice
+            console.log(that.invoice)
+          } else {
+            that.$message.error(res.data.meta.message)
           }
         })
-          .then(function (response) {
-            self.isLoading = false
-            self.tableData = []
-            console.log(response.data)
-            if (response.data.meta.status_code === 200) {
-              self.itemList = response.data.data
-              self.query.totalCount = parseInt(response.data.meta.pagination.total)
-              for (var i = 0; i < self.itemList.length; i++) {
-                var item = self.itemList[i]
-                if (!item.item.user) {
-                  item.item.user = {}
-                }
-                if (!item.item.user.account) {
-                  item.item.user.account = ''
-                }
-                var typeLabel = ''
-                if (item.item.type === 1) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_types_value.join(', ') + '/' + item.info.field_value + '/' + item.info.industry_value
-                } else {
-                  typeLabel = item.item.type_value + '/' + item.item.design_types_value.join(', ')
-                }
-
-                item['item']['type_label'] = typeLabel
-                item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
-
-                if (item.info) {
-                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
-                }
-                item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-                self.tableData.push(item)
-              } // endfor
-            } else {
-              self.$message.error(response.data.meta.message)
-            }
-          })
-          .catch(function (error) {
-            self.isLoading = false
-            self.$message.error(error.message)
-          })
+        .catch (function(error) {
+          that.$message.error(error.message)
+        })
+      },
+      // 查看凭证弹层
+      showTransfer(index, item) {
+        this.transferDialog = true
+      },
+      // 发票
+      Order() {
+        this.invoiceOneDialog = true
       }
     },
-    created: function () {
-      this.loadList()
+    mounted: function () {
+
     },
-    watch: {
-      '$route' (to, from) {
-        // 对路由变化作出响应...
-        this.loadList()
+    created: function () {
+      let that = this
+      // if (!id) {
+      //   this.$message.error('缺少请求参数!')
+      //   this.$router.replace({name: 'home'})
+      //   return false
+      // }
+      // let id = that.$route.params.id
+      that.type = 1
+      that.getDetail(1791)
+    },
+    filters: {
+      timeFormat(val) {
+        if (val) {
+          return val.date_format().format('yyyy年MM月dd日')
+        }
+      },
+      timeFormat2(val) {
+        if (val) {
+          return val.date_format().format('yyyy-MM-dd hh:mm:ss')
+        }
       }
     }
   }
@@ -828,6 +806,7 @@
     color: #FF5A5F;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   .titlelast img{
     width: 12px;
@@ -913,5 +892,9 @@
     font-size: 14px;
     text-align: center;
     margin-left: 20px;
+  }
+  .invoice-one {
+    line-height: 30px;
+    padding: 20px;
   }
 </style>

@@ -270,6 +270,7 @@ export default {
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
   adminItemShow: '/admin/item/show', // GET 项目详情
+  adminItemNewShow: '/admin/item/newShow', // GET 项目详情-新
   addItemToCompany: '/admin/item/addDesignToItem', // 给项目推荐公司
   ConfirmItemToCompany: '/admin/item/trueItem', // 确认项目推荐公司
   forceCloseSubmit: '/admin/item/closeItem', // POST 强制关闭项目并返还款项

@@ -875,8 +875,8 @@
           ]
         },
         query: {
-          from: 5,
-          mark: ''
+          from: 2,
+          mark: 'a'
         }
       }
     },
@@ -1120,7 +1120,7 @@
         }
         if (!this.query.mark) {
           this.query.mark = 'a'
-          this.query.from = 0
+          this.query.from = 2
         }
         if (this.query.identifying_code === 'no') {
           this.identifying_code = 'no'

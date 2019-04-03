@@ -35,15 +35,15 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">姓名：</div>
-                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.crm_clue_id)">{{scope.row.clue_name || '-'}}</div>
+                  <div class="info-text cursor-poin" @click="toCustemDetail(scope.row.crm_clue_id, cusId)">{{scope.row.clue_name || '—'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">电话：</div>
-                  <div class="info-text">{{scope.row.clue_phone || '-'}}</div>
+                  <div class="info-text">{{scope.row.clue_phone || '—'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">公司：</div>
-                  <div class="info-text">{{scope.row.clue_company || '-'}}</div>
+                  <div class="info-text">{{scope.row.clue_company || '—'}}</div>
                 </div>
               </div>
             </template>
@@ -55,15 +55,15 @@
               <div>
                 <div class="flex-center">
                   <div class="info-title">项目：</div>
-                  <div class="info-text text-hidden cursor-poin" @click="toItemDetail(scope.row.item_id)">{{scope.row.item_name || '-'}}</div>
+                  <div class="info-text text-hidden cursor-poin" @click="toItemDetail(scope.row.item_id)">{{scope.row.item_name || '—'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">类型：</div>
-                  <div class="info-text">{{scope.row.crm_item_type_value || '-'}}</div>
+                  <div class="info-text">{{scope.row.crm_item_type_value || '—'}}</div>
                 </div>
                 <div class="flex-center pad-top-4">
                   <div class="info-title">预算：</div>
-                  <div class="info-text">{{scope.row.design_cost_value || '-'}}</div>
+                  <div class="info-text">{{scope.row.design_cost_value || '—'}}</div>
                 </div>
               </div>
             </template>
@@ -95,19 +95,13 @@
                 v-if="scope.row.summary">
                 <div class="click-show" slot="reference">点击查看</div>
               </el-popover>
-              <el-popover
-                placement="top"
-                trigger="click"
-                content="无备注内容"
-                v-else>
-                <div class="click-show" slot="reference">点击查看</div>
-              </el-popover>
+              <div slot="reference" v-else>{{'—'}}</div>
             </template>
           </el-table-column>
         </el-table>
       </div>
 
-      <div class="bot-round flex-center-space">
+      <div class="bot-round">
         <div class="count-size">共{{query.totalCount}}条</div>
         <el-pagination
         @size-change="handleSizeChange"
@@ -197,15 +191,15 @@ export default {
         path: `/admin/item/show0/${id}`
       })
       window.open(href, '_blank')
-      // this.$router.push({name: 'adminItemShow0', params: {id: id}})
     },
-    toCustemDetail(id) {
-      const {href} = this.$router.resolve({
+    toCustemDetail(id, companyId) {
+      let that = this
+      const {href} = that.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {isService: 1, type: 6}
+        query: {type: 3}
       })
-      // window.open(href, '_blank')
-      this.$router.push(href)
+      window.open(href, '_blank')
+      // this.$router.push(href)
     },
     getCustomer(id) {
       let self = this
@@ -219,7 +213,7 @@ export default {
             let obj = self.customer[index]
             obj['created_at'] = obj.created_at.date_format().format('yyyy.MM.dd')
             if (obj.price === 0) {
-              obj.price = '-'
+              obj.price = '—'
             }
             switch (obj.status) {
               case 1:
@@ -330,6 +324,7 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
+    padding-right: 12px;
   }
   .click-show {
     width: 58px;
@@ -338,6 +333,9 @@ export default {
   .bot-round {
     height: 50px;
     padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .pad-top-4 {
     padding-top: 4px;

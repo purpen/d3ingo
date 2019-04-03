@@ -96,15 +96,16 @@
           prop="status_value"
           label="项目进度"
           column-key="status_value"
-          :filters="procont"
           :filter-multiple="false"
           filter-placement="bottom-end"
           show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="statucss">
-                <div class="circle"></div>
-                <!-- <div class="circlertwo"></div> -->
-                <!-- <div class="circlethree"></div> -->
+                <div class="flexcenter">
+                  <div class="circle" v-if="scope.row.status > 0 && scope.row.status <= 11 || scope.row.status === 45 || scope.row.status === 15"></div>
+                  <div class="circletwo"  v-if="scope.row.status === 18 || scope.row.status === 22"></div>
+                  <div class="circlethree" v-if="scope.row.status === -1 || scope.row.status === -2 || scope.row.status === -3"></div>
+                </div>
                 {{scope.row.status_value}}
               </div>
             </template>
@@ -171,14 +172,11 @@
           { value: 6, text: '50万以上' }
         ],
         moneyid: 0,
-        procont: [
-          { value: 1, text: '进度一' },
-          { value: 2, text: '进度二' },
-          { value: 3, text: '进度三' },
-          { value: 4, text: '进度四' }
-        ],
-        procontid: 0,
         opportunity: [
+          {
+            value: 0,
+            label: '全部项目'
+          },
           {
             value: 1,
             label: '对接中项目'
@@ -231,7 +229,7 @@
           type: 0,
           design_cost: 0,
           source: 0,
-          status: '',
+          status: 0,
           menu: 0,
           evt: 1,
           val: '',
@@ -597,10 +595,6 @@
           this.query.per_page = 10
           this.newlist(query)
         }
-        // 进度
-        if (value.status_value) {
-          this.procontid = value.status_value[0]
-        }
       },
       // 选中
       handleSelectionChange(val) {
@@ -660,7 +654,7 @@
         this.query.per_page = 10
         let query = this.query
         this.newlist(query)
-        this.opporvalue = this.opportunity[val - 1].label
+        this.opporvalue = this.opportunity[val].label
       },
       // 搜索选择条件
       getserch(val) {
@@ -780,12 +774,16 @@
     margin-top: 15px;
   }
   .statucss{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    /* text-overflow:ellipsis; */
-    /* white-space:nowrap; */
-    /* height: 100%; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* flex-wrap: wrap; */
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow: hidden;
+  }
+  .flexcenter{
+    float: left;
+    margin-top: 5px;
   }
   .circle{
     width: 12px;

@@ -60,6 +60,9 @@
 .fz-24 {
   font-size: 24px;
 }
+.fz-28 {
+  font-size: 28px;
+}
 .fz-36 {
   font-size: 36px;
 }
@@ -219,6 +222,9 @@
 }
 .margin-b-20 {
   margin-bottom: 20px
+}
+.blank4 {
+  padding-top: 4px;
 }
 .blank5 {
   padding-top: 5px;
@@ -483,11 +489,13 @@
 .red-button:focus,
 .red-button:focus a {
   background-color: #ffacaf;
+  border-color: #ff5a5f;
   color: #fff;
 }
 .red-button:active,
 .red-button:active a {
   background-color: #ff5a5f;
+  border-color: #ff5a5f;
   color: #fff;
 }
 .full-red-button,

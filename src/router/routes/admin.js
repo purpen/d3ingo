@@ -216,6 +216,18 @@ module.exports = [
         },
         component: require('@/components/admin/item/show0')
       },
+      // 项目详情-新
+      {
+        path: '/admin/item/detail/:id',
+        name: 'adminItemDetail',
+        meta: {
+          title: '项目详情',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/item/Detail')
+      },
       // 项目匹配公司
       {
         path: '/admin/item/match/:id',

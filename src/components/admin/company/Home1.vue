@@ -116,8 +116,8 @@
             <div class="flex-center home-img-round">
               <img :src="scope.row.logo_url" />
               <div class="pad-left-15">
-                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '-'}}</div>
-                <div class="com-name text-overflow">{{scope.row.company_name || '-'}}</div>
+                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '—'}}</div>
+                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '—'}}</div>
               </div>
             </div>
           </template>
@@ -130,7 +130,7 @@
           :filter-multiple="false"
           class="add-style">
           <template slot-scope="scope">
-            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '-'}}<span>{{scope.row.city_value}}</span>
+            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '—'}}<span>{{scope.row.city_value}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -140,7 +140,7 @@
           :filters="companySizes"
           :filter-multiple="false">
             <template slot-scope="scope">
-              <span>{{scope.row.company_size_val || '-'}}</span>
+              <span>{{scope.row.company_size_val || '—'}}</span>
             </template>
         </el-table-column>
         <el-table-column
@@ -174,7 +174,7 @@
 
 
     <!-- 分页 -->
-    <div class="flex-center-space pad-top-15 pad-left-30">
+    <div class="flex-center-center pad-top-15 pad-left-30">
       <div class="count">
         共 {{query.totalCount}} 条
       </div>
@@ -234,7 +234,7 @@ export default {
         page: 1,
         pageSize: 10,
         totalCount: 0,
-        sort: 0,
+        sort: 1,
         type: 0,
         evt: '',
         province: 0,
@@ -277,8 +277,18 @@ export default {
       }
       return result
     },
+    toCompanyHome(id) {
+      const {href} = this.$router.resolve({
+        path: `/company/${id}`
+      })
+      window.open(href, '_blank')
+    },
     navgiteTo(id) {
-      this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+      const {href} = this.$router.resolve({
+        path: `/admin/company/detail/${id}`
+      })
+      window.open(href, '_blank')
+      // this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
     },
     filterProvinces(value) {
       if (value.company_size) {
@@ -482,6 +492,7 @@ export default {
   .home-img-round img{
     height: 44px;
     width: 44px;
+    display: block;
   }
   .com-abb {
     font-size: 14px;
@@ -490,11 +501,15 @@ export default {
     color: rgba(102,102,102,1);
   }
   .com-name {
+    cursor: pointer;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
     white-space: nowrap;
+  }
+  .com-name:hover {
+    color: #ff5a5f;
   }
   .bg-CF1322 {
     background: #CF1322;
@@ -513,6 +528,7 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
+    padding-right: 12px;
   }
   .text-cen {
     text-align: center;
@@ -542,6 +558,11 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+  }
+  .flex-center-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .text-overflow {
     white-space: nowrap;
