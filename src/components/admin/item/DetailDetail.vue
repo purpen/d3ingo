@@ -9,22 +9,22 @@
         </div>
       </div>
     </div>
-    <div class="green-line flex-center">
-      <div class="flex-1 flex-center-center">
+    <div class="greys-line flex-center">
+      <div class="flex-1 flex-center-center border-raduis-flex" :class="{'green-color': contract.true_time}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center">
+      <div class="flex-1 flex-center-center" :class="{'green-color': contract.first_payment}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center">
+      <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center">
+      <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
         <div class="tick"></div>
       </div>
-      <div class="flex-1 flex-center-center">
+      <!-- <div class="flex-1 flex-center-center" :class="{'green-color': contract.true_time}">
         <div class="tick"></div>
-      </div>
+      </div> -->
     </div>
     <div class="flex">
       <div class="flex-column-center flex-1 pad-top-10">
@@ -33,24 +33,24 @@
       </div>
       <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">首付款</div>
-        <div class="order-date pad-top-5">{{payOrders[0].created_at || '—' |timeFormat}}</div>
-        <div class="order-money pad-top-5">￥{{payOrders[0].amount}}</div>
+        <div class="order-date pad-top-5">{{contract.true_time || '—' |timeFormat}}</div>
+        <div class="order-money pad-top-5">￥{{contract.first_payment}}</div>
       </div>
       <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">第一阶段款</div>
-        <div class="order-date pad-top-5">{{payOrders[0].created_at || '—' |timeFormat}}</div>
-        <div class="order-money pad-top-5">￥{{payOrders[0].amount}}</div>
+        <div class="order-date pad-top-5" v-if="itemStage[0].pay_status">{{itemStage[0].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="itemStage[0].pay_status">￥{{itemStage[0].amount}}</div>
       </div>
       <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">第二阶段款</div>
-        <div class="order-date pad-top-5">{{payOrders[0].created_at || '—' |timeFormat}}</div>
-        <div class="order-money pad-top-5">￥{{payOrders[0].amount}}</div>
+        <div class="order-date pad-top-5" v-if="itemStage[1].pay_status">{{itemStage[1].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="itemStage[1].pay_status">￥{{itemStage[1].amount}}</div>
       </div>
-      <div class="flex-column-center flex-1 pad-top-10">
+      <!-- <div class="flex-column-center flex-1 pad-top-10">
         <div class="order-title">第三阶段款</div>
-        <div class="order-date pad-top-5">{{payOrders[0].created_at || '—' |timeFormat}}</div>
-        <div class="order-money pad-top-5">￥{{payOrders[0].amount}}</div>
-      </div>
+        <div class="order-date pad-top-5" v-if="itemStage[2].pay_status">{{itemStage[2].order_created |timeFormat}}</div>
+        <div class="order-money pad-top-5" v-if="itemStage[2].pay_status">￥{{itemStage[2].amount}}</div>
+      </div> -->
     </div>
 
     <div class="grey-line"></div>
@@ -174,7 +174,7 @@ export default {
     vJdDemandContractView,
     vJdDesignContractView
   },
-  props: ['quotation', 'contract', 'payOrders', 'oldItem'],
+  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage'],
   data() {
     return {
       quotaDialog: false,
@@ -299,9 +299,9 @@ export default {
     font-weight: 500;
     color: rgba(51,51,51,1);
   }
-  .green-line {
+  .greys-line {
     height: 21px;
-    background: rgba(0,172,132,1);
+    background-color: #E6E6E6;
     border-radius: 11px;
   }
   .tick {
@@ -333,6 +333,14 @@ export default {
     margin: 30px 0;
   }
 
+  .green-color {
+    background-color: #00AC84;
+    height: 100%;
+  }
+  .border-raduis-flex {
+    border-bottom-left-radius: 11px;
+    border-top-left-radius: 11px;
+  }
   .pad-top-30 {
     padding-top: 30px;
   }

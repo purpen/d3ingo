@@ -117,7 +117,7 @@
       </div>
 
       <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name"></phase>
-      <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem"></detail>
+      <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem" :itemStage="itemStage"></detail>
       <info v-if="type === 3" :item="item" :contract="contract" :oldItem="oldItem"></info>
     </div>
   </div>
