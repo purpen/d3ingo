@@ -14,7 +14,7 @@
               <div class="advantage-title">
                 <p class="sub-title2">商机推送</p>
                 <p class="caption-txt text-center">入驻平台设计公司，</p>
-                <p  class="caption-txt text-center">一年节省X万推广预算。</p>
+                <p  class="caption-txt text-center">一年节省100万推广预算。</p>
               </div>
             </el-col>
             
