@@ -151,9 +151,31 @@
         <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at || '—' |timeFormat2}}</div>
         <div class="evaluation-text pad-left-40 white-space">沟通天数：13</div>
       </div>
-      <div class="flex-center">
-        <div class="show-img"></div>
-        <div class="show-text pad-left-5">查看进度</div>
+      <div>
+        <el-popover
+          placement="top-end"
+          width="680"
+          trigger="click">
+            <div class="steps" v-if="boolStage">
+              <el-steps :active="stageActive" class="steps-item">
+                <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
+                <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
+                <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+              </el-steps>
+              <div class="steps-remarks" v-if="trueDesign.status > 6">
+                <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{trueDesign.message || '—'}}</span></p>
+                <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{trueDesign.design_remarks || '—'}}</span></p>
+              </div>
+            </div>
+            <div class="flex-center" @click="showProgessDesign(trueDesign)" slot="reference">
+              <div class="show-img"></div>
+              <div class="show-text pad-left-5">查看进度</div>
+            </div>
+        </el-popover>
       </div>
     </div>
 
@@ -173,32 +195,9 @@
               <div class="evaluation-text pad-left-80 white-space">对接日期：{{item.created_at || '—' |timeFormat2}}</div>
               <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
             </div>
-            <div>
-              <el-popover
-                placement="top-end"
-                width="680"
-                trigger="click">
-                  <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                    <el-steps :active="stageActive" class="steps-item">
-                      <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                      <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
-                      <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                      <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                      <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                      <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                      <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                    </el-steps>
-                    <div class="steps-remarks" v-if="d.status > 6">
-                      <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
-                      <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
-                    </div>
-                  </div>
-                <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-              </el-popover>
-            </div>
             <div class="flex-center">
               <div class="show-img"></div>
-              <div class="show-text pad-left-5">查看进度</div>
+              <div class="show-text pad-left-5">查看原因</div>
             </div>
           </template>
         </div>
@@ -255,7 +254,6 @@ export default {
     },
     showProgessDesign(d) { // 查看进度
       if (!d) return
-      this.nowDesignId = d.design_company_id
       let obj = JSON.parse(d.stage)
       let stageArr = []
       for (let i in obj) {
