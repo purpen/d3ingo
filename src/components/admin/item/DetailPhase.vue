@@ -240,11 +240,11 @@ export default {
       if (that.evaluate.user_score.service) {
         that.comments.service = that.evaluate.user_score.service - 0
       }
-      if (that.evaluate.user_score.designLevel) {
-        that.comments.designLevel = that.evaluate.user_score.designLevel - 0
+      if (that.evaluate.user_score.design_level) {
+        that.comments.designLevel = that.evaluate.user_score.design_level - 0
       }
-      if (that.evaluate.user_score.responseSpeed) {
-        that.comments.responseSpeed = that.evaluate.user_score.responseSpeed - 0
+      if (that.evaluate.user_score.response_speed) {
+        that.comments.responseSpeed = that.evaluate.user_score.response_speed - 0
       }
     }
   },

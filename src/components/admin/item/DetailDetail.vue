@@ -77,13 +77,13 @@
       <div class="grey-text">{{contract.true_time || '—' |timeFormat2}}</div>
     </div>
     <div class="flex pad-top-18">
-      <div class="flex-center">
+      <div class="flex-center" v-if="contract.source === 1">
         <div class="navegete-round flex-center" @click="viewContractBtn(1)">
           <div class="navegete-to">查看客户与艺火的合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
-      <div class="flex-center pad-left-47">
+      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
         <div class="navegete-round flex-center" @click="viewContractBtn(2)">
           <div class="navegete-to">查看服务商与太火鸟的合同</div>
           <div class="arrow-right"></div>
