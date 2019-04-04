@@ -158,7 +158,7 @@ a {
   font-weight: 400;
   color: #666666;
   line-height: 14px;
-  padding-right: 10px;
+  padding-right: 20px;
 }
 .pad-left-20 {
   padding-left: 20px;
