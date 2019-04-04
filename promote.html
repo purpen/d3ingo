@@ -2172,6 +2172,7 @@
       }
       input {
         box-sizing: border-box;
+        outline: none
       }
       .pc-bot-hei-125 {
         height: 110px;
@@ -3354,6 +3355,12 @@
       },
       false
     );
+    function clearData2() {
+      $(".pc-item_name1").val('');
+      $(".pc-user_name1").val('');
+      $(".pc-phone1").val('');
+      $(".pc-sms-code1").val('');
+    }
     // 发布需求, 表单提交
     $(".pc-send-btn-text2").on("click", function() {
       var itemName = $(".pc-item_name1").val();
@@ -3398,14 +3405,20 @@
       }
       $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
-          toastr.success(res.meta.message);
+          toastr.success('发布成功');
+          clearData2()
         } else {
           // 失败
           toastr.error(res.meta.message);
         }
       });
     });
-
+    function clearData() {
+      $(".pc-item_name2").val('');
+      $(".pc-user_name2").val('');
+      $(".pc-phone2").val('');
+      $(".pc-sms-code2").val('');
+    }
     $(".pc-dialog-btn").on("click", function() {
       var itemName = $(".pc-item_name2").val();
       var userName = $(".pc-user_name2").val();
@@ -3448,7 +3461,8 @@
       }
       $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
-          toastr.success(res.meta.message);
+          toastr.success('发布成功');
+          clearData()
           $(".pc-dialog").hide();
         } else {
           // 失败
