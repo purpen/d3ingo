@@ -32,14 +32,14 @@
           <!-- <div class="pay-type" v-if="item.source === 0"> -->
           <div class="pay-type">
             <ul v-if="!isMob">
-              <li>
+              <!-- <li> 支付宝暂时隐藏
                 <label>
                   <div :class="{'item': true, active: payType === 1 ? true : false}" @click="checkedPayBtn(1)">
                     <img src="../../../../assets/images/icon/alipay.png"/>
                     <img class="pay-active" src="../../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
-              </li>
+              </li> -->
               <!--<li>-->
               <!--<label>-->
               <!--<div :class="{'item': true, active: payType === 2 ? true : false}" @click="checkedPayBtn(2)">-->
@@ -60,7 +60,7 @@
             </ul>
 
             <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio>
+              <!-- <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio> -->
               <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
             </el-radio-group>
 

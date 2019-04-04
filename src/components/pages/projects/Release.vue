@@ -156,7 +156,8 @@
           <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
         </div> -->
         <div class="foot-content">
-          <img class="qr-code margin-r-20" :src="require('assets/images/THN-WX-Assistant.jpg')" alt="">
+          <!-- <img class="qr-code margin-r-20" :src="require('assets/images/THN-WX-Assistant.jpg')" alt=""> -->
+          <div class="qr-code margin-r-20"></div>
           <div>
             <p class="line-height24 fz-16">请用微信扫一扫小程序码</p>
             <p class="line-height24 fz-16">查看并管理您的项目</p>
@@ -804,7 +805,9 @@ export default {
   .qr-code {
     width: 100px;
     height: 100px;
-    border-radius: 50%
+    border-radius: 50%;
+    border: 6px solid #fff;
+    background: url(../../../assets/images/THN-WX-Assistant.jpg) no-repeat center / contain
   }
   .project-cover {
     padding-bottom: 140px
