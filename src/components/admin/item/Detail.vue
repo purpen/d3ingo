@@ -17,11 +17,13 @@
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
-            <div class="text">{{item.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
+            <div class="text">{{oldItem.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
+            </div>
           </div>
-          <div class="one-right" v-if="oldItem.status !== 1">
+          <div class="one-right" v-if="!onePhase">
             <div class="title">合同金额：</div>
-            <div class="header-yellow width-150-right">￥{{contract.total}}</div>
+            <div class="header-yellow width-150-right" v-if="contract.total">￥{{contract.total}}</div>
+            <div class="header-yellow width-150-right" v-else>{{'-'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
@@ -29,9 +31,9 @@
             <div class="title pad-right-40">项目预算</div>
             <div class="text">{{item.design_cost_value || oldItem.design_cost_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="oldItem.status !== 1">
+          <div class="one-right" v-if="!onePhase">
             <div class="title">项目编号：</div>
-            <div class="text width-150-right">{{item.number}}</div>
+            <div class="text width-150-right">{{item.number || '-'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
@@ -39,13 +41,13 @@
             <div class="title pad-right-40">交付时间</div>
             <div class="text">{{item.cycle_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="oldItem.status !== 1">
+          <div class="one-right" v-if="!onePhase">
             <div class="title">签约日期：</div>
             <div class="text width-150-right">{{contract.true_time || '—' |timeFormat}}</div>
           </div>
         </div>
       </div>
-      <div class="flex-center-end height-34">
+      <div class="flex-center-end height-34" v-if="!onePhase">
         <div class="navegete-round flex-center">
           <div class="navegete-to">查看合同</div>
           <div class="arrow-right"></div>
@@ -81,7 +83,7 @@
             </div>
           </div>
         </div>
-        <div class="flex-1">
+        <div class="flex-1" v-if="!onePhase">
           <div class="curstomer-server-title pad-bot-20">设计服务商</div>
           <div class="flex-between">
             <div>
@@ -122,7 +124,7 @@
       <div class="bot pad-top-50">
         <div class="directory flex-center">
           <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" @click="getType(1)">项目阶段</div>
-          <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)">订单详情</div>
+          <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 2}" @click="getType(2)" v-if="twoPhase || threePhase">订单详情</div>
           <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 3}" @click="getType(3)">项目信息</div>
         </div>
       </div>
@@ -134,13 +136,28 @@
         :designCompany="designCompany"
         :contract="contract"
         :itemName="item.name"
+        :quotation="quotation"
         :evalDesignLevel="evalDesignLevel"
         :evalResponseSpeed="evalResponseSpeed"
         :evalService="evalService"
-        :oldItem="oldItem">
+        :oldItem="oldItem"
+        :creat="oldItem.created_at"
+        :refauseDesign="refauseDesign"
+        :normalDesign="normalDesign">
       </phase>
-      <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem" :itemStage="itemStage" :trueDesign="trueDesign"></detail>
-      <info v-if="type === 3" :item="item" :contract="contract" :oldItem="oldItem"></info>
+      <detail v-if="type === 2"
+        :contract="contract"
+        :quotation="quotation"
+        :payOrders="payOrders"
+        :oldItem="oldItem"
+        :itemStage="itemStage"
+        :trueDesign="trueDesign">
+      </detail>
+      <info v-if="type === 3"
+        :item="item"
+        :contract="contract"
+        :oldItem="oldItem">
+      </info>
     </div>
   </div>
 </template>
@@ -167,9 +184,11 @@ export default {
       evalDesignLevel: 0,
       evalResponseSpeed: 0,
       evalService: 0,
-      onePhase: false,
-      twoPhase: false,
-      threePhase: false
+      onePhase: false, // 第一个阶段
+      twoPhase: false, // 第二个阶段
+      threePhase: false, // 第三个阶段
+      normalDesign: [], // 未拒绝的设计公司
+      refauseDesign: [] // 拒绝的设计公司
     }
   },
   created() {
@@ -179,9 +198,9 @@ export default {
     //   this.$router.replace({name: 'home'})
     //   return false
     // }
-    // let id = that.$route.params.id
+    let id = that.$route.params.id
     that.type = 1
-    that.getDetail(1791)
+    that.getDetail(id)
   },
   methods: {
     getType(type) {
@@ -197,14 +216,44 @@ export default {
           obj = response.data.data
           that.item = obj
           that.oldItem = obj.item
-          that.contract = obj.contract
-          that.clue = obj.clue
-          that.evaluate = obj.evaluate
-          that.payOrders = obj.pay_orders
-          that.quotation = obj.quotation
-          that.itemStage = obj.item_stage
-          that.designCompany = obj.designCompany
-          that.trueDesign = obj.true_design
+          if (obj.contract) {
+            that.contract = obj.contract
+          }
+          if (obj.clue) {
+            that.clue = obj.clue
+          }
+          if (obj.evaluate) {
+            that.evaluate = obj.evaluate
+          }
+          if (obj.pay_orders) {
+            that.payOrders = obj.pay_orders
+          }
+          if (obj.quotation) {
+            that.quotation = obj.quotation
+          }
+          if (obj.item_stage) {
+            that.itemStage = obj.item_stage
+          }
+          if (obj.designCompany) {
+            for (let index in obj.designCompany) {
+              let item = obj.designCompany[index]
+              let overdueTime = (new Date().getTime().toString().substr(0, 10) - item.created_at) / 24 / 60 / 60
+              if (parseInt(overdueTime) >= 1) {
+                obj.designCompany[index].chatDay = parseInt(overdueTime)
+              } else {
+                obj.designCompany[index].chatDay = 1
+              }
+              if (item.status === 7 || item.status === 8) {
+                that.refauseDesign.push(item)
+              } else {
+                that.normalDesign.push(item)
+              }
+            }
+            that.designCompany = obj.designCompany
+          }
+          if (obj.true_design) {
+            that.trueDesign = obj.true_design
+          }
           if (that.contract) {
             that.contract.item_stage = obj.item_stage
           }
@@ -248,11 +297,13 @@ export default {
               that.threePhase = true
               break
           }
-          let overdueTime = (new Date().getTime().toString().substr(0, 10) - that.trueDesign.created_at) / 24 / 60 / 60
-          if (parseInt(overdueTime) >= 1) {
-            that.trueDesign.chatDay = parseInt(overdueTime)
-          } else {
-            that.trueDesign.chatDay = 1
+          if (that.trueDesign && that.trueDesign.created_at) {
+            let overdueTime = (new Date().getTime().toString().substr(0, 10) - that.trueDesign.created_at) / 24 / 60 / 60
+            if (parseInt(overdueTime) >= 1) {
+              that.trueDesign.chatDay = parseInt(overdueTime)
+            } else {
+              that.trueDesign.chatDay = 1
+            }
           }
         } else {
           that.$message.error(response.data.meta.message)
@@ -407,6 +458,7 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 40px;
     height: 40px;
+    transition: 268ms all ease;
   }
   .directory-title:hover {
     color: #ff5a5f;

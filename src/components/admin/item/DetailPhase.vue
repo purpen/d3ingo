@@ -1,14 +1,169 @@
 <template>
   <div>
-    <div v-if="oldItem.status === 1">
-      <div class="title">项目已创建</div>
-      <div class="date-12">{{contract.true_time || '—' |timeFormat}}</div>
-      <div class="one-img">
+    <div v-if="oldItem.status === 1 || oldItem.status === 2">
+      <div class="title pad-top-30">项目已创建</div>
+      <div class="date-12">{{creat || '—' |timeFormat}}</div>
+      <div class="one-img" v-if="oldItem.status !== 1">
         <div class="empty-img"></div>
         <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
       </div>
     </div>
-    <div v-if="oldItem.status === 22">
+    <div v-if="oldItem.status === 3 || oldItem.status === 4 || oldItem.status === 45 || oldItem.status === 5 || oldItem.status === 6 || oldItem.status === 7 || oldItem.status === 8 || oldItem.status === 9">
+      <template v-if="oldItem.status === 3">
+        <div class="title pad-top-30" v-if="normalDesign && normalDesign.length">已匹配设计服务商</div>
+        <div class="title pad-top-30" v-else>待匹配设计服务商</div>
+        <div class="date-12">{{creat || '—' |timeFormat}}</div>
+      </template>
+      <template v-if="oldItem.status === 4 || oldItem.status === 45">
+        <div class="title pad-top-30">已确认项目邀约</div>
+        <div class="date-12">{{creat || '—' |timeFormat}}</div>
+      </template>
+      <template v-if="oldItem.status === 5 || oldItem.status === 6">
+        <div class="flex-center-space">
+          <div>
+            <div class="title pad-top-30">已确认项目报价</div>
+            <div class="date-12">{{creat || '—' |timeFormat}}</div>
+          </div>
+          <div class="navegete-round flex-center" @click="showOrder()">
+            <div class="navegete-to">查看报价单</div>
+            <div class="arrow-right"></div>
+          </div>
+        </div>
+      </template>
+      <template v-if="oldItem.status === 7 || oldItem.status === 8 || oldItem.status === 9">
+        <div>
+          <div class="flex-center-space">
+            <div>
+              <div class="pad-top-30 flex-center">
+                <div class="title pad-right-20">待启动项目</div>
+                <div class="show-pay" v-if="oldItem.status === 9">已支付首付款</div>
+                <div class="show-pay" v-if="oldItem.status === 7 || oldItem.status === 8">未支付首付款</div>
+              </div>
+              <div class="date-12">{{creat || '—' |timeFormat}}</div>
+            </div>
+            <div class="navegete-round flex-center" @click="toOrder(oldItem.id)" v-if="oldItem.status === 9">
+              <div class="navegete-to">查看订单信息</div>
+              <div class="arrow-right"></div>
+            </div>
+          </div>
+
+          <div class="grey-line"></div>
+          <div class="flex-center-space">
+            <div>
+              <div class="title pad-top-30">已确认项目报价</div>
+              <div class="date-12">{{creat || '—' |timeFormat}}</div>
+            </div>
+            <div class="navegete-round flex-center" @click="showOrder()">
+              <div class="navegete-to">查看报价单</div>
+              <div class="arrow-right"></div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <div class="pad-top-10" v-if="normalDesign && normalDesign.length">
+        <div class="pad-top-20 flex-center-space" v-for="(item, index) in normalDesign" :key="index">
+          <div class="flex-center">
+            <div class="flex-center width-265">
+              <div class="logo">
+                <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+              </div>
+              <div class="name pad-left-15">{{item.company_name || '—'}}</div>
+            </div>
+            <div class="evaluation-text pad-left-80 white-space">对接日期：{{item.created_at || '—' |timeFormat2}}</div>
+            <div class="evaluation-text pad-left-40 white-space">沟通天数: {{item.chatDay || '—'}}</div>
+          </div>
+          <div>
+            <el-popover
+              placement="top-end"
+              width="680"
+              trigger="click">
+                <div class="steps" v-if="boolStage">
+                  <el-steps :active="stageActive" class="steps-item">
+                    <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                    <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
+                    <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
+                    <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                    <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                    <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                    <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                  </el-steps>
+                  <div class="steps-remarks" v-if="item.status > 6">
+                    <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{item.message || '—'}}</span></p>
+                    <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{item.design_remarks || '—'}}</span></p>
+                  </div>
+                </div>
+                <div class="flex-center" @click="showProgessDesign(item)" slot="reference">
+                  <div class="show-img"></div>
+                  <div class="show-text pad-left-5">查看进度</div>
+                </div>
+            </el-popover>
+          </div>
+        </div>
+      </div>
+      <div class="one-img" v-else>
+        <div class="empty-img"></div>
+        <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
+      </div>
+
+      <div class="grey-line" v-if="refauseDesign && refauseDesign.length"></div>
+
+      <div v-if="refauseDesign && refauseDesign.length">
+        <div class="tansition" :class="{'hei-0': !server}">
+          <div class="title">对接过的服务商</div>
+          <div class="date-12">共 {{refauseDesign.length}} 家</div>
+          <div class="pad-top-10">
+            <div class="pad-top-20 flex-center-space" v-for="(item, index) in refauseDesign" :key="index">
+              <div class="flex-center">
+                <div class="flex-center width-265">
+                  <div class="logo">
+                    <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+                  </div>
+                  <div class="name pad-left-15">{{item.company_name || '—'}}</div>
+                </div>
+                <div class="evaluation-text pad-left-80 white-space">对接日期：{{item.created_at || '—' |timeFormat2}}</div>
+                <div class="refused-text pad-left-40 white-space" v-if="item.status === 8">已拒绝合作（客户）</div>
+                <div class="refused-text pad-left-40 white-space" v-if="item.status === 7">已拒绝合作（服务商）</div>
+              </div>
+              <div>
+                <el-popover
+                  placement="top-end"
+                  width="680"
+                  trigger="click">
+                    <div class="steps" v-if="boolStage">
+                      <el-steps :active="stageActive" class="steps-item">
+                        <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                        <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
+                        <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
+                        <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                        <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                        <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                        <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                      </el-steps>
+                      <div class="steps-remarks" v-if="item.status > 6">
+                        <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{item.message || '—'}}</span></p>
+                        <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{item.design_remarks || '—'}}</span></p>
+                      </div>
+                    </div>
+                    <div class="flex-center" @click="showProgessDesign(item)" slot="reference">
+                      <div class="show-img"></div>
+                      <div class="show-text pad-left-5">查看原因</div>
+                    </div>
+                </el-popover>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-center cursor-point pad-top-30" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
+          <div class="close-text">隐藏对接过的服务商</div>
+          <div class="close-img"></div>
+        </div>
+        <div class="flex-center cursor-point pad-top-30" @click="showServer" v-else>
+          <div class="close-text">查看对接过的服务商</div>
+          <div class="open-img"></div>
+        </div>
+      </div>
+    </div>
+    <div v-if="oldItem.status === 11 || oldItem.status === 22">
       <div class="title pad-top-30">已评价</div>
       <div class="date-12">{{evaluate.created_at || '—' |timeFormat2}}</div>
       <div class="evaluation pad-top-40">
@@ -151,7 +306,7 @@
       <div class="date-12">{{contract.true_time || '—' |timeFormat}}</div>
       <div class="pad-top-30 flex-center-space">
         <div class="flex-center">
-          <div class="flex-center flex-0-1-265">
+          <div class="flex-center width-265">
             <div class="logo">
               <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
             </div>
@@ -197,7 +352,7 @@
           <div class="pad-top-20 flex-center-space" v-for="(item, index) in designCompany" :key="index">
             <template v-if="item.id !== trueDesign.id">
               <div class="flex-center">
-                <div class="flex-center flex-0-1-265">
+                <div class="flex-center width-265">
                   <div class="logo"></div>
                   <div class="name pad-left-15">{{item.company_name || '—'}}</div>
                 </div>
@@ -223,12 +378,24 @@
         <div class="open-img"></div>
       </div>
     </div>
+
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
+      <v-quote-view :formProp="quotation"></v-quote-view>
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+const vQuoteView = () => import('@/components/block/QuoteView')
 export default {
+  components: {
+    vQuoteView
+  },
   data() {
     return {
+      quotaDialog: false,
       server: true,
       nowDesignId: '',
       stageActive: 0,
@@ -236,8 +403,17 @@ export default {
       boolStage: false
     }
   },
-  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem'],
+  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem', 'creat', 'refauseDesign', 'normalDesign', 'quotation'],
   methods: {
+    toOrder(id) {
+      const {href} = this.$router.resolve({
+        path: `/admin/item/orderlist/${id}`
+      })
+      window.open(href, '_blank')
+    },
+    showOrder() {
+      this.quotaDialog = true
+    },
     showServer() {
       this.server = true
     },
@@ -408,6 +584,7 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,90,95,1);
+    white-space: nowrap;
   }
   .show-img {
     height: 16px;
@@ -464,7 +641,7 @@ export default {
   .empty-img {
     height: 100px;
     width: 100px;
-    background: url('../../../assets/images/icon/upper@2x.png') no-repeat center / contain;
+    background: url('../../../assets/images/icon/Group2@2x.png') no-repeat center / contain;
   }
   .empty-text {
     font-size: 16px;
@@ -476,6 +653,32 @@ export default {
   .color-ff5a5f {
     color: #FF5A5F;
   }
+  .navegete-round {
+    cursor: pointer;
+  }
+  .navegete-to {
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+  }
+  .arrow-right {
+    width: 14px;
+    height: 14px;
+    background: url('../../../assets/images/icon/rightArrow@2x.png') no-repeat center / contain;
+  }
+  .show-pay {
+    width: 110px;
+    height: 26px;
+    background: rgba(0,172,132,1);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 26px;
+    text-align: center;
+  }
 
 
 
@@ -485,8 +688,8 @@ export default {
   .width-30 {
     width: 30%;
   }
-  .flex-0-1-265 {
-    flex: 0 1 265px;
+  .width-265 {
+    width: 265px;
   }
   .pad-top-6 {
     padding-top: 6px;

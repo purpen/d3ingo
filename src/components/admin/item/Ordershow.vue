@@ -49,9 +49,11 @@
           width="55">
         </el-table-column>
         <el-table-column
-          prop="name"
           label="项目名称"
           width="140">
+          <template slot-scope="scope">
+            <div @click="toDetail(scope.row.id)" class="cursor-poi">{{scope.row.name}}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="type_value"
@@ -568,6 +570,12 @@
       }
     },
     methods: {
+      toDetail(id) {
+        const {href} = this.$router.resolve({
+          path: `/admin/item/detail/${id}`
+        })
+        window.open(href, '_blank')
+      },
       // 设计类型
       filterType(value) {
         // 类型
@@ -861,5 +869,11 @@
     height: 15px;
     margin: 0 30px 0 10px;
     cursor: pointer;
+  }
+  .cursor-poi {
+    cursor: pointer;
+  }
+  .cursor-poi:hover {
+    color: #ff5a5f;
   }
 </style>

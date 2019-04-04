@@ -326,8 +326,7 @@ export default {
   .tick {
     width: 16px;
     height: 16px;
-    background: url('../../../assets/images/icon/success.png') no-repeat center / contain;
-    background-color: white;
+    background: url('../../../assets/images/icon/ok.png') no-repeat center / contain;
   }
   .order-money {
     font-size: 12px;
