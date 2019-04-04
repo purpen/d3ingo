@@ -16,6 +16,9 @@
     <style>
       * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: 0
       }
       .back-bg input {
         border: 1px solid #e6e6e6;
@@ -103,15 +106,13 @@
       }
       .fields {
         text-align: left;
-      }
-      .fields .field {
-        display: inline-block;
+        display: flex
       }
       .fields .field:first-child {
-        width: 60%;
+        flex: 1 1 auto
       }
       .fields .field:last-child {
-        width: 30%;
+        flex: 0 1 auto
       }
 
       .pc-get-code {
@@ -162,7 +163,6 @@
           no-repeat center / contain;
         margin: 0 auto;
         position: relative;
-        margin-top: 25px;
       }
       .logo:after {
         content: "";
@@ -812,6 +812,10 @@
         display: flex;
         align-items: center;
       }
+      .pc-code-90-round2 {
+        flex: 1 1 auto;
+        border: none
+      }
       .field input.pc-code-90 {
         width: 90px;
         border: none;
@@ -912,12 +916,12 @@
         height: 30px;
         width: 30px;
         background: url("https://s3.taihuoniao.com/promote/Telephone@2x.png")
-          no-repeat;
-        background-size: 100% 100%;
+          no-repeat center;
+        background-size: 26px;
         margin: 0 10px 3px 20px;
       }
       .call-phone-text {
-        font-size: 24px;
+        font-size: 22px;
         font-family: PingFangSC-Regular;
         font-weight: 400;
         color: #fff;
@@ -2227,6 +2231,9 @@
       .mar-top-10 {
         margin-top: 10px;
       }
+      .swiper-slide.mob-s-slide-template {
+        height: 35px !important;
+      }
       @media screen and (max-width: 1024px) {
         .pc-investors-round {
           overflow: scroll;
@@ -2667,9 +2674,9 @@
                     placeholder="手机号码"
                   />
                 </div>
-                <div class="dialog-req">验证码</div>
+                <div class="dialog-req dialog-req-code">验证码</div>
                 <div class="dialog-code-round field">
-                  <div class="pc-code-90-round">
+                  <div class="pc-code-90-round pc-code-90-round2">
                     <input
                       type="text"
                       class="dialog-code pc-sms-code2"
@@ -2690,6 +2697,15 @@
         </div>
       </div>
 
+
+
+
+
+
+
+
+
+      
 
 
       <!-- phone -->
@@ -3027,59 +3043,48 @@
               >小米商城</span
             >
           </div>
-          <el-form
-            @submit.native.prevent
-            :model="form1"
-            :rules="ruleForm"
-            ref="ruleForm1"
+          <form
             class="text-center phone-el-pad-bot"
           >
-            <el-form-item prop="demand">
+            <div>
               <input
                 type="text"
                 placeholder="请输入您的需求"
-                class="input-style mar-top-20"
-                v-model="form1.demand"
+                class="input-style mar-top-20 mob-demand2"
                 name="username"
               />
-            </el-form-item>
-            <el-form-item prop="contact">
+            </div>
+            <div>
               <input
                 type="text"
                 placeholder="请输入联系人"
-                class="input-style margin-top-10"
-                v-model="form1.contact"
-                ref="contact"
+                class="input-style margin-top-10 mob-username2"
               />
-            </el-form-item>
-            <el-form-item prop="account">
+            </div>
+            <div>
               <input
                 type="text"
                 placeholder="手机号码"
+                id="mob-phone2"
                 class="input-style margin-top-10"
               />
-            </el-form-item>
-            <el-form-item prop="smsCode" v-if="!identifying_code">
+            </div>
+            <div>
               <div class="code-round margin-top-10">
                 <input
                   type="text"
                   placeholder="验证码"
-                  class="code-input border-none"
-                  v-model="form1.smsCode"
+                  class="code-input border-none mob-sms-code2"
                   name="smsCode"
                 />
-                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
-                <div class="send-code" @click="fetchCode1" v-else>
-                  {{ codeMsg }}
+                <div class="send-code" id="mob-send-code2">
+                  获取验证码
                 </div>
               </div>
-            </el-form-item>
-          </el-form>
-          <div class="send-code-btn color-666" v-if="appBtn2">
-            <div class="send-code-text">立即发布需求</div>
-          </div>
-          <div class="send-code-btn" v-else>
-            <div class="send-code-text" @click="submit_app1('ruleForm1')">
+            </div>
+          </form>
+          <div class="send-code-btn">
+            <div class="send-code-text"  id="mob-submit2">
               立即发布需求
             </div>
           </div>
@@ -3088,16 +3093,8 @@
             <div class="new-text">最新报名客户</div>
             <div class="right"></div>
           </div>
-          <div class="person-round">
-            <swiper class="swiper-con bot-0" :options="swiperOption2">
-              <swiper-slide v-for="(item, index) of userList" :key="index">
-                <div class="person">
-                  <div v-text="item.user_name" class="person-text"></div>
-                  <div class="person-text" v-text="item.phone"></div>
-                  <div class="person-text">{{ item.created_at }}分钟前</div>
-                </div>
-              </swiper-slide>
-            </swiper>
+          <div class="person-round" id="mob-person-template">
+            <!-- 模板 -->
           </div>
           <div class="send-code-btn">
             <div href="tel:13031154842" class="send-code-text">拨打电话</div>
@@ -3137,6 +3134,21 @@
               </div>
         </div>
       </script>
+      <script type="text/html" id="mob-person">
+        <div class="swiper-container swiper-con bot-0" id="mob-person-swiper">
+            <div class="swiper-wrapper">
+              {{each}}
+                <div class="swiper-slide mob-s-slide-template">
+                  <div class="person">
+                    <div class="person-text">{{$value.user_name}}</div>
+                    <div class="person-text">{{$value.phone}}</div>
+                    <div class="person-text">{{$value.created_at}}分钟前</div>
+                  </div>
+                </div>
+              {{/each}}
+              </div>
+        </div>
+      </script>
     </section>
   </body>
   <script>
@@ -3147,6 +3159,25 @@
   <script src="https://s3.taihuoniao.com/swiper.jquery.min.js"></script>
   <script src="https://s3.taihuoniao.com/toastr.min.js"></script>
   <script>
+    var api = location.origin + '/api'
+    var api = 'http://mc.taihuoniao.com/api'
+    // var api = 'https://saas.taihuoniao.com/api'
+    var query = getQuery();
+    if (!query.from) {
+      query.from = 2
+    }
+    if (!query.mark) {
+      query.mark = 'a'
+    }
+    var verify = true
+    if (query.identifying_code === 'no') {
+      verify = false
+    }
+    if (!verify) {
+      $(".dialog-code-round").hide()
+      $(".dialog-req-code").hide()
+      $(".pc-get-code").hide()
+    }
     function IsMobile () {
       var sUserAgent = navigator.userAgent
       var mobileAgents = ['Android', 'iPhone', 'Symbian', 'WindowsPhone', 'iPod', 'Mobile Safari', 'Windows CE']
@@ -3170,16 +3201,6 @@
       $('.pc').hide()
       $('.phone').show()
     }
-    // var api = location.origin + '/api'
-    var api = 'http://mc.taihuoniao.com/api'
-    var query = getQuery();
-    if (!query.from) {
-      query.from = 2
-    }
-    if (!query.mark) {
-      query.mark = 'a'
-    }
-
     function generalize() {
       $.post(api + '/generalize/create', {
         url: location.href,
@@ -3249,25 +3270,38 @@
           userList.forEach(function(item) {
             item.created_at = parseInt((date - item.created_at) / 60);
           });
-          $("#pc-person").html(template("pc-new-curstomer", userList));
-          var mySwiperCurstomer = new Swiper(".swiper-curstomer1", {
-            direction: "vertical",
-            autoplay: 5000,
-            loop: true,
-            slidesPerView: "auto",
-            mousewheelControl: true,
-            freeMode: true,
-            freeModeMomentumRatio: 2
-          });
-          var mySwiperCurstomer = new Swiper(".swiper-curstomer2", {
-            direction: "vertical",
-            autoplay: 5000,
-            loop: true,
-            slidesPerView: "auto",
-            mousewheelControl: true,
-            freeMode: true,
-            freeModeMomentumRatio: 2
-          });
+          if (isMob == 2) {
+            $("#mob-person-template").html(template("mob-person", userList));
+            var mySwiperMobPerson = new Swiper('#mob-person-swiper', {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            })
+          } else {
+            $("#pc-person").html(template("pc-new-curstomer", userList));
+            var mySwiperCurstomer = new Swiper(".swiper-curstomer1", {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            });
+            var mySwiperCurstomer = new Swiper(".swiper-curstomer2", {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            });
+          }
         }
       });
     }
@@ -3285,7 +3319,7 @@
     var mySwiperPhoneSever = new Swiper('#swiper-phone-sever', {
       direction: "horizontal",
       loop: true,
-      autoplay: 100000,
+      autoplay: 1000,
       // 如果需要分页器
       pagination: ".swiper-pagination",
       paginationClickable: true,
@@ -3300,10 +3334,10 @@
         $(".fiexd-logo").hide();
       } else {
         $(".fiexd-logo").show();
-        if (isMountHtml) {
-          mountHtml()
-          isMountHtml = false
-        }
+      }
+      if (isMountHtml) {
+        mountHtml()
+        isMountHtml = false
       }
     });
     ;(function () { // 刷新页面to
@@ -3392,6 +3426,11 @@
         $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
           if (res.meta && res.meta.status_code === 200) {
             toastr.success(res.meta.message);
+            $(data[0]).val('')
+            $(data[1]).val('')
+            $(data[2]).val('')
+            $(data[3]).val('')
+            console.log($(data[0]).val())
           } else {
             // 失败
             toastr.error(res.meta.message);
@@ -3498,9 +3537,11 @@
         toastr.error("请输入正确的手机号");
         return;
       }
-      if (!smsCode) {
-        toastr.error("请输入验证码");
-        return;
+      if (verify) {
+        if (!smsCode) {
+          toastr.error("请输入验证码");
+          return;
+        }
       }
       var formDate = {
         user_name: userName,
@@ -3510,7 +3551,11 @@
         son_source: query.mark,
         source: query.from
       };
-      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+      var url = '/wechat/demand/pcAdd2'
+      if (!verify) {
+        url = '/wechat/demand/pcAdd'
+      }
+      $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
           toastr.success(res.meta.message);
         } else {
@@ -3542,10 +3587,11 @@
         toastr.error("请输入正确的手机号");
         return;
       }
-
-      if (!smsCode) {
-        toastr.error("请输入验证码");
-        return;
+      if (verify) {
+        if (!smsCode) {
+          toastr.error("请输入验证码");
+          return;
+        }
       }
       var formDate = {
         user_name: userName,
@@ -3555,7 +3601,11 @@
         son_source: query.mark,
         source: query.from
       };
-      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+      var url = '/wechat/demand/pcAdd2'
+      if (!verify) {
+        url = '/wechat/demand/pcAdd'
+      }
+      $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
           toastr.success(res.meta.message);
           $(".pc-dialog").hide();
@@ -3568,7 +3618,9 @@
 
     // 移动端获取验证码
     $('#mob-send-code1').on('click', ['#mob-send-code1', '#mob-phone1'], fetchCode)
+    $('#mob-send-code2').on('click', ['#mob-send-code2', '#mob-phone2'], fetchCode)
     // 移动端提交表单
     $('#mob-submit1').on('click', ['.mob-demand1', '.mob-username1', '#mob-phone1', '.mob-sms-code1'], submitForm)
+    $('#mob-submit2').on('click', ['.mob-demand2', '.mob-username2', '#mob-phone2', '.mob-sms-code2'], submitForm)
   </script>
 </html>

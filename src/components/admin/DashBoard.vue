@@ -110,17 +110,17 @@
             <div class="content-item flex1">
               <img :src="require('assets/images/admin/dash_board/SettledInDemand@2x.png')" alt="">
               <div class="tc-6 fz-14">
-                <p>已认证需求公司</p>
+                <p>已审核需求公司</p>
                 <p class="count-number protrude">{{AdminOverviewCompany.demand_company.authentication}}</p>
-                <p>待认证: {{AdminOverviewCompany.demand_company.uncertified}}</p>
+                <p>待审核: {{AdminOverviewCompany.demand_company.uncertified}}</p>
               </div>
             </div>
             <div class="content-item flex1">
               <img :src="require('assets/images/admin/dash_board/SettledInDesign@2x.png')" alt="">
               <div class="tc-6 fz-14">
-                <p>已认证设计服务商</p>
+                <p>已审核设计服务商</p>
                 <p class="count-number protrude">{{AdminOverviewCompany.design_company.authentication}}</p>
-                <p>待认证: {{AdminOverviewCompany.design_company.uncertified}}</p>
+                <p>待审核: {{AdminOverviewCompany.design_company.uncertified}}</p>
               </div>
             </div>
           </div>
@@ -160,16 +160,16 @@
                   <span class="sub-number">{{AdminOverviewCompany.demand_company.uncertified}}</span>
                   <img :src="require('assets/images/admin/dash_board/RemindDemand Company@2x.png')" alt="">
                 </div>
-                <p>需求公司等待认证</p>
+                <p>需求公司等待审核</p>
               </router-link>
             </el-col>
             <el-col class="wait-msg" :span="12">
-              <router-link :to="{name: 'adminCompanyList'}">
+              <router-link :to="{name: 'adminCompanyHome', query: {type: '1'}}">
                 <div class="relative sub-img">
                   <span class="sub-number">{{AdminOverviewCompany.design_company.uncertified}}</span>
                   <img :src="require('assets/images/admin/dash_board/RemindDesign Company@2x.png')" alt="">
                 </div>
-                <p>设计服务商等待认证</p>
+                <p>设计服务商等待审核</p>
               </router-link>
             </el-col>
           </el-row>
