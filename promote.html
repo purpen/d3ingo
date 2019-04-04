@@ -7,11 +7,11 @@
     <title>铟果推广-太火鸟-B2B工业设计和产品创新SaaS平台</title>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css"
+      href="https://s3.taihuoniao.com/swiper.min.css"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+      href="https://s3.taihuoniao.com/toastr.min.css"
     />
     <style>
       * {
@@ -133,7 +133,9 @@
         border-radius: 4px;
         margin: 0 auto;
       }
-
+      .pc-sever-swipe-round .swiper-pagination {
+        bottom: 20px;
+      }
       .pc-header {
         text-align: center;
       }
@@ -3128,8 +3130,8 @@
   </script>
   <script src="https://s3.taihuoniao.com/javascript/jquery-2.min.js"></script>
   <script src="http://s4.taihuoniao.com/template-web.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://s3.taihuoniao.com/swiper.jquery.min.js"></script>
+  <script src="https://s3.taihuoniao.com/toastr.min.js"></script>
   <script>
     // var api = location.origin + '/api'
     var api = 'http://mc.taihuoniao.com/api'
@@ -3148,15 +3150,15 @@
 
       for (let i = 0; i < mobileAgents.length; i++) {
       if (sUserAgent.indexOf(mobileAgents[i]) > -1 && document.documentElement.clientWidth < 768) {
-      ismob = 1
-      break
+        ismob = 1
+        break
       }
       }
 
       if (ismob) {
-      return 2
+        return 2
       } else {
-      return 1
+        return 1
       }
     }
     var isMob = IsMobile()
@@ -3189,12 +3191,13 @@
       }
       return obj;
     }
+    // $('.pc-phone1').val('15525876866')
+    // $('.pc-phone2').val('15525876866')
+    // 验证码定时器
     var obj = {
       isReady1: true,
       isReady2: true
     };
-    // $('.pc-phone1').val('15525876866')
-    // $('.pc-phone2').val('15525876866')
     function countDown(dom, index, bool) {
       console.log(obj["isReady" + index], $(that).text());
       if (bool) {
@@ -3218,7 +3221,7 @@
       }
     }
 
-    $(function() {
+    function mountHtml() {
       var date = Math.round(new Date() / 1000);
       $.get(api + "/wechat/demand/users", function(res) {
         if (res.meta && res.meta.status_code === 200) {
@@ -3247,7 +3250,7 @@
           });
         }
       });
-    });
+    }
     var mySwiperPcSever = new Swiper(".swiper-pc-sever", {
       direction: "horizontal",
       loop: true,
@@ -3259,20 +3262,35 @@
       watchSlidesProgress: true,
       watchSlidesVisibility: true
     });
+    var isMountHtml = true
     $(window).scroll(function (event) {
       var fiexdHeight = $(this).scrollTop();
       if (fiexdHeight < 690) {
         $(".fiexd-logo").hide();
       } else {
         $(".fiexd-logo").show();
+        if (isMountHtml) {
+          mountHtml()
+          isMountHtml = false
+        }
       }
     });
-    var fiexdHeight = $(this).scrollTop();
-    if (fiexdHeight < 690) {
-      $(".fiexd-logo").hide();
-    } else {
-      $(".fiexd-logo").show();
+    ;(function () { // 刷新页面to
+      var fiexdHeight = $(this).scrollTop();
+      if (fiexdHeight < 690) {
+        $(".fiexd-logo").hide();
+      } else {
+        $(".fiexd-logo").show();
+        mountHtml()
+        isMountHtml = false
+      }
+    })();
+    console.log(isMob)
+    if (isMob == 2) {
+      $('.pc').hide()
+      $('.phone').show()
     }
+    
     // 获取验证码
     $(".fetchCode").on("click", function() {
       if (
@@ -3330,10 +3348,11 @@
         }
       });
     });
-    // 发布项目需求弹框
+    // PC发布项目需求弹框
     $(".fiexd-logo-text, .logo-btn").on("click", function() {
       $(".pc-dialog").show();
     });
+    // 关闭弹框
     $(".dialog-close").on("click", function() {
       $(".pc-dialog").hide();
     });
@@ -3347,7 +3366,7 @@
       },
       false
     );
-    // 发布需求, 表单提交
+    // 发布需求, 表单提交PC
     $(".pc-send-btn-text2").on("click", function() {
       var itemName = $(".pc-item_name1").val();
       var userName = $(".pc-user_name1").val();
@@ -3392,7 +3411,7 @@
         }
       });
     });
-
+    // pc弹出框表单提交
     $(".pc-dialog-btn").on("click", function() {
       var itemName = $(".pc-item_name2").val();
       var userName = $(".pc-user_name2").val();
