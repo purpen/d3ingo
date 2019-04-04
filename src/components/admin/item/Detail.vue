@@ -1,14 +1,25 @@
 <template>
   <div>
+    <div class="status-model pad-top-10">
+      <div :class="['nav-item', {'current': onePhase, 'finish': !onePhase}]">
+        <span>项目对接中</span>
+      </div>
+      <div :class="['nav-item', {'current': twoPhase, 'finish': threePhase}]">
+      <span>项目进行中</span>
+      </div>
+      <div :class="['nav-item', 'last-nav-item', {'current': threePhase}]">
+        <span>已完成</span>
+      </div>
+    </div>
     <div class="pad-0-30">
-      <div class="big-title">{{item.name || oldItem.name || '—'}}</div>
+      <div class="big-title pad-top-40">{{item.name || oldItem.name || '—'}}</div>
       <div class="header">
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
             <div class="text">{{item.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
           </div>
-          <div class="one-right">
+          <div class="one-right" v-if="oldItem.status !== 1">
             <div class="title">合同金额：</div>
             <div class="header-yellow width-150-right">￥{{contract.total}}</div>
           </div>
@@ -18,7 +29,7 @@
             <div class="title pad-right-40">项目预算</div>
             <div class="text">{{item.design_cost_value || oldItem.design_cost_value || '—'}}</div>
           </div>
-          <div class="one-right">
+          <div class="one-right" v-if="oldItem.status !== 1">
             <div class="title">项目编号：</div>
             <div class="text width-150-right">{{item.number}}</div>
           </div>
@@ -28,7 +39,7 @@
             <div class="title pad-right-40">交付时间</div>
             <div class="text">{{item.cycle_value || '—'}}</div>
           </div>
-          <div class="one-right">
+          <div class="one-right" v-if="oldItem.status !== 1">
             <div class="title">签约日期：</div>
             <div class="text width-150-right">{{contract.true_time || '—' |timeFormat}}</div>
           </div>
@@ -116,7 +127,18 @@
         </div>
       </div>
 
-      <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name" :evalDesignLevel="evalDesignLevel" :evalResponseSpeed="evalResponseSpeed" :evalService="evalService"></phase>
+      <phase v-if="type === 1"
+        :evaluate="evaluate"
+        :trueDesign="trueDesign"
+        :itemStage="itemStage"
+        :designCompany="designCompany"
+        :contract="contract"
+        :itemName="item.name"
+        :evalDesignLevel="evalDesignLevel"
+        :evalResponseSpeed="evalResponseSpeed"
+        :evalService="evalService"
+        :oldItem="oldItem">
+      </phase>
       <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem" :itemStage="itemStage" :trueDesign="trueDesign"></detail>
       <info v-if="type === 3" :item="item" :contract="contract" :oldItem="oldItem"></info>
     </div>
@@ -144,7 +166,10 @@ export default {
       trueDesign: '', // 合作的设计公司
       evalDesignLevel: 0,
       evalResponseSpeed: 0,
-      evalService: 0
+      evalService: 0,
+      onePhase: false,
+      twoPhase: false,
+      threePhase: false
     }
   },
   created() {
@@ -200,6 +225,28 @@ export default {
             } else {
               that.evalResponseSpeed = null
             }
+          }
+          switch (that.oldItem.status) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 45:
+              that.onePhase = true
+              break
+            case 7:
+            case 8:
+            case 9:
+            case 11:
+            case 15:
+              that.twoPhase = true
+              break
+            case 18:
+            case 22:
+              that.threePhase = true
+              break
           }
           let overdueTime = (new Date().getTime().toString().substr(0, 10) - that.trueDesign.created_at) / 24 / 60 / 60
           if (parseInt(overdueTime) >= 1) {
@@ -377,8 +424,14 @@ export default {
   .pad-0-30 {
     padding: 0 30px;
   }
+  .pad-top-10 {
+    padding-top: 10px;
+  }
   .pad-top-20 {
     padding-top: 20px;
+  }
+  .pad-top-40 {
+    padding-top: 40px;
   }
   .pad-top-50 {
     padding-top: 50px;
@@ -416,4 +469,115 @@ export default {
   .color-ff5a5f {
     color: #FF5A5F;
   }
+
+  /* 头部导航 */
+  .status-model {
+    position: relative;
+    width: 100%;
+    flex-basis: 1;
+    max-width: 100%;
+    display: flex;
+  }
+  .status-model > .nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    flex: 1;
+    text-align: center;
+    /* background-color: #D8D8D8; */
+    margin-right: 5px;
+  }
+  .status-model > .nav-item + .nav-item {
+    /* margin-left: 10px; */
+  }
+  .status-model > .nav-item:first-child {
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-left: 18px solid #d8d8d8;
+  }
+  .status-model > .finish:first-child {
+   background:rgba(0,172,132,0.8);
+    border-color:rgba(0,172,132,0.8);
+  }
+  .status-model > .current:first-child {
+    background-color: #00AC84;
+    border-color:#00AC84;
+  }
+  .status-model > .nav-item:last-child {
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-right: 18px solid;
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
+  }
+  .status-model > .current:last-child {
+    background-color: #00AC84;
+    border-color: #00AC84;
+  }
+  .status-model > .finish:last-child {
+   background:rgba(0,172,132,0.8);
+    border-color:rgba(0,172,132,0.8);
+  }
+
+  .nav-item::before,
+  .nav-item::after {
+    position: absolute;
+    content: '';
+    left: 6px;
+    cursor: pointer;
+  }
+  .nav-item::before {
+    width: 100%;
+    top: 0;
+    height: 50%;
+    transform: skew(32deg) translate3d(0, 0, 0);
+    background: #D8D8D8;
+  }
+  .nav-item::after {
+    width: 100%;
+    bottom: 0;
+    height: 50%;
+    transform: skew(-32deg) translate3d(0, 0, 0);
+    background: #D8D8D8;
+  }
+  .current::before,
+  .current::after {
+    background: #00AC84;
+  }
+  .finish::before,
+  .finish::after {
+   background:rgba(0,172,132,0.8);
+  }
+
+  .nav-item > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-decoration: none;
+    z-index: 5;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+  }
+  .last-nav-item::before,
+  .last-nav-item::after {
+    left: -6px;
+  }
+  .last-nav-item {
+    margin-left: 12px;
+    margin-right: 0;
+  }
+
+  .nav-item > span {
+    color: #999;
+    line-height: 34px;
+  }
+  .nav-item.current > span, .nav-item.finish > span {
+    color: #fff;
+  }
+
 </style>
