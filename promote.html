@@ -7,11 +7,11 @@
     <title>铟果推广-太火鸟-B2B工业设计和产品创新SaaS平台</title>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css"
+      href="https://s3.taihuoniao.com/swiper.min.css"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+      href="https://s3.taihuoniao.com/toastr.min.css"
     />
     <style>
       * {
@@ -19,6 +19,9 @@
         margin: 0;
         padding: 0;
         border: 0
+      }
+      .back-bg input {
+        border: 1px solid #e6e6e6;
       }
       .fr {
         float: right;
@@ -32,6 +35,16 @@
       .back-bg {
         background-color: #3052ac;
         margin-bottom: -50px;
+      }
+      input:focus {
+        outline: none;
+      }
+      .margin-b10 {
+        margin-bottom: 10px !important;
+      }
+
+      .release-input {
+        margin-bottom: 10px;
       }
       /* PC端 */
       .pc-send,
@@ -134,7 +147,12 @@
         border-radius: 4px;
         margin: 0 auto;
       }
-
+      .phone-swiper-container {
+        height: 340px
+      }
+      .pc-sever-swipe-round .swiper-pagination {
+        bottom: 20px;
+      }
       .pc-header {
         text-align: center;
       }
@@ -2099,7 +2117,7 @@
         font-weight: 400;
         color: #fff;
         position: absolute;
-        bottom: 39px;
+        bottom: 70px;
         left: 0;
         right: 0;
         text-align: center;
@@ -2119,7 +2137,7 @@
       }
       .phone-sever-swipe-bt {
         position: absolute;
-        bottom: 15px;
+        bottom: 44px;
         left: 0;
         right: 0;
         font-size: 12px;
@@ -2201,7 +2219,7 @@
       .bot-0 {
         padding-bottom: 0;
       }
-      .border-none {
+      .back-bg .border-none {
         border: none;
       }
 
@@ -2213,6 +2231,9 @@
       }
       .mar-top-10 {
         margin-top: 10px;
+      }
+      .swiper-slide.mob-s-slide-template {
+        height: 35px !important;
       }
       @media screen and (max-width: 1024px) {
         .pc-investors-round {
@@ -2504,7 +2525,6 @@
                 <div class="pc-sever-swipe-bt">深圳锐莱客思</div>
               </div>
             </div>
-            <!-- 如果需要分页器 -->
             <div class="swiper-pagination"></div>
           </div>
         </div>
@@ -2678,6 +2698,17 @@
         </div>
       </div>
 
+
+
+
+
+
+
+
+
+      
+
+
       <!-- phone -->
       <div class="phone">
         <div class="phone-head"></div>
@@ -2686,60 +2717,41 @@
             >小米商城</span
           >
         </div>
-        <el-form
-          @submit.native.prevent
-          :model="form"
-          :rules="ruleForm"
-          ref="ruleForm"
+        <form
           class="phone-form1"
         >
           <div class="phone-form-round">
-            <el-form-item prop="demand">
               <div class="release-input put-top-15">
                 <input
-                  v-model="form.demand"
-                  name="username"
+                  name="demand"
                   placeholder="请输入您的需求"
-                  class="release-form"
+                  class="release-form mob-demand1"
                 />
               </div>
-            </el-form-item>
-            <el-form-item prop="contact">
               <div class="release-input">
                 <input
                   type="text"
-                  class="release-form"
+                  class="release-form mob-username1"
                   placeholder="请输入联系人"
-                  v-model="form.contact"
-                  ref="contact"
                 />
               </div>
-            </el-form-item>
-            <el-form-item prop="account">
               <div class="release-input">
-                <input type="text" placeholder="手机号码" />
+                <input type="text" class="release-form" id="mob-phone1" placeholder="手机号码" />
               </div>
-            </el-form-item>
-            <el-form-item prop="smsCode" v-if="!identifying_code">
-              <div class="code1-send">
+              <div class="code1-send margin-b10">
                 <input
                   type="text"
                   placeholder="验证码"
-                  class="code-input-phone mar-left-5 border-none"
-                  v-model="form.smsCode"
+                  class="code-input-phone mar-left-5 border-none mob-sms-code1"
                   name="smsCode"
                 />
-                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
-                <div class="send-code" @click="fetchCode" v-else>
-                  {{ codeMsg }}
-                </div>
+                <div class="send-code" id="mob-send-code1">获取验证码</div>
               </div>
-            </el-form-item>
           </div>
-        </el-form>
+        </form>
         <div class="round-btn">
-          <div class="release-btn color-666" v-if="appBtn">发布项目需求</div>
-          <div class="release-btn" @click="submit_app('ruleForm')" v-else>
+          <!-- <div class="release-btn color-666">发布项目需求</div> -->
+          <div class="release-btn" id="mob-submit1">
             发布项目需求
           </div>
         </div>
@@ -2949,30 +2961,46 @@
         </div>
         <div class="serve-text">服务客户</div>
         <div class="phone-sever-swipe-round">
-          <div class="phone-sever-swipe">
-            <el-carousel
-              indicator-position="outside"
-              trigger="click"
-              arrow="never"
-            >
-              <el-carousel-item
-                v-for="(item, index) in serverList"
-                :key="index"
-              >
-                <div class="phone-sever-swipe-out">
-                  <div class="phone-sever-swipe-tt">{{ item.item }}</div>
-                  <div class="phone-sever-swipe-bd"></div>
-                  <div class="phone-sever-swipe-text">
-                    <div class="pc-left"></div>
-                    {{ item.content }}
-                    <div class="pc-right"></div>
+            <div class="swiper-container phone-swiper-container" id="swiper-phone-sever">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">创意药贴</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢太火鸟平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">刘征</div>
+                    <div class="phone-sever-swipe-bt">北京妥妥得生物科技</div>
                   </div>
-                  <div class="phone-sever-swipe-bt-tt">{{ item.boss }}</div>
-                  <div class="phone-sever-swipe-bt">{{ item.company }}</div>
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">便携式户外音箱</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      市场上的音箱产品很多，我们需要快速迭代，并以创新打动用户，太火鸟平台在我们发出订单几天之内就从几个设计公司中为我们挑选了一家对音箱设计很有想法也有经验的团队，对接成功后马上开始设计，最后这款产品也成为我们公司一款明星产品，市场反响很好，供不应求。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">李宏翔</div>
+                    <div class="phone-sever-swipe-bt">深圳华海拓科技</div>
+                  </div>
+    
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">不燃烧电子烟</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      电子烟产品最近大热，正是快速占领市场的好机会。我们在太火鸟平台上发单后马上有设计公司对接，确定团队后项目推进也很快很顺利。特别值得一提的是，太火鸟平台全程服务很好，在设计过程中还使用了他们特有的协作软件推进项目，给我们争取了很多时间。电子烟经过设计后净利润也提高了很多。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">张宇</div>
+                    <div class="phone-sever-swipe-bt">深圳锐莱客思</div>
+                  </div>
                 </div>
-              </el-carousel-item>
-            </el-carousel>
-          </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
         <div class="serve-flex">
           <div class="serve-img1"></div>
@@ -3016,59 +3044,48 @@
               >小米商城</span
             >
           </div>
-          <el-form
-            @submit.native.prevent
-            :model="form1"
-            :rules="ruleForm"
-            ref="ruleForm1"
+          <form
             class="text-center phone-el-pad-bot"
           >
-            <el-form-item prop="demand">
+            <div>
               <input
                 type="text"
                 placeholder="请输入您的需求"
-                class="input-style mar-top-20"
-                v-model="form1.demand"
+                class="input-style mar-top-20 mob-demand2"
                 name="username"
               />
-            </el-form-item>
-            <el-form-item prop="contact">
+            </div>
+            <div>
               <input
                 type="text"
                 placeholder="请输入联系人"
-                class="input-style margin-top-10"
-                v-model="form1.contact"
-                ref="contact"
+                class="input-style margin-top-10 mob-username2"
               />
-            </el-form-item>
-            <el-form-item prop="account">
+            </div>
+            <div>
               <input
                 type="text"
                 placeholder="手机号码"
+                id="mob-phone2"
                 class="input-style margin-top-10"
               />
-            </el-form-item>
-            <el-form-item prop="smsCode" v-if="!identifying_code">
+            </div>
+            <div>
               <div class="code-round margin-top-10">
                 <input
                   type="text"
                   placeholder="验证码"
-                  class="code-input border-none"
-                  v-model="form1.smsCode"
+                  class="code-input border-none mob-sms-code2"
                   name="smsCode"
                 />
-                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
-                <div class="send-code" @click="fetchCode1" v-else>
-                  {{ codeMsg }}
+                <div class="send-code" id="mob-send-code2">
+                  获取验证码
                 </div>
               </div>
-            </el-form-item>
-          </el-form>
-          <div class="send-code-btn color-666" v-if="appBtn2">
-            <div class="send-code-text">立即发布需求</div>
-          </div>
-          <div class="send-code-btn" v-else>
-            <div class="send-code-text" @click="submit_app1('ruleForm1')">
+            </div>
+          </form>
+          <div class="send-code-btn">
+            <div class="send-code-text"  id="mob-submit2">
               立即发布需求
             </div>
           </div>
@@ -3077,16 +3094,8 @@
             <div class="new-text">最新报名客户</div>
             <div class="right"></div>
           </div>
-          <div class="person-round">
-            <swiper class="swiper-con bot-0" :options="swiperOption2">
-              <swiper-slide v-for="(item, index) of userList" :key="index">
-                <div class="person">
-                  <div v-text="item.user_name" class="person-text"></div>
-                  <div class="person-text" v-text="item.phone"></div>
-                  <div class="person-text">{{ item.created_at }}分钟前</div>
-                </div>
-              </swiper-slide>
-            </swiper>
+          <div class="person-round" id="mob-person-template">
+            <!-- 模板 -->
           </div>
           <div class="send-code-btn">
             <div href="tel:13031154842" class="send-code-text">拨打电话</div>
@@ -3126,6 +3135,21 @@
               </div>
         </div>
       </script>
+      <script type="text/html" id="mob-person">
+        <div class="swiper-container swiper-con bot-0" id="mob-person-swiper">
+            <div class="swiper-wrapper">
+              {{each}}
+                <div class="swiper-slide mob-s-slide-template">
+                  <div class="person">
+                    <div class="person-text">{{$value.user_name}}</div>
+                    <div class="person-text">{{$value.phone}}</div>
+                    <div class="person-text">{{$value.created_at}}分钟前</div>
+                  </div>
+                </div>
+              {{/each}}
+              </div>
+        </div>
+      </script>
     </section>
   </body>
   <script>
@@ -3133,13 +3157,15 @@
   </script>
   <script src="https://s3.taihuoniao.com/javascript/jquery-2.min.js"></script>
   <script src="https://s3.taihuoniao.com/static/template-web.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://s3.taihuoniao.com/swiper.jquery.min.js"></script>
+  <script src="https://s3.taihuoniao.com/toastr.min.js"></script>
   <script>
-    var api = location.origin + '/api'
-    // var api = 'http://mc.taihuoniao.com/api'
+    // var api = location.origin + '/api'
+    var api = 'http://mc.taihuoniao.com/api'
     // var api = 'https://saas.taihuoniao.com/api'
     var query = getQuery();
+    // 发布需求防止重复请求
+    var isSubmit = true
     if (!query.from) {
       query.from = 2
     }
@@ -3153,7 +3179,7 @@
     if (!verify) {
       $(".dialog-code-round").hide()
       $(".dialog-req-code").hide()
-      $(".pc-get-code").hide()
+      $(".pc-get-code, .code1-send, .code-round").hide()
     }
     function IsMobile () {
       var sUserAgent = navigator.userAgent
@@ -3162,18 +3188,22 @@
 
       for (let i = 0; i < mobileAgents.length; i++) {
       if (sUserAgent.indexOf(mobileAgents[i]) > -1 && document.documentElement.clientWidth < 768) {
-      ismob = 1
-      break
+        ismob = 1
+        break
       }
       }
 
       if (ismob) {
-      return 2
+        return 2
       } else {
-      return 1
+        return 1
       }
     }
     var isMob = IsMobile()
+    if (isMob == 2) {
+      $('.pc').hide()
+      $('.phone').show()
+    }
     function generalize() {
       $.post(api + '/generalize/create', {
         url: location.href,
@@ -3203,24 +3233,33 @@
       }
       return obj;
     }
-    var obj = {
-      isReady1: true,
-      isReady2: true
-    };
     // $('.pc-phone1').val('15525876866')
     // $('.pc-phone2').val('15525876866')
+    // 验证码定时器
+    var obj = {
+      isReady1: true,
+      isReady2: true,
+      isReady3: true,
+      isReady4: true
+    };
+    var timer = null
     function countDown(dom, index, bool) {
-      console.log(obj["isReady" + index], $(that).text());
+      var that = dom;
+      var val = $(that).text();
+      if ($(that).text() == '获取验证码') {
+        return
+      }
+      if ($(that).text() == 0) {
+        return
+      }
       if (bool) {
         obj["isReady" + index] = true;
       }
+      if (timer) window.clearTimeout(timer);
       if (obj["isReady" + index]) {
-        if (timer) window.clearTimeout(timer);
         obj["isReady" + index] = false;
-        var that = dom;
-        var val = $(that).text();
         if (val > 0) {
-          var timer = setTimeout(function() {
+          timer = setTimeout(function() {
             val = val - 1;
             $(that).text(val);
             countDown(that, index, true);
@@ -3232,7 +3271,7 @@
       }
     }
 
-    $(function() {
+    function mountHtml() {
       var date = Math.round(new Date() / 1000);
       $.get(api + "/wechat/demand/users", function(res) {
         if (res.meta && res.meta.status_code === 200) {
@@ -3240,28 +3279,41 @@
           userList.forEach(function(item) {
             item.created_at = parseInt((date - item.created_at) / 60);
           });
-          $("#pc-person").html(template("pc-new-curstomer", userList));
-          var mySwiperCurstomer = new Swiper(".swiper-curstomer1", {
-            direction: "vertical",
-            autoplay: 5000,
-            loop: true,
-            slidesPerView: "auto",
-            mousewheelControl: true,
-            freeMode: true,
-            freeModeMomentumRatio: 2
-          });
-          var mySwiperCurstomer = new Swiper(".swiper-curstomer2", {
-            direction: "vertical",
-            autoplay: 5000,
-            loop: true,
-            slidesPerView: "auto",
-            mousewheelControl: true,
-            freeMode: true,
-            freeModeMomentumRatio: 2
-          });
+          if (isMob == 2) {
+            $("#mob-person-template").html(template("mob-person", userList));
+            var mySwiperMobPerson = new Swiper('#mob-person-swiper', {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            })
+          } else {
+            $("#pc-person").html(template("pc-new-curstomer", userList));
+            var mySwiperCurstomer = new Swiper(".swiper-curstomer1", {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            });
+            var mySwiperCurstomer = new Swiper(".swiper-curstomer2", {
+              direction: "vertical",
+              autoplay: 5000,
+              loop: true,
+              slidesPerView: "auto",
+              mousewheelControl: true,
+              freeMode: true,
+              freeModeMomentumRatio: 2
+            });
+          }
         }
       });
-    });
+    }
     var mySwiperPcSever = new Swiper(".swiper-pc-sever", {
       direction: "horizontal",
       loop: true,
@@ -3273,6 +3325,18 @@
       watchSlidesProgress: true,
       watchSlidesVisibility: true
     });
+    var mySwiperPhoneSever = new Swiper('#swiper-phone-sever', {
+      direction: "horizontal",
+      loop: true,
+      autoplay: 1000,
+      // 如果需要分页器
+      pagination: ".swiper-pagination",
+      paginationClickable: true,
+      grabCursor: true,
+      watchSlidesProgress: true,
+      watchSlidesVisibility: true
+    })
+    var isMountHtml = true
     $(window).scroll(function (event) {
       var fiexdHeight = $(this).scrollTop();
       if (fiexdHeight < 690) {
@@ -3280,68 +3344,126 @@
       } else {
         $(".fiexd-logo").show();
       }
+      if (isMountHtml) {
+        mountHtml()
+        isMountHtml = false
+      }
     });
-    // 获取验证码
-    $(".fetchCode").on("click", function() {
-      if (
-        $(this)
-          .text()
-          .trim() != "获取验证码"
-      ) {
-        return;
+    ;(function () { // 刷新页面to
+      var fiexdHeight = $(this).scrollTop();
+      if (fiexdHeight < 690) {
+        $(".fiexd-logo").hide();
+      } else {
+        $(".fiexd-logo").show();
+        mountHtml()
+        isMountHtml = false
       }
-      var phone = $(".pc-phone1").val();
-      if (
-        phone.length !== 11 ||
-        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
-      ) {
-        toastr.error("请输入正确的手机号");
-        return;
-      }
-      $(this).text(60);
-      if (obj.isReady1) {
-        countDown(this, 1);
-      }
-      $.ajax({
-        type: "POST",
-        data: { phone: phone },
-        url: "https://sa.taihuoniao.com/wechat/sms",
-        success: function(res) {}
-      });
-    });
-    $(".pc-dialog-send").on("click", function() {
-      if (
-        $(this)
-          .text()
-          .trim() != "获取验证码"
-      ) {
-        return;
-      }
-      var phone = $(".pc-phone2").val();
-      console.log(phone);
-      if (
-        phone.length !== 11 ||
-        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
-      ) {
-        toastr.error("请输入正确的手机号");
-        return;
-      }
-      $(this).text(60);
-      if (obj.isReady2) {
-        countDown(this, 2);
-      }
-      $.post(api + "/wechat/sms", { phone: phone }, function(res) {
-        if (res.meta && res.meta.status_code === 200) {
-          console.log("获取成功");
-        } else {
-          toastr.error(res.meta.message);
+    })();
+    console.log(isMob)
+    
+    /* params 获取验证码
+    target: 点击dom
+    输入框, 类名
+    */ 
+    function fetchCode(target) {
+      if (target.data) {
+        var that = target.data[0]
+        var domPhone = target.data[1]
+        if (that && domPhone) {
+          if ($(that).text().trim() != '获取验证码') return
+          var phone = $(domPhone).val();
+          if (phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8}$)/.test(phone)) {
+            toastr.error("请输入正确的手机号");
+            return;
+          }
+          $(that).text(60);
+          if (obj.isReady3) {
+            countDown(that, 3);
+          }
+          $.post(api + '/wechat/sms', {phone: phone}, function (res) {
+            if (res.meta && res.meta.status_code === 200) {
+              console.log("获取成功");
+            } else {
+              toastr.error(res.meta.message);
+              $(that).text(0);
+            }
+          })
         }
-      });
-    });
-    // 发布项目需求弹框
+      }
+    }
+    /*
+    发布需求
+    */
+    function submitForm(event) {
+      var data = event.data
+      if (data) {
+        var demand = $(data[0]).val()
+        var userName = $(data[1]).val()
+        var phone = $(data[2]).val()
+        var smsCode = $(data[3]).val()
+        console.log($(data[0]).val())
+        if (!demand) {
+          toastr.error("请输入您的需求");
+          return;
+        }
+
+        if (!userName) {
+          toastr.error("请输入联系人");
+          return;
+        }
+
+        if (
+          phone.length !== 11 ||
+          !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+        ) {
+          toastr.error("请输入正确的手机号");
+          return;
+        }
+        if (verify) {
+          if (!smsCode) {
+            toastr.error("请输入验证码");
+            return;
+          }
+        }
+        var formDate = {
+          user_name: userName,
+          phone: phone,
+          item_name: demand,
+          sms_code: smsCode,
+          son_source: query.mark,
+          source: query.from
+        };
+        var url = '/wechat/demand/pcAdd2'
+        if (!verify) {
+          url = '/wechat/demand/pcAdd'
+        }
+        if (!isSubmit) return
+        isSubmit = false
+        $.post(api + url, formDate, function(res) {
+          if (res.meta && res.meta.status_code === 200) {
+            toastr.success('发布成功');
+            $(data[0]).val('')
+            $(data[1]).val('')
+            $(data[2]).val('')
+            $(data[3]).val('')
+            console.log($(data[0]))
+            if (data[0] == '.pc-item_name2') {
+              $(".pc-dialog").hide();
+            }
+          } else {
+            // 失败
+            toastr.error(res.meta.message);
+          }
+          isSubmit = true
+        });
+      }
+    }
+
+    // PC发布项目需求弹框
     $(".fiexd-logo-text, .logo-btn").on("click", function() {
       $(".pc-dialog").show();
     });
+    // 关闭弹框
     $(".dialog-close").on("click", function() {
       $(".pc-dialog").hide();
     });
@@ -3355,120 +3477,20 @@
       },
       false
     );
-    function clearData2() {
-      $(".pc-item_name1").val('');
-      $(".pc-user_name1").val('');
-      $(".pc-phone1").val('');
-      $(".pc-sms-code1").val('');
-    }
-    // 发布需求, 表单提交
-    $(".pc-send-btn-text2").on("click", function() {
-      var itemName = $(".pc-item_name1").val();
-      var userName = $(".pc-user_name1").val();
-      var phone = $(".pc-phone1").val();
-      var smsCode = $(".pc-sms-code1").val();
-      
-      if (!itemName) {
-        toastr.error("请输入您的需求");
-        return;
-      }
+    // 发布需求, 表单提交PC
+    $('.pc-send-btn-text2').on('click', ['.pc-item_name1', '.pc-user_name1', '.pc-phone1', '.pc-sms-code1'], submitForm)
 
-      if (!userName) {
-        toastr.error("请输入联系人");
-        return;
-      }
-
-      if (
-        phone.length !== 11 ||
-        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
-      ) {
-        toastr.error("请输入正确的手机号");
-        return;
-      }
-      if (verify) {
-        if (!smsCode) {
-          toastr.error("请输入验证码");
-          return;
-        }
-      }
-      var formDate = {
-        user_name: userName,
-        phone: phone,
-        item_name: itemName,
-        sms_code: smsCode,
-        son_source: query.mark,
-        source: query.from
-      };
-      var url = '/wechat/demand/pcAdd2'
-      if (!verify) {
-        url = '/wechat/demand/pcAdd'
-      }
-      $.post(api + url, formDate, function(res) {
-        if (res.meta && res.meta.status_code === 200) {
-          toastr.success('发布成功');
-          clearData2()
-        } else {
-          // 失败
-          toastr.error(res.meta.message);
-        }
-      });
-    });
-    function clearData() {
-      $(".pc-item_name2").val('');
-      $(".pc-user_name2").val('');
-      $(".pc-phone2").val('');
-      $(".pc-sms-code2").val('');
-    }
-    $(".pc-dialog-btn").on("click", function() {
-      var itemName = $(".pc-item_name2").val();
-      var userName = $(".pc-user_name2").val();
-      var phone = $(".pc-phone2").val();
-      var smsCode = $(".pc-sms-code2").val();
-
-      if (!itemName) {
-        toastr.error("请输入您的需求");
-        return;
-      }
-
-      if (!userName) {
-        toastr.error("请输入联系人");
-        return;
-      }
-      if (
-        phone.length !== 11 ||
-        !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
-      ) {
-        toastr.error("请输入正确的手机号");
-        return;
-      }
-      if (verify) {
-        if (!smsCode) {
-          toastr.error("请输入验证码");
-          return;
-        }
-      }
-      var formDate = {
-        user_name: userName,
-        phone: phone,
-        item_name: itemName,
-        sms_code: smsCode,
-        son_source: query.mark,
-        source: query.from
-      };
-      var url = '/wechat/demand/pcAdd2'
-      if (!verify) {
-        url = '/wechat/demand/pcAdd'
-      }
-      $.post(api + url, formDate, function(res) {
-        if (res.meta && res.meta.status_code === 200) {
-          toastr.success('发布成功');
-          clearData()
-          $(".pc-dialog").hide();
-        } else {
-          // 失败
-          toastr.error(res.meta.message);
-        }
-      });
-    });
+    // pc弹出框表单提交
+    $('.pc-dialog-btn').on('click', ['.pc-item_name2', '.pc-user_name2', '.pc-phone2', '.pc-sms-code2'], submitForm)
+   
+    // pc端获取验证码
+    $('.pc-dialog-send').on('click', ['.pc-dialog-send', '.pc-phone2'], fetchCode)
+    $('.fetchCode').on('click', ['.fetchCode', '.pc-phone1'], fetchCode)
+    // 移动端获取验证码
+    $('#mob-send-code1').on('click', ['#mob-send-code1', '#mob-phone1'], fetchCode)
+    $('#mob-send-code2').on('click', ['#mob-send-code2', '#mob-phone2'], fetchCode)
+    // 移动端提交表单
+    $('#mob-submit1').on('click', ['.mob-demand1', '.mob-username1', '#mob-phone1', '.mob-sms-code1'], submitForm)
+    $('#mob-submit2').on('click', ['.mob-demand2', '.mob-username2', '#mob-phone2', '.mob-sms-code2'], submitForm)
   </script>
 </html>
