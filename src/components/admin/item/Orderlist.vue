@@ -143,17 +143,22 @@
         <!-- 欠款 -->
         <div class="progressdetail" v-if="waitOrders[0] && waitOrders[0].status === 0">
           <div class="protitle">
-              第一阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[0].amount}}</span>
+              首付款：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[0].amount}}</span>
           </div>
         </div>
         <div class="progressdetail" v-if="waitOrders[1] && waitOrders[1].status === 0">
           <div class="protitle">
-              第二阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[1].amount}}</span>
+              第一阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[1].amount}}</span>
           </div>
         </div>
         <div class="progressdetail" v-if="waitOrders[2] && waitOrders[2].status === 0">
           <div class="protitle">
-              第三阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[2].amount}}</span>
+              第二阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[2].amount}}</span>
+          </div>
+        </div>
+        <div class="progressdetail" v-if="waitOrders[3] && waitOrders[3].status === 0">
+          <div class="protitle">
+              第三阶段：{{item.name || oldItem.name || '—'}}  <span class="stay">待收款：￥{{waitOrders[3].amount}}</span>
           </div>
         </div>
         <!-- 阶段详情第三阶段 -->
@@ -595,7 +600,7 @@
           </div>
         </div>
         <!-- 阶段详情 首付款-->
-        <div class="progressdetail">
+        <div class="progressdetail" v-if="contract">
           <div class="procont">
             <div class="protitle">
                 首付款 <span class="statuclass">已收款</span>
@@ -1050,9 +1055,9 @@
       //   this.$router.replace({name: 'home'})
       //   return false
       // }
-      // let id = that.$route.params.id1791 1855 1233
+      // let id = that.$route.params.id1791 1855 1233 1787
       that.type = 1
-      that.getDetail(1866)
+      that.getDetail(146)
     },
     filters: {
       timeFormat(val) {
