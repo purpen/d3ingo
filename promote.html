@@ -17,6 +17,9 @@
       * {
         box-sizing: border-box;
       }
+      .back-bg input {
+        border: 1px solid #e6e6e6;
+      }
       .fr {
         float: right;
       }
@@ -29,6 +32,16 @@
       .back-bg {
         background-color: #3052ac;
         margin-bottom: -50px;
+      }
+      input:focus {
+        outline: none;
+      }
+      .margin-b10 {
+        margin-bottom: 10px !important;
+      }
+
+      .release-input {
+        margin-bottom: 10px;
       }
       /* PC端 */
       .pc-send,
@@ -132,6 +145,9 @@
         height: 300px;
         border-radius: 4px;
         margin: 0 auto;
+      }
+      .phone-swiper-container {
+        height: 340px
       }
       .pc-sever-swipe-round .swiper-pagination {
         bottom: 20px;
@@ -2097,7 +2113,7 @@
         font-weight: 400;
         color: #fff;
         position: absolute;
-        bottom: 39px;
+        bottom: 70px;
         left: 0;
         right: 0;
         text-align: center;
@@ -2117,7 +2133,7 @@
       }
       .phone-sever-swipe-bt {
         position: absolute;
-        bottom: 15px;
+        bottom: 44px;
         left: 0;
         right: 0;
         font-size: 12px;
@@ -2198,7 +2214,7 @@
       .bot-0 {
         padding-bottom: 0;
       }
-      .border-none {
+      .back-bg .border-none {
         border: none;
       }
 
@@ -2501,7 +2517,6 @@
                 <div class="pc-sever-swipe-bt">深圳锐莱客思</div>
               </div>
             </div>
-            <!-- 如果需要分页器 -->
             <div class="swiper-pagination"></div>
           </div>
         </div>
@@ -2675,6 +2690,8 @@
         </div>
       </div>
 
+
+
       <!-- phone -->
       <div class="phone">
         <div class="phone-head"></div>
@@ -2683,60 +2700,41 @@
             >小米商城</span
           >
         </div>
-        <el-form
-          @submit.native.prevent
-          :model="form"
-          :rules="ruleForm"
-          ref="ruleForm"
+        <form
           class="phone-form1"
         >
           <div class="phone-form-round">
-            <el-form-item prop="demand">
               <div class="release-input put-top-15">
                 <input
-                  v-model="form.demand"
-                  name="username"
+                  name="demand"
                   placeholder="请输入您的需求"
-                  class="release-form"
+                  class="release-form mob-demand1"
                 />
               </div>
-            </el-form-item>
-            <el-form-item prop="contact">
               <div class="release-input">
                 <input
                   type="text"
-                  class="release-form"
+                  class="release-form mob-username1"
                   placeholder="请输入联系人"
-                  v-model="form.contact"
-                  ref="contact"
                 />
               </div>
-            </el-form-item>
-            <el-form-item prop="account">
               <div class="release-input">
-                <input type="text" placeholder="手机号码" />
+                <input type="text" class="release-form" id="mob-phone1" placeholder="手机号码" />
               </div>
-            </el-form-item>
-            <el-form-item prop="smsCode" v-if="!identifying_code">
-              <div class="code1-send">
+              <div class="code1-send margin-b10">
                 <input
                   type="text"
                   placeholder="验证码"
-                  class="code-input-phone mar-left-5 border-none"
-                  v-model="form.smsCode"
+                  class="code-input-phone mar-left-5 border-none mob-sms-code1"
                   name="smsCode"
                 />
-                <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
-                <div class="send-code" @click="fetchCode" v-else>
-                  {{ codeMsg }}
-                </div>
+                <div class="send-code" id="mob-send-code1">获取验证码</div>
               </div>
-            </el-form-item>
           </div>
-        </el-form>
+        </form>
         <div class="round-btn">
-          <div class="release-btn color-666" v-if="appBtn">发布项目需求</div>
-          <div class="release-btn" @click="submit_app('ruleForm')" v-else>
+          <!-- <div class="release-btn color-666">发布项目需求</div> -->
+          <div class="release-btn" id="mob-submit1">
             发布项目需求
           </div>
         </div>
@@ -2946,30 +2944,46 @@
         </div>
         <div class="serve-text">服务客户</div>
         <div class="phone-sever-swipe-round">
-          <div class="phone-sever-swipe">
-            <el-carousel
-              indicator-position="outside"
-              trigger="click"
-              arrow="never"
-            >
-              <el-carousel-item
-                v-for="(item, index) in serverList"
-                :key="index"
-              >
-                <div class="phone-sever-swipe-out">
-                  <div class="phone-sever-swipe-tt">{{ item.item }}</div>
-                  <div class="phone-sever-swipe-bd"></div>
-                  <div class="phone-sever-swipe-text">
-                    <div class="pc-left"></div>
-                    {{ item.content }}
-                    <div class="pc-right"></div>
+            <div class="swiper-container phone-swiper-container" id="swiper-phone-sever">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">创意药贴</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢太火鸟平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">刘征</div>
+                    <div class="phone-sever-swipe-bt">北京妥妥得生物科技</div>
                   </div>
-                  <div class="phone-sever-swipe-bt-tt">{{ item.boss }}</div>
-                  <div class="phone-sever-swipe-bt">{{ item.company }}</div>
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">便携式户外音箱</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      市场上的音箱产品很多，我们需要快速迭代，并以创新打动用户，太火鸟平台在我们发出订单几天之内就从几个设计公司中为我们挑选了一家对音箱设计很有想法也有经验的团队，对接成功后马上开始设计，最后这款产品也成为我们公司一款明星产品，市场反响很好，供不应求。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">李宏翔</div>
+                    <div class="phone-sever-swipe-bt">深圳华海拓科技</div>
+                  </div>
+    
+                  <div class="swiper-slide">
+                    <div class="phone-sever-swipe-tt">不燃烧电子烟</div>
+                    <div class="phone-sever-swipe-bd"></div>
+                    <div class="phone-sever-swipe-text">
+                      <div class="pc-left"></div>
+                      电子烟产品最近大热，正是快速占领市场的好机会。我们在太火鸟平台上发单后马上有设计公司对接，确定团队后项目推进也很快很顺利。特别值得一提的是，太火鸟平台全程服务很好，在设计过程中还使用了他们特有的协作软件推进项目，给我们争取了很多时间。电子烟经过设计后净利润也提高了很多。
+                      <div class="pc-right"></div>
+                    </div>
+                    <div class="phone-sever-swipe-bt-tt">张宇</div>
+                    <div class="phone-sever-swipe-bt">深圳锐莱客思</div>
+                  </div>
                 </div>
-              </el-carousel-item>
-            </el-carousel>
-          </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
         <div class="serve-flex">
           <div class="serve-img1"></div>
@@ -3129,20 +3143,10 @@
       (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
   </script>
   <script src="https://s3.taihuoniao.com/javascript/jquery-2.min.js"></script>
-  <script src="http://s4.taihuoniao.com/template-web.js"></script>
+  <script src="https://s3.taihuoniao.com/static/template-web.js"></script>
   <script src="https://s3.taihuoniao.com/swiper.jquery.min.js"></script>
   <script src="https://s3.taihuoniao.com/toastr.min.js"></script>
   <script>
-    // var api = location.origin + '/api'
-    var api = 'http://mc.taihuoniao.com/api'
-    var query = getQuery();
-    if (!query.from) {
-      query.from = 2
-    }
-    if (!query.mark) {
-      query.mark = 'a'
-    }
-
     function IsMobile () {
       var sUserAgent = navigator.userAgent
       var mobileAgents = ['Android', 'iPhone', 'Symbian', 'WindowsPhone', 'iPod', 'Mobile Safari', 'Windows CE']
@@ -3162,6 +3166,20 @@
       }
     }
     var isMob = IsMobile()
+    if (isMob == 2) {
+      $('.pc').hide()
+      $('.phone').show()
+    }
+    // var api = location.origin + '/api'
+    var api = 'http://mc.taihuoniao.com/api'
+    var query = getQuery();
+    if (!query.from) {
+      query.from = 2
+    }
+    if (!query.mark) {
+      query.mark = 'a'
+    }
+
     function generalize() {
       $.post(api + '/generalize/create', {
         url: location.href,
@@ -3196,7 +3214,9 @@
     // 验证码定时器
     var obj = {
       isReady1: true,
-      isReady2: true
+      isReady2: true,
+      isReady3: true,
+      isReady4: true
     };
     function countDown(dom, index, bool) {
       console.log(obj["isReady" + index], $(that).text());
@@ -3262,6 +3282,17 @@
       watchSlidesProgress: true,
       watchSlidesVisibility: true
     });
+    var mySwiperPhoneSever = new Swiper('#swiper-phone-sever', {
+      direction: "horizontal",
+      loop: true,
+      autoplay: 100000,
+      // 如果需要分页器
+      pagination: ".swiper-pagination",
+      paginationClickable: true,
+      grabCursor: true,
+      watchSlidesProgress: true,
+      watchSlidesVisibility: true
+    })
     var isMountHtml = true
     $(window).scroll(function (event) {
       var fiexdHeight = $(this).scrollTop();
@@ -3286,11 +3317,88 @@
       }
     })();
     console.log(isMob)
-    if (isMob == 2) {
-      $('.pc').hide()
-      $('.phone').show()
-    }
     
+    /* params 获取验证码
+    target: 点击dom
+    输入框, 类名
+    */ 
+    function fetchCode(target) {
+      if (target.data) {
+        var that = target.data[0]
+        var domPhone = target.data[1]
+        if (that && domPhone) {
+          if ($(that).text().trim() != '获取验证码') return
+          var phone = $(domPhone).val();
+          if (phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8}$)/.test(phone)) {
+            toastr.error("请输入正确的手机号");
+            return;
+          }
+          $(that).text(60);
+          if (obj.isReady3) {
+            countDown(that, 3);
+          }
+          $.post(api + '/wechat/sms', {phone: phone}, function (res) {
+            if (res.meta && res.meta.status_code === 200) {
+              console.log("获取成功");
+            } else {
+              toastr.error(res.meta.message);
+            }
+          })
+        }
+      }
+    }
+    /*
+    发布需求
+    params 
+
+    */
+    function submitForm(event) {
+      var data = event.data
+      if (data) {
+        var demand = $(data[0]).val()
+        var userName = $(data[1]).val()
+        var phone = $(data[2]).val()
+        var smsCode = $(data[3]).val()
+        console.log($(data[0]).val())
+        if (!demand) {
+          toastr.error("请输入您的需求");
+          return;
+        }
+
+        if (!userName) {
+          toastr.error("请输入联系人");
+          return;
+        }
+
+        if (
+          phone.length !== 11 ||
+          !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(phone)
+        ) {
+          toastr.error("请输入正确的手机号");
+          return;
+        }
+        if (!smsCode) {
+          toastr.error("请输入验证码");
+          return;
+        }
+        var formDate = {
+          user_name: userName,
+          phone: phone,
+          item_name: demand,
+          sms_code: smsCode,
+          son_source: query.mark,
+          source: query.from
+        };
+        $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+          if (res.meta && res.meta.status_code === 200) {
+            toastr.success(res.meta.message);
+          } else {
+            // 失败
+            toastr.error(res.meta.message);
+          }
+        });
+      }
+    }
     // 获取验证码
     $(".fetchCode").on("click", function() {
       if (
@@ -3457,5 +3565,10 @@
         }
       });
     });
+
+    // 移动端获取验证码
+    $('#mob-send-code1').on('click', ['#mob-send-code1', '#mob-phone1'], fetchCode)
+    // 移动端提交表单
+    $('#mob-submit1').on('click', ['.mob-demand1', '.mob-username1', '#mob-phone1', '.mob-sms-code1'], submitForm)
   </script>
 </html>
