@@ -249,6 +249,7 @@ export default {
     }
   },
   created() {
+    this.designReault = this.$route.query.type || '0'
     this.loadList()
     this.getDesignCount()
   },
