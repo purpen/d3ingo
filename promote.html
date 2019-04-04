@@ -93,15 +93,13 @@
       }
       .fields {
         text-align: left;
-      }
-      .fields .field {
-        display: inline-block;
+        display: flex
       }
       .fields .field:first-child {
-        width: 60%;
+        flex: 1 1 auto
       }
       .fields .field:last-child {
-        width: 30%;
+        flex: 0 1 auto
       }
 
       .pc-get-code {
@@ -2656,7 +2654,7 @@
                     placeholder="手机号码"
                   />
                 </div>
-                <div class="dialog-req">验证码</div>
+                <div class="dialog-req dialog-req-code">验证码</div>
                 <div class="dialog-code-round field">
                   <div class="pc-code-90-round pc-code-90-round2">
                     <input
@@ -3138,7 +3136,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script>
     // var api = location.origin + '/api'
-    var api = 'https://saas.taihuoniao.com/api'
+    var api = 'http://mc.taihuoniao.com/api'
+    // var api = 'https://saas.taihuoniao.com/api'
     var query = getQuery();
     if (!query.from) {
       query.from = 2
@@ -3146,7 +3145,15 @@
     if (!query.mark) {
       query.mark = 'a'
     }
-
+    var verify = true
+    if (query.identifying_code === 'no') {
+      verify = false
+    }
+    if (!verify) {
+      $(".dialog-code-round").hide()
+      $(".dialog-req-code").hide()
+      $(".pc-get-code").hide()
+    }
     function IsMobile () {
       var sUserAgent = navigator.userAgent
       var mobileAgents = ['Android', 'iPhone', 'Symbian', 'WindowsPhone', 'iPod', 'Mobile Safari', 'Windows CE']
@@ -3371,9 +3378,11 @@
         toastr.error("请输入正确的手机号");
         return;
       }
-      if (!smsCode) {
-        toastr.error("请输入验证码");
-        return;
+      if (verify) {
+        if (!smsCode) {
+          toastr.error("请输入验证码");
+          return;
+        }
       }
       var formDate = {
         user_name: userName,
@@ -3383,7 +3392,11 @@
         son_source: query.mark,
         source: query.from
       };
-      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+      var url = '/wechat/demand/pcAdd2'
+      if (!verify) {
+        url = '/wechat/demand/pcAdd'
+      }
+      $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
           toastr.success(res.meta.message);
         } else {
@@ -3415,10 +3428,11 @@
         toastr.error("请输入正确的手机号");
         return;
       }
-
-      if (!smsCode) {
-        toastr.error("请输入验证码");
-        return;
+      if (verify) {
+        if (!smsCode) {
+          toastr.error("请输入验证码");
+          return;
+        }
       }
       var formDate = {
         user_name: userName,
@@ -3428,7 +3442,11 @@
         son_source: query.mark,
         source: query.from
       };
-      $.post(api + "/wechat/demand/pcAdd2", formDate, function(res) {
+      var url = '/wechat/demand/pcAdd2'
+      if (!verify) {
+        url = '/wechat/demand/pcAdd'
+      }
+      $.post(api + url, formDate, function(res) {
         if (res.meta && res.meta.status_code === 200) {
           toastr.success(res.meta.message);
           $(".pc-dialog").hide();
