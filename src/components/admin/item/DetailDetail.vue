@@ -291,7 +291,7 @@ export default {
     font-weight: 400;
     color: rgba(51,51,51,1);
   }
-  
+
 
   .big-title {
     font-size: 22px;
