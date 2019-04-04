@@ -11,13 +11,13 @@
           <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
         </div>
       </div>
-      <div class="evaluation-round">
+      <div class="evaluation-round" v-if="evaluate">
         <div class="eval-round">
           <div class="pad-right-20 width-30">
             <div class="eval-title">设计水平</div>
             <div class="white-space">
               <el-rate
-                v-model="designLevel"
+                v-model="evalDesignLevel"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -27,7 +27,7 @@
             <div class="eval-title">响应速度</div>
             <div class="white-space">
               <el-rate
-                v-model="responseSpeed"
+                v-model="evalResponseSpeed"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -37,7 +37,7 @@
             <div class="eval-title">服务态度</div>
             <div class="white-space">
               <el-rate
-                v-model="service"
+                v-model="evalService"
                 disabled
                 text-color="#ff9900">
               </el-rate>
@@ -149,7 +149,7 @@
           <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
         </div>
         <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at || '—' |timeFormat2}}</div>
-        <div class="evaluation-text pad-left-40 white-space">沟通天数：13</div>
+        <div class="evaluation-text pad-left-40 white-space">沟通天数：{{trueDesign.chatDay}}</div>
       </div>
       <div>
         <el-popover
@@ -223,28 +223,10 @@ export default {
       nowDesignId: '',
       stageActive: 0,
       stageArr: [],
-      boolStage: false,
-      service: 0,
-      designLevel: 0,
-      responseSpeed: 0
+      boolStage: false
     }
   },
-  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName'],
-  created() {
-    let that = this
-    if (that.evaluate && that.evaluate.user_score) {
-      let obj = JSON.parse(that.evaluate.user_score)
-      if (obj.service) {
-        that.service = obj.service - 0
-      }
-      if (obj.design_level) {
-        that.designLevel = obj.design_level - 0
-      }
-      if (obj.response_speed) {
-        that.responseSpeed = obj.response_speed - 0
-      }
-    }
-  },
+  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel'],
   methods: {
     showServer() {
       this.server = true

@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name"></phase>
+      <phase v-if="type === 1" :evaluate="evaluate" :trueDesign="trueDesign" :itemStage="itemStage" :designCompany="designCompany" :contract="contract" :itemName="item.name" :evalDesignLevel="evalDesignLevel" :evalResponseSpeed="evalResponseSpeed" :evalService="evalService"></phase>
       <detail v-if="type === 2" :contract="contract" :quotation="quotation" :payOrders="payOrders" :oldItem="oldItem" :itemStage="itemStage" :trueDesign="trueDesign"></detail>
       <info v-if="type === 3" :item="item" :contract="contract" :oldItem="oldItem"></info>
     </div>
@@ -141,7 +141,10 @@ export default {
       quotation: '', // 报价
       itemStage: '', // 项目阶段
       designCompany: '', // 设计公司列表
-      trueDesign: '' // 合作的设计公司
+      trueDesign: '', // 合作的设计公司
+      evalDesignLevel: 0,
+      evalResponseSpeed: 0,
+      evalService: 0
     }
   },
   created() {
@@ -179,6 +182,30 @@ export default {
           that.trueDesign = obj.true_design
           if (that.contract) {
             that.contract.item_stage = obj.item_stage
+          }
+          if (that.evaluate && that.evaluate.user_score) {
+            let obj = JSON.parse(that.evaluate.user_score)
+            if (obj.service) {
+              that.evalService = obj.service - 0
+            } else {
+              that.evalService = null
+            }
+            if (obj.design_level) {
+              that.evalDesignLevel = obj.design_level - 0
+            } else {
+              that.evalDesignLevel = null
+            }
+            if (obj.response_speed) {
+              that.evalResponseSpeed = obj.response_speed - 0
+            } else {
+              that.evalResponseSpeed = null
+            }
+          }
+          let overdueTime = (new Date().getTime().toString().substr(0, 10) - that.trueDesign.created_at) / 24 / 60 / 60
+          if (parseInt(overdueTime) >= 1) {
+            that.trueDesign.chatDay = parseInt(overdueTime)
+          } else {
+            that.trueDesign.chatDay = 1
           }
         } else {
           that.$message.error(response.data.meta.message)
