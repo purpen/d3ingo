@@ -45,7 +45,7 @@
             <div class="certification flex-center-center" @click="setRefuseRease(2)" v-if="item.verify_status === 1">
               <div class="certification-text">撤销认证</div>
             </div>
-            <div class="certification flex-center-center" @click="setVerify(1)" v-else>
+            <div class="certification flex-center-center" @click="setRefuseRease(1)" v-else>
               <div class="certification-text">通过认证</div>
             </div>
             <div class="dot">
@@ -125,7 +125,14 @@
       <el-input v-model="refuseRease"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="setVerify(evt)">确 定</el-button>
+        <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="通过认证" :visible.sync="throwCreit" width="380px">
+      <span>是否要通过认证通过认证</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="throwCreit = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
       </span>
     </el-dialog>
     <div v-if="detailLoading" class="loading-fiexd">
@@ -154,7 +161,9 @@ export default {
       refuseRease: '',
       itemId: '',
       evt: '',
-      creatDate: ''
+      creatDate: '',
+      btnLoading: false,
+      throwCreit: false
     }
   },
   methods: {
@@ -193,8 +202,6 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.item = response.data.data
-          console.log('status', self.item.status)
-          console.log('is_test_data', self.item.is_test_data)
           self.creatDate = self.item.created_at.date_format().format('yyyy.MM.dd')
           if (self.item.verify_status !== 1) {
             self.type = 4
@@ -269,25 +276,37 @@ export default {
       })
     },
     setRefuseRease (evt) {
-      this.dialogVisible = !this.dialogVisible
+      if (evt === 1) {
+        this.throwCreit = !this.throwCreit
+      } else {
+        this.dialogVisible = !this.dialogVisible
+      }
       this.evt = evt
     },
     // 审核事件
     setVerify(evt) {
       let that = this
+      that.btnLoading = true
       that.$http.put(api.adminCompanyVerifyOk, {id: that.itemId, status: evt, verify_summary: that.refuseRease})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           that.dialogVisible = false
+          that.throwCreit = false
+          that.btnLoading = false
           that.item.verify_status = evt
+          that.refuseRease = ''
           that.$message.success('操作成功')
         } else {
           that.dialogVisible = false
+          that.throwCreit = false
+          that.btnLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
         that.dialogVisible = false
+        that.throwCreit = false
+        that.btnLoading = false
         that.$message.error(error.message)
       })
     },
