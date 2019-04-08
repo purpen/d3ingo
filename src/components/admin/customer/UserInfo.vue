@@ -372,7 +372,7 @@
 
                           <el-row class="design-li-footer">
                             <el-col :span="6">
-                              <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                              <span :class="['progess-current', {'refuse': d.status > 6 }]">{{d.status_value}}</span>
                             </el-col>
                             
                             <el-col :span="6">
@@ -3131,6 +3131,14 @@ export default {
 }
 .design-li-footer > span:first-child {
   margin-right: 60px;
+}
+.progess-current {
+  padding-left: 20px;
+  background: url(../../../assets/images/icon/designCurrent.png) no-repeat left/14px;
+}
+.progess-current.refuse {
+  color: #FF5A5F;
+  background: url(../../../assets/images/icon/error.png) no-repeat left/14px;
 }
 .design-progress {
   top: 4px;
