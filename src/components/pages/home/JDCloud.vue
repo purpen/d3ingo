@@ -993,11 +993,6 @@ export default {
     } else {
       this.calcHeight = calcImgSize (500, 1440)
     }
-    // 人员数量
-    this.$http.get(api.usersCount)
-      .then(res => {
-        this.quantity = parseInt(res.data.data + 200)
-      })
     // 人员列表
     let date = Math.round(new Date() / 1000)
     this.$http.get(api.userMessage)
@@ -1159,9 +1154,9 @@ export default {
         new_from: this.query.from || 3
       }).then(res => {
         console.log(res)
-        this.$message.error(res.data.meta.message)
       }).catch(err => {
         console.error(err)
+        this.$message.error(err.message)
       })
     },
     formatQuery(query) {
