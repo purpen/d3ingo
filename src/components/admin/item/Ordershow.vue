@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="load" v-if="isLoading">
+      <div class="load_cont" v-loading="isLoading"></div>
+    </div>
     <div class="content">
       <div class="topclass">
         <div class="headselect">
@@ -42,7 +45,6 @@
           @filter-change="filterType"
           style="width: 100%"
           @selection-change="handleSelectionChange"
-          v-loading="isLoading"
           >
         <el-table-column
           type="selection"
@@ -117,7 +119,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentpage"
-          :page-sizes="[10, 20, 30, 40]"
+          :page-sizes="[20, 50, 100]"
           :page-size="10"
           layout="total, sizes, prev, pager, next"
           :total="total">
@@ -138,7 +140,7 @@
         removeid: '',
         removecot: '',
         currentpage: 1,
-        pagesizes: 10,
+        pagesizes: 20,
         total: 0,
         itemList: [],
         typecont: [
@@ -225,7 +227,7 @@
         seleValue: '',
         query: {
           page: 1,
-          per_page: 10,
+          per_page: 20,
           type: 0,
           design_cost: 0,
           source: 0,
@@ -861,5 +863,18 @@
     height: 15px;
     margin: 0 30px 0 10px;
     cursor: pointer;
+  }
+  .load{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    text-align: center;
+    z-index: 1000
+  }
+  .load_cont{
+    width: 100%;
+    height: 100%;
   }
 </style>

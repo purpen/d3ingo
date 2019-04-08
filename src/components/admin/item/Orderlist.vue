@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="content" v-loading="isLoading">
+    <div class="load" v-if="isLoading">
+      <div class="load_cont" v-loading="isLoading"></div>
+    </div>
+    <div class="content">
         <!-- 公司详情 -->
         <div class="companyinfo">
             <div class="companyname">
@@ -199,7 +202,7 @@
                 </div>
               </div>
               <!-- two -->
-              <div class="detail_cont">
+              <div class="detail_cont textcen">
                 <div class="formcont">
                     <div class="title">
                       支付方式
@@ -252,7 +255,7 @@
                    </div>
               </div>
               <!-- three -->
-              <div class="detail_cont">
+              <div class="detail_cont textrig">
                 <div class="formcont">
                     <div class="title">
                       发票名称
@@ -345,7 +348,7 @@
                 </div>
               </div>
               <!-- two -->
-              <div class="detail_cont">
+              <div class="detail_cont textcen">
                 <div class="formcont">
                     <div class="title">
                       支付方式
@@ -491,7 +494,7 @@
                 </div>
               </div>
               <!-- two -->
-              <div class="detail_cont">
+              <div class="detail_cont textcen">
                 <div class="formcont">
                     <div class="title">
                       支付方式
@@ -640,7 +643,7 @@
                 </div>
               </div>
               <!-- two -->
-              <div class="detail_cont">
+              <div class="detail_cont textcen">
                 <div class="formcont">
                     <div class="title">
                       支付方式
@@ -920,10 +923,11 @@
     methods: {
       getDetail(id) {
         let that = this
+        that.isLoading = true
         that.$http.get(api.adminItemNewShow, {params: {id: id}})
         .then (function(res) {
-          that.isLoading = false
           if (res.data.meta.status_code === 200) {
+            that.isLoading = false
             let obj = {}
             obj = res.data.data
             that.item = obj
@@ -1050,14 +1054,14 @@
     },
     created: function () {
       let that = this
-      // if (!id) {
-      //   this.$message.error('缺少请求参数!')
-      //   this.$router.replace({name: 'home'})
-      //   return false
-      // }
-      // let id = that.$route.params.id1791 1855 1233 1787
+      if (!id) {
+        this.$message.error('缺少请求参数!')
+        this.$router.replace({name: 'home'})
+        return false
+      }
+      let id = that.$route.params.id
       that.type = 1
-      that.getDetail(146)
+      that.getDetail(id)
     },
     filters: {
       timeFormat(val) {
@@ -1186,6 +1190,16 @@
     display: flex;
     justify-content: space-between;
     margin-top: 30px;
+    width: 100%;
+  }
+  /* .detail_cont{
+    width: calc(100% / 3);
+  } */
+  /* .textrig{
+    text-align: right;
+  }*/
+  .textcen{
+    width: 270px;
   }
   .statuclass{
     display: inline-block;
@@ -1203,7 +1217,7 @@
   }
   .stay{
     display: inline-block;
-    width:160px;
+    padding: 0 20px;
     height: 26px;
     line-height: 26px;
     background:#65A6FF;
@@ -1218,5 +1232,18 @@
   .invoice-one {
     line-height: 30px;
     padding: 20px;
+  }
+  .load{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    text-align: center;
+    z-index: 1000
+  }
+  .load_cont{
+    width: 100%;
+    height: 100%;
   }
 </style>
