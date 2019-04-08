@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="oldItem.status === 1 || oldItem.status === 2 || oldItem.status === -1 || oldItem.status === -3" class="pad-top-30">
-      <div v-of="oldItem.status === -1 || oldItem.status === -3">
+      <div v-if="oldItem.status === -1 || oldItem.status === -3">
         <div class="title">{{oldItem.status === -1 ? '客户已关闭项目' : '平台已关闭项目'}}</div>
         <div class="date-12">{{oldItem.status_time['-3'] || oldItem.status_time['-1']}}</div>
-      <div class="grey-line"></div>
+        <div class="grey-line"></div>
       </div>
       <div class="title">项目已创建</div>
       <div class="date-12">{{creat || '—' |timeFormat}}</div>

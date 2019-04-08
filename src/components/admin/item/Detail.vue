@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
+    <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
       <div :class="['nav-item', {'current': onePhase, 'finish': !onePhase}]">
         <span>项目对接中</span>
       </div>
@@ -11,8 +11,7 @@
         <span>已完成</span>
       </div>
     </div>
-    <div v-else class="fail-border pad-top-10"></div> -->
-    <div class="fail-border flex-center-center mar-top-10">
+    <div class="fail-border flex-center-center mar-top-10" v-else>
       <div class="fail-img"></div>
       <div class="fail-text">项目已关闭</div>
     </div>
