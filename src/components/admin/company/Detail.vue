@@ -4,17 +4,28 @@
       <div class="top-left">
         <div class="top-left-img">
           <img :src="item.logo_url">
+          <div class="stop-account flex-column-center" v-if="item.status === 0">
+            <div class="stop-img"></div>
+            <div class="stop-text">已禁用</div>
+          </div>
         </div>
         <!-- <div class="top-left-btn flex-center-center">
           <div class="top-left-btn-icon"></div>
           <div class="top-left-btn-text">金牌服务商</div>
         </div> -->
+        <div class="test-border flex-center-center" v-if="item.is_test_data === 1">
+          <div class="test-text">测试账号</div>
+        </div>
+        <div class="test-border flex-center-center" v-if="item.verify_status !== 1">
+          <div class="wait-icon"></div>
+          <div class="test-text pad-left-10">待认证</div>
+        </div>
       </div>
       <div class="top-right">
         <div class="top-right-top flex-center-space">
           <div class="top-right-top-left">
             <div class="referred">{{item.company_abbreviation || '—'}}</div>
-            <div class="name">{{item.company_name || '—'}}</div>
+            <div class="name" @click="toCompanyHome(itemId)">{{item.company_name || '—'}}</div>
             <div class="enter-flex">
               <template v-if="item.industrial_design_center && item.industrial_design_center.length">
                 <div v-for="(item, index) in item.industrial_design_center" :key="index">
@@ -182,6 +193,8 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.item = response.data.data
+          console.log('status', self.item.status)
+          console.log('is_test_data', self.item.is_test_data)
           self.creatDate = self.item.created_at.date_format().format('yyyy.MM.dd')
           if (self.item.verify_status !== 1) {
             self.type = 4
@@ -322,6 +335,12 @@ export default {
         window.open('http://' + this.item.web)
       }
     },
+    toCompanyHome(id) {
+      const {href} = this.$router.resolve({
+        path: `/company/${id}`
+      })
+      window.open(href, '_blank')
+    },
     getCustomer(id) {
       let self = this
       self.$http.get(api.adminDesignCompanyClueList, {params: {design_company_id: id, page: 1, per_page: 10, status: 0}})
@@ -384,6 +403,29 @@ export default {
     line-height: 20px;
     text-align: left;
   }
+  .top-left-img {
+    position: relative;
+  }
+  .stop-account {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color:rgba(0,0,0,0.5);
+  }
+  .stop-img {
+    height: 30px;
+    width: 30px;
+    background: url('../../../assets/images/icon/Prohibit@2x.png') no-repeat center / contain;
+  }
+  .stop-text {
+    font-size: 13px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    padding-top: 6px;
+  }
   .top-left-img img{
     width: 120px;
     height: 120px;
@@ -437,6 +479,10 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 28px;
     padding-top: 5px;
+    cursor: pointer;
+  }
+  .name:hover {
+    color: #ff5a5f;
   }
   .certification {
     cursor: pointer;
@@ -568,9 +614,34 @@ export default {
   .certification:active .certification-text {
     color: #fff;
   }
+  .test-text {
+    font-size: 13px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+  }
+  .test-border {
+    width: 120px;
+    height: 30px;
+    background: rgba(255,255,255,1);
+    border-radius: 15px;
+    border: 1px solid rgba(230,230,230,1);
+    margin-top: 10px;
+  }
+  .wait-icon {
+    width: 14px;
+    height: 16px;
+    background: url('../../../assets/images/design_admin/Uncertified@2x.png') no-repeat center / contain;
+  }
 
   .flex-center-center {
     display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .flex-column-center {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }

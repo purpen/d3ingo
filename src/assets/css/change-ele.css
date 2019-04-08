@@ -976,7 +976,7 @@
     margin-bottom: 0;
   }
   .header-border .el-progress--circle .el-progress-circle__path {
-    stroke: #0A6DD9;
+    stroke: #ff5a5f;
   }
   .header-progress .el-progress__text {
     display: flex;

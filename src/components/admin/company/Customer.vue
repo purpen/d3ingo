@@ -329,6 +329,7 @@ export default {
   .click-show {
     width: 58px;
     cursor: pointer;
+    color: #ff5a5f;
   }
   .bot-round {
     height: 50px;

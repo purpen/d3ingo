@@ -6,9 +6,9 @@
           type="circle"
           :stroke-width="15"
           :percentage="100"
-          color="#0A6DD9"
           class="header-progress"
-          status="text">
+          status="text"
+          color="#ff5a5f">
           <span class="progress-top">设计服务商</span>
           <span class="progress-bot">{{statistical.total}}</span>
         </el-progress>
@@ -21,7 +21,7 @@
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.docking / statistical.total * 10000) / 100"
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
@@ -37,7 +37,7 @@
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.no_docking / statistical.total * 10000) / 100"
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
@@ -53,7 +53,7 @@
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.to_be_audited / statistical.total * 10000) / 100 "
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
