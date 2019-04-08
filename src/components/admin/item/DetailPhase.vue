@@ -164,56 +164,57 @@
       </div>
     </div>
     <div v-if="oldItem.status === 11 || oldItem.status === 22">
-      <div class="title pad-top-30">已评价</div>
-      <div class="date-12">{{evaluate.created_at || '—' |timeFormat2}}</div>
-      <div class="evaluation pad-top-40">
-        <div class="width-40">
-          <div class="flex-center">
-            <div class="logo">
-              <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
-            </div>
-            <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
-          </div>
-        </div>
-        <div class="evaluation-round" v-if="evaluate">
-          <div class="eval-round">
-            <div class="pad-right-20 width-30">
-              <div class="eval-title">设计水平</div>
-              <div class="white-space">
-                <el-rate
-                  v-model="evalDesignLevel"
-                  disabled
-                  text-color="#ff9900">
-                </el-rate>
+      <template v-if="evaluate">
+        <div class="title pad-top-30">已评价</div>
+        <div class="date-12">{{evaluate.created_at || '—' |timeFormat2}}</div>
+        <div class="evaluation pad-top-40">
+          <div class="width-40">
+            <div class="flex-center">
+              <div class="logo">
+                <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
               </div>
-            </div>
-            <div class="pad-right-20 width-30">
-              <div class="eval-title">响应速度</div>
-              <div class="white-space">
-                <el-rate
-                  v-model="evalResponseSpeed"
-                  disabled
-                  text-color="#ff9900">
-                </el-rate>
-              </div>
-            </div>
-            <div class="width-30">
-              <div class="eval-title">服务态度</div>
-              <div class="white-space">
-                <el-rate
-                  v-model="evalService"
-                  disabled
-                  text-color="#ff9900">
-                </el-rate>
-              </div>
+              <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
             </div>
           </div>
-          <div class="eval-title pad-top-17">客户评价</div>
-          <div class="evaluation-text">{{evaluate.content || '—'}}</div>
+          <div class="evaluation-round" v-if="evaluate">
+            <div class="eval-round">
+              <div class="pad-right-20 width-30">
+                <div class="eval-title">设计水平</div>
+                <div class="white-space">
+                  <el-rate
+                    v-model="evalDesignLevel"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
+                </div>
+              </div>
+              <div class="pad-right-20 width-30">
+                <div class="eval-title">响应速度</div>
+                <div class="white-space">
+                  <el-rate
+                    v-model="evalResponseSpeed"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
+                </div>
+              </div>
+              <div class="width-30">
+                <div class="eval-title">服务态度</div>
+                <div class="white-space">
+                  <el-rate
+                    v-model="evalService"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
+                </div>
+              </div>
+            </div>
+            <div class="eval-title pad-top-17">客户评价</div>
+            <div class="evaluation-text">{{evaluate.content || '—'}}</div>
+          </div>
         </div>
-      </div>
-
-      <div class="grey-line"></div>
+      </template>
+      <div class="grey-line" v-if="evaluate"></div>
 
       <div v-if="itemStage && itemStage[2]">
         <div class="flex-center">
