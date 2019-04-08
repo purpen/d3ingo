@@ -785,7 +785,7 @@
   }
   .flexcenter{
     float: left;
-    margin-top: 5px;
+    margin-top: 6px;
   }
   .circle{
     width: 12px;
