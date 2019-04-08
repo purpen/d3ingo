@@ -163,7 +163,15 @@
         </div>
       </div>
     </div>
-    <div v-if="oldItem.status === 11 || oldItem.status === 22">
+    <div v-if="oldItem.status === 11 || oldItem.status === 22 || oldItem.status === 15 || oldItem.status === 18">
+      <template v-if="oldItem.status === 15 || oldItem.status === 18">
+        <div class="flex-center pad-top-30">
+          <div class="title pad-right-20">项目已完成</div>
+          <div class="sure-green bgcolor-65A6FF">{{oldItem.status === 18 ? '已验收' : '待验收'}}</div>
+        </div>
+        <div class="date-12">{{oldItem.status_time['15'] || '—'}}</div>
+        <div class="grey-line mar-top-30"></div>
+      </template>
       <template v-if="evaluate">
         <div class="title pad-top-30">已评价</div>
         <div class="date-12">{{evaluate.created_at || '—' |timeFormat2}}</div>
@@ -216,12 +224,12 @@
       </template>
       <div class="grey-line" v-if="evaluate"></div>
 
-      <div v-if="itemStage && itemStage[2]">
+      <div  class="pad-top-30" v-if="itemStage && itemStage[1] && itemStage[2] && itemStage[1].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[2] && itemStage[2].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[2] && itemStage[2].created_at">{{itemStage[2].created_at || '—' |timeFormat}}</div>
+        <div class="date-12" v-if="itemStage && itemStage[2] && itemStage[2].updated_at">{{itemStage[2].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[2] && itemStage[2].item_stage_image">
         <div class="pad-top-36" v-for="(item, index) in itemStage[2].item_stage_image" :key="index">
@@ -244,12 +252,12 @@
         </template>
       </div>
 
-      <div :class="{'pad-top-70': itemStage && itemStage[2]}">
+      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[2]}" v-if="itemStage && itemStage[1] && itemStage[0].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[1] && itemStage[1].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[1] && itemStage[1].created_at">{{itemStage[1].created_at || '—' |timeFormat}}</div>
+        <div class="date-12" v-if="itemStage && itemStage[1] && itemStage[1].updated_at">{{itemStage[1].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[1] && itemStage[1].item_stage_image">
         <div class="pad-top-36" v-for="(item, index) in itemStage[1].item_stage_image" :key="index">
@@ -272,12 +280,12 @@
         </template>
       </div>
 
-      <div :class="{'pad-top-70': itemStage && itemStage[1]}">
+      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[1]}">
         <div class="flex-center">
           <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
-          <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].confirm === 1 ? '已确认' : '未确认'}}</div>
+          <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].pay_status === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].created_at">{{itemStage[0].created_at || '—' |timeFormat}}</div>
+        <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].updated_at">{{itemStage[0].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[0] && itemStage[0].item_stage_image">
         <div class="pad-top-36" v-for="(item, index) in itemStage[0].item_stage_image" :key="index">
@@ -752,6 +760,9 @@ export default {
   .mar-50-0-30-0 {
     margin: 50px 0 30px 0;
   }
+  .mar-top-30 {
+    margin: 30px 0 0 0;
+  }
   .mar-left-80 {
     margin-left: 80px;
   }
@@ -776,6 +787,9 @@ export default {
     height: 0;
     overflow: hidden;
     transition: 500ms all ease;
+  }
+  .bgcolor-65A6FF {
+    background-color: #65A6FF;
   }
 
 

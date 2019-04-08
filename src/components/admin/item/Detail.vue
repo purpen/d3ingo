@@ -232,7 +232,19 @@ export default {
             that.quotation = obj.quotation
           }
           if (obj.item_stage) {
-            that.itemStage = obj.item_stage
+            let arr = []
+            obj.item_stage.forEach(items => {
+              if (items.sort === 1) {
+                arr[0] = items
+              }
+              if (items.sort === 2) {
+                arr[1] = items
+              }
+              if (items.sort === 3) {
+                arr[2] = items
+              }
+            })
+            that.itemStage = arr
           }
           if (obj.designCompany) {
             for (let index in obj.designCompany) {
