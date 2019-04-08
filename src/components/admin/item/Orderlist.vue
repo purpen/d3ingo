@@ -185,8 +185,11 @@
                     <div class="title">
                       订单号
                     </div>
-                    <div class="titlecont">
-                      {{item.number}}
+                    <div class="titlecont" v-if="payOrders[3]">
+                      {{payOrders[3].uid ||  '—'}}
+                    </div>
+                    <div class="titlecont" v-else>
+                      —
                     </div>
                 </div>
                 <div class="formcont">
@@ -331,8 +334,11 @@
                     <div class="title">
                       订单号
                     </div>
-                    <div class="titlecont">
-                      {{item.number}}
+                    <div class="titlecont" v-if="payOrders[2]">
+                      {{payOrders[2].uid ||  '—'}}
+                    </div>
+                    <div class="titlecont" v-else>
+                      —
                     </div>
                 </div>
                 <div class="formcont">
@@ -477,8 +483,11 @@
                     <div class="title">
                       订单号
                     </div>
-                    <div class="titlecont">
-                      {{item.number ||  '—'}}
+                    <div class="titlecont" v-if="payOrders[1]">
+                      {{payOrders[1].uid ||  '—'}}
+                    </div>
+                    <div class="titlecont" v-else>
+                      —
                     </div>
                 </div>
                 <div class="formcont">
@@ -626,8 +635,11 @@
                     <div class="title">
                       订单号
                     </div>
-                    <div class="titlecont">
-                      {{item.number ||  '—'}}
+                    <div class="titlecont" v-if="payOrders[0]">
+                      {{payOrders[0].uid ||  '—'}}
+                    </div>
+                    <div class="titlecont" v-else>
+                      —
                     </div>
                 </div>
                 <div class="formcont">
@@ -942,7 +954,6 @@
             that.itemStage = obj.item_stage
             that.designCompany = obj.designCompany
             that.invoice = obj.demand_invoice
-            console.log(that.payOrders)
             for (var x in that.payOrders) {
               if (that.payOrders[x].status < 0) {
                 that.payOrders[0] = that.payOrders[1]
@@ -1054,12 +1065,12 @@
     },
     created: function () {
       let that = this
+      let id = that.$route.params.id
       if (!id) {
         this.$message.error('缺少请求参数!')
         this.$router.replace({name: 'home'})
         return false
       }
-      let id = that.$route.params.id
       that.type = 1
       that.getDetail(id)
     },

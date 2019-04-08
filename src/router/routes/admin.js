@@ -159,7 +159,7 @@ module.exports = [
         component: require('@/components/admin/item/List')
       },
       {
-        path: '/admin/item/orderlist',
+        path: '/admin/item/orderlist/:id',
         name: 'orderlist',
         meta: {
           title: '订单详情',
