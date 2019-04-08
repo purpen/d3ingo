@@ -288,7 +288,7 @@
               <router-link :to="menu.mobile_login">成果交易会</router-link>
             </li>
             <li>
-              <router-link :route="menu.content_manage">帮助</router-link>
+              <router-link :to="menu.content_manage">帮助</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
@@ -789,10 +789,6 @@
   }
   .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .nav-header .el-menu--horizontal > .el-menu-item.logo.is-active {
     border-color: transparent
-  }
-
-  .nav-header .el-menu-header {
-    /* background: #ffffff; */
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
