@@ -79,7 +79,8 @@
           <div class="padding-r4">
           <i @click="boolProgressContant = !boolProgressContant" :class="['fx', 'fx-icon-lower', 'item-arrow', 'fz-28', {'i-active': !boolProgressContant}]"></i>
           </div>
-					<div class="status-model">
+					<div :class="['status-model', 
+          {'margin-r240' : ((userForm.new_status === 4) || userForm.son_status === 4)}]">
 
 						<div @click="showTabProgress(1)" :class="['nav-item', {'current': userForm.new_status === 1, 'finish': userForm.new_status !== 1}]">
               <span>商机</span>
@@ -90,19 +91,21 @@
 						<div @click="showTabProgress(3)" :class="['nav-item', {'current': userForm.new_status === 3, 'finish': userForm.new_status > 3}]">
             <span>对接设计</span>
             </div>
-						<div  @click="showTabProgress(4)" :class="['nav-item', 'last-nav-item', {'current': userForm.new_status === 4}]">
+						<div  @click="showTabProgress(4)" :class="['nav-item', 'last-nav-item', {'finish': userForm.new_status === 4}]">
               <span>签订合作</span>
             </div>
 
 					</div>
-          <div class="status-right">
+          <div class="status-right" v-if="!((userForm.new_status === 4) || userForm.son_status === 4)">
             <el-dropdown @command="showClueDialog" trigger="hover">
               <!-- <span class="">标记当前商机状态</span> -->
-              <el-button type="primary" size="small" class="change-status">标记当前商机状态</el-button>
+              <el-button type="primary" size="small" class="change-status" :disabled="!isHasPower">
+                {{userForm.new_status ===1 ? '标记当前商机状态' : '标记当前客户状态'}}
+              </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="userForm.new_status === 1" command="1">转化为潜在客户</el-dropdown-item>
-                <el-dropdown-item v-if="userForm.new_status === 1" command="3">无效商机</el-dropdown-item>
-                <el-dropdown-item v-if="userForm.new_status !== 4" command="4">低价客户</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1 || userForm.new_status === 2" command="3">无效商机</el-dropdown-item>
+                <el-dropdown-item v-if="userForm.new_status === 1 || userForm.new_status === 2" command="4">低价客户</el-dropdown-item>
                 <el-dropdown-item v-if="userForm.new_status === 3"  command="2">流失客户</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -133,7 +136,8 @@
             </div>
             <div class="note-right">
               <p class="fw-5">成功指南</p>
-              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户。为预算大于一万的潜在客户匹配最适合的设计服务商</p>
+              <p>· 快速确认潜在客户的预算，如果潜在客户预算小于一万，请将潜在客户标记为低价客户</p>
+              <p>· 为预算大于一万的潜在客户匹配最适合的设计服务商</p>
             </div>
           </div>
           
@@ -145,10 +149,10 @@
             </div>
             <div class="note-right">
               <p class="fw-5">成功指南</p>
-              <p>· 为潜在客户提供最合适的设计服务商，为潜在客户提供最好的服务。</p>
-              <p>· 若对接失败，不要轻易将客户标记为流失客户。</p>
-              <p>· 分析原因，判断是否可以为潜在客户匹配其他服务商。</p>
-              <p>· 尽可能找到最合适的沟通方式，持续不断的追踪对接进度。</p>
+              <p>· 为潜在客户提供最合适的设计服务商，为潜在客户提供最好的服务</p>
+              <p>· 若对接失败，不要轻易将客户标记为流失客户</p>
+              <p>· 分析原因，判断是否可以为潜在客户匹配其他服务商</p>
+              <p>· 尽可能找到最合适的沟通方式，持续不断的追踪对接进度</p>
             </div>
           </div>
           
@@ -160,9 +164,9 @@
             </div>
             <div class="note-right">
               <p class="fw-5">成功指南</p>
-              <p>· 签约项目只是合作的开始，实时关注项目进度。</p>
-              <p>· 为客户提供优质服务。</p>
-              <p>· 开发十个新的商机，不如维护好一个老客户。</p>
+              <p>· 签约项目只是合作的开始，实时关注项目进度</p>
+              <p>· 为客户提供优质服务</p>
+              <p>· 开发十个新的商机，不如维护好一个老客户</p>
             </div>
           </div>
 
@@ -193,7 +197,7 @@
                         <h5 class="project-name fl">{{item.name}}</h5>
                         <div class="edit-project fr">
                           <div class="edit-project-tag" v-if="isHasPower">
-                            <p @click="editProject(item)">编辑项目</p>
+                            <p class="edit" @click="editProject(item)">编辑项目</p>
                           </div>
                         </div>
                       </el-col>
@@ -263,7 +267,7 @@
 													<el-col :md="24" :lg="24" v-if="!boolRemarks">
 														<span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
 														<span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-														<i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i>
+														<i @click="editRemarks(item)" v-if="isHasPower" class="margin-l10 el-icon-edit pointer"></i>
 													</el-col>
 													
 													<el-col  :md="20" :lg="20" v-if="boolRemarks && item.item_id === editRemarksId">
@@ -309,7 +313,7 @@
 													<span class="item.update_user_name">{{item.update_user_name}}</span>
 													<span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
 												</div>
-												<div v-else>—</div>
+												<span v-else>—</span>
                       </el-col>
                     </el-row>
                     <!-- 对接设计公司 -->
@@ -330,7 +334,7 @@
                             <div v-if="item.failure === null && isHasPower" class="edit-project fr">
                               <div class="edit-project-tag" v-if="isHasPower">
                                 <!-- <p @click="deleteDesignProject(d)">删除</p> -->
-                                <p @click="showEditDesignForm(d)" class="pointer">编辑</p>
+                                <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
                               </div>
                             </div>
                           </div>
@@ -426,7 +430,7 @@
               <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
                 <!-- <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span> -->
-                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="editClientUser"><i class="el-icon-circle-plus"></i>编辑</span>
+                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="editClientUser">编辑</span>
               </p>
             </div>
             <div class="client-info">
@@ -618,7 +622,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="padding-b20" v-if="activeLogList.length">
               <ul class="padding-l30  tc-6">
                 <li v-for="(item, i) in activeLogList" :key="i" class="log-li">
                   <p :class="{'phone': item.type === 1, 'wx': item.type === 2}">
@@ -633,7 +637,7 @@
                 </li>
               </ul>
             </div>
-            <div class="padding-l30  tc-6" v-if="eventLogList.length">
+            <div :class="['padding-l30', 'tc-6', 'padding-b20', {'blank20': activeLogList.length === 0}]" v-if="eventLogList.length">
               <p class="event-title bb-e6">事件</p>
               <ul class="">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
@@ -659,6 +663,7 @@
     <el-dialog
       title="标记失败"
       :visible.sync="BoolmarkFailure"
+      class="reset-dialog"
       width="380px">
       <p class="dialog-c-p">是否确认项目对接失败？</p>
       <el-input v-model.trim="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
@@ -750,14 +755,13 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+          <el-col class="region" :xs="24" :sm="24" :md="24" :lg="24">
             <region-picker :provinceProp="clientForm.province" 
                           :cityProp="clientForm.city"
-                          propStyle="margin:0;"
                           :twoSelect="true"
-                          :gutter="20"
-                          class="fullwidth margin-b22"
-                          :isFirstProp="isFirstRegion" titleProp="企业地址"
+                          :gutter="0"
+                          :isFirstProp="isFirstRegion" 
+                          titleProp="企业地址"
                           @onchange="changeClient">
             </region-picker>
           </el-col>
@@ -887,17 +891,20 @@
             </el-col>
           </el-row>
 
-          <div>
-            <region-picker :provinceProp="projectForm.item_province" 
-                  :cityProp="projectForm.item_city" propStyle="margin:0;"
-                  :isFirstProp="isFirstRegion" titleProp="项目工作地点"
-                  @onchange="changeProject" class="margin-b22 fullwidth"
-                  :twoSelect="true"
-                  :gutter="20"
-                  >
-            </region-picker>
-          </div>
 
+          <el-row>
+            <el-col class="region">
+              <region-picker :provinceProp="projectForm.item_province" 
+                    :cityProp="projectForm.item_city" 
+                    :isFirstProp="isFirstRegion" 
+                    titleProp="项目工作地点"
+                    @onchange="changeProject"
+                    :twoSelect="true"
+                    :gutter="0"
+                    >
+              </region-picker>
+            </el-col>
+          </el-row>
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="项目描述" prop="summary">
@@ -920,7 +927,7 @@
         <el-button @click="boolProject = false, boolAddProject = false">取 消</el-button>
         <el-button type="primary" :loading="createProjectLoading" @click="createProjectForm('ruleProjectForm')">保 存</el-button>
       </span>
-      <span v-else  slot="footer" class="edit-design-btn clearfix fz-0 flex-right">
+      <span v-else  slot="footer" class="edit-design-btn fz-0 flex-right">
         <el-button class="margin-r-15" @click="boolProject = false">取 消</el-button>
         <el-button type="primary" @click="updateProjectForm('ruleProjectForm')">保 存
         </el-button>
@@ -930,6 +937,7 @@
     <el-dialog 
       :title="ClueStatusRemarks"
       :visible.sync="boolClueStatus"
+      class="reset-dialog"
       width="380px">
         <el-radio-group v-model="label_cause" v-if="boolClueStatus2">
           <el-radio :label="1">虚假商机</el-radio>
@@ -1932,6 +1940,8 @@ export default {
           this.$message.success('标记成功')
           if (status === 1) {
             this.$message.success('成功转化为潜在客户')
+          } else if (status === 3) {
+            this.redirect()
           }
           this.getUserInfo()
           this.getLogList()
@@ -2777,6 +2787,9 @@ export default {
 .margin-r20 {
   margin-right: 20px;
 }
+.margin-r240 {
+  margin-right: 240px;
+}
 .margin-l0 {
   margin-left: 0 !important;
 }
@@ -3090,6 +3103,13 @@ export default {
   /* height: 142px; */
   padding: 10px 18px 4px 20px;
 }
+.design-li  .flex-column > span {
+  line-height: 1.2;
+  padding-bottom: 10px;
+}
+.design-li  .flex-column > span:nth-child(1) {
+
+}
 .design-info > div {
   width: 150px;
 }
@@ -3098,6 +3118,8 @@ export default {
 }
 .design-li-footer {
   position: relative;
+  padding-top: 8px;
+  border-top: 1px solid #E9E9E9;
 }
 .design-li-footer .div {
   position: absolute;
@@ -3157,7 +3179,6 @@ export default {
 .user-log {
   overflow: hidden;
   transition: 268ms all ease;
-  padding-bottom: 20px;
 }
 
 /* .bg-blue01 {
@@ -3220,7 +3241,7 @@ export default {
 }
 
 .event-title {
-  padding: 20px 0 10px 0;
+  padding: 0 0 10px 0;
 }
 .log-title {
   line-height: 40px;
@@ -3257,7 +3278,7 @@ export default {
   overflow-y: auto;
   /* height: calc(80vh - 120px); */
   min-height: 30vh;
-  max-height: 70vh;
+  max-height: 64vh;
   padding: 30px 60px 0 50px;
 }
 .change-status {
@@ -3457,26 +3478,32 @@ export default {
   display: none;
   position: absolute;
   top: 34px;
-  left: -54px;
-  width: 100px;
+  left: -66px;
+  width: 120px;
   z-index: 99;
   border: 1px solid #e6e6e6;
   background: #ffffff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .2);
 }
 .edit-project .edit-project-tag> p {
-  height: 30px;
-  line-height: 29px;
-  color: #AAAAAA;
+  height: 36px;
+  padding-left: 22px;
+  line-height: 36px;
+  color: #222;
   margin-bottom: 0px;
-  text-align: center;
-  font-size: 12px;
-  border-bottom: 1px solid #e6e6e6;
+  font-size: 14px;
+  border-left: 10px solid transparent;
+  /* border-bottom: 1px solid #e6e6e6; */
 }
 .edit-project-tag> p:hover {
-  color: #484848;
+  background-color: #f7f7f7;
+  /* color: #222222; */
 }
 .edit-project-tag > .delete {
-
+  background: url(../../../assets/images/icon/delete@2x.png) no-repeat left/16px;
+}
+.edit-project-tag > .edit {
+  background: url(../../../assets/images/icon/edit.png) no-repeat left/14px;
 }
 .project-failure {
   color: #FF5A5F;
@@ -3774,10 +3801,14 @@ export default {
 }
 
 /* dialog */
+.reset-dialog .el-dialog__body {
+  text-align: center;
+}
 .userinfo-dialog .el-dialog {
   /* overflow: hidden; */
 }
-.userinfo-dialog .el-dialog__header {
+.userinfo-dialog .el-dialog__header, 
+.reset-dialog .el-dialog__header {
   padding: 20px 20px 18px 20px;
 }
 .userinfo-dialog .el-dialog__body {
@@ -3788,11 +3819,15 @@ export default {
 	border-top: 1px solid #e6e6e6;
 	/* box-shadow: 0 -5px 5px 0 rgba(0,0,0,.1); */
 }
-.userinfo-dialog  .el-dialog__footer .client-btn {
+.userinfo-dialog  .el-dialog__footer .client-btn,
+.userinfo-dialog  .el-dialog__footer .edit-design-btn {
   padding-right: 6px;
 }
 .userinfo-dialog  .el-dialog__footer .el-button + .el-button {
 	margin-right: 0;
+}
+.design-progress .el-progress-bar__outer {
+  height: 4px !important;
 }
 </style>
 
