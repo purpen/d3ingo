@@ -575,7 +575,7 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -588,7 +588,7 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -631,7 +631,7 @@
             {text: '商机', value: '1' },
             { text: '潜在客户', value: '2' },
             { text: '对接设计', value: '3' },
-            { text: '签约合作', value: '4' }
+            { text: '签订合作', value: '4' }
           ]"
           :filter-multiple="false"
           filter-placement="bottom-end">
@@ -639,7 +639,7 @@
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
               <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-              <p class="status5 status"  v-else>签约合作</p>
+              <p class="status5 status"  v-else>签订合作</p>
             </template>
         </el-table-column> -->
       </el-table>
