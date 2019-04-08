@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="status-model pad-top-10">
+    <!-- <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
       <div :class="['nav-item', {'current': onePhase, 'finish': !onePhase}]">
         <span>项目对接中</span>
       </div>
@@ -10,6 +10,11 @@
       <div :class="['nav-item', 'last-nav-item', {'current': threePhase}]">
         <span>已完成</span>
       </div>
+    </div>
+    <div v-else class="fail-border pad-top-10"></div> -->
+    <div class="fail-border flex-center-center mar-top-10">
+      <div class="fail-img"></div>
+      <div class="fail-text">项目已关闭</div>
     </div>
     <div class="pad-0-30">
       <div class="big-title pad-top-40">{{item.name || oldItem.name || '—'}}</div>
@@ -480,6 +485,24 @@ export default {
     color: #ff5a5f;
     border-bottom: 4px solid #ff5a5f;
   }
+  .fail-border {
+    height: 40px;
+    background: rgba(255,246,237,1);
+    border-radius: 20px;
+    border: 1px solid rgba(255,221,188,1);
+  }
+  .fail-img {
+    width: 16px;
+    height: 16px;
+    background: url('../../../assets/images/icon/GroupFour@2x.png') no-repeat center / contain;
+  }
+  .fail-text {
+    font-size: 14px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,166,75,1);
+    padding-left: 10px;
+  }
 
 
 
@@ -512,6 +535,9 @@ export default {
   .mar-right-36 {
     margin-right: 36px;
   }
+  .mar-top-10 {
+    margin-top: 10px;
+  }
   .one-left {
     height: 34px;
     display: flex;
@@ -532,6 +558,11 @@ export default {
   }
   .color-ff5a5f {
     color: #FF5A5F;
+  }
+  .flex-center-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* 头部导航 */

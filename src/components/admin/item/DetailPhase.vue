@@ -1,11 +1,17 @@
 <template>
   <div>
-    <div v-if="oldItem.status === 1 || oldItem.status === 2">
-      <div class="title pad-top-30">项目已创建</div>
+    <div v-if="oldItem.status === 1 || oldItem.status === 2 || oldItem.status === -1 || oldItem.status === -3" class="pad-top-30">
+      <div v-of="oldItem.status === -1 || oldItem.status === -3">
+        <div class="title">{{oldItem.status === -1 ? '客户已关闭项目' : '平台已关闭项目'}}</div>
+        <div class="date-12">{{oldItem.status_time['-3'] || oldItem.status_time['-1']}}</div>
+      <div class="grey-line"></div>
+      </div>
+      <div class="title">项目已创建</div>
       <div class="date-12">{{creat || '—' |timeFormat}}</div>
       <div class="one-img" v-if="oldItem.status !== 1">
         <div class="empty-img"></div>
-        <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
+        <div class="empty-text" v-if="oldItem.status === -1 || oldItem.status === -3">待匹配设计服务商</div>
+        <div class="empty-text" v-else>如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
       </div>
     </div>
     <div v-if="oldItem.status === 3 || oldItem.status === 4 || oldItem.status === 45 || oldItem.status === 5 || oldItem.status === 6 || oldItem.status === 7 || oldItem.status === 8 || oldItem.status === 9">
