@@ -299,34 +299,8 @@
           </button>
         </el-row>
       </el-form>
-      <div class="pad-10">
-        <el-row :gutter="10" class="phone-six mar-bot-6">
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-              <p>产品外观设计</p>
-            </div>
-          </el-form-item>
-          <el-form-item prop="contact">
-            <div class="release-input">
-              <input type="text" class="release-form" placeholder="请输入联系人" v-model="form.contact" ref="contact">
-            </div>
-          </el-form-item>
-          <el-form-item prop="account">
-            <div class="release-input">
-              <input type="text" class="release-form" placeholder="手机号码" v-model="form.account" ref="account">
-            </div>
-          </el-form-item>
-          <el-form-item prop="smsCode">
-            <div class="code1-send">
-              <input type="text" placeholder="验证码" class="code-input mar-left-5" v-model="form.smsCode" name="smsCode">
-              <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
-            </div>
-          </el-form-item>
-        </div>
-      </el-form>
       <div class="round-btn">
-        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">发布项目需求</div>
+        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">发布项111目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">

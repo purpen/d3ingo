@@ -748,7 +748,8 @@ module.exports = [
         name: 'bAdminItemList',
         meta: {
           title: '项目列表',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/item/List')
       },
@@ -758,7 +759,8 @@ module.exports = [
         name: 'bAdminItemShow',
         meta: {
           title: '项目详情',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/item/Show')
       },
@@ -768,7 +770,8 @@ module.exports = [
         name: 'bAdminOrderList',
         meta: {
           title: '订单列表',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/order/List')
       },
@@ -778,7 +781,8 @@ module.exports = [
         name: 'bAdminCompanyList',
         meta: {
           title: '设计服务商列表',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/company/List')
       },
@@ -788,7 +792,8 @@ module.exports = [
         name: 'bAdminCompanyShow',
         meta: {
           title: '设计服务商详情',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/company/Show')
       },
@@ -798,7 +803,8 @@ module.exports = [
         name: 'bAdminDemandCompanyList',
         meta: {
           title: '需求公司列表',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/demand_company/List')
       },
@@ -808,7 +814,8 @@ module.exports = [
         name: 'bAdminDemandCompanyShow',
         meta: {
           title: '需求公司详情',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/demand_company/Show')
       },
@@ -818,7 +825,8 @@ module.exports = [
         name: 'bAdminUserList',
         meta: {
           title: '用户列表',
-          requireAuth: true
+          requireAuth: true,
+          hideFooter: true
         },
         component: require('@/components/b_admin/user/List')
       }
