@@ -139,11 +139,11 @@
       </div>
     </div> -->
 
-    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="5%" custom-class="quate-round">
       <v-quote-view :formProp="quotation"></v-quote-view>
-      <div slot="footer" class="dialog-footer btn">
+      <!-- <div slot="footer" class="dialog-footer btn">
         <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      </div> -->
     </el-dialog>
 
     <el-dialog

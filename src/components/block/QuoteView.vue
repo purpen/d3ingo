@@ -1,53 +1,45 @@
 <template>
   <div>
     <div>
-      <p class="font-size-16 color-222">项目目标</p>
-      <p class="font-size-14 color-666">{{ form.summary }}</p>
+      <div class="title">项目目标</div>
+      <div class="text pad-top-10">{{ form.summary }}</div>
     </div>
-    <div class="blank20"></div>
-    <div>
-      <p class="font-size-16 color-222">项目工作计划及费用</p>
-      <!-- <div class="line"></div> -->
-      <div class="" v-for="(d, index) in form.plan" :key="index">
-        <el-row :gutter="10" class="bb-e6">
-          <el-col>
-            <p class="fz-12 tc-6">{{ d.content }}</p>
-          </el-col>
-          <el-col>
-            <div class="item-box">
-              <div class="item-content">
-                <p>
-                  <span v-for="(c, c_index) in d.arranged" :key="c_index">
-                    {{ c.number }}名 {{ c.name }} &nbsp;&nbsp;&nbsp;&nbsp;
-                  </span>
-                </p>
-                <p>{{ d.duration }}个 工作日</p>
-                <p class="font-size-14 color-666"><span class="tc-2">备注: </span>{{ d.summary }}</p>
+    <div class="title pad-top-20">项目工作计划及费用</div>
+    <div class="line"></div>
+    <div class="center-round">
+      <div v-for="(d, index) in form.plan" :key="index" class="flex flex-pad">
+        <div class="content-left">{{d.content}}</div>
+        <div class="flex-space">
+          <div class="content-center">
+            <div v-for="(c, c_index) in d.arranged" :key="c_index" class="flex">
+              <div class="flex">
+                <div class="pad-right-20 number-people">{{c.number}}&nbsp;名</div>
+                <div class="number-people">{{c.name}}</div>
               </div>
-              <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>
-            <div class="line" v-if="index !== form.plan.length - 1"></div>
-          </el-col>
-        </el-row>
-
+            <div class="week-day">{{d.duration}}个&nbsp;&nbsp;&nbsp;&nbsp;工作日</div>
+            <div class="">{{d.summary}}</div>
+          </div>
+          <div class="content-right">¥ {{ formatPrice(d.price) }}</div>
+        </div>
       </div>
     </div>
-    <!-- <div class="line"></div> -->
+    <div class="line"></div>
     <div class="sum-box" v-if="false">
       <div class="tax-box" v-if="!form.is_tax && form.is_invoince">
-        <p class="total-money">费用: <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
+        <p class="total-money ">费用:<span class="font-size-16">¥{{ totalMoneyFormat }}</span></p>
       </div>
       <div class="tax-total-box">
-        <p v-show="form.is_tax" class="tax-total-money">总计(含税): <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
-        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:<span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税): <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="form.is_tax" class="tax-total-money">总计（含税）：<span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:<span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税):<span class="font-size-16">&nbsp;¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
     <div class="sum-box clearfix" v-else>
       <div class="tax-box clearfix">
-        <p class="total-money">费用: <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
+        <p class="total-money">费用:<span class="font-size-16">¥{{ totalMoneyFormat }}</span></p>
       </div>
       <div class="tax-total-box clearfix">
-        <p class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税):  <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p class="tax-total-money">税率:<span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）:<span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span></p>
       </div>
     </div>
 
@@ -113,46 +105,101 @@ export default {
 </script>
 
 <style scoped>
-  div {
-    color: #222;
-  }
+
+
   .title {
-    margin: 20px;
-    text-align: center;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
   }
-  .title h1 {
-    font-size: 22px;
+  .text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
   }
   .line {
-    border-bottom: solid #EBEBEB 1px;
-    margin: 10px 0 20px 0;
+    border-top: 1px solid #EBEBEB;
+    margin: 10px 0 15px 0;
   }
-
-  .form-btn button {
-    /* padding: 10px 40px; */
-    margin: 0px;
-    margin-left: 20px;
+  .content-left {
+    width: 120px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 22px;
+    margin-right: 20px;
+    word-break: break-all;
   }
+  .content-center {
+    flex: 1;
+  }
+  .content-right {
+    width: 100px;
+    text-align: right;
+    font-size: 16px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,90,95,1);
+  }
+  .number-people {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 22px;
+  }
+  .week-day {
+    padding-top: 8px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    text-align: start;
+    line-height: 22px;
+  }
+  .note {
+    padding-top: 8px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
+  }
+  .flex {
+    display: flex;
+  }
+  .flex-space {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 16px;
+  }
+  .center-round .flex-pad:not(:nth-last-child(1)) .flex-space {
+    border-bottom: 1px solid #EBEBEB;
+  }
+  .center-round .flex-pad:not(:nth-child(1)) {
+    padding-top: 15px;
+  }
+  .pad-top-10 {
+    padding-top: 10px;
+  }
+  .pad-top-20 {
+    padding-top: 20px;
+  }
+  .pad-right-20 {
+    padding-right: 20px;
+  }
+  
   p {
     line-height: 2;
-  }
-  h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .contact-box {
-
-  }
-  .contact-box p span {
-    color: #666;
   }
 
   .sum-box {
     margin: 20px 0 0;
-  }
-  .sum-box .tax-box {
-
   }
   .sum-box .tax-box p {
     float: right;
@@ -160,55 +207,38 @@ export default {
     color: #222;
   }
   .total-money {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
     margin-left: 10px;
   }
   .total-money span {
-    color: #FF5A5F;
-  }
-
-  .invoice-box {
-    clear: both;
-  }
-  .invoice-box p {
-    float: right;
+    font-size: 16px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,90,95,1);
+    padding-left: 10px;
   }
   .tax-total-box {
     clear: both;
   }
   .tax-total-money {
-    line-height: 1.5;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
     float: right;
   }
   .tax-total-money span {
-    color: #FF5A5F;
-  }
-  .item-box {
-    display: flex;
-  }
-  .item-content {
-    flex-grow: 1;
-    /* margin: 0 0 20px 0; */
-  }
-  .item-money {
-    color: #FF5A5F;
-    white-space: nowrap;
-    /* margin: 10px 0 0 20px; */
     font-size: 16px;
-  }
-
-  .font-size-14 {
-    font-size: 14px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,90,95,1);
+    padding-left: 10px;
   }
 
   .font-size-16 {
     font-size: 16px;
-  }
-
-  .color-666 {
-    color: #666666;
-  }
-
-  .color-222 {
-    color: #222222;
   }
 </style>
