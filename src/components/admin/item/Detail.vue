@@ -140,6 +140,7 @@
         :designCompany="designCompany"
         :contract="contract"
         :itemName="item.name"
+        :clueId="item.clue_id"
         :quotation="quotation"
         :evalDesignLevel="evalDesignLevel"
         :evalResponseSpeed="evalResponseSpeed"

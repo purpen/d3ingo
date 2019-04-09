@@ -11,7 +11,7 @@
       <div class="one-img" v-if="oldItem.status !== 1">
         <div class="empty-img"></div>
         <div class="empty-text" v-if="oldItem.status === -1 || oldItem.status === -3">待匹配设计服务商</div>
-        <div class="empty-text" v-else>如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
+        <div class="empty-text" v-else>如需匹配设计服务商，请<span class="color-ff5a5f cursor-point" @click="toCustomer()">前往客户管理</span></div>
       </div>
     </div>
     <div v-if="oldItem.status === 3 || oldItem.status === 4 || oldItem.status === 45 || oldItem.status === 5 || oldItem.status === 6 || oldItem.status === 7 || oldItem.status === 8 || oldItem.status === 9">
@@ -110,7 +110,7 @@
         </div>
         <div class="one-img" v-else>
           <div class="empty-img"></div>
-          <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
+          <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f cursor-point" @click="toCustomer()">前往客户管理</span></div>
           <div class="flex-center cursor-point mar-top-10 width-130 jusity-center" @click="showServer" v-if="(!normalDesign || !normalDesign.length) && !server">
             <div class="close-text">查看对接过的服务商</div>
             <div class="open-img"></div>
@@ -550,8 +550,16 @@ export default {
       boolStage: false
     }
   },
-  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem', 'creat', 'refauseDesign', 'normalDesign', 'quotation', 'failDesign'],
+  props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem', 'creat', 'refauseDesign', 'normalDesign', 'quotation', 'failDesign', 'clueId'],
   methods: {
+    toCustomer() {
+      const {href} = this.$router.resolve({
+        path: `/admin/customer/userinfo/${this.clueId}`,
+        query: {type: 1}
+      })
+      window.open(href, '_blank')
+      // this.$router.push(href)
+    },
     toOrder(id) {
       const {href} = this.$router.resolve({
         path: `/admin/item/orderlist/${id}`
