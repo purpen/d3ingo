@@ -3063,7 +3063,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   top: -1px;
@@ -3072,7 +3072,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   bottom: -1px;
