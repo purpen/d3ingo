@@ -147,7 +147,8 @@
         :oldItem="oldItem"
         :creat="oldItem.created_at"
         :refauseDesign="refauseDesign"
-        :normalDesign="normalDesign">
+        :normalDesign="normalDesign"
+        :failDesign="failDesign">
       </phase>
       <detail v-if="type === 2"
         :contract="contract"
@@ -192,7 +193,8 @@ export default {
       twoPhase: false, // 第二个阶段
       threePhase: false, // 第三个阶段
       normalDesign: [], // 未拒绝的设计公司
-      refauseDesign: [] // 拒绝的设计公司
+      refauseDesign: [], // 拒绝的设计公司,
+      failDesign: [] // 对接失败的设计公司
     }
   },
   created() {
@@ -250,6 +252,9 @@ export default {
             })
             that.itemStage = arr
           }
+          if (obj.true_design) {
+            that.trueDesign = obj.true_design
+          }
           if (obj.designCompany) {
             for (let index in obj.designCompany) {
               let item = obj.designCompany[index]
@@ -264,11 +269,11 @@ export default {
               } else {
                 that.normalDesign.push(item)
               }
+              if (that.trueDesign && item.status > 6 && item.id !== that.trueDesign.id) {
+                that.failDesign.push(item)
+              }
             }
             that.designCompany = obj.designCompany
-          }
-          if (obj.true_design) {
-            that.trueDesign = obj.true_design
           }
           if (that.contract) {
             that.contract.item_stage = obj.item_stage
