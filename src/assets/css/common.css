@@ -187,11 +187,17 @@
 .margin-t-10 {
   margin-top: 10px;
 }
+.margin-l-0 {
+  margin-left: 0 !important;
+}
 .margin-l-10 {
   margin-left: 10px;
 }
 .margin-r-10 {
   margin-right: 10px;
+}
+.margin-r-0 {
+  margin-right: 0 !important;
 }
 .margin-r-15 {
   margin-right: 15px!important;
@@ -263,6 +269,9 @@
 }
 .va-bottom {
   vertical-align: bottom
+}
+.va-middle {
+  vertical-align: middle;
 }
 .fw-4 {
   font-weight: 400;
