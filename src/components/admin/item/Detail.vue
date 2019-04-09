@@ -299,6 +299,8 @@ export default {
             case 5:
             case 6:
             case 45:
+            case -1:
+            case -3:
               that.onePhase = true
               break
             case 7:
