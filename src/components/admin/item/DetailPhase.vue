@@ -73,6 +73,7 @@
                 <div class="flex-center width-265">
                   <div class="logo">
                     <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+                      <img src="../../../assets/images/df_100x100.png" alt="" v-else>
                   </div>
                   <div class="name pad-left-15">{{item.company_name || '—'}}</div>
                 </div>
@@ -111,9 +112,9 @@
           <div class="empty-img"></div>
           <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
         </div>
-        <div class="grey-line" v-if="refauseDesign && refauseDesign.length"></div>
+        <div class="grey-line" v-if="refauseDesign && refauseDesign.length && server"></div>
         <div v-if="refauseDesign && refauseDesign.length">
-          <div class="tansition" :class="{'hei-0': !server}">
+          <div class="tansition">
             <div class="title">对接过的服务商</div>
             <div class="date-12">共 {{refauseDesign.length}} 家</div>
             <div class="pad-top-10">
@@ -122,6 +123,7 @@
                   <div class="flex-center width-265">
                     <div class="logo">
                       <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+                      <img src="../../../assets/images/df_100x100.png" alt="" v-else>
                     </div>
                     <div class="name pad-left-15">{{item.company_name || '—'}}</div>
                   </div>
@@ -158,11 +160,11 @@
               </div>
             </div>
           </div>
-          <div class="flex-center cursor-point pad-top-30" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
+          <div class="flex-center mar-top-30 width-130" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
             <div class="close-text">隐藏对接过的服务商</div>
             <div class="close-img"></div>
           </div>
-          <div class="flex-center cursor-point pad-top-30" @click="showServer" v-else>
+          <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
             <div class="close-text">查看对接过的服务商</div>
             <div class="open-img"></div>
           </div>
@@ -170,48 +172,48 @@
       </template>
       <template v-else>
         <div class="pad-top-10">
-            <div class="pad-top-20 flex-center-space">
-              <div class="flex-center">
-                <div class="flex-center width-265">
-                  <div class="logo">
-                    <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
-                  </div>
-                  <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
+          <div class="pad-top-20 flex-center-space">
+            <div class="flex-center">
+              <div class="flex-center width-265">
+                <div class="logo">
+                  <img :src="trueDesign.logo_image.logo" v-if="trueDesign.logo_image && trueDesign.logo_image.logo">
                 </div>
-                <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at || '—' |timeFormat2}}</div>
-                <div class="evaluation-text pad-left-40 white-space">沟通天数: {{trueDesign.chatDay || '—'}}</div>
+                <div class="name pad-left-15">{{trueDesign.company_name || '—'}}</div>
               </div>
-              <div>
-                <el-popover
-                  placement="top-end"
-                  width="680"
-                  trigger="click">
-                    <div class="steps" v-if="boolStage">
-                      <el-steps :active="stageActive" class="steps-item">
-                        <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                        <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
-                        <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
-                        <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                        <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                        <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                        <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                      </el-steps>
-                      <div class="steps-remarks" v-if="trueDesign.status > 6">
-                        <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{trueDesign.message || '—'}}</span></p>
-                        <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{trueDesign.design_remarks || '—'}}</span></p>
-                      </div>
-                    </div>
-                    <div class="flex-center" @click="showProgessDesign(trueDesign)" slot="reference">
-                      <div class="show-img"></div>
-                      <div class="show-text pad-left-5">查看进度</div>
-                    </div>
-                </el-popover>
-              </div>
+              <div class="evaluation-text pad-left-80 white-space">对接日期：{{trueDesign.created_at || '—' |timeFormat2}}</div>
+              <div class="evaluation-text pad-left-40 white-space">沟通天数: {{trueDesign.chatDay || '—'}}</div>
             </div>
+            <div>
+              <el-popover
+                placement="top-end"
+                width="680"
+                trigger="click">
+                  <div class="steps" v-if="boolStage">
+                    <el-steps :active="stageActive" class="steps-item">
+                      <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                      <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
+                      <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
+                      <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                      <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                      <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                      <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                    </el-steps>
+                    <div class="steps-remarks" v-if="trueDesign.status > 6">
+                      <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{trueDesign.message || '—'}}</span></p>
+                      <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{trueDesign.design_remarks || '—'}}</span></p>
+                    </div>
+                  </div>
+                  <div class="flex-center" @click="showProgessDesign(trueDesign)" slot="reference">
+                    <div class="show-img"></div>
+                    <div class="show-text pad-left-5">查看进度</div>
+                  </div>
+              </el-popover>
+            </div>
+          </div>
         </div>
-        <div class="grey-line" v-if="failDesign && failDesign.length"></div>
+        <div class="grey-line" v-if="failDesign && failDesign.length && server"></div>
         <div v-if="failDesign && failDesign.length">
-          <div class="tansition" :class="{'hei-0': !server}">
+          <div class="tansition" v-if="server">
             <div class="title">对接过的服务商</div>
             <div class="date-12">共 {{failDesign.length}} 家</div>
             <div class="pad-top-10">
@@ -220,6 +222,7 @@
                   <div class="flex-center width-265">
                     <div class="logo">
                       <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+                      <img src="../../../assets/images/df_100x100.png" alt="" v-else>
                     </div>
                     <div class="name pad-left-15">{{item.company_name || '—'}}</div>
                   </div>
@@ -256,11 +259,11 @@
               </div>
             </div>
           </div>
-          <div class="flex-center cursor-point pad-top-30" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
+          <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
             <div class="close-text">隐藏对接过的服务商</div>
             <div class="close-img"></div>
           </div>
-          <div class="flex-center cursor-point pad-top-30" @click="showServer" v-else>
+          <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
             <div class="close-text">查看对接过的服务商</div>
             <div class="open-img"></div>
           </div>
@@ -456,37 +459,64 @@
         </div>
       </div>
 
-      <div class="grey-line mar-50-0-30-0"></div>
-
-      <div class="tansition" :class="{'hei-0': !server}">
+      <div class="grey-line mar-50-0-30-0" v-if="server"></div>
+      <div>
+        
+      </div>
+      <div class="tansition" v-if="server">
         <div class="title">对接过的服务商</div>
-        <div class="date-12">共 {{trueDesign ? designCompany.length - 1 : designCompany.length}} 家</div>
+        <div class="date-12">共 {{failDesign.length}} 家</div>
         <div class="pad-top-10">
-          <div class="pad-top-20 flex-center-space" v-for="(item, index) in designCompany" :key="index">
+          <div class="pad-top-20 flex-center-space" v-for="(item, index) in failDesign" :key="index">
             <template v-if="item.id !== trueDesign.id">
               <div class="flex-center">
                 <div class="flex-center width-265">
-                  <div class="logo"></div>
+                  <div class="logo">
+                    <img :src="item.logo_image.logo" v-if="item.logo_image && item.logo_image.logo">
+                    <img src="../../../assets/images/df_100x100.png" alt="" v-else>
+                  </div>
                   <div class="name pad-left-15">{{item.company_name || '—'}}</div>
                 </div>
                 <div class="evaluation-text pad-left-80 white-space">对接日期：{{item.created_at || '—' |timeFormat2}}</div>
                 <div class="refused-text pad-left-40 white-space">已拒绝合作（客户）</div>
               </div>
-              <div class="flex-center">
-                <div class="show-img"></div>
-                <div class="show-text pad-left-5">查看原因</div>
+              <div>
+                <el-popover
+                  placement="top-end"
+                  width="680"
+                  trigger="click">
+                    <div class="steps" v-if="boolStage">
+                      <el-steps :active="stageActive" class="steps-item">
+                        <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                        <el-step :title="stageArr[1].message" :description="stageArr[1].time" icon="el-icon-success"></el-step>
+                        <el-step :title="stageArr[2].message" :description="stageArr[2].time" icon="el-icon-success"></el-step>
+                        <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                        <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                        <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                        <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                      </el-steps>
+                      <div class="steps-remarks" v-if="item.status > 6">
+                        <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{item.message || '—'}}</span></p>
+                        <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{item.design_remarks || '—'}}</span></p>
+                      </div>
+                    </div>
+                    <div class="flex-center" @click="showProgessDesign(item)" slot="reference">
+                      <div class="show-img"></div>
+                      <div class="show-text pad-left-5">查看原因</div>
+                    </div>
+                </el-popover>
               </div>
             </template>
           </div>
         </div>
       </div>
 
-      <div class="flex-center cursor-point pad-top-30" @click="closeServer" v-if="server">
+      <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
         <div class="close-text">隐藏对接过的服务商</div>
         <div class="close-img"></div>
       </div>
 
-      <div class="flex-center cursor-point pad-top-30" @click="showServer" v-else>
+      <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
         <div class="close-text">查看设计服务商</div>
         <div class="open-img"></div>
       </div>
@@ -637,6 +667,7 @@ export default {
     height: 49px;
     border-radius: 42px;
     border: 1px solid rgba(230,230,230,1);
+    overflow: hidden;
   }
   .logo img {
     width: 49px;
@@ -865,79 +896,13 @@ export default {
     margin: 50px 0 30px 0;
   }
   .mar-top-30 {
-    margin: 30px 0 0 0;
-  }
-  .mar-left-80 {
-    margin-left: 80px;
-  }
-  .mar-left-20 {
-    margin-left: 20px;
-  }
-  .width-180 {
-    width: 180px;
-  }
-  .white-space {
-    white-space: nowrap;
+    margin-top: 30px;
   }
   .cursor-point {
     cursor: pointer;
   }
-  .tansition {
-    transition: 500ms all ease;
-    overflow: hidden;
-    height: 120px;
-  }
-  .hei-0 {
-    height: 0;
-    overflow: hidden;
-    transition: 500ms all ease;
-  }
-  .bgcolor-65A6FF {
-    background-color: #65A6FF;
-  }
-
-
-  /* 查看详情样式 */
-  .steps .el-step__title.is-finish,
-  .steps .el-step__description.is-finish {
-    color: #222 !important;
-  }
-  .steps .is-finish .el-step__icon.is-text {
-    border-color: #00ac84 !important;
-  }
-  .steps .el-step__line {
-    background-color: #00ac84 !important;
-  }
-  .steps .el-step__main {
-    padding-bottom: 10px;
-  }
-  .steps .steps-item > .el-step {
-    flex-basis: 20% !important;
-  }
-  .steps .steps-item .el-step__head .el-step__line {
-    position: absolute;
-    top: 6px !important;
-    left: 5px !important;
-  }
-  .steps .el-step__head.is-finish {
-    color: #00ac84 !important;
-    border-color: #00ac84 !important;
-  }
-  .steps .el-step__head .el-step__icon-inner {
-    display: inline-block;
-  }
-  .steps .el-step__icon-inner[class*=el-icon]:not(.is-status) {
-    font-size: 20px;
-  }
-  .steps .el-step__head.is-process .el-step__icon {
-    background-color: #fff;
-    border-color: #fff;
-  }
-  .steps .el-step__icon-inner.el-icon-error {
-    color: #ff5a5f; 
-  }
-  .steps .el-step__head.is-process {
-    color: #00ac84;
+  .width-130 {
+    width: 130px;
   }
 </style>
 
