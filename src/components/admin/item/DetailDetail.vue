@@ -3,8 +3,8 @@
     <div class="flex-center-between pad-top-30 pad-bot-30">
       <div class="big-title">订单已完成</div>
       <div class="flex-center">
-        <div class="navegete-round flex-center" @click="navgiteTo(trueDesign.design_company_id)">
-          <div class="navegete-to">查看设计服务商</div>
+        <div class="navegete-round flex-center" @click="navgiteTo(tonaveId)">
+          <div class="navegete-to">查看订单</div>
           <div class="arrow-right"></div>
         </div>
       </div>
@@ -14,7 +14,8 @@
         <div class="tick"></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': contract.first_payment}">
-        <div class="tick"></div>
+        <div v-if="!contract.first_payment" class="omit"></div>
+        <div class="tick" v-else></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[0] && constractSort[0].pay_status}">
         <div class="tick"></div>
@@ -180,11 +181,13 @@ export default {
       quotaDialog: false,
       contractDialog: false,
       contractEvt: 0,
+      tonaveId: '',
       constractSort: []
     }
   },
   created() {
     let that = this
+    that.tonaveId = that.$route.params.id
     if (that.contract && (that.contract.source === 0 || that.contract.source)) {
       switch (that.contract.source) {
         case 0:
@@ -214,7 +217,7 @@ export default {
     // 查看服务商详情
     navgiteTo(id) {
       const {href} = this.$router.resolve({
-        path: `/admin/company/detail/${id}`
+        path: `/admin/item/orderlist/${id}`
       })
       window.open(href, '_blank')
     },
@@ -327,6 +330,9 @@ export default {
     width: 16px;
     height: 16px;
     background: url('../../../assets/images/icon/ok.png') no-repeat center / contain;
+  }
+  .omit {
+    
   }
   .order-money {
     font-size: 12px;
