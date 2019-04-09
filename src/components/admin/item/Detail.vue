@@ -156,7 +156,9 @@
         :payOrders="payOrders"
         :oldItem="oldItem"
         :itemStage="itemStage"
-        :trueDesign="trueDesign">
+        :trueDesign="trueDesign"
+        :toContras="toContras"
+        ref="detailChild">
       </detail>
       <info v-if="type === 3"
         :item="item"
@@ -194,7 +196,8 @@ export default {
       threePhase: false, // 第三个阶段
       normalDesign: [], // 未拒绝的设计公司
       refauseDesign: [], // 拒绝的设计公司,
-      failDesign: [] // 对接失败的设计公司
+      failDesign: [], // 对接失败的设计公司
+      toContras: false // 去合同的位置
     }
   },
   created() {
@@ -211,7 +214,14 @@ export default {
   methods: {
     toContra() {
       let that = this
+      if (that.type === 2) {
+        let height = that.$refs.detailChild.goHeight
+        console.log('height', that.$refs.detailChild.goHeight)
+        document.documentElement.scrollTo(0, height)
+        return
+      }
       that.type = 2
+      that.toContras = true
     },
     getType(type) {
       this.type = type

@@ -80,7 +80,7 @@
       <div class="grey-title">签约日期</div>
       <div class="grey-text">{{contract.true_time || '—' |timeFormat2}}</div>
     </div>
-    <div class="flex pad-top-18">
+    <div class="flex pad-top-18" ref="contract">
       <div class="flex-center" v-if="contract.source === 1">
         <div class="navegete-round flex-center" @click="viewContractBtn(1)">
           <div class="navegete-to">查看客户与艺火的合同</div>
@@ -178,12 +178,13 @@ export default {
     vJdDemandContractView,
     vJdDesignContractView
   },
-  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign'],
+  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign', 'toContras'],
   data() {
     return {
       quotaDialog: false,
       contractDialog: false,
       contractEvt: 0,
+      goHeight: 0,
       tonaveId: '',
       constractSort: []
     }
@@ -216,7 +217,18 @@ export default {
       }
     }
   },
+  mounted() {
+    let that = this
+    if (that.toContras) {
+      that.anchor()
+    }
+  },
   methods: {
+    anchor() {
+      let that = this
+      that.goHeight = that.$refs.contract.offsetTop
+      document.documentElement.scrollTo(0, that.goHeight)
+    },
     // 查看服务商详情
     navgiteTo(id) {
       const {href} = this.$router.resolve({
