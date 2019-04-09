@@ -18,13 +18,16 @@
         <div class="tick" v-else></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[0] && constractSort[0].pay_status}">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[0] && constractSort[0].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
       <div class="flex-1 flex-center-center" :class="[{'green-color': constractSort && constractSort[1] && constractSort[1].pay_status}, {'border-raduis-flex-right' : constractSort && constractSort.length && constractSort.length === 2}]">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[1] && constractSort[1].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[2] && constractSort[2].pay_status}" v-if="constractSort && constractSort.length && constractSort.length === 3">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[2] && constractSort[2].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
     </div>
     <div class="flex">
@@ -332,7 +335,9 @@ export default {
     background: url('../../../assets/images/icon/ok.png') no-repeat center / contain;
   }
   .omit {
-    
+    width: 16px;
+    height: 16px;
+    background: url('../../../assets/images/icon/ellipsis.png') no-repeat center / contain;
   }
   .order-money {
     font-size: 12px;

@@ -24,7 +24,7 @@
             <div class="text">{{oldItem.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
             </div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">合同金额：</div>
             <div class="header-yellow width-150-right" v-if="contract.total">￥{{contract.total}}</div>
             <div class="header-yellow width-150-right" v-else>{{'-'}}</div>
@@ -35,7 +35,7 @@
             <div class="title pad-right-40">项目预算</div>
             <div class="text">{{item.design_cost_value || oldItem.design_cost_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">项目编号：</div>
             <div class="text width-150-right">{{item.number || '-'}}</div>
           </div>
@@ -45,14 +45,14 @@
             <div class="title pad-right-40">交付时间</div>
             <div class="text">{{item.cycle_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">签约日期：</div>
             <div class="text width-150-right">{{contract.true_time || '—' |timeFormat}}</div>
           </div>
         </div>
       </div>
-      <div class="flex-center-end height-34" v-if="!onePhase">
-        <div class="navegete-round flex-center">
+      <div class="flex-center-end height-34" v-if="twoPhase || threePhase">
+        <div class="navegete-round flex-center" @click="toContra">
           <div class="navegete-to">查看合同</div>
           <div class="arrow-right"></div>
         </div>
@@ -87,7 +87,7 @@
             </div>
           </div>
         </div>
-        <div class="flex-1" v-if="!onePhase">
+        <div class="flex-1" v-if="twoPhase || threePhase">
           <div class="curstomer-server-title pad-bot-20">设计服务商</div>
           <div class="flex-between">
             <div>
@@ -209,6 +209,10 @@ export default {
     that.getDetail(id)
   },
   methods: {
+    toContra() {
+      let that = this
+      that.type = 2
+    },
     getType(type) {
       this.type = type
     },
@@ -627,7 +631,6 @@ export default {
     position: absolute;
     content: '';
     left: 6px;
-    cursor: pointer;
   }
   .nav-item::before {
     width: 100%;
@@ -659,7 +662,6 @@ export default {
     position: relative;
     text-decoration: none;
     z-index: 5;
-    cursor: pointer;
     font-size: 14px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
