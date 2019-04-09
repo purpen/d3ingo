@@ -3,43 +3,43 @@
     <div class="big-title">基本信息</div>
     <div class="flex-center-34 pad-top-24">
       <div class="title">项目名称</div>
-      <div class="text">{{item.name}}</div>
+      <div class="text">{{item.name || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">设计类型</div>
-      <div class="text">{{item.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
+      <div class="text">{{item.type_value || '—'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目预算</div>
-      <div class="text">{{item.design_cost_value || '-'}}</div>
+      <div class="text">{{item.design_cost_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">交付时间</div>
-      <div class="text">{{item.cycle_value || '-'}}</div>
+      <div class="text">{{item.cycle_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">来源渠道</div>
-      <div class="text">{{contract.source_value || '-'}}</div>
+      <div class="text">{{contract.source_value || '—'}}</div>
     </div>
 
     <div class="line"></div>
 
     <div class="flex-center-34">
       <div class="title">行业领域</div>
-      <div class="text">{{item.industry_value || '-'}}</div>
+      <div class="text">{{item.industry_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目工作地点</div>
       <div class="text" v-if="item.item_province_value">{{item.item_province_value}}·{{item.item_city_value}}</div>
-      <div class="text" v-else>{{'-'}}</div>
+      <div class="text" v-else>{{'—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目描述</div>
-      <div class="text">{{item.summary || '-'}}</div>
+      <div class="text">{{item.summary || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">备注</div>
-      <div class="text">{{item.remarks || '-'}}</div>
+      <div class="text">{{item.remarks || '—'}}</div>
     </div>
 
     <div class="line"></div>
@@ -48,15 +48,15 @@
     <div class="big-title">其他信息</div>
     <div class="flex-center-34 pad-top-24">
       <div class="title">项目编号</div>
-      <div class="text">{{item.number || '-'}}</div>
+      <div class="text">{{item.number || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">创建人</div>
-      <div class="text">{{item.user_name || '-'}}（{{item.created_at || '—' |timeFormat}}）</div>
+      <div class="text">{{item.user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
     </div>
     <div class="flex-center-34">
       <div class="title">修改人</div>
-      <div class="text">{{item.update_user_name || '-'}}（{{item.created_at || '—' |timeFormat}}）</div>
+      <div class="text">{{item.update_user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
     </div>
   </div>
 </template>

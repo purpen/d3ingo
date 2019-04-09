@@ -21,13 +21,13 @@
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
-            <div class="text">{{oldItem.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
+            <div class="text">{{oldItem.type_value || '—'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
             </div>
           </div>
           <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">合同金额：</div>
             <div class="header-yellow width-150-right" v-if="contract.total">￥{{contract.total}}</div>
-            <div class="header-yellow width-150-right" v-else>{{'-'}}</div>
+            <div class="header-yellow width-150-right" v-else>{{'—'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
@@ -37,7 +37,7 @@
           </div>
           <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">项目编号：</div>
-            <div class="text width-150-right">{{item.number || '-'}}</div>
+            <div class="text width-150-right">{{item.number || '—'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
