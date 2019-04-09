@@ -111,10 +111,14 @@
         <div class="one-img" v-else>
           <div class="empty-img"></div>
           <div class="empty-text">如需匹配设计服务商，请<span class="color-ff5a5f">前往客户管理</span></div>
+          <div class="flex-center cursor-point mar-top-10 width-130 jusity-center" @click="showServer" v-if="(!normalDesign || !normalDesign.length) && !server">
+            <div class="close-text">查看对接过的服务商</div>
+            <div class="open-img"></div>
+          </div>
         </div>
-        <div class="grey-line" v-if="refauseDesign && refauseDesign.length && server"></div>
+        <div class="grey-line" v-if="refauseDesign && refauseDesign.length && server" :class="{'mar-top-0': !normalDesign || !normalDesign.length}"></div>
         <div v-if="refauseDesign && refauseDesign.length">
-          <div class="tansition">
+          <div class="tansition" v-if="server">
             <div class="title">对接过的服务商</div>
             <div class="date-12">共 {{refauseDesign.length}} 家</div>
             <div class="pad-top-10">
@@ -160,11 +164,11 @@
               </div>
             </div>
           </div>
-          <div class="flex-center mar-top-30 width-130" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
+          <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
             <div class="close-img"></div>
           </div>
-          <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
+          <div class="flex-center cursor-point mar-top-30 width-130" :class="{'empty-center': !normalDesign || !normalDesign.length}" @click="showServer" v-if="!server && normalDesign && normalDesign.length">
             <div class="close-text">查看对接过的服务商</div>
             <div class="open-img"></div>
           </div>
@@ -259,7 +263,7 @@
               </div>
             </div>
           </div>
-          <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server" :class="{'justy-center': !normalDesign || !normalDesign.length}">
+          <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
             <div class="close-img"></div>
           </div>
@@ -539,7 +543,7 @@ export default {
   data() {
     return {
       quotaDialog: false,
-      server: true,
+      server: false,
       nowDesignId: '',
       stageActive: 0,
       stageArr: [],
@@ -823,6 +827,10 @@ export default {
     line-height: 26px;
     text-align: center;
   }
+  .empty-center {
+    margin: 0 auto;
+    margin-top: 0;
+  }
 
 
 
@@ -898,11 +906,20 @@ export default {
   .mar-top-30 {
     margin-top: 30px;
   }
+  .mar-top-10 {
+    margin-top: 10px;
+  }
   .cursor-point {
     cursor: pointer;
   }
   .width-130 {
     width: 130px;
+  }
+  .jusity-center {
+    justify-content: center;
+  }
+  .mar-top-0 {
+    margin-top: 0;
   }
 </style>
 

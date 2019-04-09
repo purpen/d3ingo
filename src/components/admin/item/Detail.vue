@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
-      <div :class="['nav-item', {'current': onePhase, 'finish': !onePhase}]">
+      <div :class="['nav-item current', {'finish': threePhase}]">
         <span>项目对接中</span>
       </div>
       <div :class="['nav-item', {'current': twoPhase, 'finish': threePhase}]">
@@ -598,13 +598,13 @@ export default {
     border-bottom-left-radius: 18px;
     border-left: 18px solid #d8d8d8;
   }
-  .status-model > .finish:first-child {
-   background:rgba(0,172,132,0.8);
-    border-color:rgba(0,172,132,0.8);
-  }
   .status-model > .current:first-child {
     background-color: #00AC84;
     border-color:#00AC84;
+  }
+  .status-model > .finish:first-child {
+   background:#32BD9D;
+    border-color:#32BD9D;
   }
   .status-model > .nav-item:last-child {
     border-top-right-radius: 18px;
@@ -618,7 +618,7 @@ export default {
     border-color: #00AC84;
   }
   .status-model > .finish:last-child {
-   background:rgba(0,172,132,0.8);
+    background:rgba(0,172,132,0.8);
     border-color:rgba(0,172,132,0.8);
   }
 
@@ -649,7 +649,7 @@ export default {
   }
   .finish::before,
   .finish::after {
-   background:rgba(0,172,132,0.8);
+   background:#32BD9D;
   }
 
   .nav-item > span {
