@@ -376,8 +376,13 @@
                             </el-col>
                             
                             <el-col :span="6">
-                            <span v-if="d.status < 5"><i class="fx fx-icon-time va-middle"></i><span class="tc-red">{{d.status_time | getProgessTime}}</span></span>
-                            <span v-else><i class="fx fx-icon-time va-middle"></i>{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
+                            <span v-if="d.status < 5">
+                              <i class="fx fx-icon-time va-middle"></i>
+                              <span class="tc-red va-middle">{{d.status_time | getProgessTime}}</span>
+                            </span>
+                            <span v-else><i class="fx fx-icon-time va-middle"></i>
+                              <span class="va-middle">{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
+                            </span>
                             </el-col>
                             
                             <el-col :span="6">
