@@ -195,7 +195,7 @@
                     <el-row>
                       <el-col>
                         <h5 class="project-name fl">{{item.name}}</h5>
-                        <div class="edit-project fr">
+                        <div class="edit-project fr"  v-if="isHasPower">
                           <div class="edit-project-tag" v-if="isHasPower">
                             <p class="edit" @click="editProject(item)">编辑项目</p>
                           </div>
@@ -372,12 +372,12 @@
 
                           <el-row class="design-li-footer">
                             <el-col :span="6">
-                              <span :class="{'tc-red': d.status > 6 }">{{d.status_value}}</span>
+                              <span :class="['progess-current', {'refuse': d.status > 6 }]">{{d.status_value}}</span>
                             </el-col>
                             
                             <el-col :span="6">
-                            <span v-if="d.status < 5"><i class="fx fx-icon-time"></i><span class="tc-red">{{d.status_time | getProgessTime}}</span></span>
-                            <span v-else><i class="fx fx-icon-time"></i>{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
+                            <span v-if="d.status < 5"><i class="fx fx-icon-time va-middle"></i><span class="tc-red">{{d.status_time | getProgessTime}}</span></span>
+                            <span v-else><i class="fx fx-icon-time va-middle"></i>{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
                             </el-col>
                             
                             <el-col :span="6">
@@ -402,7 +402,8 @@
                                       <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
                                     </div>
                                   </div>
-                                <span slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                                  <!-- v-if="d.status !== 1" -->
+                                <span  slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
                               </el-popover>
                             </div>
                             </el-col>
@@ -2923,7 +2924,6 @@ export default {
   min-width: 150px;
   flex: 1;
   text-align: center;
-  /* background-color: #D8D8D8; */
   margin-right: 5px;
 }
 .status-model > .nav-item + .nav-item {
@@ -2932,30 +2932,30 @@ export default {
 .status-model > .nav-item:first-child {
   border-top-left-radius: 18px;
   border-bottom-left-radius: 18px;
-  border-left: 18px solid #d8d8d8;
+  border-left: 18px solid #e6e6e6;
 }
 .status-model > .finish:first-child {
-  background-color: #73D13D;
-  border-color:#73D13D;
+  background-color: #00AC84;
+  border-color:#00AC84;
 }
 .status-model > .current:first-child {
-  background-color: #096DD9;
-  border-color:#096DD9;
+  background-color: #3E95EB;
+  border-color:#3E95EB;
 }
 .status-model > .nav-item:last-child {
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
   border-right: 18px solid;
-  background-color: #d8d8d8;
-  border-color: #d8d8d8;
+  background-color: #e6e6e6;
+  border-color: #e6e6e6;
 }
 .status-model > .current:last-child {
-  background-color: #096DD9;
-  border-color: #096DD9;
+  background-color: #3E95EB;
+  border-color: #3E95EB;
 }
 .status-model > .finish:last-child {
-  background-color: #73D13D;
-  border-color:#73D13D;
+  background-color: #00AC84;
+  border-color:#00AC84;
 }
 
 .nav-item::before,
@@ -2970,22 +2970,22 @@ export default {
   top: 0;
   height: 50%;
   transform: skew(32deg) translate3d(0, 0, 0);
-  background: #D8D8D8;
+  background: #e6e6e6;
 }
 .nav-item::after {
   width: 100%;
   bottom: 0;
   height: 50%;
   transform: skew(-32deg) translate3d(0, 0, 0);
-  background: #D8D8D8;
+  background: #e6e6e6;
 }
 .current::before,
 .current::after {
-  background: #096DD9;
+  background: #3E95EB;
 }
 .finish::before,
 .finish::after {
-  background-color: #73D13D;
+  background-color: #00AC84;
 }
 
 .nav-item > span {
@@ -3079,7 +3079,7 @@ export default {
 .project-name {
   font-size: 20px;
   line-height: 30px;
-  color: #666666;
+  color: #222;
 }
 .client-info {
   padding: 10px 30px 10px 30px;
@@ -3132,6 +3132,14 @@ export default {
 .design-li-footer > span:first-child {
   margin-right: 60px;
 }
+.progess-current {
+  padding-left: 20px;
+  background: url(../../../assets/images/icon/designCurrent.png) no-repeat left/14px 15px;
+}
+.progess-current.refuse {
+  color: #FF5A5F;
+  background: url(../../../assets/images/icon/error.png) no-repeat left/14px;
+}
 .design-progress {
   top: 4px;
   margin: 0 -18px 0 -20px;
@@ -3169,6 +3177,7 @@ export default {
 .all-design-btn {
   position: relative;
   z-index: 4;
+  margin-bottom: 20px;
 }
 
 
@@ -3255,7 +3264,7 @@ export default {
 }
 
 .steps-remarks {
-  border-top: 1px solid #D8D8D8;
+  border-top: 1px solid #e6e6e6;
   padding: 10px 0 0 0;
 }
 .user-body span {
@@ -3483,7 +3492,7 @@ export default {
   z-index: 99;
   border: 1px solid #e6e6e6;
   background: #ffffff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);
 }
 .edit-project .edit-project-tag> p {
   height: 36px;
