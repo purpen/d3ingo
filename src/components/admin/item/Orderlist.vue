@@ -88,28 +88,36 @@
                     <img src="../../../assets/images/icon/ok.png" alt="">
                   </div>
                   <div class="first" v-if="contract">
-                    <img src="../../../assets/images/icon/ok.png" alt="">
+                    <div class="first" v-if="contract && contract.first_payment">
+                      <img src="../../../assets/images/icon/ok.png" alt="">
+                    </div>
+                    <div class="firstnext" v-else>
+                      <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                    </div>
                   </div>
-                  <div class="firstnext" v-else>
-                    <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                  <div class="first" v-if="itemStage && itemStage[0]">
+                    <div class="first" v-if="itemStage && itemStage[0] && itemStage[0].pay_status">
+                      <img src="../../../assets/images/icon/ok.png" alt="">
+                    </div>
+                    <div class="firstnext" v-else>
+                      <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                    </div>
                   </div>
-                  <div class="first" v-if="itemStage[0]">
-                    <img src="../../../assets/images/icon/ok.png" alt="">
+                  <div class="first" v-if="itemStage && itemStage[1]">
+                    <div class="first" v-if="itemStage && itemStage[1] && itemStage[1].pay_status">
+                      <img src="../../../assets/images/icon/ok.png" alt="">
+                    </div>
+                    <div class="firstnext" v-else>
+                      <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                    </div>
                   </div>
-                  <div class="firstnext" v-else>
-                    <img src="../../../assets/images/icon/ellipsis.png" alt="">
-                  </div>
-                  <div class="first" v-if="itemStage[1]">
-                    <img src="../../../assets/images/icon/ok.png" alt="">
-                  </div>
-                  <div class="firstnext" v-else>
-                    <img src="../../../assets/images/icon/ellipsis.png" alt="">
-                  </div>
-                  <div class="first"  v-if="itemStage[2]">
-                    <img src="../../../assets/images/icon/ok.png" alt="">
-                  </div>
-                  <div class="firstnext" v-else>
-                    <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                  <div class="first" v-if="itemStage && itemStage[2]">
+                    <div class="first" v-if="itemStage && itemStage[2] && itemStage[2].pay_status">
+                      <img src="../../../assets/images/icon/ok.png" alt="">
+                    </div>
+                    <div class="firstnext" v-else>
+                      <img src="../../../assets/images/icon/ellipsis.png" alt="">
+                    </div>
                   </div>
               </div>
               <div class="barcont">
@@ -118,27 +126,47 @@
                       <p v-if="contract" style="color:#999999">{{contract.true_time || '—' |timeFormat2}}</p>
                       <p v-else>—</p>
                   </div>
-                  <div class="bar_cont">
-                      <p>首付款</p>
-                      <p v-if="contract" style="color:#999999">{{contract.true_time || '—' |timeFormat2}}</p>
-                      <p v-else>—</p>
-                      <p v-if="contract" style="color:#FAAD15">￥{{contract.first_payment}}</p>
-                      <p v-else>—</p>
+                  <div class="bar_cont" v-if="contract">
+                    <div class="bar_cont" v-if="contract && contract.first_payment">
+                        <p>首付款</p>
+                        <p v-if="contract && contract.first_payment" style="color:#999999">{{contract.true_time || '—' |timeFormat2}}</p>
+                        <p v-else>—</p>
+                        <p v-if="contract && contract.first_payment" style="color:#FAAD15">￥{{contract.first_payment}}</p>
+                        <p v-else>—</p>
+                    </div>
+                    <div class="bar_cont" v-else>
+                        <p>首付款</p>
+                    </div>
                   </div>
-                  <div class="bar_cont">
-                      <p>第1阶段款</p>
-                      <p style="color:#999999" v-if="itemStage[0]">{{itemStage[0].order_created |timeFormat2}}</p>
-                      <p style="color:#FAAD15" v-if="itemStage[0]">￥{{itemStage[0].amount}}</p>
+                  <div class="bar_cont" v-if="itemStage && itemStage[0]">
+                    <div class="bar_cont" v-if="itemStage && itemStage[0] && itemStage[0].pay_status">
+                        <p>第1阶段款</p>
+                        <p style="color:#999999" v-if="itemStage[0] && itemStage[0].pay_status">{{itemStage[0].order_created |timeFormat2}}</p>
+                        <p style="color:#FAAD15" v-if="itemStage[0] && itemStage[0].pay_status">￥{{itemStage[0].amount}}</p>
+                    </div>
+                    <div class="bar_cont" v-else>
+                        <p>第1阶段款</p>
+                    </div>
                   </div>
-                  <div class="bar_cont">
-                      <p>第2阶段款</p>
-                      <p style="color:#999999" v-if="itemStage[1]">{{itemStage[1].order_created |timeFormat2}}</p>
-                      <p style="color:#FAAD15" v-if="itemStage[1]">￥{{itemStage[1].amount}}</p>
+                  <div class="bar_cont" v-if="itemStage && itemStage[1]">
+                    <div class="bar_cont" v-if="itemStage && itemStage[1] && itemStage[1].pay_status">
+                        <p>第2阶段款</p>
+                        <p style="color:#999999" v-if="itemStage[1] && itemStage[1].pay_status">{{itemStage[1].order_created |timeFormat2}}</p>
+                        <p style="color:#FAAD15" v-if="itemStage[1] && itemStage[1].pay_status">￥{{itemStage[1].amount}}</p>
+                    </div>
+                    <div class="bar_cont" v-else>
+                        <p>第2阶段款</p>
+                    </div>
                   </div>
-                  <div class="bar_cont">
-                      <p>第3阶段款</p>
-                      <p style="color:#999999" v-if="itemStage[2]">{{itemStage[2].order_created |timeFormat2}}</p>
-                      <p style="color:#FAAD15" v-if="itemStage[2]">￥{{itemStage[2].amount}}</p>
+                  <div class="bar_cont" v-if="itemStage && itemStage[2]">
+                    <div class="bar_cont" v-if="itemStage && itemStage[2] && itemStage[2].pay_status">
+                        <p>第3阶段款</p>
+                        <p style="color:#999999" v-if="itemStage[2] && itemStage[2].pay_status">{{itemStage[2].order_created |timeFormat2}}</p>
+                        <p style="color:#FAAD15" v-if="itemStage[2] && itemStage[2].pay_status">￥{{itemStage[2].amount}}</p>
+                    </div>
+                    <div class="bar_cont" v-else>
+                        <p>第3阶段款</p>
+                    </div>
                   </div>
               </div>
           </div>
@@ -165,7 +193,7 @@
           </div>
         </div>
         <!-- 阶段详情第三阶段 -->
-        <div class="progressdetail"  v-if="itemStage && itemStage[2]">
+        <div class="progressdetail"  v-if="itemStage && itemStage[2] && itemStage[2].pay_status">
           <div class="procont">
             <div class="protitle">
                 第三阶段：{{item.name || oldItem.name || '—'}}  <span class="statuclass">已收款</span>
@@ -314,7 +342,7 @@
           </div>
         </div>
         <!-- 阶段详情第二阶段 -->
-        <div class="progressdetail"  v-if="itemStage && itemStage[1]">
+        <div class="progressdetail"  v-if="itemStage && itemStage[1] && itemStage[1].pay_status"">
           <div class="procont">
             <div class="protitle">
                 第二阶段：{{item.name || oldItem.name || '—'}} <span class="statuclass">已收款</span>
@@ -463,7 +491,7 @@
           </div>
         </div>
         <!-- 阶段详情第一阶段 -->
-        <div class="progressdetail" v-if="itemStage && itemStage[0]">
+        <div class="progressdetail" v-if="itemStage && itemStage[0] && itemStage[0].pay_status"">
           <div class="procont">
             <div class="protitle">
                 第一阶段：{{item.name || oldItem.name || '—'}} <span class="statuclass">已收款</span>
@@ -612,7 +640,7 @@
           </div>
         </div>
         <!-- 阶段详情 首付款-->
-        <div class="progressdetail" v-if="contract">
+        <div class="progressdetail" v-if="contract && contract.first_payment">
           <div class="procont">
             <div class="protitle">
                 首付款 <span class="statuclass">已收款</span>
