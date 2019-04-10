@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
+    <div class="status-model pad-top-10" v-if="oldItem.status !== -1 && oldItem.status !== -3">
       <div :class="['nav-item current', {'finish': threePhase}]">
         <span>项目对接中</span>
       </div>
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div class="line-height-2"></div>
+      <div class="line-height-1"></div>
 
       <div class="curstomer-server">
         <div class="flex-1">
@@ -413,8 +413,8 @@ export default {
     align-items: center;
     justify-content: flex-end;
   }
-  .line-height-2 {
-    border-top: 2px solid #E6E6E6;
+  .line-height-1 {
+    border-top: 1px solid #E6E6E6;
     margin: 25px 0 40px 0;
   }
   .big-title {

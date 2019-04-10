@@ -173,7 +173,7 @@ module.exports = [
         path: '/admin/item/ordershow',
         name: 'ordershow',
         meta: {
-          title: '订单列表',
+          title: '项目列表',
           requireAuth: true,
           hideCustomer: true,
           hideFooter: true
