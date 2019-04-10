@@ -41,9 +41,11 @@
           <el-table
           ref="multipleTable"
           :data="tableData"
+          class="cursor-poi"
           tooltip-effect="dark"
           @filter-change="filterType"
           style="width: 100%"
+          @row-click="toDetail"
           @selection-change="handleSelectionChange"
           >
         <el-table-column
@@ -52,9 +54,9 @@
         </el-table-column>
         <el-table-column
           label="项目名称"
-          width="140">
+          width="200">
           <template slot-scope="scope">
-            <div @click="toDetail(scope.row.id)" class="cursor-poi">{{scope.row.name}}</div>
+            <div class="cursor-poi">{{scope.row.name}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -76,9 +78,9 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          width="110"
           prop="clue_name"
           label="客户"
+          width="100"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -99,6 +101,7 @@
         <el-table-column
           prop="status_value"
           label="项目进度"
+          width="150"
           column-key="status_value"
           :filter-multiple="false"
           filter-placement="bottom-end"
@@ -213,15 +216,15 @@
           },
           {
             value: 2,
-            label: '项目编号'
+            label: '按项目编号'
           },
           {
             value: 3,
-            label: '客户姓名'
+            label: '按客户姓名'
           },
           {
             value: 4,
-            label: '客户手机号'
+            label: '按客户手机号'
           }
         ],
         serchId: 1,
@@ -572,9 +575,9 @@
       }
     },
     methods: {
-      toDetail(id) {
+      toDetail(value) {
         const {href} = this.$router.resolve({
-          path: `/admin/item/detail/${id}`
+          path: `/admin/item/detail/${value.id}`
         })
         window.open(href, '_blank')
       },
@@ -707,14 +710,12 @@
             for (var i in this.tableData) {
               let time = this.tableData[i].created_at.date_format().format('yyyy-MM-dd')
               Vue.set(this.tableData[i], 'time', time)
-              if (this.tableData[i].source === -1) {
-                Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
-              } else if (this.tableData[i].source === 1) {
+              if (this.tableData[i].source === 1) {
                 Vue.set(this.tableData[i], 'sourcecont', '京东')
               } else if (this.tableData[i].source === 2) {
                 Vue.set(this.tableData[i], 'sourcecont', '义乌')
               } else if (this.tableData[i].source === 0) {
-                Vue.set(this.tableData[i], 'sourcecont', '全部')
+                Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
               }
               if (this.tableData[i].clue_name === null) {
                 this.tableData[i].clue_name = '—'
@@ -741,14 +742,12 @@
           for (var i in this.tableData) {
             let time = this.tableData[i].created_at.date_format().format('yyyy-MM-dd')
             Vue.set(this.tableData[i], 'time', time)
-            if (this.tableData[i].source === -1) {
-              Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
-            } else if (this.tableData[i].source === 1) {
+            if (this.tableData[i].source === 1) {
               Vue.set(this.tableData[i], 'sourcecont', '京东')
             } else if (this.tableData[i].source === 2) {
               Vue.set(this.tableData[i], 'sourcecont', '义乌')
             } else if (this.tableData[i].source === 0) {
-              Vue.set(this.tableData[i], 'sourcecont', '全部')
+              Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
             }
             if (this.tableData[i].clue_name === null) {
               this.tableData[i].clue_name = '—'
@@ -857,6 +856,7 @@
   .select-date{
     display: flex;
     align-items: center;
+    margin-left: 0;
   }
   .nocolor{
     background: none;
@@ -865,6 +865,7 @@
     color: #333333;
     display: flex;
     align-items: center;
+    font-family:PingFangSC-Regular;
   }
   .nocolor img{
     width: 15px;
@@ -874,9 +875,6 @@
   }
   .cursor-poi {
     cursor: pointer;
-  }
-  .cursor-poi:hover {
-    color: #ff5a5f;
   }
   .load{
     width: 100vw;
