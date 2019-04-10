@@ -136,7 +136,7 @@
                       <a href="javascript:void(0);" @click="evaluateup(i.evaluate)">查看评价</a>
                     </span></p>
                   <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
-                    <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span> 
+                    <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span>
                     <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name}}</router-link>
                   </p>
                   <p v-if="i.type === 5&&i.designCompany">
@@ -668,7 +668,7 @@
 
           </el-form>
         </div>
-        
+
         <div slot="footer" class="dialog-footer">
           <el-button @click="receiptDialog = false">取消</el-button>
           <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
@@ -761,7 +761,7 @@
             </el-col>
           </el-row>
         </div>
-        
+
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" class="is-custom" @click="invoiceOneDialog = false">关闭</el-button>
         </div>
@@ -2279,7 +2279,7 @@ export default {
     position: relative;
     text-align: right;
     min-height: 65px;
-    height: 100%;    
+    height: 100%;
     padding: 10px 20px;
   }
   .step-right::before {
@@ -2395,7 +2395,7 @@ export default {
     margin-top: 1px;
     margin-right: 15px;
     line-height: 36px;
-    
+
   }
   .header-basics>.el-col {
     border-right: 1px solid #e6e6e6;

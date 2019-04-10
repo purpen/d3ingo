@@ -976,7 +976,7 @@
     margin-bottom: 0;
   }
   .header-border .el-progress--circle .el-progress-circle__path {
-    stroke: #0A6DD9;
+    stroke: #ff5a5f;
   }
   .header-progress .el-progress__text {
     display: flex;
@@ -1098,6 +1098,25 @@
   }
   .sever-right-left .el-input {
     height: 34px;
+  }
+  .quate-round .el-dialog__header {
+    height: 50px;
+    padding: 19px;
+  }
+  .quate-round .el-dialog__headerbtn {
+    top: 16px;
+    font-size: 19px;
+  }
+  .quate-round .el-dialog__body {
+    max-height: 550px;
+    overflow-x: hidden;
+    padding: 20px 20px 30px 20px;
+  }
+  .quate-round .el-dialog__title {
+    font-size: 16px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(34,34,34,1);
   }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {

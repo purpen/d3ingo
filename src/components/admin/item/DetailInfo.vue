@@ -3,42 +3,43 @@
     <div class="big-title">基本信息</div>
     <div class="flex-center-34 pad-top-24">
       <div class="title">项目名称</div>
-      <div class="text">圣甲虫游戏鼠标概念设计</div>
+      <div class="text">{{item.name || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">设计类型</div>
-      <div class="text">产品设计/产品结构、产品外观设计</div>
+      <div class="text">{{item.type_value || '—'}}<span v-if="oldItem.design_types_value">/</span><span v-for="items in oldItem.design_types_value" :key="items">{{items}}</span></div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目预算</div>
-      <div class="text">5-10万元</div>
+      <div class="text">{{item.design_cost_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">交付时间</div>
-      <div class="text">2-3个月</div>
+      <div class="text">{{item.cycle_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">来源渠道</div>
-      <div class="text">官方/小程序</div>
+      <div class="text">{{contract.source_value || '—'}}</div>
     </div>
 
     <div class="line"></div>
 
     <div class="flex-center-34">
       <div class="title">行业领域</div>
-      <div class="text">消费电子</div>
+      <div class="text">{{item.industry_value || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目工作地点</div>
-      <div class="text">北京市·朝阳区</div>
+      <div class="text" v-if="item.item_province_value">{{item.item_province_value}}·{{item.item_city_value}}</div>
+      <div class="text" v-else>{{'—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">项目描述</div>
-      <div class="text">通过改变传统洗手液用手挤压的方式，洗手过程更加的便捷卫生；细节上的视觉感知设计，让容量的可视化成为可能，还可以实时提醒用户及时补充皂液；在整体造型设计上，采用简洁的机身，柔和的形态，去除一切不必要的冗杂元素，追求圆润亲近的自然感。</div>
+      <div class="text">{{item.summary || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">备注</div>
-      <div class="text">实现了自动感应出液，可以做到零触碰，有效防止公共空间中的交叉感染，控制病菌传播。</div>
+      <div class="text">{{item.remarks || '—'}}</div>
     </div>
 
     <div class="line"></div>
@@ -47,18 +48,51 @@
     <div class="big-title">其他信息</div>
     <div class="flex-center-34 pad-top-24">
       <div class="title">项目编号</div>
-      <div class="text">AX0015123</div>
+      <div class="text">{{item.number || '—'}}</div>
     </div>
     <div class="flex-center-34">
       <div class="title">创建人</div>
-      <div class="text">姜伟（2019-03-08 14:22）</div>
+      <div class="text">{{item.user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
     </div>
     <div class="flex-center-34">
       <div class="title">修改人</div>
-      <div class="text">姜伟（2019-03-08 14:22）</div>
+      <div class="text">{{item.update_user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: ['item', 'contract', 'oldItem'],
+  data() {
+    return {
+    }
+  },
+  created() {
+    let that = this
+    if (that.contract && (that.contract.source === 0 || that.contract.source)) {
+      switch (that.contract.source) {
+        case 0:
+          that.contract.source_value = '太火鸟'
+          break
+        case 1:
+          that.contract.source_value = '京东/艺火'
+          break
+        case 2:
+          that.contract.source_value = '义乌'
+          break
+      }
+    }
+  },
+  filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy-MM-dd hh:mm')
+      }
+    }
+  }
+}
+</script>
+
 <style scoped>
   .flex-center-34 {
     display: flex;

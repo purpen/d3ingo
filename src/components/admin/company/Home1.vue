@@ -2,13 +2,13 @@
   <div>
     <div class="header">
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="100"
-          color="#0A6DD9"
           class="header-progress"
-          status="text">
+          status="text"
+          color="#ff5a5f">
           <span class="progress-top">设计服务商</span>
           <span class="progress-bot">{{statistical.total}}</span>
         </el-progress>
@@ -17,11 +17,11 @@
         </el-tooltip>
       </div>
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.docking / statistical.total * 10000) / 100"
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
@@ -33,11 +33,11 @@
         </el-tooltip>
       </div>
        <div class="header-border">
-        <el-progress 
+        <el-progress
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.no_docking / statistical.total * 10000) / 100"
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
@@ -53,7 +53,7 @@
           type="circle"
           :stroke-width="15"
           :percentage="Math.round(statistical.to_be_audited / statistical.total * 10000) / 100 "
-          color="#0A6DD9"
+          color="#FF5A5F"
           class="header-progress"
           status="text"
           v-if="statistical">
@@ -116,8 +116,8 @@
             <div class="flex-center home-img-round">
               <img :src="scope.row.logo_url" />
               <div class="pad-left-15">
-                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '-'}}</div>
-                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '-'}}</div>
+                <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '—'}}</div>
+                <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '—'}}</div>
               </div>
             </div>
           </template>
@@ -130,7 +130,7 @@
           :filter-multiple="false"
           class="add-style">
           <template slot-scope="scope">
-            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '-'}}<span>{{scope.row.city_value}}</span>
+            <span>{{scope.row.province_value}}</span>{{scope.row.province_value ? '·' : '—'}}<span>{{scope.row.city_value}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -140,7 +140,7 @@
           :filters="companySizes"
           :filter-multiple="false">
             <template slot-scope="scope">
-              <span>{{scope.row.company_size_val || '-'}}</span>
+              <span>{{scope.row.company_size_val || '—'}}</span>
             </template>
         </el-table-column>
         <el-table-column
@@ -585,4 +585,3 @@ export default {
     padding-left: 15px;
   }
 </style>
-
