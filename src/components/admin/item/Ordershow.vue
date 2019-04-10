@@ -54,7 +54,7 @@
         </el-table-column>
         <el-table-column
           label="项目名称"
-          width="240">
+          width="200">
           <template slot-scope="scope">
             <div class="cursor-poi">{{scope.row.name}}</div>
           </template>
@@ -101,7 +101,7 @@
         <el-table-column
           prop="status_value"
           label="项目进度"
-          width="200"
+          width="150"
           column-key="status_value"
           :filter-multiple="false"
           filter-placement="bottom-end"
@@ -865,6 +865,7 @@
     color: #333333;
     display: flex;
     align-items: center;
+    font-family:PingFangSC-Regular;
   }
   .nocolor img{
     width: 15px;
