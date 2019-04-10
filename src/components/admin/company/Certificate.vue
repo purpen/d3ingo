@@ -3,15 +3,15 @@
     <div class="round">
       <div class="flex-center">
         <div class="cer-left">企业名称</div>
-        <div class="cer-right">{{item.company_name || '-'}}</div>
+        <div class="cer-right">{{item.company_name || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">企业证件类型</div>
-        <div class="cer-right">{{item.company_type_val || '-'}}</div>
+        <div class="cer-right">{{item.company_type_val || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">统一社会信用代码</div>
-        <div class="cer-right">{{item.registration_number || '-'}}</div>
+        <div class="cer-right">{{item.registration_number || '—'}}</div>
       </div>
       <div class="flex">
         <div class="cer-left">营业执照</div>
@@ -28,15 +28,15 @@
     <div class="round">
       <div class="flex-center">
         <div class="cer-left">法人姓名</div>
-        <div class="cer-right">{{item.legal_person || '-'}}</div>
+        <div class="cer-right">{{item.legal_person || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">法人证件类型</div>
-        <div class="cer-right">{{item.document_type_val || '-'}}</div>
+        <div class="cer-right">{{item.document_type_val || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">法人证件号码</div>
-        <div class="cer-right">{{item.document_number || '-'}}</div>
+        <div class="cer-right">{{item.document_number || '—'}}</div>
       </div>
       <div class="flex">
         <div class="cer-left">法人证件附件</div>
@@ -53,19 +53,19 @@
     <div class="round-bot">
       <div class="flex-center">
         <div class="cer-left">联系人</div>
-        <div class="cer-right">{{item.contact_name || '-'}}</div>
+        <div class="cer-right">{{item.contact_name || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">职位</div>
-        <div class="cer-right">{{item.position || '-'}}</div>
+        <div class="cer-right">{{item.position || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">联系电话</div>
-        <div class="cer-right">{{item.phone || '-'}}</div>
+        <div class="cer-right">{{item.phone || '—'}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">邮箱</div>
-        <div class="cer-right">{{item.email || '-'}}</div>
+        <div class="cer-right">{{item.email || '—'}}</div>
       </div>
     </div>
 

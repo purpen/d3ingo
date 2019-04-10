@@ -270,6 +270,7 @@ export default {
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
   adminItemShow: '/admin/item/show', // GET 项目详情
+  adminItemNewShow: '/admin/item/newShow', // GET 项目详情-新
   addItemToCompany: '/admin/item/addDesignToItem', // 给项目推荐公司
   ConfirmItemToCompany: '/admin/item/trueItem', // 确认项目推荐公司
   forceCloseSubmit: '/admin/item/closeItem', // POST 强制关闭项目并返还款项
@@ -640,5 +641,7 @@ export default {
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量
   generalize: '/generalize/create', // POST 推广统计
   // 服务号
-  fwhUser: '/fwh/user' // GET 获取服务号用户信息
+  fwhUser: '/fwh/user', // GET 获取服务号用户信息
+  // 新项目列表
+  newlist: '/admin/item/newItemList' // GET 新项目列表
 }
