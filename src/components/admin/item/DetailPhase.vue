@@ -352,7 +352,8 @@
             </div>
             <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
             <div class="file-date">
               <div class="file-title">提交时间</div>
@@ -380,7 +381,8 @@
             </div>
             <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
             <div class="file-date">
               <div class="file-title">提交时间</div>
@@ -408,7 +410,8 @@
             </div>
             <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
             <div class="file-date">
               <div class="file-title">提交时间</div>
@@ -621,6 +624,15 @@ export default {
       if (val) {
         return val.date_format().format('yyyy-MM-dd')
       }
+    },
+    sizeFormat(val) {
+      if (val > 1024 * 1024) {
+        return Math.round(val / 1024 / 1024) + 'MB'
+      } else if (val > 1024) {
+        return Math.round(val / 1024) + 'KB'
+      } else {
+        return val + 'B'
+      }
     }
   }
 }
@@ -748,6 +760,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    height: 22px;
   }
   .show-text {
     cursor: pointer;
