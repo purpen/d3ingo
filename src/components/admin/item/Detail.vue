@@ -167,6 +167,9 @@
         :oldItem="oldItem">
       </info>
     </div>
+    <div v-if="homeLoading" class="loading-fiexd">
+      <div class="fiex-content" v-loading="homeLoading"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -184,6 +187,7 @@ export default {
       contract: '', // 合同
       clue: '', // 潜在客户
       evaluate: '', // 评价
+      homeLoading: false,
       payOrders: '', // 订单
       quotation: '', // 报价
       itemStage: '', // 项目阶段
@@ -229,6 +233,7 @@ export default {
     },
     getDetail(id) {
       let that = this
+      that.homeLoading = true
       that.$http.get(api.adminItemNewShow, {params: {id: id}})
       .then (function(response) {
         that.isLoading = false
@@ -343,11 +348,14 @@ export default {
               that.trueDesign.chatDay = 1
             }
           }
+          that.homeLoading = false
         } else {
+          that.homeLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        that.homeLoading = false
         that.$message.error(error.message)
       })
     },
@@ -584,6 +592,19 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
   }
 
   /* 头部导航 */
