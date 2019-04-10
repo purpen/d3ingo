@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="status-model pad-top-10" v-if="oldItem.status !== -1 || oldItem.status !== -3">
+    <div class="status-model pad-top-10" v-if="oldItem.status !== -1 && oldItem.status !== -3">
       <div :class="['nav-item current', {'finish': threePhase}]">
         <span>项目对接中</span>
       </div>
@@ -21,13 +21,13 @@
         <div class="line-one flex-center-between pad-top-20">
           <div class="one-left">
             <div class="title pad-right-40">设计类型</div>
-            <div class="text">{{oldItem.type_value || '-'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
+            <div class="text">{{oldItem.type_value || '—'}}<span v-if="oldItem.design_types_value">/</span><span v-for="(items, index) in oldItem.design_types_value" :key="items">{{items}}<span v-if="index !== oldItem.design_types_value.length - 1">、</span></span>
             </div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">合同金额：</div>
             <div class="header-yellow width-150-right" v-if="contract.total">￥{{contract.total}}</div>
-            <div class="header-yellow width-150-right" v-else>{{'-'}}</div>
+            <div class="header-yellow width-150-right" v-else>{{'—'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
@@ -35,9 +35,9 @@
             <div class="title pad-right-40">项目预算</div>
             <div class="text">{{item.design_cost_value || oldItem.design_cost_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">项目编号：</div>
-            <div class="text width-150-right">{{item.number || '-'}}</div>
+            <div class="text width-150-right">{{item.number || '—'}}</div>
           </div>
         </div>
         <div class="line-one flex-center-between">
@@ -45,20 +45,20 @@
             <div class="title pad-right-40">交付时间</div>
             <div class="text">{{item.cycle_value || '—'}}</div>
           </div>
-          <div class="one-right" v-if="!onePhase">
+          <div class="one-right" v-if="twoPhase || threePhase">
             <div class="title">签约日期：</div>
             <div class="text width-150-right">{{contract.true_time || '—' |timeFormat}}</div>
           </div>
         </div>
       </div>
-      <div class="flex-center-end height-34" v-if="!onePhase">
-        <div class="navegete-round flex-center">
+      <div class="flex-center-end height-34" v-if="twoPhase || threePhase">
+        <div class="navegete-round flex-center" @click="toContra">
           <div class="navegete-to">查看合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
 
-      <div class="line-height-2"></div>
+      <div class="line-height-1"></div>
 
       <div class="curstomer-server">
         <div class="flex-1">
@@ -87,7 +87,7 @@
             </div>
           </div>
         </div>
-        <div class="flex-1" v-if="!onePhase">
+        <div class="flex-1" v-if="twoPhase || threePhase">
           <div class="curstomer-server-title pad-bot-20">设计服务商</div>
           <div class="flex-between">
             <div>
@@ -140,6 +140,7 @@
         :designCompany="designCompany"
         :contract="contract"
         :itemName="item.name"
+        :clueId="item.clue_id"
         :quotation="quotation"
         :evalDesignLevel="evalDesignLevel"
         :evalResponseSpeed="evalResponseSpeed"
@@ -156,13 +157,18 @@
         :payOrders="payOrders"
         :oldItem="oldItem"
         :itemStage="itemStage"
-        :trueDesign="trueDesign">
+        :trueDesign="trueDesign"
+        :toContras="toContras"
+        ref="detailChild">
       </detail>
       <info v-if="type === 3"
         :item="item"
         :contract="contract"
         :oldItem="oldItem">
       </info>
+    </div>
+    <div v-if="homeLoading" class="loading-fiexd">
+      <div class="fiex-content" v-loading="homeLoading"></div>
     </div>
   </div>
 </template>
@@ -181,6 +187,7 @@ export default {
       contract: '', // 合同
       clue: '', // 潜在客户
       evaluate: '', // 评价
+      homeLoading: false,
       payOrders: '', // 订单
       quotation: '', // 报价
       itemStage: '', // 项目阶段
@@ -194,7 +201,8 @@ export default {
       threePhase: false, // 第三个阶段
       normalDesign: [], // 未拒绝的设计公司
       refauseDesign: [], // 拒绝的设计公司,
-      failDesign: [] // 对接失败的设计公司
+      failDesign: [], // 对接失败的设计公司
+      toContras: false // 去合同的位置
     }
   },
   created() {
@@ -209,11 +217,23 @@ export default {
     that.getDetail(id)
   },
   methods: {
+    toContra() {
+      let that = this
+      if (that.type === 2) {
+        let height = that.$refs.detailChild.goHeight
+        console.log('height', that.$refs.detailChild.goHeight)
+        document.documentElement.scrollTo(0, height)
+        return
+      }
+      that.type = 2
+      that.toContras = true
+    },
     getType(type) {
       this.type = type
     },
     getDetail(id) {
       let that = this
+      that.homeLoading = true
       that.$http.get(api.adminItemNewShow, {params: {id: id}})
       .then (function(response) {
         that.isLoading = false
@@ -328,11 +348,14 @@ export default {
               that.trueDesign.chatDay = 1
             }
           }
+          that.homeLoading = false
         } else {
+          that.homeLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
+        that.homeLoading = false
         that.$message.error(error.message)
       })
     },
@@ -390,8 +413,8 @@ export default {
     align-items: center;
     justify-content: flex-end;
   }
-  .line-height-2 {
-    border-top: 2px solid #E6E6E6;
+  .line-height-1 {
+    border-top: 1px solid #E6E6E6;
     margin: 25px 0 40px 0;
   }
   .big-title {
@@ -571,6 +594,19 @@ export default {
     align-items: center;
   }
 
+  .loading-fiexd {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 70px;
+    z-index: 9999;
+  }
+  .fiex-content {
+    width: 100%;
+    height: 100%;
+  }
+
   /* 头部导航 */
   .status-model {
     position: relative;
@@ -627,7 +663,6 @@ export default {
     position: absolute;
     content: '';
     left: 6px;
-    cursor: pointer;
   }
   .nav-item::before {
     width: 100%;
@@ -659,7 +694,6 @@ export default {
     position: relative;
     text-decoration: none;
     z-index: 5;
-    cursor: pointer;
     font-size: 14px;
     font-family: PingFangSC-Medium;
     font-weight: 500;

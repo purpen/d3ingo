@@ -1903,14 +1903,14 @@ const ADMINMENU = {
       query: {}
     },
     children: [
-      // {
-      //   name: '列表',
-      //   route: 'adminItemList',
-      //   statement: {
-      //     params: {},
-      //     query: {}
-      //   }
-      // },
+      {
+        name: '项目列表-旧',
+        route: 'adminItemList',
+        statement: {
+          params: {},
+          query: {}
+        }
+      },
       // {
       //   name: '小程序',
       //   route: 'adminItemSltem',

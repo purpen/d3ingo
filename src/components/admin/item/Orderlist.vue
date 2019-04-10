@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="formcont">
-                    <div class="titlelast" @click="viewContractBtn(1)">
+                    <div class="titlelast" @click="viewContractBtn(1)"  v-if="contract.source === 1">
                       查看客户与艺火的合同
                       <img src="../../../assets/images/icon/ArrowRightHover@2x.png" alt="">
                     </div>
@@ -137,7 +137,7 @@
                     <div class="bar_cont" v-else>
                         <p>首付款</p>
                     </div>
-                  </div>
+                  </div>  
                   <div class="bar_cont" v-if="itemStage && itemStage[0]">
                     <div class="bar_cont" v-if="itemStage && itemStage[0] && itemStage[0].pay_status">
                         <p>第1阶段款</p>
@@ -1125,6 +1125,7 @@
   .companyname{
     font-size: 22px;
     margin:20px 0 40px 0;
+    font-family: PingFangSC-Regular;
   }
   .companydetail{
     display: flex;
@@ -1138,6 +1139,7 @@
     width: 120px;
     font-size: 13px;
     color: #919191;
+    font-family: PingFangSC-Regular;
   }
   .titlelast{
     width: 140px;
@@ -1145,7 +1147,9 @@
     color: #FF5A5F;
     display: flex;
     align-items: center;
+    margin-right: 50px;
     cursor: pointer;
+    font-family: PingFangSC-Regular;
   }
   .titlelast img{
     width: 12px;
@@ -1156,13 +1160,14 @@
     font-size: 13px;
     color: #333333;
     margin-left: 10px;
+    font-family: PingFangSC-Regular;
   }
   .titlecontlast{
     font-size: 12px;
     color: #FF5A5F;
-    margin-left: 50px;
     display: flex;
     align-items: center;
+    font-family: PingFangSC-Regular;
     cursor: pointer;
   }
   .titlecontlast img{
@@ -1175,6 +1180,7 @@
      color: #333333;
      display: flex;
      align-items: center;
+     font-family: PingFangSC-Regular;
   }
   .progress{
     border-top: 1px solid #E6E6E6;
@@ -1220,6 +1226,7 @@
     font-size: 12px;
     color:#333333;
     line-height: 22px;
+    font-family: PingFangSC-Regular;
   }
   .progressdetail{
     border-top: 1px solid #E6E6E6;

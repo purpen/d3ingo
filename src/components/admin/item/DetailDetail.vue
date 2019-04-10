@@ -18,13 +18,16 @@
         <div class="tick" v-else></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[0] && constractSort[0].pay_status}">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[0] && constractSort[0].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
       <div class="flex-1 flex-center-center" :class="[{'green-color': constractSort && constractSort[1] && constractSort[1].pay_status}, {'border-raduis-flex-right' : constractSort && constractSort.length && constractSort.length === 2}]">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[1] && constractSort[1].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
       <div class="flex-1 flex-center-center" :class="{'green-color': constractSort && constractSort[2] && constractSort[2].pay_status}" v-if="constractSort && constractSort.length && constractSort.length === 3">
-        <div class="tick"></div>
+        <div class="tick" v-if="constractSort && constractSort[2] && constractSort[2].pay_status"></div>
+        <div v-else class="omit"></div>
       </div>
     </div>
     <div class="flex">
@@ -77,7 +80,7 @@
       <div class="grey-title">签约日期</div>
       <div class="grey-text">{{contract.true_time || '—' |timeFormat2}}</div>
     </div>
-    <div class="flex pad-top-18">
+    <div class="flex pad-top-18" ref="contract">
       <div class="flex-center" v-if="contract.source === 1">
         <div class="navegete-round flex-center" @click="viewContractBtn(1)">
           <div class="navegete-to">查看客户与艺火的合同</div>
@@ -136,11 +139,11 @@
       </div>
     </div> -->
 
-    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="5%" custom-class="quate-round">
       <v-quote-view :formProp="quotation"></v-quote-view>
-      <div slot="footer" class="dialog-footer btn">
+      <!-- <div slot="footer" class="dialog-footer btn">
         <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      </div> -->
     </el-dialog>
 
     <el-dialog
@@ -175,12 +178,13 @@ export default {
     vJdDemandContractView,
     vJdDesignContractView
   },
-  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign'],
+  props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign', 'toContras'],
   data() {
     return {
       quotaDialog: false,
       contractDialog: false,
       contractEvt: 0,
+      goHeight: 0,
       tonaveId: '',
       constractSort: []
     }
@@ -213,7 +217,18 @@ export default {
       }
     }
   },
+  mounted() {
+    let that = this
+    if (that.toContras) {
+      that.anchor()
+    }
+  },
   methods: {
+    anchor() {
+      let that = this
+      that.goHeight = that.$refs.contract.offsetTop
+      document.documentElement.scrollTo(0, that.goHeight)
+    },
     // 查看服务商详情
     navgiteTo(id) {
       const {href} = this.$router.resolve({
@@ -332,7 +347,9 @@ export default {
     background: url('../../../assets/images/icon/ok.png') no-repeat center / contain;
   }
   .omit {
-    
+    width: 16px;
+    height: 16px;
+    background: url('../../../assets/images/icon/ellipsis.png') no-repeat center / contain;
   }
   .order-money {
     font-size: 12px;
