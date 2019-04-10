@@ -56,7 +56,7 @@
     </div>
     <div class="flex-center-34">
       <div class="title">修改人</div>
-      <div class="text">{{item.update_user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
+      <div class="text">{{item.update_user_name || '—'}}（{{item.update_user_time || '—' |timeFormat}}）</div>
     </div>
   </div>
 </template>

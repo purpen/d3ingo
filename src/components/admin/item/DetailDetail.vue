@@ -227,7 +227,11 @@ export default {
     anchor() {
       let that = this
       that.goHeight = that.$refs.contract.offsetTop
-      document.documentElement.scrollTo(0, that.goHeight)
+      if (document.body) {
+        window.scrollTo(0, that.goHeight)
+      } else if (document.documentElement) {
+        document.documentElement.scrollTo(0, that.goHeight)
+      }
     },
     // 查看服务商详情
     navgiteTo(id) {
