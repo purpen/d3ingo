@@ -335,7 +335,7 @@
       </template>
       <div class="grey-line" v-if="evaluate"></div>
 
-      <div  class="pad-top-30" v-if="itemStage && itemStage[1] && itemStage[2] && itemStage[1].pay_status === 1">
+      <div v-if="itemStage && itemStage[1] && itemStage[2] && itemStage[1].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[2] && itemStage[2].confirm === 1 ? '已确认' : '未确认'}}</div>
@@ -346,15 +346,15 @@
         <div class="pad-top-36" v-for="(item, index) in itemStage[2].item_stage_image" :key="index">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
               <div class="file-text pad-top-6">{{item.size || '—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -363,7 +363,7 @@
         </template>
       </div>
 
-      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[2]}" v-if="itemStage && itemStage[1] && itemStage[0].pay_status === 1">
+      <div :class="{'pad-top-70': itemStage && itemStage[2] && itemStage[1].pay_status === 1}" v-if="itemStage && itemStage[1] && itemStage[0].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[1] && itemStage[1].confirm === 1 ? '已确认' : '未确认'}}</div>
@@ -374,15 +374,15 @@
         <div class="pad-top-36" v-for="(item, index) in itemStage[1].item_stage_image" :key="index">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
               <div class="file-text pad-top-6">{{item.size || '—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -391,7 +391,7 @@
         </template>
       </div>
 
-      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[1]}">
+      <div :class="[{'pad-top-70': itemStage && itemStage[1] && itemStage[0].pay_status === 1},{'pad-top-30': itemStage && itemStage[0] && itemStage[0].pay_status !== 1}]">
         <div class="flex-center">
           <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].pay_status === 1 ? '已确认' : '未确认'}}</div>
@@ -402,15 +402,15 @@
         <div class="pad-top-36" v-for="(item, index) in itemStage[0].item_stage_image" :key="index">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
               <div class="file-text pad-top-6">{{item.size || '—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -419,7 +419,7 @@
         </template>
       </div>
 
-      <div class="grey-line mar-56-0-30-0"></div>
+      <div class="grey-line mar-top-30"></div>
 
 
       <div class="title">已签订合作</div>
@@ -521,7 +521,7 @@
       </div>
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
-        <div class="close-text">查看设计服务商</div>
+        <div class="close-text">查看对接过的服务商</div>
         <div class="open-img"></div>
       </div>
     </div>
@@ -716,6 +716,18 @@ export default {
   .file-round {
     display: flex;
     flex-direction: column;
+    width: 280px;
+    padding-right: 30px;
+  }
+  .file-file {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    padding-right: 30px;
+  }
+  .file-date {
+    display: flex;
+    flex-direction: column;
   }
   .file-img {
     height: 34px;
@@ -733,6 +745,9 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .show-text {
     cursor: pointer;
@@ -838,6 +853,9 @@ export default {
   .empty-center {
     margin: 0 auto;
     margin-top: 0;
+  }
+  .steps {
+	  padding: 20px 20px 0 20px;
   }
 
 
