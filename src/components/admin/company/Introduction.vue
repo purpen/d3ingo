@@ -114,8 +114,20 @@
         </div>
       </div>
     </div>
-
-    <div class="round-bot">
+    <div class="round-bot" v-if="!item.boss_name && !item.boss_position && !item.boss_phone && !item.boss_email">
+      <div class="flex-center-space">
+        <div class="company-title">公司负责人</div>
+        <div class="join-round" @click="editor">
+          <div class="join-editor"></div>
+          <div class="empty-editor">添加负责人</div>
+        </div>
+      </div>
+      <div class="empty flex-center-center">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂无公司负责人信息</div>
+      </div>
+    </div>
+    <div class="round-bot" v-else>
       <div class="flex-center-space">
         <div class="company-title">公司负责人</div>
         <div class="company-editor" @click="editor">编辑</div>
@@ -423,6 +435,44 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
+  }
+
+  .empty-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: url('../../../assets/images/design_admin/CustomerDefaultGraph@2x.png') no-repeat center / contain;
+  }
+  .empty-text {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-top: 10px;
+  }
+  .flex-center-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+  }
+  .empty-editor {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+    padding-left: 5px;
+  }
+  .join-editor {
+    width: 14px;
+    height: 14px;
+    background: url('../../../assets/images/icon/Remarks2@2x.png') no-repeat center / contain;
+  }
+  .join-round {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
   }
 
 
