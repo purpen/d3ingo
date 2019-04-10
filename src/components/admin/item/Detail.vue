@@ -221,8 +221,11 @@ export default {
       let that = this
       if (that.type === 2) {
         let height = that.$refs.detailChild.goHeight
-        console.log('height', that.$refs.detailChild.goHeight)
-        document.documentElement.scrollTo(0, height)
+        if (document.body) {
+          window.scrollTo(0, height)
+        } else if (document.documentElement) {
+          document.documentElement.scrollTo(0, height)
+        }
         return
       }
       that.type = 2

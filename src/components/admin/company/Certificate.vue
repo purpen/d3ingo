@@ -111,7 +111,7 @@ export default {
     },
     closeImg() {
       this.fixed = false
-      this.img = 'img'
+      this.img = ''
     }
   }
 }
