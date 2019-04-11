@@ -52,11 +52,11 @@
     </div>
     <div class="flex-center-34">
       <div class="title">创建人</div>
-      <div class="text">{{item.user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
+      <div class="text">{{item.user_name || '—'}}（<span v-if="item.created_at">{{item.created_at |timeFormat}}</span><span v-else>{{'—'}}</span>）</div>
     </div>
     <div class="flex-center-34">
       <div class="title">修改人</div>
-      <div class="text">{{item.update_user_name || '—'}}（{{item.update_user_time || '—' |timeFormat}}）</div>
+      <div class="text">{{item.update_user_name || '—'}}（<span v-if="item.update_user_time">{{item.update_user_time |timeFormat}}</span><span v-else>{{'—'}}</span>）</div>
     </div>
   </div>
 </template>
