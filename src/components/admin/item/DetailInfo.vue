@@ -19,7 +19,7 @@
     </div>
     <div class="flex-center-34">
       <div class="title">来源渠道</div>
-      <div class="text">{{contract.source_value || '—'}}</div>
+      <div class="text">{{oldItem.source_value || '—'}}</div>
     </div>
 
     <div class="line"></div>
@@ -69,17 +69,16 @@ export default {
   },
   created() {
     let that = this
-    if (that.contract && (that.contract.source === 0 || that.contract.source)) {
-      switch (that.contract.source) {
-        case 0:
-          that.contract.source_value = '太火鸟'
-          break
+    if (that.oldItem && (that.oldItem.source === 0 || that.oldItem.source)) {
+      switch (that.oldItem.source) {
         case 1:
-          that.contract.source_value = '京东/艺火'
+          that.oldItem.source_value = '京东/艺火'
           break
         case 2:
-          that.contract.source_value = '义乌'
+          that.oldItem.source_value = '义乌'
           break
+        default:
+          that.oldItem.source_value = '太火鸟'
       }
     }
   },
