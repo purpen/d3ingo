@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="round-bot">
+    <div class="round">
       <div class="flex-center">
         <div class="cer-left">创新力指数</div>
         <div class="cer-right">{{item.ave_score || '—'}}</div>
@@ -114,15 +114,147 @@
         </div>
       </div>
     </div>
+    <div class="round-bot" v-if="!item.boss_name && !item.boss_position && !item.boss_phone && !item.boss_email">
+      <div class="flex-center-space">
+        <div class="company-title">公司负责人</div>
+        <div class="join-round" @click="editor">
+          <div class="join-editor"></div>
+          <div class="empty-editor">添加负责人</div>
+        </div>
+      </div>
+      <div class="empty flex-center-center">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂无公司负责人信息</div>
+      </div>
+    </div>
+    <div class="round-bot" v-else>
+      <div class="flex-center-space">
+        <div class="company-title">公司负责人</div>
+        <div class="company-editor" @click="editor">编辑</div>
+      </div>
+      <div class="flex-center">
+        <div class="cer-left">负责人</div>
+        <div class="cer-right">{{item.boss_name || '—'}}</div>
+      </div>
+      <div class="flex-center">
+        <div class="cer-left">职位</div>
+        <div class="cer-right">{{item.boss_position || '—'}}</div>
+      </div>
+      <div class="flex-center">
+        <div class="cer-left">联系电话</div>
+        <div class="cer-right">{{item.boss_phone || '—'}}</div>
+      </div>
+      <div class="flex-center">
+        <div class="cer-left">邮箱</div>
+        <div class="cer-right">{{item.boss_email || '—'}}</div>
+      </div>
+    </div>
+    <el-dialog :title="headTitle" :visible.sync="showEditor" width="480px" top="5%" custom-class="editor-head">
+      <div>
+        <div class="dialog-head-title">设计公司</div>
+        <div class="flex-center">
+          <div class="editor-img-round">
+            <img :src="item.logo_url" class="editor-head-img">
+          </div>
+          <div class="editor-img-text">{{item.company_name}}</div>
+        </div>
+      </div>
+      <div class="pad-top-20">
+        <div class="dialog-head-title">负责人姓名</div>
+        <div class="pad-top-10">
+          <el-input v-model="form.name" placeholder="请填写负责人姓名"></el-input>
+        </div>
+      </div>
+      <div class="pad-top-20">
+        <div class="dialog-head-title">职位</div>
+        <div class="pad-top-10">
+          <el-input v-model="form.position" placeholder="请填写负责人职位"></el-input>
+        </div>
+      </div>
+      <div class="pad-top-20">
+        <div class="dialog-head-title">联系电话</div>
+        <div class="pad-top-10">
+          <el-form :model="form" :rules="rules" ref="ruleForm">
+            <el-form-item prop="phone">
+              <el-input v-model="form.phone" placeholder="请填写负责人联系电话"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+      <div>
+        <div class="dialog-head-title">邮箱</div>
+        <div class="pad-top-10">
+          <el-input v-model="form.email" placeholder="请填写负责人联系邮箱"></el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showEditor = false">取 消</el-button>
+        <el-button type="primary" @click="headEditor('ruleForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+import api from '@/api/api'
 export default {
   name: 'introduction',
   props: ['item', 'prizeArr'],
   data() {
     return {
-      line: '—'
+      line: '—',
+      showEditor: false,
+      headTitle: '',
+      form: {
+        name: '',
+        position: '',
+        phone: '',
+        email: ''
+      },
+      rules: {
+        phone: [
+          { required: true, message: '请填写负责人联系电话', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    editor() {
+      this.form.name = this.item.boss_name
+      this.form.position = this.item.boss_position
+      this.form.phone = this.item.boss_phone
+      this.form.email = this.item.boss_email
+      this.headTitle = '编辑公司负责人'
+      this.showEditor = true
+    },
+    headEditor(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let row = {
+            id: this.item.id,
+            boss_name: this.form.name || '',
+            boss_position: this.form.position || '',
+            boss_phone: this.form.phone || '',
+            boss_email: this.form.email || ''
+          }
+          this.$http.post(api.adminDesignCompanyBoss, row).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.item.boss_name = this.form.name
+              this.item.boss_position = this.form.position
+              this.item.boss_phone = this.form.phone
+              this.item.boss_email = this.form.email
+              this.showEditor = false
+            } else {
+              this.showEditor = false
+              this.$message.error(response.data.message)
+            }
+          }).catch(error => {
+            this.showEditor = false
+            this.$message.error(error.message)
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }
@@ -142,6 +274,12 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+    padding-top: 15px;
+  }
+  .flex-center-space {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-top: 15px;
   }
   .flex {
@@ -260,5 +398,85 @@ export default {
   }
   .bot-index {
     padding-left: 10px;
+  }
+  .company-title {
+    font-size: 15px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+  }
+  .company-editor {
+    cursor: pointer;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+  }
+  .editor-img-round {
+    height: 45px;
+    width: 45px;
+    border: 1px solid #e6e6e6;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .editor-head-img {
+    height: 45px;
+    width: 45px;
+  }
+  .editor-img-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-left: 20px;
+  }
+  .dialog-head-title {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+
+  .empty-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: url('../../../assets/images/design_admin/CustomerDefaultGraph@2x.png') no-repeat center / contain;
+  }
+  .empty-text {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-top: 10px;
+  }
+  .flex-center-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+  }
+  .empty-editor {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+    padding-left: 5px;
+  }
+  .join-editor {
+    width: 14px;
+    height: 14px;
+    background: url('../../../assets/images/icon/Remarks2@2x.png') no-repeat center / contain;
+  }
+  .join-round {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .pad-top-20 {
+    padding-top: 20px;
   }
 </style>

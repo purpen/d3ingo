@@ -311,6 +311,7 @@ export default {
   adminDesignCaseDesignCaseList: '/admin/designCase/designCaseList', // GET 某个设计公司案例列表
   adminDesignCompanyStatistics: '/admin/designCompany/statistics', // GET 设计公司统计
   adminDesignCompanyDownloadReport: 'admin/designCompany/downloadReport', // POST 设计公司下载客户报表
+  adminDesignCompanyBoss: '/admin/designCompany/boss', // POST 保存设计公司负责人信息
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表

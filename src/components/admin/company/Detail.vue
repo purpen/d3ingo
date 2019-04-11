@@ -210,7 +210,7 @@ export default {
             self.designItem = response.data.data.users.design_item
           }
           if (self.item.logo_image) {
-            self.item.logo_url = self.item.logo_image.big
+            self.item.logo_url = self.item.logo_image.logo
           } else {
             self.item.logo_url = require ('@/assets/images/df_100x100.png')
           }
