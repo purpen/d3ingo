@@ -166,7 +166,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" :class="{'empty-center': !normalDesign || !normalDesign.length}" @click="showServer" v-if="!server && normalDesign && normalDesign.length">
             <div class="close-text">查看对接过的服务商</div>
@@ -265,7 +265,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
             <div class="close-text">查看对接过的服务商</div>
@@ -520,7 +520,7 @@
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
         <div class="close-text">隐藏对接过的服务商</div>
-        <div class="close-img"></div>
+        <div class="close-img2"></div>
       </div>
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
@@ -797,7 +797,7 @@ export default {
     font-weight: 400;
     color: rgba(255,166,75,1);
   }
-  .close-img {
+  .close-img2 {
     height: 16px;
     width: 16px;
     background: url('../../../assets/images/icon/upper@2x.png') no-repeat center / contain;
