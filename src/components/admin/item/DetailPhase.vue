@@ -166,7 +166,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" :class="{'empty-center': !normalDesign || !normalDesign.length}" @click="showServer" v-if="!server && normalDesign && normalDesign.length">
             <div class="close-text">查看对接过的服务商</div>
@@ -265,7 +265,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
             <div class="close-text">查看对接过的服务商</div>
@@ -335,26 +335,27 @@
       </template>
       <div class="grey-line" v-if="evaluate"></div>
 
-      <div  class="pad-top-30" v-if="itemStage && itemStage[1] && itemStage[2] && itemStage[1].pay_status === 1">
+      <div v-if="itemStage && itemStage[1] && itemStage[2] && itemStage[1].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[2] && itemStage[2].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[2] && itemStage[2].updated_at">{{itemStage[2].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[2] && itemStage[2].updated_at">{{itemStage[2].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[2] && itemStage[2].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[2].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[2].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -363,26 +364,27 @@
         </template>
       </div>
 
-      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[2]}" v-if="itemStage && itemStage[1] && itemStage[0].pay_status === 1">
+      <div :class="{'pad-top-70': itemStage && itemStage[2] && itemStage[1].pay_status === 1}" v-if="itemStage && itemStage[1] && itemStage[0].pay_status === 1">
         <div class="flex-center">
           <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[1] && itemStage[1].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[1] && itemStage[1].updated_at">{{itemStage[1].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[1] && itemStage[1].updated_at">{{itemStage[1].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[1] && itemStage[1].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[1].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[1].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -391,26 +393,27 @@
         </template>
       </div>
 
-      <div class="pad-top-30" :class="{'pad-top-70': itemStage && itemStage[1]}">
+      <div :class="[{'pad-top-70': itemStage && itemStage[1] && itemStage[0].pay_status === 1},{'pad-top-30': itemStage && itemStage[0] && itemStage[0].pay_status !== 1}]">
         <div class="flex-center">
           <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].pay_status === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].updated_at">{{itemStage[0].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[0] && itemStage[0].updated_at">{{itemStage[0].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[0] && itemStage[0].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[0].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[0].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
-            <div class="file-round pad-right-110 pad-left-26">
+            <div class="file-round pad-left-26">
               <div class="file-title">文件名</div>
               <div class="file-text pad-top-6">{{item.name || '—'}}</div>
             </div>
-            <div class="file-round pad-right-110">
+            <div class="file-file">
               <div class="file-title">文件大小</div>
-              <div class="file-text pad-top-6">{{item.size || '—'}}</div>
+              <div class="file-text pad-top-6" v-if="item.size">{{item.size |sizeFormat}}</div>
+              <div class="file-text pad-top-6" v-else>{{'—'}}</div>
             </div>
-            <div class="file-round">
+            <div class="file-date">
               <div class="file-title">提交时间</div>
               <div class="file-text pad-top-6">{{item.created_at || '—' |timeFormat}}</div>
             </div>
@@ -419,7 +422,7 @@
         </template>
       </div>
 
-      <div class="grey-line mar-56-0-30-0"></div>
+      <div class="grey-line mar-top-30"></div>
 
 
       <div class="title">已签订合作</div>
@@ -465,7 +468,7 @@
 
       <div class="grey-line mar-50-0-30-0" v-if="server"></div>
       <div>
-        
+
       </div>
       <div class="tansition" v-if="server">
         <div class="title">对接过的服务商</div>
@@ -517,11 +520,11 @@
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
         <div class="close-text">隐藏对接过的服务商</div>
-        <div class="close-img"></div>
+        <div class="close-img2"></div>
       </div>
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
-        <div class="close-text">查看设计服务商</div>
+        <div class="close-text">查看对接过的服务商</div>
         <div class="open-img"></div>
       </div>
     </div>
@@ -532,6 +535,12 @@
         <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
       </div> -->
     </el-dialog>
+    <div class="fiexd-img" v-if="fixed">
+      <div class="relave">
+        <img :src="img">
+        <div class="close-img" @click="closeImg"></div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -546,12 +555,22 @@ export default {
       server: false,
       nowDesignId: '',
       stageActive: 0,
+      fixed: false,
+      img: '',
       stageArr: [],
       boolStage: false
     }
   },
   props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem', 'creat', 'refauseDesign', 'normalDesign', 'quotation', 'failDesign', 'clueId'],
   methods: {
+    showImg(img) {
+      this.fixed = true
+      this.img = img
+    },
+    closeImg() {
+      this.fixed = false
+      this.img = ''
+    },
     toCustomer() {
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${this.clueId}`,
@@ -620,6 +639,15 @@ export default {
     timeFormat2(val) {
       if (val) {
         return val.date_format().format('yyyy-MM-dd')
+      }
+    },
+    sizeFormat(val) {
+      if (val > 1024 * 1024) {
+        return Math.round(val / 1024 / 1024) + 'MB'
+      } else if (val > 1024) {
+        return Math.round(val / 1024) + 'KB'
+      } else {
+        return val + 'B'
       }
     }
   }
@@ -716,6 +744,18 @@ export default {
   .file-round {
     display: flex;
     flex-direction: column;
+    width: 280px;
+    padding-right: 30px;
+  }
+  .file-file {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    padding-right: 30px;
+  }
+  .file-date {
+    display: flex;
+    flex-direction: column;
   }
   .file-img {
     height: 34px;
@@ -733,6 +773,10 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 22px;
   }
   .show-text {
     cursor: pointer;
@@ -753,7 +797,7 @@ export default {
     font-weight: 400;
     color: rgba(255,166,75,1);
   }
-  .close-img {
+  .close-img2 {
     height: 16px;
     width: 16px;
     background: url('../../../assets/images/icon/upper@2x.png') no-repeat center / contain;
@@ -839,6 +883,43 @@ export default {
     margin: 0 auto;
     margin-top: 0;
   }
+  .steps {
+	  padding: 20px 20px 0 20px;
+  }
+  .hover-grey {
+    cursor: pointer;
+  }
+  .hover-grey:hover {
+    background: #fafafa;
+  }
+
+  /* 预览 */
+  .fiexd-img {
+    position: fixed;
+    z-index: 9999;
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fiexd-img img {
+    height: auto;
+    max-width: 880px;
+  }
+  .close-img {
+    cursor: pointer;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 100px;
+    top: 50px;
+    background: url('../../../assets/images/design_admin/CloseHover@2x.png') no-repeat center / contain;
+  }
 
 
 
@@ -902,6 +983,12 @@ export default {
   .pad-right-110 {
     padding-right: 110px;
   }
+  .pad-bot-18 {
+    padding-bottom: 18px;
+  }
+  .pad-18-0 {
+    padding: 18px 0;
+  }
   .pad-bot-30 {
     padding-bottom: 30px;
   }
@@ -930,4 +1017,3 @@ export default {
     margin-top: 0;
   }
 </style>
-

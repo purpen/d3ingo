@@ -3,7 +3,7 @@
     <div class="load" v-if="isLoading">
       <div class="load_cont" v-loading="isLoading"></div>
     </div>
-    <div class="content">
+    <div class="contents">
       <div class="topclass">
         <div class="headselect">
           <div class="remoclass" v-if="removecot.length > 0">
@@ -42,8 +42,10 @@
           ref="multipleTable"
           :data="tableData"
           class="cursor-poi"
+          @sort-change="sortChange"
           tooltip-effect="dark"
           @filter-change="filterType"
+          :default-sort = "{prop: 'date', order: 'descending'}"
           style="width: 100%"
           @row-click="toDetail"
           @selection-change="handleSelectionChange"
@@ -80,7 +82,6 @@
         <el-table-column
           prop="clue_name"
           label="客户"
-          width="100"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -95,7 +96,7 @@
         <el-table-column
           prop="time"
           label="创建日期"
-          sortable
+          sortable="custom"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -239,6 +240,7 @@
           status: 0,
           menu: 0,
           evt: 1,
+          sort: 1,
           val: '',
           ids: []
         },
@@ -621,6 +623,16 @@
       handleClose() {
         this.removecot = ''
         this.$refs.multipleTable.clearSelection()
+      },
+      // 排序
+      sortChange() {
+        if (this.query.sort === 1) {
+          this.query.sort = 0
+        } else {
+          this.query.sort = 1
+        }
+        let query = this.query
+        this.newlist(query)
       },
       // 来源
       // renderChange(val) {
