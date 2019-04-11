@@ -1041,10 +1041,10 @@ import api from '@/api/api'
 import typeData from '@/config'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
-import Clipboard from 'clipboard'
+// import Clipboard from 'clipboard'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
-import Clickoutside from 'assets/js/clickoutside'
+// import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_potential_userinfo',
   components: {
@@ -1395,32 +1395,32 @@ export default {
     redirect() {
       this.$router.push({name: 'adminPotentialUserList', params: this.query})
     },
-    getLink(projectId, designId) {
-      let row = {
-        type: 1,
-        clue_id: this.currentId
-      }
-      if (projectId && designId) {
-        row.type = 2
-        row.crm_item_id = projectId
-        row.design_company_id = designId
-      }
-      this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          if (row.type === 1) {
-            this.QRCode = res.data.data.url
-          } else {
-            this.QRCode2 = res.data.data.url
-          }
-          // this.setClipboardText()
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        this.$message.error(error.message)
-        console.log(error.message)
-      })
-    },
+    // getLink(projectId, designId) {
+    //   let row = {
+    //     type: 1,
+    //     clue_id: this.currentId
+    //   }
+    //   if (projectId && designId) {
+    //     row.type = 2
+    //     row.crm_item_id = projectId
+    //     row.design_company_id = designId
+    //   }
+    //   this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
+    //     if (res.data.meta.status_code === 200) {
+    //       if (row.type === 1) {
+    //         this.QRCode = res.data.data.url
+    //       } else {
+    //         this.QRCode2 = res.data.data.url
+    //       }
+    //       // this.setClipboardText()
+    //     } else {
+    //       this.$message.error(res.data.meta.message)
+    //     }
+    //   }).catch(error => {
+    //     this.$message.error(error.message)
+    //     console.log(error.message)
+    //   })
+    // },
     getProjectSchedule() {
       let row = {
         clue_id: this.currentId
@@ -1443,16 +1443,16 @@ export default {
         this.$message.error(error.message)
       })
     },
-    setClipboardText() {
-      let clipboard = null
-      if (this.QRCode) {
-        clipboard = new Clipboard('.btn-link', {
-          text: () => this.QRCode
-        })
-        // this.$message.success('复制成功')
-      }
-      console.log(clipboard)
-    },
+    // setClipboardText() {
+    //   let clipboard = null
+    //   if (this.QRCode) {
+    //     clipboard = new Clipboard('.btn-link', {
+    //       text: () => this.QRCode
+    //     })
+    //     // this.$message.success('复制成功')
+    //   }
+    //   console.log(clipboard)
+    // },
     showTabProgress(val) {
       this.activeName = val
     },
@@ -2735,8 +2735,8 @@ export default {
       this.userForm.execute_user_id = this.userId
     }
     this.getAdminVoIpList()
-  },
-  directives: {Clickoutside}
+  }
+  // directives: {Clickoutside}
 }
 </script>
 <style scoped>
