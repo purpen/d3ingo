@@ -240,7 +240,7 @@
           status: 0,
           menu: 0,
           evt: 1,
-          sort: 1,
+          sort: 0,
           val: '',
           ids: []
         },
@@ -626,10 +626,10 @@
       },
       // 排序
       sortChange() {
-        if (this.query.sort === 1) {
-          this.query.sort = 0
-        } else {
+        if (this.query.sort === 0) {
           this.query.sort = 1
+        } else {
+          this.query.sort = 0
         }
         let query = this.query
         this.newlist(query)
