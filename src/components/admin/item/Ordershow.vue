@@ -589,7 +589,7 @@
         if (value.type_value) {
           this.query.type = value.type_value[0]
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           let query = this.query
           this.newlist(query)
         }
@@ -597,7 +597,7 @@
         if (value.design_cost_value) {
           this.query.design_cost = value.design_cost_value[0]
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           let query = this.query
           this.newlist(query)
         }
@@ -607,7 +607,7 @@
           this.query.source = value.sourcecont[0]
           let query = this.query
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           this.newlist(query)
         }
       },
@@ -676,7 +676,7 @@
         this.opporId = val
         this.query.menu = val
         this.query.page = 1
-        this.query.per_page = 10
+        this.query.per_page = 20
         let query = this.query
         this.newlist(query)
         this.opporvalue = this.opportunity[val].label
@@ -693,7 +693,7 @@
       selectLoad() {
         this.query.val = this.seleValue
         this.query.page = 1
-        this.query.per_page = 10
+        this.query.per_page = 20
         let query = this.query
         this.newlist(query)
       },
