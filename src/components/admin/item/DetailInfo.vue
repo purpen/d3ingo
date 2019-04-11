@@ -19,11 +19,7 @@
     </div>
     <div class="flex-center-34">
       <div class="title">来源渠道</div>
-<<<<<<< HEAD
-      <div class="text">{{contract.source_value || '—'}}</div>
-=======
       <div class="text">{{oldItem.source_value || '—'}}</div>
->>>>>>> origin/ding-bug
     </div>
 
     <div class="line"></div>
@@ -56,19 +52,11 @@
     </div>
     <div class="flex-center-34">
       <div class="title">创建人</div>
-<<<<<<< HEAD
-      <div class="text">{{item.user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
-    </div>
-    <div class="flex-center-34">
-      <div class="title">修改人</div>
-      <div class="text">{{item.update_user_name || '—'}}（{{item.created_at || '—' |timeFormat}}）</div>
-=======
       <div class="text">{{item.user_name || '—'}}（<span v-if="item.created_at">{{item.created_at |timeFormat}}</span><span v-else>{{'—'}}</span>）</div>
     </div>
     <div class="flex-center-34">
       <div class="title">修改人</div>
       <div class="text">{{item.update_user_name || '—'}}（<span v-if="item.update_user_time">{{item.update_user_time |timeFormat}}</span><span v-else>{{'—'}}</span>）</div>
->>>>>>> origin/ding-bug
     </div>
   </div>
 </template>
