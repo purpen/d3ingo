@@ -309,6 +309,12 @@
             return item.subRouter === Number(this.$route.params.type)
           })
           this.subRouter = set
+          // let arr = ADMINMENU.adminPotentialUserList.children
+          // arr.forEach(ele => {
+          //   if (ele.subRouter === Number(this.$route.params.type)) {
+          //     document.title = ele.name + '-' + this.$store.state.event.prod.title
+          //   }
+          // })
         }
         if (this.$route.name === 'adminPotentialUserInfo') {
           this.selectedName = 'adminPotentialUserList' + this.$route.query.type

@@ -372,9 +372,17 @@ export default {
     // 查看客户详情
     toCustemDetail(id) {
       let that = this
+      let type = 0
+      if (that.clue.new_status === 1) {
+        type = 1
+      } else if (that.clue.new_status === 2 || that.clue.new_status === 3) {
+        type = 2
+      } else {
+        type = 3
+      }
       const {href} = that.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {type: 3}
+        query: {type: type}
       })
       window.open(href, '_blank')
     }
