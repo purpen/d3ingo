@@ -225,17 +225,13 @@
         </div>
       </div>
       <div class="business-header" v-if="typeId === 4">
-        <div class="edit-i" @blur="isDown" tabindex="-1">
+        <!-- <div class="edit-i" @blur="isDown" tabindex="-1">
           <i @click="isEdits = true"></i>
           <ul v-show="isEdits">
-            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
-            <li @click="exportForm">导出</li>
-            <li @click="randomAssign = true">随机分配</li>
-            <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
             <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
-        </div>
+        </div> -->
         <!-- <div class="export-upload">
           <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
           <el-upload
@@ -258,7 +254,7 @@
             </button>
           </el-upload>
         </div> -->
-        <div class="search-sort">
+        <div class="search-sort margin-r-0">
           <div class="search-select">
             <el-select v-model="isSearch.label" placeholder="请选择">
               <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
@@ -278,7 +274,7 @@
             </el-option>
           </el-select>
         </div> -->
-        <div class="select-date">
+        <div class="select-date margin-l-0">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
@@ -575,7 +571,7 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -588,7 +584,7 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -631,7 +627,7 @@
             {text: '商机', value: '1' },
             { text: '潜在客户', value: '2' },
             { text: '对接设计', value: '3' },
-            { text: '签约合作', value: '4' }
+            { text: '签订合作', value: '4' }
           ]"
           :filter-multiple="false"
           filter-placement="bottom-end">
@@ -639,7 +635,7 @@
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
               <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-              <p class="status5 status"  v-else>签约合作</p>
+              <p class="status5 status"  v-else>签订合作</p>
             </template>
         </el-table-column> -->
       </el-table>
@@ -1480,10 +1476,10 @@ export default {
       ],
       // 0.全部商家; 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
       optionLatent: [
-        {
-          value: 0,
-          label: '全部商家'
-        },
+        // {
+        //   value: 0,
+        //   label: '全部商家'
+        // },
         {
           value: 1,
           label: '全部潜在客户'
@@ -1599,7 +1595,7 @@ export default {
         evt: '',
         sort: 2,
         sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: 0, // 0.全部 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
+        search_val: 1, // 0.全部 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -2352,14 +2348,16 @@ export default {
       this.$router.push(href)
     },
     getLookUserInfo({id = {}, name = {}}) {
-      this['query' + this.typeId].id = id
-      // this['query' + this.typeId].name = name
-      const {href} = this.$router.resolve({
-        path: `/admin/customer/userinfo/${id}`,
-        query: {page: this['query' + this.typeId].page, type: this.typeId}
-      })
-      // window.open(href, '_blank')
-      this.$router.push(href)
+      if (this.typeId !== 4) {
+        this['query' + this.typeId].id = id
+        // this['query' + this.typeId].name = name
+        const {href} = this.$router.resolve({
+          path: `/admin/customer/userinfo/${id}`,
+          query: {page: this['query' + this.typeId].page, type: this.typeId}
+        })
+        // window.open(href, '_blank')
+        this.$router.push(href)
+      }
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -3065,7 +3063,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   top: -1px;
@@ -3074,7 +3072,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   bottom: -1px;
@@ -3411,6 +3409,7 @@ export default {
   margin-right: 30px;
   padding-left: 15px;
   position: relative;
+  font-size: 14px;
 }
 .check-all i {
   position: absolute;

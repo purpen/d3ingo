@@ -360,8 +360,11 @@
                 <div class="case-header">{{item.field_val}}</div>
                 <div class="case-header-arrow"></div>
               </div>
-              <div class="case-center text-a-center" @click="caseDetail(item.id)">
-                <img :src="item.cover.middle" width="auto" height="100%" class="max-width-100">
+              <div v-if="item.cover" class="case-center text-a-center" @click="caseDetail(item.id)"
+              :style="{background: 'url(' + item.cover.middle +') no-repeat center / cover'}">
+              </div>
+              <div v-else class="case-center text-a-center" @click="caseDetail(item.id)"
+              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / cover'}">
               </div>
               <div class="case-center-round">
                 <div class="case-center-title">{{item.title}}</div>
@@ -1250,6 +1253,7 @@
     border:1px solid rgba(230,230,230,1);
     margin-top: 30px;
     cursor: pointer;
+    overflow: hidden
   }
   .case-center-round {
     max-width:380px;
