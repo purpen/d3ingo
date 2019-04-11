@@ -133,7 +133,7 @@
       </div>
     </div>
     <el-dialog title="删除项目" :visible.sync="throwCreit" width="380px">
-      <span>是否删除选中的项目</span>
+      <span>是否删除已选中的项目</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="throwCreit = false">取 消</el-button>
         <el-button size="small" type="primary" :loading="btnLoading" @click="removetrue(evt)">确 定</el-button>
