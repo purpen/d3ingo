@@ -726,14 +726,23 @@ let routes = [
     component: require('@/components/pages/v_center/common/ChildControl')
   },
   // 公司主页
+  // {
+  //   path: '/company/:id',
+  //   name: 'companyShow',
+  //   meta: {
+  //     title: '公司主页',
+  //     requireAuth: false
+  //   },
+  //   component: require('@/components/pages/company/Show')
+  // },
   {
-    path: '/company/:id',
+    path: '/company',
     name: 'companyShow',
     meta: {
       title: '公司主页',
       requireAuth: false
     },
-    component: require('@/components/pages/company/Show')
+    component: require('@/components/pages/company/Design')
   },
   // 作品详情
   {
