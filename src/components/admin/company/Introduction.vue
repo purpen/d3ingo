@@ -200,6 +200,26 @@ export default {
   name: 'introduction',
   props: ['item', 'prizeArr'],
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写负责人联系电话'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
       line: '—',
       showEditor: false,
@@ -212,7 +232,7 @@ export default {
       },
       rules: {
         phone: [
-          { required: true, message: '请填写负责人联系电话', trigger: 'blur' }
+          { validator: checkNumber, trigger: 'blur' }
         ]
       }
     }
