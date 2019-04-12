@@ -622,27 +622,30 @@
             window.scroll(0, 0)
             if (response.data.data && response.data.data.length) {
               let designItems2 = response.data.data
-              for (let i = 0; i < designItems2.length; i++) {
-                let item = designItems2[i]
+              designItems2.forEach((item, i) => {
                 let typeLabel = ''
-                if (item.item.type === 1) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
-                } else if (item.item.type === 2) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
+                if (item.item) {
+                  if (item.item.type === 1) {
+                    typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
+                  } else if (item.item.type === 2) {
+                    typeLabel = item.item.type_value + '/' + item.item.design_type_value
+                  }
+                  let showPrice = false
+                  let showView2 = false
+                  let status = item.item.status
+                  if (item.item.status >= 5) showPrice = true
+                  if (status === 7 || status === 8 || status === 9 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
+                    showView2 = true
+                  }
+                  designItems2[i].item.show_price = showPrice
+                  designItems2[i].item.is_show_view = showView2
+                  designItems2[i].item.type_label = typeLabel
+                  designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
+                } else {
+                  designItems2.splice(i, 1)
                 }
-                let showPrice = false
-                let showView2 = false
-                let status = item.item.status
-                if (item.item.status >= 5) showPrice = true
-                if (status === 7 || status === 8 || status === 9 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
-                  showView2 = true
-                }
-                designItems2[i].item.show_price = showPrice
-                designItems2[i].item.is_show_view = showView2
-                designItems2[i].item.type_label = typeLabel
-                designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-              } // endfor
-              self.designItems2 = designItems2
+                self.designItems2 = designItems2
+              })
             } else {
               self.isEmpty2 = true
             }
@@ -656,7 +659,6 @@
         })
       },
       getVcenterItemList() {
-        console.log(this.query.page)
         this.isLoading = true
         let self = this
         self.$http.get(api.designItemList, {params: {
@@ -674,8 +676,7 @@
             if (response.data.data && response.data.data.length) {
               self.isEmpty = false
               let designItems = response.data.data
-              for (let i = 0; i < designItems.length; i++) {
-                let item = designItems[i]
+              designItems.forEach((item, index) => {
                 let typeLabel = ''
                 if (item.item) {
                   if (item.item.type === 1) {
@@ -683,10 +684,12 @@
                   } else if (item.item.type === 2) {
                     typeLabel = item.item.type_value + '/' + item.item.design_type_value
                   }
+                  designItems[index].item.type_label = typeLabel
+                  designItems[index]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
+                } else {
+                  designItems.splice(index, 1)
                 }
-                designItems[i].item.type_label = typeLabel
-                designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-              } // endfor
+              })
               self.designItems = designItems
             } else {
               self.isEmpty = true
