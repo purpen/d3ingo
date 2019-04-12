@@ -1894,9 +1894,9 @@ const ADMINMENU = {
       }
     ]
   },
-  adminItemList: {
+  ordershow: {
     name: '项目管理',
-    route: 'adminItemList',
+    route: 'ordershow',
     icon: require('assets/images/admin/menu/Project@2x.png'),
     statement: {
       params: {},
@@ -2292,7 +2292,7 @@ const ADMINDETAIL = {
     redirect: 'adminUserList'
   },
   adminItemShow0: {
-    redirect: 'adminItemList'
+    redirect: 'ordershow'
   }
 }
 const OTHERADMINMENU = {
