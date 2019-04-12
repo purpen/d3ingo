@@ -105,7 +105,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="bot">
       <div class="directory flex-center">
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>

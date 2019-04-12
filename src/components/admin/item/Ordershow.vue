@@ -132,6 +132,13 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog title="删除项目" :visible.sync="throwCreit" width="380px">
+      <span>是否删除已选中的项目</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="throwCreit = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="btnLoading" @click="removetrue(evt)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -143,6 +150,7 @@
     data () {
       return {
         isLoading: false,
+        throwCreit: false,
         removeid: '',
         removecot: '',
         currentpage: 1,
@@ -699,10 +707,14 @@
       },
       // 删除列表
       remove() {
+        this.throwCreit = true
+      },
+      removetrue() {
         this.isLoading = true
         this.$http.delete(api.adminItemDeleteIds, {params: {ids: this.query.ids}}).then(res => {
           if (res.data.meta.status_code === 200) {
             this.isLoading = false
+            this.throwCreit = false
             let query = this.query
             this.newlist(query)
           } else {
