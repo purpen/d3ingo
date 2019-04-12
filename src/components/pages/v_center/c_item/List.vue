@@ -639,7 +639,7 @@
                   }
                   designItems2[i].item.show_price = showPrice
                   designItems2[i].item.is_show_view = showView2
-                  designItems2[i].item.type_label = typeLabel
+                  designItems2[i].item.type_label = typeLabel || '—'
                   designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
                 } else {
                   designItems2.splice(i, 1)
@@ -684,7 +684,7 @@
                   } else if (item.item.type === 2) {
                     typeLabel = item.item.type_value + '/' + item.item.design_type_value
                   }
-                  designItems[index].item.type_label = typeLabel
+                  designItems[index].item.type_label = typeLabel || '—'
                   designItems[index]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
                 } else {
                   designItems.splice(index, 1)
