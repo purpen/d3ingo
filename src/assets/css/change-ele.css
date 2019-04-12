@@ -1118,8 +1118,6 @@
     font-weight: 500;
     color: rgba(34,34,34,1);
   }
-<<<<<<< HEAD
-=======
   .editor-head .el-dialog__header {
     height: 50px;
     padding: 19px;
@@ -1136,7 +1134,6 @@
     line-height: 20px;
     padding: 15px;
   }
->>>>>>> origin/ding-bug
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;
