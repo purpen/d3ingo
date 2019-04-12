@@ -52,7 +52,7 @@
           >
         <el-table-column
           type="selection"
-          width="55">
+          width="40">
         </el-table-column>
         <el-table-column
           label="项目名称"
@@ -102,7 +102,7 @@
         <el-table-column
           prop="status_value"
           label="项目进度"
-          width="150"
+          width="170"
           column-key="status_value"
           :filter-multiple="false"
           filter-placement="bottom-end"
@@ -136,7 +136,7 @@
       <span>是否删除已选中的项目</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="throwCreit = false">取 消</el-button>
-        <el-button size="small" type="primary" :loading="btnLoading" @click="removetrue(evt)">确 定</el-button>
+        <el-button size="small" type="primary"  @click="removetrue(evt)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -726,6 +726,7 @@
       },
       newlist(query) {
         this.isLoading = true
+        query.val = this.seleValue
         this.$http.get(api.newlist, {params: query}).then(res => {
           if (res.data.meta.status_code === 200) {
             this.isLoading = false
@@ -758,6 +759,7 @@
     },
     mounted: function () {
       this.isLoading = true
+      this.query.val = this.seleValue
       this.$http.get(api.newlist, {params: this.query}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.isLoading = false
@@ -806,14 +808,14 @@
     width: 100%;
     margin-top: 15px;
   }
-  .statucss{
+  /* .statucss{ */
     /* display: flex; */
     /* align-items: center; */
     /* flex-wrap: wrap; */
-    text-overflow:ellipsis;
+    /* text-overflow:ellipsis;
     white-space:nowrap;
     overflow: hidden;
-  }
+  } */
   .flexcenter{
     float: left;
     margin-top: 6px;
