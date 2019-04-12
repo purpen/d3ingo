@@ -1118,6 +1118,22 @@
     font-weight: 500;
     color: rgba(34,34,34,1);
   }
+  .editor-head .el-dialog__header {
+    height: 50px;
+    padding: 19px;
+  }
+  .editor-head .el-dialog__headerbtn {
+    top: 16px;
+    font-size: 19px;
+  }
+  .editor-head .el-dialog__body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .editor-head .el-input__inner {
+    line-height: 20px;
+    padding: 15px;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;

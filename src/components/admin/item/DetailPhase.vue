@@ -166,7 +166,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" :class="{'empty-center': !normalDesign || !normalDesign.length}" @click="showServer" v-if="!server && normalDesign && normalDesign.length">
             <div class="close-text">查看对接过的服务商</div>
@@ -265,7 +265,7 @@
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
             <div class="close-text">隐藏对接过的服务商</div>
-            <div class="close-img"></div>
+            <div class="close-img2"></div>
           </div>
           <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
             <div class="close-text">查看对接过的服务商</div>
@@ -340,10 +340,10 @@
           <div class="title pad-right-20">第三阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[2] && itemStage[2].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[2] && itemStage[2].updated_at">{{itemStage[2].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[2] && itemStage[2].updated_at">{{itemStage[2].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[2] && itemStage[2].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[2].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[2].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
             <div class="file-round pad-left-26">
@@ -369,10 +369,10 @@
           <div class="title pad-right-20">第二阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[1] && itemStage[1].confirm === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[1] && itemStage[1].updated_at">{{itemStage[1].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[1] && itemStage[1].updated_at">{{itemStage[1].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[1] && itemStage[1].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[1].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[1].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
             <div class="file-round pad-left-26">
@@ -398,10 +398,10 @@
           <div class="title pad-right-20">第一阶段：{{itemName || '—'}}</div>
           <div class="sure-green">{{itemStage && itemStage[0] && itemStage[0].pay_status === 1 ? '已确认' : '未确认'}}</div>
         </div>
-        <div class="date-12" v-if="itemStage && itemStage[0] && itemStage[0].updated_at">{{itemStage[0].updated_at || '—' |timeFormat}}</div>
+        <div class="date-12 pad-bot-18" v-if="itemStage && itemStage[0] && itemStage[0].updated_at">{{itemStage[0].updated_at || '—' |timeFormat}}</div>
 
         <template v-if="itemStage && itemStage[0] && itemStage[0].item_stage_image">
-        <div class="pad-top-36" v-for="(item, index) in itemStage[0].item_stage_image" :key="index">
+        <div class="pad-18-0 hover-grey" v-for="(item, index) in itemStage[0].item_stage_image" :key="index" @click="showImg(item.big)">
           <div class="flex">
             <div class="file-img"></div>
             <div class="file-round pad-left-26">
@@ -520,7 +520,7 @@
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="closeServer" v-if="server">
         <div class="close-text">隐藏对接过的服务商</div>
-        <div class="close-img"></div>
+        <div class="close-img2"></div>
       </div>
 
       <div class="flex-center cursor-point mar-top-30 width-130" @click="showServer" v-else>
@@ -535,6 +535,12 @@
         <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
       </div> -->
     </el-dialog>
+    <div class="fiexd-img" v-if="fixed">
+      <div class="relave">
+        <img :src="img">
+        <div class="close-img" @click="closeImg"></div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -549,12 +555,22 @@ export default {
       server: false,
       nowDesignId: '',
       stageActive: 0,
+      fixed: false,
+      img: '',
       stageArr: [],
       boolStage: false
     }
   },
   props: ['evaluate', 'trueDesign', 'itemStage', 'designCompany', 'contract', 'itemName', 'evalService', 'evalResponseSpeed', 'evalDesignLevel', 'oldItem', 'creat', 'refauseDesign', 'normalDesign', 'quotation', 'failDesign', 'clueId'],
   methods: {
+    showImg(img) {
+      this.fixed = true
+      this.img = img
+    },
+    closeImg() {
+      this.fixed = false
+      this.img = ''
+    },
     toCustomer() {
       const {href} = this.$router.resolve({
         path: `/admin/customer/userinfo/${this.clueId}`,
@@ -781,7 +797,7 @@ export default {
     font-weight: 400;
     color: rgba(255,166,75,1);
   }
-  .close-img {
+  .close-img2 {
     height: 16px;
     width: 16px;
     background: url('../../../assets/images/icon/upper@2x.png') no-repeat center / contain;
@@ -870,6 +886,40 @@ export default {
   .steps {
 	  padding: 20px 20px 0 20px;
   }
+  .hover-grey {
+    cursor: pointer;
+  }
+  .hover-grey:hover {
+    background: #fafafa;
+  }
+
+  /* 预览 */
+  .fiexd-img {
+    position: fixed;
+    z-index: 9999;
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fiexd-img img {
+    height: auto;
+    max-width: 880px;
+  }
+  .close-img {
+    cursor: pointer;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 100px;
+    top: 50px;
+    background: url('../../../assets/images/design_admin/CloseHover@2x.png') no-repeat center / contain;
+  }
 
 
 
@@ -932,6 +982,12 @@ export default {
   }
   .pad-right-110 {
     padding-right: 110px;
+  }
+  .pad-bot-18 {
+    padding-bottom: 18px;
+  }
+  .pad-18-0 {
+    padding: 18px 0;
   }
   .pad-bot-30 {
     padding-bottom: 30px;

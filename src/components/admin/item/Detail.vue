@@ -221,8 +221,11 @@ export default {
       let that = this
       if (that.type === 2) {
         let height = that.$refs.detailChild.goHeight
-        console.log('height', that.$refs.detailChild.goHeight)
-        document.documentElement.scrollTo(0, height)
+        if (document.body) {
+          window.scrollTo(0, height)
+        } else if (document.documentElement) {
+          document.documentElement.scrollTo(0, height)
+        }
         return
       }
       that.type = 2
@@ -369,9 +372,17 @@ export default {
     // 查看客户详情
     toCustemDetail(id) {
       let that = this
+      let type = 0
+      if (that.clue.new_status === 1) {
+        type = 1
+      } else if (that.clue.new_status === 2 || that.clue.new_status === 3) {
+        type = 2
+      } else {
+        type = 3
+      }
       const {href} = that.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {type: 3}
+        query: {type: type}
       })
       window.open(href, '_blank')
     }
