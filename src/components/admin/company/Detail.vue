@@ -4,17 +4,28 @@
       <div class="top-left">
         <div class="top-left-img">
           <img :src="item.logo_url">
+          <div class="stop-account flex-column-center" v-if="item.status === 0">
+            <div class="stop-img"></div>
+            <div class="stop-text">已禁用</div>
+          </div>
         </div>
         <!-- <div class="top-left-btn flex-center-center">
           <div class="top-left-btn-icon"></div>
           <div class="top-left-btn-text">金牌服务商</div>
         </div> -->
+        <div class="test-border flex-center-center" v-if="item.is_test_data === 1">
+          <div class="test-text">测试账号</div>
+        </div>
+        <div class="test-border flex-center-center" v-if="item.verify_status !== 1">
+          <div class="wait-icon"></div>
+          <div class="test-text pad-left-10">待认证</div>
+        </div>
       </div>
       <div class="top-right">
         <div class="top-right-top flex-center-space">
           <div class="top-right-top-left">
-            <div class="referred">{{item.company_abbreviation || '-'}}</div>
-            <div class="name">{{item.company_name || '-'}}</div>
+            <div class="referred">{{item.company_abbreviation || '—'}}</div>
+            <div class="name" @click="toCompanyHome(itemId)">{{item.company_name || '—'}}</div>
             <div class="enter-flex">
               <template v-if="item.industrial_design_center && item.industrial_design_center.length">
                 <div v-for="(item, index) in item.industrial_design_center" :key="index">
@@ -34,7 +45,7 @@
             <div class="certification flex-center-center" @click="setRefuseRease(2)" v-if="item.verify_status === 1">
               <div class="certification-text">撤销认证</div>
             </div>
-            <div class="certification flex-center-center" @click="setVerify(1)" v-else>
+            <div class="certification flex-center-center" @click="setRefuseRease(1)" v-else>
               <div class="certification-text">通过认证</div>
             </div>
             <div class="dot">
@@ -65,36 +76,36 @@
               <div class="top-right-bot-title min-width-43">网址</div>
               <div class="top-right-bot-title pad-left-10">
                 <span @click="toNewWeb" v-if="item.web">{{item.web}}</span>
-                <div v-else>{{'-'}}</div>
+                <div v-else>{{'—'}}</div>
               </div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width-43">地址</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width-43">规模</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '—'}}</div>
             </div>
           </div>
           <div class="contact-round">
             <div class="flex-center">
               <div class="top-right-bot-title min-width">联系人</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">职位</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '—'}}</div>
             </div>
             <div class="flex-center pad-top-14">
               <div class="top-right-bot-title min-width">电话</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '-'}}</div>
+              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '—'}}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div class="bot">
       <div class="directory flex-center">
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>
@@ -114,7 +125,14 @@
       <el-input v-model="refuseRease"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="setVerify(evt)">确 定</el-button>
+        <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="通过认证" :visible.sync="throwCreit" width="380px">
+      <span>是否要通过认证通过认证</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="throwCreit = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
       </span>
     </el-dialog>
     <div v-if="detailLoading" class="loading-fiexd">
@@ -143,7 +161,9 @@ export default {
       refuseRease: '',
       itemId: '',
       evt: '',
-      creatDate: ''
+      creatDate: '',
+      btnLoading: false,
+      throwCreit: false
     }
   },
   methods: {
@@ -190,7 +210,7 @@ export default {
             self.designItem = response.data.data.users.design_item
           }
           if (self.item.logo_image) {
-            self.item.logo_url = self.item.logo_image.big
+            self.item.logo_url = self.item.logo_image.logo
           } else {
             self.item.logo_url = require ('@/assets/images/df_100x100.png')
           }
@@ -256,25 +276,37 @@ export default {
       })
     },
     setRefuseRease (evt) {
-      this.dialogVisible = !this.dialogVisible
+      if (evt === 1) {
+        this.throwCreit = !this.throwCreit
+      } else {
+        this.dialogVisible = !this.dialogVisible
+      }
       this.evt = evt
     },
     // 审核事件
     setVerify(evt) {
       let that = this
+      that.btnLoading = true
       that.$http.put(api.adminCompanyVerifyOk, {id: that.itemId, status: evt, verify_summary: that.refuseRease})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           that.dialogVisible = false
+          that.throwCreit = false
+          that.btnLoading = false
           that.item.verify_status = evt
+          that.refuseRease = ''
           that.$message.success('操作成功')
         } else {
           that.dialogVisible = false
+          that.throwCreit = false
+          that.btnLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
         that.dialogVisible = false
+        that.throwCreit = false
+        that.btnLoading = false
         that.$message.error(error.message)
       })
     },
@@ -321,6 +353,12 @@ export default {
       } else {
         window.open('http://' + this.item.web)
       }
+    },
+    toCompanyHome(id) {
+      const {href} = this.$router.resolve({
+        path: `/company/${id}`
+      })
+      window.open(href, '_blank')
     },
     getCustomer(id) {
       let self = this
@@ -384,6 +422,29 @@ export default {
     line-height: 20px;
     text-align: left;
   }
+  .top-left-img {
+    position: relative;
+  }
+  .stop-account {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color:rgba(0,0,0,0.5);
+  }
+  .stop-img {
+    height: 30px;
+    width: 30px;
+    background: url('../../../assets/images/icon/Prohibit@2x.png') no-repeat center / contain;
+  }
+  .stop-text {
+    font-size: 13px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    padding-top: 6px;
+  }
   .top-left-img img{
     width: 120px;
     height: 120px;
@@ -437,6 +498,10 @@ export default {
     color: rgba(51,51,51,1);
     line-height: 28px;
     padding-top: 5px;
+    cursor: pointer;
+  }
+  .name:hover {
+    color: #ff5a5f;
   }
   .certification {
     cursor: pointer;
@@ -568,9 +633,34 @@ export default {
   .certification:active .certification-text {
     color: #fff;
   }
+  .test-text {
+    font-size: 13px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+  }
+  .test-border {
+    width: 120px;
+    height: 30px;
+    background: rgba(255,255,255,1);
+    border-radius: 15px;
+    border: 1px solid rgba(230,230,230,1);
+    margin-top: 10px;
+  }
+  .wait-icon {
+    width: 14px;
+    height: 16px;
+    background: url('../../../assets/images/design_admin/Uncertified@2x.png') no-repeat center / contain;
+  }
 
   .flex-center-center {
     display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .flex-column-center {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }

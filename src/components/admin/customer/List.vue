@@ -91,13 +91,13 @@
             </el-option>
           </el-select>
         </div>
-        <div class="select-date">
+        <!-- <div class="select-date">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <div class="business-header" v-if="typeId === 2">
         <div class="edit-i" @blur="isDown" tabindex="-1">
@@ -153,13 +153,13 @@
             </el-option>
           </el-select>
         </div>
-        <div class="select-date">
+        <!-- <div class="select-date">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionCondition2" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <div class="business-header" v-if="typeId === 3">
         <div class="edit-i" @blur="isDown" tabindex="-1">
@@ -216,26 +216,22 @@
             </el-option>
           </el-select>
         </div>
-        <div class="select-date">
+        <!-- <div class="select-date">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <div class="business-header" v-if="typeId === 4">
-        <div class="edit-i" @blur="isDown" tabindex="-1">
+        <!-- <div class="edit-i" @blur="isDown" tabindex="-1">
           <i @click="isEdits = true"></i>
           <ul v-show="isEdits">
-            <!-- <li @click="showDialogVoIpUser">添加商务成员</li>
-            <li @click="exportForm">导出</li>
-            <li @click="randomAssign = true">随机分配</li>
-            <li @click="showClueDialog">无效</li> -->
             <li @click="resetAll()"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
             <li @click="exportFormPost(2)"><span class="fz-12 el-icon-upload2"></span>下载导入模版</li>
           </ul>
-        </div>
+        </div> -->
         <!-- <div class="export-upload">
           <span @click="isHasPower?(dialogAddUser = true):(dialogAddUser = false)" :class="{'is-disabled': !isHasPower}"></span>
           <el-upload
@@ -258,7 +254,7 @@
             </button>
           </el-upload>
         </div> -->
-        <div class="search-sort">
+        <div class="search-sort margin-r-0">
           <div class="search-select">
             <el-select v-model="isSearch.label" placeholder="请选择">
               <el-option v-for="s in optionSearch" :key="s.value" :value="s.value" :label="s.label">
@@ -278,13 +274,13 @@
             </el-option>
           </el-select>
         </div> -->
-        <div class="select-date">
+        <!-- <div class="select-date margin-l-0">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientCondition" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <div class="business-header" v-if="typeId === 5">
         <div class="edit-i" @blur="isDown" tabindex="-1">
@@ -312,13 +308,13 @@
             <i class="icon-search" @click="updateSort"></i>
           </div>
         </div>
-        <div class="select-date">
+        <!-- <div class="select-date">
           <i class="select-icon el-icon-sort"></i>
           <el-select v-model="sortEvts" @change="updateAt">
             <el-option v-for="c in optionClientRecycle" :key="c.value" :value="c.value" :label="c.label">
             </el-option>
           </el-select>
-        </div>
+        </div> -->
       </div>
       <!-- <div class="admin-header fz-0 clearfix">
         <el-form :inline="true" :model="query" class="select-query fl">
@@ -361,7 +357,7 @@
       </div>
       <div class="btn-list fz-0">
         <el-button size="small"
-          @click="$router.push({name: 'adminPotentialUserCreated'})" 
+          @click="$router.push({name: 'adminPotentialUserCreated'})"
           class="white-to-red-button">添加客户</el-button>
         <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
         <el-upload
@@ -501,7 +497,7 @@
                 <span v-else-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-else-if="scope.row.son_source === 'c'">百家号</span>
                 <span v-else-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
-                
+
                 <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
@@ -525,6 +521,7 @@
         <el-table-column
           prop="created_at"
           label="创建时间"
+          sortable="custom"
           v-if="typeId !== 4"
           key="created_at1"
           min-width="120"
@@ -551,6 +548,7 @@
           v-if="typeId !== 4 && typeId !== 5"
           label="最后跟进日"
           min-width="120"
+          sortable="custom"
           >
           <template slot-scope="scope">
             <p v-if="scope.row.end_time" key="custom">{{scope.row.end_time}}</p>
@@ -575,7 +573,7 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -588,13 +586,14 @@
               <p class="status2 status" v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status" v-else-if="scope.row.new_status === 3">对接设计</p>
               <p class="status1 status" v-else-if="scope.row.new_status === 5">商机</p>
-              <p class="status5 status" v-else>签约合作</p>
+              <p class="status5 status" v-else>签订合作</p>
             </template>
         </el-table-column>
         <el-table-column
           v-if="typeId&&typeId === 4"
           prop="invalid_time"
           label="无效时间"
+          sortable="custom"
           key="invalidTime"
           min-width="120"
           >
@@ -631,7 +630,7 @@
             {text: '商机', value: '1' },
             { text: '潜在客户', value: '2' },
             { text: '对接设计', value: '3' },
-            { text: '签约合作', value: '4' }
+            { text: '签订合作', value: '4' }
           ]"
           :filter-multiple="false"
           filter-placement="bottom-end">
@@ -639,7 +638,7 @@
               <p class="status1 status" v-if="scope.row.new_status === 1">商机</p>
               <p class="status2 status"  v-else-if="scope.row.new_status === 2">潜在客户</p>
               <p class="status3 status"  v-else-if="scope.row.new_status === 3">对接设计</p>
-              <p class="status5 status"  v-else>签约合作</p>
+              <p class="status5 status"  v-else>签订合作</p>
             </template>
         </el-table-column> -->
       </el-table>
@@ -877,7 +876,7 @@
           </el-row>
           <el-row>
             <el-col class="region">
-              <region-picker :provinceProp="clientForm.province" 
+              <region-picker :provinceProp="clientForm.province"
                 :cityProp="clientForm.city"
                 :twoSelect="true"
                 :gutter="0"
@@ -889,7 +888,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
               <el-form-item label="备注" prop="summary">
-                <el-input v-model.trim="clientForm.summary" 
+                <el-input v-model.trim="clientForm.summary"
                   type="textarea"
                   :maxlength="500"
                   :autosize="{ minRows: 2, maxRows: 4}"
@@ -1326,14 +1325,14 @@ export default {
         //   value: 1,
         //   label: '按姓名'
         // },
-        {
-          value: 3,
-          label: '最近创建'
-        },
-        {
-          value: 9,
-          label: '最早创建'
-        },
+        // {
+        //   value: 3,
+        //   label: '最近创建'
+        // },
+        // {
+        //   value: 9,
+        //   label: '最早创建'
+        // },
         {
           value: 2,
           label: '按客户级别(5-1)'
@@ -1349,15 +1348,15 @@ export default {
         {
           value: 6,
           label: '按优先级'
-        },
-        {
-          value: 7,
-          label: '按最后跟进日(最近)'
-        },
-        {
-          value: 8,
-          label: '按最后跟进日(最早)'
         }
+        // {
+        //   value: 7,
+        //   label: '按最后跟进日(最近)'
+        // },
+        // {
+        //   value: 8,
+        //   label: '按最后跟进日(最早)'
+        // }
       ],
       // 商机搜索条件
       optionCondition2: [
@@ -1365,14 +1364,14 @@ export default {
         //   value: 1,
         //   label: '按姓名'
         // },
-        {
-          value: 3,
-          label: '最近创建'
-        },
-        {
-          value: 9,
-          label: '最早创建'
-        },
+        // {
+        //   value: 3,
+        //   label: '最近创建'
+        // },
+        // {
+        //   value: 9,
+        //   label: '最早创建'
+        // },
         {
           value: 2,
           label: '按客户级别(5-1)'
@@ -1388,15 +1387,15 @@ export default {
         {
           value: 6,
           label: '按优先级'
-        },
-        {
-          value: 7,
-          label: '按最后跟进日(最近)'
-        },
-        {
-          value: 8,
-          label: '按最后跟进日(最早)'
         }
+        // {
+        //   value: 7,
+        //   label: '按最后跟进日(最近)'
+        // },
+        // {
+        //   value: 8,
+        //   label: '按最后跟进日(最早)'
+        // }
       ],
       // 潜在客户条件
       optionLatentCondition: [
@@ -1435,14 +1434,14 @@ export default {
         //   value: 1,
         //   label: '按姓名'
         // },
-        {
-          value: 3,
-          label: '最近创建'
-        },
-        {
-          value: 9,
-          label: '最早创建'
-        },
+        // {
+        //   value: 3,
+        //   label: '最近创建'
+        // },
+        // {
+        //   value: 9,
+        //   label: '最早创建'
+        // },
         {
           value: 2,
           label: '按客户级别(5-1)'
@@ -1454,19 +1453,19 @@ export default {
         {
           value: 5,
           label: '按客户所有人'
-        },
+        }
         // {
         //   value: 6,
         //   label: '按优先级'
         // },
-        {
-          value: 7,
-          label: '按无效时间(最近)'
-        },
-        {
-          value: 8,
-          label: '按无效时间(最早)'
-        }
+        // {
+        //   value: 7,
+        //   label: '按无效时间(最近)'
+        // },
+        // {
+        //   value: 8,
+        //   label: '按无效时间(最早)'
+        // }
       ],
       optionClient: [
         {
@@ -1480,10 +1479,10 @@ export default {
       ],
       // 0.全部商家; 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
       optionLatent: [
-        {
-          value: 0,
-          label: '全部商家'
-        },
+        // {
+        //   value: 0,
+        //   label: '全部商机'
+        // },
         {
           value: 1,
           label: '全部潜在客户'
@@ -1510,14 +1509,14 @@ export default {
         //   value: 1,
         //   label: '按姓名'
         // },
-        {
-          value: 3,
-          label: '最近创建'
-        },
-        {
-          value: 9,
-          label: '最早创建'
-        },
+        // {
+        //   value: 3,
+        //   label: '最近创建'
+        // },
+        // {
+        //   value: 9,
+        //   label: '最早创建'
+        // },
         {
           value: 2,
           label: '按客户级别(5-1)'
@@ -1529,19 +1528,19 @@ export default {
         {
           value: 5,
           label: '按客户所有人'
-        },
+        }
         // {
         //   value: 6,
         //   label: '按优先级'
         // },
-        {
-          value: 7,
-          label: '按删除时间(最近)'
-        },
-        {
-          value: 8,
-          label: '按删除时间(最早)'
-        }
+        // {
+        //   value: 7,
+        //   label: '按删除时间(最近)'
+        // },
+        // {
+        //   value: 8,
+        //   label: '按删除时间(最早)'
+        // }
       ],
       optionBusiness: [
         {
@@ -1576,7 +1575,7 @@ export default {
       query1: {
         page: 1,
         per_page: 50,
-        evt: '',
+        // evt: '',
         sort: 2,
         sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商机; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
@@ -1596,10 +1595,10 @@ export default {
       query2: {
         page: 1,
         per_page: 50,
-        evt: '',
+        // evt: '',
         sort: 2,
         sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
-        search_val: 0, // 0.全部 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
+        search_val: 1, // (0.全部delete) 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
         number: '', // 编号
         name: '', // 姓名
         phone: '', // 手机号
@@ -1616,7 +1615,7 @@ export default {
       query3: {
         page: 1,
         per_page: 50,
-        evt: '',
+        // evt: '',
         sort: 2,
         sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
@@ -1636,9 +1635,9 @@ export default {
       query4: {
         page: 1,
         per_page: 50,
-        evt: '',
+        // evt: '',
         sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -1866,7 +1865,7 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort_evt: 6, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -2196,31 +2195,39 @@ export default {
     },
     sortChange({column}) { // 排序
       if (!column) return
-      switch (column.label) {
-        case '编号':
-          this['query' + this.typeId].evt = 1
-          break
-        case '姓名':
-          this['query' + this.typeId].evt = 2
-          break
-        case '客户级别':
-          this['query' + this.typeId].evt = 3
-          break
-        case '创建时间':
-          this['query' + this.typeId].evt = 4
-          break
-        case '来源渠道':
-          this['query' + this.typeId].evt = 5
-          break
-        case '负责人':
-          this['query' + this.typeId].evt = 6
-          break
-        case '沟通状态':
-          this['query' + this.typeId].evt = 7
-          break
-        default:
-          this['query' + this.typeId].evt = 8
+      if (column.label === '创建时间') {
+        this['query' + this.typeId].sort_evt = 3
+        if (this.typeId === 5) {
+          this['query' + this.typeId].sort_evt = 5
+        }
+      } else {
+        this['query' + this.typeId].sort_evt = 7
       }
+      // switch (column.label) {
+      //   case '编号':
+      //     this['query' + this.typeId].evt = 1
+      //     break
+      //   case '姓名':
+      //     this['query' + this.typeId].evt = 2
+      //     break
+      //   case '客户级别':
+      //     this['query' + this.typeId].evt = 3
+      //     break
+      //   case '创建时间':
+      //     this['query' + this.typeId].sort_evt = 3
+      //     break
+      //   case '来源渠道':
+      //     this['query' + this.typeId].evt = 5
+      //     break
+      //   case '负责人':
+      //     this['query' + this.typeId].evt = 6
+      //     break
+      //   case '沟通状态':
+      //     this['query' + this.typeId].evt = 7
+      //     break
+      //   default:
+      //     this['query' + this.typeId].sort_evt = 7
+      // }
       let sort = parseInt(this['query' + this.typeId].sort)
       if (sort === 2) {
         this['query' + this.typeId].sort = 1
@@ -2352,14 +2359,16 @@ export default {
       this.$router.push(href)
     },
     getLookUserInfo({id = {}, name = {}}) {
-      this['query' + this.typeId].id = id
-      // this['query' + this.typeId].name = name
-      const {href} = this.$router.resolve({
-        path: `/admin/customer/userinfo/${id}`,
-        query: {page: this['query' + this.typeId].page, type: this.typeId}
-      })
-      // window.open(href, '_blank')
-      this.$router.push(href)
+      if (this.typeId !== 4) {
+        this['query' + this.typeId].id = id
+        // this['query' + this.typeId].name = name
+        const {href} = this.$router.resolve({
+          path: `/admin/customer/userinfo/${id}`,
+          query: {page: this['query' + this.typeId].page, type: this.typeId}
+        })
+        // window.open(href, '_blank')
+        this.$router.push(href)
+      }
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -2701,8 +2710,8 @@ export default {
       }
     }
     // 搜索条件默认
-    if (this.typeId > 4) {
-      this['query' + this.typeId].sort_evt = 7
+    if (this.typeId >= 4) {
+      this['query' + this.typeId].sort_evt = 2
     }
     this.selectedOptions2 = []
     this.sortEvts = this['query' + this.typeId].sort_evt
@@ -2746,7 +2755,7 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort_evt: 6, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -2760,6 +2769,9 @@ export default {
         // totalCount: 0,
         search: '',
         valueDate: []
+      }
+      if (this.typeId === 2) {
+        this['query' + this.typeId].search_val = 1 // 默认全部潜在客户
       }
       if (this.typeId === 5 || this.typeId === 4) {
         delete this['query' + this.typeId].evt
@@ -2851,10 +2863,11 @@ export default {
       this.downCheck()
       this.$refs.tableData.clearFilter()
       // 搜索条件默认
-      if (this.typeId > 4) {
-        this['query' + this.typeId].sort_evt = 7
+      if (this.typeId >= 4) {
+        this['query' + this.typeId].sort_evt = 2
       }
       this.sortEvts = this['query' + this.typeId].sort_evt
+      console.log(this.sortEvts)
       this.selectedOptions2 = []
       // this.isCheck = false
       this.getClueList()
@@ -3020,7 +3033,7 @@ export default {
 }
 .status {
   font-weight: 600;
-} 
+}
 .d-d-content {
   line-height: 20px;
 }
@@ -3065,7 +3078,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   top: -1px;
@@ -3074,7 +3087,7 @@ export default {
   content: '';
   width: 4px;
   height: 20px;
-  background: #fff;
+  /* background: #fff; */
   position: absolute;
   left: -4px;
   bottom: -1px;
@@ -3411,6 +3424,7 @@ export default {
   margin-right: 30px;
   padding-left: 15px;
   position: relative;
+  font-size: 14px;
 }
 .check-all i {
   position: absolute;
@@ -3547,4 +3561,3 @@ export default {
   font-size: 14px;
 }
 </style>
-

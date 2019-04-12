@@ -105,7 +105,7 @@ export default {
       },
       cusId: '',
       caseLoading: false,
-      line: '-'
+      line: '—'
     }
   },
   created() {
