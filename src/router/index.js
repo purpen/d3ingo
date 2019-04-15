@@ -736,7 +736,7 @@ let routes = [
   //   component: require('@/components/pages/company/Show')
   // },
   {
-    path: '/company',
+    path: '/company/:id',
     name: 'companyShow',
     meta: {
       title: '公司主页',
