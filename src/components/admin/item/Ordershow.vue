@@ -717,6 +717,7 @@
             this.throwCreit = false
             let query = this.query
             this.newlist(query)
+            this.$message.success('删除成功!')
           } else {
             this.$message.error(res.data.meta.message)
           }
