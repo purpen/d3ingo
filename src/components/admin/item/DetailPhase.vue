@@ -468,7 +468,7 @@
 
       <div class="grey-line mar-50-0-30-0" v-if="server"></div>
       <div>
-        
+
       </div>
       <div class="tansition" v-if="server">
         <div class="title">对接过的服务商</div>
@@ -1017,4 +1017,3 @@ export default {
     margin-top: 0;
   }
 </style>
-
