@@ -357,7 +357,7 @@
       </div>
       <div class="btn-list fz-0">
         <el-button size="small"
-          @click="$router.push({name: 'adminPotentialUserCreated'})" 
+          @click="$router.push({name: 'adminPotentialUserCreated'})"
           class="white-to-red-button">添加客户</el-button>
         <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
         <el-upload
@@ -497,7 +497,7 @@
                 <span v-else-if="scope.row.son_source === 'b'">头条号</span>
                 <span v-else-if="scope.row.son_source === 'c'">百家号</span>
                 <span v-else-if="scope.row.son_source === 'toutiao_ad'">头条文章广告位</span>
-                
+
                 <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 7" class="fz-14 tc-3">
@@ -876,7 +876,7 @@
           </el-row>
           <el-row>
             <el-col class="region">
-              <region-picker :provinceProp="clientForm.province" 
+              <region-picker :provinceProp="clientForm.province"
                 :cityProp="clientForm.city"
                 :twoSelect="true"
                 :gutter="0"
@@ -888,7 +888,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
               <el-form-item label="备注" prop="summary">
-                <el-input v-model.trim="clientForm.summary" 
+                <el-input v-model.trim="clientForm.summary"
                   type="textarea"
                   :maxlength="500"
                   :autosize="{ minRows: 2, maxRows: 4}"
@@ -3035,7 +3035,7 @@ export default {
 }
 .status {
   font-weight: 600;
-} 
+}
 .d-d-content {
   line-height: 20px;
 }
@@ -3563,4 +3563,3 @@ export default {
   font-size: 14px;
 }
 </style>
-

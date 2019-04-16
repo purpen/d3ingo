@@ -172,6 +172,13 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="删除项目" :visible.sync="throwCreit" width="380px">
+      <span>是否删除已选中的项目</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="throwCreit = false">取 消</el-button>
+        <el-button size="small" type="primary"  @click="removetrue(evt)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -183,6 +190,7 @@
       return {
         menuType: 0,
         matchCompanyDialog: false,
+        throwCreit: false,
         itemList: [],
         tableData: [],
         currentMatchCompany: [],
@@ -283,7 +291,11 @@
         if (this.multipleSelection.length === 0) {
           this.$message.error('至少选择一个要删除的项目')
           return false
+        } else {
+          this.throwCreit = true
         }
+      },
+      removetrue() {
         var idArr = []
         for (var i = 0; i < this.multipleSelection.length; i++) {
           idArr.push(this.multipleSelection[i].item.id)
@@ -291,6 +303,7 @@
         this.$http.delete(api.adminItemDeleteIds, {params: {ids: idArr}})
           .then((response) => {
             if (response.data.meta.status_code === 200) {
+              this.throwCreit = false
               for (let i = 0; i < idArr.length; i++) {
                 for (let j = 0; j < this.tableData.length; j++) {
                   if (idArr[i] === this.tableData[j].item.id) {
