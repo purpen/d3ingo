@@ -1576,8 +1576,8 @@ export default {
         page: 1,
         per_page: 50,
         // evt: '',
-        sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort: '',
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商机; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -1596,8 +1596,8 @@ export default {
         page: 1,
         per_page: 50,
         // evt: '',
-        sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort: '',
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 1, // (0.全部delete) 1.全部潜在客户 2.未分配的潜在客户；3.我的潜在客户 4.全部对接设计 5.我的对接设计
         number: '', // 编号
         name: '', // 姓名
@@ -1616,8 +1616,8 @@ export default {
         page: 1,
         per_page: 50,
         // evt: '',
-        sort: 2,
-        sort_evt: 3, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort: '',
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -1636,7 +1636,7 @@ export default {
         page: 1,
         per_page: 50,
         // evt: '',
-        sort: 2,
+        sort: '',
         sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
@@ -1656,8 +1656,8 @@ export default {
       query5: {
         page: 1,
         per_page: 50,
-        sort: 2,
-        sort_evt: 5, // 排序条件 1.姓名 2.客户级别 3.来源渠道 4.负责人 5.创建时间
+        sort: '',
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.来源渠道 4.负责人 5.创建时间
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -1865,7 +1865,7 @@ export default {
         per_page: 50,
         evt: '',
         sort: 2,
-        sort_evt: 6, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -2228,11 +2228,12 @@ export default {
       //   default:
       //     this['query' + this.typeId].sort_evt = 7
       // }
-      let sort = parseInt(this['query' + this.typeId].sort)
+      let sort = this['query' + this.typeId].sort
       if (sort === 2) {
         this['query' + this.typeId].sort = 1
-      }
-      if (sort === 1) {
+      } else if (sort === 1) {
+        this['query' + this.typeId].sort = 2
+      } else {
         this['query' + this.typeId].sort = 2
       }
       this['query' + this.typeId].page = 1
@@ -2711,7 +2712,7 @@ export default {
     }
     // 搜索条件默认
     if (this.typeId >= 4) {
-      this['query' + this.typeId].sort_evt = 2
+      this['query' + this.typeId].sort_evt = ''
     }
     this.selectedOptions2 = []
     this.sortEvts = this['query' + this.typeId].sort_evt
@@ -2754,8 +2755,8 @@ export default {
         page: 1,
         per_page: 50,
         evt: '',
-        sort: 2,
-        sort_evt: 6, // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
+        sort: '',
+        sort_evt: '', // 排序条件 1.姓名 2.客户级别 3.创建时间 4.来源渠道 5.负责人 6.沟通状态 7.最后跟进日
         search_val: 0, // 下拉搜索 0.全部商家; 1.未分配的商机；2.我的商机 3.本周新建 4.上周新建
         number: '', // 编号
         name: '', // 姓名
@@ -2775,7 +2776,8 @@ export default {
       }
       if (this.typeId === 5 || this.typeId === 4) {
         delete this['query' + this.typeId].evt
-        this['query' + this.typeId].sort_evt = 7
+        // this['query' + this.typeId].sort_evt = 7
+        this['query' + this.typeId].sort_evt = ''
       }
       if (this.typeId === 4) {
         this['query' + this.typeId].new_status = ''
@@ -2864,7 +2866,7 @@ export default {
       this.$refs.tableData.clearFilter()
       // 搜索条件默认
       if (this.typeId >= 4) {
-        this['query' + this.typeId].sort_evt = 2
+        // this['query' + this.typeId].sort_evt = 2
       }
       this.sortEvts = this['query' + this.typeId].sort_evt
       console.log(this.sortEvts)
