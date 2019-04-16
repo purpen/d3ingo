@@ -68,9 +68,9 @@
         </el-row>
       </div>
       <div class="container" v-if="option === 'base-info'">
-        <el-row :gutter="20"   class="blank20">
+        <el-row :gutter="20" class="blank20">
           <el-col :span="18">
-            <div class="padding-l-r-30 bg-f">
+            <div class="summary-parent bg-f">
               <div class="summary" v-if="companyInfo.company_profile">
                 <h3>公司简介</h3>
                 <p>{{ companyInfo.company_profile }}</p>
@@ -81,7 +81,7 @@
                 <p>{{ companyInfo.professional_advantage }}</p>
               </div>
               
-              <div class="summary" v-if="companyInfo.prizes.length">
+              <div class="summary" v-if="prizeArr.length">
                 <h3>荣获奖项</h3>
                 <div class="flex-align-c prizes-box">
                   <div v-for="(item, i) in prizeArr" :key="i" class="prizes">
@@ -218,7 +218,8 @@ export default {
           this.companyInfo = res.data
           console.log(this.companyInfo)
           let arr = []
-          let {prizes} = this.companyInfo
+          let {prizes = []} = this.companyInfo
+          if (!prizes) return
           prizes.forEach(ele => {
             let obj = {}
             let type = ele.type
@@ -355,6 +356,9 @@ export default {
 }
 </script>
 <style scoped>
+.padding-b-20 {
+  padding-bottom: 20px;
+}
 .inline-block {
   display: inline-block;
 }
@@ -547,6 +551,9 @@ img.avatar {
 }
 
 /* option === 'base-info' */
+.summary-parent {
+  padding: 0 30px 20px 30px;
+}
 .summary > h3 {
   padding: 1.7rem 0 0.83rem 0;
   font-size: 16px;
@@ -615,7 +622,7 @@ img.avatar {
 .prizes-box {
   justify-content: space-evenly;
   margin-top: 10px;
-  padding-bottom: 3.4rem;
+  padding-bottom: 20px;
 }
 .prizes img {
   width: 34px;
