@@ -98,6 +98,7 @@
     <div class="table-round">
       <el-table
         :data="tableData"
+        @sort-change="sortChange"
         style="width: 100%"
         :default-sort = "{prop: 'date', order: 'descending'}"
         @filter-change = "filterProvinces"
@@ -146,7 +147,7 @@
         <el-table-column
           prop="created_at"
           label="申请日期"
-          sortable>
+          sortable="custom">
         </el-table-column>
         <el-table-column
           label="状态">
@@ -249,9 +250,13 @@ export default {
     }
   },
   created() {
-    this.designReault = this.$route.query.type || '0'
-    this.loadList()
-    this.getDesignCount()
+    let that = this
+    that.designReault = that.$route.query.type || '0'
+    if (that.$route.query) {
+      that.query = that.$route.query
+    }
+    that.loadList()
+    that.getDesignCount()
   },
   computed: {
     provinces () {
@@ -267,6 +272,14 @@ export default {
     }
   },
   methods: {
+    sortChange() {
+      if (this.query.sort === 1) {
+        this.query.sort = 0
+      } else {
+        this.query.sort = 1
+      }
+      this.loadList()
+    },
     _filter (pid) {
       const result = []
       const items = this.$options.region[pid]
@@ -285,11 +298,11 @@ export default {
       window.open(href, '_blank')
     },
     navgiteTo(id) {
-      const {href} = this.$router.resolve({
-        path: `/admin/company/detail/${id}`
-      })
-      window.open(href, '_blank')
-      // this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+      // const {href} = this.$router.resolve({
+      //   path: `/admin/company/detail/${id}`
+      // })
+      // window.open(href, '_blank')
+      this.$router.push({name: 'adminCompanyDetail', params: {id: id}, query: this.query})
     },
     filterProvinces(value) {
       if (value.company_size) {

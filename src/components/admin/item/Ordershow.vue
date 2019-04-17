@@ -3,7 +3,7 @@
     <div class="load" v-if="isLoading">
       <div class="load_cont" v-loading="isLoading"></div>
     </div>
-    <div class="content">
+    <div class="contents">
       <div class="topclass">
         <div class="headselect">
           <div class="remoclass" v-if="removecot.length > 0">
@@ -42,15 +42,17 @@
           ref="multipleTable"
           :data="tableData"
           class="cursor-poi"
+          @sort-change="sortChange"
           tooltip-effect="dark"
           @filter-change="filterType"
+          :default-sort = "{prop: 'date', order: 'descending'}"
           style="width: 100%"
           @row-click="toDetail"
           @selection-change="handleSelectionChange"
           >
         <el-table-column
           type="selection"
-          width="55">
+          width="40">
         </el-table-column>
         <el-table-column
           label="项目名称"
@@ -80,7 +82,6 @@
         <el-table-column
           prop="clue_name"
           label="客户"
-          width="100"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -95,13 +96,13 @@
         <el-table-column
           prop="time"
           label="创建日期"
-          sortable
+          sortable="custom"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="status_value"
           label="项目进度"
-          width="150"
+          width="170"
           column-key="status_value"
           :filter-multiple="false"
           filter-placement="bottom-end"
@@ -131,6 +132,13 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog title="删除项目" :visible.sync="throwCreit" width="380px">
+      <span>是否删除已选中的项目</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="throwCreit = false">取 消</el-button>
+        <el-button size="small" type="primary"  @click="removetrue(evt)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -142,6 +150,7 @@
     data () {
       return {
         isLoading: false,
+        throwCreit: false,
         removeid: '',
         removecot: '',
         currentpage: 1,
@@ -239,6 +248,7 @@
           status: 0,
           menu: 0,
           evt: 1,
+          sort: 0,
           val: '',
           ids: []
         },
@@ -576,10 +586,11 @@
     },
     methods: {
       toDetail(value) {
-        const {href} = this.$router.resolve({
-          path: `/admin/item/detail/${value.id}`
-        })
-        window.open(href, '_blank')
+        // const {href} = this.$router.resolve({
+        //   path: `/admin/item/detail/${value.id}`
+        // })
+        // window.open(href, '_blank')
+        this.$router.push({name: 'adminItemDetail', params: {id: value.id}, query: this.query})
       },
       // 设计类型
       filterType(value) {
@@ -587,7 +598,7 @@
         if (value.type_value) {
           this.query.type = value.type_value[0]
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           let query = this.query
           this.newlist(query)
         }
@@ -595,7 +606,7 @@
         if (value.design_cost_value) {
           this.query.design_cost = value.design_cost_value[0]
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           let query = this.query
           this.newlist(query)
         }
@@ -605,7 +616,7 @@
           this.query.source = value.sourcecont[0]
           let query = this.query
           this.query.page = 1
-          this.query.per_page = 10
+          this.query.per_page = 20
           this.newlist(query)
         }
       },
@@ -621,6 +632,16 @@
       handleClose() {
         this.removecot = ''
         this.$refs.multipleTable.clearSelection()
+      },
+      // 排序
+      sortChange() {
+        if (this.query.sort === 0) {
+          this.query.sort = 1
+        } else {
+          this.query.sort = 0
+        }
+        let query = this.query
+        this.newlist(query)
       },
       // 来源
       // renderChange(val) {
@@ -664,7 +685,7 @@
         this.opporId = val
         this.query.menu = val
         this.query.page = 1
-        this.query.per_page = 10
+        this.query.per_page = 20
         let query = this.query
         this.newlist(query)
         this.opporvalue = this.opportunity[val].label
@@ -681,18 +702,23 @@
       selectLoad() {
         this.query.val = this.seleValue
         this.query.page = 1
-        this.query.per_page = 10
+        this.query.per_page = 20
         let query = this.query
         this.newlist(query)
       },
       // 删除列表
       remove() {
+        this.throwCreit = true
+      },
+      removetrue() {
         this.isLoading = true
         this.$http.delete(api.adminItemDeleteIds, {params: {ids: this.query.ids}}).then(res => {
           if (res.data.meta.status_code === 200) {
             this.isLoading = false
+            this.throwCreit = false
             let query = this.query
             this.newlist(query)
+            this.$message.success('删除成功!')
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -702,6 +728,7 @@
       },
       newlist(query) {
         this.isLoading = true
+        query.val = this.seleValue
         this.$http.get(api.newlist, {params: query}).then(res => {
           if (res.data.meta.status_code === 200) {
             this.isLoading = false
@@ -734,6 +761,7 @@
     },
     mounted: function () {
       this.isLoading = true
+      this.query.val = this.seleValue
       this.$http.get(api.newlist, {params: this.query}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.isLoading = false
@@ -782,14 +810,14 @@
     width: 100%;
     margin-top: 15px;
   }
-  .statucss{
+  /* .statucss{ */
     /* display: flex; */
     /* align-items: center; */
     /* flex-wrap: wrap; */
-    text-overflow:ellipsis;
+    /* text-overflow:ellipsis;
     white-space:nowrap;
     overflow: hidden;
-  }
+  } */
   .flexcenter{
     float: left;
     margin-top: 6px;

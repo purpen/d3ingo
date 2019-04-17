@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="head-content">
+      <i class="fx fx-icon-nothing-close-error" @click="redirect"></i>
+    </div>
     <div class="top flex-start">
       <div class="top-left">
         <div class="top-left-img">
@@ -105,7 +108,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="bot">
       <div class="directory flex-center">
         <div class="directory-title mar-right-36" :class="{'directory-activer' : type === 1}" v-if="item.verify_status === 1" @click="getType(1)">客户列表</div>
@@ -157,6 +160,7 @@ export default {
       dialogVisible: false,
       detailLoading: false,
       prizeArr: [],
+      query: {},
       tableDatas: '',
       refuseRease: '',
       itemId: '',
@@ -167,6 +171,9 @@ export default {
     }
   },
   methods: {
+    redirect() {
+      this.$router.push({name: 'adminCompanyHome', query: this.query})
+    },
     getType(type) {
       this.type = type
     },
@@ -210,7 +217,7 @@ export default {
             self.designItem = response.data.data.users.design_item
           }
           if (self.item.logo_image) {
-            self.item.logo_url = self.item.logo_image.big
+            self.item.logo_url = self.item.logo_image.logo
           } else {
             self.item.logo_url = require ('@/assets/images/df_100x100.png')
           }
@@ -379,6 +386,9 @@ export default {
     let that = this
     let id = that.$route.params.id
     that.itemId = that.$route.params.id
+    if (that.$route.query) {
+      that.query = that.$route.query
+    }
     that.companyShow(id)
     // that.getList(id)
   },
@@ -412,7 +422,7 @@ export default {
   }
   .top-left {
     /* height: 240px; */
-    padding-top: 20px;
+    /* padding-top: 20px; */
   }
   .top-right-bot-title {
     font-size: 14px;
@@ -474,7 +484,7 @@ export default {
   .top-right {
     padding-left: 30px;
     /* height: 240px; */
-    padding-top: 20px;
+    /* padding-top: 20px; */
     flex: 1 1 auto;
   }
   .web-round {
@@ -651,6 +661,12 @@ export default {
     width: 14px;
     height: 16px;
     background: url('../../../assets/images/design_admin/Uncertified@2x.png') no-repeat center / contain;
+  }
+  .head-content {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding-left: 30px;
   }
 
   .flex-center-center {

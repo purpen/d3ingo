@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="head-content">
+      <i class="fx fx-icon-nothing-close-error" @click="redirect"></i>
+    </div>
     <div class="status-model pad-top-10" v-if="oldItem.status !== -1 && oldItem.status !== -3">
       <div :class="['nav-item current', {'finish': threePhase}]">
         <span>项目对接中</span>
@@ -207,22 +210,35 @@ export default {
   },
   created() {
     let that = this
-    // if (!id) {
-    //   this.$message.error('缺少请求参数!')
-    //   this.$router.replace({name: 'home'})
-    //   return false
-    // }
     let id = that.$route.params.id
-    that.type = 1
+    if (!id) {
+      that.$message.error('缺少请求参数!')
+      that.$router.replace({name: 'home'})
+      return false
+    }
+    if (that.$route.query.returnType) {
+      that.type = 2
+    } else if (that.$route.query) {
+      that.query = that.$route.query
+      that.type = 1
+    } else {
+      that.type = 1
+    }
     that.getDetail(id)
   },
   methods: {
+    redirect() {
+      this.$router.push({name: 'ordershow', query: this.query})
+    },
     toContra() {
       let that = this
       if (that.type === 2) {
         let height = that.$refs.detailChild.goHeight
-        console.log('height', that.$refs.detailChild.goHeight)
-        document.documentElement.scrollTo(0, height)
+        if (document.body) {
+          window.scrollTo(0, height)
+        } else if (document.documentElement) {
+          document.documentElement.scrollTo(0, height)
+        }
         return
       }
       that.type = 2
@@ -369,9 +385,17 @@ export default {
     // 查看客户详情
     toCustemDetail(id) {
       let that = this
+      let type = 0
+      if (that.clue.new_status === 1) {
+        type = 1
+      } else if (that.clue.new_status === 2 || that.clue.new_status === 3) {
+        type = 2
+      } else {
+        type = 3
+      }
       const {href} = that.$router.resolve({
         path: `/admin/customer/userinfo/${id}`,
-        query: {type: 3}
+        query: {type: type}
       })
       window.open(href, '_blank')
     }
@@ -531,6 +555,11 @@ export default {
     font-weight: 500;
     color: rgba(255,166,75,1);
     padding-left: 10px;
+  }
+  .head-content {
+    display: flex;
+    align-items: center;
+    height: 40px;
   }
 
 
