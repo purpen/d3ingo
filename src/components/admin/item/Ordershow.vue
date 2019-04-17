@@ -586,10 +586,11 @@
     },
     methods: {
       toDetail(value) {
-        const {href} = this.$router.resolve({
-          path: `/admin/item/detail/${value.id}`
-        })
-        window.open(href, '_blank')
+        // const {href} = this.$router.resolve({
+        //   path: `/admin/item/detail/${value.id}`
+        // })
+        // window.open(href, '_blank')
+        this.$router.push({name: 'adminItemDetail', params: {id: value.id}, query: this.query})
       },
       // 设计类型
       filterType(value) {
