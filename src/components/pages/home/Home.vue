@@ -1955,6 +1955,10 @@
     height: 24px;
     width: 106px;
   }
+  .swiper-wrapper .swiper-slide:nth-child(10) .slide-company img {
+    height: 24px;
+    width: 106px;
+  }
   
   
 
