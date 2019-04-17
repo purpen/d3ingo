@@ -213,10 +213,12 @@ export default {
     },
     async getDesignInfo(id) {
       try {
+        this.isFullLoading = true
         const {data: res} = await this.$http.get(api.designCompanyId.format(id), {})
         if (res.meta.status_code === 200) {
           this.companyInfo = res.data
           console.log(this.companyInfo)
+          this.isFullLoading = false
           let arr = []
           let {prizes = []} = this.companyInfo
           if (!prizes) return
@@ -240,10 +242,13 @@ export default {
           }
         } else {
           this.$message.error(res.meta.message)
+          console.log(res.meta.message)
+          this.isFullLoading = false
         }
       } catch (error) {
         console.log(error)
         this.$message.error(error.message)
+        this.isFullLoading = false
       }
       // this.$http.get(api.designCompanyId.format(id), {}).then(res => {
       //   if (res.data.meta.status_code === 200) {
@@ -516,6 +521,7 @@ img.avatar {
   display: block;
   overflow: hidden;
   padding-top: 57%;
+  /* height: 285px; */
 }
 .img-box a img {
   display: block;
@@ -530,6 +536,9 @@ img.avatar {
   padding: 10px 15px 13px 15px;
   border-top: 1px solid #E6E6E6;
 }
+.cases-item-box > div:last-child {
+  min-height: 20px;
+}
 .cases-item-title {
   font-size: 18px;
   font-weight: 400;
@@ -538,9 +547,9 @@ img.avatar {
 }
 .c-i-label {
   display: inline-block;
-  padding-left: 1.84rem;
-  margin-right: 1.67rem;
-  margin-top: 0.7rem;
+  padding-left: 22px;
+  margin-right: 20px;
+  margin-top: 8px;
   color: #C8C8C8;
   background: url(../../../assets/images/design_company/Label@2x.png) no-repeat left/14px;
 }
