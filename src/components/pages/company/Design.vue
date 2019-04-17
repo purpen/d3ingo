@@ -551,6 +551,7 @@ img.avatar {
 }
 .cases-item-box > div:last-child {
   min-height: 20px;
+  overflow: hidden;
 }
 .cases-item-title {
   font-size: 18px;
