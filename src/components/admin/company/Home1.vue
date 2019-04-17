@@ -250,9 +250,13 @@ export default {
     }
   },
   created() {
-    this.designReault = this.$route.query.type || '0'
-    this.loadList()
-    this.getDesignCount()
+    let that = this
+    that.designReault = that.$route.query.type || '0'
+    if (that.$route.query) {
+      that.query = that.$route.query
+    }
+    that.loadList()
+    that.getDesignCount()
   },
   computed: {
     provinces () {
@@ -294,11 +298,11 @@ export default {
       window.open(href, '_blank')
     },
     navgiteTo(id) {
-      const {href} = this.$router.resolve({
-        path: `/admin/company/detail/${id}`
-      })
-      window.open(href, '_blank')
-      // this.$router.push({name: 'adminCompanyDetail', params: {id: id}})
+      // const {href} = this.$router.resolve({
+      //   path: `/admin/company/detail/${id}`
+      // })
+      // window.open(href, '_blank')
+      this.$router.push({name: 'adminCompanyDetail', params: {id: id}, query: this.query})
     },
     filterProvinces(value) {
       if (value.company_size) {
