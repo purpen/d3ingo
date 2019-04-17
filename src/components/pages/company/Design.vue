@@ -217,7 +217,11 @@ export default {
         const {data: res} = await this.$http.get(api.designCompanyId.format(id), {})
         if (res.meta.status_code === 200) {
           this.companyInfo = res.data
-          console.log(this.companyInfo)
+          if (this.companyInfo.logo_image) {
+            this.companyInfo.logo_url = this.companyInfo.logo_image.logo
+          } else {
+            this.companyInfo.logo_url = false
+          }
           this.isFullLoading = false
           let arr = []
           let {prizes = []} = this.companyInfo
@@ -235,11 +239,6 @@ export default {
           })
           console.log(arr)
           this.prizeArr = arr
-          if (this.companyInfo.logo_image) {
-            this.companyInfo.logo_url = this.companyInfo.logo_image.logo
-          } else {
-            this.companyInfo.logo_url = false
-          }
         } else {
           this.$message.error(res.meta.message)
           console.log(res.meta.message)
@@ -430,6 +429,20 @@ img.avatar {
   font-size: 1.8rem;
   line-height: 1.5;
 }
+.top-v {
+  position: relative;
+}
+.top-v::before {
+  content: '';
+  display: inline-block;
+  background: url(../../../assets/images/design_company/Authentication@2x.png) no-repeat bottom right /24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 56px;
+  right: 44px;
+}
+
 
 .wx {
   display: inline-block;
