@@ -781,7 +781,7 @@
         <el-button type="primary" @click="permanentDel" :disabled="!multipleSelection.length" >确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
+    <!-- <el-dialog
       width="350px"
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
@@ -791,7 +791,7 @@
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       width="350px"
       title="恢复客户"
