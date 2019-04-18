@@ -235,10 +235,11 @@ export default {
     },
     // 查看服务商详情
     navgiteTo(id) {
-      const {href} = this.$router.resolve({
-        path: `/admin/item/orderlist/${id}`
-      })
-      window.open(href, '_blank')
+      // const {href} = this.$router.resolve({
+      //   path: `/admin/item/orderlist/${id}`
+      // })
+      // window.open(href, '_blank')
+      this.$router.push({path: `/admin/item/orderlist/${id}`})
     },
     // 查看合同点击事件
     viewContractBtn(evt) {

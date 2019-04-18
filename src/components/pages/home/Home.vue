@@ -666,40 +666,76 @@
         },
         caseSlideList: [
           {
-            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/25',
-            company: '',
-            companyLogo: require('@/assets/images/home/micoe&WOW@2x.png'),
-            title: '四季沐歌不插电的WOW净水机',
-            sales: '众筹总额高达23,134,254元',
-            intro: '众筹纪录创造者，产品由太火鸟运营众筹，3月27日众筹正式开始便展现了惊人的潜力，众筹表现38分钟众筹金额破百万、4天破千万。经过一个月的众筹，最终的众筹总额高达23,134,254元，支持人数14,804人，2313%完成众筹目标。',
-            image: require ('@/assets/images/home/micoe&WOW.jpg')
+            clickUrl: '',
+            company: '飞行鱼 FIFISH',
+            companyLogo: require('@/assets/images/home/fifish@2x.png'),
+            title: '飞行鱼 FIFISH P3',
+            sales: '销售量：10000件',
+            intro: '由太火鸟旗下的“太火鸟深圳D3IN铟立方未来实验室”在2016年推出的全球首款进入消费级市场的ROV智能水下机器人，主要用途为水下摄像，一经推出即获得2017年DIA中国智造大奖、2017美国CES创新大奖、2018美国CES创新大奖。',
+            image: require ('@/assets/images/home/FIFISH1@2x.png')
           },
           {
             clickUrl: 'http://d3ingo.taihuoniao.com/article/show/24',
-            company: '小蚁',
-            companyLogo: require('@/assets/images/home/xiaoyi@2x.png'),
-            title: '小蚁智能行车记录仪',
-            sales: '众筹总额高达16,191,730元',
-            intro: '2015年，太火鸟联合小蚁智能行车记录仪的出品公司小蚁科技，在淘宝众筹首发小蚁智能行车记录仪。太火鸟社区发起“募百人首批小蚁样机体验团”试用活动，申请使用人数突破2300人，3天众筹金额突破1000万。',
-            image: require ('@/assets/images/home/yi.jpg')
-          },
-          {
-            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/23',
-            company: '婴萌科技',
-            companyLogo: require('@/assets/images/home/ingmeng.png'),
-            title: '婴萌智能配奶机',
-            sales: '众筹总额超过320万人民币',
-            intro: '北京婴萌科技有限公司设计研发的智能配奶机由太火鸟全程孵化运营，配合卖点提炼、市场定位和针对性营销规划。至今产品已在淘宝众筹平台共筹集320多万人民币，649%达成众筹目标，获得3794多人支持。',
-            image: require ('@/assets/images/home/ingmeng.jpg')
+            company: 'FIU浮游',
+            companyLogo: require('@/assets/images/home/FIU.png'),
+            title: 'FIU优雅不倒杯',
+            sales: '月销量：10000件',
+            intro: 'FIU不倒杯像不倒翁一样推不倒却又轻松拿取的新奇杯子，采用创新的魔术吸盘技术，让杯子稳稳的吸着桌面，防止意外翻杯。优秀的吸盘创新技术，能抓住桌面，推不倒也撞不倒吸盘韧性提升60%，吸力提升30%。',
+            image: require ('@/assets/images/home/FIU2@2x.png')
           },
           {
             clickUrl: 'http://d3ingo.taihuoniao.com/article/show/18',
             company: '云马',
             companyLogo: require('@/assets/images/home/uma.png'),
-            title: '云马C1智能电单车',
-            sales: '太火鸟运营发布的爆款“鼻祖”',
-            intro: '2015年10月15日，太火鸟协助国内电单车品牌云造科技正式发布云马 C1智能电单车，同步上线淘宝众筹，并助其拓展线上线下及海外营销渠道，不到一个月时间即完成众筹金额破千万的成绩。截止众筹结束，云马C1智行车共取得5879粉丝支持，筹得资金¥11597621，1159%完成众筹目标，渠道直采4万台。',
-            image: require ('@/assets/images/home/yunma.jpg')
+            title: '云马智能电单车',
+            sales: '众筹突破：3,000+万元',
+            intro: '2015年10月15日，太火鸟协助国内电单车品牌云造科技正式发布云马 C1智能电单车，同步上线淘宝众筹，并助其拓展线上线下及海外营销渠道，不到一个月时间即完成众筹金额破千万的成绩。截止众筹结束，云马C1智行车共取得5879粉丝支持，1159%完成众筹目标，渠道直采4万台。',
+            image: require ('@/assets/images/home/yunma3@2x.png')
+          },
+          {
+            clickUrl: '',
+            company: '',
+            companyLogo: require('@/assets/images/home/AMIRP_LUX@2x.png'),
+            title: 'AMIRO LUX日光镜',
+            sales: '销售额：1000万元',
+            intro: '深圳市宗匠科技有限公司（以下简称宗匠）以智能照明为核心研发对象，发布了高科技智能化妆镜由。2015年，太火鸟参与宗匠天使轮投资，并开放自有电商平台供宗匠产品入驻销售。如今，宗匠已通过研发日光灯、自拍补光灯等产品获得“中国智能化妆镜第一品牌”的称号。',
+            image: require ('@/assets/images/home/AMIROLUX4@2x.png')
+          },
+          {
+            clickUrl: '',
+            company: '婴萌科技',
+            companyLogo: require('@/assets/images/home/ingmeng.png'),
+            title: '婴萌智能配奶机',
+            sales: '众筹突破：320万元',
+            intro: '北京婴萌科技有限公司设计研发的智能配奶机由太火鸟全程孵化运营，配合卖点提炼、市场定位和针对性营销规划。至今产品已在淘宝众筹平台共筹集320多万人民币，649%达成众筹目标，获得3794多人支持。',
+            image: require ('@/assets/images/home/yinmen5@2x.png')
+          },
+          {
+            clickUrl: '',
+            company: '素士 Soocare',
+            companyLogo: require('@/assets/images/home/logo_sushi.png'),
+            title: '素士声波电动牙刷',
+            sales: '销售额超过： 10亿元',
+            intro: '种子期投资孵化项目，资本助力创业团队搭建和产品开发升级，头部大号攻城掠地、中腰和底部社群全网覆盖战略，已有100＋合作自媒体，助力全渠道分发。',
+            image: require ('@/assets/images/home/sushi6@2x.png')
+          },
+          {
+            clickUrl: '',
+            company: 'WOWSTICK',
+            companyLogo: require('@/assets/images/home/WOWSTICK@2x.png'),
+            title: 'WOWSTICK 1fs电动螺丝刀',
+            sales: '销售额超过：3,000万元',
+            intro: 'WOWSTICK电动螺丝刀是小米智能家居2016年第42期众筹新品，太火鸟参与运营众筹并担任线上销售总代理，最终筹集金额199万元，2016年12月至2017年4月，该款产品在米家商城/米家有品的销售额高达600万，分销总额超过3,000万元。',
+            image: require ('@/assets/images/home/WOWSTICK7@2x.png')
+          },
+          {
+            clickUrl: '',
+            company: '洒哇地咔',
+            companyLogo: require('@/assets/images/home/logo_swdk.png'),
+            title: '洒哇地咔智能拖地机器人',
+            sales: '50000件',
+            intro: '重新设计产品图片、输出原创内容，提升品牌格调和销售转化新品开发，重新设计产品外观和功能体验。',
+            image: require ('@/assets/images/home/sawa8@2x.png')
           }
         ]
       }
@@ -721,6 +757,7 @@
           type: 'success',
           customClass: 'prompt-suc'
         })
+        this.prompt = false
       },
       toServer() {
         this.$router.push({name: 'register', params: {type: 2}})
@@ -1642,7 +1679,7 @@
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(34,34,34,1);
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 
   .slide-sales {
@@ -1650,7 +1687,7 @@
     font-family: PingFangSC-Light;
     font-weight: 300;
     color: rgba(102,102,102,1);
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 
   .slide-intro {
@@ -1910,6 +1947,18 @@
   }
   .innovation-flex-img {
     width: 20%;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(5) .slide-company img {
+    height: 18px;
+    width: 160px;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(2) .slide-company img {
+    height: 24px;
+    width: 106px;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(10) .slide-company img {
+    height: 24px;
+    width: 106px;
   }
   
   
