@@ -757,6 +757,7 @@
           type: 'success',
           customClass: 'prompt-suc'
         })
+        this.prompt = false
       },
       toServer() {
         this.$router.push({name: 'register', params: {type: 2}})
@@ -1952,6 +1953,10 @@
     width: 160px;
   }
   .swiper-wrapper .swiper-slide:nth-child(2) .slide-company img {
+    height: 24px;
+    width: 106px;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(10) .slide-company img {
     height: 24px;
     width: 106px;
   }

@@ -781,7 +781,7 @@
         <el-button type="primary" @click="permanentDel" :disabled="!multipleSelection.length" >确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
+    <!-- <el-dialog
       width="350px"
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
@@ -791,7 +791,7 @@
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       width="350px"
       title="恢复客户"
@@ -2175,7 +2175,7 @@ export default {
     },
     showDialogVoIpUser() {
       this.BoolAddVoIpUser = true
-      this.getAdminList()
+      // this.getAdminList()
     },
     getDate(val) {
       if (val) {
@@ -2371,25 +2371,25 @@ export default {
         this.$router.push(href)
       }
     },
-    getAdminList() { // 后台人员列表
-      this.$http.get(api.adminClueAdminUser, {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.adminUserList = res.data.data
-          let ids = []
-          this.adminUserList.forEach(item => {
-            if (item.status === 1) {
-              ids.push(item.id)
-            }
-          })
-          this.voIpUserIds = [...new Set(ids)]
-        } else {
-          this.$message.error(res.data.message)
-        }
-      }).catch(error => {
-        console.log(error.message)
-        this.$message.error(error.message)
-      })
-    },
+    // getAdminList() { // 后台人员列表
+    //   this.$http.get(api.adminClueAdminUser, {}).then(res => {
+    //     if (res.data.meta.status_code === 200) {
+    //       this.adminUserList = res.data.data
+    //       let ids = []
+    //       this.adminUserList.forEach(item => {
+    //         if (item.status === 1) {
+    //           ids.push(item.id)
+    //         }
+    //       })
+    //       this.voIpUserIds = [...new Set(ids)]
+    //     } else {
+    //       this.$message.error(res.data.message)
+    //     }
+    //   }).catch(error => {
+    //     console.log(error.message)
+    //     this.$message.error(error.message)
+    //   })
+    // },
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
@@ -2427,30 +2427,30 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteVoIpUser() { // 移除业务人员
-      if (!this.currentVoIpUserId) return
-      this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.deleteDialogVoIpUser = false
-          this.adminUserList.forEach((item, i, array) => {
-            if (item.id === this.currentVoIpUserId) {
-              this.$set(array[i], 'status', 2)
-              let index = this.voIpUserIds.indexOf(item.id)
-              if (index !== (-1)) {
-                this.voIpUserIds.splice(index, 1)
-              }
-            }
-          })
-          this.$message.success('移除成功')
-          // this.getAdminList()
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        console.log(error.message)
-        this.$message.error(error.message)
-      })
-    },
+    // deleteVoIpUser() { // 移除业务人员
+    //   if (!this.currentVoIpUserId) return
+    //   this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
+    //     if (res.data.meta.status_code === 200) {
+    //       this.deleteDialogVoIpUser = false
+    //       this.adminUserList.forEach((item, i, array) => {
+    //         if (item.id === this.currentVoIpUserId) {
+    //           this.$set(array[i], 'status', 2)
+    //           let index = this.voIpUserIds.indexOf(item.id)
+    //           if (index !== (-1)) {
+    //             this.voIpUserIds.splice(index, 1)
+    //           }
+    //         }
+    //       })
+    //       this.$message.success('移除成功')
+    //       // this.getAdminList()
+    //     } else {
+    //       this.$message.error(res.data.meta.message)
+    //     }
+    //   }).catch(error => {
+    //     console.log(error.message)
+    //     this.$message.error(error.message)
+    //   })
+    // },
     randomAllot(type) { // 随机分配
       this.randomAssign = false
       let clue = this.multipleSelection.map(item => {
@@ -2717,7 +2717,6 @@ export default {
     this.selectedOptions2 = []
     this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
-    this.getAdminList()
     this.getUsers()
   },
   // directives: {Clickoutside},
