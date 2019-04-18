@@ -757,6 +757,7 @@
           type: 'success',
           customClass: 'prompt-suc'
         })
+        this.prompt = false
       },
       toServer() {
         this.$router.push({name: 'register', params: {type: 2}})
