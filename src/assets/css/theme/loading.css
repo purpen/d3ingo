@@ -250,8 +250,8 @@
     .el-loading-mask.is-fullscreen .el-loading-spinner {
       margin-top: -25px; }
       .el-loading-mask.is-fullscreen .el-loading-spinner .circular {
-        height: 50px;
-        width: 50px; }
+        height: 150px;
+        width: 150px; }
 
 .el-loading-spinner {
   top: 50%;

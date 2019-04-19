@@ -754,6 +754,16 @@ let routes = [
     },
     component: require('@/components/pages/design_case/Show')
   },
+  // 作品详情
+  {
+    path: '/design_case/show1/:id',
+    name: 'vcenterDesignCaseShow1',
+    meta: {
+      title: '作品详情',
+      requireAuth: false
+    },
+    component: require('@/components/pages/design_case/Show1')
+  },
   // 参赛作品详情
   {
     path: '/match_case/show/:id',

@@ -18,6 +18,10 @@
 .flex {
   display: flex;
 }
+.flex-jus-center {
+  display: flex;
+  justify-content: center
+}
 .flex-column {
   flex-direction: column
 }
@@ -216,6 +220,9 @@
 }
 .padding20 {
   padding: 20px
+}
+.padding30 {
+  padding: 30px
 }
 .padding26 {
   padding-bottom: 26px;

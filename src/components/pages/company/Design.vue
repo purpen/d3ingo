@@ -27,7 +27,7 @@
               <span class="fw-5 fz-16">{{companyInfo.ave_score}}</span>
               <!-- <span class="line"></span> -->
               <!-- <span>排名</span>
-              <span class="fw-5 fz-16">{{}}</span> -->
+              <span class="fw-5 fz-16">{{companyInfo.rank}}</span> -->
             </div>
           </el-col>
         </el-row>
@@ -40,6 +40,9 @@
           <span class="t-item-title">设计案例</span>
           <span class="num"><i>{{designCases.length}}</i></span>
         </div>
+        <div :class="['table-item', {'active': option === 'exponent'}]" @click="changeOption('exponent')">
+          <span class="t-item-title">创新指数</span>
+        </div>
         <div :class="['table-item', {'active': option === 'base-info'}]" @click="changeOption('base-info')">
           <span class="t-item-title">公司简介</span>
         </div>
@@ -51,9 +54,12 @@
           <el-col v-for="(d, index) in designCases" :key="index" :span="8">
             <div class="cases-item">
               <div class="img-box">
-                <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                               :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}">
                   <!-- <img v-if="d.cover" :src="d.cover.middle"> -->
+                </router-link>
+                
+                <router-link v-else :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" class="df-case-a">
                 </router-link>
               </div>
               <div class="cases-item-box">
@@ -130,6 +136,63 @@
           </el-col>
         </el-row>
       </div>
+      <div :class="['container', {'hide': option !== 'exponent'}]">
+        <el-row :gutter="20" class="blank20">
+          <el-col :span="18">
+            <div class="padding30 bg-f">
+              <el-row>
+                <el-col :span="12">
+                  <div class="chart" ref="chart">
+                    <ECharts
+                    :init-options="initOptions"
+                    :options="option2"
+                    auto-resize
+                    ref="radar">
+                    </ECharts>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="padding30 exponent-right">
+                    <div class="exponent-top flex">
+                      <div class="flex-column aligin-item-c">
+                        <span class="tc-6 line-height1_5">设计创新力指数</span>
+                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height2_5r fw-6">{{companyInfo.ave_score}}</span>
+                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                      </div>
+                      
+                      <div class="line border-c-e6"></div>
+                      <div class="flex-column aligin-item-c">
+                        <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
+                        <span v-if="companyInfo.rank" class="tc-red blank6 fz-28 line-height2_5r fw-6">NO.{{companyInfo.rank}}</span>
+                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                      </div>
+                    </div>
+                    <div class="exponent-info fz-14">
+                      <div v-for="(item, i) in radarList" :key="i" class="blank30">
+                        <span class="tc-6 margin-r-4">{{item.name}}:</span>
+                        <span class="tc-red">{{item.value}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+              <div class="exponent-bottom-info">
+                <h3>创新表现概述</h3>
+                <p>{{companyInfo.professional_advantage}}</p>
+              </div>
+            </div>
+          </el-col>
+          
+          <el-col :span="6">
+            <div class="contact bg-f">
+              <div class="contact-box"  @click="boolFindDesign=true">
+                <a class="no-select">找他设计</a>
+              </div>
+            </div>
+            <div class="exponent-img"></div>
+          </el-col>
+        </el-row>
+      </div>
     </div>
 
     <el-dialog
@@ -160,6 +223,7 @@
 import api from '@/api/api'
 import '@/assets/js/format'
 import typeData from '@/config'
+import ECharts from 'vue-echarts'
 export default {
   props: {
     second: {
@@ -169,6 +233,14 @@ export default {
   },
   name: 'company_show',
   data() {
+    let scores = [
+      {name: '基础运作力', max: 20, value: 0},
+      {name: '风险应激力', max: 20, value: 0},
+      {name: '创新交付力', max: 20, value: 0},
+      {name: '商业决策力', max: 20, value: 0},
+      {name: '客观公信力', max: 20, value: 0},
+      {name: '品牌溢价力', max: 20, value: 0}
+    ]
     return {
       isLoading: false,
       isFullLoading: false,
@@ -190,7 +262,61 @@ export default {
         phone: [
           { required: true, message: '请输入您的手机号', trigger: 'blur' }
         ]
-      }
+      },
+      option2: {
+        tooltip: {},
+        radar: {
+          indicator: scores.map(({name, max}) => {
+            return {name, max}
+          }),
+          name: {
+            fontSize: 10,
+            textStyle: {
+              color: '#666'
+            }
+          },
+          nameGap: 10,
+          shape: 'circle',
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(255,90,95, 0.5)'
+            }
+          },
+          splitNumber: 4,
+          splitLine: {
+            lineStyle: {
+              color: '#FF5A5F',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            areaStyle: {
+              color: '#fff'
+            }
+          }
+        },
+        series: [{
+          name: '能力值',
+          type: 'radar',
+          data: [{value: scores.map(({value}) => value)}],
+          symbol: 'circle',
+          symbolSize: 4,
+          itemStyle: {
+            normal: {
+              areaStyle: {
+                color: 'rgba(255,90,95, 0.3)'
+              },
+              lineStyle: {
+                color: 'rgba(255,90,95, 0.5)'
+              }
+            }
+          }
+        }]
+      },
+      initOptions: {
+        renderer: 'canvas'
+      },
+      radarList: []
     }
   },
   methods: {
@@ -213,10 +339,16 @@ export default {
     },
     async getDesignInfo(id) {
       try {
+        this.isFullLoading = true
         const {data: res} = await this.$http.get(api.designCompanyId.format(id), {})
         if (res.meta.status_code === 200) {
           this.companyInfo = res.data
-          console.log(this.companyInfo)
+          if (this.companyInfo.logo_image) {
+            this.companyInfo.logo_url = this.companyInfo.logo_image.logo
+          } else {
+            this.companyInfo.logo_url = false
+          }
+          this.isFullLoading = false
           let arr = []
           let {prizes = []} = this.companyInfo
           if (!prizes) return
@@ -233,17 +365,16 @@ export default {
           })
           console.log(arr)
           this.prizeArr = arr
-          if (this.companyInfo.logo_image) {
-            this.companyInfo.logo_url = this.companyInfo.logo_image.logo
-          } else {
-            this.companyInfo.logo_url = false
-          }
+          // this.getDetails()
         } else {
           this.$message.error(res.meta.message)
+          console.log(res.meta.message)
+          this.isFullLoading = false
         }
       } catch (error) {
         console.log(error)
         this.$message.error(error.message)
+        this.isFullLoading = false
       }
       // this.$http.get(api.designCompanyId.format(id), {}).then(res => {
       //   if (res.data.meta.status_code === 200) {
@@ -319,6 +450,71 @@ export default {
             })
         }
       })
+    },
+    getDetails(id) {
+      let radar = this.$refs.radar
+      console.log(this.$refs)
+      console.log(this.companyInfo)
+      radar.showLoading()
+      this.$http.get(api.designCompanyId.format(id), {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          const item = res.data.data
+          this.radarList = [
+            {
+              name: '基础运作力',
+              max: 100,
+              value: item.base_average
+            },
+            {
+              name: '风险应激力',
+              max: 100,
+              value: item.credit_average
+            },
+            {
+              name: '创新交付力',
+              max: 100,
+              value: item.innovate_average
+            },
+            {
+              name: '商业决策力',
+              max: 100,
+              value: item.business_average
+            },
+            {
+              name: '客观公信力',
+              max: 100,
+              value: item.effect_average
+            },
+            {
+              name: '品牌溢价力',
+              max: 100,
+              value: item.design_average
+            }
+          ]
+          radar.hideLoading()
+          radar.mergeOptions({
+            radar: {
+              indicator: this.radarList.map(({name, max}) => {
+                return {name, max}
+              })
+            },
+            series: [{
+              data: [{value: this.radarList.map(({value}) => value)}]
+            }]
+          })
+          console.log(this.$refs.radar.mergeOptions.series)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    getCompanyExponent() {
+      let {id, unique_id: uid} = this.companyInfo
+      if (id && uid) {
+        this.$router.push({name: 'innovationCompany', params: {id: id}, query: {id: uid}})
+      }
     }
   },
   created() {
@@ -347,20 +543,37 @@ export default {
       return this.time > 0 ? this.time + 's' : '获取验证码'
     }
   },
+  components: {
+    ECharts
+  },
   watch: {
     option(val) {
-      if (val === 'case') {
+      if (val === 'exponent') {
+        // this.getDetails()
       }
     }
+  },
+  mounted() {
+    this.getDetails(this.designId)
   }
 }
 </script>
 <style scoped>
+.hide {
+  position: absolute;
+  left: 9999px;
+}
 .padding-b-20 {
   padding-bottom: 20px;
 }
+.margin-r-4 {
+  margin-right: 4px;
+}
 .inline-block {
   display: inline-block;
+}
+.border-c-e6 {
+  border-color: #e6e6e6 !important;
 }
 .flex-align-c {
   display: flex;
@@ -369,6 +582,9 @@ export default {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+.aligin-item-c {
+  align-items: center;
 }
 .flex-column-between {
   display: flex;
@@ -425,6 +641,20 @@ img.avatar {
   font-size: 1.8rem;
   line-height: 1.5;
 }
+.top-v {
+  position: relative;
+}
+.top-v::before {
+  content: '';
+  display: inline-block;
+  background: url(../../../assets/images/design_company/Authentication@2x.png) no-repeat bottom right /24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 56px;
+  right: 44px;
+}
+
 
 .wx {
   display: inline-block;
@@ -516,12 +746,20 @@ img.avatar {
   display: block;
   overflow: hidden;
   padding-top: 57%;
-}
-.img-box a img {
-  display: block;
-  width: 100%;
   /* height: 285px; */
 }
+/* .img-box a img {
+  display: block;
+  width: 100%;
+  height: 285px;
+} */
+
+.img-box .df-case-a {
+  background: url(../../../assets/images/df_100x100.png) no-repeat center / 100px #f7f7f7;
+}
+
+
+
 .cases-item {
   border: 1px solid #E6E6E6;
   border-radius: 5px;
@@ -529,6 +767,10 @@ img.avatar {
 .cases-item-box {
   padding: 10px 15px 13px 15px;
   border-top: 1px solid #E6E6E6;
+}
+.cases-item-box > div:last-child {
+  min-height: 20px;
+  overflow: hidden;
 }
 .cases-item-title {
   font-size: 18px;
@@ -538,9 +780,9 @@ img.avatar {
 }
 .c-i-label {
   display: inline-block;
-  padding-left: 1.84rem;
-  margin-right: 1.67rem;
-  margin-top: 0.7rem;
+  padding-left: 22px;
+  margin-right: 20px;
+  margin-top: 8px;
   color: #C8C8C8;
   background: url(../../../assets/images/design_company/Label@2x.png) no-repeat left/14px;
 }
@@ -630,6 +872,57 @@ img.avatar {
   margin-right: 10px;
   border-radius: 50%;
 }
+.e-r-index {
+  display: inline-block;
+  padding-right: 20px;
+  background: url(../../../assets/images/design_company/right@2x.png) no-repeat right/ 16px;
+}
+
+
+.exponent-right {
+  border-left: 1px solid #e6e6e6;
+}
+
+.exponent-top {
+  justify-content: space-evenly;
+}
+.exponent-info {
+  margin: 30px -30px 0 -30px;
+  /* padding: 0 0 30px 0; */
+  border-top: 1px solid #e6e6e6;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-around; */
+}
+.exponent-info > div {
+  width: 50%;
+  text-align: center;
+}
+.exponent-bottom-info {
+  margin-top: 40px;
+}
+
+.exponent-bottom-info > h3 {
+  padding: 1.7rem 0 0.83rem 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #222;
+  text-align: center;
+}
+.exponent-bottom-info > p {
+  margin-top: 10px;
+  line-height: 2.3rem;
+  font-weight:400;
+  color: #666;
+}
+
+.exponent-img {
+  height: 198px;
+  margin-top: 10px;
+  background: url(../../../assets/images/design_company/exponent.png) no-repeat left/cover;
+}
+
+
 </style>
 <style>
 .find-design .el-dialog__header {
@@ -650,5 +943,10 @@ img.avatar {
 
 .form-data .el-form-item {
   margin-bottom: 10px;
+}
+
+.echarts {
+  width: 82%;
+  height: 280px;
 }
 </style>

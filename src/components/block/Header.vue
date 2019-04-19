@@ -376,7 +376,6 @@
     methods: {
       updateUser() {
         this.$http.get(api.user).then(res => {
-          console.log(res)
           auth.write_user(res.data.data)
         })
       },
