@@ -80,7 +80,7 @@
           </el-select>
         </div>
 
-        <div class="sever-right flex-center">
+        <div class="sever-right flex-ali-center">
           <el-select v-model="companyReault" placeholder="请选择" class="sever-right-left">
             <el-option
               v-for="item in companyChoose"
@@ -114,7 +114,7 @@
           label="公司名称"
           width="320">
           <template slot-scope="scope">
-            <div class="flex-center home-img-round">
+            <div class="flex-ali-center home-img-round">
               <div class="img-round-size">
                 <img :src="scope.row.logo_url" />
               </div>
@@ -154,7 +154,7 @@
         <el-table-column
           label="状态">
           <template slot-scope="scope">
-            <div class="flex-center">
+            <div class="flex-ali-center">
               <div class="state-border bg-D8D8D8" v-if="scope.row.status === 0"></div>
               <div class="state-border bg-000" v-if="scope.row.status === 1 && scope.row.verify_status === 0"></div>
               <div class="state-border" v-if="scope.row.status === 1 && scope.row.verify_status === 1"></div>
@@ -574,13 +574,12 @@ export default {
 
 
 
-
   .flex-center-space {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .flex-center {
+  .flex-ali-center {
     display: flex;
     align-items: center;
   }

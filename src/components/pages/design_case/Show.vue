@@ -6,7 +6,7 @@
       </div>
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
-        <section class="flex-center">
+        <section class="flex-jus-center">
           <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
@@ -331,7 +331,7 @@ export default {
   white-space: nowrap;
   line-height: 40px
 }
-.flex-center i:hover {
+.flex-jus-center i:hover {
   color: #fff
 }
 </style>
