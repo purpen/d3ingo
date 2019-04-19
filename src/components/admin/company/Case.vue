@@ -16,7 +16,9 @@
             width="300">
             <template slot-scope="scope">
               <div class="flex-center desimg-round">
-                <img :src="scope.row.logoUrl"/>
+                <div class="title-img-size">
+                  <img :src="scope.row.logoUrl"/>
+                </div>
                 <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.profile}}</div>
               </div>
             </template>
@@ -25,7 +27,7 @@
             label="类型">
             <template slot-scope="scope">
               <div class="flex-center">
-                <div>{{scope.row.type_val}} | {{scope.row.design_types_val[0] || scope.row.type_val}}</div>
+                <div class="text-type">{{scope.row.type_val}} | {{scope.row.design_types_val[0] || scope.row.type_val}}</div>
               </div>
             </template>
           </el-table-column>
@@ -44,7 +46,7 @@
             label="状态">
             <template slot-scope="scope">
               <div class="flex-center">
-                <div class="dot"></div><div>{{scope.row.status_value}}</div>
+                <div class="dot"></div><div class="text-type">{{scope.row.status_value}}</div>
               </div>
             </template>
           </el-table-column>
@@ -204,6 +206,11 @@ export default {
     -webkit-box-orient: vertical;
     word-break: break-all;
     padding-left: 15px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    line-height: 22px;
+    max-height: 44px;
   }
   .tit-text:hover {
     color: #ff5a5f;
@@ -222,6 +229,7 @@ export default {
   }
   .label-style {
     white-space: nowrap;
+    font-family: PingFangSC-Regular;
   }
   .label-round .label-style {
     padding-left: 5px;
@@ -281,5 +289,12 @@ export default {
   .fiex-content {
     width: 100%;
     height: 100%;
+  }
+  .title-img-size {
+    height: 60px;
+    width: 90px;
+  }
+  .text-type {
+    font-family: PingFangSC-Regular;
   }
 </style>
