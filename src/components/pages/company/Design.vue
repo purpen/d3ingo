@@ -178,7 +178,7 @@
               </el-row>
               <div class="exponent-bottom-info">
                 <h3>创新表现概述</h3>
-                <p v-if="companyInfo">{{'----'}}</p>
+                <p v-if="companyInfo.evaluates">{{companyInfo.evaluates}}</p>
                 <p v-else>—</p>
               </div>
             </div>
