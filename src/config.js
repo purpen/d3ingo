@@ -1931,7 +1931,7 @@ const ADMINMENU = {
   },
   adminCompanyList: {
     name: '设计服务商管理',
-    route: 'adminCompanyList',
+    route: 'adminCompanyHome',
     icon: require('assets/images/admin/menu/DesignCompany@2x.png'),
     statement: {
       params: {},
