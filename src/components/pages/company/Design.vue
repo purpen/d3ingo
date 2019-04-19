@@ -89,7 +89,7 @@
               
               <div class="summary" v-if="prizeArr.length">
                 <h3>荣获奖项</h3>
-                <div class="flex-align-c prizes-box">
+                <div class="prizes-box clearfix">
                   <div v-for="(item, i) in prizeArr" :key="i" class="prizes">
                     <img  :src="item.img" alt="">
                     <div class="flex-column-between">
@@ -178,7 +178,8 @@
               </el-row>
               <div class="exponent-bottom-info">
                 <h3>创新表现概述</h3>
-                <p>{{companyInfo.professional_advantage}}</p>
+                <p v-if="companyInfo">{{'----'}}</p>
+                <p v-else>—</p>
               </div>
             </div>
           </el-col>
@@ -463,32 +464,32 @@ export default {
             {
               name: '基础运作力',
               max: 100,
-              value: item.base_average
+              value: item.base_average || 60
             },
             {
               name: '风险应激力',
               max: 100,
-              value: item.credit_average
+              value: item.credit_average || 60
             },
             {
               name: '创新交付力',
               max: 100,
-              value: item.innovate_average
+              value: item.innovate_average || 60
             },
             {
               name: '商业决策力',
               max: 100,
-              value: item.business_average
+              value: item.business_average || 60
             },
             {
               name: '客观公信力',
               max: 100,
-              value: item.effect_average
+              value: item.effect_average || 60
             },
             {
               name: '品牌溢价力',
               max: 100,
-              value: item.design_average
+              value: item.design_average || 60
             }
           ]
           radar.hideLoading()
@@ -575,7 +576,7 @@ export default {
 .border-c-e6 {
   border-color: #e6e6e6 !important;
 }
-.flex-align-c {
+. {
   display: flex;
   align-items: center;
 }
@@ -856,15 +857,20 @@ img.avatar {
 }
 
 .prizes {
+  float: left;
   display: flex;
   padding: 8px 10px;
   border: 1px solid #e6e6e6;
   border-radius:4px;
 }
 .prizes-box {
-  justify-content: space-evenly;
-  margin-top: 10px;
   padding-bottom: 20px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.prizes-box .prizes {
+  margin: 10px 10px 0 10px;
 }
 .prizes img {
   width: 34px;
