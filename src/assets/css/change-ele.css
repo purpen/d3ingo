@@ -1134,6 +1134,15 @@
     line-height: 20px;
     padding: 15px;
   }
+  .table-round .el-table .cell {
+    font-family: PingFangSC-Regular;
+  }
+  .case-top .el-table .cell {
+    font-family: PingFangSC-Regular;
+  }
+  .sever-icon .el-input__icon {
+    line-height: 36px;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;

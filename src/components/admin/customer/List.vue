@@ -2717,6 +2717,7 @@ export default {
     this.selectedOptions2 = []
     this.sortEvts = this['query' + this.typeId].sort_evt
     this.getClueList()
+    // this.getAdminList()
     this.getUsers()
   },
   // directives: {Clickoutside},

@@ -31,7 +31,8 @@
                   :target="isMob ? '_self' : '_blank'">
                 <el-card :body-style="{ padding: '0px' }" class="item">
                   <div class="image-box">
-                      <img :src="d.cover.middle">
+                      <img v-if="d.cover" :src="d.cover.middle">
+                      <img v-else :src="require('assets/images/df_100x100.png')">
                   </div>
                   <div class="item-content">
                     <p class="title">{{ d.title }}</p>
