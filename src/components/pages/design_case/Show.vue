@@ -4,80 +4,334 @@
       <div class="banner">
         <img src="">
       </div>
-      <h1>电动VR摇臂</h1>
-      <section class="">
-        <article>
-          <div class="img-desigin"></div>
-          <p>产品设计 / 产品外观设计</p>
+      <div class="header-info">
+        <h1>{{designCasesDetail.title}}</h1>
+        <section class="flex-center">
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
+        </section>
+      </div>
+    </head>
+    <div class="container bg-f">
+      <section class="center">
+        <div class="share">
+          <div class="share-text"></div>
+          <div class="share-wx"></div>
+        </div>
+        <article class="content">
+          <p class="content-summary">{{designCasesDetail.profile}}</p>
+          <img v-for="(e, i) in designCasesDetail.case_image" :key="i" :src="e.big" :alt="e.summary">
         </article>
-        <article>
-          <div class="img-date"></div>
-          <p>2019.3.1 17:50:39</p>
+        <article class="sub-info">
+          <p class="">行业领域：{{designCasesDetail.industry_val}} / {{designCasesDetail.field_val}}</p>
+          <p class="serve-for">服务客户：{{designCasesDetail.customer}}</p>
+          <div class="prize" v-if="designCasesDetail.prizes && designCasesDetail.prizes.length">
+            <div class="title">产品所获奖项：</div>
+            <div>
+              <el-tooltip v-for="(ele, index) in designCasesDetail.prizes" :key="index" :content="ele.name" placement="top">
+                <span class="prize-item" :style="{background: 'url('+ele.img+') no-repeat center / 34px'}"></span>
+              </el-tooltip>
+            </div>
+          </div>
+          <p v-else class="prize">产品所获奖项：—</p>
+          <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：<span class="label">designCasesDetail.label</span></p>
+          <p v-else class="tags">标签：—</p>
         </article>
       </section>
-    </head>
-    <section class="center">
-      <div class="share">
-        <div class="share-text"></div>
-        <div class="share-wx"></div>
-      </div>
-      <article>
-        <p>普通及虚拟演播室双用途拍摄设备；可自动识别位置镜头电机；双高清大屏显示；依使用环境臂身前后可移动，臂身高度可调；新材料应用，质量更轻，画面更稳定；XYZ三轴摄像机画面运动，画面语言更丰富。能实现普通电视画面录制，以及虚拟图像跟踪画面录制。臂身可改造成4-12米，高度可调节1.6-1.8米。双屏显示人机互动，数据直观。操作稳定灵活。VR画面录制省去搭建实景舞台及装饰的耗时耗人工的弊端，由电脑三维动画与主持人画面对接完成，跟踪准确。漆面采用无害硬氧处理，电路处理安全，系统能耗不超50W。人机互动操作台：触屏面板，阻尼俯仰，多页参数显示；新材料应用：轻量化设计，负载更轻，适用更灵活；人性化设计；人体力学应用，操作更方便；手感轻盈，运动指令性更强；结构考究。</p>
-      </article>
-      <article>
-        <img src="../../../assets/images/icon/jd_icon.png">
-      </article>
-    </section>
-    <footer></footer>
+      <router-link class="gg-banner" :to="{name: 'projectCreate'}"></router-link>
+      <section class="company-info">
+        <div class="company-header" v-if="designCasesDetail.design_company">
+          <img v-if="designCasesDetail.design_company && designCasesDetail.design_company.logo_image" class="company-logo" :src="designCasesDetail.design_company.logo_image.logo" :alt="designCasesDetail.design_company.logo_image.name">
+          <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
+            <p class="company-name">
+            <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+            <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
+          </div>
+          <div class="rank clearfix">
+            <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score}}</i></p>
+            <p v-if="designCasesDetail.design_company.no" class="fl"><span>排名</span><i>NO.{{designCasesDetail.design_company.no}}</i></p>
+            <p v-else class="fl"><span>排名</span><i>—</i></p>
+          </div>
+        </div>
+        <div class="case-list" v-loading="isLoading">
+          <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
+            <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
+              <el-card :body-style="{ padding: '0px' }" class="card">
+                  <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                                :target="isMob ? '_self' : '_blank'">
+                  <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
+                      <!-- <img v-lazy="d.cover.middle"> -->
+                  </div>
+                  <div class="case-box">
+                    <router-link class="title" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" target="_blank">{{ d.title }}
+                    </router-link>
+                    <p class="des">{{ d.profile }}</p>
+                  </div>
+                </router-link>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
+      </section>
+    </div>
   </section>
 </template>
 <script>
+import api from '@/api/api'
+import {DESIGN_CASE_PRICE_OPTIONS} from '@/config'
 export default {
-  name: 'design_case_show'
+  name: 'design_case_show',
+  data() {
+    return {
+      designCasesDetail: {},
+      isLoading: false
+    }
+  },
+  created() {
+    let id = this.$route.params.id
+    this.getDesignCase(id)
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    }
+  },
+  methods: {
+    getDesignCase(id) {
+      this.$http.get(api.designCaseId.format(id), {}).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          this.designCasesDetail = res.data.data
+          if (this.designCasesDetail.created_at) {
+            this.designCasesDetail.created_at = this.designCasesDetail.created_at.date_format().format('yyyy-MM-dd')
+          }
+          if (this.designCasesDetail.prizes && this.designCasesDetail.prizes.length) {
+            this.designCasesDetail.prizes.forEach(item => {
+              DESIGN_CASE_PRICE_OPTIONS.forEach(i => {
+                if (i.id === item.type) {
+                  item.name = i.name
+                  item.img = i.img
+                }
+              })
+            })
+          }
+          if (this.designCasesDetail.title) {
+            document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .round {
   background-color: #F7F7F7;
-}
-.header {
-  height: 400px;
-  overflow: hidden;
-  position: relative;
-}
-.banner {
-  position: absolute;
+  margin-bottom: -50px;
+  padding-bottom: 50px;
 }
 .center {
-  width: 90%;
-  max-width: 1180px;
-  background-color: #fff;
+  max-width: 880px;
+  margin: 0 auto;
+  padding-top: 30px
 }
 .share {
   display: flex;
+  padding-bottom: 20px;
 }
 .share-text {
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design_case/share@2x.png')
+  background: url('../../../assets/images/design_case/share@2x.png') no-repeat center / contain
 }
 .share-wx {
   cursor: pointer;
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design_case/WeChat02@2x.png')
+  background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
 }
 .share-wx {
   cursor: pointer;
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design_case/WeChat02@2x.png')
+  background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
 }
 
 .flex-column-center {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.header {
+  height: 400px;
+  background: url('../../../assets/images/design_case/company-bg.jpg') no-repeat center / cover;
+  color: #fff
+}
+.header h1 {
+  font-size: 50px;
+  padding-bottom: 30px;
+  text-align: center
+}
+.date {
+  padding-left: 20px
+}
+.header-info {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+.sub-info p {
+  color: #999;
+  line-height: 28px;
+  padding-bottom: 10px;
+}
+.container {
+  margin-top: -100px;
+  position: relative;
+  z-index: 1;
+}
+.content {
+  line-height: 28px;
+  font-size: 14px;
+  color: #666
+}
+.content img {
+  display: block;
+  max-width: 880px;
+  margin: 0 auto 20px;
+}
+.gg-banner {
+  display: block;
+  height: 100px;
+  background: url(../../../assets/images/gg-banner.jpg) no-repeat center / contain #45117d;
+  margin: 20px 0 40px;
+}
+.company-logo {
+  width: 90px;
+  height: 90px;
+  background: #6ca685;
+  border-radius: 50%;
+}
+.company-header {
+  display: flex;
+  padding: 0 30px;
+}
+.company-detail {
+  padding-left: 20px;
+}
+.company-name {
+  font-size: 20px;
+  color: #222;
+  line-height: 40px;
+}
+.company-addr {
+  font-size: 14px;
+  color: #999;
+}
+.company-addr::before {
+  content: '';
+  background: 
+}
+.rank {
+  background: #fafafa;
+}
+.rank p {
+  width: 120px;
+  height: 80px;
+  text-align: center;
+  position: relative;
+  padding: 10px 0
+}
+.rank p:first-child::before {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 20px;
+  width: 1px;
+  height: 40px;
+  background: #D2D2D2
+}
+.rank p span,
+.rank p i {
+  line-height: 28px;
+  display: block;
+  color: #999
+}
+
+.rank p i {
+  font-size: 26px;
+  line-height: 40px;
+  font-weight: 600;
+  color: #666
+}
+.case-list {
+  padding: 20px 30px 0;
+}
+.image-box {
+  padding-top: 57%;
+  overflow: hidden;
+}
+.case-box {
+  padding: 10px 15px
+}
+.case-box a {
+  font-size: 1.8rem;
+  font-family:PingFangSC-Regular;
+  display: block;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  color: #222;
+  font-weight:400;
+}
+
+.des {
+  margin: 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.content-summary {
+  padding-bottom: 20px;
+}
+.label {
+  padding-left: 20px;
+  padding-right: 10px;
+  position: relative
+}
+.label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  background: url(../../../assets/images/icon/label.png) no-repeat center / contain
+}
+.sub-info .prize {
+  display: flex;
+}
+.prize-item {
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.sub-info .prize .title {
+  font-size: 14px;
+  color: #999;
+  white-space: nowrap;
+  line-height: 40px
+}
+.flex-center i:hover {
+  color: #fff
 }
 </style>
