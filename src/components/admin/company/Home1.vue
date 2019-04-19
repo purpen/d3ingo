@@ -179,7 +179,7 @@
       <div class="count">
         共 {{query.totalCount}} 条
       </div>
-      <div v-if="query.totalCount > query.pageSize">
+      <div>
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
