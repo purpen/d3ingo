@@ -208,7 +208,7 @@ export default {
 
   // 潜在客户
   adminClueClueList: '/admin/clue/clueList', // GET 潜在客户列表
-  adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
+  // adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
   adminClueDelete: '/admin/clue/delete', // 删除潜在客户
   adminClueExportExcel: '/admin/clue/exportExcel', // 导出表格
   adminClueImportExcel: '/api/admin/clue/importExcel', // 导入表格

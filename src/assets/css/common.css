@@ -18,6 +18,10 @@
 .flex {
   display: flex;
 }
+.flex-jus-center {
+  display: flex;
+  justify-content: center
+}
 .flex-column {
   flex-direction: column
 }
@@ -187,6 +191,9 @@
 .margin-t-10 {
   margin-top: 10px;
 }
+.margin-t-20 {
+  margin-top: 20px;
+}
 .margin-l-0 {
   margin-left: 0 !important;
 }
@@ -213,6 +220,9 @@
 }
 .padding20 {
   padding: 20px
+}
+.padding30 {
+  padding: 30px
 }
 .padding26 {
   padding-bottom: 26px;
@@ -301,6 +311,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+  display: inline-block;
 }
 /* 发布需求 */
 .project-cover {

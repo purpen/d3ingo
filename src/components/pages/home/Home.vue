@@ -694,7 +694,7 @@
           },
           {
             clickUrl: '',
-            company: 'AMIRO LUX',
+            company: '',
             companyLogo: require('@/assets/images/home/AMIRP_LUX@2x.png'),
             title: 'AMIRO LUX日光镜',
             sales: '销售额：1000万元',
@@ -757,6 +757,7 @@
           type: 'success',
           customClass: 'prompt-suc'
         })
+        this.prompt = false
       },
       toServer() {
         this.$router.push({name: 'register', params: {type: 2}})
@@ -1678,7 +1679,7 @@
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(34,34,34,1);
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 
   .slide-sales {
@@ -1686,7 +1687,7 @@
     font-family: PingFangSC-Light;
     font-weight: 300;
     color: rgba(102,102,102,1);
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
 
   .slide-intro {
@@ -1948,8 +1949,16 @@
     width: 20%;
   }
   .swiper-wrapper .swiper-slide:nth-child(5) .slide-company img {
-    height: 15px;
-    width: 60px;
+    height: 18px;
+    width: 160px;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(2) .slide-company img {
+    height: 24px;
+    width: 106px;
+  }
+  .swiper-wrapper .swiper-slide:nth-child(10) .slide-company img {
+    height: 24px;
+    width: 106px;
   }
   
   

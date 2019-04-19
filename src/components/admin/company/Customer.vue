@@ -110,8 +110,7 @@
         :page-sizes="[10, 20, 50]"
         :page-size="query.pageSize"
         layout="sizes, prev, pager, next"
-        :total="query.totalCount"
-        v-if="query.totalCount > query.pageSize">
+        :total="query.totalCount">
       </el-pagination>
       </div>
     </template>

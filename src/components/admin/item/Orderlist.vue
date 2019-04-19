@@ -3,6 +3,9 @@
     <div class="load" v-if="isLoading">
       <div class="load_cont" v-loading="isLoading"></div>
     </div>
+    <div class="head-content">
+      <i class="fx fx-icon-nothing-close-error" @click="redirect"></i>
+    </div>
     <div class="content">
         <!-- 公司详情 -->
         <div class="companyinfo">
@@ -945,6 +948,7 @@
         itemStage: '',
         ststucot: '',
         designCompany: '',
+        itemId: '',
         index: 0,
         contractEvt: 0,
         query: {
@@ -961,6 +965,9 @@
       }
     },
     methods: {
+      redirect() {
+        this.$router.push({name: 'adminItemDetail', params: {id: this.itemId}, query: {returnType: 2}})
+      },
       getDetail(id) {
         let that = this
         that.isLoading = true
@@ -1094,9 +1101,10 @@
     created: function () {
       let that = this
       let id = that.$route.params.id
+      that.itemId = that.$route.params.id
       if (!id) {
-        this.$message.error('缺少请求参数!')
-        this.$router.replace({name: 'home'})
+        that.$message.error('缺少请求参数!')
+        that.$router.replace({name: 'home'})
         return false
       }
       that.type = 1
@@ -1120,11 +1128,11 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .companyinfo{
-    margin: 20px 0;
+    margin: 0 0 20px 0;
   }
   .companyname{
     font-size: 22px;
-    margin:20px 0 40px 0;
+    margin: 0 0 40px 0;
     font-family: PingFangSC-Regular;
   }
   .companydetail{
@@ -1291,5 +1299,10 @@
   .load_cont{
     width: 100%;
     height: 100%;
+  }
+  .head-content {
+    display: flex;
+    align-items: center;
+    height: 40px;
   }
 </style>
