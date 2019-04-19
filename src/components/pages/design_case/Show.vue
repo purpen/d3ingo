@@ -60,19 +60,19 @@ export default {
 .share-text {
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design-case/share@2x.png')
+  background: url('../../../assets/images/design_case/share@2x.png')
 }
 .share-wx {
   cursor: pointer;
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design-case/WeChat02@2x.png')
+  background: url('../../../assets/images/design_case/WeChat02@2x.png')
 }
 .share-wx {
   cursor: pointer;
   height: 40px;
   width: 40px;
-  background: url('../../../assets/images/design-case/WeChat02@2x.png')
+  background: url('../../../assets/images/design_case/WeChat02@2x.png')
 }
 
 .flex-column-center {
