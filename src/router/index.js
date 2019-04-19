@@ -726,6 +726,15 @@ let routes = [
     component: require('@/components/pages/v_center/common/ChildControl')
   },
   // 公司主页
+  // {
+  //   path: '/company/:id',
+  //   name: 'companyShow',
+  //   meta: {
+  //     title: '公司主页',
+  //     requireAuth: false
+  //   },
+  //   component: require('@/components/pages/company/Show')
+  // },
   {
     path: '/company/:id',
     name: 'companyShow',
@@ -733,7 +742,7 @@ let routes = [
       title: '公司主页',
       requireAuth: false
     },
-    component: require('@/components/pages/company/Show')
+    component: require('@/components/pages/company/Design')
   },
   // 作品详情
   {
@@ -744,6 +753,16 @@ let routes = [
       requireAuth: false
     },
     component: require('@/components/pages/design_case/Show')
+  },
+  // 作品详情
+  {
+    path: '/design_case/show1/:id',
+    name: 'vcenterDesignCaseShow1',
+    meta: {
+      title: '作品详情',
+      requireAuth: false
+    },
+    component: require('@/components/pages/design_case/Show1')
   },
   // 参赛作品详情
   {

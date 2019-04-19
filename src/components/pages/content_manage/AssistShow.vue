@@ -58,8 +58,8 @@
     watch: {
       categoryId(val) {
         if (val) {
-          this.$route.query.categoryId = this.categoryId
-          console.log(this.$route.query.categoryId)
+          // this.$route.query.categoryId = this.categoryId
+          this.$router.push({name: 'contentManageAssistShow', query: {categoryId: val}})
         }
       }
     },
