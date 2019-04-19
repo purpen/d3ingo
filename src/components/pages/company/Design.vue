@@ -136,7 +136,7 @@
           </el-col>
         </el-row>
       </div>
-      <div class="container" v-show="option === 'exponent'">
+      <div :class="['container', {'hide': option !== 'exponent'}]">
         <el-row :gutter="20" class="blank20">
           <el-col :span="18">
             <div class="padding30 bg-f">
@@ -155,15 +155,15 @@
                   <div class="padding30 exponent-right">
                     <div class="exponent-top flex">
                       <div class="flex-column aligin-item-c">
-                        <span class="tc-6">设计创新力指数</span>
-                        <span v-if="companyInfo" class="tc-red blank6 fz-22 line-height2_5r">{{companyInfo.ave_score}}</span>
+                        <span class="tc-6 line-height1_5">设计创新力指数</span>
+                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height2_5r fw-6">{{companyInfo.ave_score}}</span>
                         <span v-else class="tc-6 blank6 line-height2_5r">—</span>
                       </div>
                       
                       <div class="line border-c-e6"></div>
                       <div class="flex-column aligin-item-c">
-                        <span class="tc-6">创新力指数排行</span>
-                        <span v-if="companyInfo.rank" class="tc-red blank6 fz-22 line-height2_5r">NO.{{companyInfo.rank}}</span>
+                        <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
+                        <span v-if="companyInfo.rank" class="tc-red blank6 fz-28 line-height2_5r fw-6">NO.{{companyInfo.rank}}</span>
                         <span v-else class="tc-6 blank6 line-height2_5r">—</span>
                       </div>
                     </div>
@@ -509,6 +509,12 @@ export default {
       }).catch(err => {
         console.error(err)
       })
+    },
+    getCompanyExponent() {
+      let {id, unique_id: uid} = this.companyInfo
+      if (id && uid) {
+        this.$router.push({name: 'innovationCompany', params: {id: id}, query: {id: uid}})
+      }
     }
   },
   created() {
@@ -553,6 +559,10 @@ export default {
 }
 </script>
 <style scoped>
+.hide {
+  position: absolute;
+  left: 9999px;
+}
 .padding-b-20 {
   padding-bottom: 20px;
 }
@@ -862,6 +872,11 @@ img.avatar {
   margin-right: 10px;
   border-radius: 50%;
 }
+.e-r-index {
+  display: inline-block;
+  padding-right: 20px;
+  background: url(../../../assets/images/design_company/right@2x.png) no-repeat right/ 16px;
+}
 
 
 .exponent-right {
@@ -872,8 +887,8 @@ img.avatar {
   justify-content: space-evenly;
 }
 .exponent-info {
-  margin-top: 25px;
-  padding: 0 0 30px 0;
+  margin: 30px -30px 0 -30px;
+  /* padding: 0 0 30px 0; */
   border-top: 1px solid #e6e6e6;
   display: flex;
   flex-wrap: wrap;
@@ -906,6 +921,8 @@ img.avatar {
   margin-top: 10px;
   background: url(../../../assets/images/design_company/exponent.png) no-repeat left/cover;
 }
+
+
 </style>
 <style>
 .find-design .el-dialog__header {
@@ -930,6 +947,6 @@ img.avatar {
 
 .echarts {
   width: 82%;
-  height: 300px;
+  height: 280px;
 }
 </style>
