@@ -194,6 +194,7 @@ export default {
               data: [{value: this.radarList.map(({value}) => value)}]
             }]
           })
+          console.log(this.$refs.radar.mergeOptions.series)
         } else {
           this.$message.error(res.data.meta.message)
         }
