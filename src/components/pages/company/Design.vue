@@ -1,4 +1,5 @@
 <template>
+<!-- 公司详情 -->
   <div class="" v-loading.fullscreen.lock="isFullLoading">
     <div class="header">
       <div class="bg"></div>

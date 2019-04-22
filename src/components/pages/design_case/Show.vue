@@ -1,4 +1,5 @@
 <template>
+<!-- 案例详情 -->
   <section class="round">
     <head class="header flex-column-center">
       <div class="banner">
@@ -17,7 +18,7 @@
         <div class="share">
           <div class="share-text"></div>
           <div class="share-wx">
-            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 100px 100px'}"></span>
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
           </div>
         </div>
         <article class="content">
@@ -59,7 +60,7 @@
         </div>
         <div class="case-list" v-loading="isLoading">
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
-            <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
+            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
                   <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                                 :target="isMob ? '_self' : '_blank'">
@@ -135,6 +136,9 @@ export default {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
           this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.design_company.id
+          if (this.designCasesDetail.design_cases && this.designCasesDetail.design_cases.length > 4) {
+            this.designCasesDetail.design_cases = this.designCasesDetail.design_cases.slice(0, 4)
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -178,10 +182,10 @@ export default {
 }
 .share-wx .er-code {
   display: none;
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   position: absolute;
-  left: 100%;
+  left: 50px;
   top: 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
