@@ -9,7 +9,7 @@
             <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
               <span class="wx">
-                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
               </span>
             </div>
           </el-col>

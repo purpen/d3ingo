@@ -18,7 +18,7 @@
         <div class="share">
           <div class="share-text"></div>
           <div class="share-wx">
-            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
           </div>
         </div>
         <article class="content">
@@ -135,7 +135,7 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
-          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.design_company.id
+          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.id
           if (this.designCasesDetail.design_cases && this.designCasesDetail.design_cases.length > 4) {
             this.designCasesDetail.design_cases = this.designCasesDetail.design_cases.slice(0, 4)
           }
