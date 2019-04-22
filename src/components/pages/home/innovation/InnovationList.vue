@@ -13,7 +13,7 @@
           'middle-button', 'circle-button']">对比设计企业</button>
       </div>
     </div>
-    <div class="inno-content">
+    <div class="inno-content fz-12">
       <div ref="innovation" id="innovation" class="leaderboard">
         <div class="inno-header clearfix">
           <el-col :span="1">排名</el-col>
