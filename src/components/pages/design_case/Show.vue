@@ -1,7 +1,22 @@
 <template>
 <!-- 案例详情 -->
   <section class="round">
-    <head class="header flex-column-center">
+    <head v-if="designCasesDetail.cover" class="header flex-column-center" :style="{background: 'url('+ designCasesDetail.cover.file +') no-repeat center / cover'}">
+      <div class="bg"></div>
+      <div class="banner">
+        <img src="">
+      </div>
+      <div class="header-info">
+        <h1>{{designCasesDetail.title}}</h1>
+        <section class="flex-jus-center">
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
+        </section>
+      </div>
+    </head>
+
+    <head v-else class="header flex-column-center">
+      <div class="bg"></div>
       <div class="banner">
         <img src="">
       </div>
@@ -151,6 +166,14 @@ export default {
 </script>
 
 <style scoped>
+.header .bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .5);
+}
 .round {
   background-color: #F7F7F7;
   margin-bottom: -50px;
@@ -197,6 +220,7 @@ export default {
   align-items: center;
 }
 .header {
+  position: relative;
   height: 400px;
   background: url('../../../assets/images/design_case/company-bg.jpg') no-repeat center / cover;
   color: #fff
@@ -210,6 +234,7 @@ export default {
   padding-left: 20px
 }
 .header-info {
+  position: relative;
   height: 300px;
   display: flex;
   flex-direction: column;
