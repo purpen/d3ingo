@@ -27,9 +27,9 @@
             <div class="fr tc-f base-right">
               <span>创新指数</span>
               <span class="fw-5 fz-16">{{companyInfo.ave_score}}</span>
-              <!-- <span class="line"></span> -->
-              <!-- <span>排名</span>
-              <span class="fw-5 fz-16">{{companyInfo.rank}}</span> -->
+              <span class="line"></span>
+              <span>排名</span>
+              <span class="fw-5 fz-16">{{companyInfo.no}}</span>
             </div>
           </el-col>
         </el-row>
@@ -515,9 +515,9 @@ export default {
       })
     },
     getCompanyExponent() {
-      let {id, unique_id: uid} = this.companyInfo
-      if (id && uid) {
-        this.$router.push({name: 'innovationCompany', params: {id: id}, query: {id: uid}})
+      let {id} = this.companyInfo
+      if (id) {
+        this.$router.push({name: 'innovationCompany', params: {id: id}})
       }
     }
   },
