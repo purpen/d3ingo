@@ -132,6 +132,7 @@ export default {
   designCaseOpenLists: '/designCase/openLists', // GET 案例列表
   designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
   designCaseLabel: '/designCaseLabel/lists', // GET 设计案例标签列表
+  getAppCode: '/designCompany/getAppCode', // GET 获取设计交易小程序设计公司主页二维码
   // 添加作品
   work: 'works',
   workid: 'works/{0}',
@@ -208,7 +209,7 @@ export default {
 
   // 潜在客户
   adminClueClueList: '/admin/clue/clueList', // GET 潜在客户列表
-  adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
+  // adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
   adminClueDelete: '/admin/clue/delete', // 删除潜在客户
   adminClueExportExcel: '/admin/clue/exportExcel', // 导出表格
   adminClueImportExcel: '/api/admin/clue/importExcel', // 导入表格

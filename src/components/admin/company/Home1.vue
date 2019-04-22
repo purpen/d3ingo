@@ -80,7 +80,7 @@
           </el-select>
         </div>
 
-        <div class="sever-right flex-center">
+        <div class="sever-right flex-ali-center">
           <el-select v-model="companyReault" placeholder="请选择" class="sever-right-left">
             <el-option
               v-for="item in companyChoose"
@@ -114,9 +114,11 @@
           label="公司名称"
           width="320">
           <template slot-scope="scope">
-            <div class="flex-center home-img-round">
-              <img :src="scope.row.logo_url" />
-              <div class="pad-left-15">
+            <div class="flex-ali-center home-img-round">
+              <div class="img-round-size">
+                <img :src="scope.row.logo_url" />
+              </div>
+              <div class="pad-left-15 name-ref">
                 <div class="com-abb text-overflow">{{scope.row.company_abbreviation || '—'}}</div>
                 <div class="com-name text-overflow" @click="toCompanyHome(scope.row.id)">{{scope.row.company_name || '—'}}</div>
               </div>
@@ -152,7 +154,7 @@
         <el-table-column
           label="状态">
           <template slot-scope="scope">
-            <div class="flex-center">
+            <div class="flex-ali-center">
               <div class="state-border bg-D8D8D8" v-if="scope.row.status === 0"></div>
               <div class="state-border bg-000" v-if="scope.row.status === 1 && scope.row.verify_status === 0"></div>
               <div class="state-border" v-if="scope.row.status === 1 && scope.row.verify_status === 1"></div>
@@ -179,7 +181,7 @@
       <div class="count">
         共 {{query.totalCount}} 条
       </div>
-      <div v-if="query.totalCount > query.pageSize">
+      <div>
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -503,6 +505,10 @@ export default {
     border-radius: 50%;
     margin-right: 7px;
   }
+  .img-round-size {
+    height: 44px;
+    width: 44px;
+  }
   .home-img-round img{
     height: 44px;
     width: 44px;
@@ -513,6 +519,7 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
+    line-height: 14px
   }
   .com-name {
     cursor: pointer;
@@ -521,6 +528,7 @@ export default {
     font-weight: 400;
     color: rgba(51,51,51,1);
     white-space: nowrap;
+    line-height: 16px
   }
   .com-name:hover {
     color: #ff5a5f;
@@ -559,7 +567,9 @@ export default {
     width: 100%;
     height: 100%;
   }
-
+  .name-ref {
+    height: 42px;
+  }
 
 
 
@@ -569,7 +579,7 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
-  .flex-center {
+  .flex-ali-center {
     display: flex;
     align-items: center;
   }
