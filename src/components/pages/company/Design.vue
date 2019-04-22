@@ -564,6 +564,9 @@ export default {
   position: absolute;
   left: 9999px;
 }
+.chart {
+  border-right: 1px solid #e6e6e6;
+}
 .padding-b-20 {
   padding-bottom: 20px;
 }
@@ -576,7 +579,7 @@ export default {
 .border-c-e6 {
   border-color: #e6e6e6 !important;
 }
-. {
+.flex-align-c {
   display: flex;
   align-items: center;
 }
@@ -886,7 +889,7 @@ img.avatar {
 
 
 .exponent-right {
-  border-left: 1px solid #e6e6e6;
+  /* border-left: 1px solid #e6e6e6; */
 }
 
 .exponent-top {
@@ -952,7 +955,7 @@ img.avatar {
 }
 
 .echarts {
-  width: 82%;
+  width: 93%;
   height: 280px;
 }
 </style>
