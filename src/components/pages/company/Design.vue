@@ -780,7 +780,7 @@ img.avatar {
   border-top: 1px solid #E6E6E6;
 }
 .cases-item-box > div:last-child {
-  min-height: 20px;
+  height: 20px;
   overflow: hidden;
 }
 .cases-item-title {
