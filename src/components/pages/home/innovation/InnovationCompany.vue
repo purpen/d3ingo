@@ -39,7 +39,7 @@
     <div class="company-profile" v-if="companyDetails.company_profile || companyDetails.design_company">
       <h3 class="text-center blank30">公司简介</h3>
       <p v-if="companyDetails.isD3">{{companyDetails.company_profile}}</p>
-      <p v-if="!companyDetails.isD3 && companyDetails.design_company">{{companyDetails.design_company.description}}</p>
+      <p v-else>{{companyDetails.design_company.description}}</p>
     </div>
     <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
