@@ -569,7 +569,12 @@ export default {
   left: 9999px;
 }
 .chart {
+  width: 93%;
+  height: 280px;
   border-right: 1px solid #e6e6e6;
+}
+.echarts {
+  width: 100%
 }
 .padding-b-20 {
   padding-bottom: 20px;
