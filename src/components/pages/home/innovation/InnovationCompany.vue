@@ -1,6 +1,19 @@
 <template>
   <div class="innavation-company">
-    <div class="company-base">
+    <div class="company-base" v-if="companyDetails.isD3">
+      <img class="company-logo" v-if="companyDetails.logo_image" :src="companyDetails.logo_image.logo" alt="">
+      <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+      <h2 class="company-name" v-if="companyDetails.company_name">{{companyDetails.company_name}}</h2>
+      <p class="ranking" v-if="companyDetails.ave_score">设计创新力指数：<span>{{companyDetails.ave_score}}</span>排名：<span>{{companyDetails.no}}</span><i></i></p>
+      <div class="chart" ref="chart">
+        <ECharts
+          :init-options="initOptions"
+          :options="option"
+          auto-resize
+          ref="radar"></ECharts>
+      </div>
+    </div>
+    <div class="company-base" v-else>
       <img class="company-logo" v-if="companyDetails.design_company" :src="companyDetails.design_company.logo_url" alt="">
       <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name" v-if="companyDetails.design_company">{{companyDetails.design_company.name}}</h2>
@@ -13,13 +26,20 @@
           ref="radar"></ECharts>
       </div>
     </div>
+
     <div class="company-profile" v-if="companyDetails.evaluates && companyDetails.evaluates.length">
       <h3 class="text-center">创新表现描述</h3>
-      <p v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
+      <div v-if="companyDetails.isD3">
+        <p>{{companyDetails.evaluates}}</p>
+      </div>
+      <div v-else>
+        <p v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
+      </div>
     </div>
-    <div class="company-profile" v-if="companyDetails.design_company">
+    <div class="company-profile" v-if="companyDetails.company_profile || companyDetails.design_company">
       <h3 class="text-center blank30">公司简介</h3>
-      <p>{{companyDetails.design_company.description}}</p>
+      <p v-if="companyDetails.isD3">{{companyDetails.company_profile}}</p>
+      <p v-if="!companyDetails.isD3 && companyDetails.design_company">{{companyDetails.design_company.description}}</p>
     </div>
     <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
@@ -210,6 +230,8 @@ export default {
         console.log(res)
         if (res.data.meta.status_code === 200) {
           const item = res.data.data
+          this.companyDetails = item
+          this.companyDetails.isD3 = true
           this.radarList = [
             {
               name: '基础运作力',
