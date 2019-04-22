@@ -1,4 +1,5 @@
 <template>
+<!-- 公司详情 -->
   <div class="" v-loading.fullscreen.lock="isFullLoading">
     <div class="header">
       <div class="bg"></div>
@@ -8,7 +9,7 @@
             <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
               <span class="wx">
-                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
               </span>
             </div>
           </el-col>
@@ -27,9 +28,10 @@
             <div class="fr tc-f base-right">
               <span>创新指数</span>
               <span class="fw-5 fz-16">{{companyInfo.ave_score}}</span>
-              <!-- <span class="line"></span> -->
-              <!-- <span>排名</span>
-              <span class="fw-5 fz-16">{{companyInfo.rank}}</span> -->
+              <span class="line"></span>
+              <span>排名</span>
+              <span v-if="companyInfo.no" class="fw-5 fz-16">{{companyInfo.no}}</span>
+              <span v-else class="tc-6">—</span>
             </div>
           </el-col>
         </el-row>
@@ -143,7 +145,7 @@
           <el-col :span="18">
             <div class="padding30 bg-f">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="12" class="border-r-1">
                   <div class="chart" ref="chart">
                     <ECharts
                     :init-options="initOptions"
@@ -344,15 +346,62 @@ export default {
     async getDesignInfo(id) {
       try {
         this.isFullLoading = true
+        let radar = this.$refs.radar
+        radar.showLoading()
         const {data: res} = await this.$http.get(api.designCompanyId.format(id), {})
         if (res.meta.status_code === 200) {
-          this.companyInfo = res.data
+          const item = res.data
+          this.isFullLoading = false
+          this.companyInfo = item
           if (this.companyInfo.logo_image) {
             this.companyInfo.logo_url = this.companyInfo.logo_image.logo
           } else {
             this.companyInfo.logo_url = false
           }
-          this.isFullLoading = false
+          this.radarList = [
+            {
+              name: '基础运作力',
+              max: 100,
+              value: item.base_average || 60
+            },
+            {
+              name: '风险应激力',
+              max: 100,
+              value: item.credit_average || 60
+            },
+            {
+              name: '创新交付力',
+              max: 100,
+              value: item.innovate_average || 60
+            },
+            {
+              name: '商业决策力',
+              max: 100,
+              value: item.business_average || 60
+            },
+            {
+              name: '客观公信力',
+              max: 100,
+              value: item.effect_average || 60
+            },
+            {
+              name: '品牌溢价力',
+              max: 100,
+              value: item.design_average || 60
+            }
+          ]
+          radar.hideLoading()
+          radar.mergeOptions({
+            radar: {
+              indicator: this.radarList.map(({name, max}) => {
+                return {name, max}
+              })
+            },
+            series: [{
+              data: [{value: this.radarList.map(({value}) => value)}]
+            }]
+          })
+
           let arr = []
           let {prizes = []} = this.companyInfo
           if (!prizes) return
@@ -367,9 +416,7 @@ export default {
             obj.time = ele.time.substr(0, 7)
             arr.push(obj)
           })
-          console.log(arr)
           this.prizeArr = arr
-          // this.getDetails()
         } else {
           this.$message.error(res.meta.message)
           console.log(res.meta.message)
@@ -380,16 +427,6 @@ export default {
         this.$message.error(error.message)
         this.isFullLoading = false
       }
-      // this.$http.get(api.designCompanyId.format(id), {}).then(res => {
-      //   if (res.data.meta.status_code === 200) {
-      //     this.companyInfo = res.data.data
-      //     if (this.companyInfo.logo_image) {
-      //     }
-      //   } else {
-
-      //   }
-      // }).catch(err => {
-      // })
     },
     changeOption(e) {
       // this.option = e
@@ -456,74 +493,14 @@ export default {
         }
       })
     },
-    getDetails(id) {
-      let radar = this.$refs.radar
-      console.log(this.$refs)
-      console.log(this.companyInfo)
-      radar.showLoading()
-      this.$http.get(api.designCompanyId.format(id), {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          const item = res.data.data
-          this.radarList = [
-            {
-              name: '基础运作力',
-              max: 100,
-              value: item.base_average || 60
-            },
-            {
-              name: '风险应激力',
-              max: 100,
-              value: item.credit_average || 60
-            },
-            {
-              name: '创新交付力',
-              max: 100,
-              value: item.innovate_average || 60
-            },
-            {
-              name: '商业决策力',
-              max: 100,
-              value: item.business_average || 60
-            },
-            {
-              name: '客观公信力',
-              max: 100,
-              value: item.effect_average || 60
-            },
-            {
-              name: '品牌溢价力',
-              max: 100,
-              value: item.design_average || 60
-            }
-          ]
-          radar.hideLoading()
-          radar.mergeOptions({
-            radar: {
-              indicator: this.radarList.map(({name, max}) => {
-                return {name, max}
-              })
-            },
-            series: [{
-              data: [{value: this.radarList.map(({value}) => value)}]
-            }]
-          })
-          console.log(this.$refs.radar.mergeOptions.series)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        console.error(err)
-      })
-    },
     getCompanyExponent() {
-      this.$router.push({name: 'innovationCompany', params: {id: this.companyInfo.id}})
+      this.$router.push({name: 'InnovateList'})
     }
   },
   created() {
     this.option = this.$route.query.option || 'case'
     let id = this.$route.params.id
     this.designId = id
-    this.getDesignInfo(id)
     this.getDesignCaseList(id)
     this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
   },
@@ -561,7 +538,7 @@ export default {
     }
   },
   mounted() {
-    this.getDetails(this.designId)
+    this.getDesignInfo(this.designId)
   }
 }
 </script>
@@ -573,6 +550,8 @@ export default {
 .chart {
   width: 93%;
   height: 280px;
+}
+.border-r-1 {
   border-right: 1px solid #e6e6e6;
 }
 .echarts {
@@ -701,7 +680,7 @@ img.avatar {
   width: 1px;
   height: 20px;
   border-left: 1px solid #fff;
-  margin: auto 10px;
+  margin: auto 20px;
 }
 .base-right {
   display: flex;
@@ -801,7 +780,7 @@ img.avatar {
   border-top: 1px solid #E6E6E6;
 }
 .cases-item-box > div:last-child {
-  min-height: 20px;
+  height: 20px;
   overflow: hidden;
 }
 .cases-item-title {
