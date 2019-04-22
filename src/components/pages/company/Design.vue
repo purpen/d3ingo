@@ -14,7 +14,7 @@
           </el-col>
           <el-col :span="16">
           <div class="company-base">
-            <div class="inline-block">
+            <div :class="['inline-block', {'top-v': companyInfo.verify_status === 1}]">
               <img class="avatar" v-if="companyInfo.logo_url" :src="companyInfo.logo_url" width="100"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
               <h3>{{ companyInfo.company_name }}</h3>
@@ -109,24 +109,24 @@
             <div class="baseinfo-r-t flex bg-f">
               <div class="flex-column">
                 <span class="tc-9">公司创建时间</span>
-                <span v-if="companyInfo.establishment_time" class="line-height2_5r fz-22 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
-                <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                <span v-if="companyInfo.establishment_time" class="line-height30 fz-22 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
+                <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
               <div class="line"></div>
               <div class="flex-column">
                 <span class="tc-9">公司规模</span>
-                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-22 line-height2_5r">{{companyInfo.company_size}}人</span>
-                <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-22 line-height30">{{companyInfo.company_size}}人</span>
+                <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
             </div>
             
-            <div class="business-type bg-f margin-t-10">
-              <h6>接单类型</h6>
+            <div class="business-type bg-f margin-t-10" v-if="!(companyInfo.design_type_val.length && companyInfo.good_field.length)">
+              <h6 v-if="companyInfo.design_type_val.length">接单类型</h6>
               <div>
                 <span class="label" v-for="(d, i) in companyInfo.design_type_val" :key="i">{{d}}</span>
               </div>
-              <h6 class="margin-t-20">擅长领域</h6>
-              <div>
+              <h6 v-if="companyInfo.good_field.length" class="margin-t-20">擅长领域</h6>
+              <div v-if="companyInfo.good_field">
                 <span class="label" v-for="(d, i) in companyInfo.good_field" :key="i">{{d}}</span>
               </div>
             </div>
@@ -159,15 +159,15 @@
                     <div class="exponent-top flex">
                       <div class="flex-column aligin-item-c">
                         <span class="tc-6 line-height1_5">设计创新力指数</span>
-                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height2_5r fw-6">{{companyInfo.ave_score}}</span>
-                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height30 fw-6">{{companyInfo.ave_score}}</span>
+                        <span v-else class="tc-6 blank6 line-height30">—</span>
                       </div>
                       
                       <div class="line border-c-e6"></div>
                       <div class="flex-column aligin-item-c">
                         <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
-                        <span v-if="companyInfo.rank" class="tc-red blank6 fz-28 line-height2_5r fw-6">NO.{{companyInfo.rank}}</span>
-                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                        <span v-if="companyInfo.no" class="tc-red blank6 fz-28 line-height30 fw-6">NO.{{companyInfo.no}}</span>
+                        <span v-else class="tc-6 blank6 line-height30">—</span>
                       </div>
                     </div>
                     <div class="exponent-info fz-14">
@@ -591,14 +591,11 @@ export default {
 .padding-l-r-30 {
   padding: 0 30px;
 }
-.line-height2_5r {
-  line-height: 2.5rem;
-}
 .header {
   position: relative;
   padding-top: 20px;
   height: 280px;
-  background: url(../../../assets/images/design_company/companyBg.jpg) no-repeat left /cover;
+  background: url(../../../assets/images/design_case/company-bg.jpg) no-repeat center / cover;
 }
 .header .bg {
   position: absolute;
@@ -647,7 +644,7 @@ img.avatar {
   height: 24px;
   position: absolute;
   top: 56px;
-  right: 44px;
+  right: 88px;
 }
 
 
@@ -807,20 +804,20 @@ img.avatar {
   padding: 0 30px 20px 30px;
 }
 .summary > h3 {
-  padding: 1.7rem 0 0.83rem 0;
+  padding: 20px 0 10px 0;
   font-size: 16px;
   font-weight: 400;
   color: #222;
   text-align: center;
 }
 .summary > p {
-  line-height: 2.3rem;
+  line-height: 28px;
   font-weight:400;
   color: #666;
 }
 
 .baseinfo-r-t, .business-type, .contact {
-  padding: 1.7rem 2.08rem 1.7rem 2.5rem;
+  padding: 20px 25px 20px 30px;
 }
 .business-type h6 {
   color: #222;
@@ -830,7 +827,7 @@ img.avatar {
 
 .baseinfo-r-t .line {
   border-color: #e6e6e6;
-  margin: 1rem 1.67rem 0 1.67rem;
+  margin: 12px 20px 0 20px;
 }
 
 
@@ -918,7 +915,7 @@ img.avatar {
 }
 
 .exponent-bottom-info > h3 {
-  padding: 1.7rem 0 0.83rem 0;
+  padding: 20px 0 10px 0;
   font-size: 16px;
   font-weight: 400;
   color: #222;
@@ -926,7 +923,7 @@ img.avatar {
 }
 .exponent-bottom-info > p {
   margin-top: 10px;
-  line-height: 2.3rem;
+  line-height: 28px;
   font-weight:400;
   color: #666;
 }
