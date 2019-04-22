@@ -1,6 +1,22 @@
 <template>
+<!-- 案例详情 -->
   <section class="round">
-    <head class="header flex-column-center">
+    <head v-if="designCasesDetail.cover" class="header flex-column-center" :style="{background: 'url('+ designCasesDetail.cover.file +') no-repeat center / cover'}">
+      <div class="bg"></div>
+      <div class="banner">
+        <img src="">
+      </div>
+      <div class="header-info">
+        <h1>{{designCasesDetail.title}}</h1>
+        <section class="flex-jus-center">
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
+        </section>
+      </div>
+    </head>
+
+    <head v-else class="header flex-column-center">
+      <div class="bg"></div>
       <div class="banner">
         <img src="">
       </div>
@@ -16,7 +32,9 @@
       <section class="center">
         <div class="share">
           <div class="share-text"></div>
-          <div class="share-wx"></div>
+          <div class="share-wx">
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
+          </div>
         </div>
         <article class="content">
           <p class="content-summary">{{designCasesDetail.profile}}</p>
@@ -34,7 +52,9 @@
             </div>
           </div>
           <p v-else class="prize">产品所获奖项：—</p>
-          <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：<span class="label">designCasesDetail.label</span></p>
+          <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：
+            <span class="label" v-for="(ele, index) in designCasesDetail.label" :key="index">{{ele}}</span>
+          </p>
           <p v-else class="tags">标签：—</p>
         </article>
       </section>
@@ -42,20 +62,21 @@
       <section class="company-info">
         <div class="company-header" v-if="designCasesDetail.design_company">
           <img v-if="designCasesDetail.design_company && designCasesDetail.design_company.logo_image" class="company-logo" :src="designCasesDetail.design_company.logo_image.logo" :alt="designCasesDetail.design_company.logo_image.name">
+          <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
             <p class="company-name">
             <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
             <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
-            <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score}}</i></p>
+            <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score || '—'}}</i></p>
             <p v-if="designCasesDetail.design_company.no" class="fl"><span>排名</span><i>NO.{{designCasesDetail.design_company.no}}</i></p>
             <p v-else class="fl"><span>排名</span><i>—</i></p>
           </div>
         </div>
         <div class="case-list" v-loading="isLoading">
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
-            <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
+            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
                   <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                                 :target="isMob ? '_self' : '_blank'">
@@ -83,6 +104,7 @@ export default {
   name: 'design_case_show',
   data() {
     return {
+      erCode: '',
       designCasesDetail: {},
       isLoading: false
     }
@@ -97,6 +119,18 @@ export default {
     }
   },
   methods: {
+    getAppCode(id) {
+      this.$http.get(api.getAppCode, {params: {id: id}})
+      .then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          console.log(res.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
     getDesignCase(id) {
       this.$http.get(api.designCaseId.format(id), {}).then(res => {
         if (res.data && res.data.meta.status_code === 200) {
@@ -117,6 +151,10 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
+          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.id
+          if (this.designCasesDetail.design_cases && this.designCasesDetail.design_cases.length > 4) {
+            this.designCasesDetail.design_cases = this.designCasesDetail.design_cases.slice(0, 4)
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -129,6 +167,14 @@ export default {
 </script>
 
 <style scoped>
+.header .bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .5);
+}
 .round {
   background-color: #F7F7F7;
   margin-bottom: -50px;
@@ -149,16 +195,24 @@ export default {
   background: url('../../../assets/images/design_case/share@2x.png') no-repeat center / contain
 }
 .share-wx {
+  position: relative;
   cursor: pointer;
   height: 40px;
   width: 40px;
   background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
 }
-.share-wx {
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
+.share-wx:hover .er-code {
+  display: block
+}
+.share-wx .er-code {
+  display: none;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 50px;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: dialog-fade-in .3s;
 }
 
 .flex-column-center {
@@ -167,6 +221,7 @@ export default {
   align-items: center;
 }
 .header {
+  position: relative;
   height: 400px;
   background: url('../../../assets/images/design_case/company-bg.jpg') no-repeat center / cover;
   color: #fff
@@ -180,6 +235,7 @@ export default {
   padding-left: 20px
 }
 .header-info {
+  position: relative;
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -214,7 +270,8 @@ export default {
 .company-logo {
   width: 90px;
   height: 90px;
-  background: #6ca685;
+  border: 1px solid #e6e6e6;
+  background: #fff;
   border-radius: 50%;
 }
 .company-header {

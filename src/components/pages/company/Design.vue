@@ -1,20 +1,25 @@
 <template>
+<!-- 公司详情 -->
   <div class="" v-loading.fullscreen.lock="isFullLoading">
     <div class="header">
       <div class="bg"></div>
       <div class="container">
         <el-row>
           <el-col :span="4">
-            <div class="flex-align-c">
+            <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
-              <span class="wx"></span>
+              <span class="wx">
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
+              </span>
             </div>
           </el-col>
           <el-col :span="16">
           <div class="company-base">
             <div class="inline-block">
-              <img class="avatar" v-if="companyInfo.logo_url" :src="companyInfo.logo_url" width="100"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
+              <div :class="['inline-block', {'top-v': companyInfo.verify_status === 1}]">
+                <img class="avatar" v-if="companyInfo.logo_url" :src="companyInfo.logo_url" width="100"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
+              </div>
               <h3>{{ companyInfo.company_name }}</h3>
               <p><i class="fx-icon-location va-middle fz-16"></i><span>{{ companyInfo.province_value }}</span><span>{{ companyInfo.city_value }}</span></p>
             </div>
@@ -25,9 +30,10 @@
             <div class="fr tc-f base-right">
               <span>创新指数</span>
               <span class="fw-5 fz-16">{{companyInfo.ave_score}}</span>
-              <!-- <span class="line"></span> -->
-              <!-- <span>排名</span>
-              <span class="fw-5 fz-16">{{companyInfo.rank}}</span> -->
+              <span class="line"></span>
+              <span>排名</span>
+              <span v-if="companyInfo.no" class="fw-5 fz-16">{{companyInfo.no}}</span>
+              <span v-else class="tc-6">—</span>
             </div>
           </el-col>
         </el-row>
@@ -89,7 +95,7 @@
               
               <div class="summary" v-if="prizeArr.length">
                 <h3>荣获奖项</h3>
-                <div class="flex-align-c prizes-box">
+                <div class="prizes-box clearfix">
                   <div v-for="(item, i) in prizeArr" :key="i" class="prizes">
                     <img  :src="item.img" alt="">
                     <div class="flex-column-between">
@@ -106,24 +112,24 @@
             <div class="baseinfo-r-t flex bg-f">
               <div class="flex-column">
                 <span class="tc-9">公司创建时间</span>
-                <span v-if="companyInfo.establishment_time" class="line-height2_5r fz-22 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
-                <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                <span v-if="companyInfo.establishment_time" class="line-height30 fz-22 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
+                <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
               <div class="line"></div>
               <div class="flex-column">
                 <span class="tc-9">公司规模</span>
-                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-22 line-height2_5r">{{companyInfo.company_size}}人</span>
-                <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-22 line-height30">{{companyInfo.company_size}}人</span>
+                <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
             </div>
             
-            <div class="business-type bg-f margin-t-10">
-              <h6>接单类型</h6>
+            <div class="business-type bg-f margin-t-10" v-if="companyInfo.design_type_val.length || companyInfo.good_field.length">
+              <h6 v-if="companyInfo.design_type_val.length">接单类型</h6>
               <div>
                 <span class="label" v-for="(d, i) in companyInfo.design_type_val" :key="i">{{d}}</span>
               </div>
-              <h6 class="margin-t-20">擅长领域</h6>
-              <div>
+              <h6 v-if="companyInfo.good_field.length" class="margin-t-20">擅长领域</h6>
+              <div v-if="companyInfo.good_field">
                 <span class="label" v-for="(d, i) in companyInfo.good_field" :key="i">{{d}}</span>
               </div>
             </div>
@@ -141,7 +147,7 @@
           <el-col :span="18">
             <div class="padding30 bg-f">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="12" class="border-r-1">
                   <div class="chart" ref="chart">
                     <ECharts
                     :init-options="initOptions"
@@ -156,15 +162,15 @@
                     <div class="exponent-top flex">
                       <div class="flex-column aligin-item-c">
                         <span class="tc-6 line-height1_5">设计创新力指数</span>
-                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height2_5r fw-6">{{companyInfo.ave_score}}</span>
-                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height30 fw-6">{{companyInfo.ave_score}}</span>
+                        <span v-else class="tc-6 blank6 line-height30">—</span>
                       </div>
                       
                       <div class="line border-c-e6"></div>
                       <div class="flex-column aligin-item-c">
                         <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
-                        <span v-if="companyInfo.rank" class="tc-red blank6 fz-28 line-height2_5r fw-6">NO.{{companyInfo.rank}}</span>
-                        <span v-else class="tc-6 blank6 line-height2_5r">—</span>
+                        <span v-if="companyInfo.no" class="tc-red blank6 fz-28 line-height30 fw-6">NO.{{companyInfo.no}}</span>
+                        <span v-else class="tc-6 blank6 line-height30">—</span>
                       </div>
                     </div>
                     <div class="exponent-info fz-14">
@@ -178,7 +184,8 @@
               </el-row>
               <div class="exponent-bottom-info">
                 <h3>创新表现概述</h3>
-                <p>{{companyInfo.professional_advantage}}</p>
+                <p v-if="companyInfo.evaluates">{{companyInfo.evaluates}}</p>
+                <p v-else>—</p>
               </div>
             </div>
           </el-col>
@@ -242,6 +249,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      erCode: '',
       isLoading: false,
       isFullLoading: false,
       boolFindDesign: false,
@@ -340,15 +348,62 @@ export default {
     async getDesignInfo(id) {
       try {
         this.isFullLoading = true
+        let radar = this.$refs.radar
+        radar.showLoading()
         const {data: res} = await this.$http.get(api.designCompanyId.format(id), {})
         if (res.meta.status_code === 200) {
-          this.companyInfo = res.data
+          const item = res.data
+          this.isFullLoading = false
+          this.companyInfo = item
           if (this.companyInfo.logo_image) {
             this.companyInfo.logo_url = this.companyInfo.logo_image.logo
           } else {
             this.companyInfo.logo_url = false
           }
-          this.isFullLoading = false
+          this.radarList = [
+            {
+              name: '基础运作力',
+              max: 100,
+              value: item.base_average || 60
+            },
+            {
+              name: '风险应激力',
+              max: 100,
+              value: item.credit_average || 60
+            },
+            {
+              name: '创新交付力',
+              max: 100,
+              value: item.innovate_average || 60
+            },
+            {
+              name: '商业决策力',
+              max: 100,
+              value: item.business_average || 60
+            },
+            {
+              name: '客观公信力',
+              max: 100,
+              value: item.effect_average || 60
+            },
+            {
+              name: '品牌溢价力',
+              max: 100,
+              value: item.design_average || 60
+            }
+          ]
+          radar.hideLoading()
+          radar.mergeOptions({
+            radar: {
+              indicator: this.radarList.map(({name, max}) => {
+                return {name, max}
+              })
+            },
+            series: [{
+              data: [{value: this.radarList.map(({value}) => value)}]
+            }]
+          })
+
           let arr = []
           let {prizes = []} = this.companyInfo
           if (!prizes) return
@@ -363,9 +418,7 @@ export default {
             obj.time = ele.time.substr(0, 7)
             arr.push(obj)
           })
-          console.log(arr)
           this.prizeArr = arr
-          // this.getDetails()
         } else {
           this.$message.error(res.meta.message)
           console.log(res.meta.message)
@@ -376,19 +429,10 @@ export default {
         this.$message.error(error.message)
         this.isFullLoading = false
       }
-      // this.$http.get(api.designCompanyId.format(id), {}).then(res => {
-      //   if (res.data.meta.status_code === 200) {
-      //     this.companyInfo = res.data.data
-      //     if (this.companyInfo.logo_image) {
-      //     }
-      //   } else {
-
-      //   }
-      // }).catch(err => {
-      // })
     },
     changeOption(e) {
-      this.option = e
+      // this.option = e
+      this.$router.push({name: this.$route.name, query: {option: e}})
     },
     // 点击获取验证码
     fetchCode() {
@@ -451,77 +495,16 @@ export default {
         }
       })
     },
-    getDetails(id) {
-      let radar = this.$refs.radar
-      console.log(this.$refs)
-      console.log(this.companyInfo)
-      radar.showLoading()
-      this.$http.get(api.designCompanyId.format(id), {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          const item = res.data.data
-          this.radarList = [
-            {
-              name: '基础运作力',
-              max: 100,
-              value: item.base_average
-            },
-            {
-              name: '风险应激力',
-              max: 100,
-              value: item.credit_average
-            },
-            {
-              name: '创新交付力',
-              max: 100,
-              value: item.innovate_average
-            },
-            {
-              name: '商业决策力',
-              max: 100,
-              value: item.business_average
-            },
-            {
-              name: '客观公信力',
-              max: 100,
-              value: item.effect_average
-            },
-            {
-              name: '品牌溢价力',
-              max: 100,
-              value: item.design_average
-            }
-          ]
-          radar.hideLoading()
-          radar.mergeOptions({
-            radar: {
-              indicator: this.radarList.map(({name, max}) => {
-                return {name, max}
-              })
-            },
-            series: [{
-              data: [{value: this.radarList.map(({value}) => value)}]
-            }]
-          })
-          console.log(this.$refs.radar.mergeOptions.series)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        console.error(err)
-      })
-    },
     getCompanyExponent() {
-      let {id, unique_id: uid} = this.companyInfo
-      if (id && uid) {
-        this.$router.push({name: 'innovationCompany', params: {id: id}, query: {id: uid}})
-      }
+      this.$router.push({name: 'InnovateList'})
     }
   },
   created() {
+    this.option = this.$route.query.option || 'case'
     let id = this.$route.params.id
     this.designId = id
-    this.getDesignInfo(id)
     this.getDesignCaseList(id)
+    this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
   },
   computed: {
     isMob() {
@@ -551,10 +534,13 @@ export default {
       if (val === 'exponent') {
         // this.getDetails()
       }
+    },
+    $route (to, from) {
+      this.option = this.$route.query.option || 'case'
     }
   },
   mounted() {
-    this.getDetails(this.designId)
+    this.getDesignInfo(this.designId)
   }
 }
 </script>
@@ -562,6 +548,17 @@ export default {
 .hide {
   position: absolute;
   left: 9999px;
+}
+.chart {
+  width: 93%;
+  height: 280px;
+}
+.border-r-1 {
+  border-right: 1px solid #e6e6e6;
+}
+.echarts {
+  width: 100%;
+  height: 280px;
 }
 .padding-b-20 {
   padding-bottom: 20px;
@@ -575,7 +572,7 @@ export default {
 .border-c-e6 {
   border-color: #e6e6e6 !important;
 }
-.flex-align-c {
+.flex-vertical-center {
   display: flex;
   align-items: center;
 }
@@ -597,14 +594,11 @@ export default {
 .padding-l-r-30 {
   padding: 0 30px;
 }
-.line-height2_5r {
-  line-height: 2.5rem;
-}
 .header {
   position: relative;
   padding-top: 20px;
   height: 280px;
-  background: url(../../../assets/images/design_company/companyBg.jpg) no-repeat left /cover;
+  background: url(../../../assets/images/design_case/company-bg.jpg) no-repeat center / cover;
 }
 .header .bg {
   position: absolute;
@@ -621,6 +615,7 @@ export default {
 img.avatar {
   width: 80px;
   height: 80px;
+  background: #fff;
 }
 .company-base h3 {
   color: #fff;
@@ -652,11 +647,12 @@ img.avatar {
   height: 24px;
   position: absolute;
   top: 56px;
-  right: 44px;
+  right: 0;
 }
 
 
 .wx {
+  position: relative;
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -666,15 +662,32 @@ img.avatar {
 .wx:hover {
   background: url(../../../assets/images/design_company/WeChatHover@2x.png) no-repeat left/cover;
 }
+.wx:hover .er-code {
+  display: block
+}
+.wx .er-code {
+  display: none;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 40px;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: dialog-fade-in .3s;
+}
 .line {
   width: 1px;
   height: 20px;
   border-left: 1px solid #fff;
-  margin: auto 10px;
+  margin: auto 20px;
 }
 .base-right {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
+}
+.base-right > span {
+  line-height: 22px;
+  vertical-align: middle;
 }
 .base-right >span:nth-child(1),
 .base-right >span:nth-child(4) {
@@ -708,6 +721,7 @@ img.avatar {
   color: #666;
   font-weight:400;
   font-size: 14px;
+  border-bottom: 3px solid transparent;
 }
 .t-item-title:hover {
   color: #FF5A5F;
@@ -769,7 +783,7 @@ img.avatar {
   border-top: 1px solid #E6E6E6;
 }
 .cases-item-box > div:last-child {
-  min-height: 20px;
+  height: 20px;
   overflow: hidden;
 }
 .cases-item-title {
@@ -797,20 +811,20 @@ img.avatar {
   padding: 0 30px 20px 30px;
 }
 .summary > h3 {
-  padding: 1.7rem 0 0.83rem 0;
+  padding: 20px 0 10px 0;
   font-size: 16px;
   font-weight: 400;
   color: #222;
   text-align: center;
 }
 .summary > p {
-  line-height: 2.3rem;
+  line-height: 28px;
   font-weight:400;
   color: #666;
 }
 
 .baseinfo-r-t, .business-type, .contact {
-  padding: 1.7rem 2.08rem 1.7rem 2.5rem;
+  padding: 20px 25px 20px 30px;
 }
 .business-type h6 {
   color: #222;
@@ -820,7 +834,7 @@ img.avatar {
 
 .baseinfo-r-t .line {
   border-color: #e6e6e6;
-  margin: 1rem 1.67rem 0 1.67rem;
+  margin: 12px 20px 0 20px;
 }
 
 
@@ -856,15 +870,20 @@ img.avatar {
 }
 
 .prizes {
+  float: left;
   display: flex;
   padding: 8px 10px;
   border: 1px solid #e6e6e6;
   border-radius:4px;
 }
 .prizes-box {
-  justify-content: space-evenly;
-  margin-top: 10px;
   padding-bottom: 20px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.prizes-box .prizes {
+  margin: 10px 10px 0 10px;
 }
 .prizes img {
   width: 34px;
@@ -880,7 +899,7 @@ img.avatar {
 
 
 .exponent-right {
-  border-left: 1px solid #e6e6e6;
+  /* border-left: 1px solid #e6e6e6; */
 }
 
 .exponent-top {
@@ -903,7 +922,7 @@ img.avatar {
 }
 
 .exponent-bottom-info > h3 {
-  padding: 1.7rem 0 0.83rem 0;
+  padding: 20px 0 10px 0;
   font-size: 16px;
   font-weight: 400;
   color: #222;
@@ -911,7 +930,7 @@ img.avatar {
 }
 .exponent-bottom-info > p {
   margin-top: 10px;
-  line-height: 2.3rem;
+  line-height: 28px;
   font-weight:400;
   color: #666;
 }
@@ -946,7 +965,7 @@ img.avatar {
 }
 
 .echarts {
-  width: 82%;
+  width: 93%;
   height: 280px;
 }
 </style>
