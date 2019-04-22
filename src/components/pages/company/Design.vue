@@ -5,9 +5,11 @@
       <div class="container">
         <el-row>
           <el-col :span="4">
-            <div class="flex-align-c">
+            <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
-              <span class="wx"></span>
+              <span class="wx">
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+              </span>
             </div>
           </el-col>
           <el-col :span="16">
@@ -89,7 +91,7 @@
               
               <div class="summary" v-if="prizeArr.length">
                 <h3>荣获奖项</h3>
-                <div class="flex-align-c prizes-box">
+                <div class="flex-vertical-center prizes-box">
                   <div v-for="(item, i) in prizeArr" :key="i" class="prizes">
                     <img  :src="item.img" alt="">
                     <div class="flex-column-between">
@@ -242,6 +244,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      erCode: '',
       isLoading: false,
       isFullLoading: false,
       boolFindDesign: false,
@@ -522,6 +525,7 @@ export default {
     this.designId = id
     this.getDesignInfo(id)
     this.getDesignCaseList(id)
+    this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
   },
   computed: {
     isMob() {
@@ -575,7 +579,7 @@ export default {
 .border-c-e6 {
   border-color: #e6e6e6 !important;
 }
-.flex-align-c {
+.flex-vertical-center {
   display: flex;
   align-items: center;
 }
@@ -657,6 +661,7 @@ img.avatar {
 
 
 .wx {
+  position: relative;
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -665,6 +670,19 @@ img.avatar {
 }
 .wx:hover {
   background: url(../../../assets/images/design_company/WeChatHover@2x.png) no-repeat left/cover;
+}
+.wx:hover .er-code {
+  display: block
+}
+.wx .er-code {
+  display: none;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 40px;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: dialog-fade-in .3s;
 }
 .line {
   width: 1px;

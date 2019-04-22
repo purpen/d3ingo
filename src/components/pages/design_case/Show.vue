@@ -16,7 +16,9 @@
       <section class="center">
         <div class="share">
           <div class="share-text"></div>
-          <div class="share-wx"></div>
+          <div class="share-wx">
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 100px 100px'}"></span>
+          </div>
         </div>
         <article class="content">
           <p class="content-summary">{{designCasesDetail.profile}}</p>
@@ -83,6 +85,7 @@ export default {
   name: 'design_case_show',
   data() {
     return {
+      erCode: '',
       designCasesDetail: {},
       isLoading: false
     }
@@ -97,6 +100,18 @@ export default {
     }
   },
   methods: {
+    getAppCode(id) {
+      this.$http.get(api.getAppCode, {params: {id: id}})
+      .then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          console.log(res.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
     getDesignCase(id) {
       this.$http.get(api.designCaseId.format(id), {}).then(res => {
         if (res.data && res.data.meta.status_code === 200) {
@@ -117,6 +132,7 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
+          this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + this.designCasesDetail.design_company.id
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -149,16 +165,24 @@ export default {
   background: url('../../../assets/images/design_case/share@2x.png') no-repeat center / contain
 }
 .share-wx {
+  position: relative;
   cursor: pointer;
   height: 40px;
   width: 40px;
   background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
 }
-.share-wx {
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
+.share-wx:hover .er-code {
+  display: block
+}
+.share-wx .er-code {
+  display: none;
+  width: 110px;
+  height: 110px;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: dialog-fade-in .3s;
 }
 
 .flex-column-center {
