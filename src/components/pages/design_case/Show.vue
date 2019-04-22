@@ -134,7 +134,7 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
-          this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + this.designCasesDetail.design_company.id
+          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.design_company.id
         } else {
           this.$message.error(res.data.meta.message)
         }
