@@ -203,10 +203,56 @@ export default {
       })
     },
     getDetailsFromD3in(id) {
+      let radar = this.$refs.radar
+      radar.showLoading()
       this.$http.get(api.designCompanyId.format(id))
       .then(res => {
         console.log(res)
         if (res.data.meta.status_code === 200) {
+          const item = res.data.data
+          this.radarList = [
+            {
+              name: '基础运作力',
+              max: 100,
+              value: item.base_average || 60
+            },
+            {
+              name: '风险应激力',
+              max: 100,
+              value: item.credit_average || 60
+            },
+            {
+              name: '创新交付力',
+              max: 100,
+              value: item.innovate_average || 60
+            },
+            {
+              name: '商业决策力',
+              max: 100,
+              value: item.business_average || 60
+            },
+            {
+              name: '客观公信力',
+              max: 100,
+              value: item.effect_average || 60
+            },
+            {
+              name: '品牌溢价力',
+              max: 100,
+              value: item.design_average || 60
+            }
+          ]
+          radar.hideLoading()
+          radar.mergeOptions({
+            radar: {
+              indicator: this.radarList.map(({name, max}) => {
+                return {name, max}
+              })
+            },
+            series: [{
+              data: [{value: this.radarList.map(({value}) => value)}]
+            }]
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
