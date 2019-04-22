@@ -24,7 +24,7 @@
                   <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
-                <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" target="_blank">{{ d.title }}
+                <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">{{ d.title }}
                 </router-link>
                 <p class="des">{{ d.profile }}</p>
 
