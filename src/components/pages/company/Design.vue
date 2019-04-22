@@ -14,9 +14,11 @@
           </el-col>
           <el-col :span="16">
           <div class="company-base">
-            <div :class="['inline-block', {'top-v': companyInfo.verify_status === 1}]">
-              <img class="avatar" v-if="companyInfo.logo_url" :src="companyInfo.logo_url" width="100"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
+            <div class="inline-block">
+              <div :class="['inline-block', {'top-v': companyInfo.verify_status === 1}]">
+                <img class="avatar" v-if="companyInfo.logo_url" :src="companyInfo.logo_url" width="100"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
+              </div>
               <h3>{{ companyInfo.company_name }}</h3>
               <p><i class="fx-icon-location va-middle fz-16"></i><span>{{ companyInfo.province_value }}</span><span>{{ companyInfo.city_value }}</span></p>
             </div>
@@ -644,7 +646,7 @@ img.avatar {
   height: 24px;
   position: absolute;
   top: 56px;
-  right: 88px;
+  right: 0;
 }
 
 
@@ -679,8 +681,12 @@ img.avatar {
   margin: auto 20px;
 }
 .base-right {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
+}
+.base-right > span {
+  line-height: 22px;
+  vertical-align: middle;
 }
 .base-right >span:nth-child(1),
 .base-right >span:nth-child(4) {
