@@ -201,6 +201,19 @@ export default {
       }).catch(err => {
         console.error(err)
       })
+    },
+    getDetailsFromD3in(id) {
+      this.$http.get(api.designCompanyId.format(id))
+      .then(res => {
+        console.log(res)
+        if (res.data.meta.status_code === 200) {
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+        console.error(err)
+      })
     }
   },
   computed: {
@@ -221,6 +234,8 @@ export default {
     }
     if (this._id) {
       this.getDetails(this._id)
+    } else {
+      this.getDetailsFromD3in(this.id)
     }
   }
 }
