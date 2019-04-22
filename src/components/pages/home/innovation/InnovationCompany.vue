@@ -13,7 +13,7 @@
           ref="radar"></ECharts>
       </div>
     </div>
-    <div class="company-profile" v-if="companyDetails.evaluates.length">
+    <div class="company-profile" v-if="companyDetails.evaluates && companyDetails.evaluates.length">
       <h3 class="text-center">创新表现描述</h3>
       <p v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
     </div>
@@ -150,7 +150,7 @@ export default {
         ids: id
       }}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.companyDetails = res.data.data[0]
+          this.companyDetails = res.data.data[0] || {}
           this.radarList = [
             {
               name: '基础运作力',
