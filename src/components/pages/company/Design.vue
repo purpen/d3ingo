@@ -494,7 +494,7 @@ export default {
       })
     },
     getCompanyExponent() {
-      this.$router.push({name: 'innovationCompany', params: {id: this.companyInfo.id}})
+      this.$router.push({name: 'InnovateList'})
     }
   },
   created() {
