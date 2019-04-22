@@ -392,7 +392,8 @@ export default {
       // })
     },
     changeOption(e) {
-      this.option = e
+      // this.option = e
+      this.$router.push({name: this.$route.name, query: {option: e}})
     },
     // 点击获取验证码
     fetchCode() {
@@ -515,13 +516,11 @@ export default {
       })
     },
     getCompanyExponent() {
-      let {id, unique_id: uid} = this.companyInfo
-      if (id && uid) {
-        this.$router.push({name: 'innovationCompany', params: {id: id}, query: {id: uid}})
-      }
+      this.$router.push({name: 'innovationCompany', params: {id: this.companyInfo.id}})
     }
   },
   created() {
+    this.option = this.$route.query.option || 'case'
     let id = this.$route.params.id
     this.designId = id
     this.getDesignInfo(id)
@@ -556,6 +555,9 @@ export default {
       if (val === 'exponent') {
         // this.getDetails()
       }
+    },
+    $route (to, from) {
+      this.option = this.$route.query.option || 'case'
     }
   },
   mounted() {
@@ -574,7 +576,8 @@ export default {
   border-right: 1px solid #e6e6e6;
 }
 .echarts {
-  width: 100%
+  width: 100%;
+  height: 280px;
 }
 .padding-b-20 {
   padding-bottom: 20px;
@@ -634,6 +637,7 @@ export default {
 img.avatar {
   width: 80px;
   height: 80px;
+  background: #fff;
 }
 .company-base h3 {
   color: #fff;
@@ -735,6 +739,7 @@ img.avatar {
   color: #666;
   font-weight:400;
   font-size: 14px;
+  border-bottom: 3px solid transparent;
 }
 .t-item-title:hover {
   color: #FF5A5F;

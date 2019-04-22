@@ -36,7 +36,9 @@
             </div>
           </div>
           <p v-else class="prize">产品所获奖项：—</p>
-          <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：<span class="label">designCasesDetail.label</span></p>
+          <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：
+            <span class="label" v-for="(ele, index) in designCasesDetail.label" :key="index">{{ele}}</span>
+          </p>
           <p v-else class="tags">标签：—</p>
         </article>
       </section>
@@ -50,7 +52,7 @@
             <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
-            <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score}}</i></p>
+            <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score || '—'}}</i></p>
             <p v-if="designCasesDetail.design_company.no" class="fl"><span>排名</span><i>NO.{{designCasesDetail.design_company.no}}</i></p>
             <p v-else class="fl"><span>排名</span><i>—</i></p>
           </div>
@@ -238,7 +240,8 @@ export default {
 .company-logo {
   width: 90px;
   height: 90px;
-  background: #6ca685;
+  border: 1px solid #e6e6e6;
+  background: #fff;
   border-radius: 50%;
 }
 .company-header {
