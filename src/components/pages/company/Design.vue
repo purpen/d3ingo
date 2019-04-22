@@ -5,9 +5,11 @@
       <div class="container">
         <el-row>
           <el-col :span="4">
-            <div class="flex-align-c">
+            <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
-              <span class="wx"></span>
+              <span class="wx">
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+              </span>
             </div>
           </el-col>
           <el-col :span="16">
@@ -178,7 +180,7 @@
               </el-row>
               <div class="exponent-bottom-info">
                 <h3>创新表现概述</h3>
-                <p v-if="companyInfo">{{'----'}}</p>
+                <p v-if="companyInfo.evaluates">{{companyInfo.evaluates}}</p>
                 <p v-else>—</p>
               </div>
             </div>
@@ -243,6 +245,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      erCode: '',
       isLoading: false,
       isFullLoading: false,
       boolFindDesign: false,
@@ -523,6 +526,7 @@ export default {
     this.designId = id
     this.getDesignInfo(id)
     this.getDesignCaseList(id)
+    this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
   },
   computed: {
     isMob() {
@@ -564,6 +568,9 @@ export default {
   position: absolute;
   left: 9999px;
 }
+.chart {
+  border-right: 1px solid #e6e6e6;
+}
 .padding-b-20 {
   padding-bottom: 20px;
 }
@@ -576,7 +583,7 @@ export default {
 .border-c-e6 {
   border-color: #e6e6e6 !important;
 }
-. {
+.flex-vertical-center {
   display: flex;
   align-items: center;
 }
@@ -658,6 +665,7 @@ img.avatar {
 
 
 .wx {
+  position: relative;
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -666,6 +674,19 @@ img.avatar {
 }
 .wx:hover {
   background: url(../../../assets/images/design_company/WeChatHover@2x.png) no-repeat left/cover;
+}
+.wx:hover .er-code {
+  display: block
+}
+.wx .er-code {
+  display: none;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 40px;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: dialog-fade-in .3s;
 }
 .line {
   width: 1px;
@@ -886,7 +907,7 @@ img.avatar {
 
 
 .exponent-right {
-  border-left: 1px solid #e6e6e6;
+  /* border-left: 1px solid #e6e6e6; */
 }
 
 .exponent-top {
@@ -952,7 +973,7 @@ img.avatar {
 }
 
 .echarts {
-  width: 82%;
+  width: 93%;
   height: 280px;
 }
 </style>
