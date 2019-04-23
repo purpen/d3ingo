@@ -361,10 +361,10 @@
                 <div class="case-header-arrow"></div>
               </div>
               <div v-if="item.cover" class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url(' + item.cover.middle +') no-repeat center / cover'}">
+              :style="{background: 'url(' + item.cover.middle +') no-repeat center / contain'}">
               </div>
               <div v-else class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / cover'}">
+              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / contain'}">
               </div>
               <div class="case-center-round">
                 <div class="case-center-title">{{item.title}}</div>
@@ -1262,7 +1262,7 @@
     color: rgba(34,34,34,1);
   }
   .case-border {
-    height: 490px;
+    /* height: 490px; */
     max-width: 380px;
     text-align: left;
     padding-top: 40px;
@@ -1272,6 +1272,7 @@
     display: flex;
   }
   .case-header {
+    height: 18px;
     font-size: 18px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1285,7 +1286,8 @@
     margin-top: 1px;
   }
   .case-center {
-    height: 320px;
+    /* height: 320px; */
+    padding-top: 56.7%;
     background: #fff;
     border:1px solid rgba(230,230,230,1);
     margin-top: 30px;
