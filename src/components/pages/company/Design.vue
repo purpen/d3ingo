@@ -652,6 +652,7 @@ img.avatar {
 
 
 .wx {
+  cursor: pointer;
   position: relative;
   display: inline-block;
   width: 30px;
@@ -670,10 +671,24 @@ img.avatar {
   width: 100px;
   height: 100px;
   position: absolute;
-  left: 40px;
-  top: 0;
+  left: -35px;
+  top: 45px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border-radius: 6px;
+  border: 1px solid #e6e6e6
+}
+.wx .er-code:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-bottom-color: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  margin: auto;
 }
 .line {
   width: 1px;
