@@ -8,8 +8,8 @@
           <el-card :body-style="{ padding: '0px' }" class="card">
             <router-link :to="{name: 'designAwardsShow', params: {id: d.id}}"
                         :target="BMob ? '_self' : '_blank'">
-              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
-                  <img v-lazy="d.cover.middle">
+              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'contain'}">
+                  <!-- <img v-lazy="d.cover.middle"> -->
               </div>
               <div class="image-box" v-else :style="{background: 'url('+require('assets/images/Bitmap.png')+') no-repeat center', backgroundSize: 'cover'}">
               </div>
@@ -138,7 +138,8 @@ a {
 }
 
 .image-box {
-    height: 220px;
+    /* height: 220px; */
+    padding-top: 56.7%;
     overflow: hidden;
     border-bottom: 1px solid #D2D2D2;
     /* border-radius: 4px 4px 0 0; */
