@@ -60,7 +60,7 @@
             <div class="cases-item">
               <div class="img-box">
                 <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                              :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.small +') no-repeat center / contain'}">
+                              :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                   <!-- <img v-if="d.cover" :src="d.cover.middle"> -->
                 </router-link>
                 
