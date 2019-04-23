@@ -20,8 +20,10 @@
               <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                             :target="isMob ? '_self' : '_blank'">
 
-              <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
-                  <img v-lazy="d.cover.middle">
+              <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / contain'}">
+                  <!-- <img v-lazy="d.cover.middle"> -->
+              </div>
+              <div class="image-box" v-else :style="{background: 'url('+require('assets/images/Bitmap.png')+') no-repeat center', backgroundSize: 'contain'}">
               </div>
               <div class="content">
                 <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">{{ d.title }}
@@ -170,7 +172,8 @@ a {
   color: #FF5A5F;
 }
 .image-box {
-    height: 220px;
+    /* height: 220px; */
+    padding-top: 56.7%;
     overflow: hidden;
     border-bottom: 1px solid #D2D2D2;
     /* border-radius: 4px 4px 0 0; */
