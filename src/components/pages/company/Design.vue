@@ -43,7 +43,7 @@
       <div class="table-box">
         <div :class="['table-item', {'active': option === 'case'}]" @click="changeOption('case')">
           <span class="t-item-title">设计案例</span>
-          <span class="num"><i>{{designCases.length}}</i></span>
+          <span class="num"><i>{{query.totalCount}}</i></span>
         </div>
         <div :class="['table-item', {'active': option === 'exponent'}]" @click="changeOption('exponent')">
           <span class="t-item-title">创新指数</span>
@@ -55,7 +55,7 @@
     </div>
     <div class="bg-f7 company-body">
       <div class="container" v-if="option === 'case'">
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-loading="isLoading">
           <el-col v-for="(d, index) in designCases" :key="index" :span="8">
             <div class="cases-item">
               <div class="img-box">
@@ -77,6 +77,18 @@
             </div>
           </el-col>
         </el-row>
+        <div v-if="designCases.length && query.totalCount > query.pageSize" class="blank20"></div>
+        <div v-if="query.totalCount" class="pager">
+          <el-pagination
+            v-if="designCases.length && query.totalCount > query.pageSize"
+            class="pagination"
+            @current-change="handleCurrentChange"
+            :page-size="query.pageSize"
+            :page-count="query.totalPges"
+            layout="total, prev, pager, next, jumper"
+            :total="query.totalCount">
+          </el-pagination>
+        </div>
       </div>
       <div class="container" v-if="option === 'base-info'">
         <el-row :gutter="20" class="blank20">
@@ -323,18 +335,30 @@ export default {
       initOptions: {
         renderer: 'canvas'
       },
-      radarList: []
+      radarList: [],
+      query: {
+        page: 1,
+        pageSize: 9,
+        totalPges: 0,
+        totalCount: 0
+      }
     }
   },
   methods: {
-    getDesignCaseList(id) { // 设计案例
+    getDesignCaseList() { // 设计案例
+      let id = this.designId
       this.isLoading = true
       this.$http
-      .get(api.designCaseCompanyId.format(id), {})
+      .get(api.designCaseCompanyId.format(id), {params: {
+        page: this.query.page,
+        per_page: this.query.pageSize
+      }})
       .then((res) => {
         this.isLoading = false
         if (res.data.meta.status_code === 200) {
           this.designCases = res.data.data
+          this.query.totalCount = res.data.meta.pagination.total
+          this.query.totalPges = res.data.meta.total_pages
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -496,13 +520,18 @@ export default {
     },
     getCompanyExponent() {
       this.$router.push({name: 'InnovateList'})
+    },
+    handleCurrentChange(page) {
+      this.query.page = page
+      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+      this.getDesignCaseList()
     }
   },
   created() {
     this.option = this.$route.query.option || 'case'
     let id = this.$route.params.id
     this.designId = id
-    this.getDesignCaseList(id)
+    this.getDesignCaseList()
     this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
   },
   computed: {
@@ -530,12 +559,17 @@ export default {
   },
   watch: {
     option(val) {
-      if (val === 'exponent') {
-        // this.getDetails()
+      if (val === 'case') {
+        // this.query.page = 1
+        // this.getDesignCaseList()
       }
     },
     $route (to, from) {
       this.option = this.$route.query.option || 'case'
+      if (this.option === 'case') {
+        this.query.page = this.$route.query.page || 1
+        this.getDesignCaseList()
+      }
     }
   },
   mounted() {
@@ -782,7 +816,7 @@ img.avatar {
   border-top: 1px solid #E6E6E6;
 }
 .cases-item-box > div:last-child {
-  min-height: 20px;
+  height: 20px;
   overflow: hidden;
 }
 .cases-item-title {
