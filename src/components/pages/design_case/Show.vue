@@ -209,12 +209,24 @@ export default {
   width: 100px;
   height: 100px;
   position: absolute;
-  left: 50px;
-  top: 0;
+  left: 55px;
+  top: -30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border: 1px solid #e6e6e6
 }
-
+.share-wx .er-code:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -16px;
+  margin: auto;
+}
 .flex-column-center {
   display: flex;
   flex-direction: column;
