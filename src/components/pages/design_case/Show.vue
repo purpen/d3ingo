@@ -33,7 +33,7 @@
         <div class="share">
           <div class="share-text"></div>
           <div class="share-wx">
-            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
           </div>
         </div>
         <article class="content">
@@ -206,13 +206,14 @@ export default {
 }
 .share-wx .er-code {
   display: none;
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 160px;
   position: absolute;
   left: 55px;
-  top: -30px;
+  top: -60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border-radius: 6px;
   border: 1px solid #e6e6e6
 }
 .share-wx .er-code:before {
