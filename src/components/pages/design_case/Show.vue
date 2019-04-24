@@ -65,7 +65,7 @@
           <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
               <p class="company-name">
-              <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+              <router-link class="tc-2" :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
               <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
