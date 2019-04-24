@@ -1,4 +1,5 @@
 <template>
+<!-- 公司详情 -->
   <div class="" v-loading.fullscreen.lock="isFullLoading">
     <div class="header">
       <div class="bg"></div>
@@ -8,7 +9,7 @@
             <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
               <span class="wx">
-                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover'}"></span>
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
               </span>
             </div>
           </el-col>
@@ -685,6 +686,7 @@ img.avatar {
 
 
 .wx {
+  cursor: pointer;
   position: relative;
   display: inline-block;
   width: 30px;
@@ -700,13 +702,27 @@ img.avatar {
 }
 .wx .er-code {
   display: none;
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 160px;
   position: absolute;
-  left: 40px;
-  top: 0;
+  left: -65px;
+  top: 45px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border-radius: 6px;
+  border: 1px solid #e6e6e6;
+}
+.wx .er-code:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-bottom-color: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  margin: auto;
 }
 .line {
   width: 1px;

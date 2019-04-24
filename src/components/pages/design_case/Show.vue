@@ -1,4 +1,5 @@
 <template>
+<!-- 案例详情 -->
   <section class="round">
     <head v-if="designCasesDetail.cover" class="header flex-column-center" :style="{background: 'url('+ designCasesDetail.cover.file +') no-repeat center / cover'}">
       <div class="bg"></div>
@@ -32,7 +33,7 @@
         <div class="share">
           <div class="share-text"></div>
           <div class="share-wx">
-            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 100px 100px'}"></span>
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
           </div>
         </div>
         <article class="content">
@@ -61,10 +62,10 @@
       <section class="company-info">
         <div class="company-header" v-if="designCasesDetail.design_company">
           <img v-if="designCasesDetail.design_company && designCasesDetail.design_company.logo_image" class="company-logo" :src="designCasesDetail.design_company.logo_image.logo" :alt="designCasesDetail.design_company.logo_image.name">
-          <img v-else src="../../../assets/images/avatar_100.png" alt="" class="company-logo">
+          <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
               <p class="company-name">
-              <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+              <router-link class="tc-2" :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
               <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
@@ -75,7 +76,7 @@
         </div>
         <div class="case-list" v-loading="isLoading">
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
-            <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
+            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
                   <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                                 :target="isMob ? '_self' : '_blank'">
@@ -150,7 +151,10 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
-          this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + this.designCasesDetail.design_company.id
+          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.id
+          if (this.designCasesDetail.design_cases && this.designCasesDetail.design_cases.length > 4) {
+            this.designCasesDetail.design_cases = this.designCasesDetail.design_cases.slice(0, 4)
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -202,15 +206,28 @@ export default {
 }
 .share-wx .er-code {
   display: none;
-  width: 110px;
-  height: 110px;
+  width: 160px;
+  height: 160px;
   position: absolute;
-  left: 100%;
-  top: 0;
+  left: 55px;
+  top: -60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border-radius: 6px;
+  border: 1px solid #e6e6e6
 }
-
+.share-wx .er-code:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -16px;
+  margin: auto;
+}
 .flex-column-center {
   display: flex;
   flex-direction: column;

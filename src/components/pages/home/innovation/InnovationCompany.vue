@@ -328,7 +328,8 @@ export default {
     width: 78px;
     height: 78px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2
+    border: 1px solid #e6e6e6;
+    background: #fff;
   }
   .company-name {
     font-size: 20px;
