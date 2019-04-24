@@ -33,7 +33,7 @@
         <div class="share">
           <div class="share-text"></div>
           <div class="share-wx">
-            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
+            <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
           </div>
         </div>
         <article class="content">
@@ -41,7 +41,7 @@
           <img v-for="(e, i) in designCasesDetail.case_image" :key="i" :src="e.big" :alt="e.summary">
         </article>
         <article class="sub-info">
-          <p class="">行业领域：{{designCasesDetail.industry_val}} / {{designCasesDetail.field_val}}</p>
+          <p class="" v-if="designCasesDetail.industry_val || designCasesDetail.field_val">行业领域：{{designCasesDetail.industry_val}} / {{designCasesDetail.field_val}}</p>
           <p class="serve-for">服务客户：{{designCasesDetail.customer}}</p>
           <div class="prize" v-if="designCasesDetail.prizes && designCasesDetail.prizes.length">
             <div class="title">产品所获奖项：</div>
@@ -51,11 +51,11 @@
               </el-tooltip>
             </div>
           </div>
-          <p v-else class="prize">产品所获奖项：—</p>
+          <!-- <p v-else class="prize">产品所获奖项：—</p> -->
           <p class="tags" v-if="designCasesDetail.label && designCasesDetail.label.length">标签：
             <span class="label" v-for="(ele, index) in designCasesDetail.label" :key="index">{{ele}}</span>
           </p>
-          <p v-else class="tags">标签：—</p>
+          <!-- <p v-else class="tags">标签：—</p> -->
         </article>
       </section>
       <router-link class="gg-banner" :to="{name: 'projectCreate'}"></router-link>
@@ -64,9 +64,9 @@
           <img v-if="designCasesDetail.design_company && designCasesDetail.design_company.logo_image" class="company-logo" :src="designCasesDetail.design_company.logo_image.logo" :alt="designCasesDetail.design_company.logo_image.name">
           <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
-            <p class="company-name">
-            <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
-            <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
+              <p class="company-name">
+              <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+              <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
             <p class="fl"><span>设计创新力指数</span><i>{{designCasesDetail.design_company.ave_score || '—'}}</i></p>
@@ -206,13 +206,14 @@ export default {
 }
 .share-wx .er-code {
   display: none;
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 160px;
   position: absolute;
   left: 55px;
-  top: -30px;
+  top: -60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
+  border-radius: 6px;
   border: 1px solid #e6e6e6
 }
 .share-wx .er-code:before {
@@ -297,10 +298,12 @@ export default {
   font-size: 20px;
   color: #222;
   line-height: 40px;
+  margin-top: 5px;
 }
 .company-addr {
   font-size: 14px;
   color: #999;
+  margin-top: 10px;
 }
 .company-addr::before {
   content: '';
@@ -371,7 +374,8 @@ export default {
 .label {
   padding-left: 20px;
   padding-right: 10px;
-  position: relative
+  position: relative;
+  margin-right: 10px;
 }
 .label:before {
   content: '';
