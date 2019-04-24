@@ -9,7 +9,7 @@
             <div class="flex-vertical-center">
               <span class="tc-f">分享</span>
               <span class="wx">
-                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / cover #fff'}"></span>
+                <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
               </span>
             </div>
           </el-col>
@@ -702,15 +702,15 @@ img.avatar {
 }
 .wx .er-code {
   display: none;
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 160px;
   position: absolute;
-  left: -35px;
+  left: -65px;
   top: 45px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   animation: dialog-fade-in .3s;
   border-radius: 6px;
-  border: 1px solid #e6e6e6
+  border: 1px solid #e6e6e6;
 }
 .wx .er-code:before {
   content: '';
@@ -830,6 +830,7 @@ img.avatar {
 .cases-item-box {
   padding: 10px 15px 13px 15px;
   border-top: 1px solid #E6E6E6;
+  background: #fff;
 }
 .cases-item-box > div:last-child {
   height: 20px;
