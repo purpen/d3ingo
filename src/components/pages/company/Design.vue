@@ -814,6 +814,7 @@ img.avatar {
 .cases-item-box {
   padding: 10px 15px 13px 15px;
   border-top: 1px solid #E6E6E6;
+  background: #fff;
 }
 .cases-item-box > div:last-child {
   height: 20px;
