@@ -175,7 +175,7 @@ a {
     /* height: 220px; */
     padding-top: 56.7%;
     overflow: hidden;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     /* border-radius: 4px 4px 0 0; */
 }
 
