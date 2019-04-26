@@ -81,7 +81,7 @@
             <template slot-scope="scope">
               <div class="flex-center">
                 <div class="dot" v-if="scope.row.status > 0 && scope.row.status <= 6"></div>
-                <div class="dot-red" v-else></div><div>{{scope.row.status_value}}</div>
+                <div class="dot-red" v-else></div><div>{{scope.row.item_status_value}}</div>
               </div>
             </template>
           </el-table-column>
@@ -214,20 +214,20 @@ export default {
             if (obj.price === 0) {
               obj.price = '—'
             }
-            switch (obj.status) {
-              case 1:
-              case 2:
-              case 3:
-              case 4:
-              case 5:
-              case 6:
-                obj.status_value = '对接中'
-                break
-              case 7:
-              case 8:
-                obj.status_value = '对接失败'
-                break
-            }
+            // switch (obj.status) {
+            //   case 1:
+            //   case 2:
+            //   case 3:
+            //   case 4:
+            //   case 5:
+            //   case 6:
+            //     obj.status_value = '对接中'
+            //     break
+            //   case 7:
+            //   case 8:
+            //     obj. = '对接失败'
+            //     break
+            // }
           }
           self.customLoading = false
         } else {
