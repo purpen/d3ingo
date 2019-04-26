@@ -78,7 +78,7 @@
             <div class="flex-center">
               <div class="top-right-bot-title min-width-43">网址</div>
               <div class="top-right-bot-title pad-left-10">
-                <span @click="toNewWeb" v-if="item.web">{{item.web}}</span>
+                <span @click="toNewWeb" v-if="item.web">{{item.web | spliceHttp}}</span>
                 <div v-else>{{'—'}}</div>
               </div>
             </div>
@@ -404,6 +404,19 @@ export default {
         items.push (item)
       }
       return items
+    }
+  },
+  filters: {
+    spliceHttp(val) {
+      if (val.includes('http://')) {
+        let a = val.replace('http://', '')
+        return a
+      } else if (val.includes('https://')) {
+        let b = val.replace('https://', '')
+        return b
+      } else {
+        return val
+      }
     }
   },
   components: {
