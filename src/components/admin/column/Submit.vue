@@ -25,6 +25,14 @@
               :label="item.value">{{ item.label }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="公司类型" prop="companyType" v-if="form.type === 3">
+          <el-radio-group v-model.number="form.companyType">
+            <el-radio-button
+              v-for="item in companyType"
+              :key="item.index"
+              :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
         <el-row :gutter="24" v-if="form.type === 2">
           <el-col :span="12">
             <el-form-item label="设备" prop="facility">
@@ -159,6 +167,16 @@ export default {
           label: '手机'
         }
       ],
+      companyType: [
+        {
+          value: 2,
+          label: '设计公司'
+        },
+        {
+          value: 1,
+          label: '需求公司'
+        }
+      ],
       menuType: 0,
       itemMode: '添加栏目',
       isLoading: false,
@@ -179,6 +197,7 @@ export default {
       fileList: [],
       form: {
         type: '',
+        companyType: 2,
         title: '',
         content: '',
         url: '',
@@ -187,6 +206,9 @@ export default {
       ruleForm: {
         type: [
           { type: 'number', message: '请选择类型', trigger: 'change' }
+        ],
+        companyType: [
+          { type: 'number', message: '请选择公司类型', trigger: 'change' }
         ],
         facility: [
           { type: 'number', message: '请选择图片显示设备', trigger: 'change' }
@@ -198,7 +220,7 @@ export default {
           { required: true, message: '链接不能为空', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请填写内容', trigger: 'blur' }
+          { required: true, message: '请填写描述', trigger: 'blur' }
         ]
       },
       // 上一页信息
@@ -225,6 +247,7 @@ export default {
             content: that.form.content,
             url: that.form.url,
             facility: that.form.facility || 1,
+            small_type: that.form.companyType || 2,
             sort: that.form.sort || 0
           }
           row.cover_id = that.coverId

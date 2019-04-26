@@ -17,9 +17,9 @@
             <template slot-scope="scope">
               <div class="flex-center desimg-round">
                 <div class="title-img-size">
-                  <img :src="scope.row.logoUrl"/>
+                  <img v-if="scope.row.logoUrl" :src="scope.row.logoUrl"/>
                 </div>
-                <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.profile}}</div>
+                <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.title}}</div>
               </div>
             </template>
           </el-table-column>
@@ -27,7 +27,7 @@
             label="类型">
             <template slot-scope="scope">
               <div class="flex-center">
-                <div class="text-type">{{scope.row.type_val}} | {{scope.row.design_types_val[0] || scope.row.type_val}}</div>
+                <div class="text-type">{{scope.row.type_val}}<text v-if="scope.row.design_types_val[0]"> | {{scope.row.design_types_val[0]}}</text></div>
               </div>
             </template>
           </el-table-column>
@@ -63,6 +63,10 @@
               <el-button
               size="mini"
               @click="getOpen(scope.$index, scope.row.id, 1, '已公开显示')" v-else>公开显示</el-button>
+              <p class="margin-t-10 share-wx relative">
+              <el-button size="mini" @mouseover.native="shareCase(scope)">分享案例</el-button>
+              <span :class="[topShow ? 'er-code2' : 'er-code']" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
+              </p>
             </template>
           </el-table-column>
         </el-table>
@@ -98,6 +102,8 @@ export default {
   props: ['creatDate', 'type'],
   data() {
     return {
+      topShow: false,
+      erCode: '',
       tableData: [],
       query: {
         page: 1,
@@ -115,6 +121,15 @@ export default {
     that.getList()
   },
   methods: {
+    shareCase(scope) {
+      if (scope.$index === this.tableData.length - 1 || scope.$index === this.tableData.length - 2) {
+        console.log('aaa')
+        this.topShow = true
+      } else {
+        this.topShow = false
+      }
+      this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + scope.row.id
+    },
     toCaseDetail(id) {
       const {href} = this.$router.resolve({
         path: `/design_case/show/${id}`
@@ -155,11 +170,11 @@ export default {
           that.query.totalCount = parseInt(response.data.meta.pagination.total)
           for (let index in that.tableData) {
             if (that.tableData[index].cover) {
-              that.tableData[index].logoUrl = that.tableData[index].cover.small
+              that.tableData[index].logoUrl = that.tableData[index].cover.logo
             } else if (that.tableData[index].case_image.length) {
-              that.tableData[index].logoUrl = that.tableData[index].case_image[0].small
+              that.tableData[index].logoUrl = that.tableData[index].case_image[0].logo
             } else {
-              that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
+              that.tableData[index].logoUrl = ''
             }
             if (that.tableData[index].status === 0) {
               that.tableData[index].status_value = '未公开显示'
@@ -235,8 +250,7 @@ export default {
     padding-left: 5px;
   }
   .desimg-round img{
-    width: 90px;
-    height: 60px;
+    width: 80px;
     display: block;
   }
   .count-size {
@@ -291,10 +305,72 @@ export default {
     height: 100%;
   }
   .title-img-size {
-    height: 60px;
-    width: 90px;
+    border: 1px solid #e6e6e6;
+    height: 80px;
+    width: 80px;
+    background: url(../../../assets/images/df_100x100.png) no-repeat center / contain;
   }
   .text-type {
     font-family: PingFangSC-Regular;
   }
+  .share-wx .er-code {
+    display: none;
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    left: -30px;
+    z-index: 1;
+    top: 95px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: dialog-fade-in .3s;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+  }
+  .share-wx:hover .er-code,
+  .share-wx:hover .er-code2 {
+    display: block
+  }
+  .share-wx .er-code:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-bottom-color: #fff;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: -16px;
+    margin: auto;
+  }
+  .share-wx .er-code2 {
+    display: none;
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    left: -30px;
+    z-index: 1;
+    bottom: 56px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: dialog-fade-in .3s;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+  }
+  .share-wx .er-code2:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: #fff;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -16px;
+    margin: auto;
+  }
 </style>
+<style>
+.el-table__body-wrapper {
+  overflow-y: auto!important;
+}
+</style>
+
