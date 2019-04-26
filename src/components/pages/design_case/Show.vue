@@ -9,7 +9,9 @@
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
-          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
+          <span v-if="designCasesDetail.design_types_val.length">/ <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
       </div>
@@ -23,7 +25,9 @@
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
-          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
+          <span v-if="designCasesDetail.design_types_val.length"> / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
       </div>
@@ -65,7 +69,7 @@
           <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
               <p class="company-name">
-              <router-link :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+              <router-link class="tc-2" :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
               <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
@@ -173,7 +177,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .7);
 }
 .round {
   background-color: #F7F7F7;

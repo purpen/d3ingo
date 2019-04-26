@@ -250,7 +250,7 @@
               <li v-for="(ele, index) in rank.province" :key="index" class="clearfix rank-item bb-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
-                  <span class="tc-6 fz-14">{{ele.province_value}}</span>
+                  <span class="tc-6 fz-14">{{ele.province_value || '其他地区'}}</span>
                 </div>
                 <div class="fr rank-r">
                   <span class="value fz-14">{{ele.value}}</span>
