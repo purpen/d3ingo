@@ -169,11 +169,11 @@ export default {
       ],
       companyType: [
         {
-          value: 1,
+          value: 2,
           label: '设计公司'
         },
         {
-          value: 2,
+          value: 1,
           label: '需求公司'
         }
       ],
@@ -197,7 +197,7 @@ export default {
       fileList: [],
       form: {
         type: '',
-        companyType: 1,
+        companyType: 2,
         title: '',
         content: '',
         url: '',
@@ -247,7 +247,7 @@ export default {
             content: that.form.content,
             url: that.form.url,
             facility: that.form.facility || 1,
-            small_type: that.form.companyType || 1,
+            small_type: that.form.companyType || 2,
             sort: that.form.sort || 0
           }
           row.cover_id = that.coverId
