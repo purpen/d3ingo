@@ -458,7 +458,7 @@ export default {
   .top-left-img img{
     width: 120px;
     height: 120px;
-    border: 1px solid #d8d8d8;
+    border: 1px solid #e6e6e6;
   }
   .top-left-btn {
     width: 120px;

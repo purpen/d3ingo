@@ -155,9 +155,9 @@ export default {
           that.query.totalCount = parseInt(response.data.meta.pagination.total)
           for (let index in that.tableData) {
             if (that.tableData[index].cover) {
-              that.tableData[index].logoUrl = that.tableData[index].cover.small
+              that.tableData[index].logoUrl = that.tableData[index].cover.logo
             } else if (that.tableData[index].case_image.length) {
-              that.tableData[index].logoUrl = that.tableData[index].case_image[0].small
+              that.tableData[index].logoUrl = that.tableData[index].case_image[0].logo
             } else {
               that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
             }
@@ -235,8 +235,7 @@ export default {
     padding-left: 5px;
   }
   .desimg-round img{
-    width: 90px;
-    height: 60px;
+    width: 80px;
     display: block;
   }
   .count-size {
@@ -291,8 +290,10 @@ export default {
     height: 100%;
   }
   .title-img-size {
-    height: 60px;
-    width: 90px;
+    border: 1px solid #e6e6e6;
+    height: 80px;
+    width: 80px;
+    background: url(../../../assets/images/df_100x100.png) no-repeat center / contain;
   }
   .text-type {
     font-family: PingFangSC-Regular;
