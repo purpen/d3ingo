@@ -368,9 +368,4 @@ export default {
     margin: auto;
   }
 </style>
-<style>
-.el-table__body-wrapper {
-  overflow-y: auto!important;
-}
-</style>
 
