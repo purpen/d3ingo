@@ -19,7 +19,7 @@
                 <div class="title-img-size">
                   <img :src="scope.row.logoUrl"/>
                 </div>
-                <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.profile}}</div>
+                <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.title}}</div>
               </div>
             </template>
           </el-table-column>
@@ -27,7 +27,7 @@
             label="类型">
             <template slot-scope="scope">
               <div class="flex-center">
-                <div class="text-type">{{scope.row.type_val}} | {{scope.row.design_types_val[0] || scope.row.type_val}}</div>
+                <div class="text-type">{{scope.row.type_val}}<text v-if="scope.row.design_types_val[0]"> | {{scope.row.design_types_val[0]}}</text></div>
               </div>
             </template>
           </el-table-column>
