@@ -1489,6 +1489,10 @@ const COLUMN_TYPE = [
     name: '轮播'
   },
   {
+    id: 3,
+    name: '小程序'
+  },
+  {
     id: 10,
     name: '其他'
   }

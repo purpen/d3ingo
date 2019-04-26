@@ -124,13 +124,13 @@
             <div class="baseinfo-r-t flex bg-f">
               <div class="flex-column">
                 <span class="tc-9">公司创建时间</span>
-                <span v-if="companyInfo.establishment_time" class="line-height30 fz-22 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
+                <span v-if="companyInfo.establishment_time" class="line-height30 fz-20 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
                 <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
               <div class="line"></div>
               <div class="flex-column">
                 <span class="tc-9">公司规模</span>
-                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-22 line-height30">{{companyInfo.company_size}}人</span>
+                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-20 line-height30">{{companyInfo.company_size | companySize}}</span>
                 <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
             </div>
@@ -553,6 +553,16 @@ export default {
     },
     codeMsg() {
       return this.time > 0 ? this.time + 's' : '获取验证码'
+    }
+  },
+  filters: {
+    companySize(id) {
+      let company = typeData.COMPANY_SIZE
+      for (let i = 0; i < company.length; i++) {
+        if (company[i]['id'] === id) {
+          return company[i].name
+        }
+      }
     }
   },
   components: {

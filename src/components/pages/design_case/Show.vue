@@ -9,7 +9,9 @@
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
-          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
+          <span v-if="designCasesDetail.design_types_val.length">/ <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
       </div>
@@ -23,7 +25,9 @@
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
-          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}} / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></p>
+          <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
+          <span v-if="designCasesDetail.design_types_val.length"> / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
       </div>
@@ -173,7 +177,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .7);
 }
 .round {
   background-color: #F7F7F7;
