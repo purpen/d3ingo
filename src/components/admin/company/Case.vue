@@ -17,7 +17,7 @@
             <template slot-scope="scope">
               <div class="flex-center desimg-round">
                 <div class="title-img-size">
-                  <img :src="scope.row.logoUrl"/>
+                  <img v-if="scope.row.logoUrl" :src="scope.row.logoUrl"/>
                 </div>
                 <div class="tit-text" @click="toCaseDetail(scope.row.id)">{{scope.row.title}}</div>
               </div>
@@ -159,7 +159,7 @@ export default {
             } else if (that.tableData[index].case_image.length) {
               that.tableData[index].logoUrl = that.tableData[index].case_image[0].logo
             } else {
-              that.tableData[index].logoUrl = require ('@/assets/images/df_100x100.png')
+              that.tableData[index].logoUrl = ''
             }
             if (that.tableData[index].status === 0) {
               that.tableData[index].status_value = '未公开显示'
