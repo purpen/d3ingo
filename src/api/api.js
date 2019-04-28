@@ -259,8 +259,11 @@ export default {
   adminAnalysisItemType: '/admin/analysis/itemType', // GET 商机分析-商机类型
   adminAnalysisBudget: '/admin/analysis/budget', // GET 商机分析-商机预算
   adminAnalysisTrend: '/admin/analysis/trend', // GET 商机分析-趋势
-  adminAnalysisConversionTrend: '/admin/analysis/conversionTrend', // 商机分析-转化趋势
-  adminClueClueDelList: '/admin/clue/clueDelList', // 潜在客户-回收站列表/搜索
+  adminAnalysisConversionTrend: '/admin/analysis/conversionTrend', // GET 商机分析-转化趋势
+  adminClueClueDelList: '/admin/clue/clueDelList', // GET 潜在客户-回收站列表/搜索
+  adminGrabSheetPushRecord: '/admin/grabSheet/pushRecord', // POST crm项目推荐-新增设计公司推荐记录
+  adminGrabSheetReceiptList: '/admin/grabSheet/receiptList', // GET crm项目推荐-项目已接单设计公司列表
+  adminGrabSheetPushList: '/admin/grabSheet/pushList', // GET crm项目推荐-项目推荐设计公司列表
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
