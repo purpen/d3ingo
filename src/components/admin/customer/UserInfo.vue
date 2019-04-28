@@ -2450,13 +2450,13 @@ export default {
     },
     showEditDesignForm(d) {
       if (!d) return
-      this.getDesignCompanyList()
       this.$set(this.designCompanyForm, 'contact_name', d.contact_name)
       this.$set(this.designCompanyForm, 'phone', d.phone)
       this.$set(this.designCompanyForm, 'design_company_id', d.design_company_id)
       this.$set(this.designCompanyForm, 'wx', d.wx)
       this.$set(this.designCompanyForm, 'summary', d.summary)
       this.$set(this.designCompanyForm, 'company_name', d.company_name)
+      this.$set(this.designCompanyForm, 'position', d.position)
       this.boolDesignCompany = true
       this.boolEditDesignCompany = true
       this.editDesignParams = {
