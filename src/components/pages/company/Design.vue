@@ -25,7 +25,7 @@
             </div>
           </div>
           </el-col>
-          
+
           <el-col :span="4">
             <div class="fr tc-f base-right">
               <span>创新指数</span>
@@ -64,7 +64,7 @@
                               :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                   <!-- <img v-if="d.cover" :src="d.cover.middle"> -->
                 </router-link>
-                
+
                 <router-link v-else :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" class="df-case-a">
                 </router-link>
               </div>
@@ -78,10 +78,10 @@
             </div>
           </el-col>
         </el-row>
-        <div v-if="designCases.length && query.totalCount > query.pageSize" class="blank20"></div>
+        <div v-if="designCases && designCases.length && query.totalCount > query.pageSize" class="blank20"></div>
         <div v-if="query.totalCount" class="pager">
           <el-pagination
-            v-if="designCases.length && query.totalCount > query.pageSize"
+            v-if="designCases && designCases.length && query.totalCount > query.pageSize"
             class="pagination"
             @current-change="handleCurrentChange"
             :page-size="query.pageSize"
@@ -99,13 +99,13 @@
                 <h3>公司简介</h3>
                 <p>{{ companyInfo.company_profile }}</p>
               </div>
-              
+
               <div class="summary" v-if="companyInfo.professional_advantage">
                 <h3>专业优势</h3>
                 <p>{{ companyInfo.professional_advantage }}</p>
               </div>
-              
-              <div class="summary" v-if="prizeArr.length">
+
+              <div class="summary" v-if="prizeArr && prizeArr.length">
                 <h3>荣获奖项</h3>
                 <div class="prizes-box clearfix">
                   <div v-for="(item, i) in prizeArr" :key="i" class="prizes">
@@ -119,7 +119,7 @@
               </div>
             </div>
           </el-col>
-          
+
           <el-col :span="6"  class="">
             <div class="baseinfo-r-t flex bg-f">
               <div class="flex-column">
@@ -134,7 +134,7 @@
                 <span v-else class="tc-6 blank6 line-height30">—</span>
               </div>
             </div>
-            
+
             <div class="business-type bg-f margin-t-10" v-if="companyInfo.design_type_val.length || companyInfo.good_field.length">
               <h6 v-if="companyInfo.design_type_val.length">接单类型</h6>
               <div>
@@ -145,7 +145,7 @@
                 <span class="label" v-for="(d, i) in companyInfo.good_field" :key="i">{{d}}</span>
               </div>
             </div>
-            
+
             <div class="contact bg-f margin-t-10">
               <div class="contact-box"  @click="boolFindDesign=true">
                 <a class="no-select">找他设计</a>
@@ -177,7 +177,7 @@
                         <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height30 fw-6">{{companyInfo.ave_score}}</span>
                         <span v-else class="tc-6 blank6 line-height30">—</span>
                       </div>
-                      
+
                       <div class="line border-c-e6"></div>
                       <div class="flex-column aligin-item-c">
                         <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
@@ -201,7 +201,7 @@
               </div>
             </div>
           </el-col>
-          
+
           <el-col :span="6">
             <div class="contact bg-f">
               <div class="contact-box"  @click="boolFindDesign=true">
