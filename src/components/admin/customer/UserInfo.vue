@@ -1158,27 +1158,28 @@
             <div class="title-mark"></div>
           </el-tooltip>
         </div>
-
-        <div class="company-style">
-          <div class="company-info">
-            <div class="company-logo">
-              <img :src="designCompanyForm.logo" v-if="designCompanyForm.logo">
-              <img src="../../../assets/images/df_100x100.png" v-else>
-            </div>
-            <div class="info-style">
-              <div class="info-name">{{designCompanyForm.company_name || '—'}}</div>
-              <div class="info-data">
-                <div class="info-text-round">
-                  <div class="info-text">已对接</div>
-                  <div class="info-num">{{designCompanyForm.docking || '0'}}</div>
-                </div>
-                <div class="info-text-round pad-left-10 ">
-                  <div class="info-text">签约项目</div>
-                  <div class="info-num">{{designCompanyForm.signing || '0'}}</div>
-                </div>
-                <div class="info-text-round pad-left-10 ">
-                  <div class="info-text">本月对接</div>
-                  <div class="info-num">{{designCompanyForm.this_month_docking || '0'}}次</div>
+        <div class="bottom-company">
+          <div class="company-style" v-for="item in recommenLists" :key="item.company_name">
+            <div class="company-info">
+              <div class="company-logo">
+                <img :src="item.logo" v-if="item.logo">
+                <img src="../../../assets/images/df_100x100.png" v-else>
+              </div>
+              <div class="info-style">
+                <div class="info-name">{{item.company_name || '—'}}</div>
+                <div class="info-data">
+                  <div class="info-text-round">
+                    <div class="info-text">已对接</div>
+                    <div class="info-num">{{item.docking || '0'}}</div>
+                  </div>
+                  <div class="info-text-round pad-left-10 ">
+                    <div class="info-text">签约项目</div>
+                    <div class="info-num">{{item.signing || '0'}}</div>
+                  </div>
+                  <div class="info-text-round pad-left-10 ">
+                    <div class="info-text">本月对接</div>
+                    <div class="info-num">{{item.this_month_docking || '0'}}次</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2490,8 +2491,13 @@ export default {
       let that = this
       that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
         if (res.data && res.data.meta.status_code === 200) {
+          let data = res.data.data
+          for (let index in data) {
+            if (data[index].logo_image && data[index].logo_image.logo) {
+              data[index].logo = data[index].logo_image.logo
+            }
+          }
           that.recommenLists = res.data.data
-          console.log(that.recommenLists)
         } else {
           that.$message.error(res.data.meta.message)
         }
@@ -3546,6 +3552,9 @@ export default {
   justify-content: space-between;
   padding-top: 10px;
   border-bottom: 1px solid #E9E9E9;
+}
+.bottom-company .company-style:nth-last-child(1) {
+  border-bottom: none;
 }
 .company-info {
   display: flex;
