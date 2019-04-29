@@ -264,6 +264,8 @@ export default {
   adminGrabSheetPushRecord: '/admin/grabSheet/pushRecord', // POST crm项目推荐-新增设计公司推荐记录
   adminGrabSheetReceiptList: '/admin/grabSheet/receiptList', // GET crm项目推荐-项目已接单设计公司列表
   adminGrabSheetPushList: '/admin/grabSheet/pushList', // GET crm项目推荐-项目推荐设计公司列表
+  adminGrabSheetDesignatedOrder: '/admin/grabSheet/designatedOrder', // POST crm项目推荐-商务指定接单
+  adminGrabSheetAllPush: '/admin/grabSheet/allPush', // GET crm项目推荐-所有推荐设计公司记录
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id

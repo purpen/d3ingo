@@ -319,13 +319,129 @@
                     <!-- 对接设计公司 -->
                     <div>
                       <p class="add-design clearfix design-title">
-                      <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
+                      <!-- <span class="fl cur-point" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span> -->
+                      <span class="fl cur-point" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商</span>
                       <!-- <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button> -->
                       <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="addDesignCompany(item.item_id)"><i class="el-icon-circle-plus"></i>匹配设计服务商</span>
                       </p>
                     </div>
                     <el-collapse-transition>
-                      <ul v-if="boolDesigeList" class="design-parent">
+                      <ul v-if="boolDesigeList && crmDesignCompanyList1.length < 1" class="design-parent">
+                        <div class="count-push" v-if="sheetAllPushState === 0">
+                          <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
+                          <div class="count-text color-ff">{{waitOrder}}家</div>
+                          <div class="count-text">等待接单。</div>
+                          <div class="count-text color-09 cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                        </div>
+                        <div class="count-push" v-else>
+                          <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商</div>
+                          <div class="count-text color-ff">{{alreadyOrder}}家</div>
+                          <div class="count-text">已接单，</div>
+                          <div class="count-text color-ff">{{resourceOrder}}家</div>
+                          <div class="count-text">拒绝接单。</div>
+                          <div class="count-text color-09 cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                        </div>
+                        <li class="design-li contant-border margin-t20"  v-for="(d, i) in sheetAllPush" :key="i" v-if="d.is_appoint === 1">
+                          <div class="margin-b-10">
+                            <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                            <span class="padding-l10">{{d.company_name}}</span>
+                            <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                              <div class="edit-project-tag" v-if="isHasPower">
+                                <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                                <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
+                              </div>
+                            </div>
+                          </div>
+                          <el-row :gutter="10">
+                            <el-col :span="6">
+                              <div class="flex-column">
+                                <span class="tc-9">联系人</span>
+                                <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                                <span v-else>—</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="6">
+                              <div class="flex-column">
+                                <span class="tc-9">职务</span>
+                                <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                                <span v-else>—</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="6">
+                              <div class="flex-column">
+                                <span class="tc-9">电话</span>
+                                <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                                <span v-else>—</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="6">
+                              <div class="flex-column">
+                                <span class="tc-9">微信</span>
+                                <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                                <span v-else>—</span>
+                              </div>
+                            </el-col>
+                          </el-row>
+
+
+                          <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+                            <el-col :span="6">
+                              <span class="progess-current refuse">{{d.status_value}}</span>
+                            </el-col>
+                            
+                            <el-col :span="6">
+                              <span class="va-middle">拒绝原因：{{d.refuse_log}}</span>
+                            </el-col>
+                          </el-row>
+
+                          <el-row class="design-li-footer" v-if="d.grab_sheet_status === 2">
+                            <el-col :span="6">
+                              <span class="progess-current">{{d.status_value}}</span>
+                            </el-col>
+                            
+                            <el-col :span="6">
+                            <span>
+                              <i class="fx fx-icon-time va-middle"></i>
+                              <span class="tc-red va-middle">{{d.receipt_time | getProgessTime}}</span>
+                            </span>
+                            </el-col>
+                          </el-row>
+
+                          <el-row class="design-li-footer" v-if="d.grab_sheet_status === 1">
+                            <el-col :span="6">
+                              <span class="progess-current refuse">{{d.status_value}}</span>
+                            </el-col>
+                            
+                            <el-col :span="6">
+                            <span v-if="d.setTime"><i class="fx fx-icon-time va-middle"></i>
+                              <span class="va-middle">剩余接单时间&nbsp;{{d.setTime}}</span>
+                            </span>
+                            <span class="va-middle" v-else>已拒绝</span>
+                            </el-col>
+                            
+                            <el-col :span="6">
+                            <div class="progess-box">
+                              该服务商接单后将自动对接给客户
+                            </div>
+                            </el-col>
+                          </el-row>
+                        </li>
+                        <li>
+                          <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
+                        </li>
+                      </ul>
+                    </el-collapse-transition>
+                    <el-collapse-transition>
+                      <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0" class="design-parent">
+                        <div class="count-push">
+                          <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商</div>
+                          <div class="count-text color-ff">{{alreadyOrder}}家</div>
+                          <div class="count-text">已接单，</div>
+                          <div class="count-text color-ff">{{resourceOrder}}家</div>
+                          <div class="count-text">拒绝接单。</div>
+                          <div class="count-text color-09 cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                        </div>
                         <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
                           <div class="margin-b-10">
                             <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
@@ -343,28 +459,28 @@
                               <div class="flex-column">
                                 <span class="tc-9">联系人</span>
                                 <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
-																<span v-else>—</span>
+                                <span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">职务</span>
                                 <span v-if="d.position" class="fz-14">{{d.position}}</span>
-																<span v-else>—</span>
+                                <span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">电话</span>
                                 <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
-																<span v-else>—</span>
+                                <span v-else>—</span>
                               </div>
                             </el-col>
                             <el-col :span="6">
                               <div class="flex-column">
                                 <span class="tc-9">微信</span>
                                 <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
-																<span v-else>—</span>
+                                <span v-else>—</span>
                               </div>
                             </el-col>
                           </el-row>
@@ -1088,7 +1204,7 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col  :xs="24" :sm="24" :md="24" :lg="24">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="备注" prop="summary">
               <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.summary" placeholder="请填写备注"></el-input>
             </el-form-item>
@@ -1105,14 +1221,14 @@
 
     <!-- 添加服务商 -->
     <el-dialog
-      title="匹配设计公司"
+      title="匹配设计服务商"
       class="userinfo-dialog custom-userinfo-dialog"
       :visible.sync="boolDesignCompany"
       width="780px">
       <div class="dialog-body scroll-bar">
         <div class="title-round">
           <div class="title-title">选择设计服务商</div>
-          <el-tooltip class="item" effect="light" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
+          <el-tooltip effect="add-tooltop chose-use" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
             <div class="title-mark"></div>
           </el-tooltip>
         </div>
@@ -1152,9 +1268,9 @@
           <div class="company-close" @click="deleteSelectCompany(item.id)"></div>
         </div>
 
-        <div class="title-round pad-top-30-bot-0">
+        <div class="title-round pad-top-30-bot-0" v-if="recommenLists.length > 0">
           <div class="title-title">系统匹配的设计服务商</div>
-          <el-tooltip class="item" effect="light" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
+          <el-tooltip effect="add-tooltop chose-use" content="系统自动匹配6家服务商。服务商接单后可选择合适的1-2家对接给客户。" placement="right">
             <div class="title-mark"></div>
           </el-tooltip>
         </div>
@@ -1186,9 +1302,90 @@
           </div>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer design-btn fz-0 flex-right">
-        <el-button @click="selectDialogClose">取 消</el-button>
-        <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()">保 存</el-button>
+      <span slot="footer" class="dialog-footer design-btn fz-0">
+        <div class="choose-golden-round">
+          <div class="choose-golden-tan"></div>
+          <div class="choose-golden-text">确认匹配后，{{chooseCompany.length + recommenLists.length}}家设计公司将收到接单提醒</div>
+        </div>
+        <div>
+          <el-button @click="selectDialogClose">取 消</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()">确认匹配</el-button>
+        </div>
+      </span>
+    </el-dialog>
+
+    <!-- 全部服务商 -->
+    <el-dialog
+      title="系统匹配的设计服务商"
+      :visible.sync="showAllDesigns"
+      width="780px" class="all-choose-design"
+      top="10vh">
+      <div class="choose-design-body scroll-bar">
+        <ul class="design-parent">
+          <li v-for="(d, i) in sheetAllPush" :key="i" class="design-li margin-t20">
+            <div class="mar-bottom-18">
+              <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+              <span class="padding-l10">{{d.company_name}}</span>
+            </div>
+            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">联系人</span>
+                  <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">职务</span>
+                  <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">电话</span>
+                  <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">微信</span>
+                  <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+            </el-row>
+
+
+            <el-row class="design-li-footer">
+              <el-col :span="6">
+                <span :class="['progess-current', {'refuse': d.grab_sheet_status === 3 }]">{{d.status_value}}</span>
+              </el-col>
+              
+              <el-col :span="6" v-if="d.grab_sheet_status !== 3">
+                <span v-if="d.setTime">
+                  <i class="fx fx-icon-time va-middle"></i>
+                  <span class="tc-red va-middle">{{d.setTime}}</span>
+                </span>
+                <span v-else><i class="fx fx-icon-time va-middle"></i>
+                  <span class="va-middle">{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
+                </span>
+              </el-col>
+              <el-col :span="6" v-else>
+                  <span class="va-middle">拒绝原因：{{d.refuse_log}}</span>
+              </el-col>
+            </el-row>
+          </li>
+        </ul>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="showAllDesigns = false">取 消</el-button>
+        <el-button type="primary" @click="showAllDesigns = false">确 定</el-button> -->
+        <div class="footer-img"></div>
+        <div class="footer-img-text">系统已匹配{{sheetAllPush.length}}家设计服务商，{{waitOrder}}家等待接单</div>
       </span>
     </el-dialog>
   </div>
@@ -1213,6 +1410,7 @@ export default {
       query: {},
       currentUser: '新建客户',
       currentId: '',
+      timesObj: '',
       userLoading: false,
       userProjectLoading: false,
       userLogLoading: false,
@@ -1222,6 +1420,11 @@ export default {
       boolProjectList: true,
       boolDesigeList: true,
       boolRemarks: false,
+      sheetAllPush: '',
+      waitOrder: 0, // 等待
+      alreadyOrder: 0, // 接单
+      resourceOrder: 0, // 拒绝
+      sheetAllPushState: 0,
       remarksValue: '',
       editRemarksId: '',
       recommenLists: '', // 推荐列表
@@ -1508,7 +1711,7 @@ export default {
       boolDesignCompany: false,
       boolEditDesignCompany: false,
       editDesignParams: {},
-
+      showAllDesigns: false, // 推送的服务商弹窗
       followVal: '',
       editFollowVal: '',
       followTime: '',
@@ -1552,6 +1755,186 @@ export default {
     }
   },
   methods: {
+    clickChooseDesign(id) {
+
+    },
+    // 商务指定订单
+    postGrabSheetDesignatedOrder() {
+      let that = this
+      let row = {
+        id: '',
+        design: []
+      }
+      row.id = that.projectList[0].item_id
+      for (let index in that.chooseCompany) {
+        row.design.push(that.chooseCompany[index].id)
+      }
+      that.$http.post(api.adminGrabSheetDesignatedOrder, {clue_ids: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.$message.success(res.data.meta.message)
+          that.getUserProject()
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        that.$message.error(error.message)
+      })
+    },
+    // 所有推荐设计公司记录
+    getGrabSheetAllPush(type) {
+      let that = this
+      if (!type) {
+        that.showAllDesigns = true
+      }
+      let id = that.projectList[0].item_id
+      that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          if (res.data.data && res.data.data.data.length > 0) {
+            let data = res.data.data.data
+            that.sheetAllPushState = res.data.data.status
+            let waitOrder = 0
+            let alreadyOrder = 0
+            let resourceOrder = 0
+            for (let index in data) {
+              if (data[index].grab_sheet_status === 3) {
+                resourceOrder++
+              } else if (data[index].grab_sheet_status === 2) {
+                alreadyOrder++
+              } else if (data[index].grab_sheet_status === 1) {
+                waitOrder++
+              }
+              // if (data[index].updated_at) {
+              //   data[index].updatedAt = app.timestampToTime(data[index].updated_at)
+              // }
+              let newTime = Math.floor(((new Date()).getTime()) / 1000)
+              if (data[index].grab_sheet_push_time && (new Date(data[index].grab_sheet_push_time).getTime()) < newTime && (newTime - (new Date(data[index].grab_sheet_push_time).getTime()) > 0)) {
+                let time = new Date(data[index].grab_sheet_push_time)
+                let lasttime = time.getTime() / 1000
+                let times = Math.floor((lasttime + 7200) - newTime)
+                if (times[index] > 0) {
+                  that.timesObj['time' + index] = setInterval(function () {
+                    let day = 0
+                    let hour = 0
+                    let minute = 0
+                    let second = 0 // 时间默认值
+                    if (times[index] > 0) {
+                      day = Math.floor(times[index] / (60 * 60 * 24))
+                      hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
+                      minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
+                      second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+                    }
+                    if (hour <= 9) hour = '0' + hour
+                    if (minute <= 9) minute = '0' + minute
+                    if (second <= 9) second = '0' + second
+                    data[index].setTime = hour + '：' + minute + '：' + second
+                    that.sheetAllPush = data
+                    times[index]--
+                    if (times[index] <= 0) {
+                      data[index].setTime = ''
+                      data[index].setTimeState = '已拒绝'
+                      that.sheetAllPush = data
+                      clearInterval(that.timesObj['time' + index])
+                    }
+                  }, 1000)
+                } else {
+                  that.sheetAllPush = data
+                }
+              } else {
+                that.sheetAllPush = data
+              }
+            }
+            that.waitOrder = waitOrder
+            that.alreadyOrder = alreadyOrder
+            that.resourceOrder = resourceOrder
+          }
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.error(error.message)
+        that.$message.error(error.message)
+      })
+    },
+    // 添加匹配服务商
+    addSelectCompany(val) {
+      let that = this
+      that.designCompanyList.forEach((item, i) => {
+        if (item.id === val) {
+          let data = {}
+          data.id = item.id
+          data.company_name = item.company_name
+          data.docking = item.docking
+          data.signing = item.signing
+          data.this_month_docking = item.this_month_docking
+          if (item.logo_image && item.logo_image.logo) {
+            data.logo = item.logo_image.logo
+          }
+          if (that.chooseCompany.length === 2) {
+            that.$message.error('最多选择两家设计服务商')
+          }
+          if (that.chooseCompany.length < 2) {
+            that.chooseCompany.push(data)
+          }
+        }
+      })
+    },
+    selectDialogClose() {
+      let that = this
+      that.boolDesignCompany = false
+      that.chooseCompany = []
+    },
+    deleteSelectCompany(id) {
+      let that = this
+      for (let index in that.chooseCompany) {
+        if (that.chooseCompany[index].id === id) {
+          that.chooseCompany.splice(index, 1)
+        }
+      }
+    },
+    recommenList(id) {
+      let that = this
+      that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          let data = res.data.data
+          for (let index in data) {
+            if (data[index].logo_image && data[index].logo_image.logo) {
+              data[index].logo = data[index].logo_image.logo
+            }
+          }
+          that.recommenLists = res.data.data
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    addGrabSheetPush() {
+      let that = this
+      let row = {
+        id: '',
+        design: []
+      }
+      row.id = that.projectList[0].item_id
+      for (let index in that.chooseCompany) {
+        row.design.push(that.chooseCompany[index].id)
+      }
+      that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.boolDesignCompany = false
+          that.chooseCompany = []
+          that.getUserProject()
+        } else {
+          that.$message.error(res.data.meta.message)
+          that.boolDesignCompany = false
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        that.boolFollowLog = false
+      })
+    },
     redirect() {
       this.$router.push({name: 'adminPotentialUserList', params: this.query})
     },
@@ -1589,7 +1972,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           const dataArr = res.data.data
           dataArr.forEach(item => {
-            console.log(item)
+            // console.log(item)
             let {feedback} = item
             let arr = Object.values(feedback)
             item.feedback = arr
@@ -1650,7 +2033,7 @@ export default {
         }
       })
       this.stageArr = stageArr
-      console.log(stageArr)
+      // console.log(stageArr)
       this.boolStage = true
     },
     importWeb() { // 导入社区
@@ -2394,7 +2777,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
           this.projectList = data
-          this.recommenList(this.projectList[0].item_id)
+          let type = true
+          this.getGrabSheetAllPush(type)
           this.userProjectLoading = false
           this.boolallDesign = true
           if (data[0]) {
@@ -2427,6 +2811,7 @@ export default {
         wx: '',
         summary: ''
       }
+      this.recommenList(this.projectList[0].item_id)
       this.boolDesignCompany = true
       this.getDesignCompanyList()
     },
@@ -2449,85 +2834,6 @@ export default {
           this.$set(this.designCompanyForm, 'company_name', item.company_name)
           this.$set(this.designCompanyForm, 'position', item.position ? item.position : '')
         }
-      })
-    },
-    // 添加匹配服务商
-    addSelectCompany(val) {
-      let that = this
-      that.designCompanyList.forEach((item, i) => {
-        if (item.id === val) {
-          let data = {}
-          data.id = item.id
-          data.company_name = item.company_name
-          data.docking = item.docking
-          data.signing = item.signing
-          data.this_month_docking = item.this_month_docking
-          if (item.logo_image && item.logo_image.logo) {
-            data.logo = item.logo_image.logo
-          }
-          if (that.chooseCompany.length === 2) {
-            that.$message.error('最多选择两家设计服务商')
-          }
-          if (that.chooseCompany.length < 2) {
-            that.chooseCompany.push(data)
-          }
-        }
-      })
-    },
-    selectDialogClose() {
-      let that = this
-      that.boolDesignCompany = false
-      that.chooseCompany = []
-    },
-    deleteSelectCompany(id) {
-      let that = this
-      for (let index in that.chooseCompany) {
-        if (that.chooseCompany[index].id === id) {
-          that.chooseCompany.splice(index, 1)
-        }
-      }
-    },
-    recommenList(id) {
-      let that = this
-      that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
-        if (res.data && res.data.meta.status_code === 200) {
-          let data = res.data.data
-          for (let index in data) {
-            if (data[index].logo_image && data[index].logo_image.logo) {
-              data[index].logo = data[index].logo_image.logo
-            }
-          }
-          that.recommenLists = res.data.data
-        } else {
-          that.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        that.$message.error(error.message)
-        console.log(error.message)
-      })
-    },
-    addGrabSheetPush() {
-      let that = this
-      let row = {
-        id: '',
-        design: []
-      }
-      row.id = that.projectList[0].item_id
-      for (let index in that.chooseCompany) {
-        row.design.push(that.chooseCompany[index].id)
-      }
-      that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          that.boolDesignCompany = false
-          that.chooseCompany = []
-          that.getUserInfo()
-        } else {
-          that.$message.error(res.data.meta.message)
-          that.boolDesignCompany = false
-        }
-      }).catch(error => {
-        that.$message.error(error.message)
-        that.boolFollowLog = false
       })
     },
     focusInput() {
@@ -2903,8 +3209,8 @@ export default {
       return false
     },
     isFollowTime() {
-      console.log(this.userForm.created_at)
-      console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
+      // console.log(this.userForm.created_at)
+      // console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
       return this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10)
     },
     activeLogList() {
@@ -2916,6 +3222,14 @@ export default {
       return this.followLogList.filter(d => {
         return d.type === 0
       })
+    }
+  },
+  beforeDestroy() {
+    let that = this
+    if (that.timesObj) {
+      for (let index in that.timesObj) {
+        clearInterval(that.timesObj['time' + index])
+      }
     }
   },
   watch: {
@@ -3352,6 +3666,11 @@ export default {
 .design-li  .flex-column > span:nth-child(1) {
 
 }
+.choose-design-body {
+  padding: 10px 50px 30px 50px;
+  height: 60vh;
+  overflow-x: hidden;
+}
 .design-info > div {
   width: 150px;
 }
@@ -3373,6 +3692,30 @@ export default {
 }
 .design-li-footer > span:first-child {
   margin-right: 60px;
+}
+.all-choose-design .design-li-footer {
+  padding-top: 0;
+  height: 47px;
+  display: flex;
+  align-items: center;
+}
+.all-choose-design .design-li {
+  padding-bottom: 0;
+  border: 1px solid rgba(216,216,216,1);
+  border-radius: 4px;
+}
+.all-choose-design .design-li .flex-column > span {
+  padding-bottom: 15px;
+}
+.footer-img {
+  width: 16px;
+  height: 16px;
+}
+.footer-img-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(102,102,102,1);
 }
 .progess-current {
   padding-left: 20px;
@@ -3472,7 +3815,9 @@ export default {
   width: 40px;
   height: 40px;
 }
-
+.mar-bottom-18 {
+  margin-bottom: 18px;
+}
 .remarks-icon {
 
 }
@@ -3526,7 +3871,8 @@ export default {
 
 .dialog-body {
   overflow-y: auto;
-  height: 60vh;
+  min-height: 40vh;
+  max-height: 60vh;
   padding: 20px 40px 0 40px;
 }
 .title-round {
@@ -3539,10 +3885,6 @@ export default {
   font-family: PingFangSC-Medium;
   font-weight: 500;
   color: rgba(51,51,51,1);
-}
-.title-mark {
-  height: 12px;
-  width: 12px;
 }
 .company-style {
   height: 100px;
@@ -3611,6 +3953,31 @@ export default {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: rgba(51,51,51,1);
+}
+.count-push {
+  height: 44px;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  border: 1px solid rgba(216,216,216,1);
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.count-text {
+  font-size: 12px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(51,51,51,1);
+}
+.color-ff {
+  color: #FF4B49;
+}
+.color-09 {
+  color: #096DD9;
+}
+.cur-point {
+  cursor: pointer;
 }
 
 
@@ -4054,6 +4421,32 @@ export default {
 .son-source > span:first-child {
   white-space:nowrap;
 }
+
+
+/* 选择服务商 */
+.choose-golden-round {
+  display: flex;
+  align-items: center;
+}
+.choose-golden-tan {
+  height: 16px;
+  width: 16px;
+  background: url('../../../assets/images/custmer_img/TipsOrange@2x.png') no-repeat center/contain;
+  margin-right: 14px;
+}
+.choose-golden-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,166,75,1);
+}
+.title-mark {
+  height: 12px;
+  width: 12px;
+  background: url('../../../assets/images/custmer_img/TipsHover@2x.png') no-repeat center/contain;
+  cursor: pointer;
+  margin-left: 5px;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -4181,6 +4574,31 @@ export default {
 }
 .custom-userinfo-dialog .el-dialog__footer{
 	padding: 20px 40px 20px 40px;
+}
+.custom-userinfo-dialog .el-dialog__footer .dialog-footer {
+  justify-content: space-between;
+}
+.custom-userinfo-dialog .el-button {
+  height: 40px;
+  line-height: 40px;
+}
+.custom-userinfo-dialog .el-button--default {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(153,153,153,1);
+}
+.custom-userinfo-dialog .el-button--primary {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,255,255,1);
+}
+.custom-userinfo-dialog .el-dialog__title {
+  font-size: 16px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(34,34,34,1);
 }
 </style>
 
