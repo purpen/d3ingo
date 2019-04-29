@@ -684,8 +684,7 @@
       title="编辑客户"
       class="userinfo-dialog"
       :visible.sync="BoolEditUserInfo">
-      <el-form :model="clientForm" :rules="ruleClientForm" class="userinfo-form scroll-bar"
-                    ref="ruleClientForm" label-width="100px">
+      <el-form :model="clientForm" :rules="ruleClientForm" class="userinfo-form scroll-bar" ref="ruleClientForm" label-width="100px">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="商机所有人" prop="execute_user_id">
@@ -961,7 +960,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       title="匹配设计公司"
       class="userinfo-dialog"
       :visible.sync="boolDesignCompany"
@@ -1032,6 +1031,164 @@
         <el-button @click="boolDesignCompany = false">取 消</el-button>
         <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保 存</el-button>
       </span>
+    </el-dialog> -->
+
+    <!-- 编辑信息 -->
+    <el-dialog
+      title="匹配设计公司"
+      class="userinfo-dialog"
+      :visible.sync="boolEditDesignCompany"
+      width="680px">
+      <el-form  label-width="140px" :model="designCompanyForm" class="userinfo-form scroll-bar" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="设计服务商名称" prop="design_company_id">
+              <el-select v-model="designCompanyForm.design_company_id" filterable :disabled="boolEditDesignCompany" placeholder="请选择设计服务商" @change="selectdesignCompany">
+                <el-option
+                  v-for="(d, index) in designCompanyList"
+                  :key="index"
+                  :label="d.company_name"
+                  :value="d.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人名称" prop="contact_name">
+              <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人名称"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人电话" prop="phone">
+              <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人职位" prop="position">
+              <el-input v-model="designCompanyForm.position" :maxlength="20" placeholder="请填写联系人职位"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="微信号" prop="wx">
+              <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写联系人微信号"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col  :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="备注" prop="summary">
+              <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.summary" placeholder="请填写备注"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <span v-if="boolEditDesignCompany" slot="footer" class="dialog-footer design-btn fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolEditDesignCompany = false">取 消</el-button>
+        <el-button type="primary" @click="submitEditDesignCompanyForm('ruleDesignCompanyForm')">保 存
+        </el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 添加服务商 -->
+    <el-dialog
+      title="匹配设计公司"
+      class="userinfo-dialog custom-userinfo-dialog"
+      :visible.sync="boolDesignCompany"
+      width="780px">
+      <div class="dialog-body scroll-bar">
+        <div class="title-round">
+          <div class="title-title">选择设计服务商</div>
+          <el-tooltip class="item" effect="light" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
+            <div class="title-mark"></div>
+          </el-tooltip>
+        </div>
+        <el-select v-model="designCompanyForm.design_company_id" filterable placeholder="请输入或选择设计服务商" @change="addSelectCompany">
+          <el-option
+            v-for="(d, index) in designCompanyList"
+            :key="index"
+            :label="d.company_name"
+            :value="d.id">
+          </el-option>
+        </el-select>
+
+        <div class="company-style" v-for="(item, index) in chooseCompany" :key="index">
+          <div class="company-info">
+            <div class="company-logo">
+              <img :src="item.logo" v-if="item.logo">
+              <img src="../../../assets/images/df_100x100.png" v-else>
+            </div>
+            <div class="info-style">
+              <div class="info-name">{{item.company_name || '—'}}</div>
+              <div class="info-data">
+                <div class="info-text-round">
+                  <div class="info-text">已对接</div>
+                  <div class="info-num">{{item.docking || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">签约项目</div>
+                  <div class="info-num">{{item.signing || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">本月对接</div>
+                  <div class="info-num">{{item.this_month_docking || '0'}}次</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="company-close" @click="deleteSelectCompany(item.id)"></div>
+        </div>
+
+        <div class="title-round pad-top-30-bot-0">
+          <div class="title-title">系统匹配的设计服务商</div>
+          <el-tooltip class="item" effect="light" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
+            <div class="title-mark"></div>
+          </el-tooltip>
+        </div>
+
+        <div class="company-style">
+          <div class="company-info">
+            <div class="company-logo">
+              <img :src="designCompanyForm.logo" v-if="designCompanyForm.logo">
+              <img src="../../../assets/images/df_100x100.png" v-else>
+            </div>
+            <div class="info-style">
+              <div class="info-name">{{designCompanyForm.company_name || '—'}}</div>
+              <div class="info-data">
+                <div class="info-text-round">
+                  <div class="info-text">已对接</div>
+                  <div class="info-num">{{designCompanyForm.docking || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">签约项目</div>
+                  <div class="info-num">{{designCompanyForm.signing || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">本月对接</div>
+                  <div class="info-num">{{designCompanyForm.this_month_docking || '0'}}次</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer design-btn fz-0 flex-right">
+        <el-button @click="selectDialogClose">取 消</el-button>
+        <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()">保 存</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -1066,6 +1223,7 @@ export default {
       boolRemarks: false,
       remarksValue: '',
       editRemarksId: '',
+      recommenLists: '', // 推荐列表
       dialogProjectTitle: '',
       selectedsource: [],
       QRCode: '', // 需求方二维码链接
@@ -1080,6 +1238,7 @@ export default {
       boolCreateUser: false,
       boolallDesign: true,
       adminVoIpList: [], // 业务人员列表
+      chooseCompany: [],
       clientList: {},
       clientForm: {
         company: '',
@@ -2234,6 +2393,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
           this.projectList = data
+          this.recommenList(this.projectList[0].item_id)
           this.userProjectLoading = false
           this.boolallDesign = true
           if (data[0]) {
@@ -2267,7 +2427,6 @@ export default {
         summary: ''
       }
       this.boolDesignCompany = true
-      this.boolEditDesignCompany = false
       this.getDesignCompanyList()
     },
     getDesignCompanyList() {
@@ -2289,6 +2448,80 @@ export default {
           this.$set(this.designCompanyForm, 'company_name', item.company_name)
           this.$set(this.designCompanyForm, 'position', item.position ? item.position : '')
         }
+      })
+    },
+    // 添加匹配服务商
+    addSelectCompany(val) {
+      let that = this
+      that.designCompanyList.forEach((item, i) => {
+        if (item.id === val) {
+          let data = {}
+          data.id = item.id
+          data.company_name = item.company_name
+          data.docking = item.docking
+          data.signing = item.signing
+          data.this_month_docking = item.this_month_docking
+          if (item.logo_image && item.logo_image.logo) {
+            data.logo = item.logo_image.logo
+          }
+          if (that.chooseCompany.length === 2) {
+            that.$message.error('最多选择两家设计服务商')
+          }
+          if (that.chooseCompany.length < 2) {
+            that.chooseCompany.push(data)
+          }
+        }
+      })
+    },
+    selectDialogClose() {
+      let that = this
+      that.boolDesignCompany = false
+      that.chooseCompany = []
+    },
+    deleteSelectCompany(id) {
+      let that = this
+      for (let index in that.chooseCompany) {
+        if (that.chooseCompany[index].id === id) {
+          that.chooseCompany.splice(index, 1)
+        }
+      }
+    },
+    recommenList(id) {
+      let that = this
+      that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          that.recommenLists = res.data.data
+          console.log(that.recommenLists)
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    addGrabSheetPush() {
+      let that = this
+      let row = {
+        id: '',
+        design: []
+      }
+      row.id = that.projectList[0].item_id
+      for (let index in that.chooseCompany) {
+        row.design.push(that.chooseCompany[index].id)
+      }
+      that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.boolDesignCompany = false
+          that.chooseCompany = []
+          that.getUserInfo()
+        } else {
+          that.$message.error(res.data.meta.message)
+          that.boolDesignCompany = false
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        that.boolFollowLog = false
       })
     },
     focusInput() {
@@ -2457,7 +2690,6 @@ export default {
       this.$set(this.designCompanyForm, 'summary', d.summary)
       this.$set(this.designCompanyForm, 'company_name', d.company_name)
       this.$set(this.designCompanyForm, 'position', d.position)
-      this.boolDesignCompany = true
       this.boolEditDesignCompany = true
       this.editDesignParams = {
         design_id: d.id,
@@ -3287,7 +3519,103 @@ export default {
   margin: 0 -30px 10px -30px;
 }
 
+.dialog-body {
+  overflow-y: auto;
+  height: 60vh;
+  padding: 20px 40px 0 40px;
+}
+.title-round {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+.title-title {
+  font-size: 14px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(51,51,51,1);
+}
+.title-mark {
+  height: 12px;
+  width: 12px;
+}
+.company-style {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-bottom: 1px solid #E9E9E9;
+}
+.company-info {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.company-logo {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  overflow: hidden;
+}
+.company-logo img{
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+.info-style {
+  padding-left: 15px;
+  flex: 1 1 auto;
+}
+.info-data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 7px;
+}
+.info-text-round {
+  display: flex;
+  align-items: center;
+}
+.info-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(102,102,102,1);
+  padding-right: 5px;
+  white-space: nowrap;
+}
+.info-num {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #333;
+}
+.company-close {
+  cursor: pointer;
+  width: 15px;
+  height: 16px;
+  background: url('../../../assets/images/icon/delete@2x.png') no-repeat center/contain;
+}
+.info-name {
+  font-size: 18px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(51,51,51,1);
+}
 
+
+
+.pad-top-30-bot-0 {
+  padding: 30px 0 0 0;
+}
+.color-333 {
+  color: #333333;
+}
+.pad-left-10 {
+  padding-left: 10px;
+}
 .userinfo-form {
   overflow-y: auto;
   /* height: calc(80vh - 120px); */
@@ -3842,6 +4170,9 @@ export default {
 }
 .design-progress .el-progress-bar__outer {
   height: 4px !important;
+}
+.custom-userinfo-dialog .el-dialog__footer{
+	padding: 20px 40px 20px 40px;
 }
 </style>
 
