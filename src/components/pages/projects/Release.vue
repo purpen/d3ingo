@@ -67,7 +67,7 @@
       <div class="project-foot">
         <div class="buttons clearfix">
           <router-link :to="{name: 'projectType', params: {id: id}}">返回上一步</router-link>
-          <button @click="submit" class="fr middle-button full-red-button">发布</button>
+          <button @click="submit" class="fr middle-button full-red-button">确认发布</button>
         </div>
       </div>
     </div>
@@ -165,6 +165,37 @@
         </div>
       </div>
     </div>
+    <el-dialog :close-on-click-modal="false" :close-on-press-escape="false" title="填写用户信息" width="580px" :visible.sync="outerVisible">
+      <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3">
+        <div class="z-index-5">
+          <el-form-item prop="contact">
+            <input type="text" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+          </el-form-item>
+          <div class="pc-send-code-90">
+            <el-row :gutter="20">
+              <el-col :span="18">
+                <el-form-item prop="account">
+                  <input type="text" class="pc-wait-input-round2" placeholder="手机号码" v-model="form3.account" ref="account">
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item prop="smsCode">
+                  <div class="pc-code-90-round">
+                    <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
+                    <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
+                    <div class="pc-code-90-send" @click="fetchCode3" v-else>{{ codeMsg }}</div>
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="pc-send-btn-2">
+            <div class="pc-send-btn-text2" @click="submit3('ruleForm3')">立即发布需求</div>
+          </div>
+          <div slot="footer" class="dialog-footer"></div>
+        </div>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -189,7 +220,46 @@ export default {
       {name: '客观公信力', max: 20, value: 12},
       {name: '品牌溢价力', max: 20, value: 15}
     ]
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
+      ruleForm: {
+        account: [
+          {validator: checkNumber, trigger: 'blur'}
+        ],
+        contact: [
+          {required: true, message: '请输入联系人', trigger: 'blur'}
+        ],
+        smsCode: [
+          {required: true, message: '请输入验证码', trigger: 'blur'}
+        ]
+      },
+      form3: {
+        account: '', // 手机号
+        contact: '', // 联系人
+        smsCode: '' // 验证码
+      },
+      time: 0,
+      second: 60,
+      outerVisible: false, // 填写用户信息弹窗
       showForm: true,
       showList: false, // 是否展示设计公司列表
       designList: [], // 后台展示设计公司列表
@@ -268,6 +338,83 @@ export default {
     }
   },
   methods: {
+    submit3 (form) {
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          if (this.form3.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form3.account)) {
+            this.$message({
+              message: '手机号格式不正确!',
+              type: 'error',
+              duration: 1000
+            })
+            return
+          }
+          let row = {
+            id: this.id,
+            cycle: this.form.cycle,
+            design_cost: this.form.design_cost,
+            industry: this.form.industry,
+            item_province: this.province,
+            item_city: this.city,
+            random: this.uploadParam['x:random'],
+            contact_name: this.form3.contact, // 姓名
+            phone: this.form3.account, // 手机号
+            code: this.form3.smsCode // 验证码
+          }
+          this.outerVisible = false
+          this.isMatching = true
+          this.showForm = false
+          let url = api.release
+          this.$http({method: 'post', url: url, data: row})
+          .then(res => {
+            if (res.data.meta.status_code === 200) {
+              let arr = this.formatList(res.data.data)
+              setTimeout(_ => {
+                this.designList = arr || []
+                this.matchComplete = true
+                setTimeout(_ => {
+                  this.isMatching = false
+                  this.showList = true
+                  if (this.designList.length) {
+                    this.formatRadar(arr)
+                  }
+                }, 1000)
+              }, 500)
+              // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+            } else {
+              this.isMatching = false
+              this.showForm = true
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      })
+    },
+    fetchCode3() {
+      if (!this.form3.account) {
+        this.$message.error('请输入手机号')
+        return
+      }
+      this.$http.post(api.fetch_wx_code, {phone: this.form3.account})
+      .then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          this.time = this.second
+          this.timer()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch (err => {
+        this.$message.error(err.message)
+      })
+    },
+    timer() {
+      if (this.time > 0) {
+        this.time = this.time - 1
+        setTimeout(this.timer, 1000)
+      }
+    },
     getToken() {
       // 请求图片上传参数
       this.$http.get(api.upToken, {})
@@ -336,7 +483,7 @@ export default {
     uploadSuccess(response, file, fileList) {
     },
     beforeUpload(file) {
-      this.isUploadAnnex = 1
+      this.uploadAnnex = 1
       const arr = ['image/jpeg', 'image/gif', 'image/png']
       const isLt5M = file.size / 1024 / 1024 < 5
 
@@ -473,48 +620,13 @@ export default {
       if (this.form.image.length) {
         this.form.image.forEach(item => {
           if (item.status !== 'success') {
-            this.isUploadAnnex = 1
+            this.uploadAnnex = 1
             this.$message.error('请等待附件上传')
           }
         })
       }
       if (this.uploadAnnex === 0 || this.uploadAnnex === 2) {
-        let row = {
-          id: this.id,
-          cycle: this.form.cycle,
-          design_cost: this.form.design_cost,
-          industry: this.form.industry,
-          item_province: this.province,
-          item_city: this.city,
-          random: this.uploadParam['x:random']
-        }
-        this.isMatching = true
-        this.showForm = false
-        let url = api.release
-        this.$http({method: 'post', url: url, data: row})
-        .then(res => {
-          if (res.data.meta.status_code === 200) {
-            let arr = this.formatList(res.data.data)
-            setTimeout(_ => {
-              this.designList = arr || []
-              this.matchComplete = true
-              setTimeout(_ => {
-                this.isMatching = false
-                this.showList = true
-                if (this.designList.length) {
-                  this.formatRadar(arr)
-                }
-              }, 1000)
-            }, 500)
-            // this.$router.push({name: 'projectMatch', params: {id: this.id}})
-          } else {
-            this.isMatching = false
-            this.showForm = true
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err)
-        })
+        this.outerVisible = true
       }
     }
   },
@@ -547,6 +659,9 @@ export default {
     },
     user() {
       return this.$store.state.event.user
+    },
+    codeMsg() {
+      return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
     },
     custom() {
       return this.$store.state.event.prod
@@ -812,6 +927,79 @@ export default {
   .project-cover {
     padding-bottom: 140px
   }
+
+  .pc-wait-input-round {
+    width: 500px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    padding: 15px;
+  }
+  .mar-top-20 {
+    margin-top: 20px
+  }
+  .pc-send-code-90 {
+    display: flex;
+    width: 500px;
+    margin: 20px 0 0;
+  }
+  .pc-wait-input-round2 {
+    /* width: 500px; */
+    width: 100%;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    padding: 15px;
+    margin-right: 10px;
+  }
+  .pc-code-90-round {
+    width: 188px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border:1px solid  rgba(230,230,230,1);
+    display: flex;
+    align-items: center;
+  }
+  .pc-code-90 {
+    width: 90px;
+    border: none;
+    padding: 0 10px;
+  }
+  .pc-code-90-send {
+    cursor: pointer;
+    flex: 1 1 auto;
+    height: 20px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
+    text-align: center;
+    border-left: 1px solid #E6E6E6
+  }
+  .pc-send-btn-2 {
+    cursor: pointer;
+    width: 180px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.05);
+    border-radius: 30px;
+    margin: 0 auto;
+  }
+  .cursor-wait {
+    cursor: wait
+  }
+  .pc-send-btn-text2 {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 40px;
+    text-align: center;
+  }
 </style>
 <style>
   .project-item-box .el-upload-list {
@@ -827,8 +1015,8 @@ export default {
     width: calc(50% - 10px);
     height: 42px;
     background-color: rgba(255, 255, 255, .3);
-    padding: 8px 0;
-    margin: 5px
+    padding: 8px 0 8px 10px;
+    margin: 5px;
   }
   .project-item-box .el-upload-list .el-upload-list__item-name {
     color: #fff
