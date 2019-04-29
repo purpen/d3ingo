@@ -394,7 +394,7 @@ export default {
   created: function() {
     let that = this
     let id = that.$route.params.id
-    this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + id
+    this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
     that.itemId = id
     if (that.$route.query) {
       that.query = that.$route.query
