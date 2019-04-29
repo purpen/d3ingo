@@ -1070,7 +1070,7 @@ export default {
       selectedsource: [],
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
-      option: '',
+      option: 'project',
       activeName: 1,
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -2728,7 +2728,6 @@ export default {
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
-      this.option = 'project'
       this.getUserProject()
       this.getLogList()
     } else {
