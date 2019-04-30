@@ -1505,7 +1505,7 @@
             </el-row>
 
 
-            <el-row class="design-li-footer">
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
               <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="choose-refause-img"></div>
