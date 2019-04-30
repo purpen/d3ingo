@@ -1541,7 +1541,7 @@
         </div>
         <div>
           <el-button @click="closeGrabSheetDesignatedOrder()" class="mar10-10">取 消</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetDesignatedOrder()" v-if="clickChooseDesignId.length < 1">都不合适</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetRefuseRecommend()" v-if="clickChooseDesignId.length < 1">都不合适</el-button>
           <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetDesignatedOrder()" v-else>确认选择</el-button>
         </div>
       </span>
@@ -1952,7 +1952,7 @@ export default {
       }
       row.id = that.projectList[0].item_id
       row.design = that.clickChooseDesignId
-      that.$http.post(api.adminGrabSheetDesignatedOrder, {clue_ids: row}).then(res => {
+      that.$http.post(api.adminGrabSheetDesignatedOrder, row).then(res => {
         if (res.data.meta.status_code === 200) {
           that.clickChooseDesignId = []
           that.$message.success(res.data.meta.message)
@@ -1970,14 +1970,40 @@ export default {
         that.$message.error(error.message)
       })
     },
+    postGrabSheetRefuseRecommend() {
+      let that = this
+      let row = {
+        id: ''
+      }
+      row.id = that.projectList[0].item_id
+      that.$http.post(api.adminGrabSheetRefuseRecommend, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.$message.success(res.data.meta.message)
+          that.getUserProject()
+          that.showSystemAllPush = false
+        } else {
+          that.showSystemAllPush = false
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.showSystemAllPush = false
+        that.clickChooseDesignId = []
+        console.log(error.message)
+        that.$message.error(error.message)
+      })
+    },
     // 所有推荐设计公司记录
     getGrabSheetAllPush(type, add) {
       let that = this
+      console.log(that.timesObj)
       for (let index in that.timesObj) {
         if (that.timesObj['time' + index]) {
           clearInterval(that.timesObj['time' + index])
         }
       }
+      console.log(that.timesObj)
+      that.timesObj = {}
+      console.log(that.timesObj)
       if (!type) {
         that.showAllDesigns = true
       }
@@ -1991,7 +2017,7 @@ export default {
               let waitOrder = 0
               let alreadyOrder = 0
               let resourceOrder = 0
-              // let times = []
+              let times = []
               for (let index in data) {
                 if (data[index].grab_sheet_status === 3) {
                   resourceOrder++
@@ -2000,42 +2026,38 @@ export default {
                 } else if (data[index].grab_sheet_status === 1) {
                   waitOrder++
                 }
-                // if (data[index].updated_at) {
-                //   data[index].updatedAt = app.timestampToTime(data[index].updated_at)
-                // }
-                // let newTime = Math.floor(((new Date()).getTime()) / 1000)
-                // if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                //   let time = new Date(data[index].grab_sheet_push_time)
-                //   let lasttime = time.getTime() / 1000
-                //   times[index] = Math.floor((lasttime + 7200) - newTime)
-                //   that.timesObj['time' + index] = setInterval(function () {
-                //     if (times[index] > 0) {
-                //       let day = 0
-                //       let hour = 0
-                //       let minute = 0
-                //       let second = 0 // 时间默认值
-                //       day = Math.floor(times[index] / (60 * 60 * 24))
-                //       hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
-                //       minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
-                //       second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
-                //       if (hour <= 9) hour = '0' + hour
-                //       if (minute <= 9) minute = '0' + minute
-                //       if (second <= 9) second = '0' + second
-                //       data[index].setTime = hour + '：' + minute + '：' + second
-                //       that.sheetAllPush = data
-                //       times[index]--
-                //     } else {
-                //       data[index].setTime = ''
-                //       data[index].grab_sheet_status = 3
-                //       that.sheetAllPush = data
-                //       if (that.timesObj['time' + index]) {
-                //         clearInterval(that.timesObj['time' + index])
-                //       }
-                //     }
-                //   }, 1000)
-                // }
+                let newTime = Math.floor(((new Date()).getTime()) / 1000)
+                if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
+                  let time = new Date(data[index].grab_sheet_push_time)
+                  let lasttime = time.getTime() / 1000
+                  times[index] = Math.floor((lasttime + 7200) - newTime)
+                  that.timesObj['time' + index] = setInterval(function () {
+                    if (times[index] > 0) {
+                      let day = 0
+                      let hour = 0
+                      let minute = 0
+                      let second = 0 // 时间默认值
+                      day = Math.floor(times[index] / (60 * 60 * 24))
+                      hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
+                      minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
+                      second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+                      if (hour <= 9) hour = '0' + hour
+                      if (minute <= 9) minute = '0' + minute
+                      if (second <= 9) second = '0' + second
+                      data[index].setTime = hour + '：' + minute + '：' + second
+                      that.sheetAllPush = data
+                      times[index]--
+                    } else {
+                      data[index].setTime = ''
+                      data[index].grab_sheet_status = 3
+                      that.sheetAllPush = data
+                      if (that.timesObj['time' + index]) {
+                        clearInterval(that.timesObj['time' + index])
+                      }
+                    }
+                  }, 1000)
+                }
               }
-              that.sheetAllPush = data
               that.waitOrder = waitOrder
               that.alreadyOrder = alreadyOrder
               that.resourceOrder = resourceOrder
