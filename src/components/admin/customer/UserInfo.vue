@@ -455,7 +455,7 @@
                     </ul>
                   </el-collapse-transition>
                   <el-collapse-transition>
-                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && allredoreState === 1" class="design-parent">
+                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0" class="design-parent">
                       <div class="count-push">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
@@ -1995,15 +1995,6 @@ export default {
     // 所有推荐设计公司记录
     getGrabSheetAllPush(type, add) {
       let that = this
-      console.log(that.timesObj)
-      for (let index in that.timesObj) {
-        if (that.timesObj['time' + index]) {
-          clearInterval(that.timesObj['time' + index])
-        }
-      }
-      console.log(that.timesObj)
-      that.timesObj = {}
-      console.log(that.timesObj)
       if (!type) {
         that.showAllDesigns = true
       }
@@ -2026,36 +2017,40 @@ export default {
                 } else if (data[index].grab_sheet_status === 1) {
                   waitOrder++
                 }
-                let newTime = Math.floor(((new Date()).getTime()) / 1000)
-                if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                  let time = new Date(data[index].grab_sheet_push_time)
-                  let lasttime = time.getTime() / 1000
-                  times[index] = Math.floor((lasttime + 7200) - newTime)
-                  that.timesObj['time' + index] = setInterval(function () {
-                    if (times[index] > 0) {
-                      let day = 0
-                      let hour = 0
-                      let minute = 0
-                      let second = 0 // 时间默认值
-                      day = Math.floor(times[index] / (60 * 60 * 24))
-                      hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
-                      minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
-                      second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
-                      if (hour <= 9) hour = '0' + hour
-                      if (minute <= 9) minute = '0' + minute
-                      if (second <= 9) second = '0' + second
-                      data[index].setTime = hour + '：' + minute + '：' + second
-                      that.sheetAllPush = data
-                      times[index]--
-                    } else {
-                      data[index].setTime = ''
-                      data[index].grab_sheet_status = 3
-                      that.sheetAllPush = data
-                      if (that.timesObj['time' + index]) {
-                        clearInterval(that.timesObj['time' + index])
+                if (res.data.data.status === 1) {
+                  that.sheetAllPush = data
+                } else {
+                  let newTime = Math.floor(((new Date()).getTime()) / 1000)
+                  if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
+                    let time = new Date(data[index].grab_sheet_push_time)
+                    let lasttime = time.getTime() / 1000
+                    times[index] = Math.floor((lasttime + 7200) - newTime)
+                    that.timesObj['time' + index] = setInterval(function () {
+                      if (times[index] > 0) {
+                        let day = 0
+                        let hour = 0
+                        let minute = 0
+                        let second = 0 // 时间默认值
+                        day = Math.floor(times[index] / (60 * 60 * 24))
+                        hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
+                        minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
+                        second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+                        if (hour <= 9) hour = '0' + hour
+                        if (minute <= 9) minute = '0' + minute
+                        if (second <= 9) second = '0' + second
+                        data[index].setTime = hour + '：' + minute + '：' + second
+                        that.sheetAllPush = data
+                        times[index]--
+                      } else {
+                        data[index].setTime = ''
+                        data[index].grab_sheet_status = 3
+                        that.sheetAllPush = data
+                        if (that.timesObj['time' + index]) {
+                          clearInterval(that.timesObj['time' + index])
+                        }
                       }
-                    }
-                  }, 1000)
+                    }, 1000)
+                  }
                 }
               }
               that.waitOrder = waitOrder
@@ -2163,6 +2158,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           that.boolDesignCompany = false
           that.chooseCompany = []
+          window.location.reload()
           that.getUserProject()
           that.getUserInfo()
         } else {
