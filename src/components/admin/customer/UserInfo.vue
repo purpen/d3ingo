@@ -2020,7 +2020,7 @@ export default {
               for (let index in data) {
                 if (data[index].grab_sheet_status === 3) {
                   resourceOrder++
-                } else if (data[index].grab_sheet_status === 2) {
+                } else if (data[index].grab_sheet_status === 2 || data[index].grab_sheet_status === 4) {
                   alreadyOrder++
                 } else if (data[index].grab_sheet_status === 1) {
                   waitOrder++
