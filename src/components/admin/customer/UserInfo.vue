@@ -326,7 +326,7 @@
                     </p>
                   </div>
                   <el-collapse-transition>
-                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length < 1 && sheetAllPush.length > 0" class="design-parent">
+                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent">
                       <div class="count-push" v-if="allredoreState === 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{waitOrder}}家</div>
@@ -455,7 +455,7 @@
                     </ul>
                   </el-collapse-transition>
                   <el-collapse-transition>
-                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0" class="design-parent">
+                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && cooperation === 1" class="design-parent">
                       <div class="count-push">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
@@ -1331,7 +1331,9 @@
         </div>
         <div>
           <el-button @click="selectDialogClose">取 消</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()">确认匹配</el-button>
+          
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0">确认匹配</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" v-else>确认匹配</el-button>
         </div>
       </span>
     </el-dialog>
@@ -1416,7 +1418,7 @@
                 <el-col :span="6">
                   <div class="choose-refause-round">
                     <div class="choose-success-img"></div>
-                    <div class="choose-success">{{d.status_value}}</div>
+                    <div class="choose-success">{{d.status_value}}11111</div>
                   </div>
                 </el-col>
                 
@@ -1848,7 +1850,7 @@ export default {
       ],
       toolValue: 1,
       isFirstRegion: true,
-
+      cooperation: 0,
       projectList: [],
       crmDesignCompanyList1: [], // 对接设计公司列表前三个
       crmDesignCompanyList: [], // 对接设计公司列表
@@ -1998,6 +2000,11 @@ export default {
       if (!type) {
         that.showAllDesigns = true
       }
+      if (that.timesObj) {
+        for (let index in that.timesObj) {
+          window.clearInterval(that.timesObj[index])
+        }
+      }
       if (that.projectList[0]) {
         let id = that.projectList[0].item_id
         that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
@@ -2005,6 +2012,7 @@ export default {
             if (res.data.data && res.data.data.data.length > 0) {
               let data = res.data.data.data
               that.allredoreState = res.data.data.status
+              that.cooperation = res.data.data.cooperation
               let waitOrder = 0
               let alreadyOrder = 0
               let resourceOrder = 0
@@ -2158,7 +2166,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           that.boolDesignCompany = false
           that.chooseCompany = []
-          window.location.reload()
+          // if (that.timesObj) {
+          //   window.location.reload()
+          // }
           that.getUserProject()
           that.getUserInfo()
         } else {
@@ -3463,7 +3473,7 @@ export default {
     let that = this
     if (that.timesObj) {
       for (let index in that.timesObj) {
-        clearInterval(that.timesObj['time' + index])
+        clearInterval(that.timesObj[index])
       }
     }
   },
