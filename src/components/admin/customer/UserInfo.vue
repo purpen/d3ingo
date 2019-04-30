@@ -431,7 +431,7 @@
                           <el-col :span="6">
                           <div class="choose-refause-round">
                             <div class="grey-clock"></div>
-                            <div class="choose-normal">11:54:32</div>
+                            <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
                           </div>
                           </el-col>
                         </el-row>
@@ -447,7 +447,7 @@
                           <el-col :span="6">
                           <div class="choose-refause-round">
                             <div class="grey-clock"></div>
-                            <div class="choose-normal">11:54:32</div>
+                            <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
                           </div>
                           </el-col>
                         </el-row>
@@ -1423,7 +1423,7 @@
                 <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="grey-clock"></div>
-                  <div class="choose-normal">11:54:32</div>
+                  <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
                 </div>
                 </el-col>
               </el-row>
@@ -1439,7 +1439,7 @@
                 <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="grey-clock"></div>
-                  <div class="choose-normal">11:54:32</div>
+                  <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
                 </div>
                 </el-col>
               </el-row>
@@ -1527,7 +1527,7 @@
               <el-col :span="6">
               <div class="choose-refause-round">
                 <div class="grey-clock"></div>
-                <div class="choose-normal">11:54:32</div>
+                <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
               </div>
               </el-col>
             </el-row>
@@ -3463,6 +3463,11 @@ export default {
     }
   },
   filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy-MM-dd')
+      }
+    },
     formatName(val) {
       return nameToAvatar(val)
     },
