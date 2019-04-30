@@ -346,7 +346,7 @@ export default {
   color: #666
 }
 .case-list {
-  padding: 20px 30px 0;
+  padding: 20px 30px;
 }
 .image-box {
   padding-top: 57%;

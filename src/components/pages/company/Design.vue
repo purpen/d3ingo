@@ -851,6 +851,9 @@ img.avatar {
   font-weight: 400;
   color: #222;
   padding-bottom: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .c-i-label {
   display: inline-block;
