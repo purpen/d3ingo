@@ -30,7 +30,7 @@
               }), '*')
             }
           } else if (data.type === 'loginout') {
-            document.cookie = ''
+            document.cookie = 'myCookie=; expires=' + new Date(0).toUTCString() + '; path=/myPath/'
             localStorage.removeItem('user')
             localStorage.removeItem('ticket')
             localStorage.removeItem('token')
