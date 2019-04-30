@@ -326,7 +326,7 @@
                     </p>
                   </div>
                   <el-collapse-transition>
-                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent">
+                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent show-margin">
                       <div class="count-push" v-if="allredoreState === 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{waitOrder}}家</div>
@@ -346,7 +346,7 @@
                           <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                           <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
                           <span class="padding-l10">{{d.company_name}}</span>
-                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                          <div v-if="item.failure === null && isHasPower && cooperation === 1" class="edit-project fr">
                             <div class="edit-project-tag" v-if="isHasPower">
                               <!-- <p @click="deleteDesignProject(d)">删除</p> -->
                               <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
@@ -4814,6 +4814,9 @@ export default {
 }
 .mar10-10 {
   margin-right: 10px;
+}
+.show-margin .choose-border:nth-last-child(1) {
+  margin-bottom: 20px;
 }
 </style>
 <style>
