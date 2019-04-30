@@ -1145,6 +1145,41 @@
   .sever-icon .el-input__icon {
     line-height: 36px;
   }
+  .all-choose-design .el-dialog__body {
+    padding: 0;
+  }
+  .all-choose-design .el-dialog__header {
+    height: 50px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #D8D8D8;
+  }
+  .all-choose-design .el-dialog__title {
+    flex: 1 1 auto;
+  }
+  .all-choose-design .el-dialog__headerbtn {
+    position: static;
+    font-size: 20px;
+  }
+  .all-choose-design .el-dialog__footer {
+    height: 79px;
+    padding: 0 40px;
+    border-top: 1px solid #D8D8D8;
+  }
+  .all-choose-design .dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .all-choose-design .el-button + .el-button {
+    margin-right: 0;
+  }
+  .el-tooltip__popper.is-add-tooltop.chose-use[x-placement^="right"] {
+    width: 220px;
+    margin-top: 0;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;
