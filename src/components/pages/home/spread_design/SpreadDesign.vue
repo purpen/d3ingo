@@ -240,6 +240,7 @@
       <div class="entering">
         <div class="container">
           <h3 class="title">轻松入驻</h3>
+          <!-- 箭头两边距离不相同 -->
           <!-- <el-row>
             <el-col :xs="6" :sm="6" :md="6" :lg="5"  :offset="1">
               <div class="entering-box">
@@ -269,34 +270,36 @@
             </el-col>
           </el-row> -->
 
-          <el-row>
-            <el-col :xs="6" :sm="6" :md="6" :lg="4">
+          <div class="row-box">
+            <div>
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips">入驻平台</p>
                 </div>
                 <p class="server-txt">注册账号，通过企业实名认证。</p>
               </div>
-            </el-col>
+            </div>
             <img class="fl arrow" :src="require('assets/images/home/spread/pc/Arrow@2x.png')" alt="">
-            <el-col :xs="9" :sm="9" :md="9" :lg="6" class>
+            <div  class="center-box">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips2">完善信息及上传案例</p>
                 </div>
                 <p class="server-txt">完善企业信息，设置接单，上传企业服务案例。</p>
               </div>
-            </el-col>
-            <img class="fl arrow" :src="require('assets/images/home/spread/pc/Arrow@2x.png')" alt="">
-            <el-col :xs="6" :sm="6" :md="6" :lg="5">
+            </div>
+            <img class="fl arrow2" :src="require('assets/images/home/spread/pc/Arrow@2x.png')" alt="">
+            <div>
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips3">接收需求</p>
                 </div>
                 <p class="server-txt">通过平台审核后，精准对接需求客户。</p>
               </div>
-            </el-col>
-          </el-row>
+            </div>
+
+          </div>
+
         </div>
       </div>
       <div class="bg-box">
@@ -334,6 +337,14 @@ export default {
 }
 </script>
 <style scoped>
+.row-box {
+  display: flex;
+  /* justify-content: space-between; */
+}
+.center-box {
+  /* display: block; */
+  margin: 0 auto;
+}
 .bg-f7 {
   background-color: #f7f7f7;
 }
@@ -500,6 +511,10 @@ export default {
 .arrow {
   height: 12px;
   margin: 15px 50px 0 50px;
+}
+.arrow2 {
+  height: 12px;
+  margin: 15px 60px 0 50px;
 }
 .word-tips {
   padding-left: 55px;
