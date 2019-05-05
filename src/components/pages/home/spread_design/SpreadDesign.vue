@@ -240,20 +240,17 @@
       <div class="entering">
         <div class="container">
           <h3 class="title">轻松入驻</h3>
-          <el-row>
-            <el-col :xs="6" :sm="6" :md="6" :lg="6"  :offset="1">
+          <!-- <el-row>
+            <el-col :xs="6" :sm="6" :md="6" :lg="5"  :offset="1">
               <div class="entering-box">
                 <div class="entering-box-top">
-                  <!-- <img :src="require('assets/images/home/spread/1@2x.png')"  alt=""> -->
-                  <!-- <span class="word-tips">入驻平台</span> -->
-                  <!-- <img :src="require('assets/images/home/spread/Arrow@2x.png')"  alt=""> -->
                   <p class="word-tips">入驻平台</p>
                 </div>
                 <p class="server-txt">注册账号，通过企业实名认证。</p>
               </div>
             </el-col>
             
-            <el-col :xs="9" :sm="9" :md="9" :lg="9" :offset="1" class="border-l50">
+            <el-col :xs="9" :sm="9" :md="9" :lg="8" :offset="1" class="border-l50">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips2">完善信息及上传案例</p>
@@ -263,6 +260,35 @@
             </el-col>
             
             <el-col :xs="6" :sm="6" :md="6" :lg="5" :offset="2">
+              <div class="entering-box">
+                <div class="entering-box-top">
+                  <p class="word-tips3">接收需求</p>
+                </div>
+                <p class="server-txt">通过平台审核后，精准对接需求客户。</p>
+              </div>
+            </el-col>
+          </el-row> -->
+
+          <el-row>
+            <el-col :xs="6" :sm="6" :md="6" :lg="4">
+              <div class="entering-box">
+                <div class="entering-box-top">
+                  <p class="word-tips">入驻平台</p>
+                </div>
+                <p class="server-txt">注册账号，通过企业实名认证。</p>
+              </div>
+            </el-col>
+            <img class="fl arrow" :src="require('assets/images/home/spread/pc/Arrow@2x.png')" alt="">
+            <el-col :xs="9" :sm="9" :md="9" :lg="6" class>
+              <div class="entering-box">
+                <div class="entering-box-top">
+                  <p class="word-tips2">完善信息及上传案例</p>
+                </div>
+                <p class="server-txt">完善企业信息，设置接单，上传企业服务案例。</p>
+              </div>
+            </el-col>
+            <img class="fl arrow" :src="require('assets/images/home/spread/pc/Arrow@2x.png')" alt="">
+            <el-col :xs="6" :sm="6" :md="6" :lg="5">
               <div class="entering-box">
                 <div class="entering-box-top">
                   <p class="word-tips3">接收需求</p>
@@ -471,6 +497,10 @@ export default {
 .entering-box-top > img {
   width: 40px;
 }
+.arrow {
+  height: 12px;
+  margin: 15px 50px 0 50px;
+}
 .word-tips {
   padding-left: 55px;
   color: #222222;
@@ -478,8 +508,8 @@ export default {
   font-weight:400;
   line-height: 40px;
   margin-bottom: 20px;
-  background: url('../../../../assets/images/home/spread/pc/1@2x.png') no-repeat left/40px,
-              url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px;
+  background: url('../../../../assets/images/home/spread/pc/1@2x.png') no-repeat left/40px;
+              /* url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px; */
 }
 .word-tips2 {
   padding-left: 55px;
@@ -488,8 +518,8 @@ export default {
   font-weight:400;
   line-height: 40px;
   margin-bottom: 20px;
-  background: url('../../../../assets/images/home/spread/pc/2@2x.png') no-repeat left/40px,
-               url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px;
+  background: url('../../../../assets/images/home/spread/pc/2@2x.png') no-repeat left/40px;
+               /* url('../../../../assets/images/home/spread/pc/Arrow@2x.png') no-repeat right/100px; */
 }
 .word-tips3 {
   padding-left: 55px;
