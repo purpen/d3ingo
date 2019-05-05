@@ -190,239 +190,377 @@
 
             <el-collapse-transition>
               <div class="project-list" v-show="boolProjectList && projectList.length">
-                <ul>
-                  <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
-                    <el-row>
-                      <el-col>
-                        <h5 class="project-name fl">{{item.name}}</h5>
-                        <div class="edit-project fr"  v-if="isHasPower">
-                          <div class="edit-project-tag" v-if="isHasPower">
-                            <p class="edit" @click="editProject(item)">编辑项目</p>
+              <ul>
+                <li v-for="(item, index) in projectList" :key="index" class="project-li fz-14">
+                  <el-row>
+                    <el-col>
+                      <h5 class="project-name fl">{{item.name}}</h5>
+                      <div class="edit-project fr"  v-if="isHasPower">
+                        <div class="edit-project-tag" v-if="isHasPower">
+                          <p class="edit" @click="editProject(item)">编辑项目</p>
+                        </div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">设计类型</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.type_value">{{item.type_value}}</span>
+                        <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">项目预算</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.design_cost_value">{{item.design_cost_value}}</span>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">交付时间</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.cycle_value">{{item.cycle_value}}</span>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <div class="line"></div>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">行业领域</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.industry_value">{{item.industry_value}}</span>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">项目工作地点</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.item_province_value || item.item_city_value">{{item.item_province_value}}{{item.item_city_value}}</span>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">项目描述</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <span v-if="item.summary">{{item.summary}}</span>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">备注</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <el-row>
+                        <el-col :md="24" :lg="24" v-if="!boolRemarks">
+                          <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+                          <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+                          <i @click="editRemarks(item)" v-if="isHasPower" class="margin-l10 el-icon-edit pointer"></i>
+                        </el-col>
+                        
+                        <el-col  :md="20" :lg="20" v-if="boolRemarks && item.item_id === editRemarksId">
+                          <el-input  
+                            v-model="remarksValue" 
+                            :autosize="{minRows: 1, maxRows: 6}" 
+                            autofocus 
+                            type="textarea" 
+                            @keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
+                        </el-col>
+                        <el-col  :md="4" :lg="4" v-if="boolRemarks && item.item_id === editRemarksId" class="remarks-icon">
+                          <i class="el-icon-success fz-20" @click="submitRemarks(item)"></i>
+                          <i class="el-icon-circle-close-outline fz-20" @click="boolRemarks = false, remarksValue = ''"></i>
+                        </el-col>
+                      </el-row>
+                      <!-- <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
+                      <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
+                        <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i> -->
+                    </el-col>
+
+                  </el-row>
+                  <div class="line"></div>
+                  <el-row>
+                    <el-col  :md="4" :lg="4">
+                      <span class="tc-9">创建人</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <div  v-if="item.user_name || item.created_at">
+                        <span v-if="item.user_name">{{item.user_name}}</span>
+                        <span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
+                      </div>
+                      <div v-else>
+                        <span>—</span>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :md="4" :lg="4">
+                      <span class="tc-9">修改人</span>
+                    </el-col>
+                    <el-col :md="20" :lg="20">
+                      <div v-if="item.update_user_name || item.update_user_time">
+                        <span class="item.update_user_name">{{item.update_user_name}}</span>
+                        <span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
+                      </div>
+                      <span v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <!-- 对接设计公司 -->
+                  <div>
+                    <p class="add-design clearfix design-title">
+                    <!-- <span class="fl cur-point" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span> -->
+                    <span class="fl cur-point" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商</span>
+                    <!-- <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button> -->
+                    <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="addDesignCompany(item.item_id)"><i class="el-icon-circle-plus"></i>匹配设计服务商</span>
+                    </p>
+                  </div>
+                  <el-collapse-transition>
+                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent">
+                      <div class="count-push" v-if="allredoreState === 0">
+                        <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
+                        <div class="count-text color-ffa64b">{{waitOrder}}家</div>
+                        <div class="count-text">等待接单。</div>
+                        <div class="count-text color-ff5a5f cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                      </div>
+                      <div class="count-push" v-else>
+                        <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商</div>
+                        <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
+                        <div class="count-text">已接单，</div>
+                        <div class="count-text color-ffa64b">{{resourceOrder}}家</div>
+                        <div class="count-text">拒绝接单。</div>
+                        <div class="count-text color-09 cur-point" @click="getSystemAllPush()">选择服务商</div>
+                      </div>
+                      <li class="design-li choose-border margin-t20"  v-for="(d, i) in sheetAllPush" :key="i" v-if="d.is_appoint === 1">
+                        <div class="margin-b-10">
+                          <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                          <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                          <span class="padding-l10">{{d.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                            <div class="edit-project-tag" v-if="isHasPower">
+                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                              <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
+                            </div>
                           </div>
                         </div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">设计类型</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.type_value">{{item.type_value}}</span>
-												 <span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">项目预算</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.design_cost_value">{{item.design_cost_value}}</span>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">交付时间</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.cycle_value">{{item.cycle_value}}</span>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <div class="line"></div>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">行业领域</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.industry_value">{{item.industry_value}}</span>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">项目工作地点</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.item_province_value || item.item_city_value">{{item.item_province_value}}{{item.item_city_value}}</span>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">项目描述</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-                        <span v-if="item.summary">{{item.summary}}</span>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">备注</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-												<el-row>
-													<el-col :md="24" :lg="24" v-if="!boolRemarks">
-														<span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-														<span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-														<i @click="editRemarks(item)" v-if="isHasPower" class="margin-l10 el-icon-edit pointer"></i>
-													</el-col>
-													
-													<el-col  :md="20" :lg="20" v-if="boolRemarks && item.item_id === editRemarksId">
-														<el-input  
-															v-model="remarksValue" 
-															:autosize="{minRows: 1, maxRows: 6}" 
-															autofocus 
-															type="textarea" 
-															@keydown.native.enter="submitRemarks(item)" placeholder="输入备注"></el-input>
-													</el-col>
-													<el-col  :md="4" :lg="4" v-if="boolRemarks && item.item_id === editRemarksId" class="remarks-icon">
-														<i class="el-icon-success fz-20" @click="submitRemarks(item)"></i>
-														<i class="el-icon-circle-close-outline fz-20" @click="boolRemarks = false, remarksValue = ''"></i>
-													</el-col>
-												</el-row>
-                        <!-- <span v-if="item.remarks" class="pointer">{{item.remarks}}</span>
-                        <span v-if="!item.remarks && isHasPower" @click="editRemarks(item)" class="pointer">添加备注</span>
-                          <i @click="editRemarks(item)" v-if="isHasPower" class="el-icon-edit pointer"></i> -->
-                      </el-col>
+                        <el-row :gutter="10">
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">联系人</span>
+                              <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">职务</span>
+                              <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">电话</span>
+                              <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">微信</span>
+                              <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                        </el-row>
 
-                    </el-row>
-                    <div class="line"></div>
-                    <el-row>
-                      <el-col  :md="4" :lg="4">
-                        <span class="tc-9">创建人</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-												<div  v-if="item.user_name || item.created_at">
-													<span v-if="item.user_name">{{item.user_name}}</span>
-													<span v-if="item.created_at">{{ '(' + item.created_at.date_format().format('yyyy-MM-dd hh:mm:ss') + ')' }}</span>
-												</div>
-												<div v-else>
-													<span>—</span>
-												</div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :md="4" :lg="4">
-                        <span class="tc-9">修改人</span>
-                      </el-col>
-                      <el-col :md="20" :lg="20">
-												<div v-if="item.update_user_name || item.update_user_time">
-													<span class="item.update_user_name">{{item.update_user_name}}</span>
-													<span v-if="item.update_user_time">{{ '(' + item.update_user_time.date_format().format('yyyy-MM-dd hh:mm:ss') + ')'}}</span>
-												</div>
-												<span v-else>—</span>
-                      </el-col>
-                    </el-row>
-                    <!-- 对接设计公司 -->
-                    <div>
-                      <p class="add-design clearfix design-title">
-                      <span class="fl" @click="boolDesigeList = !boolDesigeList"><i :class="['fz-12', 'item-arrow', 'fx-icon-nothing-lower', {'i-active': !boolDesigeList}]"></i>设计服务商  {{'(' + crmDesignCompanyList.length + ')'}}</span>
-                      <!-- <el-button size="small" class="fr red-button" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">匹配设计服务商</el-button> -->
-                      <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="addDesignCompany(item.item_id)"><i class="el-icon-circle-plus"></i>匹配设计服务商</span>
-                      </p>
-                    </div>
-                    <el-collapse-transition>
-                      <ul v-if="boolDesigeList" class="design-parent">
-                        <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
-                          <div class="margin-b-10">
-                            <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
-                            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                            <span class="padding-l10">{{d.company_name}}</span>
-                            <div v-if="item.failure === null && isHasPower" class="edit-project fr">
-                              <div class="edit-project-tag" v-if="isHasPower">
-                                <!-- <p @click="deleteDesignProject(d)">删除</p> -->
-                                <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
-                              </div>
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 3">
+                          <el-col :span="6">
+                            <div class="choose-refause-round">
+                              <div class="choose-refause-img"></div>
+                              <div class="choose-refause">{{d.status_value}}</div>
+                            </div>
+                          </el-col>
+                          
+                          <el-col :span="15">
+                            <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+                          </el-col>
+                        </el-row>
+
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 1">
+                          <el-col :span="6">
+                            <div class="choose-refause-round">
+                              <div class="choose-normal-img"></div>
+                              <div class="choose-normal">{{d.status_value}}</div>
+                            </div>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <div class="choose-refause-round">
+                            <div class="grey-clock"></div>
+                            <div class="choose-normal">剩余接单时间 {{d.setTime}}</div>
+                          </div>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <div class="normal-progess-box">
+                            <div class="choose-golden-tan mar-right-4"></div>
+                            <div class="normal-progess-text">该服务商接单后将自动对接给客户</div>
+                          </div>
+                          </el-col>
+                        </el-row>
+
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 2">
+                          <el-col :span="6">
+                            <div class="choose-refause-round">
+                              <div class="choose-success-img"></div>
+                              <div class="choose-success">{{d.status_value}}</div>
+                            </div>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <div class="choose-refause-round">
+                            <div class="grey-clock"></div>
+                            <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
+                          </div>
+                          </el-col>
+                        </el-row>
+
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 4">
+                          <el-col :span="6">
+                            <div class="choose-refause-round">
+                              <div class="choose-normal-img"></div>
+                              <div class="choose-normal">{{d.status_value}}</div>
+                            </div>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <div class="choose-refause-round">
+                            <div class="grey-clock"></div>
+                            <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
+                          </div>
+                          </el-col>
+                        </el-row>
+                      </li>
+                    </ul>
+                  </el-collapse-transition>
+                  <el-collapse-transition>
+                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && cooperation === 1" class="design-parent">
+                      <div class="count-push">
+                        <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
+                        <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
+                        <div class="count-text">已接单，</div>
+                        <div class="count-text color-ffa64b">{{resourceOrder}}家</div>
+                        <div class="count-text">拒绝接单。</div>
+                        <div class="count-text color-ff5a5f cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                      </div>
+                      <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
+                        <div class="margin-b-10">
+                          <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
+                          <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                          <span class="padding-l10">{{d.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                            <div class="edit-project-tag" v-if="isHasPower">
+                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                              <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
                             </div>
                           </div>
-                          <el-row :gutter="10">
-                            <el-col :span="6">
-                              <div class="flex-column">
-                                <span class="tc-9">联系人</span>
-                                <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
-																<span v-else>—</span>
-                              </div>
-                            </el-col>
-                            <el-col :span="6">
-                              <div class="flex-column">
-                                <span class="tc-9">职务</span>
-                                <span v-if="d.position" class="fz-14">{{d.position}}</span>
-																<span v-else>—</span>
-                              </div>
-                            </el-col>
-                            <el-col :span="6">
-                              <div class="flex-column">
-                                <span class="tc-9">电话</span>
-                                <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
-																<span v-else>—</span>
-                              </div>
-                            </el-col>
-                            <el-col :span="6">
-                              <div class="flex-column">
-                                <span class="tc-9">微信</span>
-                                <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
-																<span v-else>—</span>
-                              </div>
-                            </el-col>
-                          </el-row>
-
-
-                          <el-row class="design-li-footer">
-                            <el-col :span="6">
-                              <span :class="['progess-current', {'refuse': d.status > 6 }]">{{d.status_value}}</span>
-                            </el-col>
-                            
-                            <el-col :span="6">
-                            <span v-if="d.status < 5">
-                              <i class="fx fx-icon-time va-middle"></i>
-                              <span class="tc-red va-middle">{{d.status_time | getProgessTime}}</span>
-                            </span>
-                            <span v-else><i class="fx fx-icon-time va-middle"></i>
-                              <span class="va-middle">{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
-                            </span>
-                            </el-col>
-                            
-                            <el-col :span="6">
-                            <div class="progess-box">
-                              <el-popover
-                                placement="top-end"
-                                width="680"
-                                trigger="click">
-                                  <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
-                                    <el-steps :active="stageActive" class="steps-item">
-                                      <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
-                                      <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
-                                      <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
-                                      <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
-                                      <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                                      <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
-                                      <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
-                                      <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
-                                    </el-steps>
-                                    <div class="steps-remarks" v-if="d.status > 6">
-                                      <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
-                                      <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
-                                    </div>
-                                  </div>
-                                  <!-- v-if="d.status !== 1" -->
-                                <span  slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-                              </el-popover>
+                        </div>
+                        <el-row :gutter="10">
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">联系人</span>
+                              <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                              <span v-else>—</span>
                             </div>
-                            </el-col>
-                          </el-row>
-                          <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
-                        </li>
-                        <li>
-                          <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
-                        </li>
-                      </ul>
-                    </el-collapse-transition>
-                  </li>
-                </ul>
-              </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">职务</span>
+                              <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">电话</span>
+                              <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                          <el-col :span="6">
+                            <div class="flex-column">
+                              <span class="tc-9">微信</span>
+                              <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                              <span v-else>—</span>
+                            </div>
+                          </el-col>
+                        </el-row>
+
+
+                        <el-row class="design-li-footer">
+                          <el-col :span="6">
+                            <span :class="['progess-current', {'refuse': d.status > 6 }]">{{d.status_value}}</span>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <span v-if="d.status < 5">
+                            <i class="fx fx-icon-time va-middle"></i>
+                            <span class="tc-red va-middle">{{d.status_time | getProgessTime}}</span>
+                          </span>
+                          <span v-else><i class="fx fx-icon-time va-middle"></i>
+                            <span class="va-middle">{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
+                          </span>
+                          </el-col>
+                          
+                          <el-col :span="6">
+                          <div class="progess-box">
+                            <el-popover
+                              placement="top-end"
+                              width="680"
+                              trigger="click">
+                                <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
+                                  <el-steps :active="stageActive" class="steps-item">
+                                    <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
+                                    <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
+                                    <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
+                                    <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
+                                    <el-step v-if="stageArr[3]" :title="stageArr[3].message" :description="stageArr[3].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                    <el-step v-if="stageArr[4]" :title="stageArr[4].message" :description="stageArr[4].time" :icon="stageArr[3].status === -1? 'el-icon-error' : 'el-icon-success'"></el-step>
+                                    <el-step v-if="stageArr[5] && stageArr[5].status !== -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-success"></el-step>
+                                    <el-step v-if="stageArr[5] && stageArr[5].status === -1" :title="stageArr[5].message" :description="stageArr[5].time" icon="el-icon-error"></el-step>
+                                  </el-steps>
+                                  <div class="steps-remarks" v-if="d.status > 6">
+                                    <p class="line-height30">拒绝原因: &nbsp;&nbsp;<span>{{d.message}}</span></p>
+                                    <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
+                                  </div>
+                                </div>
+                                <!-- v-if="d.status !== 1" -->
+                              <span  slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
+                            </el-popover>
+                          </div>
+                          </el-col>
+                        </el-row>
+                        <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
+                      </li>
+                      <li>
+                        <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
+                      </li>
+                    </ul>
+                  </el-collapse-transition>
+                </li>
+              </ul>
+            </div>
             </el-collapse-transition>
             <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
@@ -684,8 +822,7 @@
       title="编辑客户"
       class="userinfo-dialog"
       :visible.sync="BoolEditUserInfo">
-      <el-form :model="clientForm" :rules="ruleClientForm" class="userinfo-form scroll-bar"
-                    ref="ruleClientForm" label-width="100px">
+      <el-form :model="clientForm" :rules="ruleClientForm" class="userinfo-form scroll-bar" ref="ruleClientForm" label-width="100px">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
             <el-form-item label="商机所有人" prop="execute_user_id">
@@ -961,7 +1098,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       title="匹配设计公司"
       class="userinfo-dialog"
       :visible.sync="boolDesignCompany"
@@ -1032,6 +1169,384 @@
         <el-button @click="boolDesignCompany = false">取 消</el-button>
         <el-button type="primary" :loading="submitDesignLoading" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保 存</el-button>
       </span>
+    </el-dialog> -->
+
+    <!-- 编辑信息 -->
+    <el-dialog
+      title="匹配设计公司"
+      class="userinfo-dialog"
+      :visible.sync="boolEditDesignCompany"
+      width="680px">
+      <el-form  label-width="140px" :model="designCompanyForm" class="userinfo-form scroll-bar" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="设计服务商名称" prop="design_company_id">
+              <el-select v-model="designCompanyForm.design_company_id" filterable :disabled="boolEditDesignCompany" placeholder="请选择设计服务商" @change="selectdesignCompany">
+                <el-option
+                  v-for="(d, index) in designCompanyList"
+                  :key="index"
+                  :label="d.company_name"
+                  :value="d.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人名称" prop="contact_name">
+              <el-input v-model="designCompanyForm.contact_name" :maxlength="20" placeholder="请填写联系人名称"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人电话" prop="phone">
+              <el-input v-model="designCompanyForm.phone" :maxlength="11" placeholder="请填写联系人电话"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="联系人职位" prop="position">
+              <el-input v-model="designCompanyForm.position" :maxlength="20" placeholder="请填写联系人职位"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="微信号" prop="wx">
+              <el-input v-model="designCompanyForm.wx" :maxlength="20" placeholder="请填写联系人微信号"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24">
+            <el-form-item label="备注" prop="summary">
+              <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.summary" placeholder="请填写备注"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <span v-if="boolEditDesignCompany" slot="footer" class="dialog-footer design-btn fz-0 flex-right">
+        <el-button class="margin-r-15" @click="boolEditDesignCompany = false">取 消</el-button>
+        <el-button type="primary" @click="submitEditDesignCompanyForm('ruleDesignCompanyForm')">保 存
+        </el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 添加服务商 -->
+    <el-dialog
+      title="匹配设计服务商"
+      class="userinfo-dialog custom-userinfo-dialog"
+      :visible.sync="boolDesignCompany"
+      width="780px">
+      <div class="dialog-body scroll-bar">
+        <div class="title-round">
+          <div class="title-title">选择设计服务商</div>
+          <el-tooltip effect="add-tooltop chose-use" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
+            <div class="title-mark"></div>
+          </el-tooltip>
+        </div>
+        <el-select v-model="designCompanyForm.design_company_id" filterable placeholder="请输入或选择设计服务商" @change="addSelectCompany">
+          <el-option
+            v-for="(d, index) in designCompanyList"
+            :key="index"
+            :label="d.company_name"
+            :value="d.id">
+          </el-option>
+        </el-select>
+
+        <div class="company-style" v-for="(item, index) in chooseCompany" :key="index">
+          <div class="company-info">
+            <div class="company-logo">
+              <img :src="item.logo" v-if="item.logo">
+              <img src="../../../assets/images/df_100x100.png" v-else>
+            </div>
+            <div class="info-style">
+              <div class="info-name">{{item.company_name || '—'}}</div>
+              <div class="info-data">
+                <div class="info-text-round">
+                  <div class="info-text">已对接</div>
+                  <div class="info-num">{{item.docking || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">签约项目</div>
+                  <div class="info-num">{{item.signing || '0'}}</div>
+                </div>
+                <div class="info-text-round pad-left-10 ">
+                  <div class="info-text">本月对接</div>
+                  <div class="info-num">{{item.this_month_docking || '0'}}次</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="company-close" @click="deleteSelectCompany(item.id)"></div>
+        </div>
+
+        <div class="title-round pad-top-30-bot-0" v-if="recommenLists.length > 0">
+          <div class="title-title">系统匹配的设计服务商</div>
+          <el-tooltip effect="add-tooltop chose-use" content="系统自动匹配6家服务商。服务商接单后可选择合适的1-2家对接给客户。" placement="right">
+            <div class="title-mark"></div>
+          </el-tooltip>
+        </div>
+        <div class="bottom-company">
+          <div class="company-style" v-for="item in recommenLists" :key="item.company_name">
+            <div class="company-info">
+              <div class="company-logo">
+                <img :src="item.logo" v-if="item.logo">
+                <img src="../../../assets/images/df_100x100.png" v-else>
+              </div>
+              <div class="info-style">
+                <div class="info-name">{{item.company_name || '—'}}</div>
+                <div class="info-data">
+                  <div class="info-text-round">
+                    <div class="info-text">已对接</div>
+                    <div class="info-num">{{item.docking || '0'}}</div>
+                  </div>
+                  <div class="info-text-round pad-left-10 ">
+                    <div class="info-text">签约项目</div>
+                    <div class="info-num">{{item.signing || '0'}}</div>
+                  </div>
+                  <div class="info-text-round pad-left-10 ">
+                    <div class="info-text">本月对接</div>
+                    <div class="info-num">{{item.this_month_docking || '0'}}次</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer design-btn fz-0">
+        <div class="choose-golden-round">
+          <div class="choose-golden-tan"></div>
+          <div class="choose-golden-text">确认匹配后，{{chooseCompany.length + recommenLists.length}}家设计公司将收到接单提醒</div>
+        </div>
+        <div>
+          <el-button @click="selectDialogClose">取 消</el-button>
+          
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0">确认匹配</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" v-else>确认匹配</el-button>
+        </div>
+      </span>
+    </el-dialog>
+
+    <!-- 全部服务商 -->
+    <el-dialog
+      title="系统匹配的设计服务商"
+      :visible.sync="showAllDesigns"
+      width="780px" class="all-choose-design"
+      top="10vh">
+      <div class="choose-design-body scroll-bar">
+        <ul class="design-parent">
+          <li v-for="(d, i) in sheetAllPush" :key="i" class="design-li margin-t20">
+            <div class="mar-bottom-18 flex-center-space">
+              <div>
+                <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                <span class="padding-l10">{{d.company_name}}</span>
+              </div>
+            </div>
+            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">联系人</span>
+                  <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">职务</span>
+                  <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">电话</span>
+                  <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">微信</span>
+                  <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+              <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="choose-refause-img"></div>
+                  <div class="choose-refause">{{d.status_value}}</div>
+                </div>
+              </el-col>
+              
+              <el-col :span="15">
+                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+              </el-col>
+            </el-row>
+
+              <el-row class="design-li-footer" v-if="d.grab_sheet_status === 1">
+                <el-col :span="6">
+                  <div class="choose-refause-round">
+                    <div class="choose-normal-img"></div>
+                    <div class="choose-normal">{{d.status_value}}</div>
+                  </div>
+                </el-col>
+                
+                <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="grey-clock"></div>
+                  <div class="choose-normal">{{d.setTime}}</div>
+                </div>
+                </el-col>
+              </el-row>
+
+              <el-row class="design-li-footer" v-if="d.grab_sheet_status === 2">
+                <el-col :span="6">
+                  <div class="choose-refause-round">
+                    <div class="choose-success-img"></div>
+                    <div class="choose-success">{{d.status_value}}11111</div>
+                  </div>
+                </el-col>
+                
+                <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="grey-clock"></div>
+                  <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
+                </div>
+                </el-col>
+              </el-row>
+
+              <el-row class="design-li-footer" v-if="d.grab_sheet_status === 4">
+                <el-col :span="6">
+                  <div class="choose-refause-round">
+                    <div class="choose-normal-img"></div>
+                    <div class="choose-normal">{{d.status_value}}</div>
+                  </div>
+                </el-col>
+                
+                <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="grey-clock"></div>
+                  <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
+                </div>
+                </el-col>
+              </el-row>
+          </li>
+        </ul>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="showAllDesigns = false">取 消</el-button>
+        <el-button type="primary" @click="showAllDesigns = false">确 定</el-button> -->
+        <div class="footer-img"></div>
+        <div class="footer-img-text">系统已匹配{{sheetAllPush.length}}家设计服务商，{{waitOrder}}家等待接单</div>
+      </span>
+    </el-dialog>
+
+    <!-- 系统推荐服务商 -->
+    <el-dialog
+      title="系统匹配的设计服务商"
+      :visible.sync="showSystemAllPush"
+      width="780px" class="all-choose-design"
+      top="10vh">
+      <div class="choose-design-body scroll-bar">
+        <ul class="design-parent">
+          <li v-for="(d, i) in systemAllPush" :key="i" class="design-li margin-t20">
+            <div class="mar-bottom-18 flex-center-space">
+              <div>
+                <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
+                <span class="padding-l10">{{d.company_name}}</span>
+              </div>
+              <div class="choose-img-click" :class="{'red-choose-img-click' : clickChooseDesignId.includes(d.id)}" @click="clickChooseDesign(d.id)" v-if="d.grab_sheet_status === 2"></div>
+            </div>
+            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">联系人</span>
+                  <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">职务</span>
+                  <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">电话</span>
+                  <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="flex-column">
+                  <span class="tc-9">微信</span>
+                  <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                  <span v-else>—</span>
+                </div>
+              </el-col>
+            </el-row>
+
+
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+              <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="choose-refause-img"></div>
+                  <div class="choose-refause">{{d.status_value}}</div>
+                </div>
+              </el-col>
+              
+              <el-col :span="6">
+                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+              </el-col>
+            </el-row>
+
+            <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 2">
+              <el-col :span="6">
+                <div class="choose-refause-round">
+                  <div class="choose-success-img"></div>
+                  <div class="choose-success">{{d.status_value}}</div>
+                </div>
+              </el-col>
+              
+              <el-col :span="6">
+              <div class="choose-refause-round">
+                <div class="grey-clock"></div>
+                <div class="choose-normal">{{d.receipt_time | timeFormat}}</div>
+              </div>
+              </el-col>
+            </el-row>
+          </li>
+        </ul>
+      </div>
+      <span slot="footer" class="flex-center-space height-100">
+        <div class="choose-golden-round">
+          <div class="choose-golden-tan"></div>
+          <div class="choose-golden-text">选择合适的设计服务商对接给客户</div>
+        </div>
+        <div>
+          <el-button @click="closeGrabSheetDesignatedOrder()" class="mar10-10">取 消</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetRefuseRecommend()" v-if="clickChooseDesignId.length < 1">都不合适</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetDesignatedOrder()" v-else>确认选择</el-button>
+        </div>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -1055,22 +1570,30 @@ export default {
       query: {},
       currentUser: '新建客户',
       currentId: '',
+      timesObj: {},
       userLoading: false,
       userProjectLoading: false,
       userLogLoading: false,
       submitDesignLoading: false,
+      allShowAllDesigns: false,
       boolProject: false,
       boolProgressContant: true,
       boolProjectList: true,
       boolDesigeList: true,
       boolRemarks: false,
+      sheetAllPush: '',
+      waitOrder: 0, // 等待
+      alreadyOrder: 0, // 接单
+      resourceOrder: 0, // 拒绝
+      sheetAllPushState: 0,
       remarksValue: '',
       editRemarksId: '',
+      recommenLists: '', // 推荐列表
       dialogProjectTitle: '',
       selectedsource: [],
       QRCode: '', // 需求方二维码链接
       QRCode2: '', // 设计服务商二维码链接
-      option: '',
+      option: 'project',
       activeName: 1,
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -1080,6 +1603,7 @@ export default {
       boolCreateUser: false,
       boolallDesign: true,
       adminVoIpList: [], // 业务人员列表
+      chooseCompany: [],
       clientList: {},
       clientForm: {
         company: '',
@@ -1326,7 +1850,7 @@ export default {
       ],
       toolValue: 1,
       isFirstRegion: true,
-
+      cooperation: 0,
       projectList: [],
       crmDesignCompanyList1: [], // 对接设计公司列表前三个
       crmDesignCompanyList: [], // 对接设计公司列表
@@ -1348,7 +1872,7 @@ export default {
       boolDesignCompany: false,
       boolEditDesignCompany: false,
       editDesignParams: {},
-
+      showAllDesigns: false, // 推送的服务商弹窗
       followVal: '',
       editFollowVal: '',
       followTime: '',
@@ -1374,16 +1898,17 @@ export default {
       linkProjectValue: '',
       loading: false,
       states: [],
-
+      showSystemAllPush: false,
       projectSchedule: [],
-
+      systemAllPush: '',
       boolClueStatus: false,
       currentStatus: '',
       ClueStatusRemarks: '', // 更改状态备注
       label_cause: '',
+      allredoreState: 0,
       boolClueStatus2: true, // 显示无效后者流失
       isOpen: true,
-
+      clickChooseDesignId: [],
       boolStage: false,
       stageArr: [],
       stageActive: 0,
@@ -1392,6 +1917,269 @@ export default {
     }
   },
   methods: {
+    closeGrabSheetDesignatedOrder() {
+      this.showSystemAllPush = false
+      this.clickChooseDesignId = []
+    },
+    clickChooseDesign(id) {
+      let that = this
+      if (that.clickChooseDesignId.length > 0) {
+        let add = [...that.clickChooseDesignId]
+        let ishas = false
+        for (let i in add) {
+          if (add[i] === id) {
+            ishas = true
+          }
+        }
+        if (ishas) {
+          for (let index in add) {
+            if (add[index] === id) {
+              add.splice(index, 1)
+            }
+          }
+        } else {
+          add.push(id)
+        }
+        that.clickChooseDesignId = add
+      } else {
+        that.clickChooseDesignId.push(id)
+      }
+    },
+    // 商务指定订单
+    postGrabSheetDesignatedOrder() {
+      let that = this
+      let row = {
+        id: '',
+        design: []
+      }
+      row.id = that.projectList[0].item_id
+      row.design = that.clickChooseDesignId
+      that.$http.post(api.adminGrabSheetDesignatedOrder, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.clickChooseDesignId = []
+          that.$message.success(res.data.meta.message)
+          that.getUserProject()
+          that.showSystemAllPush = false
+        } else {
+          that.showSystemAllPush = false
+          that.clickChooseDesignId = []
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.showSystemAllPush = false
+        that.clickChooseDesignId = []
+        console.log(error.message)
+        that.$message.error(error.message)
+      })
+    },
+    postGrabSheetRefuseRecommend() {
+      let that = this
+      let row = {
+        id: ''
+      }
+      row.id = that.projectList[0].item_id
+      that.$http.post(api.adminGrabSheetRefuseRecommend, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.$message.success(res.data.meta.message)
+          that.getUserProject()
+          that.showSystemAllPush = false
+        } else {
+          that.showSystemAllPush = false
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.showSystemAllPush = false
+        that.clickChooseDesignId = []
+        console.log(error.message)
+        that.$message.error(error.message)
+      })
+    },
+    // 所有推荐设计公司记录
+    getGrabSheetAllPush(type, add) {
+      let that = this
+      if (!type) {
+        that.showAllDesigns = true
+      }
+      if (that.timesObj) {
+        for (let index in that.timesObj) {
+          window.clearInterval(that.timesObj[index])
+        }
+      }
+      if (that.projectList[0]) {
+        let id = that.projectList[0].item_id
+        that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            if (res.data.data && res.data.data.data.length > 0) {
+              let data = res.data.data.data
+              that.allredoreState = res.data.data.status
+              that.cooperation = res.data.data.cooperation
+              let waitOrder = 0
+              let alreadyOrder = 0
+              let resourceOrder = 0
+              let times = []
+              for (let index in data) {
+                if (data[index].grab_sheet_status === 3) {
+                  resourceOrder++
+                } else if (data[index].grab_sheet_status === 2) {
+                  alreadyOrder++
+                } else if (data[index].grab_sheet_status === 1) {
+                  waitOrder++
+                }
+                if (res.data.data.status === 1) {
+                  that.sheetAllPush = data
+                } else {
+                  let newTime = Math.floor(((new Date()).getTime()) / 1000)
+                  if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
+                    let time = new Date(data[index].grab_sheet_push_time)
+                    let lasttime = time.getTime() / 1000
+                    times[index] = Math.floor((lasttime + 7200) - newTime)
+                    that.timesObj['time' + index] = setInterval(function () {
+                      if (times[index] > 0) {
+                        let day = 0
+                        let hour = 0
+                        let minute = 0
+                        let second = 0 // 时间默认值
+                        day = Math.floor(times[index] / (60 * 60 * 24))
+                        hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
+                        minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
+                        second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+                        if (hour <= 9) hour = '0' + hour
+                        if (minute <= 9) minute = '0' + minute
+                        if (second <= 9) second = '0' + second
+                        data[index].setTime = hour + '：' + minute + '：' + second
+                        that.sheetAllPush = data
+                        times[index]--
+                      } else {
+                        data[index].setTime = ''
+                        data[index].grab_sheet_status = 3
+                        that.sheetAllPush = data
+                        if (that.timesObj['time' + index]) {
+                          clearInterval(that.timesObj['time' + index])
+                        }
+                      }
+                    }, 1000)
+                  }
+                }
+              }
+              that.waitOrder = waitOrder
+              that.alreadyOrder = alreadyOrder
+              that.resourceOrder = resourceOrder
+            }
+          }
+        }).catch(error => {
+          console.error(error.message)
+          // that.$message.error(error.message)
+        })
+      }
+    },
+    // 所有系统推荐设计公司
+    getSystemAllPush() {
+      let that = this
+      that.showSystemAllPush = true
+      let id = that.projectList[0].item_id
+      that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          if (res.data.data && res.data.data.data.length > 0) {
+            let data = res.data.data.data
+            let systemAllPush = []
+            for (let index in data) {
+              if (data[index].is_appoint === 0) {
+                systemAllPush.push(data[index])
+              }
+            }
+            that.systemAllPush = systemAllPush
+          }
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.error(error.message)
+        that.$message.error(error.message)
+      })
+    },
+    // 添加匹配服务商
+    addSelectCompany(val) {
+      let that = this
+      that.designCompanyList.forEach((item, i) => {
+        if (item.id === val) {
+          let data = {}
+          data.id = item.id
+          data.company_name = item.company_name
+          data.docking = item.docking
+          data.signing = item.signing
+          data.this_month_docking = item.this_month_docking
+          if (item.logo_image && item.logo_image.logo) {
+            data.logo = item.logo_image.logo
+          }
+          if (that.chooseCompany.length === 2) {
+            that.$message.error('最多选择两家设计服务商')
+          }
+          if (that.chooseCompany.length < 2) {
+            that.chooseCompany.push(data)
+          }
+        }
+      })
+    },
+    selectDialogClose() {
+      let that = this
+      that.boolDesignCompany = false
+      that.chooseCompany = []
+    },
+    deleteSelectCompany(id) {
+      let that = this
+      for (let index in that.chooseCompany) {
+        if (that.chooseCompany[index].id === id) {
+          that.chooseCompany.splice(index, 1)
+        }
+      }
+    },
+    recommenList(id) {
+      let that = this
+      that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          let data = res.data.data
+          for (let index in data) {
+            if (data[index].logo_image && data[index].logo_image.logo) {
+              data[index].logo = data[index].logo_image.logo
+            }
+          }
+          that.recommenLists = res.data.data
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    addGrabSheetPush() {
+      let that = this
+      let row = {
+        id: '',
+        design: []
+      }
+      row.id = that.projectList[0].item_id
+      for (let index in that.chooseCompany) {
+        row.design.push(that.chooseCompany[index].id)
+      }
+      that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          that.boolDesignCompany = false
+          that.chooseCompany = []
+          // if (that.timesObj) {
+          //   window.location.reload()
+          // }
+          that.getUserProject()
+          that.getUserInfo()
+        } else {
+          that.$message.error(res.data.meta.message)
+          that.boolDesignCompany = false
+        }
+      }).catch(error => {
+        that.$message.error(error.message)
+        that.boolFollowLog = false
+      })
+    },
     redirect() {
       this.$router.push({name: 'adminPotentialUserList', params: this.query})
     },
@@ -1429,7 +2217,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           const dataArr = res.data.data
           dataArr.forEach(item => {
-            console.log(item)
+            // console.log(item)
             let {feedback} = item
             let arr = Object.values(feedback)
             item.feedback = arr
@@ -1490,7 +2278,7 @@ export default {
         }
       })
       this.stageArr = stageArr
-      console.log(stageArr)
+      // console.log(stageArr)
       this.boolStage = true
     },
     importWeb() { // 导入社区
@@ -2234,6 +3022,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
           this.projectList = data
+          let type = true
+          this.getGrabSheetAllPush(type)
           this.userProjectLoading = false
           this.boolallDesign = true
           if (data[0]) {
@@ -2266,8 +3056,8 @@ export default {
         wx: '',
         summary: ''
       }
+      this.recommenList(this.projectList[0].item_id)
       this.boolDesignCompany = true
-      this.boolEditDesignCompany = false
       this.getDesignCompanyList()
     },
     getDesignCompanyList() {
@@ -2457,7 +3247,6 @@ export default {
       this.$set(this.designCompanyForm, 'summary', d.summary)
       this.$set(this.designCompanyForm, 'company_name', d.company_name)
       this.$set(this.designCompanyForm, 'position', d.position)
-      this.boolDesignCompany = true
       this.boolEditDesignCompany = true
       this.editDesignParams = {
         design_id: d.id,
@@ -2665,8 +3454,8 @@ export default {
       return false
     },
     isFollowTime() {
-      console.log(this.userForm.created_at)
-      console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
+      // console.log(this.userForm.created_at)
+      // console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
       return this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10)
     },
     activeLogList() {
@@ -2680,14 +3469,33 @@ export default {
       })
     }
   },
+  beforeDestroy() {
+    let that = this
+    if (that.timesObj) {
+      for (let index in that.timesObj) {
+        clearInterval(that.timesObj[index])
+      }
+    }
+  },
   watch: {
     option(val) {
       if (val === 'project') {
         this.getUserProject()
       }
+    },
+    sheetAllPush: {
+      handler(newValue, oldValue) {
+        return newValue
+      },
+      deep: true
     }
   },
   filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy-MM-dd')
+      }
+    },
     formatName(val) {
       return nameToAvatar(val)
     },
@@ -2728,7 +3536,6 @@ export default {
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
-      this.option = 'project'
       this.getUserProject()
       this.getLogList()
     } else {
@@ -3115,6 +3922,11 @@ export default {
 .design-li  .flex-column > span:nth-child(1) {
 
 }
+.choose-design-body {
+  padding: 10px 50px 30px 50px;
+  height: 60vh;
+  overflow-x: hidden;
+}
 .design-info > div {
   width: 150px;
 }
@@ -3136,6 +3948,30 @@ export default {
 }
 .design-li-footer > span:first-child {
   margin-right: 60px;
+}
+.all-choose-design .design-li-footer {
+  padding-top: 0;
+  height: 47px;
+  display: flex;
+  align-items: center;
+}
+.all-choose-design .design-li {
+  padding-bottom: 0;
+  border: 1px solid rgba(216,216,216,1);
+  border-radius: 4px;
+}
+.all-choose-design .design-li .flex-column > span {
+  padding-bottom: 15px;
+}
+.footer-img {
+  width: 16px;
+  height: 16px;
+}
+.footer-img-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(102,102,102,1);
 }
 .progess-current {
   padding-left: 20px;
@@ -3235,7 +4071,9 @@ export default {
   width: 40px;
   height: 40px;
 }
-
+.mar-bottom-18 {
+  margin-bottom: 18px;
+}
 .remarks-icon {
 
 }
@@ -3287,7 +4125,128 @@ export default {
   margin: 0 -30px 10px -30px;
 }
 
+.dialog-body {
+  overflow-y: auto;
+  min-height: 40vh;
+  max-height: 60vh;
+  padding: 20px 40px 0 40px;
+}
+.title-round {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+.title-title {
+  font-size: 14px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(51,51,51,1);
+}
+.company-style {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-bottom: 1px solid #E9E9E9;
+}
+.bottom-company .company-style:nth-last-child(1) {
+  border-bottom: none;
+}
+.company-info {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.company-logo {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  overflow: hidden;
+}
+.company-logo img{
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+.info-style {
+  padding-left: 15px;
+  flex: 1 1 auto;
+}
+.info-data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 7px;
+}
+.info-text-round {
+  display: flex;
+  align-items: center;
+}
+.info-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(102,102,102,1);
+  padding-right: 5px;
+  white-space: nowrap;
+}
+.info-num {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #333;
+}
+.company-close {
+  cursor: pointer;
+  width: 15px;
+  height: 16px;
+  background: url('../../../assets/images/icon/delete@2x.png') no-repeat center/contain;
+}
+.info-name {
+  font-size: 18px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(51,51,51,1);
+}
+.count-push {
+  height: 44px;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  border: 1px solid rgba(216,216,216,1);
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.count-text {
+  font-size: 12px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(51,51,51,1);
+}
+.color-ff {
+  color: #FF4B49;
+}
+.color-09 {
+  color: #096DD9;
+}
+.cur-point {
+  cursor: pointer;
+}
 
+
+
+.pad-top-30-bot-0 {
+  padding: 30px 0 0 0;
+}
+.color-333 {
+  color: #333333;
+}
+.pad-left-10 {
+  padding-left: 10px;
+}
 .userinfo-form {
   overflow-y: auto;
   /* height: calc(80vh - 120px); */
@@ -3718,6 +4677,144 @@ export default {
 .son-source > span:first-child {
   white-space:nowrap;
 }
+
+
+/* 选择服务商 */
+.choose-golden-round {
+  display: flex;
+  align-items: center;
+}
+.choose-golden-tan {
+  height: 16px;
+  width: 16px;
+  background: url('../../../assets/images/custmer_img/TipsOrange@2x.png') no-repeat center/contain;
+  margin-right: 14px;
+}
+.choose-golden-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,166,75,1);
+}
+.title-mark {
+  height: 12px;
+  width: 12px;
+  background: url('../../../assets/images/custmer_img/TipsHover@2x.png') no-repeat center/contain;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.choose-li-footer {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #E9E9E9;
+}
+.choose-border {
+  border:1px solid rgba(210,210,210,1);
+  border-bottom: 4px solid #E9E9E9;
+}
+.refause-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(102,102,102,1);
+}
+.choose-refause-round {
+  display: flex;
+  align-items: center;
+}
+.choose-refause-img {
+  height: 16px;
+  width: 16px;
+  background: url('../../../assets/images/custmer_img/HourglassOrange@2x.png') no-repeat center/contain;
+  margin-right: 2px;
+}
+.choose-refause {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,166,75,1);
+}
+.choose-success-img {
+  height: 16px;
+  width: 16px;
+  background: url('../../../assets/images/custmer_img/HourglassGreen@2x.png') no-repeat center/contain;
+  margin-right: 2px;
+}
+.choose-success {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #00AC84;
+}
+.choose-normal-img {
+  height: 14px;
+  width: 14px;
+  background: url('https://p4.taihuoniao.com/asset/190423/5cbe72c6d06068355a8b457e-2') no-repeat center/contain;
+  margin-right: 2px;
+}
+.choose-normal {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #666666;
+}
+.grey-clock {
+  height: 16px;
+  width: 16px;
+  background: url('https://p4.taihuoniao.com/asset/190423/5cbe72c6d06068355a8b457e-1') no-repeat center/contain;
+  margin-right: 6px;
+}
+.normal-progess-box {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  height: 20px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+}
+.normal-progess-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,166,75,1);
+}
+.mar-right-4 {
+  margin-right: 4px;
+}
+.color-ffa64b {
+  color: #FFA64B;
+}
+.color-ff5a5f {
+  color: #FF5a5f;
+}
+.choose-img-click {
+  height: 20px;
+  width: 20px;
+  background: url('../../../assets/images/custmer_img/NoChoice@2x.png') no-repeat center/contain;
+  cursor: pointer;
+}
+.red-choose-img-click {
+  height: 20px;
+  width: 20px;
+  background: url('../../../assets/images/custmer_img/Selection@2x.png') no-repeat center/contain;
+}
+.flex-center-space {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-center-footer {
+  display: flex;
+  align-items: center;
+}
+.height-100 {
+  height: 100%;
+}
+.mar10-10 {
+  margin-right: 10px;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -3842,6 +4939,34 @@ export default {
 }
 .design-progress .el-progress-bar__outer {
   height: 4px !important;
+}
+.custom-userinfo-dialog .el-dialog__footer{
+	padding: 20px 40px 20px 40px;
+}
+.custom-userinfo-dialog .el-dialog__footer .dialog-footer {
+  justify-content: space-between;
+}
+.custom-userinfo-dialog .el-button {
+  height: 40px;
+  line-height: 40px;
+}
+.custom-userinfo-dialog .el-button--default {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(153,153,153,1);
+}
+.custom-userinfo-dialog .el-button--primary {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(255,255,255,1);
+}
+.custom-userinfo-dialog .el-dialog__title {
+  font-size: 16px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(34,34,34,1);
 }
 </style>
 

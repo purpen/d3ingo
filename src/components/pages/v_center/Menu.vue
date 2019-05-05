@@ -44,7 +44,7 @@
                 <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
-              <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
+              <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
@@ -69,8 +69,9 @@
                 <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
-              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
-              <span v-else class="b-nickname">{{ eventUser.account }}</span>
+<!--              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>-->
+<!--              <span v-else class="b-nickname">{{ eventUser.account }}</span>-->
+                <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
             <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
@@ -112,7 +113,7 @@
                 class="item" :effect="DarkorLight"
                 :content="eventUser.company.company_name || eventUser.account"
                 placement="right">
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                 v-if="isMob">
                 {{eventUser.company.company_name || eventUser.account}}
               </a>
@@ -131,11 +132,11 @@
                   :content="eventUser.company.company_name || eventUser.account" placement="right">
                   <div class="computer-btn"
                     v-if="isCompany && !isMob && eventUser.logo_url"
-                    @click="redirectCompany"> 
+                    @click="redirectCompany">
                     <span :style="{background: `url(${eventUser.logo_url}) no-repeat center / cover #222`}"></span>
                   </div>
               </el-tooltip>
-              
+
               <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
               <a @click="alick" :to="'/vcenter/control'"
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
@@ -166,7 +167,7 @@
                   交易会
                 </a>
               </el-tooltip>
-              <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
+              <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany"
                 v-if="isMob && eventUser.company">
                 {{eventUser.company.company_name || eventUser.account}}
               </a>
@@ -209,7 +210,7 @@
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
                 控制面板
               </a>
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                 v-if="isMob && eventUser.company">
                 {{eventUser.company.company_name || eventUser.account}}
               </a>
@@ -247,7 +248,7 @@
                 查看公司主页
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
-                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]" 
+                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]"
                 v-if="prod.name === ''"
                 >
                 交易会
