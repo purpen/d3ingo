@@ -828,7 +828,7 @@ img.avatar {
 } */
 
 .img-box .df-case-a {
-  background: url(../../../assets/images/df_100x100.png) no-repeat center / 100px #f7f7f7;
+  background: url(../../../assets/images/Bitmap.png) no-repeat center /cover #f7f7f7;
 }
 
 
