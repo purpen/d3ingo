@@ -4,6 +4,7 @@
       <div class="case-top">
         <el-table
           :data="tableData"
+          class="case-table"
           style="width: 100%">
           <el-table-column
             width="60">
@@ -369,3 +370,11 @@ export default {
   }
 </style>
 
+<style>
+.case-top .case-table {
+  overflow: inherit;
+}
+.case-top .case-table .el-table__body-wrapper {
+  overflow: inherit;
+}
+</style>

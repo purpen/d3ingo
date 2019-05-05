@@ -178,7 +178,7 @@
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('web')">编辑</a>
               </el-col>
             </el-row>
-            
+
             <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>实名认证</p>
@@ -189,11 +189,11 @@
                 </div>
                 <div v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button>
                 </div>
                 <div v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button>
                 </div>
                 <div v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
@@ -262,14 +262,14 @@
               </el-row>
 
 
-              <region-picker 
-                :provinceProp="form.province" 
-                :cityProp="form.city"  
-                :isFirstProp="true" 
-                :districtProp="form.area" 
-                titleProp="公司地址" 
-                @onchange="changeServer"  
-                class="fullwidth" 
+              <region-picker
+                :provinceProp="form.province"
+                :cityProp="form.city"
+                :isFirstProp="true"
+                :districtProp="form.area"
+                titleProp="公司地址"
+                @onchange="changeServer"
+                class="fullwidth"
                 propStyle="margin:0;">
               </region-picker>
               <el-form-item label="" prop="address" style="margin-top: 10px">
@@ -616,7 +616,6 @@
           }
         }
 
-        console.log(row)
         that.$http({method: 'PUT', url: api.demandCompany, data: row})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
@@ -1067,7 +1066,7 @@
   .item .content a {
     color: #ff5a5f
   }
-  
+
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
@@ -1287,6 +1286,7 @@
     display: inline-block;
     width: 18px;
     height: 18px;
+    margin-left: 8px;
     background: url('../../../../assets/images/item/Tips@2x.png') 0 0 no-repeat/18px 18px;
     cursor: pointer;
   }

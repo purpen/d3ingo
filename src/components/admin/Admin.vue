@@ -57,7 +57,7 @@
                 <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
-              <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
+              <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
@@ -78,7 +78,8 @@
               <template v-else>
                 <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/><img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               </template>
-              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span><span v-else class="b-nickname">{{ eventUser.account }}</span>
+              <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
+              <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
             <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>

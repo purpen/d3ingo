@@ -346,7 +346,7 @@ export default {
   color: #666
 }
 .case-list {
-  padding: 20px 30px 0;
+  padding: 20px 30px;
 }
 .image-box {
   padding-top: 57%;
@@ -365,9 +365,12 @@ export default {
   color: #222;
   font-weight:400;
 }
+.card a:hover .des {
+  color: #666;
+}
 
 .des {
-  margin: 10px 0;
+  margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
