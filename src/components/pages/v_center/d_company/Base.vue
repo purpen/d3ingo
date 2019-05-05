@@ -1287,6 +1287,7 @@
     display: inline-block;
     width: 18px;
     height: 18px;
+    margin-left: 8px;
     background: url('../../../../assets/images/item/Tips@2x.png') 0 0 no-repeat/18px 18px;
     cursor: pointer;
   }
