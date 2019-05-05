@@ -811,7 +811,7 @@
     color: #666;
   }
   .el-menu--horizontal .el-menu .el-menu-item:hover {
-    color: #222;
+    /*color: #222;*/
     background: #fafafa;
   }
   .el-form-item__content .el-input .el-input__inner {
