@@ -184,7 +184,7 @@
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'i-active': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <!-- <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button> -->
-                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
+                <span v-if="isHasPower && projectList.length < 1" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
               </p>
             </div>
 
@@ -393,7 +393,10 @@
                           </el-col>
                           
                           <el-col :span="15">
-                            <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+                            <div style="display: flex;">
+                              <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                              <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                            </div>
                           </el-col>
                         </el-row>
 
@@ -1332,15 +1335,15 @@
         <div>
           <el-button @click="selectDialogClose">取 消</el-button>
           
-          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0">确认匹配</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" v-else>确认匹配</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0 || recommenLists.length > 0">确认匹配</el-button>
+          <el-button type="info" class="e6-btn" v-else disabled>确认匹配</el-button>
         </div>
       </span>
     </el-dialog>
 
     <!-- 全部服务商 -->
     <el-dialog
-      title="系统匹配的设计服务商"
+      title="全部匹配的设计服务商"
       :visible.sync="showAllDesigns"
       width="780px" class="all-choose-design"
       top="10vh">
@@ -1394,7 +1397,12 @@
               </el-col>
               
               <el-col :span="15">
-                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+                <!-- <el-tooltip effect="light tool-width-300" :content="d.refuse_log" placement="top" :disabled="istoolp"> -->
+                <div style="display: flex;">
+                  <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                  <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                </div>
+                <!-- </el-tooltip> -->
               </el-col>
             </el-row>
 
@@ -1513,8 +1521,11 @@
                 </div>
               </el-col>
               
-              <el-col :span="6">
-                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+              <el-col :span="15">
+                <div style="display: flex;">
+                  <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                  <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                </div>
               </el-col>
             </el-row>
 
@@ -1571,6 +1582,7 @@ export default {
       currentUser: '新建客户',
       currentId: '',
       timesObj: {},
+      istoolp: false,
       userLoading: false,
       userProjectLoading: false,
       userLogLoading: false,
@@ -2154,6 +2166,7 @@ export default {
     },
     addGrabSheetPush() {
       let that = this
+      that.submitDesignLoading = true
       let row = {
         id: '',
         design: []
@@ -2164,6 +2177,7 @@ export default {
       }
       that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
         if (res.data.meta.status_code === 200) {
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
           that.chooseCompany = []
           // if (that.timesObj) {
@@ -2173,10 +2187,12 @@ export default {
           that.getUserInfo()
         } else {
           that.$message.error(res.data.meta.message)
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
         }
       }).catch(error => {
         that.$message.error(error.message)
+        that.submitDesignLoading = false
         that.boolFollowLog = false
       })
     },
@@ -3542,6 +3558,11 @@ export default {
       this.userForm.execute_user_id = this.userId
     }
     this.getAdminVoIpList()
+  },
+  mounted() {
+    let that = this
+    console.log(that.$refs)
+    // that.$refs.toolpShow
   }
   // directives: {Clickoutside}
 }
@@ -3951,7 +3972,7 @@ export default {
 }
 .all-choose-design .design-li-footer {
   padding-top: 0;
-  height: 47px;
+  min-height: 47px;
   display: flex;
   align-items: center;
 }
@@ -3966,12 +3987,14 @@ export default {
 .footer-img {
   width: 16px;
   height: 16px;
+  background: url(../../../assets/images/custmer_img/TipsOrange@2x.png) no-repeat center/contain;
+  margin-right: 8px;
 }
 .footer-img-text {
   font-size: 14px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: rgba(102,102,102,1);
+  color: rgba(255,166,75,1);
 }
 .progess-current {
   padding-left: 20px;
@@ -4704,7 +4727,7 @@ export default {
   margin-left: 5px;
 }
 .choose-li-footer {
-  height: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   border-top: 1px solid #E9E9E9;
@@ -4817,6 +4840,20 @@ export default {
 }
 .show-margin .choose-border:nth-last-child(1) {
   margin-bottom: 20px;
+}
+.text-ellips {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.show-text-ref {
+  line-height: 17px;
+  padding: 10px 0;
+}
+.show-ref-prompt {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 </style>
 <style>
