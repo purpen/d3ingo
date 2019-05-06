@@ -184,7 +184,7 @@
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'i-active': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <!-- <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button> -->
-                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
+                <span v-if="isHasPower && projectList.length < 1" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
               </p>
             </div>
 
@@ -2166,6 +2166,7 @@ export default {
     },
     addGrabSheetPush() {
       let that = this
+      that.submitDesignLoading = true
       let row = {
         id: '',
         design: []
@@ -2176,6 +2177,7 @@ export default {
       }
       that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
         if (res.data.meta.status_code === 200) {
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
           that.chooseCompany = []
           // if (that.timesObj) {
@@ -2185,10 +2187,12 @@ export default {
           that.getUserInfo()
         } else {
           that.$message.error(res.data.meta.message)
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
         }
       }).catch(error => {
         that.$message.error(error.message)
+        that.submitDesignLoading = false
         that.boolFollowLog = false
       })
     },
