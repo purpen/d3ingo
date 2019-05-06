@@ -74,36 +74,44 @@
           </div>
         </div>
         <div class="top-right-bot flex-start">
-          <div class="web-round">
-            <div class="flex-center">
-              <div class="top-right-bot-title min-width-43">网址</div>
-              <div class="top-right-bot-title pad-left-10">
-                <span @click="toNewWeb" v-if="item.web">{{item.web | spliceHttp}}</span>
-                <div v-else>{{'—'}}</div>
+          <div class="top-right-bot flex-start flex1">
+            <div class="web-round">
+              <div class="flex-center">
+                <div class="top-right-bot-title min-width-43">网址</div>
+                <div class="top-right-bot-title pad-left-10">
+                  <span @click="toNewWeb" v-if="item.web">{{item.web | spliceHttp}}</span>
+                  <div v-else>{{'—'}}</div>
+                </div>
+              </div>
+              <div class="flex-center pad-top-14">
+                <div class="top-right-bot-title min-width-43">地址</div>
+                <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '—'}}</div>
+              </div>
+              <div class="flex-center pad-top-14">
+                <div class="top-right-bot-title min-width-43">规模</div>
+                <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '—'}}</div>
               </div>
             </div>
-            <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width-43">地址</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.province_value}}{{item.city_value}}{{item.area_value}}{{item.address || '—'}}</div>
-            </div>
-            <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width-43">规模</div>
-              <div class="top-right-bot-title color-333 pad-left-10">{{item.company_size_value || '—'}}</div>
+            <div class="contact-round">
+              <div class="flex-center">
+                <div class="top-right-bot-title min-width">联系人</div>
+                <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '—'}}</div>
+              </div>
+              <div class="flex-center pad-top-14">
+                <div class="top-right-bot-title min-width">职位</div>
+                <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '—'}}</div>
+              </div>
+              <div class="flex-center pad-top-14">
+                <div class="top-right-bot-title min-width">电话</div>
+                <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '—'}}</div>
+              </div>
             </div>
           </div>
-          <div class="contact-round">
-            <div class="flex-center">
-              <div class="top-right-bot-title min-width">联系人</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.contact_name || '—'}}</div>
+          <div class="share">
+            <div class="share-wx">
+              <span class="er-code" :style="{background: 'url('+ erCode +') no-repeat center / 150px 150px #fff'}"></span>
             </div>
-            <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width">职位</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.position || '—'}}</div>
-            </div>
-            <div class="flex-center pad-top-14">
-              <div class="top-right-bot-title min-width">电话</div>
-              <div class="top-right-bot-title color-333 pad-left-20">{{item.phone || '—'}}</div>
-            </div>
+            <div class="share-text"></div>
           </div>
         </div>
       </div>
@@ -154,6 +162,7 @@ import typeData from '@/config'
 export default {
   data() {
     return {
+      erCode: '',
       type: 1,
       item: '',
       designItem: '',
@@ -385,7 +394,8 @@ export default {
   created: function() {
     let that = this
     let id = that.$route.params.id
-    that.itemId = that.$route.params.id
+    this.erCode = location.origin + '/api/designCompany/getAppCode?id=' + id
+    that.itemId = id
     if (that.$route.query) {
       that.query = that.$route.query
     }
@@ -769,5 +779,49 @@ export default {
   .flex-start {
     display: flex;
     align-items: flex-start;
+  }
+  
+  .share {
+    display: flex;
+    padding-bottom: 20px;
+  }
+  .share-text {
+    height: 40px;
+    width: 40px;
+    background: url('../../../assets/images/design_case/share@2x.png') no-repeat center / contain
+  }
+  .share-wx {
+    position: relative;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background: url('../../../assets/images/design_case/WeChat02@2x.png') no-repeat center / contain
+  }
+  .share-wx:hover .er-code {
+    display: block
+  }
+  .share-wx .er-code {
+    display: none;
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    right: 55px;
+    top: -60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: dialog-fade-in .3s;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6
+  }
+  .share-wx .er-code:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-left-color: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -16px;
+    margin: auto;
   }
 </style>

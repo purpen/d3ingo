@@ -73,9 +73,8 @@
                     <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
                     <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
                   </template>
-                  <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
-                  <!-- <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span> -->
-                  <span v-else class="b-nickname">{{ eventUser.account }}</span>
+                  <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
+                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
                 <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
@@ -225,9 +224,10 @@
                     <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
                     <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
                   </template>
-                  <span class="b-nickname">{{ eventUser.account }}</span>
+                  <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
+                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
-                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心 
+                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心
                 </el-menu-item>
                 <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
                 <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
@@ -638,7 +638,7 @@
   .blue-header .nav-header {
     background: #0A2052
   }
-  
+
   .blue-header .header-buttom-line {
     box-shadow: none
   }
@@ -816,7 +816,7 @@
     color: #ff5a5f;
     background: none;
   }
-  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, 
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
     color: #ff5a5f !important;
   }
@@ -879,7 +879,7 @@
   .menu-header .nav-item:hover span.icon i {
     color: #ff5a5f
   }
-  
+
   .nav-header .nav-item:hover .view-msg,
   .menu-header .nav-item:hover .view-msg {
   /* .nav-header .nav-item:focus .view-msg,
@@ -1015,7 +1015,7 @@
     border-top: 3px solid transparent;
     margin-top: -3px;
   }
-  
+
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     height: 70px;
     line-height: 70px;
