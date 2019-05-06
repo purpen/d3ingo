@@ -36,7 +36,7 @@
                     <div class="image-box">
                       <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'"
-                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}">
+                        :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                       </router-link>
                       <router-link v-else 
                         :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
@@ -227,12 +227,13 @@
     height: 24px;
     border-radius: 50%;
     opacity: 0.5;
-    background: url(../../../../assets/images/icon/more@2x.png) no-repeat center / contain;
+    /* background: url(../../../../assets/images/icon/more@2x.png) no-repeat center / contain; */
+    background: url(../../../../assets/images/icon/more_new@2x.png) no-repeat center / contain;
   }
   .item-more i:hover,
   .item-more:focus i {
     opacity: 1;
-    background: url(../../../../assets/images/icon/moreHover@2x.png) no-repeat center / contain;
+    background: url(../../../../assets/images/icon/MoreHoverNew@2x.png) no-repeat center / contain;
   }
   /* .item-more:hover ul, */
   .item-more:focus ul {
@@ -276,8 +277,8 @@
 
   .image-box a {
     display: block;
-    padding-top: 75%;
-    background-color: #f7f7f7
+    padding-top: 56.7%;
+    background-color: #f7f7f7;
   }
   .content {
     padding: 10px 20px;
