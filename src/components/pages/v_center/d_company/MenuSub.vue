@@ -5,8 +5,8 @@
       <router-link :to="{name: 'vcenterDCompanyAccreditation'}"
                    :class="{'item': true, 'is-active': currentSubName === 'identification' ? true : false}">实名认证
       </router-link> -->
-      <router-link :to="{name: 'modifyPwd'}" class="item">账户设置</router-link>
       <router-link :to="{name: 'vcenterDComputerBase'}" class="item">公司设置</router-link>
+      <router-link :to="{name: 'modifyPwd'}" class="item">账户设置</router-link>
       <!-- <router-link :to="{name: 'vcenterDCompanyAccreditation'}"
                    :class="{'item': true, 'is-active': currentSubName === 'identification' ? true : false}">实名认证
       </router-link> -->
