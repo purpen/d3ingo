@@ -1180,6 +1180,13 @@
     width: 220px;
     margin-top: 0;
   }
+  .tool-width-300.el-tooltip__popper.is-light {
+    max-width: 330px;
+  }
+  .e6-btn.el-button--info.is-disabled {
+    background-color: #e6e6e6;
+    border-color: #e6e6e6;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;
