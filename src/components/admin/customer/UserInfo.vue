@@ -2042,7 +2042,8 @@ export default {
                 } else {
                   let newTime = Math.floor(((new Date()).getTime()) / 1000)
                   if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                    let time = new Date(data[index].grab_sheet_push_time)
+                    let pushtime = data[index].grab_sheet_push_time
+                    let time = new Date(pushtime.replace(/-/g, '/'))
                     let lasttime = time.getTime() / 1000
                     times[index] = Math.floor((lasttime + 7200) - newTime)
                     that.timesObj['time' + index] = setInterval(function () {
