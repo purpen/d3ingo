@@ -184,7 +184,7 @@
               <p class="add-project clearfix">
                 <span class="fl" @click="boolProjectList = !boolProjectList"><i :class="[{'i-active': !boolProjectList}, 'fz-12', 'item-arrow', 'fx-icon-nothing-lower']"></i>项目详情</span>
                 <!-- <el-button :disabled="!isHasPower" size="small" class="fr red-button" @click="createdProject">添加项目</el-button> -->
-                <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
+                <span v-if="isHasPower && projectList.length < 1" class="fr pointer tc-red like-btn" @click="createdProject"><i class="el-icon-circle-plus"></i>添加项目</span>
               </p>
             </div>
 
@@ -326,7 +326,7 @@
                     </p>
                   </div>
                   <el-collapse-transition>
-                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent">
+                    <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent show-margin">
                       <div class="count-push" v-if="allredoreState === 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{waitOrder}}家</div>
@@ -339,14 +339,15 @@
                         <div class="count-text">已接单，</div>
                         <div class="count-text color-ffa64b">{{resourceOrder}}家</div>
                         <div class="count-text">拒绝接单。</div>
-                        <div class="count-text color-09 cur-point" @click="getSystemAllPush()">选择服务商</div>
+                        <div class="count-text color-ff5a5f cur-point" @click="getGrabSheetAllPush()" v-if="sheetAllPush.length === resourceOrder">查看全部</div>
+                        <div class="count-text color-09 cur-point" @click="getSystemAllPush()" v-else>选择服务商</div>
                       </div>
                       <li class="design-li choose-border margin-t20"  v-for="(d, i) in sheetAllPush" :key="i" v-if="d.is_appoint === 1">
                         <div class="margin-b-10">
                           <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                           <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                          <span class="padding-l10">{{d.company_name}}</span>
-                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                          <span class="padding-l10 white-no">{{d.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower && cooperation === 1" class="edit-project fr">
                             <div class="edit-project-tag" v-if="isHasPower">
                               <!-- <p @click="deleteDesignProject(d)">删除</p> -->
                               <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
@@ -384,7 +385,7 @@
                           </el-col>
                         </el-row>
 
-                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 3">
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
                           <el-col :span="6">
                             <div class="choose-refause-round">
                               <div class="choose-refause-img"></div>
@@ -393,7 +394,10 @@
                           </el-col>
                           
                           <el-col :span="15">
-                            <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+                            <div style="display: flex;">
+                              <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                              <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                            </div>
                           </el-col>
                         </el-row>
 
@@ -408,7 +412,7 @@
                           <el-col :span="6">
                           <div class="choose-refause-round">
                             <div class="grey-clock"></div>
-                            <div class="choose-normal">剩余接单时间 {{d.setTime}}</div>
+                            <div class="choose-normal white-no">剩余接单时间 {{d.setTime}}</div>
                           </div>
                           </el-col>
                           
@@ -468,7 +472,7 @@
                         <div class="margin-b-10">
                           <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
                           <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                          <span class="padding-l10">{{d.company_name}}</span>
+                          <span class="padding-l10 white-no">{{d.company_name}}</span>
                           <div v-if="item.failure === null && isHasPower" class="edit-project fr">
                             <div class="edit-project-tag" v-if="isHasPower">
                               <!-- <p @click="deleteDesignProject(d)">删除</p> -->
@@ -1332,15 +1336,15 @@
         <div>
           <el-button @click="selectDialogClose">取 消</el-button>
           
-          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0">确认匹配</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" v-else>确认匹配</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0 || recommenLists.length > 0">确认匹配</el-button>
+          <el-button type="info" class="e6-btn" v-else disabled>确认匹配</el-button>
         </div>
       </span>
     </el-dialog>
 
     <!-- 全部服务商 -->
     <el-dialog
-      title="系统匹配的设计服务商"
+      title="全部匹配的设计服务商"
       :visible.sync="showAllDesigns"
       width="780px" class="all-choose-design"
       top="10vh">
@@ -1351,7 +1355,7 @@
               <div>
                 <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                <span class="padding-l10">{{d.company_name}}</span>
+                <span class="padding-l10 white-no">{{d.company_name}}</span>
               </div>
             </div>
             <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
@@ -1385,7 +1389,7 @@
               </el-col>
             </el-row>
 
-            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
               <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="choose-refause-img"></div>
@@ -1394,7 +1398,12 @@
               </el-col>
               
               <el-col :span="15">
-                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+                <!-- <el-tooltip effect="light tool-width-300" :content="d.refuse_log" placement="top" :disabled="istoolp"> -->
+                <div style="display: flex;">
+                  <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                  <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                </div>
+                <!-- </el-tooltip> -->
               </el-col>
             </el-row>
 
@@ -1469,11 +1478,11 @@
               <div>
                 <img class="avatar" v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                <span class="padding-l10">{{d.company_name}}</span>
+                <span class="padding-l10 white-no">{{d.company_name}}</span>
               </div>
               <div class="choose-img-click" :class="{'red-choose-img-click' : clickChooseDesignId.includes(d.id)}" @click="clickChooseDesign(d.id)" v-if="d.grab_sheet_status === 2"></div>
             </div>
-            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
+            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3 || d.grab_sheet_status !== 5">
               <el-col :span="6">
                 <div class="flex-column">
                   <span class="tc-9">联系人</span>
@@ -1505,7 +1514,7 @@
             </el-row>
 
 
-            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
               <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="choose-refause-img"></div>
@@ -1513,8 +1522,11 @@
                 </div>
               </el-col>
               
-              <el-col :span="6">
-                <span class="refause-text">拒绝原因：{{d.refuse_log}}</span>
+              <el-col :span="15">
+                <div style="display: flex;">
+                  <div class="refause-text show-text-ref show-ref-prompt">拒绝原因：</div>
+                  <div class="refause-text show-text-ref">{{d.refuse_log}}</div>
+                </div>
               </el-col>
             </el-row>
 
@@ -1543,8 +1555,8 @@
         </div>
         <div>
           <el-button @click="closeGrabSheetDesignatedOrder()" class="mar10-10">取 消</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetRefuseRecommend()" v-if="clickChooseDesignId.length < 1">都不合适</el-button>
-          <el-button type="primary" :loading="submitDesignLoading" @click="postGrabSheetDesignatedOrder()" v-else>确认选择</el-button>
+          <el-button type="primary" :loading="noAllChoose" @click="postGrabSheetRefuseRecommend()" v-if="clickChooseDesignId.length < 1">都不合适</el-button>
+          <el-button type="primary" :loading="isAllChoose" @click="postGrabSheetDesignatedOrder()" v-else>确认选择</el-button>
         </div>
       </span>
     </el-dialog>
@@ -1571,6 +1583,9 @@ export default {
       currentUser: '新建客户',
       currentId: '',
       timesObj: {},
+      istoolp: false,
+      noAllChoose: false,
+      isAllChoose: false,
       userLoading: false,
       userProjectLoading: false,
       userLogLoading: false,
@@ -1948,6 +1963,7 @@ export default {
     // 商务指定订单
     postGrabSheetDesignatedOrder() {
       let that = this
+      that.isAllChoose = true
       let row = {
         id: '',
         design: []
@@ -1957,41 +1973,48 @@ export default {
       that.$http.post(api.adminGrabSheetDesignatedOrder, row).then(res => {
         if (res.data.meta.status_code === 200) {
           that.clickChooseDesignId = []
-          that.$message.success(res.data.meta.message)
+          that.$message.success('对接成功')
           that.getUserProject()
           that.showSystemAllPush = false
+          that.isAllChoose = false
         } else {
+          that.isAllChoose = false
           that.showSystemAllPush = false
           that.clickChooseDesignId = []
           that.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        that.isAllChoose = false
         that.showSystemAllPush = false
         that.clickChooseDesignId = []
         console.log(error.message)
-        that.$message.error(error.message)
+        that.$message.error('对接失败')
       })
     },
     postGrabSheetRefuseRecommend() {
       let that = this
+      that.noAllChoose = true
       let row = {
         id: ''
       }
       row.id = that.projectList[0].item_id
       that.$http.post(api.adminGrabSheetRefuseRecommend, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          that.$message.success(res.data.meta.message)
+          that.$message.success('已拒绝')
           that.getUserProject()
+          that.noAllChoose = false
           that.showSystemAllPush = false
         } else {
+          that.noAllChoose = false
           that.showSystemAllPush = false
           that.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        that.noAllChoose = false
         that.showSystemAllPush = false
         that.clickChooseDesignId = []
         console.log(error.message)
-        that.$message.error(error.message)
+        that.$message.error('拒绝失败')
       })
     },
     // 所有推荐设计公司记录
@@ -2018,9 +2041,9 @@ export default {
               let resourceOrder = 0
               let times = []
               for (let index in data) {
-                if (data[index].grab_sheet_status === 3) {
+                if (data[index].grab_sheet_status === 3 || data[index].grab_sheet_status === 5) {
                   resourceOrder++
-                } else if (data[index].grab_sheet_status === 2) {
+                } else if (data[index].grab_sheet_status === 2 || data[index].grab_sheet_status === 4) {
                   alreadyOrder++
                 } else if (data[index].grab_sheet_status === 1) {
                   waitOrder++
@@ -2030,7 +2053,8 @@ export default {
                 } else {
                   let newTime = Math.floor(((new Date()).getTime()) / 1000)
                   if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                    let time = new Date(data[index].grab_sheet_push_time)
+                    let pushtime = data[index].grab_sheet_push_time
+                    let time = new Date(pushtime.replace(/-/g, '/'))
                     let lasttime = time.getTime() / 1000
                     times[index] = Math.floor((lasttime + 7200) - newTime)
                     that.timesObj['time' + index] = setInterval(function () {
@@ -2112,10 +2136,20 @@ export default {
             data.logo = item.logo_image.logo
           }
           if (that.chooseCompany.length === 2) {
+            that.designCompanyForm.design_company_id = ''
             that.$message.error('最多选择两家设计服务商')
           }
+          let ishas = false
           if (that.chooseCompany.length < 2) {
-            that.chooseCompany.push(data)
+            for (let index in that.chooseCompany) {
+              if (that.chooseCompany[index].id === data.id) {
+                ishas = true
+                that.$message.error('不能选择同一家公司')
+              }
+            }
+            if (!ishas) {
+              that.chooseCompany.push(data)
+            }
           }
         }
       })
@@ -2154,6 +2188,7 @@ export default {
     },
     addGrabSheetPush() {
       let that = this
+      that.submitDesignLoading = true
       let row = {
         id: '',
         design: []
@@ -2164,6 +2199,7 @@ export default {
       }
       that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
         if (res.data.meta.status_code === 200) {
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
           that.chooseCompany = []
           // if (that.timesObj) {
@@ -2173,10 +2209,12 @@ export default {
           that.getUserInfo()
         } else {
           that.$message.error(res.data.meta.message)
+          that.submitDesignLoading = false
           that.boolDesignCompany = false
         }
       }).catch(error => {
         that.$message.error(error.message)
+        that.submitDesignLoading = false
         that.boolFollowLog = false
       })
     },
@@ -3542,6 +3580,11 @@ export default {
       this.userForm.execute_user_id = this.userId
     }
     this.getAdminVoIpList()
+  },
+  mounted() {
+    let that = this
+    console.log(that.$refs)
+    // that.$refs.toolpShow
   }
   // directives: {Clickoutside}
 }
@@ -3951,7 +3994,7 @@ export default {
 }
 .all-choose-design .design-li-footer {
   padding-top: 0;
-  height: 47px;
+  min-height: 47px;
   display: flex;
   align-items: center;
 }
@@ -3966,12 +4009,14 @@ export default {
 .footer-img {
   width: 16px;
   height: 16px;
+  background: url(../../../assets/images/custmer_img/TipsOrange@2x.png) no-repeat center/contain;
+  margin-right: 8px;
 }
 .footer-img-text {
   font-size: 14px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: rgba(102,102,102,1);
+  color: rgba(255,166,75,1);
 }
 .progess-current {
   padding-left: 20px;
@@ -4219,6 +4264,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 }
 .count-text {
   font-size: 12px;
@@ -4234,6 +4280,9 @@ export default {
 }
 .cur-point {
   cursor: pointer;
+}
+.white-no {
+  white-space: nowrap;
 }
 
 
@@ -4704,7 +4753,7 @@ export default {
   margin-left: 5px;
 }
 .choose-li-footer {
-  height: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   border-top: 1px solid #E9E9E9;
@@ -4814,6 +4863,23 @@ export default {
 }
 .mar10-10 {
   margin-right: 10px;
+}
+.show-margin .choose-border:nth-last-child(1) {
+  margin-bottom: 20px;
+}
+.text-ellips {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.show-text-ref {
+  line-height: 17px;
+  padding: 10px 0;
+}
+.show-ref-prompt {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 </style>
 <style>
