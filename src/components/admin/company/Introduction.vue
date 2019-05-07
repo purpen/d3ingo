@@ -44,9 +44,9 @@
       <div class="flex">
         <div class="cer-left">荣誉奖项</div>
         <div class="prizeRound" v-if="item.prizes && item.prizes.length">
-          <div class="cer-right img-round-pri" v-for="(item, index) in prizeArr" :key="index">
-            <img :src="item.img" alt="">
-            <span v-if="item.type" class="img-text-pri">X{{item.count}}</span>
+          <div class="cer-right img-round-pri" v-for="(ele, index) in prizeArr" :key="index" v-if="ele.type">
+            <img :src="ele.img" alt="">
+            <span class="img-text-pri">X{{ele.count}}</span>
           </div>
         </div>
         <div class="cer-right" v-else>{{line}}</div>
