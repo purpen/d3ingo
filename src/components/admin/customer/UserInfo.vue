@@ -1977,11 +1977,13 @@ export default {
           that.showSystemAllPush = false
           that.isAllChoose = false
         } else {
+          that.isAllChoose = false
           that.showSystemAllPush = false
           that.clickChooseDesignId = []
           that.$message.error(res.data.meta.message)
         }
       }).catch(error => {
+        that.isAllChoose = false
         that.showSystemAllPush = false
         that.clickChooseDesignId = []
         console.log(error.message)
