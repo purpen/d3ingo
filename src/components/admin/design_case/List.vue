@@ -301,6 +301,7 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      this.query.value = ''
       // 对路由变化作出响应...
       this.loadList()
     }

@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="round-bot">
+    <div class="round">
       <div class="flex-center">
         <div class="cer-left">联系人</div>
         <div class="cer-right">{{item.contact_name || '—'}}</div>
@@ -69,20 +69,32 @@
       </div>
     </div>
 
-    <!-- <div class="round-bot">
+    <div class="round">
       <div class="flex-center">
         <div class="cer-left">认证状态</div>
-        <div class="cer-right">杭州飞鱼工业设计有限公司</div>
+        <div class="cer-right">{{item.verify_status | stateFormat}}</div>
       </div>
       <div class="flex-center">
         <div class="cer-left">认证日期</div>
-        <div class="cer-right">多证合一(含信用代码)</div>
+        <div class="cer-right" v-if="item.audit_time">{{item.audit_time | timeFormat}}</div>
+        <div class="cer-right" v-else>{{'—'}}</div>
       </div>
-      <div class="flex-center">
+      <!-- <div class="flex-center">
         <div class="cer-left">申请日期</div>
         <div class="cer-right">91110102575182861C</div>
+      </div> -->
+    </div>
+
+    <div class="round-bot">
+      <div class="flex-center">
+        <div class="cer-left">注册账号</div>
+        <div class="cer-right">{{item.users && item.users.account ? item.users.account : '—'}}</div>
       </div>
-    </div> -->
+      <div class="flex-center">
+        <div class="cer-left">注册日期</div>
+        <div class="cer-right">{{item.created_at | timeFormat}}</div>
+      </div>
+    </div>
 
     <div class="fiexd-img" v-if="fixed">
       <div class="relave">
@@ -112,6 +124,33 @@ export default {
     closeImg() {
       this.fixed = false
       this.img = ''
+    }
+  },
+  filters: {
+    timeFormat(val) {
+      if (val) {
+        return val.date_format().format('yyyy.MM.dd')
+      }
+    },
+    stateFormat(val) {
+      if (val) {
+        let arr = ''
+        switch (val) {
+          case 0:
+            arr = '未认证'
+            break
+          case 1:
+            arr = '已认证'
+            break
+          case 2:
+            arr = '未通过认证'
+            break
+          case 3:
+            arr = '认证中'
+            break
+        }
+        return arr
+      }
     }
   }
 }

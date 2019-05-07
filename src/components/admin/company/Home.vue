@@ -230,7 +230,6 @@ export default {
         label: '按公司编号'
       }],
       companyReault: '2',
-      currentPage2: 5,
       homeLoading: false,
       tableData: [],
       query: {
@@ -255,7 +254,20 @@ export default {
     let that = this
     that.designReault = that.$route.query.type || '0'
     if (that.$route.query) {
-      that.query = that.$route.query
+      let num = that.$route.query
+      if (num.page) {
+        num.page = num.page - 0
+      }
+      if (num.pageSize) {
+        num.pageSize = num.pageSize - 0
+      }
+      if (num.totalCount) {
+        num.totalCount = num.totalCount - 0
+      }
+      that.query = num
+      that.seleValue = that.$route.query.val
+      that.designReault = that.query.type
+      that.companyReault = that.query.evt
     }
     that.loadList()
     that.getDesignCount()
