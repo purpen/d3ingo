@@ -256,6 +256,7 @@ export default {
     that.designReault = that.$route.query.type || '0'
     if (that.$route.query) {
       that.query = that.$route.query
+      that.seleValue = that.$route.query.val
     }
     that.loadList()
     that.getDesignCount()

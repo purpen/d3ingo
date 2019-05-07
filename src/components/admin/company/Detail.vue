@@ -42,13 +42,13 @@
             </div>
           </div>
           <div class="top-right-top-right flex-center">
-            <div class="certification flex-center-center mar-right-10" @click="setRefuseRease(2)" v-if="item.verify_status === 0">
+            <div class="certification flex-center-center mar-right-10" @click="setRefuseRease(2)" v-if="item.verify_status === 3">
               <div class="certification-text">拒绝</div>
             </div>
             <div class="certification flex-center-center" @click="setRefuseRease(2)" v-if="item.verify_status === 1">
               <div class="certification-text">撤销认证</div>
             </div>
-            <div class="certification flex-center-center" @click="setRefuseRease(1)" v-else>
+            <div class="certification flex-center-center" @click="setRefuseRease(1)" v-if="item.verify_status === 2 || item.verify_status === 3">
               <div class="certification-text">通过认证</div>
             </div>
             <div class="dot">
@@ -133,7 +133,7 @@
     <introduction v-show="type === 5" :item="item" :prizeArr="prizeArr"></introduction>
 
     <el-dialog title="请填写原因" :visible.sync="dialogVisible" width="380px">
-      <el-input v-model="refuseRease"></el-input>
+      <el-input v-model="refuseRease" type="textarea"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
         <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
