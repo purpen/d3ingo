@@ -568,6 +568,7 @@ export default {
   }
   .dot-hover {
     position: absolute;
+    z-index: 999;
     top: 35px;
     bottom: 0;
     right: 8px;
