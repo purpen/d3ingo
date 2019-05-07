@@ -76,7 +76,8 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">认证日期</div>
-        <div class="cer-right">{{item.audit_time || '—'}}</div>
+        <div class="cer-right" v-if="item.audit_time">{{item.audit_time | timeFormat}}</div>
+        <div class="cer-right" v-else>{{'—'}}</div>
       </div>
       <!-- <div class="flex-center">
         <div class="cer-left">申请日期</div>

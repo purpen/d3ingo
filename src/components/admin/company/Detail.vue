@@ -310,6 +310,13 @@ export default {
           that.throwCreit = false
           that.btnLoading = false
           that.item.verify_status = evt
+          if (evt === 2) {
+            that.item.audit_time = ''
+          }
+          if (evt === 1) {
+            let time = new Date().getTime() / 1000
+            that.item.audit_time = time
+          }
           that.refuseRease = ''
           that.$message.success('操作成功')
         } else {
