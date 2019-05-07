@@ -339,7 +339,8 @@
                         <div class="count-text">已接单，</div>
                         <div class="count-text color-ffa64b">{{resourceOrder}}家</div>
                         <div class="count-text">拒绝接单。</div>
-                        <div class="count-text color-09 cur-point" @click="getSystemAllPush()">选择服务商</div>
+                        <div class="count-text color-ff5a5f cur-point" @click="getGrabSheetAllPush()" v-if="sheetAllPush.length === resourceOrder">查看全部</div>
+                        <div class="count-text color-09 cur-point" @click="getSystemAllPush()" v-else>选择服务商</div>
                       </div>
                       <li class="design-li choose-border margin-t20"  v-for="(d, i) in sheetAllPush" :key="i" v-if="d.is_appoint === 1">
                         <div class="margin-b-10">
@@ -384,7 +385,7 @@
                           </el-col>
                         </el-row>
 
-                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 3">
+                        <el-row class="choose-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
                           <el-col :span="6">
                             <div class="choose-refause-round">
                               <div class="choose-refause-img"></div>
@@ -1388,7 +1389,7 @@
               </el-col>
             </el-row>
 
-            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
               <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="choose-refause-img"></div>
@@ -1481,7 +1482,7 @@
               </div>
               <div class="choose-img-click" :class="{'red-choose-img-click' : clickChooseDesignId.includes(d.id)}" @click="clickChooseDesign(d.id)" v-if="d.grab_sheet_status === 2"></div>
             </div>
-            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3">
+            <el-row :gutter="10" v-if="d.grab_sheet_status !== 3 || d.grab_sheet_status !== 5">
               <el-col :span="6">
                 <div class="flex-column">
                   <span class="tc-9">联系人</span>
@@ -1513,7 +1514,7 @@
             </el-row>
 
 
-            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3">
+            <el-row class="design-li-footer" v-if="d.grab_sheet_status === 3 || d.grab_sheet_status === 5">
               <el-col :span="6">
                 <div class="choose-refause-round">
                   <div class="choose-refause-img"></div>
@@ -1972,7 +1973,7 @@ export default {
       that.$http.post(api.adminGrabSheetDesignatedOrder, row).then(res => {
         if (res.data.meta.status_code === 200) {
           that.clickChooseDesignId = []
-          that.$message.success('已拒绝')
+          that.$message.success('对接成功')
           that.getUserProject()
           that.showSystemAllPush = false
           that.isAllChoose = false
@@ -1987,7 +1988,7 @@ export default {
         that.showSystemAllPush = false
         that.clickChooseDesignId = []
         console.log(error.message)
-        that.$message.error('拒绝失败')
+        that.$message.error('对接失败')
       })
     },
     postGrabSheetRefuseRecommend() {
@@ -1999,7 +2000,7 @@ export default {
       row.id = that.projectList[0].item_id
       that.$http.post(api.adminGrabSheetRefuseRecommend, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          that.$message.success(res.data.meta.message)
+          that.$message.success('已拒绝')
           that.getUserProject()
           that.noAllChoose = false
           that.showSystemAllPush = false
@@ -2013,7 +2014,7 @@ export default {
         that.showSystemAllPush = false
         that.clickChooseDesignId = []
         console.log(error.message)
-        that.$message.error(error.message)
+        that.$message.error('拒绝失败')
       })
     },
     // 所有推荐设计公司记录
@@ -2040,7 +2041,7 @@ export default {
               let resourceOrder = 0
               let times = []
               for (let index in data) {
-                if (data[index].grab_sheet_status === 3) {
+                if (data[index].grab_sheet_status === 3 || data[index].grab_sheet_status === 5) {
                   resourceOrder++
                 } else if (data[index].grab_sheet_status === 2 || data[index].grab_sheet_status === 4) {
                   alreadyOrder++
@@ -4263,6 +4264,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 }
 .count-text {
   font-size: 12px;
