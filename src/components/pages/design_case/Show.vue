@@ -10,7 +10,7 @@
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
           <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
-          <span v-if="designCasesDetail.design_types_val.length">/ <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          <span v-if="designCasesDetail.design_types_val && designCasesDetail.design_types_val.length">/ <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
           </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
@@ -26,7 +26,7 @@
         <h1>{{designCasesDetail.title}}</h1>
         <section class="flex-jus-center">
           <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
-          <span v-if="designCasesDetail.design_types_val.length"> / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
+          <span v-if="designCasesDetail.design_types_val && designCasesDetail.design_types_val.length"> / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
           </p>
           <p class="date"><i class="fx fx-icon-time"></i>{{designCasesDetail.created_at}}</p>
         </section>
@@ -311,7 +311,7 @@ export default {
 }
 .company-addr::before {
   content: '';
-  background: 
+  background:
 }
 .rank {
   background: #fafafa;
