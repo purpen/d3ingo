@@ -462,7 +462,7 @@
                   </el-collapse-transition>
                   <el-collapse-transition>
                     <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && cooperation === 1" class="design-parent">
-                      <div class="count-push">
+                      <div class="count-push" v-if="sheetAllPush && sheetAllPush.length > 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
                         <div class="count-text">已接单，</div>
@@ -1429,7 +1429,7 @@
                 <el-col :span="6">
                   <div class="choose-refause-round">
                     <div class="choose-success-img"></div>
-                    <div class="choose-success">{{d.status_value}}11111</div>
+                    <div class="choose-success">{{d.status_value}}</div>
                   </div>
                 </el-col>
                 
@@ -2034,10 +2034,10 @@ export default {
         let id = that.projectList[0].item_id
         that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
           if (res.data.meta.status_code === 200) {
+            that.cooperation = res.data.data.cooperation
             if (res.data.data && res.data.data.data.length > 0) {
               let data = res.data.data.data
               that.allredoreState = res.data.data.status
-              that.cooperation = res.data.data.cooperation
               let waitOrder = 0
               let alreadyOrder = 0
               let resourceOrder = 0
