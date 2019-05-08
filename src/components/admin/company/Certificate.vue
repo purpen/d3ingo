@@ -92,7 +92,8 @@
       </div>
       <div class="flex-center">
         <div class="cer-left">注册日期</div>
-        <div class="cer-right">{{item.created_at | timeFormat}}</div>
+        <div class="cer-right" v-if="item.created_at">{{item.created_at | timeFormat}}</div>
+        <div class="cer-right" v-else>{{'—'}}</div>
       </div>
     </div>
 

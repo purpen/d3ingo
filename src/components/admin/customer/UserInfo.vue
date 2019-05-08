@@ -2053,9 +2053,7 @@ export default {
                 } else {
                   let newTime = Math.floor(((new Date()).getTime()) / 1000)
                   if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                    let pushtime = data[index].grab_sheet_push_time
-                    let time = new Date(pushtime.replace(/-/g, '/'))
-                    let lasttime = time.getTime() / 1000
+                    let lasttime = data[index].grab_sheet_push_time
                     times[index] = Math.floor((lasttime + 7200) - newTime)
                     that.timesObj['time' + index] = setInterval(function () {
                       if (times[index] > 0) {
@@ -2146,6 +2144,15 @@ export default {
                 ishas = true
                 that.$message.error('不能选择同一家公司')
               }
+            }
+            if (that.sheetAllPush && that.sheetAllPush.length > 0) {
+              that.sheetAllPush.forEach(item => {
+                if (item.id === val) {
+                  that.designCompanyForm.design_company_id = ''
+                  ishas = true
+                  that.$message.error('选择的服务商已添加')
+                }
+              })
             }
             if (!ishas) {
               that.chooseCompany.push(data)
