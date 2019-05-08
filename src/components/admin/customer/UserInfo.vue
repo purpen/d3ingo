@@ -1429,7 +1429,7 @@
                 <el-col :span="6">
                   <div class="choose-refause-round">
                     <div class="choose-success-img"></div>
-                    <div class="choose-success">{{d.status_value}}11111</div>
+                    <div class="choose-success">{{d.status_value}}</div>
                   </div>
                 </el-col>
                 
