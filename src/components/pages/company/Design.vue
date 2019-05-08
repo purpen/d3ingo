@@ -590,7 +590,7 @@ export default {
 </script>
 <style scoped>
 .hide {
-  position: absolute;
+  position: fixed;
   left: 9999px;
 }
 .chart {
