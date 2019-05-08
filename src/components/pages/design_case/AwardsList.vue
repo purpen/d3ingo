@@ -51,7 +51,7 @@ export default {
       isLoading: false,
       query: {
         page: 1,
-        pageSize: 9,
+        pageSize: 15,
         sort: 2,
         totalPges: 0,
         totalCount: 0

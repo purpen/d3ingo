@@ -339,7 +339,7 @@ export default {
       radarList: [],
       query: {
         page: 1,
-        pageSize: 9,
+        pageSize: 15,
         totalPges: 0,
         totalCount: 0
       }
