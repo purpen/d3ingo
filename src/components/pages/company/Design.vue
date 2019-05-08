@@ -339,7 +339,7 @@ export default {
       radarList: [],
       query: {
         page: 1,
-        pageSize: 9,
+        pageSize: 15,
         totalPges: 0,
         totalCount: 0
       }
@@ -590,7 +590,7 @@ export default {
 </script>
 <style scoped>
 .hide {
-  position: absolute;
+  position: fixed;
   left: 9999px;
 }
 .chart {
