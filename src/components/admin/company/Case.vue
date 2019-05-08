@@ -309,7 +309,7 @@ export default {
     border: 1px solid #e6e6e6;
     height: 80px;
     width: 80px;
-    background: url(../../../assets/images/df_100x100.png) no-repeat center / contain;
+    background: url('../../../assets/images/df_100x100.png') no-repeat center / contain;
   }
   .text-type {
     font-family: PingFangSC-Regular;
