@@ -411,7 +411,9 @@
                           
                           <el-col :span="6">
                           <div class="choose-refause-round">
-                            <div class="grey-clock"></div>
+                            <div class="grey-clock-round">
+                              <div class="grey-clock"></div>
+                            </div>
                             <div class="choose-normal white-no">剩余接单时间 {{d.setTime}}</div>
                           </div>
                           </el-col>
@@ -1274,7 +1276,7 @@
               <img src="../../../assets/images/df_100x100.png" v-else>
             </div>
             <div class="info-style">
-              <div class="info-name">{{item.company_name || '—'}}</div>
+              <div class="info-name white-no">{{item.company_name || '—'}}</div>
               <div class="info-data">
                 <div class="info-text-round">
                   <div class="info-text">已对接</div>
@@ -1308,7 +1310,7 @@
                 <img src="../../../assets/images/df_100x100.png" v-else>
               </div>
               <div class="info-style">
-                <div class="info-name">{{item.company_name || '—'}}</div>
+                <div class="info-name white-no">{{item.company_name || '—'}}</div>
                 <div class="info-data">
                   <div class="info-text-round">
                     <div class="info-text">已对接</div>
@@ -4214,13 +4216,13 @@ export default {
   height: 60px;
   width: 60px;
   border-radius: 50%;
-  border: 1px solid #e6e6e6;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .company-logo img{
   height: 60px;
   width: 60px;
   border-radius: 50%;
+  border: 1px solid #e6e6e6;
 }
 .info-style {
   padding-left: 15px;
@@ -4744,7 +4746,7 @@ export default {
   height: 16px;
   width: 16px;
   background: url('../../../assets/images/custmer_img/TipsOrange@2x.png') no-repeat center/contain;
-  margin-right: 14px;
+  margin-right: 10px;
 }
 .choose-golden-text {
   font-size: 14px;
@@ -4814,6 +4816,11 @@ export default {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #666666;
+}
+.grey-clock-round {
+  height: 16px;
+  width: 16px;
+  margin-right: 6px;
 }
 .grey-clock {
   height: 16px;
