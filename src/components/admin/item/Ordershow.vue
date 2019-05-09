@@ -759,36 +759,53 @@
         })
       }
     },
-    mounted: function () {
-      this.isLoading = true
-      this.query.val = this.seleValue
-      this.$http.get(api.newlist, {params: this.query}).then(res => {
+    created: function () {
+      let that = this
+      that.isLoading = true
+      if (that.$route.query && that.$route.query.page) {
+        let num = that.$route.query
+        if (num.page) {
+          num.page = num.page - 0
+        }
+        if (num.pageSize) {
+          num.pageSize = num.pageSize - 0
+        }
+        if (num.totalCount) {
+          num.totalCount = num.totalCount - 0
+        }
+        that.query = num
+        that.seleValue = that.query.val
+        that.opporvalue = that.opportunity[that.query.menu].label
+        that.serchvalue = that.companyChoose[that.query.evt - 1].label
+      }
+      that.query.val = that.seleValue
+      that.$http.get(api.newlist, {params: that.query}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.isLoading = false
-          this.total = res.data.meta.pagination.total
-          this.tableData = res.data.data
-          for (var i in this.tableData) {
-            let time = this.tableData[i].created_at.date_format().format('yyyy-MM-dd')
-            Vue.set(this.tableData[i], 'time', time)
-            if (this.tableData[i].source === 1) {
-              Vue.set(this.tableData[i], 'sourcecont', '京东')
-            } else if (this.tableData[i].source === 2) {
-              Vue.set(this.tableData[i], 'sourcecont', '义乌')
-            } else if (this.tableData[i].source === 0) {
-              Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
+          that.isLoading = false
+          that.total = res.data.meta.pagination.total
+          that.tableData = res.data.data
+          for (var i in that.tableData) {
+            let time = that.tableData[i].created_at.date_format().format('yyyy-MM-dd')
+            Vue.set(that.tableData[i], 'time', time)
+            if (that.tableData[i].source === 1) {
+              Vue.set(that.tableData[i], 'sourcecont', '京东')
+            } else if (that.tableData[i].source === 2) {
+              Vue.set(that.tableData[i], 'sourcecont', '义乌')
+            } else if (that.tableData[i].source === 0) {
+              Vue.set(that.tableData[i], 'sourcecont', '太火鸟')
             }
-            if (this.tableData[i].clue_name === null) {
-              this.tableData[i].clue_name = '—'
+            if (that.tableData[i].clue_name === null) {
+              that.tableData[i].clue_name = '—'
             }
-            if (this.tableData[i].design_cost_value === null) {
-              this.tableData[i].design_cost_value = '—'
+            if (that.tableData[i].design_cost_value === null) {
+              that.tableData[i].design_cost_value = '—'
             }
           }
         } else {
-          this.$message.error(res.data.meta.message)
+          that.$message.error(res.data.meta.message)
         }
       }).catch(error => {
-        this.$message.error(error.message)
+        that.$message.error(error.message)
       })
     }
   }
