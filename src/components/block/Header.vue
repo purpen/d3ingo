@@ -427,6 +427,9 @@
             return
           } else {
             self.fetchMessageCount()
+            if (self.token) {
+              self.updateUser()
+            }
             limitTimes += 1
           }
         }, 10000)
