@@ -220,6 +220,9 @@ export default {
       }, {
         value: '4',
         label: '已禁用的设计服务商'
+      }, {
+        value: '5',
+        label: '未审核的设计服务商'
       }],
       designReault: '0',
       companyChoose: [{
@@ -580,7 +583,7 @@ export default {
     height: 100%;
   }
   .name-ref {
-    height: 42px;
+    height: 44px;
   }
 
 
