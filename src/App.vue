@@ -62,7 +62,9 @@ export default {
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
       ],
-      fwh: FWH
+      fwh: FWH,
+      timer: 0, // 定时器时间
+      intervalId: 0
     }
   },
   watch: {
@@ -102,6 +104,25 @@ export default {
     let loading = document.getElementById('loading')
     let classVal = 'loading-out'
     loading.setAttribute('class', classVal)
+    // document的可见性
+    document.addEventListener('visibilitychange', () => {
+      let windowStatus = document.visibilityState
+      if (windowStatus === 'hidden') {
+        this.intervalId = setInterval(() => {
+          this.timer = this.timer + 1
+          // console.log('我是定时器')
+        }, 1000)
+      } else {
+        console.log(this.timer + 's')
+        window.clearInterval(this.intervalId)
+        if (this.timer > 1200) {
+          console.log('刷新页面')
+          window.location.reload(true)
+        } else {
+          this.timer = 0
+        }
+      }
+    })
   },
   created() {
     if (!this.hideCustomer.hideCustomer) {
