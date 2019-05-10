@@ -33,6 +33,7 @@ mallache.write_user = function (user) {
       source_admin: user.source_admin,
       design_user_name: user.design_user_name,
       design_user_phone: user.design_user_phone,
+      demand_verify_status: user.demand_verify_status,
       company: {
         company_name: user.demand_company_name,
         company_abbreviation: user.demand_company_abbreviation
@@ -66,7 +67,14 @@ mallache.write_user = function (user) {
     }
   }
   // 写入localStorage
-  store.commit(USER_INFO, userInfo)
+  let UnionUserInfo = {}
+  let oldUserInfo = JSON.parse(window.localStorage.getItem('user'))
+  if (oldUserInfo) {
+    UnionUserInfo = Object.assign(oldUserInfo, userInfo)
+  } else {
+    UnionUserInfo = userInfo
+  }
+  store.commit(USER_INFO, UnionUserInfo)
 }
 
 mallache.logout = function (bool) {
