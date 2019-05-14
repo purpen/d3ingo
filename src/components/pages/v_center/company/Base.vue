@@ -1774,7 +1774,7 @@
           }
         })
       },
-      getdesignCompanyInfo() {
+      getdesignCompanyInfo(ids) {
         this.isLoading = true
         this.$http.get(api.designCompany, {})
           .then((response) => {
@@ -1895,6 +1895,9 @@
                 taxable_type: data.taxable_type,
                 invoice_type: data.invoice_type === 0 ? null : data.invoice_type
               }
+              if (ids === 2) {
+                this.showLegalizeDialog()
+              }
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -1947,10 +1950,11 @@
         return
       }
       this.updateUser()
-      this.getdesignCompanyInfo()
       let {params = {}} = this.$route
       if (params.id === 2) {
-        this.dialogVisible = true
+        this.getdesignCompanyInfo(params.id)
+      } else {
+        this.getdesignCompanyInfo()
       }
       // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
