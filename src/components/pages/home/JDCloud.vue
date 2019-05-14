@@ -349,30 +349,30 @@
 
           </div>
         </div>
-        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-32" @submit.native.prevent>
+        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="from-phone" @submit.native.prevent>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="demand">
                 <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="contact">
                 <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="account">
                 <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <!-- <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="smsCode" class="call-ele">
                 <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
@@ -383,9 +383,9 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-col :offset="2" class="text-left tc-f fz-14 margin-b-10">设计预算 (单选)</el-col>
+          <el-col class="text-left tc-f fz-14 margin-b-10">设计预算 (单选)</el-col>
           <el-row>
-            <el-col :offset="2" :span="20">
+            <el-col :span="24">
               <el-radio-group v-model="designCost" class="phone-jd-cloud" text-color="#ffffff" fill="#764FE2">
                 <el-radio-button label="1-5万" size="medium"></el-radio-button>
                 <el-radio-button label="5-10万" size="medium"></el-radio-button>
@@ -393,7 +393,7 @@
               </el-radio-group>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row  class="text-center">
             <button :loading="isLoadingBtn" @click="submit('ruleForm', 'phone')" class="issue-bt height-40 mar-20-30">
               发布项目需求
             </button>
@@ -505,7 +505,7 @@
           </el-row>
         </div>
         <div class="pad-10">
-          <el-row :gutter="10" class="pad-top-50">
+          <el-row :gutter="10" class="pad-top-30">
             <div>
               <el-col :span="8">
                 <div class="three-two-left"></div>
@@ -578,7 +578,7 @@
                 </el-col>
               </el-row>
             </div>
-          </div>
+        </div>
         </div>
         <div class="call-we">联系我们</div>
         <div class="call-phone">客服电话：13031154842</div>
@@ -588,7 +588,7 @@
         <div class="or-text">或者</div>
         <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
         <div class="form mtop_40">
-          <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20">
+          <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-10">
             <el-form-item prop="name" class="pad-bot-15">
               <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
             </el-form-item>
@@ -1408,19 +1408,18 @@ export default {
     background-size: 100% 100%;
   }
   .design-company {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat center/contain;
   }
   .design-award {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat;
-    background-size: 100% 100%;
+    /* height: 200px; */
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .customer {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/Customer@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/Customer@2x.png") no-repeat center/contain;
   }
   .design-product {
     padding: 50px 0 60px 0;
@@ -1542,6 +1541,12 @@ export default {
   .pad-top-32 {
     padding-top: 32px;
   }
+  .from-phone {
+    padding: 30px 10px;
+  }
+  .pad-top-30 {
+    padding-top: 30px;
+  }
   .mar-20-30 {
     margin: 20px 0 30px 0
   }
@@ -1630,19 +1635,20 @@ export default {
     background-size: 100% 100%;
   }
   .three-one-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/DesignCompany@2x.png") no-repeat;
-    background-size: 100% 100%;
+    /* height: 160px; */
+     padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/DesignCompany@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .three-two-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/DesignAward@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .three-three-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/Customer@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/Customer@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .mid-hei {
     height: 96px;
@@ -1993,13 +1999,13 @@ export default {
       height: 140px;
     }
     .design-company {
-      height: 180px;
+      /* height: 180px; */
     }
     .design-award {
-      height: 180px;
+      /* height: 180px; */
     }
     .customer {
-      height: 180px;
+      /* height: 180px; */
     }
     .four-img {
       height: 110px;
@@ -2088,7 +2094,11 @@ export default {
   }
   .phone-jd-cloud {
     display: flex;
-    justify-content: space-between;
+    margin:0 -5px;
+  }
+  .phone-jd-cloud label {
+    flex: 1;
+    margin:0 5px;
   }
 </style>
 <style>
