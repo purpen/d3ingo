@@ -1208,6 +1208,8 @@ export default {
                 this.$message.success('发布成功')
                 this.form = {}
                 this.time = 0
+                this.phoneDesignCost = '1-5万'
+                this.designCost = 1
               } else {
                 this.$message.error(res.data.meta.message)
               }
