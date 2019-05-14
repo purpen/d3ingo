@@ -386,7 +386,7 @@
           <el-col class="text-left tc-f fz-14 margin-b-10">设计预算 (单选)</el-col>
           <el-row>
             <el-col :span="24">
-              <el-radio-group v-model="designCost" class="phone-jd-cloud" text-color="#ffffff" fill="#764FE2">
+              <el-radio-group v-model="phoneDesignCost" class="phone-jd-cloud" text-color="#ffffff" fill="#764FE2">
                 <el-radio-button label="1-5万" size="medium"></el-radio-button>
                 <el-radio-button label="5-10万" size="medium"></el-radio-button>
                 <el-radio-button label="10万以上" size="medium"></el-radio-button>
@@ -970,6 +970,7 @@ export default {
         mark: 'a'
       },
       designCost: 1,
+      phoneDesignCost: '1-5万',
       // swiper
       // swiperOption: {
       //   pagination: '.swiper-pagination',
@@ -1179,20 +1180,28 @@ export default {
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
             source: this.query.from || 3,
-            son_source: this.query.mark || 'b',
-            design_cost: this.designCost
+            son_source: this.query.mark || 'b'
           }
           // 是否为移动端
           if (p) {
-            if (this.designCost === '1-5万') {
-              this.designCost = 1
-            } else if (this.designCost === '5-10万') {
-              this.designCost = 2
-            } else {
-              this.designCost = 3
+            if (!this.phoneDesignCost) {
+              this.$message.error('请输入您的需求')
+              return
             }
+            if (this.phoneDesignCost === '1-5万') {
+              row.design_cost = 1
+            } else if (this.phoneDesignCost === '5-10万') {
+              row.design_cost = 2
+            } else {
+              row.design_cost = 3
+            }
+          } else {
+            if (!this.designCost) {
+              this.$message.error('请输入您的需求')
+              return
+            }
+            row.design_cost = this.designCost
           }
-          row.design_cost = this.designCost
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
