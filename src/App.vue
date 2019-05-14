@@ -107,12 +107,28 @@ export default {
       loading.setAttribute('class', classVal)
     }
     // document的可见性
-    document.addEventListener('visibilitychange', () => {
-      let windowStatus = document.visibilityState
-      if (windowStatus === 'hidden') {
+    // 找到当前浏览器支持的hidden属性名和visibilitychange事件名
+    let hidden, visibilityChange
+    if (typeof document.hidden !== 'undefined') {
+      hidden = 'hidden'
+      visibilityChange = 'visibilitychange'
+    } else if (typeof document.mozHidden !== 'undefined') {
+      hidden = 'mozHidden'
+      visibilityChange = 'mozvisibilitychange'
+    } else if (typeof document.msHidden !== 'undefined') {
+      hidden = 'msHidden'
+      visibilityChange = 'msvisibilitychange'
+    } else if (typeof document.webkitHidden !== 'undefined') {
+      hidden = 'webkitHidden'
+      visibilityChange = 'webkitvisibilitychange'
+    } else {
+      return
+    }
+    document.addEventListener(visibilityChange, () => {
+      let windowStatus = document[hidden]
+      if (windowStatus) {
         this.intervalId = setInterval(() => {
           this.timer = this.timer + 1
-          // console.log('我是定时器')
         }, 1000)
       } else {
         console.log(this.timer + 's')
