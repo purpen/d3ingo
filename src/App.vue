@@ -103,7 +103,9 @@ export default {
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'loading-out'
-    loading.setAttribute('class', classVal)
+    if (loading) {
+      loading.setAttribute('class', classVal)
+    }
     // document的可见性
     document.addEventListener('visibilitychange', () => {
       let windowStatus = document.visibilityState

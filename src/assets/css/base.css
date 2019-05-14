@@ -1771,6 +1771,9 @@ td.fc-day.fc-widget-content.fc-today::before {
   #app {
     /* padding-bottom: 450px; */
   }
+  .app {
+    padding-top: 60px;
+  }
   .el-card:hover {
     transform: none;
     box-shadow: none;
