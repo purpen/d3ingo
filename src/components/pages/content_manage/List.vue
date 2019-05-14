@@ -197,7 +197,7 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 767px) {
     .tabs span {
       width: 120px;
     }

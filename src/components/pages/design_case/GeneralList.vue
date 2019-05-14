@@ -64,7 +64,7 @@ export default {
       query: {
         page: 1,
         sort: 5,
-        pageSize: 9,
+        pageSize: 15,
         totalPges: 0,
         totalCount: 0
       },

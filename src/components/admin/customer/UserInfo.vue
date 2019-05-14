@@ -411,7 +411,9 @@
                           
                           <el-col :span="6">
                           <div class="choose-refause-round">
-                            <div class="grey-clock"></div>
+                            <div class="grey-clock-round">
+                              <div class="grey-clock"></div>
+                            </div>
                             <div class="choose-normal white-no">剩余接单时间 {{d.setTime}}</div>
                           </div>
                           </el-col>
@@ -460,7 +462,7 @@
                   </el-collapse-transition>
                   <el-collapse-transition>
                     <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && cooperation === 1" class="design-parent">
-                      <div class="count-push">
+                      <div class="count-push" v-if="sheetAllPush && sheetAllPush.length > 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
                         <div class="count-text">已接单，</div>
@@ -1274,7 +1276,7 @@
               <img src="../../../assets/images/df_100x100.png" v-else>
             </div>
             <div class="info-style">
-              <div class="info-name">{{item.company_name || '—'}}</div>
+              <div class="info-name white-no">{{item.company_name || '—'}}</div>
               <div class="info-data">
                 <div class="info-text-round">
                   <div class="info-text">已对接</div>
@@ -1308,7 +1310,7 @@
                 <img src="../../../assets/images/df_100x100.png" v-else>
               </div>
               <div class="info-style">
-                <div class="info-name">{{item.company_name || '—'}}</div>
+                <div class="info-name white-no">{{item.company_name || '—'}}</div>
                 <div class="info-data">
                   <div class="info-text-round">
                     <div class="info-text">已对接</div>
@@ -1427,7 +1429,7 @@
                 <el-col :span="6">
                   <div class="choose-refause-round">
                     <div class="choose-success-img"></div>
-                    <div class="choose-success">{{d.status_value}}11111</div>
+                    <div class="choose-success">{{d.status_value}}</div>
                   </div>
                 </el-col>
                 
@@ -2032,10 +2034,10 @@ export default {
         let id = that.projectList[0].item_id
         that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
           if (res.data.meta.status_code === 200) {
+            that.cooperation = res.data.data.cooperation
             if (res.data.data && res.data.data.data.length > 0) {
               let data = res.data.data.data
               that.allredoreState = res.data.data.status
-              that.cooperation = res.data.data.cooperation
               let waitOrder = 0
               let alreadyOrder = 0
               let resourceOrder = 0
@@ -2053,9 +2055,7 @@ export default {
                 } else {
                   let newTime = Math.floor(((new Date()).getTime()) / 1000)
                   if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                    let pushtime = data[index].grab_sheet_push_time
-                    let time = new Date(pushtime.replace(/-/g, '/'))
-                    let lasttime = time.getTime() / 1000
+                    let lasttime = data[index].grab_sheet_push_time
                     times[index] = Math.floor((lasttime + 7200) - newTime)
                     that.timesObj['time' + index] = setInterval(function () {
                       if (times[index] > 0) {
@@ -2146,6 +2146,15 @@ export default {
                 ishas = true
                 that.$message.error('不能选择同一家公司')
               }
+            }
+            if (that.sheetAllPush && that.sheetAllPush.length > 0) {
+              that.sheetAllPush.forEach(item => {
+                if (item.id === val) {
+                  that.designCompanyForm.design_company_id = ''
+                  ishas = true
+                  that.$message.error('选择的服务商已添加')
+                }
+              })
             }
             if (!ishas) {
               that.chooseCompany.push(data)
@@ -4207,13 +4216,13 @@ export default {
   height: 60px;
   width: 60px;
   border-radius: 50%;
-  border: 1px solid #e6e6e6;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .company-logo img{
   height: 60px;
   width: 60px;
   border-radius: 50%;
+  border: 1px solid #e6e6e6;
 }
 .info-style {
   padding-left: 15px;
@@ -4737,7 +4746,7 @@ export default {
   height: 16px;
   width: 16px;
   background: url('../../../assets/images/custmer_img/TipsOrange@2x.png') no-repeat center/contain;
-  margin-right: 14px;
+  margin-right: 10px;
 }
 .choose-golden-text {
   font-size: 14px;
@@ -4807,6 +4816,11 @@ export default {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #666666;
+}
+.grey-clock-round {
+  height: 16px;
+  width: 16px;
+  margin-right: 6px;
 }
 .grey-clock {
   height: 16px;
