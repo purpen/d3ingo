@@ -418,6 +418,9 @@ export default {
     }
     this.fetchImgCaptcha()
   },
+  beforeDestroy() {
+    clearInterval(this.requestMessageTask)
+  },
   computed: {
     isMob() {
       return this.$store.state.event.isMob

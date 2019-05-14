@@ -116,6 +116,7 @@ export default {
         }, 1000)
       } else {
         console.log(this.timer + 's')
+        this.fetchUser()
         window.clearInterval(this.intervalId)
         if (this.timer > 1200) {
           console.log('刷新页面')
@@ -179,31 +180,34 @@ export default {
         }
       })
     },
+    fetchToken() {
+      this.$http.post(api.iframeLogin) // cookie: ticket
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          auth.write_token(res.data.data.token)
+          that.getUser(res.data.data.token)
+        } else {
+          that.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        auth.logout(true)
+        console.log(err)
+      })
+    },
     fetchUser() {
       let that = this
       let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
-        if (!token) {
-          this.$http.post(api.iframeLogin) // cookie: ticket
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              auth.write_token(res.data.data.token)
-              that.getUser(res.data.data.token)
-            } else {
-              that.$message.error(res.data.meta.message)
-            }
-          }).catch(err => {
-            auth.logout(true)
-            console.log(err)
-          })
-        } else {
+        if (token) {
           let user = localStorage.getItem('user')
           if (!user) {
             console.error('没有user')
             this.getUser(token)
           }
           console.log('已登录')
+        } else {
+          this.fetchToken()
         }
       } else {
         console.log('没有ticket,退出登录')

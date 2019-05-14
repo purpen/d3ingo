@@ -33,9 +33,8 @@
           var from = data.from
           if (data.type === 'login') { // login | loginout
             if (data.ticket) {
-              console.log(document.cookie, getCookie('ticket'), res)
               if (getCookie('ticket') !== data.ticket) {
-                localStorage.setItem('changeUser', 'yes') // true || ''
+                localStorage.setItem('token', '')
               }
               document.cookie = 'ticket=' + data.ticket
               localStorage.setItem('ticket', data.ticket)
@@ -69,7 +68,6 @@
         }
       }
     })
-
   </script>
 </body>
 
