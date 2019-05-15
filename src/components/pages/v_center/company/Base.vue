@@ -1759,7 +1759,13 @@
                   }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
-                  auth.write_user(response.data.data)
+                  let users = response.data.data.users
+                  users.design_company_name = response.data.data.company_name
+                  users.design_company_abbreviation = response.data.data.company_abbreviation
+                  users.design_company_logo_image = response.data.data.logo_image
+                  users.verify_status = response.data.data.verify_status
+                  console.log('users', users)
+                  auth.write_user(response.data.data.users)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
