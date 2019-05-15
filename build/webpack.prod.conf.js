@@ -67,7 +67,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         mangle: true,
         output: { comments: false, beautify: false },
         compress: {
-          // drop_console: true,
+          drop_console: true,
           dead_code: true
         },
         warnings: false
