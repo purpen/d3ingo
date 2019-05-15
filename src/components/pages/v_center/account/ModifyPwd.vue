@@ -123,7 +123,6 @@
               old_password: that.form.old_password,
               password: that.form.password
             }
-
             that.isLoadingBtn = true
             that.$http({method: 'POST', url: api.modifyPwd, data: row})
               .then(function (response) {
@@ -133,7 +132,7 @@
                   that.$refs[formName].resetFields()
                   // 写入localStorage
                   auth.logout(true)
-                  // that.$router.push({name: 'home'})
+                  that.$router.push({name: 'home'})
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
