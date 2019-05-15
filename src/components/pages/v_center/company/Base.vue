@@ -1765,7 +1765,7 @@
                   users.design_company_logo_image = response.data.data.logo_image
                   users.verify_status = response.data.data.verify_status
                   console.log('users', users)
-                  auth.write_user(response.data.data.users)
+                  auth.write_user(users)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
