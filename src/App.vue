@@ -185,9 +185,9 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           auth.write_token(res.data.data.token)
-          that.getUser(res.data.data.token)
+          this.getUser(res.data.data.token)
         } else {
-          that.$message.error(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
         auth.logout(true)
@@ -195,7 +195,6 @@ export default {
       })
     },
     fetchUser() {
-      let that = this
       let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
@@ -207,6 +206,7 @@ export default {
           }
           console.log('已登录')
         } else {
+          console.log('重新获取token')
           this.fetchToken()
         }
       } else {
