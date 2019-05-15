@@ -103,17 +103,36 @@ export default {
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'loading-out'
-    loading.setAttribute('class', classVal)
+    if (loading) {
+      loading.setAttribute('class', classVal)
+    }
     // document的可见性
-    document.addEventListener('visibilitychange', () => {
-      let windowStatus = document.visibilityState
-      if (windowStatus === 'hidden') {
+    // 找到当前浏览器支持的hidden属性名和visibilitychange事件名
+    let hidden, visibilityChange
+    if (typeof document.hidden !== 'undefined') {
+      hidden = 'hidden'
+      visibilityChange = 'visibilitychange'
+    } else if (typeof document.mozHidden !== 'undefined') {
+      hidden = 'mozHidden'
+      visibilityChange = 'mozvisibilitychange'
+    } else if (typeof document.msHidden !== 'undefined') {
+      hidden = 'msHidden'
+      visibilityChange = 'msvisibilitychange'
+    } else if (typeof document.webkitHidden !== 'undefined') {
+      hidden = 'webkitHidden'
+      visibilityChange = 'webkitvisibilitychange'
+    } else {
+      return
+    }
+    document.addEventListener(visibilityChange, () => {
+      let windowStatus = document[hidden]
+      if (windowStatus) {
         this.intervalId = setInterval(() => {
           this.timer = this.timer + 1
-          // console.log('我是定时器')
         }, 1000)
       } else {
         console.log(this.timer + 's')
+        this.fetchUser()
         window.clearInterval(this.intervalId)
         if (this.timer > 1200) {
           console.log('刷新页面')
@@ -177,31 +196,34 @@ export default {
         }
       })
     },
+    fetchToken() {
+      this.$http.post(api.iframeLogin) // cookie: ticket
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          auth.write_token(res.data.data.token)
+          this.getUser(res.data.data.token)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        auth.logout(true)
+        console.log(err)
+      })
+    },
     fetchUser() {
-      let that = this
       let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
-        if (!token) {
-          this.$http.post(api.iframeLogin) // cookie: ticket
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              auth.write_token(res.data.data.token)
-              that.getUser(res.data.data.token)
-            } else {
-              that.$message.error(res.data.meta.message)
-            }
-          }).catch(err => {
-            auth.logout(true)
-            console.log(err)
-          })
-        } else {
+        if (token) {
           let user = localStorage.getItem('user')
           if (!user) {
             console.error('没有user')
             this.getUser(token)
           }
           console.log('已登录')
+        } else {
+          console.log('重新获取token')
+          this.fetchToken()
         }
       } else {
         console.log('没有ticket,退出登录')

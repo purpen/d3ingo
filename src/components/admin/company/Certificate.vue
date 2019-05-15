@@ -17,7 +17,7 @@
         <div class="cer-left">营业执照</div>
         <template v-if="item.license_image && item.license_image.length">
           <div class="img-round pos-rea" v-for="(img, index) in item.license_image" :key="index">
-            <img :src="img.file" class="img-style" />
+            <img :src="img.file" class="img-style"/>
             <div class="fiex" @click="showImg(img.file)">点击预览</div>
           </div>
         </template>
@@ -99,7 +99,7 @@
 
     <div class="fiexd-img" v-if="fixed">
       <div class="relave">
-        <img :src="img">
+        <img :src="img" ref="imgSize" style="height: 100%; width: auto; transition: 268ms all ease;">
         <div class="close-img" @click="closeImg"></div>
       </div>
     </div>
@@ -117,14 +117,106 @@ export default {
   },
   created() {
   },
+  mounted() {
+    let that = this
+    if (window.addEventListener) {
+      window.addEventListener('DOMMouseScroll', that.wheel, false)
+    }
+    if (window.onmousewheel) {
+      window.onmousewheel = function(event) {
+        if (that.fixed) {
+          event = event || window.event
+          let delta = 0
+          if (!event) {
+            event = window.event
+          }
+          if (event.wheelDelta) {
+            delta = event.wheelDelta / 120
+            if (window.opera) {
+              delta = -delta
+            }
+          } else if (event.detail) {
+            delta = -event.detail / 3
+          }
+          if (delta) {
+            that.handler(delta)
+          }
+        }
+      }
+    } else {
+      document.body.onmousewheel = function(event) {
+        if (that.fixed) {
+          event = event || window.event
+          let delta = 0
+          if (!event) {
+            event = window.event
+          }
+          if (event.wheelDelta) {
+            delta = event.wheelDelta / 120
+            if (window.opera) {
+              delta = -delta
+            }
+          } else if (event.detail) {
+            delta = -event.detail / 3
+          }
+          if (delta) {
+            that.handler(delta)
+          }
+        }
+      }
+    }
+  },
   methods: {
+    wheel(event) {
+      let that = this
+      if (that.fixed) {
+        event = event || window.event
+        let delta = 0
+        if (!event) {
+          event = window.event
+        }
+        if (event.wheelDelta) {
+          delta = event.wheelDelta / 120
+          if (window.opera) {
+            delta = -delta
+          }
+        } else if (event.detail) {
+          delta = -event.detail / 3
+        }
+        if (delta) {
+          that.handler(delta)
+        }
+      }
+    },
+    handler(delta) {
+      let that = this
+      if (delta < 0) {
+        let str = that.$refs.imgSize.style.height.replace(/%/g, '')
+        if (str - 0 < 140) {
+          str = str - 0 + 20
+          that.$refs.imgSize.style.height = str + '%'
+        }
+      } else {
+        let str = that.$refs.imgSize.style.height.replace(/%/g, '')
+        if (str - 0 > 20) {
+          str = str - 0 - 20
+          that.$refs.imgSize.style.height = str + '%'
+        }
+      }
+    },
     showImg(img) {
+      // document.body.addEventListener('touchmove', this.bodyScroll(event), false)
       this.fixed = true
       this.img = img
     },
     closeImg() {
+      // document.body.removeEventListener('touchmove', this.bodyScroll(event), false)
       this.fixed = false
       this.img = ''
+    },
+    bodyScroll(event) {
+      event = event || window.event
+      event.preventDefault()
     }
   },
   filters: {
@@ -244,16 +336,13 @@ export default {
     top: 0;
     left: 0;
   }
-  .fiexd-img img {
-    height: 100%;
-    width: auto;
-  }
   .relave {
     height: 100%;
     width: 100%;
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
   .close-img {
     cursor: pointer;

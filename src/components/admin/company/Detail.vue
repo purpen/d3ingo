@@ -139,8 +139,8 @@
         <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="通过认证" :visible.sync="throwCreit" width="380px">
-      <span>是否要通过认证通过认证</span>
+    <el-dialog title="通过认证" :visible.sync="throwCreit" width="380px" top="30vh">
+      <div style="text-align: center;">是否要通过认证?</div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="throwCreit = false">取 消</el-button>
         <el-button size="small" type="primary" :loading="btnLoading" @click="setVerify(evt)">确 定</el-button>
