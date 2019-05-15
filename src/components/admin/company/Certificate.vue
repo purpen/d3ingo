@@ -99,7 +99,7 @@
 
     <div class="fiexd-img" v-if="fixed">
       <div class="relave">
-        <img :src="img" ref="imgSize" style="height: 100%; width: auto;">
+        <img :src="img" ref="imgSize" style="height: 100%; width: auto; transition: 268ms all ease;">
         <div class="close-img" @click="closeImg"></div>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default {
   mounted() {
     let that = this
     if (window.addEventListener) {
-      window.addEventListener('DOMMouseScroll', that.wheel(event), false)
+      window.addEventListener('DOMMouseScroll', that.wheel, false)
     }
     if (window.onmousewheel) {
       window.onmousewheel = function(event) {
