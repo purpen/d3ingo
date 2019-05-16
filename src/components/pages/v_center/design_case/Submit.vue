@@ -374,6 +374,7 @@
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/design_case/MenuSub'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
@@ -641,6 +642,7 @@
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
                   that.$message.success ('提交成功！')
+                  that.getStatus(that.user.type)
                   that.$router.push ({name: 'vcenterDesignCaseList'})
                   return false
                 } else {
@@ -818,6 +820,22 @@
           this.form.design_types = []
         }
         this.isfrist = true
+      },
+      getStatus(type) {
+        let url = ''
+        if (type === 2) {
+          url = api.surveyDesignCompanySurvey
+        } else {
+          url = api.surveyDemandCompanySurvey
+        }
+        this.$http.get(url, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
       }
     },
     computed: {
