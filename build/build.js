@@ -11,7 +11,6 @@ var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
 const axios = require('axios')
 const api = require('../config/prod.env')
-
 var spinner = ora('building for production...')
 spinner.start()
 
@@ -49,7 +48,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     var full = path.resolve(__dirname)
     console.log(full.split('/')[full.split('/').length - 2] + '发布成功')
     axios.get('https://sc.ftqq.com/SCU51595T2a7b444cd453b15cb8b3af1f1d8e8cd15cdcd4257cd1e.send',
-      {params: {text: full.split('/')[full.split('/').length - 2] + '发布成功', desp: version}})
+      {params: {text: full.split('/')[full.split('/').length - 2] + '||发布成功', desp: config.build.env.LOCAL_URL+ 'time:' +version}})
     .then(res => {
       // console.log(res.data.success)
     }).catch(err => {
