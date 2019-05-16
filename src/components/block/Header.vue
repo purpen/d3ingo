@@ -138,7 +138,7 @@
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
-            <li @click="closeMenu" v-if="isAdmin">
+            <li @click="closeMenu">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
             <li @click="closeMenu">
@@ -281,7 +281,7 @@
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
             </li>
-            <li @click="closeMenu" v-if="isAdmin">
+            <li @click="closeMenu">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
             <li v-if="!custom.name">
@@ -750,7 +750,7 @@
     padding: 0;
     width: 80%;
     height: 32px;
-    line-height: 32px;
+    line-height: 31px;
     margin: 0 auto;
     margin-bottom: 20px;
     text-align: center;

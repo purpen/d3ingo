@@ -359,7 +359,7 @@
           'x:target_id': '',
           'x:type': 38
         },
-        uploadMsg: '格式：JPG／PNG 大小：小于10MB',
+        uploadMsg: '格式：JPG／PNG 大小：小于10MB（建议尺寸800X450）',
         uploadMsg2: '格式：JPG／PNG 大小：小于10MB',
         uploadMsg3: '个数: 1个 格式：PDF 大小：小于20MB',
         imageUrl: '',
@@ -662,7 +662,7 @@
       },
       // 上传成功操作
       uploadSuccess(response, file, fileList) {
-        this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
+        this.uploadMsg = '只能上传jpg/png文件，且不超过10M（建议尺寸800X450）'
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
