@@ -128,7 +128,7 @@
                           <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
                             <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                           </el-tooltip>
-                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                          <el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">
                           <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
                           </el-tooltip>
                         </div>
@@ -156,7 +156,7 @@
                       <div class="content">
                         <div class="opt">
                           <input type="checkbox" name="imgUrls" v-model="imgUrls" :value="d.url" style="float:left;" />
-                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top" v-if="!d.genImg">
+                          <el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top" v-if="!d.genImg">
                             <a href="javascript:void(0);" :index="index" :url="d.url" @click="upCoverBtn"><i class="fa fa-flag" aria-hidden="true"></i></a>
                           </el-tooltip>
                           <el-tooltip class="item" effect="dark" content="上传中" placement="top" v-else>
