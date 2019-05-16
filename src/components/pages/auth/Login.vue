@@ -153,7 +153,7 @@ export default {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
           if (res.data.meta.status_code === 200) {
-            if (res.data.data.err_count && res.data.data.err_count >= 3) {
+            if (res.data.data.is_code) {
               this.showImgCode = true
             }
           }
