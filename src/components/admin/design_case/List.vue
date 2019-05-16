@@ -67,7 +67,8 @@
         label="所属公司">
           <template slot-scope="scope">
             <p>
-              <router-link :to="{name: 'companyShow', params: {id: scope.row.design_company.id}}" target="_blank">{{ scope.row.design_company.company_name }}</router-link>
+              <a :href="location.origin+ '/static_page/company/view?id=' + scope.row.design_company.id"
+                target="_blank">{{ scope.row.design_company.company_name }}</a>
             </p>
           </template>
       </el-table-column>
