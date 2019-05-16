@@ -784,8 +784,8 @@
         })
       },
       caseDetail(id) {
-        let routeData = this.$router.resolve({name: 'vcenterDesignCaseShow', params: {id: id}})
-        window.open(routeData.href, '_blank')
+        const href = location.origin + '/static_page/design_case/view?id=' + id
+        window.open(href, 'blank')
       }
     },
     mounted() {
