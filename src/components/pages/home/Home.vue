@@ -784,7 +784,7 @@
         })
       },
       caseDetail(id) {
-        const href = location.origin+ '/static_page/design_case/view?id='+ id
+        const href = location.origin + '/static_page/design_case/view?id=' + id
         window.open(href, 'blank')
       }
     },
