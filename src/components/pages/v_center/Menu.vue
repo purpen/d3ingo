@@ -313,7 +313,7 @@
         if (!companyId || companyId === 0) {
           // this.$message.error('请先申请公司认证!')
         } else {
-          this.$router.push({name: 'companyShow', params: {id: companyId}})
+          location.href = location.origin + '/static_page/company/view?id=' + companyId
         }
       },
       alick(e) {

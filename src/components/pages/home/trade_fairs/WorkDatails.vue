@@ -42,10 +42,12 @@
           <div :class="[{'fixed-style': elementShow}, {'absolute-style': elementPosition}]">
             <div class="design-case-slide">
               <div class="info">
-                <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
+                <!-- <a 
+                :href="location.origin+ '/static_page/company/view?id=' + item.design_company.id"
+                target="_blank">
                   <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
                   <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
-                </router-link> -->
+                </a> -->
                 <div class="title-center">
                   <img class="avatar" v-if="
                   imgUrl" :src="
