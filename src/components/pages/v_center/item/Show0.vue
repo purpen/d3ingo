@@ -103,9 +103,10 @@
                       </el-col>
                       <el-col :xs="24" :sm="10" :md="10" :lg="10" v-if="d.cases.length">
                         <div class="case-box">
-                          <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: m.id}}" target="_blank"
-                                      :title="m.title" v-for="(m, index) in d.cases" :key="index">
-                            <img width="120" :src="m.cover_url"/></router-link>
+                          <a v-for="(m, index) in d.cases" :key="index"
+                          :href="location.origin+ '/static_page/design_case/view?id='+m.id" target="_blank"
+                            :title="m.title">
+                            <img width="120" :src="m.cover_url"/></a>
                         </div>
                       </el-col>
                     </el-row>

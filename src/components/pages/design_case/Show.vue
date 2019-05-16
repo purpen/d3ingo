@@ -82,17 +82,18 @@
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
-                  <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                :target="isMob ? '_self' : '_blank'">
+                  <a :href="location.origin+ '/static_page/design_case/view?id='+d.id"
+                    :target="isMob ? '_self' : '_blank'">
                   <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
                       <!-- <img v-lazy="d.cover.middle"> -->
                   </div>
                   <div class="case-box">
-                    <router-link class="title" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" target="_blank">{{ d.title }}
-                    </router-link>
+                      <a class="title" :href="location.origin+ '/static_page/design_case/view?id='+d.id"
+                      target="_blank">{{ d.title }}
+                    </a>
                     <p class="des">{{ d.profile }}</p>
                   </div>
-                </router-link>
+                </a>
               </el-card>
             </el-col>
           </el-row>
