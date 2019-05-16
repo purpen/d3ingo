@@ -29,9 +29,9 @@
                       </div>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" target="_blank">
+                      <a :href="location.origin+ '/static_page/design_case/view?id='+d.id" target="_blank">
                         {{ d.title }}
-                      </router-link>
+                      </a>
                     </div>
                   </div>
                 </el-col>

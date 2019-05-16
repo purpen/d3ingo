@@ -128,7 +128,7 @@
               .then(function (response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
-                  that.$message.success('操作成功！')
+                  that.$message.success('密码修改成功！')
                   that.$refs[formName].resetFields()
                   // 写入localStorage
                   auth.logout(true)

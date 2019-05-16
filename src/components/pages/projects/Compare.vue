@@ -11,13 +11,15 @@
                 <!-- <div class="logo" @click="clickSelf(ele.id)"> -->
                 <div class="logo">
                   <!-- <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i> -->
-                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                  <a target="_blank"
+                  :href="location.origin+ '/static_page/company/view?id='+ ele.id">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                     <img v-else :src="require('assets/images/avatar_100.png')"/>
-                  </router-link>
-                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                  </a>
+                  <a target="_blank"
+                  :href="location.origin+ '/static_page/company/view?id='+ ele.id">
                     <span class="tc-2">{{ele.company_name}}</span>
-                  </router-link>
+                  </a>
                   <span class="tc-9">
                     <i v-for="(e, i) in ele.city_arr" :key="i">
                       {{e}}
@@ -36,7 +38,7 @@
                 <h4 v-else>暂无设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
+                    <a target="_blank" :href="location.origin+ '/static_page/design_case/view?id='+e.id">
                       <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
                       </div>
                       <div v-else class="img-box" >
@@ -52,7 +54,7 @@
                           {{e.created_at.date_format().format('yyyy-MM-dd')}}
                         </p>
                       </div>
-                    </router-link>
+                    </a>
                   </el-col>
                 </el-row>
               </div>
