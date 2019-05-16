@@ -155,6 +155,8 @@ export default {
           if (res.data.meta.status_code === 200) {
             if (res.data.data.is_code) {
               this.showImgCode = true
+            } else {
+              this.showImgCode = false
             }
           }
         }).catch(err => {
@@ -240,9 +242,14 @@ export default {
                     setTimeout(function() {
                       that.isShake = false
                     }, 500)
-                  } else if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
-                    that.fetchImgCaptcha()
-                    that.showImgCode = true
+                  } else if (response.data.meta.status_code === 403) {
+                    if (response.data.data.is_code) {
+                      that.fetchImgCaptcha()
+                      that.showImgCode = true
+                    } else {
+                      that.fetchImgCaptcha()
+                      that.showImgCode = false
+                    }
                   }
                 }
               })
