@@ -166,7 +166,7 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="设计类别" prop="type">
+                  <el-form-item label="设计类型" prop="type">
                     <el-select v-model.number="form.type" placeholder="设计类别" 
                     @change="typec"
                     >
@@ -182,7 +182,7 @@
               </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="设计类别" prop="design_type">
+                  <el-form-item label="设计类别" prop="design_type" class="is-required">
                     <el-select v-model="form.design_types" multiple placeholder="设计类别">
                       <el-option
                         v-for="item in typeDesignOptions"
@@ -196,7 +196,7 @@
               </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12" v-if="form.type === 1">
-                  <el-form-item label="产品领域" prop="field">
+                  <el-form-item label="产品领域" prop="field" class="is-required">
                     <el-select v-model.number="form.field" placeholder="产品领域">
                       <el-option
                         v-for="item in fieldOptions"
@@ -211,7 +211,7 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="行业领域" prop="industry">
+                  <el-form-item label="行业领域" prop="industry"  class="is-required">
                     <el-select v-model.number="form.industry" placeholder="行业领域">
                       <el-option
                         v-for="item in industryOptions"
@@ -374,6 +374,7 @@
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/design_case/MenuSub'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
@@ -439,7 +440,7 @@
         },
         ruleForm: {
           type: [
-            {type: 'number', message: '请选择设计类别', trigger: 'change'}
+            {required: true, type: 'number', message: '请选择设计类别', trigger: 'change'}
           ],
           // design_type: [
           //   {type: 'array', validator: designTypeval, trigger: 'blur'}
@@ -641,6 +642,7 @@
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
                   that.$message.success ('提交成功！')
+                  that.getStatus(that.user.type)
                   that.$router.push ({name: 'vcenterDesignCaseList'})
                   return false
                 } else {
@@ -818,6 +820,22 @@
           this.form.design_types = []
         }
         this.isfrist = true
+      },
+      getStatus(type) {
+        let url = ''
+        if (type === 2) {
+          url = api.surveyDesignCompanySurvey
+        } else {
+          url = api.surveyDemandCompanySurvey
+        }
+        this.$http.get(url, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
       }
     },
     computed: {
