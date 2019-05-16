@@ -1,85 +1,112 @@
 <template>
   <div class="footer clear" v-if="!hideFooter">
-    <el-row class="foot-main" justify="center">
-      <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">关于{{prod.info}}设计交易</p>
-        <p>
-          <router-link :to="{name: 'home'}">首页</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'design_case'}">设计案例</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'innovationHome'}">创新指数</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'trade_fairs'}" v-if="!token">成果交易会</router-link>
-          <router-link :to="{name: 'demand_login'}" v-else>成果交易会</router-link>
-        </p>
-        <!-- <p>
-          <router-link :to="{name: 'contact'}">数据洞察</router-link>
-        </p> -->
-      </el-col>
-
-      <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">帮助/服务</p>
-        <p>
-          <router-link :to="{name: 'promote'}" class="">发布需求</router-link>
-        </p>
-        <p>
-          <router-link v-if="!isMob" :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
-          <router-link v-else :to="{name: 'mSpreadDesign'}">设计服务商入驻</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'contentManageList'}" class="">帮助中心</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
-        </p>
-        <p>
-          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
-        </p>
-      </el-col>
-
-      <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">更多太火鸟产品/服务</p>
-        <p>
-          <a href="https://saas.d3ingo.com" target="_blank">铟果</a>
-        </p>
-        <p>
-          <a href="https://www.taihuoniao.com/ingoset" target="_blank">铟果集</a>
-        </p>
-        <p>
-          <a href="http://d3in.taihuoniao.com" target="_blank">D³IN铟立方</a>
-        </p>
-        <p>
-          <a href="https://www.taihuoniao.com/topic" target="_blank">社区</a>
-        </p>
-        <p>
-          <a href="https://www.taihuoniao.com/service" target="_blank">增值服务</a>
-        </p>
-      </el-col>
-
-      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === ''">
-        <p class="title">关注我们</p>
-        <img class="qrcode" :src="require('assets/images/thn_qr.png')">
-        <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p>
-        <div class="fshare-box">
-          <p class="share" @click="clickwx">
-            <i class="wechat"></i>
-          </p>
-        </div> -->
-      </el-col>
-    </el-row>
-    <div class="copy-right" v-if="!isMob">
-      <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
-      <p>{{prod.license}}{{prod.business}}</p>
+    <div v-if="prod.id === 1">
+      <el-row class="jd-cloud-title">
+        <el-col class="text-center">
+          <div class="j-c-item">
+            <router-link :to="{name: 'SaaSIndex'}">艺火首页</router-link>
+          </div>
+          <div  class="j-c-item border-lr">
+            <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
+          </div>
+          <div  class="j-c-item">
+            <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+          </div>
+        </el-col>
+      </el-row>
+      <div class="copy-right" v-if="!isMob">
+        <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
+        <p>{{prod.license}}{{prod.business}}</p>
+      </div>
+      <div class="copy-right" v-if="isMob">
+        <p>{{prod.copyright}} {{prod.url}}</p>
+        <p>版权所有.All rights reserved.</p>
+        <p>{{prod.license}}</p>
+        <p>{{prod.business}}</p>
+      </div>
     </div>
-    <div class="copy-right" v-if="isMob">
-      <p>{{prod.copyright}} {{prod.url}}</p>
-      <p>版权所有.All rights reserved.</p>
-      <p>{{prod.license}}</p>
-      <p>{{prod.business}}</p>
+    <div v-else>
+      <el-row class="foot-main" justify="center">
+        <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
+          <p class="title">关于{{prod.info}}设计交易</p>
+          <p>
+            <router-link :to="{name: 'home'}">首页</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'design_case'}">设计案例</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'innovationHome'}">创新指数</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'trade_fairs'}" v-if="!token">成果交易会</router-link>
+            <router-link :to="{name: 'demand_login'}" v-else>成果交易会</router-link>
+          </p>
+          <!-- <p>
+            <router-link :to="{name: 'contact'}">数据洞察</router-link>
+          </p> -->
+        </el-col>
+
+        <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
+          <p class="title">帮助/服务</p>
+          <p>
+            <router-link :to="{name: 'promote'}" class="">发布需求</router-link>
+          </p>
+          <p>
+            <router-link v-if="!isMob" :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
+            <router-link v-else :to="{name: 'mSpreadDesign'}">设计服务商入驻</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'contentManageList'}" class="">帮助中心</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
+          </p>
+          <p>
+            <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+          </p>
+        </el-col>
+
+        <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
+          <p class="title">更多太火鸟产品/服务</p>
+          <p>
+            <a href="https://saas.d3ingo.com" target="_blank">铟果</a>
+          </p>
+          <p>
+            <a href="https://www.taihuoniao.com/ingoset" target="_blank">铟果集</a>
+          </p>
+          <p>
+            <a href="http://d3in.taihuoniao.com" target="_blank">D³IN铟立方</a>
+          </p>
+          <p>
+            <a href="https://www.taihuoniao.com/topic" target="_blank">社区</a>
+          </p>
+          <p>
+            <a href="https://www.taihuoniao.com/service" target="_blank">增值服务</a>
+          </p>
+        </el-col>
+
+        <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === ''">
+          <p class="title">关注我们</p>
+          <img class="qrcode" :src="require('assets/images/thn_qr.png')">
+          <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p>
+          <div class="fshare-box">
+            <p class="share" @click="clickwx">
+              <i class="wechat"></i>
+            </p>
+          </div> -->
+        </el-col>
+      </el-row>
+      <div class="copy-right" v-if="!isMob">
+        <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
+        <p>{{prod.license}}{{prod.business}}</p>
+      </div>
+      <div class="copy-right" v-if="isMob">
+        <p>{{prod.copyright}} {{prod.url}}</p>
+        <p>版权所有.All rights reserved.</p>
+        <p>{{prod.license}}</p>
+        <p>{{prod.business}}</p>
+      </div>
     </div>
     <transition name="fade">
       <section class="hidweixin" v-if="iswxhide && !isMob">
@@ -302,6 +329,24 @@
   .qrcode {
     width: 100px;
     height: 100px;
+  }
+  .jd-cloud-title {
+    padding: 40px 0 20px 0;
+    border-bottom: 1px solid hsla(0,0%,100%,.1);
+  }
+  .j-c-item {
+    display: inline-block;
+    font-size: 16px;
+    color:#5D5E66;
+    padding: 0 20px;
+  }
+  .j-c-item:hover a {
+    color:#0989C5;
+    cursor: pointer;
+  }
+  .border-lr {
+    border-left: 1px solid #5B5C65;
+    border-right: 1px solid #5B5C65;
   }
   @media screen and (min-width: 768px) and (max-width: 1055px) {
     .footer .fllow {

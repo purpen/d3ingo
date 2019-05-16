@@ -562,7 +562,6 @@
     methods: {
       updateUser() {
         this.$http.get(api.user).then(res => {
-          console.log(res)
           auth.write_user(res.data.data)
         })
       },
@@ -911,12 +910,13 @@
                   this.form.area = ''
                   this.district = ''
                   this.form.web = this.form.company_web
-
-                  this.form.license_image.forEach((d, i, array) => {
-                    this.$set(d, 'asset_id', d.id)
-                    this.$set(d, 'url', d.small)
-                  })
-                  this.fileList = this.form.license_image
+                  if (this.form.license_image) {
+                    this.form.license_image.forEach((d, i, array) => {
+                      this.$set(d, 'asset_id', d.id)
+                      this.$set(d, 'url', d.small)
+                    })
+                    this.fileList = this.form.license_image
+                  }
                   // 处理网址前缀
                   if (this.form.company_web) {
                     let urlRegex = /http:\/\/|https:\/\//

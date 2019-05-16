@@ -66,7 +66,14 @@ mallache.write_user = function (user) {
     }
   }
   // 写入localStorage
-  store.commit(USER_INFO, userInfo)
+  let UnionUserInfo = {}
+  let oldUserInfo = JSON.parse(window.localStorage.getItem('user'))
+  if (oldUserInfo) {
+    UnionUserInfo = Object.assign(oldUserInfo, userInfo)
+  } else {
+    UnionUserInfo = userInfo
+  }
+  store.commit(USER_INFO, UnionUserInfo)
 }
 
 mallache.logout = function (bool) {

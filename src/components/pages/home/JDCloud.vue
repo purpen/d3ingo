@@ -79,7 +79,28 @@
           <el-row :gutter="10" type="flex" align="middle" class="head-round">
             <el-col :span="13">
                 <el-col :span="20" class="design-font">设计从未如此简单</el-col>
-                <el-col :span="20" class="free-round"><span class="free-font"></span>发布需求，全程管家服务</el-col>
+                <!-- <el-col :span="20" class="free-round"><span class="free-font"></span>发布需求，全程管家服务</el-col> -->
+                <el-row>
+                  <el-col>
+                    <div class="pc-title-box">
+                      <div class="pc-title-item">
+                        <img src="../../../assets/images/promote/Promise@2x.png" alt="">
+                        <div class="text-box">
+                          <div>精品原创设计承诺</div>
+                          <p>我们只承接预算费用1万元以上的项目</p>
+                        </div>
+                      </div>
+                      
+                      <div class="pc-title-item margin-t-36">
+                        <img src="../../../assets/images/promote/Service@2x.png" alt="">
+                        <div class="text-box">
+                          <div>专业设计服务机构</div>
+                          <p>我们暂不承接含有基础发明性质的项目</p>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
             </el-col>
             <el-col :span="11">
               <el-col :span="24" class="header-style">
@@ -118,6 +139,16 @@
                       </el-form-item>
                     </el-col> -->
                   </el-row>
+                  <el-col :offset="2" class="text-left tc-6 fz-14 margin-b-15">设计预算 (单选)</el-col>
+                  <el-row>
+                    <el-col :offset="2">
+                        <el-radio-group v-model="designCost" class="fl jd-cloud">
+                        <el-radio :label="1">1-5万</el-radio>
+                        <el-radio :label="2">5-10万</el-radio>
+                        <el-radio :label="3">10万以上</el-radio>
+                      </el-radio-group>
+                    </el-col>
+                  </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
                       发布项目需求
@@ -138,8 +169,8 @@
             </el-col>
             <el-col :span="4">
             <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-              <p>产品结构设计</p>
+                <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+                <p>品牌设计</p>
               </div>
             </el-col>
             <el-col :span="4">
@@ -156,14 +187,14 @@
             </el-col>
             <el-col :span="4">
               <div class="six-col">
-                <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-                <p>品牌设计</p>
+                <img src="../../../assets/images/promote/design-type/UI@2x.png" alt="">
+                <p>UI/UX设计</p>
               </div>
             </el-col>
             <el-col :span="4">
               <div class="six-col">
-                <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-                <p>VI设计</p>
+                <img src="../../../assets/images/promote/design-type/Illustration@2x.png" alt="">
+                <p>插画设计</p>
               </div>
             </el-col>
           </div>
@@ -189,10 +220,10 @@
             <div class="one pad-top-50 z-index-111">
               <div class="bg2"></div>
                 <el-col :span="8">
-                  <div class="design-company z-index-111"></div>
+                <div class="design-award z-index-111"></div>
                 </el-col>
               <el-col :span="8">
-                <div class="design-award z-index-111"></div>
+                  <div class="design-company z-index-111"></div>
               </el-col>
               <el-col :span="8">
                 <div class="customer z-index-111"></div>
@@ -202,14 +233,14 @@
         </div>
         <div class="design-product">
           <div class="container">
-            <h2 class="public-h2">艺火设计服务的项目</h2>
+            <h2 class="public-h2">艺火服务的项目</h2>
             <div class="design-product-list">
               <el-row :gutter="20" class="m-b-20 z-index-111">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card>
                     <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                      <p>飞行鱼-亚特兰蒂斯号FiFish Atlantis</p>
+                      <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="美妆镜 Amiro">
+                      <p>美妆镜 Amiro</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -224,8 +255,8 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card>
                     <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                      <p>美妆镜 Amiro</p>
+                      <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="满姐饺子品牌设计">
+                      <p>满姐饺子品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -235,24 +266,24 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="婴萌智能冲奶机">
-                      <p>婴萌智能冲奶机</p>
+                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="谜鹿庄园品牌设计">
+                      <p>谜鹿庄园品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                      <p>凡曦 | 御蜜粒卫生巾包装</p>
+                      <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="枣山人家品牌设计">
+                      <p>枣山人家品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="云马C1智能电单车" class="border-bot">
-                      <p>云马C1智能电单车</p>
+                      <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="韵见APP" class="border-bot">
+                      <p>韵见APP</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -298,32 +329,50 @@
       <div class="phone-round" v-else>
         <div class="phead-text">
           <div class="phone-des">设计从未如此简单</div>
-          <div class="phone-isu"><span class="phone-free"></span>发布需求，全程管家服务</div>
+          <!-- <div class="phone-isu"><span class="phone-free"></span>发布需求，全程管家服务</div> -->
+          <div class="margin-t-20">
+            <div class="phone-title-item">
+              <img src="../../../assets/images/promote/Promise@2x.png" alt="">
+              <div class="phone-text-box">
+                <div>精品原创设计承诺</div>
+                <p>我们只承接预算费用1万元以上的项目</p>
+              </div>
+            </div>
+        
+            <div class="phone-title-item margin-t-28">
+              <img src="../../../assets/images/promote/Service@2x.png" alt="">
+              <div class="phone-text-box">
+                <div>专业设计服务机构</div>
+                <p>我们暂不承接含有基础发明性质的项目</p>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28" @submit.native.prevent>
+        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="from-phone" @submit.native.prevent>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="demand">
                 <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="contact">
                 <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="account">
                 <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <!-- <el-row>
-            <el-col :span="20" :offset="2">
+            <el-col :span="24">
               <el-form-item prop="smsCode" class="call-ele">
                 <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
@@ -334,8 +383,18 @@
               </el-form-item>
             </el-col>
           </el-row> -->
+          <el-col class="text-left tc-f fz-14 margin-b-10">设计预算 (单选)</el-col>
           <el-row>
-            <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
+            <el-col :span="24">
+              <el-radio-group v-model="phoneDesignCost" class="phone-jd-cloud" text-color="#ffffff" fill="#764FE2">
+                <el-radio-button label="1-5万" size="medium"></el-radio-button>
+                <el-radio-button label="5-10万" size="medium"></el-radio-button>
+                <el-radio-button label="10万以上" size="medium"></el-radio-button>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-row  class="text-center">
+            <button :loading="isLoadingBtn" @click="submit('ruleForm', 'phone')" class="issue-bt height-40 mar-20-30">
               发布项目需求
             </button>
           </el-row>
@@ -350,8 +409,8 @@
             </el-col>
             <el-col :span="8">
               <div class="pho-six-col">
-                <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-                <p>产品结构设计</p>
+                <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+                <p>品牌设计</p>
               </div>
             </el-col>
             <el-col :span="8">
@@ -372,14 +431,14 @@
             </el-col>
             <el-col :span="8">
               <div class="pho-six-col">
-                <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-                <p>品牌设计</p>
+                <img src="../../../assets/images/promote/design-type/UI@2x.png" alt="">
+                <p>UI/UX设计</p>
               </div>
             </el-col>
             <el-col :span="8">
               <div class="pho-six-col">
-                <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-                <p>VI设计</p>
+                <img src="../../../assets/images/promote/design-type/Illustration@2x.png" alt="">
+                <p>插画设计</p>
               </div>
             </el-col>
           </el-row>
@@ -446,13 +505,13 @@
           </el-row>
         </div>
         <div class="pad-10">
-          <el-row :gutter="10" class="pad-top-50">
+          <el-row :gutter="10" class="pad-top-30">
             <div>
               <el-col :span="8">
-                <div class="three-one-left"></div>
+                <div class="three-two-left"></div>
               </el-col>
               <el-col :span="8">
-                <div class="three-two-left"></div>
+                <div class="three-one-left"></div>
               </el-col>
               <el-col :span="8">
                 <div class="three-three-left"></div>
@@ -462,14 +521,14 @@
         </div>
         <div class="design-product-pho">
           <div class="container">
-            <h2 class="public-h2 font-size-20">艺火设计服务的项目</h2>
+            <h2 class="public-h2 font-size-20">艺火服务的项目</h2>
             <div class="design-product-list mar-top-0">
               <el-row :gutter="10" class="m-b-20">
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                      <p>FiFish飞行鱼</p>
+                      <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="美妆镜 Amiro">
+                      <p>美妆镜 Amiro</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -486,16 +545,16 @@
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                      <p>美妆镜 Amiro</p>
+                      <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="满姐饺子品牌设计">
+                      <p>满姐饺子品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="婴萌智能冲奶机">
-                      <p>婴萌智能冲奶机</p>
+                      <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="谜鹿庄园品牌设计">
+                      <p>谜鹿庄园品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -504,22 +563,22 @@
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                      <p>凡曦 | 御蜜粒卫生巾包装</p>
+                      <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="枣山人家品牌设计">
+                      <p>枣山人家品牌设计</p>
                     </div>
                   </el-card>
                 </el-col>
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="云马C1智能电单车" class="border-bot">
-                      <p>云马C1智能电单车</p>
+                      <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="韵见APP" class="border-bot">
+                      <p>韵见APP</p>
                     </div>
                   </el-card>
                 </el-col>
               </el-row>
             </div>
-          </div>
+        </div>
         </div>
         <div class="call-we">联系我们</div>
         <div class="call-phone">客服电话：13031154842</div>
@@ -529,7 +588,7 @@
         <div class="or-text">或者</div>
         <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
         <div class="form mtop_40">
-          <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20">
+          <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-10">
             <el-form-item prop="name" class="pad-bot-15">
               <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
             </el-form-item>
@@ -910,6 +969,8 @@ export default {
         from: 3,
         mark: 'a'
       },
+      designCost: 1,
+      phoneDesignCost: '1-5万',
       // swiper
       // swiperOption: {
       //   pagination: '.swiper-pagination',
@@ -1111,7 +1172,7 @@ export default {
         }
       })
     },
-    submit (form) {
+    submit (form, p) {
       this.$refs[form].validate(valid => {
         if (valid) {
           let row = {
@@ -1121,12 +1182,34 @@ export default {
             source: this.query.from || 3,
             son_source: this.query.mark || 'b'
           }
+          // 是否为移动端
+          if (p) {
+            if (!this.phoneDesignCost) {
+              this.$message.error('请输入您的需求')
+              return
+            }
+            if (this.phoneDesignCost === '1-5万') {
+              row.design_cost = 1
+            } else if (this.phoneDesignCost === '5-10万') {
+              row.design_cost = 2
+            } else {
+              row.design_cost = 3
+            }
+          } else {
+            if (!this.designCost) {
+              this.$message.error('请输入您的需求')
+              return
+            }
+            row.design_cost = this.designCost
+          }
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
                 this.form = {}
                 this.time = 0
+                this.phoneDesignCost = '1-5万'
+                this.designCost = 1
               } else {
                 this.$message.error(res.data.meta.message)
               }
@@ -1184,6 +1267,66 @@ export default {
 }
 </script>
 <style scoped>
+.pc-title-box {
+  margin-top: 30px; 
+}
+.pc-title-item {
+  display: flex;
+  align-items: center;
+}
+.pc-title-item > img {
+  width: 75px;
+  height: 75px;
+  margin-right: 16px;
+}
+.text-box > div {
+  font-size:24px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+  padding-left: 74px;
+  background: url('../../../assets/images/promote/100%@2x.png') no-repeat left/ 66px;
+  line-height: 40px;
+}
+.text-box > p {
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  line-height: 30px;
+}
+
+.phone-title-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone-title-item > img {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+.phone-title-item .phone-text-box  {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 50px;
+}
+
+.phone-text-box > div {
+  font-size:17px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+  padding-left: 58px;
+  background: url('../../../assets/images/promote/100%@2x.png') no-repeat left/ 50px;
+}
+.phone-text-box > p {
+  font-size:13px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+}
   .round-backgound {
     background: url("../../../assets/images/promote2/pc/bg/BG.jpg") no-repeat;
     background-size: cover;
@@ -1276,19 +1419,18 @@ export default {
     background-size: 100% 100%;
   }
   .design-company {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat center/contain;
   }
   .design-award {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat;
-    background-size: 100% 100%;
+    /* height: 200px; */
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .customer {
-    height: 200px;
-    background: url("../../../assets/images/promote2/pc/yihuo/Customer@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 52.6%;
+    background: url("../../../assets/images/promote2/pc/yihuo/Customer@2x.png") no-repeat center/contain;
   }
   .design-product {
     padding: 50px 0 60px 0;
@@ -1407,6 +1549,15 @@ export default {
   .pad-top-28 {
     padding-top: 28px;
   }
+  .pad-top-32 {
+    padding-top: 32px;
+  }
+  .from-phone {
+    padding: 30px 10px;
+  }
+  .pad-top-30 {
+    padding-top: 30px;
+  }
   .mar-20-30 {
     margin: 20px 0 30px 0
   }
@@ -1495,19 +1646,20 @@ export default {
     background-size: 100% 100%;
   }
   .three-one-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/DesignCompany@2x.png") no-repeat;
-    background-size: 100% 100%;
+    /* height: 160px; */
+     padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/DesignCompany@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .three-two-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/DesignAward@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .three-three-left {
-    height: 160px;
-    background: url("../../../assets/images/promote2/phone/yihuo/Customer@2x.png") no-repeat;
-    background-size: 100% 100%;
+    padding-top: 169%;
+    background: url("../../../assets/images/promote2/phone/yihuo/Customer@2x.png") no-repeat center/contain;
+    /* background-size: 100% 100%; */
   }
   .mid-hei {
     height: 96px;
@@ -1858,13 +2010,13 @@ export default {
       height: 140px;
     }
     .design-company {
-      height: 180px;
+      /* height: 180px; */
     }
     .design-award {
-      height: 180px;
+      /* height: 180px; */
     }
     .customer {
-      height: 180px;
+      /* height: 180px; */
     }
     .four-img {
       height: 110px;
@@ -1951,5 +2103,26 @@ export default {
       margin-top: 10px;
     }
   }
-  
+  .phone-jd-cloud {
+    display: flex;
+    margin:0 -5px;
+  }
+  .phone-jd-cloud label {
+    flex: 1;
+    margin:0 5px;
+  }
+</style>
+<style>
+.jd-cloud .el-radio__input.is-checked .el-radio__inner {
+  border-color: #7F75EC;
+}
+.jd-cloud .el-radio__inner::after {
+  background-color: #7F75EC;
+}
+.jd-cloud .el-radio__inner:hover {
+  border-color: #7F75EC;
+}
+.phone-jd-cloud .el-radio-button__inner {
+  width: 104px;
+}
 </style>

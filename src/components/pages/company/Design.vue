@@ -135,8 +135,8 @@
               </div>
             </div>
 
-            <div class="business-type bg-f margin-t-10" v-if="companyInfo.design_type_val.length || companyInfo.good_field.length">
-              <h6 v-if="companyInfo.design_type_val.length">接单类型</h6>
+            <div class="business-type bg-f margin-t-10" v-if="(companyInfo.design_type_val && companyInfo.design_type_val.length) ||( companyInfo.good_field &&  companyInfo.good_field.length)">
+              <h6 v-if="(companyInfo.design_type_val && companyInfo.design_type_val.length)">接单类型</h6>
               <div>
                 <span class="label" v-for="(d, i) in companyInfo.design_type_val" :key="i">{{d}}</span>
               </div>
@@ -339,7 +339,7 @@ export default {
       radarList: [],
       query: {
         page: 1,
-        pageSize: 9,
+        pageSize: 15,
         totalPges: 0,
         totalCount: 0
       }
@@ -590,7 +590,7 @@ export default {
 </script>
 <style scoped>
 .hide {
-  position: absolute;
+  position: fixed;
   left: 9999px;
 }
 .chart {
