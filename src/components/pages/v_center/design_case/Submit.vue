@@ -69,7 +69,7 @@
                                   <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
                                      @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                                <el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">
                                   <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
                                      @click="setCoverBtn"><i
                                     :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
@@ -337,7 +337,7 @@
               </el-form-item>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标签" prop="label"   class="label-tag">
+                  <el-form-item label="标签" prop="label" class="label-tag">
                     <vue-input-tag
                       placeholder="Enter添加新标签,上限10个"
                       :tags.sync="form.label"
