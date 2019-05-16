@@ -1,7 +1,7 @@
 <template>
 <div class="nav-list">
   <div class="category-list">
-    <router-link :to="{name: 'designGeneralList'}" :class="{'active': menuType === 'designGeneralList'}">作品案例</router-link>
+    <a :href="url" :class="{'active': menuType === 'designGeneralList'}">作品案例</a>
     <router-link :to="{name: 'designAwardsList'}"  :class="{'active': menuType === 'designAwardsList'}">设计奖项</router-link>
   </div>
 </div>
@@ -12,7 +12,8 @@
     data () {
       return {
         menuType: '',
-        msg: ''
+        msg: '',
+        url: location.origin + '/static_page/design_case/list'
       }
     },
     methods: {},

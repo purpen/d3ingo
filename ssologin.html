@@ -34,6 +34,7 @@
           if (data.type === 'login') { // login | loginout
             if (data.ticket) {
               if (getCookie('ticket') !== data.ticket) {
+                console.log('sso 清除token')
                 localStorage.setItem('token', '')
               }
               document.cookie = 'ticket=' + data.ticket

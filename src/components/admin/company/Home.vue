@@ -533,8 +533,9 @@ export default {
     font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
+    height: 18px;
     color: rgba(102,102,102,1);
-    line-height: 14px
+    line-height: 18px;
   }
   .com-name {
     cursor: pointer;

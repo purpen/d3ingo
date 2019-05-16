@@ -107,12 +107,28 @@ export default {
       loading.setAttribute('class', classVal)
     }
     // document的可见性
-    document.addEventListener('visibilitychange', () => {
-      let windowStatus = document.visibilityState
-      if (windowStatus === 'hidden') {
+    // 找到当前浏览器支持的hidden属性名和visibilitychange事件名
+    let hidden, visibilityChange
+    if (typeof document.hidden !== 'undefined') {
+      hidden = 'hidden'
+      visibilityChange = 'visibilitychange'
+    } else if (typeof document.mozHidden !== 'undefined') {
+      hidden = 'mozHidden'
+      visibilityChange = 'mozvisibilitychange'
+    } else if (typeof document.msHidden !== 'undefined') {
+      hidden = 'msHidden'
+      visibilityChange = 'msvisibilitychange'
+    } else if (typeof document.webkitHidden !== 'undefined') {
+      hidden = 'webkitHidden'
+      visibilityChange = 'webkitvisibilitychange'
+    } else {
+      return
+    }
+    document.addEventListener(visibilityChange, () => {
+      let windowStatus = document[hidden]
+      if (windowStatus) {
         this.intervalId = setInterval(() => {
           this.timer = this.timer + 1
-          // console.log('我是定时器')
         }, 1000)
       } else {
         console.log(this.timer + 's')
@@ -185,9 +201,9 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           auth.write_token(res.data.data.token)
-          that.getUser(res.data.data.token)
+          this.getUser(res.data.data.token)
         } else {
-          that.$message.error(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
         auth.logout(true)
@@ -195,7 +211,6 @@ export default {
       })
     },
     fetchUser() {
-      let that = this
       let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
@@ -207,6 +222,7 @@ export default {
           }
           console.log('已登录')
         } else {
+          console.log('重新获取token')
           this.fetchToken()
         }
       } else {

@@ -1759,7 +1759,13 @@
                   }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
-                  auth.write_user(response.data.data)
+                  let users = response.data.data.users
+                  users.design_company_name = response.data.data.company_name
+                  users.design_company_abbreviation = response.data.data.company_abbreviation
+                  users.design_company_logo_image = response.data.data.logo_image
+                  users.verify_status = response.data.data.verify_status
+                  console.log('users', users)
+                  auth.write_user(users)
                 } else {
                   that.$message.error(response.data.meta.message)
                 }
@@ -1774,7 +1780,7 @@
           }
         })
       },
-      getdesignCompanyInfo() {
+      getdesignCompanyInfo(ids) {
         this.isLoading = true
         this.$http.get(api.designCompany, {})
           .then((response) => {
@@ -1895,6 +1901,9 @@
                 taxable_type: data.taxable_type,
                 invoice_type: data.invoice_type === 0 ? null : data.invoice_type
               }
+              if (ids === 2) {
+                this.showLegalizeDialog()
+              }
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -1947,10 +1956,11 @@
         return
       }
       this.updateUser()
-      this.getdesignCompanyInfo()
       let {params = {}} = this.$route
       if (params.id === 2) {
-        this.dialogVisible = true
+        this.getdesignCompanyInfo(params.id)
+      } else {
+        this.getdesignCompanyInfo()
       }
       // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
