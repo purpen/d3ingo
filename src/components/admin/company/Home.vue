@@ -165,6 +165,10 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="operationName"
+          label="审核人">
+        </el-table-column>
+        <el-table-column
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -413,6 +417,7 @@ export default {
                 item['company_size_val'] = '300人以上'
                 break
             }
+            item.operationName = item.operation_name || '—'
             self.tableData.push(item)
           }
           self.homeLoading = false
