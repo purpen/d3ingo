@@ -928,13 +928,21 @@
     watch: {
       form: {
         handler: function (newValue, oldValue) {
+          for (let index in newValue.label) {
+            let str = newValue.label[index]
+            newValue.label[index] = str.split(' ').join('')
+          }
         },
         deep: true
       },
       label(newValue, oldValue) {
         if (newValue && newValue.length > 0) {
           for (let n = 0; n < newValue.length; n++) {
-            if (newValue[n].length > 7) {
+            if (!newValue[n]) {
+              newValue.splice(n, 1)
+              this.$message ('请输入内容！')
+              return false
+            } else if (newValue[n].length > 7) {
               newValue.splice(n, 1)
               this.$message ('每个标签最多7个字!')
               return false

@@ -66,7 +66,7 @@
                           <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
                             <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
                           </el-tooltip>
-                          <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                          <el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">
                           <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index" @click="setCoverBtn"><i :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }" aria-hidden="true"></i></a>
                           </el-tooltip>
                         </div>
