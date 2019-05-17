@@ -90,7 +90,7 @@
                   <div class="item-logo">
                     <div class="fl">
                       <a
-                      :href="location.origin+ '/static_page/company/view?id='+ d.design_company.id"
+                      :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
                       target="_blank">
                         <img class="avatar fl" v-if="d.design_company.logo_url" :src="d.design_company.logo_url"
                              width="40"/>
@@ -98,7 +98,7 @@
                       </a>
                       <p class="p-title minititle fl">
                         <a 
-                        :href="location.origin+ '/static_page/company/view?id='+ d.design_company.id"
+                        :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
                         target="_blank">
                           {{ d.design_company.company_name }}
                         </a>
@@ -160,7 +160,7 @@
                   <div class="item-logo">
                     <div class="fl">
                       <a 
-                      :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                       target="_blank">
                         <img class="avatar fl" v-if="cooperateCompany.design_company.logo_url"
                              :src="cooperateCompany.design_company.logo_url" width="40"/>
@@ -168,7 +168,7 @@
                       </a>
                       <p class="p-title minititle fl">
                         <a 
-                        :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                        :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                         target="_blank">{{ cooperateCompany.design_company.company_name }}
                         </a>
                       </p>
@@ -424,7 +424,7 @@
                         <p class="ev-c-name">
 
                           <a 
-                          :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                          :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                           target="_blank">
                             {{ cooperateCompany.design_company.company_name }}
                           </a>
@@ -565,6 +565,7 @@ export default {
   },
   data() {
     return {
+      origin: location.origin,
       showStickCompanyBtn: true,
       comfirmLoadingBtn: false,
       comfirmDialog: false,

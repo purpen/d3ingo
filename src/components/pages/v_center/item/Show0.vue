@@ -80,7 +80,7 @@
                       <el-col :xs="24" :sm="2" :md="2" :lg="2">
                         <div class="img">
                           <a 
-                          :href="location.origin+ '/static_page/company/view?id='+ d.id" target="_blank">
+                          :href="origin+ '/static_page/company/view?id='+ d.id" target="_blank">
                             <img class="avatar" v-if="d.logo_url" :src="d.logo_url" width="50"/>
                             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/>
                           </a>
@@ -94,7 +94,7 @@
                         <div class="company-title">
                           <h3 class="company-name">
                             <a 
-                            :href="location.origin+ '/static_page/company/view?id='+ d.id"
+                            :href="origin+ '/static_page/company/view?id='+ d.id"
                             target="_blank">{{ d.company_name
                               }}
                             </a>
@@ -107,7 +107,7 @@
                       <el-col :xs="24" :sm="10" :md="10" :lg="10" v-if="d.cases.length">
                         <div class="case-box">
                           <a v-for="(m, index) in d.cases" :key="index"
-                          :href="location.origin+ '/static_page/design_case/view?id='+m.id" target="_blank"
+                          :href="origin+ '/static_page/design_case/view?id='+m.id" target="_blank"
                             :title="m.title">
                             <img width="120" :src="m.cover_url"/></a>
                         </div>
@@ -134,7 +134,7 @@
                   <div class="item-logo">
                     <div class="fl">
                       <a 
-                      :href="location.origin+ '/static_page/company/view?id='+ d.design_company.id"
+                      :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
                       target="_blank">
                         <img class="avatar fl" v-if="d.design_company.logo_url" :src="d.design_company.logo_url"
                              width="40"/>
@@ -142,7 +142,7 @@
                       </a>
                       <p class="p-title minititle fl">
                         <a
-                        :href="location.origin+ '/static_page/company/view?id='+ d.design_company.id" target="_blank">
+                        :href="origin+ '/static_page/company/view?id='+ d.design_company.id" target="_blank">
                           {{ d.design_company.company_name }}
                         </a>
                       </p>
@@ -202,7 +202,7 @@
                   <div class="item-logo">
                     <div class="fl">
                       <a
-                      :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                       target="_blank">
                         <img class="avatar fl" v-if="cooperateCompany.design_company.logo_url"
                              :src="cooperateCompany.design_company.logo_url" width="40"/>
@@ -210,7 +210,7 @@
                       </a>
                       <p class="p-title minititle fl">
                         <a
-                        :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                        :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                         target="_blank">{{ cooperateCompany.design_company.company_name }}
                         </a>
                       </p>
@@ -404,7 +404,7 @@
                     <p class="ev-c-name">
 
                       <a
-                      :href="location.origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
+                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
                       target="_blank">
                         {{ cooperateCompany.design_company.company_name }}
                       </a>
@@ -469,6 +469,7 @@ export default {
   },
   data() {
     return {
+      origin: location.origin,
       showStickCompanyBtn: true,
       comfirmLoadingBtn: false,
       comfirmDialog: false,
