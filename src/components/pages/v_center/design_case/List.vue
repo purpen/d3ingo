@@ -34,17 +34,17 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <a v-if="d.cover" :href="location.origin+ '/static_page/design_case/view?id='+d.id"
+                      <a v-if="d.cover" :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'"
                         :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                       </a>
                       <a v-else 
-                        :href="location.origin+ '/static_page/design_case/view?id='+d.id"
+                        :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'">
                       </a>
                     </div>
                     <div class="content">
-                      <a :href="location.origin+ '/static_page/design_case/view?id='+d.id"
+                      <a :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude">{{ d.title }}
                       </a>
@@ -80,6 +80,7 @@
     },
     data() {
       return {
+        origin: location.origin,
         isLoading: false,
         designCases: [],
         userId: this.$store.state.event.user.id

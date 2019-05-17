@@ -12,12 +12,12 @@
                 <div class="logo">
                   <!-- <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i> -->
                   <a target="_blank"
-                  :href="location.origin+ '/static_page/company/view?id='+ ele.id">
+                  :href="origin+ '/static_page/company/view?id='+ ele.id">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                     <img v-else :src="require('assets/images/avatar_100.png')"/>
                   </a>
                   <a target="_blank"
-                  :href="location.origin+ '/static_page/company/view?id='+ ele.id">
+                  :href="origin+ '/static_page/company/view?id='+ ele.id">
                     <span class="tc-2">{{ele.company_name}}</span>
                   </a>
                   <span class="tc-9">
@@ -38,7 +38,7 @@
                 <h4 v-else>暂无设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <a target="_blank" :href="location.origin+ '/static_page/design_case/view?id='+e.id">
+                    <a target="_blank" :href="origin+ '/static_page/design_case/view?id='+e.id">
                       <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
                       </div>
                       <div v-else class="img-box" >
@@ -98,6 +98,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 15}
     ]
     return {
+      origin: location.origin,
       id: -1,
       test: '',
       demandObj: {},

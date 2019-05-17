@@ -57,7 +57,7 @@
             <template slot-scope="scope">
               <p>
                 <a
-                :href="location.origin+ '/static_page/company/view?id='+scope.row.company.id"
+                :href="origin+ '/static_page/company/view?id='+scope.row.company.id"
                 target="_blank">{{ scope.row.company.company_name }}</a>
               </p>
             </template>
@@ -135,6 +135,7 @@ export default {
   name: 'admin_works_list',
   data () {
     return {
+      origin: location.origin,
       menuType: 0,
       itemList: [],
       tableData: [],

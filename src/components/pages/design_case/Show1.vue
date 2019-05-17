@@ -26,7 +26,7 @@
         <div class="design-case-slide">
           <div class="info">
             <a
-            :href="location.origin+ '/static_page/company/view?id='+item.design_company.id"
+            :href="origin+ '/static_page/company/view?id='+item.design_company.id"
             target="_blank">
               <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
               <img class="avatar" v-else src="../../../assets/images/avatar_100.png" width="100"/>
@@ -83,6 +83,7 @@ export default {
   name: 'design_case_show',
   data() {
     return {
+      origin: location.origin,
       isFullLoading: false,
       item: {
         design_company: ''

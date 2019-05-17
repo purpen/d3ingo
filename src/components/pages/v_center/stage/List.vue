@@ -29,7 +29,7 @@
                       </div>
                     </div>
                     <div class="content">
-                      <a :href="location.origin+ '/static_page/design_case/view?id='+d.id" target="_blank">
+                      <a :href="origin+ '/static_page/design_case/view?id='+d.id" target="_blank">
                         {{ d.title }}
                       </a>
                     </div>
@@ -61,6 +61,7 @@
     },
     data () {
       return {
+        origin: location.origin,
         designCases: [],
         userId: this.$store.state.event.user.id
       }
