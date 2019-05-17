@@ -66,30 +66,67 @@
     <div v-if="($route.query.type - 0) === 2">
       <div v-if="itemList.length" class="list-round">
         <div class="docking-item" v-for="(d, index) in itemList" :key="d + index">
-          <div class="banner">
+          <div class="data-top mb-center-center">
             <p>{{ d.item.created_at }}</p>
           </div>
           <div class="list-body">
-            <p class="list-title Bborder">
-              <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
-              </router-link>
-            </p>
+            <div class="list-title">{{ d.item.name }}</div>
+            <div class="grey-line"></div>
             <div class="list-content">
-              <section class="c-body">
-                <p>项目预算：{{ d.item.design_cost_value }}</p>
-                <p>交付时间：{{ d.item.cycle_value }}</p>
-                <p>设计类型: {{ d.item.type_value }}</p>
-                <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                <p class="fc-content">产品功能：{{ d.item.product_features }}</p>
-              </section>
-              <p class="money-str price-m Bborder">交易金额：
-                <span v-if="d.item.price !== 0">¥ <b>{{ d.item.price }}</b></span>
-                <span v-else>暂无</span>
-              </p>
-              <p class="price-m Bborder">状态
-                <span class="status-str" v-if="d.item.show_offer">有设计服务商报价</span>
-                <span class="status-str" v-else>{{ d.item.status_value }}</span>
-              </p>
+              <div class="c-body">
+                <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+              </div>
+              <div class="grey-line"></div>
+              <div class="money-str mb-center-space">
+                <div class="money-text">交易金额</div>
+                <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                <div v-else class="money-money">暂无</div>
+              </div>
+              <div class="grey-line"></div>
+              <div class="state-str mb-center-space">
+                <div class="money-text">状态</div>
+                <div v-if="d.item.show_offer" class="design-state">有设计服务商报价</div>
+                <div v-else class="design-state">{{ d.item.status_value }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 已完成 -->
+    <div v-if="($route.query.type - 0) === 3">
+      <div v-if="itemFinList.length" class="list-round">
+        <div class="docking-item" v-for="(d, index) in itemFinList" :key="d + index">
+          <div class="data-top mb-center-center">
+            <p>{{ d.item.created_at }}</p>
+          </div>
+          <div class="list-body">
+            <div class="list-title">{{ d.item.name }}</div>
+            <div class="grey-line"></div>
+            <div class="list-content">
+              <div class="c-body">
+                <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+              </div>
+              <div class="grey-line"></div>
+              <div class="money-str mb-center-space">
+                <div class="money-text">交易金额</div>
+                <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                <div v-else class="money-money">暂无</div>
+              </div>
+              <div class="grey-line"></div>
+              <div class="state-str mb-center-space">
+                <div class="money-text">状态</div>
+                <div class="final-state">已完成</div>
+              </div>
             </div>
           </div>
         </div>
@@ -106,9 +143,12 @@ export default {
       type: 1,
       promot: true,
       isEmpty: false,
+      isEmpty2: false,
+      isEmpty3: false,
       isLoading: false,
       itemList: [],
       itemIngList: [],
+      itemFinList: [],
       query: {
         page: 1,
         pageSize: 10,
@@ -116,6 +156,12 @@ export default {
         total: 0
       },
       query2: {
+        page: 1,
+        pageSize: 10,
+        totalPages: 0,
+        total: 0
+      },
+      query3: {
         page: 1,
         pageSize: 10,
         totalPages: 0,
@@ -137,9 +183,12 @@ export default {
       if (type === 1) {
         page = this.query.page
         pageSize = this.query.pageSize
-      } else {
+      } else if (type === 2) {
         page = this.query2.page
         pageSize = this.query2.pageSize
+      } else if (type === 3) {
+        page = this.query3.page
+        pageSize = this.query3.pageSize
       }
       that.$http.get(api.itemList, {params: {type: type,
         page: page,
@@ -149,6 +198,7 @@ export default {
         if (response.data.meta.status_code === 200) {
           that.itemList = []
           that.itemIngList = []
+          that.itemFinList = []
           document.body.scrollTop = 0
           document.documentElement.scrollTop = 0
           if (response.data && response.data.data && response.data.data.length) {
@@ -156,10 +206,11 @@ export default {
             that.query.total = 0
             that.query2.totalPages = 0
             that.query2.total = 0
+            that.query3.totalPages = 0
+            that.query3.total = 0
             let data = response.data.data
             for (let i = 0; i < data.length; i++) {
               let d = data[i]
-              let status = d.item.status
               let progress = d.item.stage_status
               switch (progress) {
                 case 1:
@@ -174,21 +225,6 @@ export default {
                 default:
                   data[i]['item']['progress'] = 0
               }
-              let showOffer = false
-              if (d.item.status === 4 && d.purpose_count > 0) {
-                showOffer = true
-              }
-              let showView = false
-              if (status === 2 || status === 5 || status === 8 || status === 9 || status === 11 || status === 20 || status === 22) {
-                showView = true
-              }
-              let isClose = false
-              if (status === -2 || status === 2 || status === 3) {
-                isClose = true
-              }
-              data[i]['item']['is_view_show'] = showView
-              data[i]['item']['is_close'] = isClose
-              data[i]['item']['show_offer'] = showOffer
               data[i]['item']['created_at'] = d.item.created_at.date_format().format('yyyy-MM-dd')
             } // endfor
 
@@ -200,12 +236,18 @@ export default {
               that.itemList = data
               that.query2.totalPages = response.data.meta.pagination.total_pages
               that.query2.total = response.data.meta.pagination.total
+            } else if (type === 3) {
+              that.itemFinList = data
+              that.query3.totalPages = response.data.meta.pagination.total_pages
+              that.query3.total = response.data.meta.pagination.total
             }
           } else {
             if (type === 1) {
               that.isEmpty = true
-            } else {
+            } else if (type === 2) {
               that.isEmpty2 = true
+            } else if (type === 3) {
+              that.isEmpty3 = true
             }
           }
         } else {
@@ -393,24 +435,78 @@ export default {
     color: rgba(255,255,255,1);
     padding-left: 6px;
   }
-  .banner {
+  .data-top {
     height: 44px;
     background: rgba(250,250,250,1);
     border-radius: 4px 4px 0px 0px;
-    border: 1px solid rgba(230,230,230,1);
+    border-bottom: 1px solid rgba(230,230,230,1);
   }
   .docking-item {
-    min-height: 387px;
+    min-height: 358px;
     background: rgba(255,255,255,1);
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.05);
     border-radius: 4px;
     border: 1px solid rgba(230,230,230,1);
+    margin: 15px 15px 0 15px;
   }
-  .banner {
-    height: 44px;
-    background: rgba(250,250,250,1);
-    border-radius: 4px 4px 0px 0px;
-    border: 1px solid rgba(230,230,230,1);
+  .list-body {
+    padding: 15px;
+  }
+  .list-title {
+    font-size: 17px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(34,34,34,1);
+    padding-bottom: 15px;
+  }
+  .list-content {
+    padding-top: 15px;
+  }
+  .c-body {
+    padding: 17px 0;
+  }
+  .content-text {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    display: flex;
+  }
+  .c-body .content-text:not(:nth-last-child(1)) {
+    padding-bottom: 14px;
+  }
+  .content-text p {
+    color: #222222;
+  }
+  .money-str {
+    padding: 14px 0 16px 0;
+  }
+  .money-text {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+  }
+  .money-money {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+  .design-state {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,166,75,1);
+  }
+  .state-str {
+    padding: 14px 0 0 0;
+  }
+  .final-state {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(0,172,132,1);
   }
 
 
@@ -418,6 +514,9 @@ export default {
   .nav-line {
     height: 18px;
     border-right: 1px solid #D4D2D2;
+  }
+  .grey-line {
+    border-top: 1px solid #D4D2D2;
   }
   .nav-bot {
     border-bottom: 2px solid #FF5A5F;
