@@ -1275,7 +1275,7 @@ img.avatar {
   border-radius: 50%;
   overflow: hidden;
   vertical-align: middle;
-  border: 1px solid #E6E6E6;
+  border: 1px solid #e6e6e6;
 }
 
 img.avatar2 {
@@ -1772,7 +1772,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     /* padding-bottom: 450px; */
   }
   .app {
-    padding-top: 60px;
+    padding-top: 70px;
   }
   .el-card:hover {
     transform: none;

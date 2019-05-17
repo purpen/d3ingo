@@ -1,109 +1,6 @@
 <template>
   <section v-if="!hideHeader">
     <div :class="['header-layout', 'd3in']" v-if="custom.name === ''">
-      <div class="container">
-        <div class="nav-header" v-if="!this.isMob">
-          <hgroup>
-            <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
-              <!---->
-              <!-- <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img :src="custom.logo" :alt="custom.info">
-              </router-link> -->
-              <!-- <el-menu-item index="/home" :route="menu.home">首页</el-menu-item> -->
-              <!-- <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
-              <el-menu-item index="/article" :route="menu.article">铟果说</el-menu-item>
-              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item> -->
-              <!-- <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
-              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
-              <a class="el-menu-item logo cursor-def margin-left-0">
-                <img src="../../assets/images/new_home/logo@2x.png" :alt="custom.info">
-              </a>
-              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index=""><a :href="menu.design_general_list" class="menu-link">设计案例</a></el-menu-item>
-              <el-menu-item v-show="!isLogin" index="spread_design" :route="menu.spread_design">设计服务商入驻</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
-              <el-menu-item index="content_manage" :route="menu.content_manage">帮助</el-menu-item>
-
-              <el-menu-item v-show="!isLogin" index="/register123" :route="menu.register" style="margin-left: 126px" class="fc-red mr-15">
-                <span class="login-shadow">
-                  注册
-                </span>
-              </el-menu-item>
-              <el-menu-item v-show="!isLogin" index="/login" :route="menu.login" class="ml-0">登录</el-menu-item>
-            </el-menu>
-          </hgroup>
-          <div class="nav-right nav-menu" v-if="isLogin">
-            <a tabindex="-1" class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
-              <span class="icon active">
-                <i class="fx-4 fx-icon-notice">
-                  <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
-                </i>
-              </span>
-              <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
-              <div class="view-msg">
-                <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-                  <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
-                  <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
-                  <span v-else>[订单通知]</span>
-                </a>
-                <!-- <a v-if="isCompany" @click="showMyView('task')" class="news">
-                  <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
-                  <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
-                  <span v-else>[项目通知]</span>
-                </a> -->
-                <a @click="showMyView('system')" class="notice">
-                  <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-                  <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
-                  <span v-else>[系统通知]</span>
-                </a>
-              </div>
-            </a>
-            <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
-                <template slot="title">
-                  <template v-if="eventUser.type === 1">
-                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  </template>
-                  <template v-else>
-                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  </template>
-                  <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
-                </template>
-                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-                <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
-                <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item> -->
-                <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-                <el-menu-item index="" @click="logout">
-                  <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </div>
-
-          <!-- <div class="nav-right" v-else>
-            <div class="server-in-btn">
-              <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-            </div>
-            <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
-              <el-menu-item index="" :route="menu.register" class="fc-red">
-                <span class="login-shadow">
-                  注册
-                </span>
-              </el-menu-item>
-            </el-menu>
-          </div> -->
-
-        </div>
-      </div>
       <div class="m-nav-header" v-if="isMob">
 
         <div class="el-menu-item logo">
@@ -117,21 +14,6 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.server">服务</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.article">铟果说</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.design_case">灵感</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.commonly_sites">设计工具</router-link>
-            </li>
-            <li @click="closeMenu" v-if="isAdmin">
-              <router-link :to="menu.innovation_index">创新指数</router-link>
-            </li> -->
             <li @click="closeMenu">
               <a :href="menu.design_general_list">设计案例</a>
             </li>
@@ -173,82 +55,8 @@
           </router-link>
         </div>
       </div>
-      <div class="header-buttom-line"></div>
-      <Message></Message>
     </div>
     <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'}]" v-else>
-      <div class="container">
-        <div class="nav-header" v-if="!this.isMob">
-          <hgroup>
-            <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
-              <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'" :src="custom.logo2" :alt="custom.info">
-                <img v-else :src="custom.logo" :alt="custom.info">
-              </router-link>
-            </el-menu>
-          </hgroup>
-          <div class="nav-right nav-menu" v-if="isLogin">
-            <a tabindex="-1" class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
-              <span class="icon active">
-                <i class="fx-4 fx-icon-notice">
-                  <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
-                </i>
-              </span>
-              <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
-              <div class="view-msg">
-                <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-                  <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
-                  <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
-                  <span v-else>[订单通知]</span>
-                </a>
-                <!-- <a v-if="isCompany" @click="showMyView('task')" class="news">
-                  <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
-                  <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
-                  <span v-else>[项目通知]</span>
-                </a> -->
-                <a @click="showMyView('system')" class="notice">
-                  <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-                  <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
-                  <span v-else>[系统通知]</span>
-                </a>
-              </div>
-            </a>
-            <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
-                <template slot="title">
-                  <template v-if="eventUser.type === 1">
-                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  </template>
-                  <template v-else>
-                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  </template>
-                  <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
-                </template>
-                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心
-                </el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-                <!-- <el-menu-item :index="custom.id === 0?'/admin/dashboard':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
-                <el-menu-item index="" @click="logout">
-                  <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </div>
-
-          <div class="nav-right" v-else>
-            <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
-            </el-menu>
-          </div>
-
-        </div>
-      </div>
       <div class="m-nav-header" v-if="isMob">
 
         <div class="el-menu-item logo">
@@ -263,18 +71,6 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.server">服务</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.article">铟果说</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.design_case">灵感</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.commonly_sites">设计工具</router-link>
-            </li> -->
             <li @click="closeMenu">
               <a :href="menu.design_general_list">设计案例</a>
             </li>
@@ -319,8 +115,6 @@
           </router-link>
         </div>
       </div>
-      <div class="header-buttom-line"></div>
-      <Message></Message>
     </div>
   </section>
 </template>
@@ -328,13 +122,10 @@
 <script>
   import auth from '@/helper/auth'
   import api from '@/api/api'
-  import { MSG_COUNT } from '@/store/mutation-types'
-  import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
     data() {
       return {
-        requestMessageTask: null,
         menu: {
           home: {path: '/home'},
           // server: {path: '/server'},
@@ -389,50 +180,10 @@
           type: 'success',
           duration: 800
         })
-        clearInterval(this.requestMessageTask)
         this.$router.replace('/home')
       },
       toServer() {
         this.$router.push({name: 'serverDesign'})
-      },
-      // 请求消息数量
-      fetchMessageCount() {
-        if (this.isLogin) {
-          const self = this
-          this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
-            if (response.data) {
-              if (response.data.meta.status_code === 200) {
-                // sessionStorage.setItem('noticeCount', response.data.data.notice)
-                let msgCount = response.data.data
-                // 写入localStorage
-                self.$store.commit(MSG_COUNT, msgCount)
-              } else {
-                self.$message.error(response.data.meta.message)
-              }
-            }
-          }).catch((error) => {
-            this.$message.error(error.msg)
-            console.error(error)
-            clearInterval(this.requestMessageTask)
-          })
-        }
-      },
-      // 定时加载消息数量
-      timeLoadMessage() {
-        const self = this
-        // 定时请求消息数量
-        var limitTimes = 0
-        self.requestMessageTask = setInterval(function () {
-          if (limitTimes >= 360) {
-            return
-          } else {
-            self.fetchMessageCount()
-            if (self.token) {
-              self.updateUser()
-            }
-            limitTimes += 1
-          }
-        }, 20000)
       },
       // 查看消息
       viewMsg() {
@@ -501,13 +252,6 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        // if (user.design_company_logo_image) {
-        //   user.logo_url = user.design_company_logo_image.logo
-        // } else {
-        //   if (user.logo_url) {
-        //     user.logo_url = user.avatar.logo
-        //   }
-        // }
         return user
       },
       isAdmin() {
@@ -602,22 +346,7 @@
       if (this.token) {
         this.updateUser()
       }
-      const self = this
-      if (self.isLogin) {
-        self.fetchMessageCount()
-        self.timeLoadMessage()
-      }
       this.$store.commit('INIT_PAGE')
-    },
-    mounted() {
-      window.addEventListener('resize', this.initPage)
-    },
-    destroyed() {
-      clearInterval(this.requestMessageTask)
-      window.addEventListener('resize', this.initPage)
-    },
-    components: {
-      Message: Message
     }
   }
 </script>
@@ -683,27 +412,20 @@
   .container {
     overflow:visible
   }
-</style>
-<style>
-  .nav-header .el-submenu .el-menu-item:hover,
-  .menu-header .el-submenu .el-menu-item:hover,
-  .project-menu-sub .el-submenu .el-menu-item:hover {
-    background: #fafafa
-  }
   .m-nav-header {
     position: relative;
-    height: 60px;
+    height: 70px;
     background: #ffffff
   }
 
   .m-nav-header .bars {
     position: absolute;
-    top: 20px;
+    top: 0;
     left: 15px;
-    height: 20px;
+    height: 100%;
     width: 20px;
-    background: url(../../assets/images/icon/menuIcon.png) no-repeat;
-    background-size: contain;
+    background: url(../../assets/images/icon/menuIcon.png) no-repeat center;
+    background-size: 20px;
   }
 
   .m-nav-header .m-Menu {
@@ -760,317 +482,22 @@
     border-radius: 4px;
   }
 
-  .nav-header {
-    align-items: stretch;
-    display: flex;
-    background: #ffffff;
-    /* padding-left: 5px; */
-  }
-
   .m-nav-header {
     position: relative;
   }
-
-  /* .nav-header .el-menu--horizontal > .el-menu-item.logo {
-      display: block;
-      width: 50px;
-      height: 60px;
-      transition: none;
-      padding: 0 16px;
-      margin-right: 30px;
-      background: url(../../assets/images/logo.svg) no-repeat center / contain;
-      text-indent: -9999px;
+  .m-nav-header .logo {
+    height:  100%;
   }
-  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover {
-    background: url(../../assets/images/logo.svg) no-repeat center / contain;
-  } */
-  .el-menu-item.logo img {
+  .m-nav-header .logo img {
     width: 153px;
     height: 50px;
-    margin-top: -7px;
+    margin-top: 10px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
     height: 30px;
   }
-  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .nav-header .el-menu--horizontal > .el-menu-item.logo.is-active {
-    border-color: transparent
-  }
-
-  .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
-    height: 70px;
-    line-height: 73px;
-    border-bottom: 3px solid transparent;
-    color: #666;
-    padding: 0 3px;
-    margin: 0 22px;
-    font-size: 16px;
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
-  }
-
-  .nav-header .el-menu--horizontal.el-menu-header .el-submenu .el-submenu__title, .m-nav-header .el-menu--horizontal.el-menu-header .el-submenu .el-submenu__title {
-    height: 52px;
-    line-height: 52px;
-    border-bottom: 3px solid transparent;
-  }
-
-  .nav-header .el-menu--horizontal > .el-menu-item:hover,
-  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
-  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
-  .nav-header .el-menu--horizontal > .el-menu-item.is-active {
-    border-bottom: 3px solid #ff5a5f;
-    color: #ff5a5f;
-    background: none;
-  }
-  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
-  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #ff5a5f !important;
-  }
- /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
- .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
- .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
- .jdc .el-menu--horizontal > .el-menu-item.is-active {
-    border-bottom: 3px solid transparent;
- } */
-  .nav-header .el-menu-item, .el-submenu__title {
-    padding: 0 14px;
-  }
   .m-nav-header .el-menu-item, .el-submenu__title {
     text-align: center
-  }
-  .nav-header a.nav-item.is-tab.is-active {
-    color: #222222;
-    border-bottom-color: #222222;
-  }
-
-  .nav-header a.nav-item.is-tab:hover {
-    border-bottom-color: #222222;
-  }
-
-  .nav-header .nav-left {
-    display: flex;
-    justify-content: flex-start;
-    /*overflow: hidden;*/
-    /*overflow-x: auto;*/
-    white-space: nowrap;
-  }
-
-  .nav-header .nav-left, .nav-right {
-    align-items: stretch;
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-
-  .nav-header .nav-right {
-    display: flex;
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-  }
-
-  .nav-header .nav-item {
-    width: 80px;
-    position: relative;
-    align-items: center;
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 1.2rem;
-    justify-content: flex-end;
-    padding: 0 20px 0 9px;
-  }
-
-  .nav-header .nav-item:hover span.icon i,
-  .menu-header .nav-item:hover span.icon i {
-    color: #ff5a5f
-  }
-
-  .nav-header .nav-item:hover .view-msg,
-  .menu-header .nav-item:hover .view-msg {
-  /* .nav-header .nav-item:focus .view-msg,
-  .menu-header .nav-item:focus .view-msg { */
-      display: block
-  }
-
-  .nav-item .view-msg {
-    display: none;
-    position: absolute;
-    z-index: 999;
-    top: 56px;
-    right: 0;
-    width: 220px;
-    background: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
-    0 0 6px 0 rgba(0, 0, 0, .04);
-    overflow: hidden;
-    border: 1px solid #e6e6e6;
-    border-radius: 4px;
-    transition: transform .3s cubic-bezier(.23,1,.32,1) .1s,opacity .3s cubic-bezier(.23,1,.32,1) .1s;
-  }
-
-  .nav-item .view-msg-plus {
-    width: 200px;
-  }
-
-  .nav-item .view-msg .news,
-  .nav-item .view-msg .notice {
-    cursor: pointer;
-    font-size: 14px;
-    display: block;
-    line-height: 20px;
-    color: #999999;
-    padding: 15px 15px 15px 40px;
-    transition: all 86ms ease;
-    position: relative;
-  }
-
-  .view-msg i {
-    position: absolute;
-    left: 10px;
-    top: 15px;
-  }
-
-  .nav-item .view-msg a {
-    transition: all 86ms ease-out;
-  }
-  .nav-item .view-msg a i:nth-child(2) {
-    opacity: 0;
-  }
-  .nav-item .view-msg a:hover {
-    background: #fafafa
-  }
-  .nav-item .view-msg a:hover i {
-    color: #ff5a5f
-  }
-
-  .nav-item .view-msg a:hover i:nth-child(2) {
-    opacity: 1
-  }
-
-  .nav-item .view-msg a:hover i:nth-child(1) {
-    opacity: 0
-  }
-
-  .nav-item .view-msg a:last-child {
-    border-bottom:none
-  }
-
-  .nav-header .nav-item .icon {
-    align-items: center;
-    display: inline-flex;
-    justify-content: center;
-    height: 1.5rem;
-    vertical-align: top;
-    /* width: 1.5rem; */
-    position: relative;
-  }
-
-  .nav-header .icon .fa {
-    font-size: 21px;
-  }
-
-  .nav-header .icon.active span,
-  .menu-header .icon.active span {
-    min-width: 18px;
-    height: 18px;
-    /* border: 1px solid #ff5a5f; */
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #ff5a5f;
-    position: absolute;
-    z-index: 1000;
-    right: 2px;
-    top: 0;
-    margin-right: -10px;
-    margin-top: -10px;
-    color: #ffffff;
-    font-size: 10px;
-    line-height: 16px;
-    letter-spacing: 0px;
-    text-align: center;
-  }
-  .nav-header .fa {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 21px;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .nav-header .nav-right a {
-    cursor: pointer;
-    text-decoration: none;
-    -webkit-transition: none 258ms ease-out;
-    transition: none 258ms ease-out;
-    margin: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
-  }
-
-  .nav-header .nav-item a:hover, a.nav-item:hover {
-    color: #222;
-  }
-
-  .header-buttom-line {
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
-    border-top: 3px solid transparent;
-    margin-top: -3px;
-  }
-
-  .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
-    height: 70px;
-    line-height: 70px;
-    border: none;
-    background: #ffffff;
-    color: #666;
-    padding: 0;
-    padding-right: 14px;
-  }
-  /* jdc */
-  .jdc .nav-header .nav-right .register {
-    border: none;
-    height: 24px;
-    line-height: 24px;
-    margin-top: 23px;
-    color: #fff;
-    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
-    border-radius: 2px;
-    transition: 0.268s all ease;
-  }
-  .jdc .nav-header .nav-right .register:hover {
-    background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
-    color: #fff!important;
-  }
-  .logo-text {
-    font-size: 18px;
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
-    color: rgba(34,34,34,1);
-    line-height: 20px;
-  }
-  .login-shadow {
-    padding: 6px 20px;
-    box-shadow: 0 0 0 2px #f36 inset;
-    border-radius: 4px;
-    color: #ff5a5f;
-  }
-  .login-shadow:hover {
-    color: #fff;
-    background-color: #ff5a5f;
-  }
-  .nav-header .el-menu-header .mr-15 {
-    margin-right: 15px;
-  }
-  .nav-header .el-menu-header .ml-0 {
-    margin-left: 0;
-  }
-  .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
-    border-bottom: none;
   }
 </style>

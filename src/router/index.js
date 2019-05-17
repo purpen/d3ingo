@@ -3,13 +3,10 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 import * as types from '../store/mutation-types'
 import baseRoute from './routes/base.js'
-import adminRoute from './routes/admin.js'
-// import bAdminRoute from './routes/b_admin.js'
 import centerRoute from './routes/center.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
-import {FWH} from '../../config/prod.env.js'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -877,7 +874,6 @@ let routes = [
 ]
 
 routes = routes.concat(baseRoute)
-routes = routes.concat(adminRoute)
 // routes = routes.concat(bAdminRoute)
 routes = routes.concat(centerRoute)
 routes = routes.concat(toolsRoute)
@@ -921,15 +917,11 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      if (FWH) {
-        next()
-      } else {
-        store.commit(types.PREV_URL_NAME, to.fullPath)
-        next({
-          name: 'login'
-        })
-        return false
-      }
+      store.commit(types.PREV_URL_NAME, to.fullPath)
+      next({
+        name: 'login'
+      })
+      return false
     }
   } else {
     next()
