@@ -344,7 +344,7 @@
             </el-col>
             <el-col :span="spanVal">
               <p v-for="(d, index) in stickCompany" :key="index"><a
-              :href="location.origin+ '/static_page/company/view?id='+d.id"
+              :href="origin+ '/static_page/company/view?id='+d.id"
               target="_blank">{{ d.company_name }}</a>&nbsp;&nbsp;&nbsp;</p>
             </el-col>
             <el-col :span="spanOpt">
@@ -357,7 +357,7 @@
             </el-col>
             <el-col :span="spanVal">
               <p v-for="(d, index) in offerCompany" :key="index"><a
-              :href="location.origin+ '/static_page/company/view?id='+d.design_company.id"
+              :href="origin+ '/static_page/company/view?id='+d.design_company.id"
               target="_blank">{{ d.design_company.company_name }}</a>---<span>[{{ d.status_value }}]</span></p>
             </el-col>
             <el-col :span="spanOpt">
@@ -499,6 +499,7 @@ export default {
   },
   data () {
     return {
+      origin: location.origin,
       menuType: 0,
       matchCompanyDialog: false,
       forceCloseDialog: false,

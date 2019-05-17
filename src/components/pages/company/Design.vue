@@ -60,11 +60,11 @@
           <el-col v-for="(d, index) in designCases" :key="index" :span="8">
             <div class="cases-item">
               <div class="img-box">
-                <a v-if="d.cover" :href="location.origin+ '/static_page/design_case/view?id='+d.id" :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
+                <a v-if="d.cover" :href="origin+ '/static_page/design_case/view?id='+d.id" :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                   <!-- <img v-if="d.cover" :src="d.cover.middle"> -->
                 </a>
 
-                <a v-else :href="location.origin+ '/static_page/design_case/view?id='+d.id" class="df-case-a">
+                <a v-else :href="origin+ '/static_page/design_case/view?id='+d.id" class="df-case-a">
                 </a>
               </div>
               <div class="cases-item-box">
@@ -260,6 +260,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      origin: location.origin,
       erCode: '',
       isLoading: false,
       isFullLoading: false,
