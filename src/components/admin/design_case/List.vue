@@ -103,6 +103,10 @@
               <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a> -->
               <!-- <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a> -->
             </p>
+            <p>
+              <a href="javascript:void(0);" v-if="scope.row.recommended === 1" @click="setRecommend(scope.$index, scope.row, 0)">取消推荐</a>
+              <a href="javascript:void(0);" v-else @click="setRecommend(scope.$index, scope.row, 1)">推荐</a>
+            </p>
             <!--
             <p>
               <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
@@ -171,6 +175,23 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.itemList[index].open = evt
+          self.$message.success('操作成功')
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    setRecommend(index, item, evt) {
+      var id = item.id
+      var self = this
+      self.$http.get(api.adminDesignCaseRecommend, {params: {case_id: id, is_recommend: evt}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          self.itemList[index].recommended = evt
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
