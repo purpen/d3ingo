@@ -31,13 +31,16 @@
       </section>
     </nav>
 
-    <div class="go-btn mb-center-center">
-      <div class="go-img"></div>
-      <div class="go-text">发布项目</div>
-    </div>
-
     <!-- 待完善 -->
     <div v-if="($route.query.type - 0) === 1">
+      <div class="empty mb-column-center" v-if="!itemIngList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有待完善的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
       <div v-if="itemIngList.length" class="list-round">
         <div class="item" v-for="(d, index) in itemIngList" :key="index">
           <div class="content">
@@ -64,6 +67,14 @@
 
     <!-- 对接中 -->
     <div v-if="($route.query.type - 0) === 2">
+      <div class="empty mb-column-center" v-if="!itemList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有对接中的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
       <div v-if="itemList.length" class="list-round">
         <div class="docking-item" v-for="(d, index) in itemList" :key="d + index">
           <div class="data-top mb-center-center">
@@ -100,6 +111,14 @@
 
     <!-- 已完成 -->
     <div v-if="($route.query.type - 0) === 3">
+      <div class="empty mb-column-center" v-if="!itemFinList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有完成的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
       <div v-if="itemFinList.length" class="list-round">
         <div class="docking-item" v-for="(d, index) in itemFinList" :key="d + index">
           <div class="data-top mb-center-center">
@@ -132,11 +151,33 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title="查看详情"
+      :visible.sync="showTai"
+      width="300px">
+      <div class="mb-column-center">
+        <div class="save-text pad-bot-8">请登录PC端进行操作</div>
+        <div class="save-text pad-bot-10 color-FFA64">https://saas.taihuoniao.com</div>
+        <div class="assistant-img"></div>
+
+        <div class="save-text pad-10-0">或者用微信扫一扫小程序码</div>
+        <div class="save-text pad-bot-20">查看并管理您的项目</div>
+
+
+        <div class="save-btn" @click="download()">保存二维码到相册</div>
+
+        
+      </div>
+    </el-dialog>
+
+    <div class="fixed-load" v-if="loadShow" v-loading="isLoading"></div>
   </section>
 </template>
 
 <script>
 import api from '@/api/api'
+import downFile from 'downloadjs'
 export default {
   data() {
     return {
@@ -146,6 +187,8 @@ export default {
       isEmpty2: false,
       isEmpty3: false,
       isLoading: false,
+      loadShow: false,
+      showTai: false,
       itemList: [],
       itemIngList: [],
       itemFinList: [],
@@ -175,8 +218,15 @@ export default {
     that.loadList(type)
   },
   methods: {
+    download() {
+      downFile('https://p4.taihuoniao.com/asset/190517/5cde7dccd06068507b8b4878-1-hu.jpg')
+    },
+    showAssistant() {
+      this.showTai = true
+    },
     loadList(type) {
       const that = this
+      that.loadShow = true
       that.isLoading = true
       let page = 0
       let pageSize = 0
@@ -194,6 +244,7 @@ export default {
         page: page,
         per_page: pageSize}})
       .then(function (response) {
+        that.loadShow = false
         that.isLoading = false
         if (response.data.meta.status_code === 200) {
           that.itemList = []
@@ -256,6 +307,7 @@ export default {
       })
       .catch(function (error) {
         that.$message.error(error.message)
+        that.loadShow = false
         that.isLoading = false
       })
     },
@@ -508,9 +560,64 @@ export default {
     font-weight: 400;
     color: rgba(0,172,132,1);
   }
+  .assistant-img {
+    height: 110px;
+    width: 110px;
+    background: url('../../../../assets/images/THN-WX-Assistant.jpg') no-repeat center / contain;
+  }
+  .save-btn {
+    width: 200px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    text-align: center;
+    line-height: 40px;
+  }
+  .save-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+  .empty-img {
+    height: 120px;
+    width: 120px;
+    background: url('../../../../assets/images/icon/download@2x.png') no-repeat center / contain;
+  }
+  .empty-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+  }
+  .fixed-load {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  .color-FFA64 {
+    color: #FFA64B;
+  }
 
 
-
+  .pad-bot-8 {
+    padding-bottom: 8px;
+  }
+  .pad-bot-10 {
+    padding-bottom: 10px;
+  }
+  .pad-10-0 {
+    padding: 10px 0;
+  }
+  .pad-bot-20 {
+    padding-bottom: 20px;
+  }
   .nav-line {
     height: 18px;
     border-right: 1px solid #D4D2D2;
