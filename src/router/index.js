@@ -5,6 +5,7 @@ import * as types from '../store/mutation-types'
 import baseRoute from './routes/base.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
+import centerRoute from './routes/center.js'
 import { Message } from 'element-ui'
 import {
   calcImgSize
@@ -596,6 +597,7 @@ let routes = [
 
 routes = routes.concat(baseRoute)
 routes = routes.concat(toolsRoute)
+routes = routes.concat(centerRoute)
 routes = routes.concat(shundeRoute)
 
 const router = new VueRouter({

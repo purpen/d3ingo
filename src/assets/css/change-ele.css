@@ -1187,6 +1187,9 @@
     background-color: #e6e6e6;
     border-color: #e6e6e6;
   }
+  .account-set-arrow .el-form-item {
+    margin-bottom: 0;
+  }
   /*推广页*/
   .phone-sever-swipe .el-carousel__container {
     height: 320px;

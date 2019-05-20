@@ -148,7 +148,7 @@ export default {
     color: rgba(34,34,34,1);
   }
   .account-set {
-    height: 44px;
+    min-height: 44px;
     background: rgba(255,255,255,1);
     display: flex;
     align-items: center;
@@ -163,10 +163,10 @@ export default {
   }
   .account-set-arrow {
     width: 130px;
-    height: 40px;
+    min-height: 40px;
   }
   .account-set-big {
-    height: 134px;
+    min-height: 134px;
     background: rgba(255,255,255,1);
   }
   .set-border {

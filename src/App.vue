@@ -1,7 +1,7 @@
 <template>
   <div id="app" :class="[hideHeader ? 'app2' : 'app']">
     <v-header></v-header>
-    <div :class="['main',{'padding-t-34': showAlert}]">
+    <!-- <div :class="['main',{'padding-t-34': showAlert}]">
       <el-alert
         v-if="showAlert"
         class="alert-message"
@@ -15,7 +15,9 @@
       </el-alert>
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
-    </div>
+    </div> -->
+    <router-view class="main-content"></router-view>
+    <v-footer></v-footer>
     <p v-show="false">{{token}}</p>
     <div>
       <iframe
@@ -73,20 +75,20 @@ export default {
       if (oldVal && !val) {
         this.postMessage2()
       }
-    },
-    hideCustomer(val, oldVal) {
-      let ics = []
-      if (document.getElementsByClassName('ics-icon') && document.getElementsByClassName('ics-icon').length > 0) {
-        ics = document.getElementsByClassName('ics-icon')
-      }
-      if (val.hideCustomer) {
-        if (ics) {
-          this.removeTags()
-        }
-      } else if (ics.length <= 0) {
-        this.customerService()
-      }
     }
+    // hideCustomer(val, oldVal) {
+    //   let ics = []
+    //   if (document.getElementsByClassName('ics-icon') && document.getElementsByClassName('ics-icon').length > 0) {
+    //     ics = document.getElementsByClassName('ics-icon')
+    //   }
+    //   if (val.hideCustomer) {
+    //     if (ics) {
+    //       this.removeTags()
+    //     }
+    //   } else if (ics.length <= 0) {
+    //     this.customerService()
+    //   }
+    // }
   },
   mounted() {
     // /* eslint-disable */
@@ -142,9 +144,9 @@ export default {
     })
   },
   created() {
-    if (!this.hideCustomer.hideCustomer) {
-      this.customerService()
-    }
+    // if (!this.hideCustomer.hideCustomer) {
+    //   this.customerService()
+    // }
     if (this.prod.name === '') {
       if (ENV === 'prod') {
         let list = []
@@ -168,29 +170,29 @@ export default {
     }
   },
   methods: {
-    customerService() {
-      /* eslint-disable */
-      const oScript = document.createElement('script')
-      oScript.type = 'text/javascript'
-      oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
-      document.body.appendChild(oScript)
-      oScript.onload = function() {
-        IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
-      }
-      /* eslint-disable */
-    },
-    removeTags(){
-      let array = document.getElementsByTagName("body")[0].childNodes
-      array.forEach(item => {
-        if (item.nodeName === 'DIV') {
-          item.childNodes.forEach(child => {
-            if (child.className === 'ics-icon') {
-              item.removeChild(child)
-            }
-          })
-        }
-      })
-    },
+    // customerService() {
+    //   /* eslint-disable */
+    //   const oScript = document.createElement('script')
+    //   oScript.type = 'text/javascript'
+    //   oScript.src = 'https://bot.4paradigm.com/web/assets/ics-web-sdk-js.js'
+    //   document.body.appendChild(oScript)
+    //   oScript.onload = function() {
+    //     IcsWebSdkJs.init('https://bot.4paradigm.com/web/chat/2479/d3d6cd3b-4b07-4194-994d-891feceb0fc2')
+    //   }
+    //   /* eslint-disable */
+    // },
+    // removeTags() {
+    //   let array = document.getElementsByTagName('body')[0].childNodes
+    //   array.forEach(item => {
+    //     if (item.nodeName === 'DIV') {
+    //       item.childNodes.forEach(child => {
+    //         if (child.className === 'ics-icon') {
+    //           item.removeChild(child)
+    //         }
+    //       })
+    //     }
+    //   })
+    // },
     fetchToken() {
       this.$http.post(api.iframeLogin) // cookie: ticket
       .then(res => {
