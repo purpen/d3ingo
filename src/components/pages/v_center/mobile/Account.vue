@@ -170,7 +170,7 @@ export default {
     background: rgba(255,255,255,1);
   }
   .set-border {
-    border-bottom: 1px solid #E6E6E6;
+    border-bottom: 1px solid rgba(230, 230, 230, 0.5);
     margin: 0 15px;
   }
   .set-logout {

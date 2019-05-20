@@ -11,7 +11,7 @@
     </div>
 
     <div class="account-set-big mar-top-20">
-      <div class="account-set">
+      <div class="account-set" @click="toTai()">
         <div class="account-set-text">关于太火鸟</div>
         <div class="account-set-arrow"></div>
       </div>
@@ -28,7 +28,7 @@
       title="客服电话"
       :visible.sync="clientPhone"
       :lock-scroll="false"
-      width="380px"
+      width="300px"
       top="25vh"
       class="phone-style">
       <div class="title-center">
@@ -51,14 +51,18 @@ export default {
     }
   },
   methods: {
+    toTai() {
+      let url = 'https://m.taihuoniao.com/guide/about'
+      window.location.href = url
+    },
     callCall() {
       this.clientPhone = true
     },
     returnDetail() {
       if (this.user.type === 1) {
-        this.$router.push({name: 'vcenterMobileRequire'})
+        this.$router.push({name: 'vcenterMobileRequire', query: {type: 1}})
       } else {
-        this.$router.push({name: 'vcenterMobileDesign'})
+        this.$router.push({name: 'vcenterMobileDesign', query: {type: 1}})
       }
     },
     logout() {
@@ -163,7 +167,7 @@ export default {
     background: rgba(255,255,255,1);
   }
   .set-border {
-    border-bottom: 1px solid #E6E6E6;
+    border-bottom: 1px solid rgba(230, 230, 230, 0.5);
     margin: 0 15px;
   }
   .set-logout {

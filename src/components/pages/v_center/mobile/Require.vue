@@ -10,7 +10,8 @@
         <div class="mb-cont-set" @click="toSet()"></div>
         <div class="mb-cont-round mb-column-center">
           <div class="mb-cont-img">
-            <img :src="user.avatar.logo">
+            <img :src="user.avatar.logo" v-if="user.avatar && user.avatar.logo">
+            <img src="../../../../assets/images/df_50x50.png" v-else>
           </div>
           <div class="mb-cont-name">{{user.company.company_abbreviation || user.realname || user.company.company_name || '—'}}</div>
         </div>
@@ -31,94 +32,195 @@
       </section>
     </nav>
 
-    <div class="go-btn mb-center-center">
-      <div class="go-img"></div>
-      <div class="go-text">发布项目</div>
-    </div>
-
     <!-- 待完善 -->
     <div v-if="($route.query.type - 0) === 1">
+      <div class="empty mb-column-center" v-if="!itemIngList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有待完善的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
       <div v-if="itemIngList.length" class="list-round">
-        <div class="item" v-for="(d, index) in itemIngList" :key="index">
-          <div class="content">
-            <div class="pre"> 
-              <p class="item-title">
-                <span v-if="d.item.name">{{ d.item.name }}</span>
-                <span v-else>未命名项目</span>
-              </p>
-              <p class="progress-line">
-                <el-progress
-                  :text-inside="true"
-                  :show-text="false"
-                  :stroke-width="6"
-                  :percentage="d.item.progress"
-                  status="exception">
-                </el-progress>
-              </p>
-              <div class="prefect">您的项目需求填写已经完成了<p class="color-red">{{ d.item.progress }}%</p>。</div>
+        <div v-for="(d, index) in itemIngList" :key="index">
+          <div class="item">
+            <div class="content">
+              <div class="pre">
+                <p class="item-title">
+                  <span v-if="d.item.name">{{ d.item.name }}</span>
+                  <span v-else>未命名项目</span>
+                </p>
+                <p class="progress-line">
+                  <el-progress
+                    :text-inside="true"
+                    :show-text="false"
+                    :stroke-width="6"
+                    :percentage="d.item.progress"
+                    status="exception">
+                  </el-progress>
+                </p>
+                <div class="prefect">您的项目需求填写已经完成了<p class="color-red">{{ d.item.progress }}%</p>。</div>
+              </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemIngList.length && ingListMoreShow" @click="showListMore(1)">点击查看更多</div>
+          <div v-if="(index + 1) === itemIngList.length && !ingListMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
 
     <!-- 对接中 -->
     <div v-if="($route.query.type - 0) === 2">
+      <div class="empty mb-column-center" v-if="!itemList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有对接中的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
       <div v-if="itemList.length" class="list-round">
-        <div class="docking-item" v-for="(d, index) in itemList" :key="d + index">
-          <div class="banner">
-            <p>{{ d.item.created_at }}</p>
-          </div>
-          <div class="list-body">
-            <p class="list-title Bborder">
-              <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
-              </router-link>
-            </p>
-            <div class="list-content">
-              <section class="c-body">
-                <p>项目预算：{{ d.item.design_cost_value }}</p>
-                <p>交付时间：{{ d.item.cycle_value }}</p>
-                <p>设计类型: {{ d.item.type_value }}</p>
-                <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                <p class="fc-content">产品功能：{{ d.item.product_features }}</p>
-              </section>
-              <p class="money-str price-m Bborder">交易金额：
-                <span v-if="d.item.price !== 0">¥ <b>{{ d.item.price }}</b></span>
-                <span v-else>暂无</span>
-              </p>
-              <p class="price-m Bborder">状态
-                <span class="status-str" v-if="d.item.show_offer">有设计服务商报价</span>
-                <span class="status-str" v-else>{{ d.item.status_value }}</span>
-              </p>
+        <div v-for="(d, index) in itemList" :key="d + index">
+          <div class="docking-item">
+            <div class="data-top mb-center">
+              <div class="top-date">{{ d.item.created_at }}</div>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ d.item.name }}</div>
+              <div class="grey-line"></div>
+              <div class="list-content">
+                <div class="c-body">
+                  <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                  <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                  <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                  <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                  <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="money-str mb-center-space">
+                  <div class="money-text">交易金额</div>
+                  <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                  <div v-else class="money-money">暂无</div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="state-str mb-center-space">
+                  <div class="money-text">状态</div>
+                  <div v-if="d.item.show_offer" class="design-state">有设计服务商报价</div>
+                  <div v-else class="design-state">{{ d.item.status_value }}</div>
+                </div>
+              </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemList.length && listMoreShow" @click="showListMore(2)">点击查看更多</div>
+          <div v-if="(index + 1) === itemList.length && !listMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
+
+    <!-- 已完成 -->
+    <div v-if="($route.query.type - 0) === 3">
+      <div class="empty mb-column-center" v-if="!itemFinList.length && !isLoading">
+        <div class="empty-img"></div>
+        <div class="empty-text">暂时没有完成的项目哦～</div>
+      </div>
+      <div class="go-btn mb-center-center" @click="showAssistant()">
+        <div class="go-img"></div>
+        <div class="go-text">发布项目</div>
+      </div>
+      <div v-if="itemFinList.length" class="list-round">
+        <div v-for="(d, index) in itemFinList" :key="d + index">
+          <div class="docking-item">
+            <div class="data-top mb-center">
+              <div class="top-date">{{ d.item.created_at }}</div>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ d.item.name }}</div>
+              <div class="grey-line"></div>
+              <div class="list-content">
+                <div class="c-body">
+                  <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                  <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                  <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                  <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                  <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="money-str mb-center-space">
+                  <div class="money-text">交易金额</div>
+                  <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                  <div v-else class="money-money">暂无</div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="state-str mb-center-space">
+                  <div class="money-text">状态</div>
+                  <div class="final-state">已完成</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemFinList.length && finListMoreShow" @click="showListMore(3)">点击查看更多</div>
+          <div v-if="(index + 1) === itemFinList.length && !finListMoreShow" class="show-more mar-top-20">没有更多了</div>
+        </div>
+      </div>
+    </div>
+
+    <el-dialog
+      title="查看详情"
+      :visible.sync="showTai"
+      width="300px">
+      <div class="mb-column-center">
+        <div class="save-text pad-bot-8">请登录PC端进行操作</div>
+        <div class="save-text pad-bot-10 color-FFA64">https://saas.taihuoniao.com</div>
+        <div class="assistant-img"></div>
+
+        <div class="save-text pad-10-0">或者用微信扫一扫小程序码</div>
+        <div class="save-text pad-bot-20">查看并管理您的项目</div>
+
+
+        <div class="save-btn" @click="download()">保存二维码到相册</div>
+
+        
+      </div>
+    </el-dialog>
+
+    <div class="fixed-load" v-if="loadShow" v-loading="isLoading"></div>
   </section>
 </template>
 
 <script>
 import api from '@/api/api'
+import downFile from 'downloadjs'
 export default {
   data() {
     return {
       type: 1,
       promot: true,
       isEmpty: false,
+      isEmpty2: false,
+      isEmpty3: false,
       isLoading: false,
+      loadShow: false,
+      showTai: false,
+      ingListMoreShow: false,
+      listMoreShow: false,
+      finListMoreShow: false,
       itemList: [],
       itemIngList: [],
+      itemFinList: [],
       query: {
         page: 1,
         pageSize: 10,
-        totalPages: 0,
         total: 0
       },
       query2: {
         page: 1,
         pageSize: 10,
-        totalPages: 0,
+        total: 0
+      },
+      query3: {
+        page: 1,
+        pageSize: 10,
         total: 0
       }
     }
@@ -129,37 +231,48 @@ export default {
     that.loadList(type)
   },
   methods: {
+    showListMore(type) {
+      let that = this
+      if (type === 1) {
+        that.query.page++
+      } else if (type === 2) {
+        that.query2.page++
+      } else if (type === 3) {
+        that.query3.page++
+      }
+      that.loadList(type)
+    },
+    download() {
+      downFile('https://p4.taihuoniao.com/asset/190517/5cde7dccd06068507b8b4878-1-hu.jpg')
+    },
+    showAssistant() {
+      this.showTai = true
+    },
     loadList(type) {
       const that = this
+      that.loadShow = true
       that.isLoading = true
       let page = 0
       let pageSize = 0
       if (type === 1) {
-        page = this.query.page
-        pageSize = this.query.pageSize
-      } else {
-        page = this.query2.page
-        pageSize = this.query2.pageSize
+        page = that.query.page
+        pageSize = that.query.pageSize
+      } else if (type === 2) {
+        page = that.query2.page
+        pageSize = that.query2.pageSize
+      } else if (type === 3) {
+        page = that.query3.page
+        pageSize = that.query3.pageSize
       }
       that.$http.get(api.itemList, {params: {type: type,
         page: page,
         per_page: pageSize}})
       .then(function (response) {
-        that.isLoading = false
         if (response.data.meta.status_code === 200) {
-          that.itemList = []
-          that.itemIngList = []
-          document.body.scrollTop = 0
-          document.documentElement.scrollTop = 0
           if (response.data && response.data.data && response.data.data.length) {
-            that.query.totalPages = 0
-            that.query.total = 0
-            that.query2.totalPages = 0
-            that.query2.total = 0
             let data = response.data.data
             for (let i = 0; i < data.length; i++) {
               let d = data[i]
-              let status = d.item.status
               let progress = d.item.stage_status
               switch (progress) {
                 case 1:
@@ -174,46 +287,84 @@ export default {
                 default:
                   data[i]['item']['progress'] = 0
               }
-              let showOffer = false
-              if (d.item.status === 4 && d.purpose_count > 0) {
-                showOffer = true
-              }
-              let showView = false
-              if (status === 2 || status === 5 || status === 8 || status === 9 || status === 11 || status === 20 || status === 22) {
-                showView = true
-              }
-              let isClose = false
-              if (status === -2 || status === 2 || status === 3) {
-                isClose = true
-              }
-              data[i]['item']['is_view_show'] = showView
-              data[i]['item']['is_close'] = isClose
-              data[i]['item']['show_offer'] = showOffer
               data[i]['item']['created_at'] = d.item.created_at.date_format().format('yyyy-MM-dd')
             } // endfor
 
             if (type === 1) {
-              that.itemIngList = data
-              that.query.totalPages = response.data.meta.pagination.total_pages
+              that.itemList = []
+              that.itemFinList = []
               that.query.total = response.data.meta.pagination.total
+              if (that.itemIngList && that.itemIngList.length > 0) {
+                let arr = that.itemIngList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemIngList = arr
+              } else {
+                that.itemIngList = data
+              }
+              if (that.itemIngList.length < response.data.meta.pagination.total) {
+                that.ingListMoreShow = true
+              } else {
+                that.ingListMoreShow = false
+              }
             } else if (type === 2) {
-              that.itemList = data
-              that.query2.totalPages = response.data.meta.pagination.total_pages
+              that.itemIngList = []
+              that.itemFinList = []
               that.query2.total = response.data.meta.pagination.total
+              if (that.itemList && that.itemList.length > 0) {
+                let arr = that.itemList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemList = arr
+              } else {
+                that.itemList = data
+              }
+              if (that.itemList.length < response.data.meta.pagination.total) {
+                that.listMoreShow = true
+              } else {
+                that.listMoreShow = false
+              }
+            } else if (type === 3) {
+              that.itemList = []
+              that.itemIngList = []
+              that.query3.total = response.data.meta.pagination.total
+              if (that.itemFinList && that.itemFinList.length > 0) {
+                let arr = that.itemFinList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemFinList = arr
+              } else {
+                that.itemFinList = data
+              }
+              if (that.itemFinList.length < response.data.meta.pagination.total) {
+                that.finListMoreShow = true
+              } else {
+                that.finListMoreShow = false
+              }
             }
           } else {
             if (type === 1) {
               that.isEmpty = true
-            } else {
+            } else if (type === 2) {
               that.isEmpty2 = true
+            } else if (type === 3) {
+              that.isEmpty3 = true
             }
           }
+          that.loadShow = false
+          that.isLoading = false
         } else {
+          that.loadShow = false
+          that.isLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
       .catch(function (error) {
         that.$message.error(error.message)
+        that.loadShow = false
         that.isLoading = false
       })
     },
@@ -235,6 +386,10 @@ export default {
     '$route' (to, from) {
       let that = this
       let type = Number(that.$route.query.type) || 1
+      window.scroll(0, 0)
+      that.query.page = 1
+      that.query2.page = 1
+      that.query3.page = 1
       that.loadList(type)
     }
   },
@@ -370,7 +525,7 @@ export default {
     font-size: 16px;
   }
   .list-round {
-    padding: 15px 0 40px 0;
+    padding: 15px 0 0 0;
     /* overflow-x: hidden; */
   }
   .go-btn {
@@ -393,31 +548,164 @@ export default {
     color: rgba(255,255,255,1);
     padding-left: 6px;
   }
-  .banner {
+  .data-top {
     height: 44px;
     background: rgba(250,250,250,1);
     border-radius: 4px 4px 0px 0px;
-    border: 1px solid rgba(230,230,230,1);
+    border-bottom: 1px solid rgba(230,230,230,1);
+  }
+  .top-date {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-left: 15px;
   }
   .docking-item {
-    min-height: 387px;
+    min-height: 358px;
     background: rgba(255,255,255,1);
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.05);
     border-radius: 4px;
     border: 1px solid rgba(230,230,230,1);
+    margin: 15px 15px 0 15px;
   }
-  .banner {
-    height: 44px;
-    background: rgba(250,250,250,1);
-    border-radius: 4px 4px 0px 0px;
-    border: 1px solid rgba(230,230,230,1);
+  .list-body {
+    padding: 15px;
+  }
+  .list-title {
+    font-size: 17px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(34,34,34,1);
+    padding-bottom: 15px;
+  }
+  .list-content {
+    padding-top: 15px;
+  }
+  .c-body {
+    padding: 17px 0;
+  }
+  .content-text {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    display: flex;
+  }
+  .c-body .content-text:not(:nth-last-child(1)) {
+    padding-bottom: 14px;
+  }
+  .content-text p {
+    color: #222222;
+  }
+  .money-str {
+    padding: 14px 0 16px 0;
+  }
+  .money-text {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+  }
+  .money-money {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+  .design-state {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,166,75,1);
+    line-height: 18px;
+    max-width: 70%;
+  }
+  .state-str {
+    padding: 14px 0 0 0;
+  }
+  .final-state {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(0,172,132,1);
+  }
+  .assistant-img {
+    height: 110px;
+    width: 110px;
+    background: url('../../../../assets/images/THN-WX-Assistant.jpg') no-repeat center / contain;
+  }
+  .save-btn {
+    width: 200px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    text-align: center;
+    line-height: 40px;
+  }
+  .save-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+  }
+  .empty-img {
+    height: 120px;
+    width: 120px;
+    background: url('../../../../assets/images/icon/download@2x.png') no-repeat center / contain;
+  }
+  .empty-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+  }
+  .fixed-load {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  .color-FFA64 {
+    color: #FFA64B;
+  }
+  .show-more {
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    height: 30px;
+    line-height: 30px;
   }
 
 
-
+  .mar-top-20 {
+    margin-top: 20px;
+  }
+  .pad-bot-8 {
+    padding-bottom: 8px;
+  }
+  .pad-bot-10 {
+    padding-bottom: 10px;
+  }
+  .pad-10-0 {
+    padding: 10px 0;
+  }
+  .pad-bot-20 {
+    padding-bottom: 20px;
+  }
   .nav-line {
     height: 18px;
     border-right: 1px solid #D4D2D2;
+  }
+  .grey-line {
+    border-top: 1px solid rgba(230, 230, 230, 0.5);
   }
   .nav-bot {
     border-bottom: 2px solid #FF5A5F;
@@ -439,6 +727,10 @@ export default {
   .mb-center-center {
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+  .mb-center {
+    display: flex;
     align-items: center;
   }
 </style>
