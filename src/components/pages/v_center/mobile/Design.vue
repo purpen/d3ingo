@@ -34,12 +34,12 @@
         <div class="empty-img"></div>
         <div class="empty-text">暂未没有设计案例哦～</div>
       </div>
-      <div :class="{'pad-18-20-20-20' : designCases && designCases.length > 0}">
+      <div :class="{'pad-18-20-0-20' : designCases && designCases.length > 0}">
         <div v-for="(item, index) in designCases" :key="index" v-if="designCases && designCases.length > 0">
           <div class="case">
             <div class="case-header">
               <img :src="item.cover.middle"/>
-              <!-- <image src="https://p4.taihuoniao.com/asset/190320/5c92010fd06068e2458b4917-1-hu.jpg"/> -->
+              <image src="https://p4.taihuoniao.com/asset/190320/5c92010fd06068e2458b4917-1-hu.jpg"/>
             </div>
             <div class="case-content pad-15-15-14-15">
               <div class="case-title text-elicepse">{{item.title}}</div>
@@ -54,6 +54,8 @@
               </div>
             </div>
           </div>
+          <div class="show-more" v-if="(index + 1) === designCases.length && caseMoreShow" @click="getDesignCaseList()">点击查看更多</div>
+          <div v-if="(index + 1) === designCases.length && !caseMoreShow" class="show-more">没有更多了</div>
         </div>
       </div>
     </div>
@@ -65,34 +67,38 @@
         <div class="empty-text">暂时没有项目哦～</div>
       </div>
       <div v-if="designItems.length" class="list-round">
-        <div class="docking-item" v-for="(d, index) in designItems" :key="d + index">
-          <div class="data-top mb-center">
-            <div class="top-date">{{ d.item.created_at | timeFormat}}</div>
-          </div>
-          <div class="list-body">
-            <div class="list-title">{{ d.item.name }}</div>
-            <div class="grey-line"></div>
-            <div class="list-content">
-              <div class="c-body">
-                <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
-                <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
-                <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
-                <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
-                <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
-              </div>
+        <div v-for="(d, index) in designItems" :key="d + index">
+          <div class="docking-item">
+            <div class="data-top mb-center">
+              <div class="top-date">{{ d.item.created_at | timeFormat}}</div>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ d.item.name }}</div>
               <div class="grey-line"></div>
-              <div class="money-str mb-center-space">
-                <div class="money-text">交易金额</div>
-                <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
-                <div v-else class="money-money">暂无</div>
-              </div>
-              <div class="grey-line"></div>
-              <div class="state-str mb-center-space">
-                <div class="money-text">状态</div>
-                <div class="design-state">{{ d.item.design_status_value }}</div>
+              <div class="list-content">
+                <div class="c-body">
+                  <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                  <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                  <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                  <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                  <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="money-str mb-center-space">
+                  <div class="money-text">交易金额</div>
+                  <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                  <div v-else class="money-money">暂无</div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="state-str mb-center-space">
+                  <div class="money-text">状态</div>
+                  <div class="design-state">{{ d.item.design_status_value }}</div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === designItems.length && designMoreShow" @click="showItemMore()">点击查看更多</div>
+          <div v-if="(index + 1) === designItems.length && !designMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
@@ -133,6 +139,8 @@ export default {
       isLoading: false,
       loadShow: false,
       showTai: false,
+      caseMoreShow: false,
+      designMoreShow: false,
       designItems: [],
       designCases: [],
       query: {
@@ -151,9 +159,24 @@ export default {
   },
   created() {
     let that = this
+    if (Number(that.$route.query.type) === 1) {
+      that.getDesignCaseList()
+    } else if (Number(that.$route.query.type) === 2) {
+      that.getDesignCooperationLists()
+    }
     that.getDesignCaseList()
   },
   methods: {
+    showCaseMore() {
+      let that = this
+      that.query.page++
+      that.getDesignCaseList()
+    },
+    showItemMore() {
+      let that = this
+      that.query2.page++
+      that.getDesignCooperationLists()
+    },
     download() {
       downFile('https://p4.taihuoniao.com/asset/190517/5cde7dccd06068507b8b4878-1-hu.jpg')
     },
@@ -164,22 +187,14 @@ export default {
       const that = this
       that.loadShow = true
       that.isLoading = true
+      that.designItems = []
       let id = that.user.company_id
-      let page = 0
       that.$http.get(api.designCaseCompanyId.format(id), {params: {
-        page: page,
+        page: that.query.page,
         per_page: 15}})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
-          that.itemList = []
-          that.designCases = []
-          document.body.scrollTop = 0
-          document.documentElement.scrollTop = 0
           if (response.data && response.data.data && response.data.data.length) {
-            that.query.totalPages = 0
-            that.query.total = 0
-            that.query2.totalPages = 0
-            that.query2.total = 0
             let data = response.data.data
             if (that.designCases && that.designCases.length > 0) {
               let arr = that.designCases
@@ -193,6 +208,11 @@ export default {
           } else {
             that.$message.error(response.data.meta.message)
           }
+          if (that.designCases.length < response.data.meta.pagination.total) {
+            that.caseMoreShow = true
+          } else {
+            that.caseMoreShow = false
+          }
           that.loadShow = false
           that.isLoading = false
         }
@@ -205,28 +225,45 @@ export default {
     },
     getDesignCooperationLists() {
       let self = this
+      self.loadShow = true
       self.isLoading = true
+      self.designCases = []
       self.$http.get(api.designCooperationLists, {params: {
-        page: this.query2.page,
-        per_page: this.query2.pageSize
+        page: self.query2.page,
+        per_page: self.query2.pageSize
       }})
       .then(function (response) {
         if (response.data && response.data.meta.status_code === 200) {
-          self.designItems = []
           self.query2.totalPages = response.data.meta.pagination.total_pages
           self.query2.total = response.data.meta.pagination.total
-          window.scroll(0, 0)
           if (response.data.data && response.data.data.length) {
-            let designItems = response.data.data
-            self.designItems = designItems
+            let data = response.data.data
+            if (self.designItems && self.designItems.length > 0) {
+              let arr = self.designItems
+              for (let index in data) {
+                arr.push(data[index])
+              }
+              self.designItems = arr
+            } else {
+              self.designItems = data
+            }
+            if (self.designItems.length < response.data.meta.pagination.total) {
+              self.designMoreShow = true
+            } else {
+              self.designMoreShow = false
+            }
           }
+          self.loadShow = false
           self.isLoading = false
         } else {
+          self.loadShow = false
+          self.isLoading = false
           self.$message.error(response.data.meta.message)
         }
       })
       .catch(function (error) {
         self.$message.error(error.message)
+        self.loadShow = false
         self.isLoading = false
       })
     },
@@ -248,8 +285,12 @@ export default {
     '$route' (to, from) {
       let that = this
       if (Number(that.$route.query.type) === 1) {
+        window.scroll(0, 0)
+        that.query.page = 1
         that.getDesignCaseList()
       } else if (Number(that.$route.query.type) === 2) {
+        window.scroll(0, 0)
+        that.query2.page = 1
         that.getDesignCooperationLists()
       }
     }
@@ -391,7 +432,7 @@ export default {
     font-size: 16px;
   }
   .list-round {
-    padding: 15px 0 40px 0;
+    padding: 15px 0 0 0;
     /* overflow-x: hidden; */
   }
   .go-btn {
@@ -609,20 +650,32 @@ export default {
     overflow: hidden;
     word-break: break-all;
   }
+  .show-more {
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    height: 30px;
+    line-height: 30px;
+  }
 
 
 
   .pad-15-15-14-15 {
     padding: 15px 15px 14px 15px;
   }
-  .pad-18-20-20-20 {
-    padding: 18px 20px 20px 20px;
+  .pad-18-20-0-20 {
+    padding: 18px 20px 0 20px;
   }
   .pad-bot-8 {
     padding-bottom: 8px;
   }
   .pad-bot-10 {
     padding-bottom: 10px;
+  }
+  .mar-top-20 {
+    margin-top: 20px;
   }
   .pad-10-0 {
     padding: 10px 0;
