@@ -3,13 +3,9 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 import * as types from '../store/mutation-types'
 import baseRoute from './routes/base.js'
-import adminRoute from './routes/admin.js'
-// import bAdminRoute from './routes/b_admin.js'
-import centerRoute from './routes/center.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
-import {FWH} from '../../config/prod.env.js'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -431,212 +427,6 @@ let routes = [
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
-  // 发布需求new
-  {
-    path: '/projects/create',
-    name: 'projectCreate',
-    meta: {
-      title: '发布需求',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Create')
-  },
-  // 选择类型
-  {
-    path: '/projects/select/:id',
-    name: 'projectSelect',
-    meta: {
-      title: '选择类型',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Select')
-  },
-  // 选择类型
-  {
-    path: '/projects/type/:id',
-    name: 'projectType',
-    meta: {
-      title: '填写需求',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Type')
-  },
-  // 选择类型
-  {
-    path: '/projects/info/:id',
-    name: 'projectInfo',
-    meta: {
-      title: '补全需求信息',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Info')
-  },
-  // 发布
-  {
-    path: '/projects/release/:id',
-    name: 'projectRelease',
-    meta: {
-      title: '补全需求信息',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Release')
-  },
-  // 匹配公司
-  {
-    path: '/projects/match/:id',
-    name: 'projectMatch',
-    meta: {
-      title: '匹配公司',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/MatchNew')
-  },
-  // 公司比较
-  {
-    path: '/projects/compare/:id',
-    name: 'projectCompare',
-    meta: {
-      title: '设计服务商比较',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/projects/Compare')
-  },
-  // 发布需求(第二步) 选择领域
-  {
-    path: '/item/submit_type/:id',
-    name: 'itemSubmitTwo',
-    meta: {
-      title: '选择类型',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/SubmitTwo')
-  },
-
-  // 发布需求(第三步) 填写基本信息(产品设计)
-  {
-    path: '/item/submit_base/:id',
-    name: 'itemSubmitThree',
-    meta: {
-      title: '基本信息',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/SubmitThree')
-  },
-
-  // 发布需求(第三步) 填写基本信息(UI设计)
-  {
-    path: '/item/submit_ui_base/:id',
-    name: 'itemSubmitUIThree',
-    meta: {
-      title: '基本信息',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/SubmitUIThree')
-  },
-
-  // 发布需求(第四步) 填写公司信息
-  {
-    path: '/item/submit_company/:id',
-    name: 'itemSubmitFour',
-    meta: {
-      title: '补全公司信息',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/SubmitFour')
-  },
-
-  // 发布需求(第五步) 检查并发布
-  {
-    path: '/item/submit_check/:id',
-    name: 'itemSubmitFive',
-    meta: {
-      title: '检查并发布',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/SubmitFive')
-  },
-
-  // 发布需求(第五步) 检查并发布
-  {
-    path: '/item/publish',
-    name: 'itemPublish',
-    meta: {
-      title: '发布',
-      requireAuth: true,
-      isDesignInc: 1
-    },
-    component: require('@/components/pages/item/Publish')
-  },
-
-  // 支付99预付款
-  {
-    path: '/item/payment',
-    name: 'itemPayment',
-    meta: {
-      title: '支付',
-      requireAuth: true
-    },
-    // 按需加载
-    component: (resolve) => {
-      require(['@/components/pages/item/Payment'], resolve)
-    }
-  },
-  // 支付宝回调
-  {
-    path: '/alipay/callback',
-    name: 'alipayCallback',
-    meta: {
-      title: '支付宝-支付结果',
-      requireAuth: false
-    },
-    component: require('@/components/pages/pay/AlipayCallback')
-  },
-  // 京东回调
-  {
-    path: '/jdpay/callback',
-    name: 'jdpayCallback',
-    meta: {
-      title: '京东-支付结果',
-      requireAuth: false
-    },
-    component: require('@/components/pages/pay/JdCallback')
-  },
-  // 微信回调
-  {
-    path: '/wxpay/callback',
-    name: 'wxpayCallback',
-    meta: {
-      title: '微信-支付结果',
-      requireAuth: true
-    },
-    component: require('@/components/pages/pay/wxCallback')
-  },
   // 支付项目资金--首付款
   {
     path: '/item/pay_fund/:item_id',
@@ -689,52 +479,6 @@ let routes = [
     },
     component: require('@/components/pages/user/MemberManagement')
   },
-  // 控制面板
-  {
-    path: '/vcenter/control',
-    name: 'vcenterControl',
-    meta: {
-      title: '控制面板',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/common/Control')
-  },
-  // 统计
-  // {
-  //   path: '/vcenter/console',
-  //   name: 'vcenterConsole',
-  //   meta: {
-  //     title: '统计',
-  //     requireAuth: true,
-  //     hideHeader: true,
-  //     hideFooter: true
-  //   },
-  //   component: require('@/components/pages/v_center/console/Console')
-  // },
-  // 控制面板--子账户
-  {
-    path: '/vcenter/child_control',
-    name: 'vcenterChildControl',
-    meta: {
-      title: '控制面板',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/common/ChildControl')
-  },
-  // 公司主页
-  // {
-  //   path: '/company/:id',
-  //   name: 'companyShow',
-  //   meta: {
-  //     title: '公司主页',
-  //     requireAuth: false
-  //   },
-  //   component: require('@/components/pages/company/Show')
-  // },
   {
     path: '/company/:id',
     name: 'companyShow',
@@ -764,16 +508,6 @@ let routes = [
     },
     component: require('@/components/pages/design_case/Show1')
   },
-  // 参赛作品详情
-  {
-    path: '/match_case/show/:id',
-    name: 'vcenterMatchCaseShow',
-    meta: {
-      title: '参赛作品详情',
-      requireAuth: true
-    },
-    component: require('@/components/pages/v_center/design_case/Show')
-  },
   {
     path: '/remind',
     name: 'remind',
@@ -782,22 +516,6 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/home/Apply')
-  },
-  {
-    path: '/promote',
-    name: 'promote',
-    meta: {
-      title: '铟果推广'
-    },
-    component: require('@/components/pages/promote/Promote')
-  },
-  {
-    path: '/promote/youke',
-    name: 'youke',
-    meta: {
-      title: '优客工场'
-    },
-    component: require('@/components/pages/promote/Promote3')
   },
   {
     path: '/redirect',
@@ -877,9 +595,6 @@ let routes = [
 ]
 
 routes = routes.concat(baseRoute)
-routes = routes.concat(adminRoute)
-// routes = routes.concat(bAdminRoute)
-routes = routes.concat(centerRoute)
 routes = routes.concat(toolsRoute)
 routes = routes.concat(shundeRoute)
 
@@ -921,15 +636,11 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      if (FWH) {
-        next()
-      } else {
-        store.commit(types.PREV_URL_NAME, to.fullPath)
-        next({
-          name: 'login'
-        })
-        return false
-      }
+      store.commit(types.PREV_URL_NAME, to.fullPath)
+      next({
+        name: 'login'
+      })
+      return false
     }
   } else {
     next()

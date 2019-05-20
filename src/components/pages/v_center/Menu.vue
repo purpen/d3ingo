@@ -9,79 +9,6 @@
           </router-link>
         </p>
       </div>
-      <div v-if="!isMob" class="menu-right">
-        <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
-          <span class="icon active">
-            <i class="fx-4 fx-icon-notice">
-              <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
-            </i>
-          </span>
-          <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
-          <div class="view-msg">
-            <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-              <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
-              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
-              <span v-else>[消息提醒]</span>
-            </a>
-            <a @click="showMyView('system')" class="notice">
-              <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-              <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
-              <span v-else>[系统通知]</span>
-            </a>
-          </div>
-        </a>
-        <!-- <div v-if="isCompany" @click="showMine()" class="mine no-select">
-          <span>我的</span>
-        </div> -->
-        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
-          <el-submenu index="2" :popper-append-to-body="false">
-            <template slot="title">
-              <template v-if="eventUser.type === 1">
-                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              </template>
-              <template v-else>
-                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              </template>
-              <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
-              <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
-            </template>
-            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-            <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item> -->
-            <!-- <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item> -->
-            <el-menu-item  index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-            <el-menu-item index="/vcenter/account/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-            <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-            <el-menu-item index="" @click="logout">
-              <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-          </el-submenu>
-        </el-menu>
-        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
-          <el-submenu index="2" :popper-append-to-body="false">
-            <template slot="title">
-              <template v-if="eventUser.type === 1">
-                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              </template>
-              <template v-else>
-                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              </template>
-<!--              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>-->
-<!--              <span v-else class="b-nickname">{{ eventUser.account }}</span>-->
-                <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
-            </template>
-            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-            <el-menu-item index="/vcenter/account/base"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-            <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-            <el-menu-item index="" @click="logout">
-              <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </div>
 
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
@@ -280,12 +207,6 @@
         </div>
       </section>
     </el-col>
-    <div>
-      <message-components></message-components>
-    </div>
-    <div>
-      <mine-view></mine-view>
-    </div>
   </section>
 </template>
 
@@ -293,8 +214,6 @@
   import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
-  import messageComponents from 'components/tools_block/Message'
-  import mineView from 'components/tools_block/Mine'
   export default {
     name: 'vcenter_menu',
     props: {
@@ -313,7 +232,7 @@
         if (!companyId || companyId === 0) {
           // this.$message.error('请先申请公司认证!')
         } else {
-          this.$router.push({name: 'companyShow', params: {id: companyId}})
+          location.href = location.origin + '/static_page/company/view?id=' + companyId
         }
       },
       alick(e) {
@@ -530,10 +449,6 @@
         this.showCover = ''
         this.showCover2 = ''
       }
-    },
-    components: {
-      messageComponents,
-      mineView
     }
   }
 </script>
@@ -726,6 +641,7 @@
     height: 36px;
     border-radius: 50%;
     background: #f7f7f7;
+    border: 1px solid #e6e6e6
   }
   .menuHide-mini {
     width: 60px;

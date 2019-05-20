@@ -25,10 +25,12 @@
       <el-col :xs="24" :sm="6" :md="6" :lg="6">
         <div class="design-case-slide">
           <div class="info">
-            <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
+            <a
+            :href="origin+ '/static_page/company/view?id='+item.design_company.id"
+            target="_blank">
               <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
               <img class="avatar" v-else src="../../../assets/images/avatar_100.png" width="100"/>
-            </router-link>
+            </a>
             <h3 class="pointer" @click="goCompany(item.design_company.id)">{{ item.design_company.company_name }}</h3>
             <p class="com-addr"><i class="fx-icon-location"></i><span>{{ item.design_company.province_value }}</span><span>{{ item.design_company.city_value }}</span>
             </p>
@@ -81,6 +83,7 @@ export default {
   name: 'design_case_show',
   data() {
     return {
+      origin: location.origin,
       isFullLoading: false,
       item: {
         design_company: ''
@@ -117,7 +120,7 @@ export default {
   },
   methods: {
     goCompany(id) {
-      this.$router.push({name: 'companyShow', params: {id: id}})
+      location.href = location.origin + '/static_page/company/view?id=' + id
     }
   }
 }

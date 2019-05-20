@@ -47,7 +47,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8" :md="8" :lg="8"
               v-for="(d, index) in designCaseList" :key="index">
-              <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+              <a :href="origin+ '/static_page/design_case/view?id='+d.id"
                   :target="isMob ? '_self' : '_blank'">
                 <el-card :body-style="{ padding: '0px' }" class="item">
                   <div class="image-box">
@@ -60,7 +60,7 @@
                     <p class="prize-time">{{d.prize_time}}</p>
                   </div>
                 </el-card>
-              </router-link>
+              </a>
             </el-col>
           </el-row>
         </div>
@@ -82,6 +82,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      origin: location.origin,
       id: -1,
       _id: '',
       isLoading: false,

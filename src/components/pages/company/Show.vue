@@ -51,16 +51,16 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
                     <div class="image-box">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                   :target="isMob ? '_self' : '_blank'">
+                      <a :href="origin+ '/static_page/design_case/view?id='+d.id"
+                        :target="isMob ? '_self' : '_blank'">
                         <img v-if="d.cover" :src="d.cover.middle">
-                      </router-link>
+                      </a>
                     </div>
                     <el-tooltip :content="d.title" placement="bottom">
                       <div class="content">
-                        <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                    :target="isMob ? '_self' : '_blank'">{{ d.title }}
-                        </router-link>
+                        <a :href="origin+ '/static_page/design_case/view?id='+d.id"
+                        :target="isMob ? '_self' : '_blank'">{{ d.title }}
+                        </a>
                       </div>
                     </el-tooltip>
                   </el-card>
@@ -97,6 +97,7 @@ export default {
   isLoading: false,
   data() {
     return {
+      origin: location.origin,
       item: {},
       isLoading: false,
       isFullLoading: false,

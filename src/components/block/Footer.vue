@@ -89,18 +89,8 @@
         <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === ''">
           <p class="title">关注我们</p>
           <img class="qrcode" :src="require('assets/images/thn_qr.png')">
-          <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p>
-          <div class="fshare-box">
-            <p class="share" @click="clickwx">
-              <i class="wechat"></i>
-            </p>
-          </div> -->
         </el-col>
       </el-row>
-      <div class="copy-right" v-if="!isMob">
-        <p>{{prod.copyright}} {{prod.url}} 版权所有.All rights reserved.</p>
-        <p>{{prod.license}}{{prod.business}}</p>
-      </div>
       <div class="copy-right" v-if="isMob">
         <p>{{prod.copyright}} {{prod.url}}</p>
         <p>版权所有.All rights reserved.</p>
@@ -108,20 +98,6 @@
         <p>{{prod.business}}</p>
       </div>
     </div>
-    <transition name="fade">
-      <section class="hidweixin" v-if="iswxhide && !isMob">
-        <div class="hidebox" @click="clickwx"></div>
-        <div class="wxbox">
-          <i class="wxclose" @click="clickwx"></i>
-          <h3>关注铟果微信公众号</h3>
-          <p class="openxw">打开微信，点击右上角的“+”，选择“扫一扫”功能，对准下方二维码即可。</p>
-          <div class="d3INeq">
-            <p class="saoqr">扫码关注我们</p>
-            <p class="qr"></p>
-          </div>
-        </div>
-      </section>
-    </transition>
   </div>
 </template>
 
