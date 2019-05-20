@@ -10,7 +10,8 @@
         <div class="mb-cont-set" @click="toSet()"></div>
         <div class="mb-cont-round mb-column-center">
           <div class="mb-cont-img">
-            <img :src="user.avatar.logo">
+            <img :src="user.avatar.logo" v-if="user.avatar && user.avatar.logo">
+            <img src="../../../../assets/images/df_50x50.png" v-else>
           </div>
           <div class="mb-cont-name">{{user.company.company_abbreviation || user.realname || user.company.company_name || '—'}}</div>
         </div>
@@ -77,8 +78,8 @@
       </div>
       <div v-if="itemList.length" class="list-round">
         <div class="docking-item" v-for="(d, index) in itemList" :key="d + index">
-          <div class="data-top mb-center-center">
-            <p>{{ d.item.created_at }}</p>
+          <div class="data-top mb-center">
+            <div class="top-date">{{ d.item.created_at }}</div>
           </div>
           <div class="list-body">
             <div class="list-title">{{ d.item.name }}</div>
@@ -121,8 +122,8 @@
       </div>
       <div v-if="itemFinList.length" class="list-round">
         <div class="docking-item" v-for="(d, index) in itemFinList" :key="d + index">
-          <div class="data-top mb-center-center">
-            <p>{{ d.item.created_at }}</p>
+          <div class="data-top mb-center">
+            <div class="top-date">{{ d.item.created_at }}</div>
           </div>
           <div class="list-body">
             <div class="list-title">{{ d.item.name }}</div>
@@ -493,6 +494,13 @@ export default {
     border-radius: 4px 4px 0px 0px;
     border-bottom: 1px solid rgba(230,230,230,1);
   }
+  .top-date {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    padding-left: 15px;
+  }
   .docking-item {
     min-height: 358px;
     background: rgba(255,255,255,1);
@@ -623,7 +631,7 @@ export default {
     border-right: 1px solid #D4D2D2;
   }
   .grey-line {
-    border-top: 1px solid #D4D2D2;
+    border-top: 1px solid rgba(230, 230, 230, 0.5);
   }
   .nav-bot {
     border-bottom: 2px solid #FF5A5F;
@@ -645,6 +653,10 @@ export default {
   .mb-center-center {
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+  .mb-center {
+    display: flex;
     align-items: center;
   }
 </style>
