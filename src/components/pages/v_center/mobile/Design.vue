@@ -54,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="show-more" v-if="(index + 1) === designCases.length && caseMoreShow" @click="getDesignCaseList()">点击查看更多</div>
+          <div class="show-more" v-if="(index + 1) === designCases.length && caseMoreShow" @click="showCaseMore()">点击查看更多</div>
           <div v-if="(index + 1) === designCases.length && !caseMoreShow" class="show-more">没有更多了</div>
         </div>
       </div>

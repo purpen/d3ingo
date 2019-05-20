@@ -43,25 +43,29 @@
         <div class="go-text">发布项目</div>
       </div>
       <div v-if="itemIngList.length" class="list-round">
-        <div class="item" v-for="(d, index) in itemIngList" :key="index">
-          <div class="content">
-            <div class="pre"> 
-              <p class="item-title">
-                <span v-if="d.item.name">{{ d.item.name }}</span>
-                <span v-else>未命名项目</span>
-              </p>
-              <p class="progress-line">
-                <el-progress
-                  :text-inside="true"
-                  :show-text="false"
-                  :stroke-width="6"
-                  :percentage="d.item.progress"
-                  status="exception">
-                </el-progress>
-              </p>
-              <div class="prefect">您的项目需求填写已经完成了<p class="color-red">{{ d.item.progress }}%</p>。</div>
+        <div v-for="(d, index) in itemIngList" :key="index">
+          <div class="item">
+            <div class="content">
+              <div class="pre">
+                <p class="item-title">
+                  <span v-if="d.item.name">{{ d.item.name }}</span>
+                  <span v-else>未命名项目</span>
+                </p>
+                <p class="progress-line">
+                  <el-progress
+                    :text-inside="true"
+                    :show-text="false"
+                    :stroke-width="6"
+                    :percentage="d.item.progress"
+                    status="exception">
+                  </el-progress>
+                </p>
+                <div class="prefect">您的项目需求填写已经完成了<p class="color-red">{{ d.item.progress }}%</p>。</div>
+              </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemIngList.length && ingListMoreShow" @click="showListMore(1)">点击查看更多</div>
+          <div v-if="(index + 1) === itemIngList.length && !ingListMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
@@ -77,35 +81,39 @@
         <div class="go-text">发布项目</div>
       </div>
       <div v-if="itemList.length" class="list-round">
-        <div class="docking-item" v-for="(d, index) in itemList" :key="d + index">
-          <div class="data-top mb-center">
-            <div class="top-date">{{ d.item.created_at }}</div>
-          </div>
-          <div class="list-body">
-            <div class="list-title">{{ d.item.name }}</div>
-            <div class="grey-line"></div>
-            <div class="list-content">
-              <div class="c-body">
-                <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
-                <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
-                <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
-                <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
-                <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
-              </div>
+        <div v-for="(d, index) in itemList" :key="d + index">
+          <div class="docking-item">
+            <div class="data-top mb-center">
+              <div class="top-date">{{ d.item.created_at }}</div>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ d.item.name }}</div>
               <div class="grey-line"></div>
-              <div class="money-str mb-center-space">
-                <div class="money-text">交易金额</div>
-                <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
-                <div v-else class="money-money">暂无</div>
-              </div>
-              <div class="grey-line"></div>
-              <div class="state-str mb-center-space">
-                <div class="money-text">状态</div>
-                <div v-if="d.item.show_offer" class="design-state">有设计服务商报价</div>
-                <div v-else class="design-state">{{ d.item.status_value }}</div>
+              <div class="list-content">
+                <div class="c-body">
+                  <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                  <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                  <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                  <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                  <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="money-str mb-center-space">
+                  <div class="money-text">交易金额</div>
+                  <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                  <div v-else class="money-money">暂无</div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="state-str mb-center-space">
+                  <div class="money-text">状态</div>
+                  <div v-if="d.item.show_offer" class="design-state">有设计服务商报价</div>
+                  <div v-else class="design-state">{{ d.item.status_value }}</div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemList.length && listMoreShow" @click="showListMore(2)">点击查看更多</div>
+          <div v-if="(index + 1) === itemList.length && !listMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
@@ -121,34 +129,38 @@
         <div class="go-text">发布项目</div>
       </div>
       <div v-if="itemFinList.length" class="list-round">
-        <div class="docking-item" v-for="(d, index) in itemFinList" :key="d + index">
-          <div class="data-top mb-center">
-            <div class="top-date">{{ d.item.created_at }}</div>
-          </div>
-          <div class="list-body">
-            <div class="list-title">{{ d.item.name }}</div>
-            <div class="grey-line"></div>
-            <div class="list-content">
-              <div class="c-body">
-                <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
-                <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
-                <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
-                <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
-                <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
-              </div>
+        <div v-for="(d, index) in itemFinList" :key="d + index">
+          <div class="docking-item">
+            <div class="data-top mb-center">
+              <div class="top-date">{{ d.item.created_at }}</div>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ d.item.name }}</div>
               <div class="grey-line"></div>
-              <div class="money-str mb-center-space">
-                <div class="money-text">交易金额</div>
-                <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
-                <div v-else class="money-money">暂无</div>
-              </div>
-              <div class="grey-line"></div>
-              <div class="state-str mb-center-space">
-                <div class="money-text">状态</div>
-                <div class="final-state">已完成</div>
+              <div class="list-content">
+                <div class="c-body">
+                  <div class="content-text">项目预算：<p>{{ d.item.design_cost_value }}</p></div>
+                  <div class="content-text">交付时间：<p>{{ d.item.cycle_value }}</p></div>
+                  <div class="content-text">设计类型：<p>{{ d.item.type_value }}</p></div>
+                  <div class="content-text">行业领域：<p>{{ d.item.design_types_value | formatEnd }}</p></div>
+                  <div class="content-text">项目描述：<p>{{ d.item.product_features }}</p></div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="money-str mb-center-space">
+                  <div class="money-text">交易金额</div>
+                  <div v-if="(d.item.price - 0) !== 0" class="money-money">¥ {{ d.item.price }}</div>
+                  <div v-else class="money-money">暂无</div>
+                </div>
+                <div class="grey-line"></div>
+                <div class="state-str mb-center-space">
+                  <div class="money-text">状态</div>
+                  <div class="final-state">已完成</div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="show-more mar-top-20" v-if="(index + 1) === itemFinList.length && finListMoreShow" @click="showListMore(3)">点击查看更多</div>
+          <div v-if="(index + 1) === itemFinList.length && !finListMoreShow" class="show-more mar-top-20">没有更多了</div>
         </div>
       </div>
     </div>
@@ -190,25 +202,25 @@ export default {
       isLoading: false,
       loadShow: false,
       showTai: false,
+      ingListMoreShow: false,
+      listMoreShow: false,
+      finListMoreShow: false,
       itemList: [],
       itemIngList: [],
       itemFinList: [],
       query: {
         page: 1,
         pageSize: 10,
-        totalPages: 0,
         total: 0
       },
       query2: {
         page: 1,
         pageSize: 10,
-        totalPages: 0,
         total: 0
       },
       query3: {
         page: 1,
         pageSize: 10,
-        totalPages: 0,
         total: 0
       }
     }
@@ -219,6 +231,17 @@ export default {
     that.loadList(type)
   },
   methods: {
+    showListMore(type) {
+      let that = this
+      if (type === 1) {
+        that.query.page++
+      } else if (type === 2) {
+        that.query2.page++
+      } else if (type === 3) {
+        that.query3.page++
+      }
+      that.loadList(type)
+    },
     download() {
       downFile('https://p4.taihuoniao.com/asset/190517/5cde7dccd06068507b8b4878-1-hu.jpg')
     },
@@ -232,34 +255,21 @@ export default {
       let page = 0
       let pageSize = 0
       if (type === 1) {
-        page = this.query.page
-        pageSize = this.query.pageSize
+        page = that.query.page
+        pageSize = that.query.pageSize
       } else if (type === 2) {
-        page = this.query2.page
-        pageSize = this.query2.pageSize
+        page = that.query2.page
+        pageSize = that.query2.pageSize
       } else if (type === 3) {
-        page = this.query3.page
-        pageSize = this.query3.pageSize
+        page = that.query3.page
+        pageSize = that.query3.pageSize
       }
       that.$http.get(api.itemList, {params: {type: type,
         page: page,
         per_page: pageSize}})
       .then(function (response) {
-        that.loadShow = false
-        that.isLoading = false
         if (response.data.meta.status_code === 200) {
-          that.itemList = []
-          that.itemIngList = []
-          that.itemFinList = []
-          document.body.scrollTop = 0
-          document.documentElement.scrollTop = 0
           if (response.data && response.data.data && response.data.data.length) {
-            that.query.totalPages = 0
-            that.query.total = 0
-            that.query2.totalPages = 0
-            that.query2.total = 0
-            that.query3.totalPages = 0
-            that.query3.total = 0
             let data = response.data.data
             for (let i = 0; i < data.length; i++) {
               let d = data[i]
@@ -281,17 +291,59 @@ export default {
             } // endfor
 
             if (type === 1) {
-              that.itemIngList = data
-              that.query.totalPages = response.data.meta.pagination.total_pages
+              that.itemList = []
+              that.itemFinList = []
               that.query.total = response.data.meta.pagination.total
+              if (that.itemIngList && that.itemIngList.length > 0) {
+                let arr = that.itemIngList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemIngList = arr
+              } else {
+                that.itemIngList = data
+              }
+              if (that.itemIngList.length < response.data.meta.pagination.total) {
+                that.ingListMoreShow = true
+              } else {
+                that.ingListMoreShow = false
+              }
             } else if (type === 2) {
-              that.itemList = data
-              that.query2.totalPages = response.data.meta.pagination.total_pages
+              that.itemIngList = []
+              that.itemFinList = []
               that.query2.total = response.data.meta.pagination.total
+              if (that.itemList && that.itemList.length > 0) {
+                let arr = that.itemList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemList = arr
+              } else {
+                that.itemList = data
+              }
+              if (that.itemList.length < response.data.meta.pagination.total) {
+                that.listMoreShow = true
+              } else {
+                that.listMoreShow = false
+              }
             } else if (type === 3) {
-              that.itemFinList = data
-              that.query3.totalPages = response.data.meta.pagination.total_pages
+              that.itemList = []
+              that.itemIngList = []
               that.query3.total = response.data.meta.pagination.total
+              if (that.itemFinList && that.itemFinList.length > 0) {
+                let arr = that.itemFinList
+                for (let index in data) {
+                  arr.push(data[index])
+                }
+                that.itemFinList = arr
+              } else {
+                that.itemFinList = data
+              }
+              if (that.itemFinList.length < response.data.meta.pagination.total) {
+                that.finListMoreShow = true
+              } else {
+                that.finListMoreShow = false
+              }
             }
           } else {
             if (type === 1) {
@@ -302,7 +354,11 @@ export default {
               that.isEmpty3 = true
             }
           }
+          that.loadShow = false
+          that.isLoading = false
         } else {
+          that.loadShow = false
+          that.isLoading = false
           that.$message.error(response.data.meta.message)
         }
       })
@@ -330,6 +386,10 @@ export default {
     '$route' (to, from) {
       let that = this
       let type = Number(that.$route.query.type) || 1
+      window.scroll(0, 0)
+      that.query.page = 1
+      that.query2.page = 1
+      that.query3.page = 1
       that.loadList(type)
     }
   },
@@ -465,7 +525,7 @@ export default {
     font-size: 16px;
   }
   .list-round {
-    padding: 15px 0 40px 0;
+    padding: 15px 0 0 0;
     /* overflow-x: hidden; */
   }
   .go-btn {
@@ -614,8 +674,20 @@ export default {
   .color-FFA64 {
     color: #FFA64B;
   }
+  .show-more {
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    height: 30px;
+    line-height: 30px;
+  }
 
 
+  .mar-top-20 {
+    margin-top: 20px;
+  }
   .pad-bot-8 {
     padding-bottom: 8px;
   }
