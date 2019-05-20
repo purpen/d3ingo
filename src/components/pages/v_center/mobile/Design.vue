@@ -34,7 +34,7 @@
         <div class="empty-img"></div>
         <div class="empty-text">暂未没有设计案例哦～</div>
       </div>
-      <div :class="{'pad-18-20-0-20' : designCases && designCases.length > 0}">
+      <div :class="{'pad-18-20-20-20' : designCases && designCases.length > 0}">
         <div v-for="(item, index) in designCases" :key="index" v-if="designCases && designCases.length > 0">
           <div class="case">
             <div class="case-header">
@@ -485,6 +485,7 @@ export default {
     font-weight: 400;
     color: rgba(255,166,75,1);
     max-width: 70%;
+    line-height: 18px;
   }
   .state-str {
     padding: 14px 0 0 0;
@@ -614,8 +615,8 @@ export default {
   .pad-15-15-14-15 {
     padding: 15px 15px 14px 15px;
   }
-  .pad-18-20-0-20 {
-    padding: 18px 20px 0 20px;
+  .pad-18-20-20-20 {
+    padding: 18px 20px 20px 20px;
   }
   .pad-bot-8 {
     padding-bottom: 8px;

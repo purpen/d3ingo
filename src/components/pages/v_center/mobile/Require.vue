@@ -558,6 +558,8 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,166,75,1);
+    line-height: 18px;
+    max-width: 70%;
   }
   .state-str {
     padding: 14px 0 0 0;
