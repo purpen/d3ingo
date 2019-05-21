@@ -2305,6 +2305,9 @@ const ADMINDETAIL = {
   },
   adminItemShow0: {
     redirect: 'ordershow'
+  },
+  adminDesignCasecCawlingSubmit: {
+    redirect: 'adminDesignCasecCawlingList'
   }
 }
 const OTHERADMINMENU = {
