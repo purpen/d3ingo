@@ -161,15 +161,14 @@
           </ul>
         </div>
         <div class="m-Nav-right" v-if="isLogin">
-          <router-link to="/vcenter/control">
-            <template v-if="eventUser.type === 1">
-              <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-            </template>
-            <template v-else>
-              <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-            </template>
+          <!-- <router-link to="/vcenter/control"> -->
+          <router-link to="/v_center/mobile/require?type=1" v-if="eventUser.type === 1">
+            <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+          </router-link>
+          <router-link to="/v_center/mobile/design?type=1" v-else>
+            <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
           </router-link>
         </div>
       </div>
