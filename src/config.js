@@ -2116,8 +2116,16 @@ const ADMINMENU = {
     },
     children: [
       {
-        name: '列表',
+        name: '公司案例',
         route: 'adminDesignCaseList',
+        statement: {
+          params: {},
+          query: {}
+        }
+      },
+      {
+        name: '爬取案例',
+        route: 'adminDesignCasecCawlingList',
         statement: {
           params: {},
           query: {}
@@ -2297,6 +2305,9 @@ const ADMINDETAIL = {
   },
   adminItemShow0: {
     redirect: 'ordershow'
+  },
+  adminDesignCasecCawlingSubmit: {
+    redirect: 'adminDesignCasecCawlingList'
   }
 }
 const OTHERADMINMENU = {
