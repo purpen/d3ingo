@@ -155,7 +155,7 @@
               <el-row>
                 <el-col :span="20">
                   <el-form-item label="设计类型" prop="type">
-                    <el-select v-model.number="form.type" placeholder="设计类别"
+                    <el-select v-model.number="form.type" placeholder="设计类型"
                                @change="typec"
                     >
                       <el-option
@@ -170,7 +170,7 @@
               </el-row>
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="设计类别" prop="design_type" class="is-required">
+                  <el-form-item label="设计类别" prop="design_types" class="is-required">
                     <el-select v-model="form.design_types" multiple placeholder="设计类别">
                       <el-option
                         v-for="item in typeDesignOptions"
@@ -526,24 +526,12 @@
         return items
       },
       typeDesignOptions() {
-        let items = []
         let index
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
+        if (!this.form.type || isNaN(this.form.type)) {
           return []
         }
-        if (!typeData.designType[index].field) return []
-        for (let i = 0; i < typeData.designType[index].field.length; i++) {
-          let item = {
-            value: typeData.designType[index].field[i]['id'],
-            label: typeData.designType[index].field[i]['name']
-          }
-          items.push (item)
-        }
-        return items
+        index = this.form.type - 1
+        return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
         let items = []
@@ -669,6 +657,15 @@
               }
               if (response.data.data.field === 0) {
                 that.form.field = ''
+              }
+              let arrPush = []
+              if (that.form.design_types && that.form.design_types.length > 0) {
+                for (let index in that.form.design_types) {
+                  let arr = that.form.design_types[index]
+                  arr = arr - 0
+                  arrPush.push(arr)
+                }
+                that.form.design_types = arrPush
               }
 //              if (that.form.prizes && that.form.prizes.length) {
 //                that.$set(that, 'is_prize', true)
