@@ -26,47 +26,43 @@
 
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="爬取图片" prop="">
+                  <el-form-item label="爬取图片" prop="" v-if="fileList.length > 0">
                     <div class="file-list">
                       <el-row :gutter="20">
-                        <el-col :span="20" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                              <i v-if="index === 0"></i>
-                              <img :src="d.big">
-                            </div>
-                            <!--<div class="content">-->
-                              <!--<p>{{ d.name }}</p>-->
-                              <!--<div class="summary-edit" v-if="d.edit">-->
-                                <!--<textarea v-model="d.summary"></textarea>-->
-                              <!--</div>-->
-                              <!--<div class="summary" v-else>-->
-                                <!--<p v-if="d.summary">{{ d.summary }}</p>-->
-                                <!--<p class="image-no-summary" v-else>暂无描述信息</p>-->
-                              <!--</div>-->
-                              <!--<div class="opt" v-if="d.edit">-->
-                                <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
-                                   <!--@click="saveAssetSummary">保存</a>-->
-                              <!--</div>-->
-                              <!--<div class="opt" v-else>-->
-                                <!--<el-tooltip class="item" effect="dark" content="删除图片" placement="top">-->
-                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
-                                     <!--@click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>-->
-                                <!--</el-tooltip>-->
-                                <!--<el-tooltip class="item" effect="dark" content="编辑文字" placement="top">-->
-                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
-                                     <!--@click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>-->
-                                <!--</el-tooltip>-->
-                                <!--<el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">-->
-                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
-                                     <!--@click="setCoverBtn"><i-->
-                                    <!--:class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"-->
-                                    <!--aria-hidden="true"></i></a>-->
-                                <!--</el-tooltip>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                          </el-card>
-                        </el-col>
+                        <div class="image-box" v-for="(d, index) in fileList" :key="index">
+                          <i v-if="index === 0"></i>
+                          <img :src="d.big">
+                        </div>
+                        <!--<div class="content">-->
+                          <!--<p>{{ d.name }}</p>-->
+                          <!--<div class="summary-edit" v-if="d.edit">-->
+                            <!--<textarea v-model="d.summary"></textarea>-->
+                          <!--</div>-->
+                          <!--<div class="summary" v-else>-->
+                            <!--<p v-if="d.summary">{{ d.summary }}</p>-->
+                            <!--<p class="image-no-summary" v-else>暂无描述信息</p>-->
+                          <!--</div>-->
+                          <!--<div class="opt" v-if="d.edit">-->
+                            <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                               <!--@click="saveAssetSummary">保存</a>-->
+                          <!--</div>-->
+                          <!--<div class="opt" v-else>-->
+                            <!--<el-tooltip class="item" effect="dark" content="删除图片" placement="top">-->
+                              <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                 <!--@click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>-->
+                            <!--</el-tooltip>-->
+                            <!--<el-tooltip class="item" effect="dark" content="编辑文字" placement="top">-->
+                              <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                 <!--@click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>-->
+                            <!--</el-tooltip>-->
+                            <!--<el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">-->
+                              <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                 <!--@click="setCoverBtn"><i-->
+                                <!--:class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"-->
+                                <!--aria-hidden="true"></i></a>-->
+                            <!--</el-tooltip>-->
+                          <!--</div>-->
+                        <!--</div>-->
                       </el-row>
                     </div>
                   </el-form-item>
@@ -154,6 +150,35 @@
 
               <el-row>
                 <el-col :span="20">
+                  <el-form-item label="案例价格" prop="price" class="line-hei-20">
+                    <el-input v-model="form.price" placeholder="请输入案例价格"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="20">
+                  <el-form-item label="时间周期" prop="cycle" class="line-hei-20">
+                    <el-input v-model="form.cycle" placeholder="请输入时间周期"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="20">
+                  <el-form-item label="所属设计公司" prop="design_company">
+                    <el-autocomplete
+                      v-model="form.design_company"
+                      :fetch-suggestions="querySearch"
+                      placeholder="填写或者选择所属设计公司"
+                      class="select_querySearch"
+                    ></el-autocomplete>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="20">
                   <el-form-item label="设计类型" prop="type">
                     <el-select v-model.number="form.type" placeholder="设计类型"
                                @change="typec"
@@ -183,8 +208,8 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="20" v-if="form.type === 1">
-                  <el-form-item label="产品类型" prop="field" class="is-required">
+                <el-col :span="20">
+                  <el-form-item label="产品类型" prop="field" class="line-hei-20">
                     <el-select v-model.number="form.field" placeholder="产品类型">
                       <el-option
                         v-for="item in fieldOptions"
@@ -199,7 +224,7 @@
 
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="行业领域" prop="industry"  class="is-required">
+                  <el-form-item label="行业领域" prop="industry"   class="line-hei-20">
                     <el-select v-model.number="form.industry" placeholder="行业领域">
                       <el-option
                         v-for="item in industryOptions"
@@ -229,6 +254,13 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="20">
+                  <el-form-item label="来源" prop="url" class="label-tag">
+                    <p class="urls_cawlingsubmit">{{form.url}}</p>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col>
                   <div class="form-footer">
                     <div class="form-btn">
@@ -249,7 +281,6 @@
 
 <script>
   import vMenuSub from '@/components/pages/v_center/design_case/MenuSub'
-  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
@@ -286,23 +317,21 @@
         value10: [],
         isfrist: false,
         imageUrl: '',
-        coverId: '',
         design_types: [],
+        design_companys: [], // 设计公司列表
         form: {
           type: '',
           field: '',
           industry: '',
           title: '',
-          prize_time: '',
-          prize: '',
-          patent_time: '',
-          patent_info: '',
           customer: '',
-          mass_production: 0,
-          sales_volume: '',
-          cover_id: '',
           profile: '',
-          label: []
+          label: [],
+          design_company: '', // 设计公司名称
+          price: '', // 设计价格
+          cycle: '', // 设计周期
+          url: '', // 来源
+          design_types: [] // 设计类别
         },
         ruleForm: {
           type: [
@@ -318,30 +347,40 @@
             {type: 'number', message: '请选择所属行业', trigger: 'change'}
           ],
           title: [
-            {required: true, message: '请填写标题', trigger: 'blur'}
+            {required: true, message: '请填写标题', trigger: 'blur'},
+            {min: 1, max: 50, message: '长度在 50 个字符以内', trigger: 'blur'},
+            {pattern: (/(^\s*)|(\s*$)/g, ''), message: '不能全是空格', trigger: 'blur'}
           ],
           customer: [
             {message: '请填写服务客户', trigger: 'blur'},
-            {pattern: (/(^\s*)|(\s*$)/g, ''), message: '不能全是空格'}
+            {pattern: (/(^\s*)|(\s*$)/g, ''), message: '不能全是空格', trigger: 'blur'}
           ],
           profile: [
             {required: true, message: '请填写案例描述', trigger: 'blur'},
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ],
-          prize: [
-            // {required: true, type: 'number', message: '请选择获奖名称', trigger: 'blur'}
-          ],
-          prize_time: [
-            // {required: true, type: 'date', message: '请选择获奖时间', trigger: 'blur'}
-          ],
           label: [
             {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
             {type: 'array', min: 1, max: 10, message: '请填写1~10个标签', trigger: 'blur'}
+          ],
+          design_company: [
+            {required: true, message: '请填写或者选择所属设计公司', trigger: 'change'}
           ]
         }
       }
     },
     methods: {
+      querySearch(queryString, cb) { // 搜索
+        var restaurants = this.design_companys
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+        // 调用 callback 返回建议列表的数据
+        cb(results)
+      },
+      createFilter(queryString) { // 搜索
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+        }
+      },
       backInlist () { // 返回爬取案例
         this.$router.push({
           name: 'adminDesignCasecCawlingList'
@@ -351,21 +390,22 @@
         if (!this.form.label) {
           this.form.label = []
         }
-//        if (this.form.label.indexOf(label + '') === -1) {
-//          this.form.label.push(label + '')
-//        }
+        if (this.form.label.indexOf(label + '') === -1) {
+          if (this.form.label.length < 10) {
+            this.form.label.push(label + '')
+          }
+        }
       },
       getTags() {
         this.$http.get(api.designCaseLabel, {params: {design_company_id: this.user.company_id}})
           .then(res => {
             if (res.data && res.data.meta.status_code === 200) {
               this.LabelList = this.LabelList.concat(res.data.data)
-              console.log(this.LabelList)
             } else {
               this.$message.error(res.data.meta.message)
             }
           }).catch(err => {
-            console.error(err.message)
+            console.log(err)
           })
       },
       // 选择分类事件
@@ -374,96 +414,111 @@
       },
       submit(formName) {
         const that = this
-        if (!that.fileList || !that.fileList.length) {
-          that.coverId = 0
-        } else {
-          let bool = false
-          that.fileList.forEach(item => {
-            if (item.id === (that.coverId - 0)) {
-              bool = true
-            }
-          })
-          if (!bool) {
-            that.coverId = 0
+        console.log(that.form)
+        that.form.title = that.form.title.replace(/(^\s*)|(\s*$)/g, '') // *作品案例标题
+        that.form.profile = that.form.profile.replace(/(^\s*)|(\s*$)/g, '') // *作品案例描述
+        that.form.customer = that.form.customer.replace(/(^\s*)|(\s*$)/g, '') // 服务客户
+        let prices = parseInt(that.form.price)
+        that.form.price = prices.toString().replace(/(^\s*)|(\s*$)/g, '') // 案例价格
+        that.form.price = prices.toString().replace(/[^0-9.]/g, '') // 案例价格
+        let cycles = parseInt(that.form.cycle)
+        that.form.cycle = cycles.toString().replace(/(^\s*)|(\s*$)/g, '') // 时间周期
+        that.form.cycle = cycles.toString().replace(/[^0-9.]/g, '') // 时间周期
+        that.form.design_company = that.form.design_company.replace(/(^\s*)|(\s*$)/g, '') // *所属设计公司
+        // *设计类别that.form.design_types
+//        产品类型that.form.field
+//        行业领域that.form.industry
+//        *标签that.form.label
+//        *来源that.form.url
+        if (that.form.title === '') {
+          that.$message.error ('请输入作品案例标题,不能全是空格!')
+          return false
+        } else if (that.form.title.toString() > 50) {
+          that.$message.error ('作品案例标题不能超过50个字符!')
+          return false
+        }
+        if (that.form.profile === '') {
+          that.$message.error ('请输入作品案例描述,不能全是空格!')
+          return false
+        } else if (that.form.profile.toString() > 500 || that.form.profile.toString() < 10) {
+          that.$message.error ('作品案例描述长度在 10 到 500 个字符!')
+          return false
+        }
+        if (that.form.customer !== '') {
+          if (that.form.customer === '') {
+            that.$message.error ('服务客户不能全是空格!')
+            return false
           }
         }
-        console.log(that.fileList)
-        if (!that.coverId) {
-          that.$message.error ('必须设置一张封面图!')
+        if (that.form.price !== '') {
+          if (that.form.price === '') {
+            that.$message.error ('案例价格不能全是空格!')
+            return false
+          }
+        }
+        if (that.form.cycle !== '') {
+          if (that.form.cycle === '') {
+            that.$message.error ('时间周期不能全是空格!')
+            return false
+          }
+        }
+        if (that.form.design_company === '') {
+          that.$message.error ('请输入所属设计公司,不能全是空格!')
+          return false
+        }
+        if (that.form.type === '' || that.form.type <= 0) {
+          that.$message.error ('请输入选择设计类型!')
           return false
         }
         if (!that.form.design_types || !that.form.design_types.length) {
           that.$message.error ('请选择至少一个设计类别!')
           return false
         }
+        if (!that.form.label || !that.form.label.length) {
+          that.$message.error ('请创建至少一个标签!')
+          return false
+        }
         that.$refs[formName].validate ((valid) => {
           // 验证通过，提交
           if (valid) {
             let row = {
-              type: that.form.type,
-              field: that.form.field,
-              industry: that.form.industry,
-              title: that.form.title,
-              customer: that.form.customer,
-              mass_production: that.form.mass_production,
-              sales_volume: !that.form.sales_volume ? 0 : that.form.sales_volume,
-              profile: that.form.profile,
-              label: that.form.label
+              id: this.$route.params.id, // *id
+              title: that.form.title, // *标题
+              profile: that.form.profile, // *项目描述
+              type: that.form.type, // * 设计类型
+              design_types: that.form.design_types, // *设计类别
+              design_company: that.form.design_company, // *设计公司名称
+              label: that.form.label, // *标签
+              url: that.form.url // *来源
             }
-            row.cover_id = that.coverId
-            if (that.form.design_types && that.form.design_types.length) {
-              row.design_types = JSON.stringify(that.form.design_types)
-            } else {
-              row.design_types = '[]'
+            if (that.form.customer !== '') {
+              var customers = {customer: that.form.customer}
+              Object.assign(row, customers)
             }
-            if (this.prizes && this.prizes.length) {
-              for (var i = 0; i < this.prizes.length; i++) {
-                if (!this.prizes[i].time || !this.prizes[i].type) {
-                  this.prizes.splice(i, 1)
-                }
-                this.prizes[i].time = this.prizes[i].time.format ('yyyy-MM-dd')
-              }
-              row.prizes = JSON.stringify(this.prizes)
-            } else {
-              row.prizes = '[]'
+            if (that.form.field > 0) {
+              var fields = {field: that.form.field}
+              Object.assign(row, fields)
             }
-
-            if (this.patents && this.patents.length) {
-              for (var c = 0; c < this.patents.length; c++) {
-                if (!this.patents[c].time || !this.patents[c].type) {
-                  this.patents.splice(c, 1)
-                }
-                this.patents[c].time = this.patents[c].time.format ('yyyy-MM-dd')
-              }
-              row.patent = JSON.stringify(this.patents)
-            } else {
-              row.patents = '[]'
+            if (that.form.industry > 0) {
+              var industrys = {industry: that.form.industry}
+              Object.assign(row, industrys)
             }
-            // if (that.is_apply && that.form.patent_time) {
-            //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
-            //   row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
-            // } else {
-            //   row.patent = null
-            // }
-            let apiUrl = null
-            let method = null
-            if (that.itemId) {
-              method = 'put'
-              apiUrl = api.designCaseId.format (that.itemId)
-            } else {
-              method = 'post'
-              apiUrl = api.designCase
-              if (that.uploadParam['x:random']) {
-                row['random'] = that.uploadParam['x:random']
-              }
+            if (parseInt(that.form.price) > 0) {
+              var prices = {price: parseInt(that.form.price)}
+              Object.assign(row, prices)
+            }
+            if (parseInt(that.form.cycle) > 0) {
+              var cycles = {cycle: parseInt(that.form.cycle)}
+              Object.assign(row, cycles)
             }
             that.isLoadingBtn = true
-            that.$http ({method: method, url: apiUrl, data: row})
+            that.$http ({method: 'POST', url: api.adminDesignGrabCaseUpdate, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
                   that.$message.success ('提交成功！')
-                  that.getStatus(that.user.type)
-                  that.$router.push ({name: 'vcenterDesignCaseList'})
+                  that.isLoadingBtn = false
+ //                  that.getStatus(that.user.type)
+                  that.$router.push ({name: 'adminDesignCasecCawlingList'})
                   return false
                 } else {
                   that.$message.error (response.data.meta.message)
@@ -473,40 +528,24 @@
               .catch (function (error) {
                 that.$message.error (error.message)
                 that.isLoadingBtn = false
-                console.log (error.message)
                 return false
               })
             return false
           } else {
-            console.log ('error submit!!')
             return false
           }
         })
       },
       returnList() {
-        this.$router.push ({name: 'vcenterDesignCaseList'})
+        this.$router.push ({name: 'adminDesignCasecCawlingList'})
       },
       typec() {
         if (this.isfrist) {
           this.form.design_types = []
+        } else {
+          this.form.design_types = []
         }
         this.isfrist = true
-      },
-      getStatus(type) {
-        let url = ''
-        if (type === 2) {
-          url = api.surveyDesignCompanySurvey
-        } else {
-          url = api.surveyDemandCompanySurvey
-        }
-        this.$http.get(url, {})
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-            }
-          }).catch(err => {
-            console.error(err.message)
-          })
       }
     },
     computed: {
@@ -534,20 +573,13 @@
         return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
+        console.log(111122)
         let items = []
-        let index
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
-          return []
-        }
-        if (!typeData.COMPANY_TYPE[index].field) return []
-        for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
+        if (!typeData.COMPANY_TYPE[0].field) return []
+        for (let i = 0; i < typeData.COMPANY_TYPE[0].field.length; i++) {
           let item = {
-            value: typeData.COMPANY_TYPE[index].field[i]['id'],
-            label: typeData.COMPANY_TYPE[index].field[i]['name']
+            value: typeData.COMPANY_TYPE[0].field[i]['id'],
+            label: typeData.COMPANY_TYPE[0].field[i]['name']
           }
           items.push (item)
         }
@@ -667,28 +699,6 @@
                 }
                 that.form.design_types = arrPush
               }
-//              if (that.form.prizes && that.form.prizes.length) {
-//                that.$set(that, 'is_prize', true)
-//                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-//                that.$set(that.form, 'prize', that.form.prizes[0].type)
-//              }
-//              if (that.form.patent && that.form.patent.length) {
-//                that.$set(that, 'is_apply', true)
-//                that.$set(that.form, 'patent_time', that.form.patent[0].time)
-//                that.$set(that.form, 'patent_info', that.form.patent[0].type)
-//              } else {
-//                that.$set(that, 'is_apply', false)
-//              }
-
-              if (that.form.cover_id) {
-                that.coverId = that.form.cover_id
-              }
-              if (!response.data.data.sales_volume) {
-                that.form.sales_volume = ''
-                that.form.mass_production = 0
-              } else {
-                that.form.mass_production = 1
-              }
               if (response.data.data.case_image) {
                 let files = []
                 for (let i = 0; i < response.data.data.case_image.length; i++) {
@@ -722,6 +732,20 @@
       } else {
         that.itemId = null
       }
+      that.$http.get (api.adminDesignGrabCaseCompanySumList, {})
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.design_companys = []
+            let datas = response.data.data
+            for (let i = 0; i < datas.length; i++) {
+              that.design_companys.push({'value': datas[i].company_name})
+            }
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          return false
+        })
     }
   }
 
@@ -807,7 +831,18 @@
     line-height: 1.5;
   }
   .image-box {
-    position: relative
+    position: relative;
+    height: 180px;
+    width: 300px;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    float: left;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  .image-box:hover {
+    transform: translate3D(0, -5px, 0);
+    box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
   .image-box i{
     position: absolute;
@@ -818,6 +853,15 @@
     background-size: 50px 50px;
     left: 0px;
     top: 0px;
+    z-index: 10000;
+  }
+  .image-box img {
+    max-height: 180px;
+    max-width: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
   .margin-b-10 {
     margin-bottom: 10px
@@ -895,5 +939,18 @@
     font-size: 14px;
     margin-right: 22px;
     display: inline-block;
+  }
+  .select_querySearch {
+    width: 100%;
+  }
+  .urls_cawlingsubmit {
+    float: left;
+    width: 100%;
+    font-size: 14px;
+    color: rgb(153, 153, 153);
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    overflow-wrap: break-word;
   }
 </style>

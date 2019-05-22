@@ -342,12 +342,13 @@ export default {
   adminDesignCaseRecommend: '/admin/designCase/recommend', // GET 推荐或取消推荐设计案例
 
   // 抓取案例列表
-  adminDesignGrabCaseList: '/admin/grab/caseList', // GET抓取案例列表
-  adminDesignGrabSearch: '/admin/grab/search', // GET抓取案例搜索
+  adminDesignGrabCaseList: '/admin/grab/caseList', // GET 抓取案例列表
+  adminDesignGrabSearch: '/admin/grab/search', // GET 抓取案例搜索
 
   // 编辑抓取案例
-  adminDesignGrabCaseSubmitShow: '/admin/grab/show', // GET抓取案例查看详情
-
+  adminDesignGrabCaseSubmitShow: '/admin/grab/show', // GET 抓取案例查看详情
+  adminDesignGrabCaseCompanySumList: '/admin/designCompany/getDesignCompanySumList', // GET 获取设计公司列表
+  adminDesignGrabCaseUpdate: '/admin/grab/update', // POST 抓取案例更改
   // 栏目管理
   adminColumnList: '/admin/column/lists', // GET 列表
   adminColumn: '/admin/column', // GET 详情 | POST 添加 | PUT 更新 | DELETE 删除
