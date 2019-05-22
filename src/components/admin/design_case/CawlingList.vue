@@ -159,12 +159,12 @@
     },
     methods: {
       adminDesignCasecCawlingSubmits (id) { // 编辑案例爬取页面跳转
-//        this.$router.push({
-//          name: 'adminDesignCasecCawlingSubmit',
-//          params: {
-//            id: id
-//          }
-//        })
+        this.$router.push({
+          name: 'adminDesignCasecCawlingSubmit',
+          params: {
+            id: id
+          }
+        })
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
