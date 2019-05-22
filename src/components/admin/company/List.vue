@@ -66,7 +66,8 @@
         label="内容"
         min-width="160">
           <template slot-scope="scope">
-            <p>全称: <router-link :to="{name: 'companyShow', params: {id: scope.row.id}}" target="_blank">{{ scope.row.company_name }}</router-link></p>
+            <p>全称: <a :href="origin+ '/static_page/company/view?id='+scope.row.id"
+            target="_blank">{{ scope.row.company_name }}</a></p>
             <p>简称: {{ scope.row.company_abbreviation }}</p>
             <p>网址: {{ scope.row.web }}</p>
             <p>类型: {{ scope.row.company_type_val }}</p>
@@ -170,6 +171,7 @@ export default {
   name: 'admin_company_list',
   data () {
     return {
+      origin: location.origin,
       menuType: -1,
       itemList: [],
       tableData: [],

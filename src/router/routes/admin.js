@@ -430,6 +430,30 @@ module.exports = [
         },
         component: require('@/components/admin/design_case/List')
       },
+      // 案例爬取列表
+      {
+        path: '/admin/design_case/cawlinglist',
+        name: 'adminDesignCasecCawlingList',
+        meta: {
+          title: '案例爬取列表',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/design_case/CawlingList')
+      },
+      // 编辑案例爬取
+      {
+        path: '/admin/design_case/cawlingsubmit',
+        name: 'adminDesignCasecCawlingSubmit',
+        meta: {
+          title: '编辑案例爬取',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/design_case/CawlingSubmit')
+      },
       // 用户列表
       {
         path: '/admin/user/list',

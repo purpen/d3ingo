@@ -69,7 +69,8 @@
           <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
               <p class="company-name">
-              <router-link class="tc-2" :to="{name: 'companyShow', params: {id: designCasesDetail.design_company.id}}">{{designCasesDetail.design_company.company_name}}</router-link></p>
+              <a class="tc-2"
+              :href="origin+ '/static_page/company/view?id='+designCasesDetail.design_company.id">{{designCasesDetail.design_company.company_name}}</a></p>
               <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
@@ -82,17 +83,18 @@
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
-                  <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                :target="isMob ? '_self' : '_blank'">
+                  <a :href="origin+ '/static_page/design_case/view?id='+d.id"
+                    :target="isMob ? '_self' : '_blank'">
                   <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
                       <!-- <img v-lazy="d.cover.middle"> -->
                   </div>
                   <div class="case-box">
-                    <router-link class="title" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" target="_blank">{{ d.title }}
-                    </router-link>
+                      <a class="title" :href="origin+ '/static_page/design_case/view?id='+d.id"
+                      target="_blank">{{ d.title }}
+                    </a>
                     <p class="des">{{ d.profile }}</p>
                   </div>
-                </router-link>
+                </a>
               </el-card>
             </el-col>
           </el-row>
@@ -108,6 +110,7 @@ export default {
   name: 'design_case_show',
   data() {
     return {
+      origin: location.origin,
       erCode: '',
       designCasesDetail: {},
       isLoading: false
@@ -155,7 +158,7 @@ export default {
           if (this.designCasesDetail.title) {
             document.title = this.designCasesDetail.title + '-太火鸟-B2B工业设计和产品创新SaaS平台'
           }
-          this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.id
+          this.erCode = this.origin + '/api/designCompanyCase/getAppCode?id=' + this.designCasesDetail.id
           if (this.designCasesDetail.design_cases && this.designCasesDetail.design_cases.length > 4) {
             this.designCasesDetail.design_cases = this.designCasesDetail.design_cases.slice(0, 4)
           }

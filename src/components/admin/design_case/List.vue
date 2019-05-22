@@ -49,7 +49,7 @@
         label="内容"
         min-width="250">
           <template slot-scope="scope">
-            <p>标题: <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: scope.row.id}}" target="_blank">{{ scope.row.title }}</router-link></p>
+            <p>标题: <a :href="origin+ '/static_page/design_case/view?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p>
             <p>类型: {{ scope.row.type_label }}</p>
             <p>服务客户: {{ scope.row.customer }}</p>
             <p>标签: {{ scope.row.tags }}</p>
@@ -67,7 +67,8 @@
         label="所属公司">
           <template slot-scope="scope">
             <p>
-              <router-link :to="{name: 'companyShow', params: {id: scope.row.design_company.id}}" target="_blank">{{ scope.row.design_company.company_name }}</router-link>
+              <a :href="origin+ '/static_page/company/view?id=' + scope.row.design_company.id"
+                target="_blank">{{ scope.row.design_company.company_name }}</a>
             </p>
           </template>
       </el-table-column>
@@ -102,6 +103,10 @@
               <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a> -->
               <!-- <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a> -->
             </p>
+            <p>
+              <a href="javascript:void(0);" v-if="scope.row.recommended === 1" @click="setRecommend(scope.$index, scope.row, 0)">取消推荐</a>
+              <a href="javascript:void(0);" v-else @click="setRecommend(scope.$index, scope.row, 1)">推荐</a>
+            </p>
             <!--
             <p>
               <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
@@ -133,6 +138,7 @@ export default {
   name: 'admin_design_case_list',
   data () {
     return {
+      origin: location.origin,
       menuType: 0,
       itemList: [],
       tableData: [],
@@ -169,6 +175,23 @@ export default {
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.itemList[index].open = evt
+          self.$message.success('操作成功')
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    setRecommend(index, item, evt) {
+      var id = item.id
+      var self = this
+      self.$http.get(api.adminDesignCaseRecommend, {params: {case_id: id, is_recommend: evt}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          self.itemList[index].recommended = evt
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)

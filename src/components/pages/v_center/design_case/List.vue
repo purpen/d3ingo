@@ -34,20 +34,20 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <a v-if="d.cover" :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'"
                         :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
-                      </router-link>
-                      <router-link v-else 
-                        :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      </a>
+                      <a v-else 
+                        :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'">
-                      </router-link>
+                      </a>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <a :href="origin+ '/static_page/design_case/view?id='+d.id"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude">{{ d.title }}
-                      </router-link>
+                      </a>
                       <span class="fz-12 tc-9">{{ d.date }}</span>
                     </div>
                   </el-card>
@@ -80,6 +80,7 @@
     },
     data() {
       return {
+        origin: location.origin,
         isLoading: false,
         designCases: [],
         userId: this.$store.state.event.user.id

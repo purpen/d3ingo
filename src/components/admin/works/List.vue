@@ -56,7 +56,9 @@
           label="所属公司">
             <template slot-scope="scope">
               <p>
-                <router-link :to="{name: 'companyShow', params: {id: scope.row.company.id}}" target="_blank">{{ scope.row.company.company_name }}</router-link>
+                <a
+                :href="origin+ '/static_page/company/view?id='+scope.row.company.id"
+                target="_blank">{{ scope.row.company.company_name }}</a>
               </p>
             </template>
         </el-table-column>
@@ -133,6 +135,7 @@ export default {
   name: 'admin_works_list',
   data () {
     return {
+      origin: location.origin,
       menuType: 0,
       itemList: [],
       tableData: [],
