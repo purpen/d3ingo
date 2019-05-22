@@ -57,7 +57,8 @@
         </el-submenu>
         <el-submenu index="8">
           <template slot="title"><i class="fa fa-clipboard"></i> 案例管理</template>
-            <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
+          <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
+          <el-menu-item index="designCaseCawlingList" :route="{name: 'adminDesignCasecCawlingList'}">爬取列表</el-menu-item>
         </el-submenu>
         <el-submenu index="15">
           <template slot="title"><i class="fa fa-window-maximize" aria-hidden="true"></i> 内容管理</template>

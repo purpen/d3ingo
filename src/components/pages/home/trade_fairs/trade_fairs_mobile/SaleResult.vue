@@ -390,11 +390,13 @@
   }
   .image-size {
     height: 130px;
+    text-align: center;
+    overflow: hidden;
     text-align: center
   }
   .img-size {
-    height: 100%;
-    max-width: 100%;
+    /* height: 100%; */
+    width: 100%;
   }
   .images-size {
     height: 100%;

@@ -26,7 +26,7 @@
         <div class="design-case-slide">
           <div class="info">
             <a v-if="item.company_id"
-              :href="location.origin+ '/static_page/company/view?id='+ item.company_id" target="_blank">
+              :href="origin+ '/static_page/company/view?id='+ item.company_id" target="_blank">
               <img class="avatar" v-if="item.company.logo_url" :src="item.company.logo_url" width="100" />
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100" />
             </a>
@@ -84,6 +84,7 @@ export default {
   name: 'match_case_show',
   data() {
     return {
+      origin: location.origin,
       isFullLoading: false,
       item: {
         company: ''
