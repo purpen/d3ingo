@@ -32,39 +32,39 @@
                         <el-col :span="20" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
                             <div class="image-box">
-                              <i v-if="parseInt(coverId) === d.response.asset_id"></i>
-                              <img :src="d.url">
+                              <i v-if="index === 0"></i>
+                              <img :src="d.big">
                             </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
-                              <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary"></textarea>
-                              </div>
-                              <div class="summary" v-else>
-                                <p v-if="d.summary">{{ d.summary }}</p>
-                                <p class="image-no-summary" v-else>暂无描述信息</p>
-                              </div>
-                              <div class="opt" v-if="d.edit">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                   @click="saveAssetSummary">保存</a>
-                              </div>
-                              <div class="opt" v-else>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="setCoverBtn"><i
-                                    :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
-                                    aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
+                            <!--<div class="content">-->
+                              <!--<p>{{ d.name }}</p>-->
+                              <!--<div class="summary-edit" v-if="d.edit">-->
+                                <!--<textarea v-model="d.summary"></textarea>-->
+                              <!--</div>-->
+                              <!--<div class="summary" v-else>-->
+                                <!--<p v-if="d.summary">{{ d.summary }}</p>-->
+                                <!--<p class="image-no-summary" v-else>暂无描述信息</p>-->
+                              <!--</div>-->
+                              <!--<div class="opt" v-if="d.edit">-->
+                                <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                   <!--@click="saveAssetSummary">保存</a>-->
+                              <!--</div>-->
+                              <!--<div class="opt" v-else>-->
+                                <!--<el-tooltip class="item" effect="dark" content="删除图片" placement="top">-->
+                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                     <!--@click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>-->
+                                <!--</el-tooltip>-->
+                                <!--<el-tooltip class="item" effect="dark" content="编辑文字" placement="top">-->
+                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                     <!--@click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>-->
+                                <!--</el-tooltip>-->
+                                <!--<el-tooltip class="item" effect="dark" content="设为封面（建议尺寸800X450）" placement="top">-->
+                                  <!--<a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"-->
+                                     <!--@click="setCoverBtn"><i-->
+                                    <!--:class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"-->
+                                    <!--aria-hidden="true"></i></a>-->
+                                <!--</el-tooltip>-->
+                              <!--</div>-->
+                            <!--</div>-->
                           </el-card>
                         </el-col>
                       </el-row>
@@ -321,7 +321,8 @@
             {required: true, message: '请填写标题', trigger: 'blur'}
           ],
           customer: [
-            {message: '请填写服务客户', trigger: 'blur'}
+            {message: '请填写服务客户', trigger: 'blur'},
+            {pattern: (/(^\s*)|(\s*$)/g, ''), message: '不能全是空格'}
           ],
           profile: [
             {required: true, message: '请填写案例描述', trigger: 'blur'},
@@ -350,9 +351,9 @@
         if (!this.form.label) {
           this.form.label = []
         }
-        if (this.form.label.indexOf(label + '') === -1) {
-          this.form.label.push(label + '')
-        }
+//        if (this.form.label.indexOf(label + '') === -1) {
+//          this.form.label.push(label + '')
+//        }
       },
       getTags() {
         this.$http.get(api.designCaseLabel, {params: {design_company_id: this.user.company_id}})
@@ -525,12 +526,24 @@
         return items
       },
       typeDesignOptions() {
+        let items = []
         let index
-        if (!this.form.type || isNaN(this.form.type)) {
+        if (this.form.type === 1) {
+          index = 0
+        } else if (this.form.type === 2) {
+          index = 1
+        } else {
           return []
         }
-        index = this.form.type - 1
-        return typeData.COMPANY_TYPE[index].designType
+        if (!typeData.designType[index].field) return []
+        for (let i = 0; i < typeData.designType[index].field.length; i++) {
+          let item = {
+            value: typeData.designType[index].field[i]['id'],
+            label: typeData.designType[index].field[i]['name']
+          }
+          items.push (item)
+        }
+        return items
       },
       fieldOptions() {
         let items = []
@@ -650,8 +663,13 @@
         }})
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
-              console.log(response.data.data)
               that.form = response.data.data
+              if (response.data.data.industry === 0) {
+                that.form.industry = ''
+              }
+              if (response.data.data.field === 0) {
+                that.form.field = ''
+              }
 //              if (that.form.prizes && that.form.prizes.length) {
 //                that.$set(that, 'is_prize', true)
 //                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
@@ -664,6 +682,7 @@
 //              } else {
 //                that.$set(that, 'is_apply', false)
 //              }
+
               if (that.form.cover_id) {
                 that.coverId = that.form.cover_id
               }
@@ -692,6 +711,8 @@
               that.prizes = response.data.data.prizes || []
               that.patents = response.data.data.patent || []
               that.form.design_types = response.data.data.design_types || []
+              that.form.label = response.data.data.label.split(',')
+              that.fileList = response.data.data.image
 //               if (des_types && des_types.length !== 0) {
 //                 that.form.design_types = des_types
 //               }
@@ -704,27 +725,6 @@
       } else {
         that.itemId = null
       }
-
-      // 获取图片token
-      that.$http.get (api.upToken, {})
-        .then (function (response) {
-          if (response.data.meta.status_code === 200) {
-            if (response.data.data) {
-              that.uploadParam['token'] = response.data.data.upToken
-              that.uploadParam['x:random'] = response.data.data.random
-              that.uploadUrl = response.data.data.upload_url
-            }
-          }
-        })
-        .catch (function (error) {
-          that.$message ({
-            showClose: true,
-            message: error.message,
-            type: 'error'
-          })
-          console.log (error.message)
-          return false
-        })
     }
   }
 
