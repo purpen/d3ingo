@@ -540,7 +540,7 @@
               } else if (parseInt(that.form.cycle) === '') {
                 var cyclesees = {cycle: ''}
                 Object.assign(row, cyclesees)
-              }else {
+              } else {
                 var cycles = {cycle: parseInt(that.form.cycle)}
                 Object.assign(row, cycles)
               }
