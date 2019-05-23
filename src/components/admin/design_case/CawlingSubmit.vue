@@ -569,11 +569,15 @@
         if (!this.form.type || isNaN(this.form.type)) {
           return []
         }
-        index = this.form.type - 1
+        if (this.form.type === 6) {
+          index = this.form.type - 2
+        } else {
+          index = this.form.type - 1
+        }
+        console.log(this.form.type)
         return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
-        console.log(111122)
         let items = []
         if (!typeData.COMPANY_TYPE[0].field) return []
         for (let i = 0; i < typeData.COMPANY_TYPE[0].field.length; i++) {
@@ -684,6 +688,7 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
+              console.log(response.data.data)
               if (response.data.data.industry === 0) {
                 that.form.industry = ''
               }
