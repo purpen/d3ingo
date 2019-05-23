@@ -390,11 +390,15 @@
         if (parseInt(val) > 2147483646) {
           this.form.cycle = '2147483646'
         }
+        this.form.cycle = val.toString().replace(/(^\s*)|(\s*$)/g, '') // 案例价格
+        this.form.cycle = val.toString().replace(/[^0-9.]/g, '') // 案例价格
       },
       formPrice (val) { // 设计价格
         if (parseInt(val) > 2147483646) {
           this.form.price = '2147483646'
         }
+        this.form.price = val.toString().replace(/(^\s*)|(\s*$)/g, '') // 案例价格
+        this.form.price = val.toString().replace(/[^0-9.]/g, '') // 案例价格
       },
       addLabel(label) {
         if (!this.form.label) {
