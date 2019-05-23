@@ -414,7 +414,6 @@
       },
       submit(formName) {
         const that = this
-        console.log(that.form)
         that.form.title = that.form.title.replace(/(^\s*)|(\s*$)/g, '') // *作品案例标题
         that.form.profile = that.form.profile.replace(/(^\s*)|(\s*$)/g, '') // *作品案例描述
         that.form.customer = that.form.customer.replace(/(^\s*)|(\s*$)/g, '') // 服务客户
@@ -574,7 +573,6 @@
         } else {
           index = this.form.type - 1
         }
-        console.log(this.form.type)
         return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
@@ -688,7 +686,6 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              console.log(response.data.data)
               if (response.data.data.industry === 0) {
                 that.form.industry = ''
               }
