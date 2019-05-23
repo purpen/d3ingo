@@ -266,7 +266,7 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="谜鹿庄园品牌设计">
+                      <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="谜鹿庄园品牌设计">
                       <p>谜鹿庄园品牌设计</p>
                     </div>
                   </el-card>
