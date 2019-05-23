@@ -414,7 +414,6 @@
       },
       submit(formName) {
         const that = this
-        console.log(that.form)
         that.form.title = that.form.title.replace(/(^\s*)|(\s*$)/g, '') // *作品案例标题
         that.form.profile = that.form.profile.replace(/(^\s*)|(\s*$)/g, '') // *作品案例描述
         that.form.customer = that.form.customer.replace(/(^\s*)|(\s*$)/g, '') // 服务客户
@@ -569,11 +568,14 @@
         if (!this.form.type || isNaN(this.form.type)) {
           return []
         }
-        index = this.form.type - 1
+        if (this.form.type === 6) {
+          index = this.form.type - 2
+        } else {
+          index = this.form.type - 1
+        }
         return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
-        console.log(111122)
         let items = []
         if (!typeData.COMPANY_TYPE[0].field) return []
         for (let i = 0; i < typeData.COMPANY_TYPE[0].field.length; i++) {
