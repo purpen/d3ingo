@@ -159,12 +159,12 @@
     },
     methods: {
       adminDesignCasecCawlingSubmits (id) { // 编辑案例爬取页面跳转
-//        this.$router.push({
-//          name: 'adminDesignCasecCawlingSubmit',
-//          params: {
-//            id: id
-//          }
-//        })
+        this.$router.push({
+          name: 'adminDesignCasecCawlingSubmit',
+          params: {
+            id: id
+          }
+        })
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
@@ -250,7 +250,6 @@
             self.tableData = []
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
-              console.log(self.itemList)
               self.query.totalCount = parseInt(response.data.meta.pagination.total)
 
               for (var i = 0; i < self.itemList.length; i++) {
@@ -286,14 +285,12 @@
           })
       },
       searchDesignCase() {
-        console.log(this.query.value)
         this.isLoading = true
         this.$http.get(api.adminDesignGrabSearch, {params: this.query}).then(res => {
           this.isLoading = false
           this.tableData = []
           if (res.data.meta.status_code === 200) {
             this.itemList = res.data.data
-            console.log(this.itemList)
             this.query.totalCount = parseInt(res.data.meta.pagination.total)
 
             for (var i = 0; i < this.itemList.length; i++) {

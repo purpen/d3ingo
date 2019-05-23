@@ -444,7 +444,7 @@ module.exports = [
       },
       // 编辑案例爬取
       {
-        path: '/admin/design_case/cawlingsubmit',
+        path: '/admin/design_case/cawlingsubmit/:id',
         name: 'adminDesignCasecCawlingSubmit',
         meta: {
           title: '编辑案例爬取',
