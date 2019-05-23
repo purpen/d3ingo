@@ -259,12 +259,17 @@
                   item.cover_url = item.image[0].small
                 }
                 var typeLabel = ''
-                if (item.type === 1) {
+                if (item.field_value === '' && item.industry_value === '') {
+                  typeLabel = item.type_value + '|' + item.design_types_value
+                } else if (item.field_value !== '' && item.industry_value === '') {
+                  typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value
+                } else if (item.field_value === '' && item.industry_value !== '') {
+                  typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.industry_value
+                } else if (item.field_value !== '' && item.industry_value !== '') {
                   typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value + '/' + item.industry_value
                 } else {
-                  typeLabel = item.type_value + '|' + item.design_types_value
+                  typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value + '/' + item.industry_value
                 }
-
                 var tags = ''
                 if (item.label) {
                   tags = item.label
