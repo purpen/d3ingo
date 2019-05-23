@@ -390,11 +390,15 @@
         if (parseInt(val) > 2147483646) {
           this.form.cycle = '2147483646'
         }
+        this.form.cycle = val.toString().replace(/(^\s*)|(\s*$)/g, '') // 案例价格
+        this.form.cycle = val.toString().replace(/[^0-9.]/g, '') // 案例价格
       },
       formPrice (val) { // 设计价格
         if (parseInt(val) > 2147483646) {
           this.form.price = '2147483646'
         }
+        this.form.price = val.toString().replace(/(^\s*)|(\s*$)/g, '') // 案例价格
+        this.form.price = val.toString().replace(/[^0-9.]/g, '') // 案例价格
       },
       addLabel(label) {
         if (!this.form.label) {
@@ -503,6 +507,9 @@
             if (that.form.customer !== '') {
               var customers = {customer: that.form.customer}
               Object.assign(row, customers)
+            } else {
+              var customerse = {customer: ''}
+              Object.assign(row, customerse)
             }
             if (that.form.field > 0) {
               var fields = {field: that.form.field}
@@ -516,6 +523,12 @@
               if (parseInt(that.form.price) > 2147483646) {
                 var pricese = {price: 2147483646}
                 Object.assign(row, pricese)
+              } else if (parseInt(that.form.price) === 0) {
+                var pricesee = {price: 0}
+                Object.assign(row, pricesee)
+              } else if (parseInt(that.form.price) === '') {
+                var pricesees = {price: ''}
+                Object.assign(row, pricesees)
               } else {
                 var prices = {price: parseInt(that.form.price)}
                 Object.assign(row, prices)
@@ -525,6 +538,12 @@
               if (parseInt(that.form.cycle) > 2147483646) {
                 var cyclese = {cycle: 2147483646}
                 Object.assign(row, cyclese)
+              } else if (parseInt(that.form.cycle) === 0) {
+                var cyclesee = {cycle: 0}
+                Object.assign(row, cyclesee)
+              } else if (parseInt(that.form.cycle) === '') {
+                var cyclesees = {cycle: ''}
+                Object.assign(row, cyclesees)
               } else {
                 var cycles = {cycle: parseInt(that.form.cycle)}
                 Object.assign(row, cycles)
