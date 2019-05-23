@@ -151,7 +151,7 @@
               <el-row>
                 <el-col :span="20">
                   <el-form-item label="案例价格" prop="price" class="line-hei-20">
-                    <el-input v-model="form.price" placeholder="请输入案例价格"></el-input>
+                    <el-input v-model="form.price" placeholder="请输入案例价格" @change="formPrice"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -159,7 +159,7 @@
               <el-row>
                 <el-col :span="20">
                   <el-form-item label="时间周期" prop="cycle" class="line-hei-20">
-                    <el-input v-model="form.cycle" placeholder="请输入时间周期"></el-input>
+                    <el-input v-model="form.cycle" placeholder="请输入时间周期" @change="formCycle"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -386,6 +386,16 @@
           name: 'adminDesignCasecCawlingList'
         })
       },
+      formCycle (val) { // 设计周期
+        if (parseInt(val) > 2147483646) {
+          this.form.cycle = '2147483646'
+        }
+      },
+      formPrice (val) { // 设计价格
+        if (parseInt(val) > 2147483646) {
+          this.form.price = '2147483646'
+        }
+      },
       addLabel(label) {
         if (!this.form.label) {
           this.form.label = []
@@ -503,12 +513,22 @@
               Object.assign(row, industrys)
             }
             if (parseInt(that.form.price) > 0) {
-              var prices = {price: parseInt(that.form.price)}
-              Object.assign(row, prices)
+              if (parseInt(that.form.price) > 2147483646) {
+                var pricese = {price: 2147483646}
+                Object.assign(row, pricese)
+              } else {
+                var prices = {price: parseInt(that.form.price)}
+                Object.assign(row, prices)
+              }
             }
             if (parseInt(that.form.cycle) > 0) {
-              var cycles = {cycle: parseInt(that.form.cycle)}
-              Object.assign(row, cycles)
+              if (parseInt(that.form.cycle) > 2147483646) {
+                var cyclese = {cycle: 2147483646}
+                Object.assign(row, cyclese)
+              } else {
+                var cycles = {cycle: parseInt(that.form.cycle)}
+                Object.assign(row, cycles)
+              }
             }
             that.isLoadingBtn = true
             that.$http ({method: 'POST', url: api.adminDesignGrabCaseUpdate, data: row})
