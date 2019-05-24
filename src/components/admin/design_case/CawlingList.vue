@@ -170,7 +170,7 @@
         _this.$http ({method: 'POST', url: api.adminDesignGrabDelete, data: {id: row.id}})
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
-              that.$message.success ('删除成功！')
+              _this.$message.success ('删除成功！')
               _this.setDelete(index, row)
             } else {
               _this.$message.error (response.data.meta.message)
