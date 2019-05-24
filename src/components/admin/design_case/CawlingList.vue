@@ -79,6 +79,13 @@
         width="120"
         label="爬取时间">
       </el-table-column>
+      <el-table-column
+        width="100"
+        label="操作">
+        <template slot-scope="scope">
+          <p><a href="javascript: void(0);" @click="setDeletePut(scope.$index, scope.row, 0)">删除</a></p>
+        </template>
+      </el-table-column>
       <!--<el-table-column-->
         <!--prop="verify_status"-->
         <!--label="是否公开">-->
@@ -158,6 +165,227 @@
       }
     },
     methods: {
+      setDeletePut (index, row) { // 删除请求
+        let _this = this
+        _this.$http ({method: 'POST', url: api.adminDesignGrabDelete, data: {id: row.id}})
+          .then (function (response) {
+            if (response.data.meta.status_code === 200) {
+              console.log(index, row)
+              _this.setDelete(index, row)
+            } else {
+              _this.$message.error (response.data.meta.message)
+            }
+          })
+          .catch (function (error) {
+            _this.$message.error (error.message)
+            return false
+          })
+      },
+      setDelete (index, row) { // 删除操作
+        let tableDatas = this.tableData
+        let pages = Math.ceil(this.query.totalCount / this.query.pageSize)
+        console.log(pages, this.query.page)
+        if (tableDatas.length === 1) { // 这页最后一条
+          if (this.query.value !== '') { // 搜索后
+            if (this.query.page === pages) { // 只剩一页了
+              var rowv = {
+                page: 1,
+                per_page: this.query.pageSize,
+                sort: this.query.sort
+              }
+              this.query.value = ''
+              this.tableData.splice(row, 1)
+              this.detileList(rowv, 1, 0)
+            } else { // 不是剩一页
+              if (this.query.page === 1) {
+                var rowb = {
+                  page: 1,
+                  per_page: this.query.pageSize,
+                  sort: this.query.sort,
+                  value: this.query.value
+                }
+                this.tableData.splice(row, 1)
+                this.detileList(rowb, 1, 1)
+              } else {
+                var rowi = {
+                  page: this.query.page - 1,
+                  per_page: this.query.pageSize,
+                  sort: this.query.sort,
+                  value: this.query.value
+                }
+                this.tableData.splice(row, 1)
+                this.detileList(rowi, 1, 1)
+              }
+            }
+          } else { // 搜索前
+            if (this.query.page === pages) { // 只剩一页了
+              var rowa = {
+                page: 1,
+                per_page: this.query.pageSize,
+                sort: this.query.sort
+              }
+              this.tableData.splice(row, 1)
+              this.detileList(rowa, 1, 0)
+            } else { // 不是剩一页
+              if (this.query.page === 1) {
+                var rowc = {
+                  page: 1,
+                  per_page: this.query.pageSize,
+                  sort: this.query.sort
+                }
+                this.tableData.splice(row, 1)
+                this.detileList(rowc, 1, 0)
+              } else {
+                var rowk = {
+                  page: this.query.page - 1,
+                  per_page: this.query.pageSize,
+                  sort: this.query.sort
+                }
+                this.tableData.splice(row, 1)
+                this.detileList(rowk, 1, 0)
+              }
+            }
+          }
+        } else { // 不是最后一条
+          if (this.query.value !== '') { // 搜索后
+            if (this.query.page === pages) { // 只剩一页了
+              var rowh = {
+                page: 1,
+                per_page: this.query.pageSize,
+                sort: this.query.sort,
+                value: this.query.value
+              }
+              this.tableData.splice(row, 1)
+              this.detileList(rowh, 0, 1)
+            } else { // 不是剩一页
+              var rowt = {
+                page: this.query.page,
+                per_page: this.query.pageSize,
+                sort: this.query.sort,
+                value: this.query.value
+              }
+              this.tableData.splice(row, 1)
+              this.detileList(rowt, 0, 1)
+            }
+          } else {
+            if (this.query.page === pages) { // 只剩一页了
+              var rows = {
+                page: 1,
+                per_page: this.query.pageSize,
+                sort: this.query.sort
+              }
+              this.tableData.splice(row, 1)
+              this.detileList(rows, 0, 0)
+            } else { // 不是剩一页
+              var rowe = {
+                page: this.query.page,
+                per_page: this.query.pageSize,
+                sort: this.query.sort
+              }
+              this.tableData.splice(row, 1)
+              this.detileList(rowe, 0, 0)
+            }
+          }
+        }
+//        this.tableData.splice(row, 1)
+      },
+      detileList (datav, isLoding, issetch) { // 删除之后列表请求
+        let self = this
+        if (issetch === 0) { // 没搜索
+          if (isLoding === 1) { // 要loding
+            self.isLoading = true
+          } else {
+            self.isLoading = false
+          }
+          self.$http.get(api.adminDesignGrabCaseList, {params: datav})
+            .then (function(response) {
+              self.isLoading = false
+              if (response.data.meta.status_code === 200) {
+                self.tableData = []
+                self.itemList = response.data.data
+                self.query.totalCount = parseInt(response.data.meta.pagination.total)
+
+                for (var i = 0; i < self.itemList.length; i++) {
+                  var item = self.itemList[i]
+                  item.cover_url = require('@/assets/images/df_100x100.png')
+                  if (item.image.length > 0) {
+                    item.cover_url = item.image[0].small
+                  }
+                  var typeLabel = ''
+                  if (item.field_value === '' && item.industry_value === '') {
+                    typeLabel = item.type_value + '|' + item.design_types_value
+                  } else if (item.field_value !== '' && item.industry_value === '') {
+                    typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value
+                  } else if (item.field_value === '' && item.industry_value !== '') {
+                    typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.industry_value
+                  } else if (item.field_value !== '' && item.industry_value !== '') {
+                    typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value + '/' + item.industry_value
+                  } else {
+                    typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value + '/' + item.industry_value
+                  }
+                  var tags = ''
+                  if (item.label) {
+                    tags = item.label
+                  }
+
+                  item.tags = tags
+                  item.type_label = typeLabel
+                  item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
+                  self.tableData.push(item)
+                } // endfor
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch (function(error) {
+              self.$message.error(error.message)
+              self.isLoading = false
+            })
+        } else if (issetch === 1) { // 搜索了
+          if (isLoding === 1) { // 要loding
+            self.isLoading = true
+          } else {
+            self.isLoading = false
+          }
+          this.$http.get(api.adminDesignGrabSearch, {params: datav}).then(res => {
+            this.isLoading = false
+            this.tableData = []
+            if (res.data.meta.status_code === 200) {
+              this.itemList = res.data.data
+              this.query.totalCount = parseInt(res.data.meta.pagination.total)
+
+              for (var i = 0; i < this.itemList.length; i++) {
+                var item = this.itemList[i]
+                item.cover_url = require ('@/assets/images/df_100x100.png')
+                if (item.image.length > 0) {
+                  item.cover_url = item.image[0].small
+                }
+                var typeLabel = ''
+                if (item.type === 1) {
+                  typeLabel = item.type_value + '|' + item.design_types_value + '/' + item.field_value + '/' + item.industry_value
+                } else {
+                  typeLabel = item.type_value + '|' + item.design_types_value
+                }
+
+                var tags = ''
+                if (item.label) {
+                  tags = item.label
+                }
+
+                item.tags = tags
+                item.type_label = typeLabel
+                item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
+                this.tableData.push(item)
+              } // endfor
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.$message.error(error.message)
+            this.isLoading = false
+          })
+        }
+      },
       adminDesignCasecCawlingSubmits (id) { // 编辑案例爬取页面跳转
         this.$router.push({
           name: 'adminDesignCasecCawlingSubmit',
