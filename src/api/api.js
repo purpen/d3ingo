@@ -344,6 +344,7 @@ export default {
   // 抓取案例列表
   adminDesignGrabCaseList: '/admin/grab/caseList', // GET 抓取案例列表
   adminDesignGrabSearch: '/admin/grab/search', // GET 抓取案例搜索
+  adminDesignGrabDelete: '/admin/grab/delete', // POST抓取案例删除
 
   // 编辑抓取案例
   adminDesignGrabCaseSubmitShow: '/admin/grab/show', // GET 抓取案例查看详情
