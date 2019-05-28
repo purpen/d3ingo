@@ -191,6 +191,9 @@
 .margin-t-10 {
   margin-top: 10px;
 }
+.margin-t-14 {
+  margin-top: 14px;
+}
 .margin-t-20 {
   margin-top: 20px;
 }
@@ -241,6 +244,15 @@
 }
 .padding-b20 {
   padding-bottom: 20px;
+}
+.padding-b40 {
+  padding-bottom: 40px;
+}
+.padding-b30 {
+  padding-bottom: 30px;
+}
+.padding-b80 {
+  padding-bottom: 80px;
 }
 .margin-b-10 {
   margin-bottom: 10px

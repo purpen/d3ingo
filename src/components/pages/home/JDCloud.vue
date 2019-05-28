@@ -681,6 +681,231 @@
         </div>
       </section>
     </div>
+    <div v-if="custom.name === 'sn'" :class="['jd-cloud', {'sn': custom.name === 'sn'}]">
+      <div class="sn-banner">
+        <div class="container banner-box">
+          <el-row>
+            <el-col>
+              <div class="banner-title">神农大脑 设计服务平台</div>
+              <div class="banner-second-title">定制化产品创新造物平台</div>
+              <span class="sn-release" @click="boolFindDesign = true">发布需求</span>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="sn-banner-word">
+        <div class="b-word-box">
+          <div class="b-word-l">100%精品原创设计承诺</div>
+          <div class="b-word-r">100%专业设计服务机构</div>
+        </div>
+      </div>
+      <div class="sn-service-type">
+        <div class="container">
+          <p class="sn-sub-title padding-b40">设计服务类型</p>
+          <el-row :gutter="20" type="flex">
+            <el-col v-for="(item, i) in snServiceTyoe" :key="i">
+              <div class="service-type-contant">
+                <div class="img-box">
+                  <img :src="item.img" alt="">
+                </div>
+                <div class="title-box">
+                  <p>{{item.title}}</p>
+                  <span>{{item.title2}}</span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <!-- 部分案例展示 -->
+      <div class="sn-case">
+        <div class="container">
+          <p class="sn-sub-title padding-b40">部分案例展示</p>
+          <div class="case-title">
+            <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">视觉设计</div>
+            <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">logo设计</div>
+            <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">产品设计</div>
+            <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">包装设计</div>
+            <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div>
+          </div>
+          <div v-if="currentCase === 'product'" class="case-product">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <div class="product-left1"></div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="product-left2"></div>
+                  </el-col>
+                  <el-col :span="24">
+                    <div class="product-left3 margin-t-20"></div>
+                  </el-col>
+                </el-row>
+              </el-col>
+              <el-col :span="12">
+                <div class="product-right"></div>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
+      <!-- 报价方案 -->
+      <div class="sn-offer padding-b80">
+        <div class="container">
+          <p class="sn-sub-title padding-b40">部分案例展示</p>
+          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择</div>
+          <div class="offer-title blank40">
+            <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
+            <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
+            <div @click="changeOfferType('product')" :class="[{'active': currentOffer === 'product'}]">产品设计</div>
+            <div @click="changeOfferType('packing')" :class="[{'active': currentOffer === 'packing'}]">包装设计</div>
+            <div @click="changeOfferType('vidio')" :class="[{'active': currentOffer === 'vidio'}]">视频制作</div>
+          </div>
+          <div class="offer-content blank60">
+            <div v-for="(item, i) in snOfferprint" :key="i" class="print-item">
+              <div class="img-box">
+                <img :src="item.img" alt="">
+              </div>
+              <div class="server-list">
+                <h6>{{item.h1}}</h6>
+                <p>{{item.h2}}</p>
+                <p>{{item.h3}}</p>
+                <p>{{item.h4}}</p>
+                <p>{{item.h5}}</p>
+                <p>{{item.h6}}</p>
+                <p class="add-services" v-if="item.h7">{{item.h7}}</p>
+                <p class="add-services" v-if="item.h8">{{item.h8}}</p>
+              </div>
+              <div class="price padding-b30">
+                <p class="price-money">	&yen;<span>{{item.money}}</span>起</p>
+                <el-button class="buy-btn" size="large">购买</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 我们的优势 -->
+      <div class="sn-advantage padding-b80">
+        <div class="container">
+          <p class="sn-sub-title padding-b40">我们的优势</p>
+          <el-row :gutter="30">
+            <el-col v-for="(item, i) in snAdvantage" :key="i" :span="8">
+              <div class="s-a-item">
+                <div class="img-box">
+                  <img :src="item.img" alt="">
+                </div>
+                <div class="s-a-explain bg-f">
+                  <p>{{item.title}}</p>
+                  <span>{{item.title2}}</span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <!-- 所获奖项 -->
+      <div class="bg-f sn-awards padding-b80">
+        <div class="container">
+          <p class="sn-sub-title padding-b15">所获奖项</p>
+          <div class="awards-title2  padding-b40">3000+ 全球设计大奖</div>
+          <div class="awards-box">
+            <div class="awards-item" v-for="(item, i) in snAwards" :key="i" :style="{background:'url('+item.img +') no-repeat center / contain'}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 发布需求 -->
+      <div class="sn-demand margin-t-14">
+        <div class="">
+          <el-row>
+            <el-col :span="13">
+              <div class="sn-demand-left">
+
+              </div>
+            </el-col>
+          
+            <el-col :span="10">
+              <h5>您还在等什么？快来发布需求吧！</h5>
+              <el-col class="header-style">
+                <el-col :span="24" class="ius-round">
+                  <span class="free-color"></span>立即发布项目需求
+                </el-col>
+                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="demand">
+                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="contact">
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-row :gutter="10">
+                          <el-col :span="14">
+                              <el-form-item prop="account">
+                                <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                              </el-form-item>
+                          </el-col>
+                        
+                          <el-col :span="10">
+                            <el-form-item prop="smsCode">
+                              <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                                <template slot="append">
+                                  <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                                  </el-button>
+                                </template>
+                              </el-input>
+                            </el-form-item>
+                          </el-col>
+                      </el-row>
+                    </el-col>
+                  </el-row>
+                  <el-col>
+                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                      立即发布需求
+                    </button>
+                  </el-col>
+                </el-form>
+              </el-col>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <el-dialog
+        title="发布项目需求"
+        :visible.sync="boolFindDesign"
+        width="480px"
+        class="find-design">
+        <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
+          <el-form-item prop="demand"  label="项目需求">
+            <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+          </el-form-item>
+          <el-form-item label="联系人" prop="contact">
+            <el-input v-model="form.contact" maxlength="20"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="account">
+            <el-input v-model="form.account"  maxlength="11"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
+              <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
+              <el-button class="red-button"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
+              </el-button>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 交</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </section>
 </template>
 
@@ -948,6 +1173,122 @@ export default {
           image: require ('@/assets/images/home/yunma.jpg')
         }
       ],
+      snServiceTyoe: [
+        {
+          img: require('assets/images/promote_sn/service_type/vision@2x.png'),
+          title: '视觉设计',
+          title2: '平面设计 插画设计 书籍设计 画册设计'
+        },
+        {
+          img: require('assets/images/promote_sn/service_type/logo@2x.png'),
+          title: 'logo设计',
+          title2: '文字logo设计 图形logo设计 图像logo设计...'
+        },
+        {
+          img: require('assets/images/promote_sn/service_type/ProductDesign@2x.png'),
+          title: '产品设计',
+          title2: '产品外观设计 产品结构设计'
+        },
+        {
+          img: require('assets/images/promote_sn/service_type/PackingDesign@2x.png'),
+          title: '包装设计',
+          title2: '包装造型设计 包装结构设计'
+        },
+        {
+          img: require('assets/images/promote_sn/service_type/video@2x.png'),
+          title: '视频制作',
+          title2: '视频剪辑 Mg动画制作'
+        }
+      ],
+      currentCase: 'product',
+      currentOffer: 'product',
+      snOfferprint: [
+        {
+          img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
+          h1: '基础版',
+          h2: '推荐1名设计师服务',
+          h3: ' 设计2款3d产品创意方案任选其一',
+          h4: ' 选中设计方案支持2次免费修改',
+          h5: '专业设计顾问全程服务',
+          h6: ' 签订合同，开具发票',
+          money: '1万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
+          h1: '进阶版',
+          h2: '推荐2名设计师服务',
+          h3: ' 设计4款3d产品创意方案任选其一',
+          h4: ' 选中设计方案支持3次免费修改',
+          h5: '专业设计顾问全程服务',
+          h6: '签订合同，开具发票',
+          h7: '半年内设计方案免费咨询',
+          money: '3万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
+          h1: '综合版',
+          h2: '推荐3名设计师服务',
+          h3: ' 设计6款3d产品创意方案任选其一',
+          h4: ' 选中设计方案支持4次免费修改',
+          h5: '专业设计顾问全程服务',
+          h6: '签订合同，开具发票',
+          h7: '一年内设计方案免费咨询',
+          h8: '方案执行全程跟踪',
+          money: '5万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
+          h1: '全能版',
+          h2: '推荐4名设计师服务',
+          h3: ' 设计8款3d产品创意方案任选其一',
+          h4: ' 选中设计方案支持6次免费修改',
+          h5: '专业设计顾问全程服务',
+          h6: ' 签订合同，开具发票',
+          h7: '一年内设计方案免费咨询',
+          h8: '一对一客服方案执行全程跟踪',
+          money: '8万'
+        }
+      ],
+      snAdvantage: [
+        {
+          img: require('assets/images/promote_sn/More@2x.png'),
+          title: '更多',
+          title2: '1000+家顶尖设计公司资源随时待命'
+        },
+        {
+          img: require('assets/images/promote_sn/MoreAccurate@2x.png'),
+          title: '更准',
+          title2: '24H人工智能系统自动匹配设计公司'
+        },
+        {
+          img: require('assets/images/promote_sn/Faster@2x.png'),
+          title: '更快',
+          title2: '10天打造真正个性化原创设计方案'
+        }
+      ],
+      snAwards: [
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize02@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize03@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize04@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize05@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize06@2x.png')
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize07@2x.png')
+        }
+      ],
       jdAccount: {},
       isShowBounced: false, // 弹窗
       quantity: '', // 数量
@@ -992,7 +1333,7 @@ export default {
       },
       ruleForm: {
         account: [
-          {validator: checkNumber, trigger: 'blur'}
+          {validator: checkNumber, trigger: 'blur', required: true}
         ],
         demand: [
           { required: true, message: '请输入您的需求', trigger: 'blur' }
@@ -1007,7 +1348,8 @@ export default {
         name: [
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ]
-      }
+      },
+      boolFindDesign: false
     }
   },
   props: {
@@ -1254,6 +1596,12 @@ export default {
         this.query.mark = 'a'
         this.query.from = 0
       }
+    },
+    changeCaseType(e) {
+      this.currentCase = e
+    },
+    changeOfferType(e) {
+      this.currentOffer = e
     }
   },
   components: {
@@ -1267,6 +1615,354 @@ export default {
 }
 </script>
 <style scoped>
+/* sn start */
+.add-services {
+  position: relative;
+}
+.sn-post-btn {
+  border-radius: 20px;
+}
+.sn-post-btn:hover {
+  color: #ffffff;
+  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+}
+.add-services::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  left: -18px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #A4CDFF;
+}
+.padding-t-b60 {
+  padding: 60px 0;
+}
+.sn-banner {
+  background: #16192F;
+}
+.banner-box {
+  height: 500px;
+  padding-top: 90px;
+  background: url('../../../assets/images/promote_sn/HeadPicture@2x.png') no-repeat bottom right/700px;
+  color:#FFFFFF;
+}
+.banner-box .banner-title {
+  height:70px;
+  font-size:50px;
+  font-family:PingFangSC-Semibold;
+  font-weight:600;
+  line-height:70px;
+}
+.banner-box .banner-second-title {
+  margin-top: 20px;
+  height:42px;
+  font-size:30px;
+  font-family:PingFangSC-Light;
+  font-weight:300;
+  line-height:42px;
+}
+.sn-release {
+  display: inline-block;
+  margin-top: 50px;
+  height:60px;
+  line-height: 60px;
+  width:220px;
+  background: #ffffff;
+  color: #3171FF;
+  font-family:PingFangSC-Semibold;
+  font-weight:600;
+  border-radius:40px;
+  font-size:20px;
+  text-align: center;
+}
+.sn-banner-word {
+  background: #2B3042;
+}
+.b-word-box {
+  height: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #ffffff;
+  font-size:24px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+}
+.b-word-box > div {
+  height: 60px;
+  line-height: 60px;
+  padding-left: 90px;
+}
+.b-word-box .b-word-l {
+  height: 60px;
+  background: url('../../../assets/images/promote_sn/Promise@2x.png') no-repeat left/ 60px;
+}
+.b-word-box .b-word-r {
+  background: url('../../../assets/images/promote_sn/Major@2x.png') no-repeat left/ 60px;
+}
+p.sn-sub-title {
+  padding-top: 60px;
+  font-size:30px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#212330;
+  text-align: center;
+}
+.service-type-contant {
+  height: 280px;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+}
+.service-type-contant .img-box {
+  background: #F6F8FF;
+  padding: 30px 60px;
+}
+.service-type-contant .img-box img {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
+.sn-service-type .title-box {
+  padding: 15px;
+  text-align: center;
+}
+.sn-service-type .title-box p {
+  height:28px;
+  font-size:20px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#212330;
+  line-height:28px;
+  text-align: center;
+}
+.sn-service-type .title-box span {
+  padding-top: 10px; 
+  color: #9FA3A7;
+  line-height:24px;
+}
+
+.sn-case {
+  background: #F6F8FF;
+  padding-bottom: 80px;
+}
+.case-title,
+.offer-title {
+  border-bottom: 1px solid #E1E8EE;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.offer-title {
+  border-color: rgba(225, 225, 225, .5);
+}
+.case-title > div,
+.offer-title > div {
+  flex: 1;
+  padding-bottom: 16px;
+  text-align: center;
+  color: #9FA3A7;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  cursor: pointer;
+}
+.offer-title > div {
+  color: #ffffff;
+}
+.case-title > div.active {
+  color: #3171FF;
+}
+.case-title > div.active::after,
+.offer-title > div.active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  position: relative;
+  top: 16px;
+  left: 0;
+  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+}
+.case-product {
+  padding-top: 40px;
+}
+.product-left1, 
+.product-left2,
+.product-left3 {
+  height: 280px;
+  background: #B0B0B2;
+}
+.product-right {
+  height: 580px;
+  background:#FFFFFF;
+}
+
+.sn-offer {
+  position: relative;
+  color: #ffffff;
+  background: url('../../../assets/images/promote_sn/offer/offer.jpg') no-repeat left/cover;
+}
+.sn-offer::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .5);
+}
+.sn-offer .container {
+  position: relative;
+  z-index: 1;
+}
+.sn-offer p.sn-sub-title {
+  color: #ffffff;
+}
+.sn-offer .secondary-title {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  text-align: center;
+}
+.offer-content {
+  display: flex;
+}
+.offer-content > div {
+  flex: 1;
+  padding: 0 35px;
+}
+.print-item {
+  background: #ffffff;
+}
+.print-item > .img-box {
+  text-align: center;
+  padding: 40px 0 30px;
+}
+.print-item > .img-box img {
+  width: 100px;
+}
+.server-list {
+  height: 230px;
+}
+.server-list > h6 {
+  padding-bottom: 22px;
+  color: #222222;
+  text-align: center;
+  font-size:20px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+}
+.server-list > p {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#9FA3A7;
+  line-height:22px;
+}
+.print-item .price {
+  text-align: center;
+}
+.price > .price-money {
+  color: #212121;
+  font-family:PingFangSC-Medium;
+  font-weight:400;
+  font-size: 20px;
+  /* height:42px;
+  line-height:42px; */
+}
+.price-money > span {
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  font-size:30px;
+  padding: 0 4px;
+}
+.price > .buy-btn {
+  margin-top: 18px;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color: #9FA3A7;
+  border-radius: 20px;
+}
+.price > .buy-btn:hover {
+  color: #ffffff;
+  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+}
+
+.sn-advantage {
+  background: #F6F8FF;
+}
+.s-a-item {
+  display: flex;
+  box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+}
+.s-a-item > .img-box {
+  padding: 28px;
+}
+.s-a-item img {
+  width: 83px;
+  height: 83px;
+}
+.s-a-explain {
+  padding: 30px 20px;
+}
+.s-a-explain p {
+  height:28px;
+  font-size:20px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#222200;
+  line-height:28px;
+  margin-bottom: 10px;
+}
+.s-a-explain span {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#9FA3A7;
+  line-height:20px;
+}
+.awards-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+.awards-item {
+  width: 150px;
+  height: 80px;
+  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.06);
+}
+.awards-title2 {
+  text-align: center;
+  font-size:20px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color: #9FA3A7;
+}
+
+.sn-demand {
+  padding: 176px 34px 50px;
+  background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat left top/cover;
+}
+.sn-demand-left {
+  height: 472px;
+  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/contain;
+}
+.sn-demand h5 {
+  padding-bottom: 40px;
+  font-size:30px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color: #212330;
+}
+.sn-demand .header-style {
+  width: 600px;
+}
+/* sn end */
+
+
+
 .pc-title-box {
   margin-top: 30px; 
 }
@@ -2111,6 +2807,8 @@ export default {
     flex: 1;
     margin:0 5px;
   }
+
+
 </style>
 <style>
 .jd-cloud .el-radio__input.is-checked .el-radio__inner {
@@ -2124,5 +2822,20 @@ export default {
 }
 .phone-jd-cloud .el-radio-button__inner {
   width: 104px;
+}
+.find-design .el-dialog__header {
+  padding: 20px 20px 18px 20px;
+}
+.sn-fetch-code .el-form-item__label {
+  width: 100%;
+  text-align: left;
+}
+.find-design .el-dialog__body {
+  padding: 0 20px;
+  padding-top: 10px;
+}
+.find-design .sn-fetch-code .el-input {
+  width: 305px;
+  margin-right: 10px;
 }
 </style>

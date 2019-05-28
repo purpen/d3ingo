@@ -175,7 +175,7 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'}]" v-else>
+    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn'}]" v-else>
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
@@ -242,7 +242,8 @@
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/register" :route="menu.register" class="sn-register register">免费注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
             </el-menu>
           </div>
 
@@ -489,6 +490,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      prodName() {
+        return this.$store.state.event.prod.name
+      },
       token() {
         return this.$store.state.event.token
       },
@@ -598,6 +602,7 @@
       }
     },
     created: function () {
+      console.log(this.$route.name)
       if (this.token) {
         this.updateUser()
       }
@@ -648,7 +653,10 @@
   .blue-header .header-buttom-line {
     box-shadow: none
   }
-
+  .black-header,
+  .black-header .nav-header  {
+    background: #13162A;
+  }
   .Flogin {
     background: #ff5a5f;
     border-color: #ff5a5f;
@@ -1071,5 +1079,17 @@
   }
   .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
     border-bottom: none;
+  }
+  .sn-register {
+    padding: 0 12px !important;
+    height:30px !important;
+    line-height: 30px !important;
+    background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%) !important;
+    border-radius:15px !important;
+  }
+  .black-header .project-menu-sub .el-menu,
+  .black-header .nav-header .el-menu,
+  .black-header .menu-header .el-menu {
+    background: #13162A;
   }
 </style>
