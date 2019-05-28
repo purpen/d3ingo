@@ -171,6 +171,16 @@ let routes = [
     },
     component: require('@/components/pages/home/Item')
   },
+   // 服务条款
+  {
+    path: '/terms',
+    name: 'sn_terms',
+    meta: {
+      title: '服务条款',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/SnItem')
+  },
   // 常见问题
   {
     path: '/question',
@@ -190,6 +200,16 @@ let routes = [
       requireAuth: false
     },
     component: require('@/components/pages/home/Trade')
+  },
+  // 神农大脑交易保障
+  {
+    path: '/trade',
+    name: 'sn_trade',
+    meta: {
+      title: '交易保障',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/SnTrade')
   },
   {
     path: '/apply',

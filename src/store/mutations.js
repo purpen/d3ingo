@@ -133,8 +133,8 @@ function showProd() {
       return {
         id: 3,
         name: 'sn',
-        logo: require('assets/images/promote_sn/logo02@2x.png'),
-        logo2: require('assets/images/promote_sn/logo01@2x.png'),
+        logo: require('assets/images/promote_sn/logo01@2x.png'),
+        logo2: require('assets/images/promote_sn/logo02@2x.png'),
         login: '神农大脑',
         info: '神农大脑',
         title: '神农大脑-设计服务平台',

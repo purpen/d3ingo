@@ -688,7 +688,7 @@
             <el-col>
               <div class="banner-title">神农大脑 设计服务平台</div>
               <div class="banner-second-title">定制化产品创新造物平台</div>
-              <span class="sn-release" @click="boolFindDesign = true">发布需求</span>
+              <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
             </el-col>
           </el-row>
         </div>
@@ -699,7 +699,7 @@
           <div class="b-word-r">100%专业设计服务机构</div>
         </div>
       </div>
-      <div class="sn-service-type">
+      <div class="sn-service-type padding-b60">
         <div class="container">
           <p class="sn-sub-title padding-b40">设计服务类型</p>
           <el-row :gutter="20" type="flex">
@@ -753,7 +753,7 @@
       <!-- 报价方案 -->
       <div class="sn-offer padding-b80">
         <div class="container">
-          <p class="sn-sub-title padding-b40">部分案例展示</p>
+          <p class="sn-sub-title padding-b40">报价方案</p>
           <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
@@ -762,26 +762,28 @@
             <div @click="changeOfferType('packing')" :class="[{'active': currentOffer === 'packing'}]">包装设计</div>
             <div @click="changeOfferType('vidio')" :class="[{'active': currentOffer === 'vidio'}]">视频制作</div>
           </div>
-          <div class="offer-content blank60">
-            <div v-for="(item, i) in snOfferprint" :key="i" class="print-item">
-              <div class="img-box">
-                <img :src="item.img" alt="">
+          <div class="blank60 offer-content">
+              <div v v-for="(item, i) in snOfferprint" :key="i" class="print-box">
+                <div class="print-item">
+                  <div class="img-box">
+                    <img :src="item.img" alt="">
+                  </div>
+                  <div class="server-list">
+                    <h6>{{item.h1}}</h6>
+                    <p>{{item.h2}}</p>
+                    <p>{{item.h3}}</p>
+                    <p>{{item.h4}}</p>
+                    <p>{{item.h5}}</p>
+                    <p>{{item.h6}}</p>
+                    <p class="add-services" v-if="item.h7">{{item.h7}}</p>
+                    <p class="add-services" v-if="item.h8">{{item.h8}}</p>
+                  </div>
+                  <div class="price padding-b30">
+                    <p class="price-money">	&yen;<span>{{item.money}}</span>起</p>
+                    <el-button class="buy-btn" size="large">购买</el-button>
+                  </div>
+                </div>
               </div>
-              <div class="server-list">
-                <h6>{{item.h1}}</h6>
-                <p>{{item.h2}}</p>
-                <p>{{item.h3}}</p>
-                <p>{{item.h4}}</p>
-                <p>{{item.h5}}</p>
-                <p>{{item.h6}}</p>
-                <p class="add-services" v-if="item.h7">{{item.h7}}</p>
-                <p class="add-services" v-if="item.h8">{{item.h8}}</p>
-              </div>
-              <div class="price padding-b30">
-                <p class="price-money">	&yen;<span>{{item.money}}</span>起</p>
-                <el-button class="buy-btn" size="large">购买</el-button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -897,7 +899,7 @@
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
               <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
-              <el-button class="red-button"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
+              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
               </el-button>
           </el-form-item>
         </el-form>
@@ -1615,7 +1617,15 @@ export default {
 }
 </script>
 <style scoped>
-/* sn start */
+/* sn start */ 
+.sn-fetch-btn {
+  border:1px solid #3171FF;
+  color: #3171FF;
+}
+.sn-fetch-btn:hover {
+  background:  #3171FF;
+  color: #fff;
+}
 .add-services {
   position: relative;
 }
@@ -1630,7 +1640,7 @@ export default {
   content: '';
   display: inline-block;
   position: absolute;
-  top: 8px;
+  top: 10px;
   left: -18px;
   width: 8px;
   height: 8px;
@@ -1828,13 +1838,29 @@ p.sn-sub-title {
 }
 .offer-content {
   display: flex;
+  /* margin: 0 -10px; */
 }
 .offer-content > div {
   flex: 1;
-  padding: 0 35px;
+}
+
+.print-box {
+  /* padding: 0 10px; */
+  background: #ffffff;
+  transition: all .3s;
+}
+.print-box:hover {
+  -webkit-transform: scale(1.05);
+	-ms-transform: scale(1.05);
+  transform: scale(1.05);
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 .print-item {
-  background: #ffffff;
+  padding: 0 35px;
+}
+.print-item:hover .buy-btn {
+  color: #ffffff;
+  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
 }
 .print-item > .img-box {
   text-align: center;
@@ -1844,7 +1870,8 @@ p.sn-sub-title {
   width: 100px;
 }
 .server-list {
-  height: 230px;
+  height: 260px;
+  padding: 0 7px;
 }
 .server-list > h6 {
   padding-bottom: 22px;
@@ -1859,7 +1886,7 @@ p.sn-sub-title {
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:#9FA3A7;
-  line-height:22px;
+  line-height:28px;
 }
 .print-item .price {
   text-align: center;

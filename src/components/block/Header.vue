@@ -175,15 +175,19 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn'}]" v-else>
+    <div v-else
+    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn'}]">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'" :src="custom.logo2" :alt="custom.info">
+                <img v-else-if="$route.name !== 'home' && $store.state.event.prod.name === 'sn'" :src="custom.logo2" :alt="custom.info">
                 <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
+              <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/" :route="menu.about">帮助</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -832,7 +836,8 @@
   }
   .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #ff5a5f !important;
+    /* color: #ff5a5f !important; */
+    color: #ff5a5f;
   }
  /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
@@ -1080,6 +1085,7 @@
   .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
     border-bottom: none;
   }
+  /* 神农大脑 */
   .sn-register {
     padding: 0 12px !important;
     height:30px !important;
@@ -1091,5 +1097,18 @@
   .black-header .nav-header .el-menu,
   .black-header .menu-header .el-menu {
     background: #13162A;
+  }
+  .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover, 
+  .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus {
+    background: #13162A;
+    color: #3171FF;
+  }
+  .black-header   .nav-header .el-menu--horizontal > .el-menu-item:hover,
+  .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
+  .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
+  .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
+    border-bottom: none;
+    color: #3171FF;
+    background: none;
   }
 </style>
