@@ -681,7 +681,7 @@
         </div>
       </section>
     </div>
-    <div v-if="custom.name === 'sn'" :class="['jd-cloud', {'sn': custom.name === 'sn'}]">
+    <div v-if="custom.name === 'sn'" :class="['jd-cloud', 'margin-b-m50', {'sn': custom.name === 'sn'}]">
       <div class="sn-banner">
         <div class="container banner-box">
           <el-row>
@@ -736,24 +736,24 @@
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h1}}</div>
+                        <div class="f-layer"><span>{{d.h1}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="12">
                       <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h2}}</div>
+                        <div class="f-layer"><span>{{d.h2}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="24">
                       <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h3}}</div>
+                        <div class="f-layer"><span>{{d.h3}}</span></div>
                       </div>
                     </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="12">
                   <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}">
-                    <div class="f-layer">{{d.h4}}</div>
+                    <div class="f-layer"><span>{{d.h4}}</span></div>
                   </div>
                 </el-col>
               </el-row>

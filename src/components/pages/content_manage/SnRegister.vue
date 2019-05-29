@@ -298,7 +298,7 @@
     padding-bottom: 20px;
   }
   .cor{
-    color: #3171FF;
+    color: #666;
     border-bottom: none;
   }
   .active{

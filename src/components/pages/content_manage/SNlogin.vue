@@ -58,7 +58,7 @@
     <div class="introduce">
       <div>
         <div class="describe">登录神农大脑设计服务平台</div>
-        <img src="../../../assets/images/works/Release.png" alt="" class="introduceImg">
+        <img src="../../../assets/images/promote_sn/SignIn@2x.png" alt="" class="introduceImg">
       </div>
     </div>
   </div>

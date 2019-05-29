@@ -247,7 +247,8 @@
               <el-menu-item v-if="prodName === 'sn'" index="/" :route="menu.about">帮助</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register register fr">免费注册</el-menu-item>
               <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <el-menu-item index="/login" :route="menu.login" class="fr">登录</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -359,6 +360,7 @@
           register: {path: '/register'},
           identity: {path: '/identity'},
           content_manage: {path: '/content_manage/list'},
+          sn_login: {path: '/content_manage/SNlogin'},
           sn_register: {path: '/content_manage/SNRegister'}
         },
         menuHide: true,
