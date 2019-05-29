@@ -1305,10 +1305,10 @@ export default {
       caseData: [
         {
           case: 'logo',
-          img1: require('assets/images/promote_sn/case/logo/Logo01@2x.png'),
-          img2: require('assets/images/promote_sn/case/logo/Logo02@2x.png'),
-          img3: require('assets/images/promote_sn/case/logo/Logo03@2x.png'),
-          img4: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
+          img1: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
+          img2: require('assets/images/promote_sn/case/logo/Logo05@2x.png'),
+          img3: require('assets/images/promote_sn/case/logo/Logo06@2x.png'),
+          img4: require('assets/images/promote_sn/case/logo/Logo07@2x.png'),
           h1: '苏泊尔新品上市设计',
           h2: '中国家电及消费电子博览会视觉形象设计',
           h3: 'AMIRO LUX明肌高清化妆镜',
@@ -1740,13 +1740,18 @@ export default {
   height:60px;
   line-height: 60px;
   width:220px;
-  background: #ffffff;
-  color: #3171FF;
+  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  color: #fff;
   font-family:PingFangSC-Semibold;
   font-weight:600;
   border-radius:40px;
   font-size:20px;
   text-align: center;
+}
+.sn-release:hover,
+.sn-release:active {
+  background: #ffffff;
+  color: #3171FF;
 }
 .sn-banner-word {
   background: #2B3042;

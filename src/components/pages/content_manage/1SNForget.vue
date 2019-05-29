@@ -55,7 +55,7 @@
 <script>
 import api from '@/api/api'
 export default {
-  name: 'sn_forget',
+  name: 'SNForget',
   props: {
     second: {
       type: Number,
