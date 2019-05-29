@@ -572,6 +572,24 @@ module.exports = [
     component: require('@/components/pages/content_manage/List')
   },
   {
+    path: '/content_manage/SNhelp',
+    name: 'SNhelp',
+    meta: {
+      title: '帮助中心列表'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNhelp')
+  },
+  {
+    path: '/content_manage/SNlogin',
+    name: 'SNlogin',
+    meta: {
+      title: '登录'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNlogin')
+  },
+  {
     path: '/content_manage/AssistShow',
     name: 'contentManageAssistShow',
     meta: {
