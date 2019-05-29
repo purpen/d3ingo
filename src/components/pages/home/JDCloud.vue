@@ -1305,10 +1305,10 @@ export default {
       caseData: [
         {
           case: 'logo',
-          img1: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
-          img2: require('assets/images/promote_sn/case/logo/Logo05@2x.png'),
-          img3: require('assets/images/promote_sn/case/logo/Logo06@2x.png'),
-          img4: require('assets/images/promote_sn/case/logo/Logo07@2x.png'),
+          img1: require('assets/images/promote_sn/case/logo/Logo11@2x.png'),
+          img2: require('assets/images/promote_sn/case/logo/Logo12@2x.png'),
+          img3: require('assets/images/promote_sn/case/logo/Logo13@2x.png'),
+          img4: require('assets/images/promote_sn/case/logo/Logo14@2x.png'),
           h1: '苏泊尔新品上市设计',
           h2: '中国家电及消费电子博览会视觉形象设计',
           h3: 'AMIRO LUX明肌高清化妆镜',
