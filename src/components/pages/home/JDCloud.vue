@@ -736,21 +736,25 @@
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
-                      <div class="f-layer">{{d.h1}}</div>
+                        <div class="f-layer">{{d.h1}}</div>
                       </div>
                     </el-col>
                     <el-col :span="12">
                       <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h1}}</div>
+                        <div class="f-layer">{{d.h2}}</div>
                       </div>
                     </el-col>
                     <el-col :span="24">
-                      <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}"></div>
+                      <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}">
+                        <div class="f-layer">{{d.h3}}</div>
+                      </div>
                     </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="12">
-                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}"></div>
+                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}">
+                    <div class="f-layer">{{d.h4}}</div>
+                  </div>
                 </el-col>
               </el-row>
             </div>
@@ -1305,10 +1309,10 @@ export default {
           img2: require('assets/images/promote_sn/case/logo/Logo02@2x.png'),
           img3: require('assets/images/promote_sn/case/logo/Logo03@2x.png'),
           img4: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
-          h1: '智能数控门禁（红点奖获奖作品)',
-          h2: '超声波电动牙刷',
+          h1: '苏泊尔新品上市设计',
+          h2: '中国家电及消费电子博览会视觉形象设计',
           h3: 'AMIRO LUX明肌高清化妆镜',
-          h4: '超声波电动牙刷'
+          h4: '掌柜家的猫日料餐厅品牌视觉设计'
         },
         {
           case: 'product',
@@ -1328,9 +1332,9 @@ export default {
           img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.png'),
           img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.png'),
           h1: '智能数控门禁（红点奖获奖作品)',
-          h2: '超声波电动牙刷',
-          h3: 'AMIRO LUX明肌高清化妆镜',
-          h4: '超声波电动牙刷'
+          h2: '满姐饺子品牌设计',
+          h3: '韵见APP',
+          h4: 'IPromise品牌视觉设计'
         },
         {
           case: 'packing',
@@ -1338,10 +1342,10 @@ export default {
           img2: require('assets/images/promote_sn/case/pack/Packing02.png'),
           img3: require('assets/images/promote_sn/case/pack/Packing03.png'),
           img4: require('assets/images/promote_sn/case/pack/Packing04.png'),
-          h1: '智能数控门禁（红点奖获奖作品)',
-          h2: '超声波电动牙刷',
-          h3: 'AMIRO LUX明肌高清化妆镜',
-          h4: '超声波电动牙刷'
+          h1: '中国风切糕包装设计',
+          h2: '西安年最中国包装设计',
+          h3: '中国节龙棕包装设计',
+          h4: '中国节月饼全套设计'
         }
       ],
       jdAccount: {},
@@ -1857,9 +1861,32 @@ p.sn-sub-title {
   height: 280px;
   position: relative;
 }
-
+.f-layer {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  background: linear-gradient(306deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  opacity:0.7;
+  font-size:20px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color: #FFFFFF;
+}
 .product-right {
   height: 580px;
+  position: relative;
+}
+.product-right:hover .f-layer,
+.product-left1:hover .f-layer, 
+.product-left2:hover .f-layer,
+.product-left3:hover .f-layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sn-offer {

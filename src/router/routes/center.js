@@ -580,6 +580,7 @@ module.exports = [
     },
     component: require('@/components/pages/content_manage/SNhelp')
   },
+  // 神农注册
   {
     path: '/content_manage/SNRegister',
     name: 'SNRegister',
@@ -588,6 +589,16 @@ module.exports = [
       // requireAuth: true
     },
     component: require('@/components/pages/content_manage/SNRegister')
+  },
+  // 神农登录
+  {
+    path: '/content_manage/SNlogin',
+    name: 'SNlogin',
+    meta: {
+      title: '登录'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNlogin')
   },
   {
     path: '/content_manage/AssistShow',
