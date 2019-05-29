@@ -35,8 +35,8 @@
               <router-link :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
           </div>
-          <button  @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom btn">登录
-          </button>
+          <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
+          </el-button>
         </el-form>
         <!-- 跳转注册 -->
         <div class="regtShow">
@@ -496,7 +496,7 @@
     margin-top: 25px;
     background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%);
     border: none;
-    border-radius:20px;
+    border-radius:20px !important;
     height: 44px;
     color: white;
     line-height: 44px;
@@ -506,8 +506,12 @@
     cursor: pointer;
   }
   .btn:hover{
-    background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%);
-    border: none;
+    background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%) !important;
+    border: none !important;
+  }
+  .btn:focus{
+    background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%) !important;
+    border: none !important;
   }
   .describe{
     font-size:14px;
