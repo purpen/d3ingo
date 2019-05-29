@@ -64,7 +64,7 @@
 <script>
 
 export default {
-  name: 'sn_item',
+  name: 'SNLtem',
   components: {
   },
   data() {

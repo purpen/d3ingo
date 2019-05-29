@@ -9,11 +9,11 @@
           </div>
           <div  class="j-c-item border-lr">
             <router-link  v-if="prod.id === 1" :to="{name: 'trade'}" class="">交易保障</router-link>
-            <router-link  v-else-if="prod.id === 3" :to="{name: 'sn_trade'}" class="">交易保障</router-link>
+            <router-link  v-else-if="prod.id === 3" :to="{name: 'home-SNTrade'}" class="">交易保障</router-link>
           </div>
           <div class="j-c-item">
             <router-link v-if="prod.id === 1" :to="{name: 'terms'}" class="">服务条款</router-link>
-            <router-link  v-else-if="prod.id === 3" :to="{name: 'sn_terms'}" class="">服务条款</router-link>
+            <router-link  v-else-if="prod.id === 3" :to="{name: 'home-SNItem'}" class="">服务条款</router-link>
           </div>
           <div v-if="prod.id === 3" class="j-c-item">
             <router-link :to="{name: 'SNhelp'}" class="">帮助</router-link>
