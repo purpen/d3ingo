@@ -429,7 +429,15 @@ let routes = [
     },
     component: require('@/components/pages/auth/Forget')
   },
-
+  // 神农大脑找回密码
+  {
+    path: '/sn_forget',
+    name: 'sn_forget',
+    meta: {
+      title: '找回密码'
+    },
+    component: require('@/components/pages/content_manage/SnForget')
+  },
   // 发布需求(第一步) 支付
   {
     path: '/item/submit_one',

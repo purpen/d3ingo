@@ -699,6 +699,7 @@
           <div class="b-word-r">100%专业设计服务机构</div>
         </div>
       </div>
+      <!-- 设计服务类型 -->
       <div class="sn-service-type padding-b60">
         <div class="container">
           <p class="sn-sub-title padding-b40">设计服务类型</p>
@@ -726,27 +727,33 @@
             <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">logo设计</div>
             <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">产品设计</div>
             <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">包装设计</div>
-            <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div>
+            <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
-          <div v-if="currentCase === 'product'" class="case-product">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <el-row :gutter="20">
-                  <el-col :span="12">
-                    <div class="product-left1"></div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="product-left2"></div>
-                  </el-col>
-                  <el-col :span="24">
-                    <div class="product-left3 margin-t-20"></div>
-                  </el-col>
-                </el-row>
-              </el-col>
-              <el-col :span="12">
-                <div class="product-right"></div>
-              </el-col>
-            </el-row>
+          <div class="case-product">
+            <div v-for="(d, index) in caseData" :key="index">
+              <el-row :gutter="20" v-if="d.case === currentCase">
+                <el-col :span="12">
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
+                      <div class="f-layer">{{d.h1}}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12">
+                      <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
+                        <div class="f-layer">{{d.h1}}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="24">
+                      <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}"></div>
+                    </el-col>
+                  </el-row>
+                </el-col>
+                <el-col :span="12">
+                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}"></div>
+                </el-col>
+              </el-row>
+            </div>
           </div>
         </div>
       </div>
@@ -1291,6 +1298,52 @@ export default {
           img: require('assets/images/promote_sn/awards/prize07@2x.png')
         }
       ],
+      caseData: [
+        {
+          case: 'logo',
+          img1: require('assets/images/promote_sn/case/logo/Logo01@2x.png'),
+          img2: require('assets/images/promote_sn/case/logo/Logo02@2x.png'),
+          img3: require('assets/images/promote_sn/case/logo/Logo03@2x.png'),
+          img4: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
+          h1: '智能数控门禁（红点奖获奖作品)',
+          h2: '超声波电动牙刷',
+          h3: 'AMIRO LUX明肌高清化妆镜',
+          h4: '超声波电动牙刷'
+        },
+        {
+          case: 'product',
+          img1: require('assets/images/promote_sn/case/product/ProductDesign01@2x.png'),
+          img2: require('assets/images/promote_sn/case/product/ProductDesign02@2x.png'),
+          img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.png'),
+          img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.png'),
+          h1: '智能数控门禁（红点奖获奖作品)',
+          h2: '超声波电动牙刷',
+          h3: 'AMIRO LUX明肌高清化妆镜',
+          h4: '超声波电动牙刷'
+        },
+        {
+          case: 'vision',
+          img1: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.png'),
+          img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.png'),
+          img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.png'),
+          img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.png'),
+          h1: '智能数控门禁（红点奖获奖作品)',
+          h2: '超声波电动牙刷',
+          h3: 'AMIRO LUX明肌高清化妆镜',
+          h4: '超声波电动牙刷'
+        },
+        {
+          case: 'packing',
+          img1: require('assets/images/promote_sn/case/pack/Packing01.png'),
+          img2: require('assets/images/promote_sn/case/pack/Packing02.png'),
+          img3: require('assets/images/promote_sn/case/pack/Packing03.png'),
+          img4: require('assets/images/promote_sn/case/pack/Packing04.png'),
+          h1: '智能数控门禁（红点奖获奖作品)',
+          h2: '超声波电动牙刷',
+          h3: 'AMIRO LUX明肌高清化妆镜',
+          h4: '超声波电动牙刷'
+        }
+      ],
       jdAccount: {},
       isShowBounced: false, // 弹窗
       quantity: '', // 数量
@@ -1802,11 +1855,11 @@ p.sn-sub-title {
 .product-left2,
 .product-left3 {
   height: 280px;
-  background: #B0B0B2;
+  position: relative;
 }
+
 .product-right {
   height: 580px;
-  background:#FFFFFF;
 }
 
 .sn-offer {

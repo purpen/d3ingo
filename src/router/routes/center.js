@@ -581,13 +581,13 @@ module.exports = [
     component: require('@/components/pages/content_manage/SNhelp')
   },
   {
-    path: '/content_manage/SNlogin',
-    name: 'SNlogin',
+    path: '/content_manage/SNRegister',
+    name: 'SNRegister',
     meta: {
-      title: '登录'
+      title: '注册'
       // requireAuth: true
     },
-    component: require('@/components/pages/content_manage/SNlogin')
+    component: require('@/components/pages/content_manage/SNRegister')
   },
   {
     path: '/content_manage/AssistShow',
