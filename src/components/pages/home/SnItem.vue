@@ -1,20 +1,13 @@
 <template>
-  <div class="">
-    <div class="container">
-      <div class="top-menu-list">
-        <router-link :to="{name: 'terms'}" class="item is-active">服务条款</router-link>
-        <!-- <router-link :to="{name: 'question'}" class="item">常见问题</router-link> -->
-        <router-link :to="{name: 'trade'}" class="item">交易保障</router-link>
-      </div>
-    </div>
-    <div class="line"></div>
+  <div class="sn-box">
     <div class="container">
       <el-row :gutter="20">
 
         <el-col :span="24">
-          <div class="h-right-content">
+          <div class="h-right-content  bg-f">
 
             <div class="content-box">
+              <h2>服务条款</h2>
               <h3>1.关于用户</h3>
               <p>在{{custom.info}}平台注册、发布、承接设计项目的用户，必须是可以代表企业的完全民事行为能力人或法人。用户享有万千民事行为能力人或法人的权利，也要遵守相关的义务，遵守平台规则与相关的法律法规。用户需对平台上的所有操作负法律责任。平台所有用户应遵循的原则包括但不仅限于以下条款</p>
               <p>遵守中国有关的法律和法规；</p>
@@ -71,7 +64,7 @@
 <script>
 
 export default {
-  name: 'item',
+  name: 'sn_item',
   components: {
   },
   data() {
@@ -99,15 +92,36 @@ export default {
 .line {
   border-bottom: 1px solid #ccc;
 }
-
+.sn-box {
+  padding: 30px 0px;
+  margin-bottom: -50px;
+  background: #F6F7FC;
+  border-bottom: 1px solid #E1E8EE;
+}
 .content-box {
   padding: 20px 15px;
+  width: 880px;
+  margin: 0 auto;
 }
-
+.bg-f6f7fc {
+  background: #F6F7FC;
+}
+.content-box h2 {
+  padding-top: 10px;
+  font-size:18px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:#212330;
+  line-height:25px;
+  text-align: center;
+}
 .content-box h3 {
-  font-size: 1.8rem;
   line-height: 2;
-  margin: 10px 0;
+  margin: 20px 0;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(33,35,48,1);
 }
 
 .content-box p img {

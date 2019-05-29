@@ -186,8 +186,6 @@
                 <img v-else-if="$route.name !== 'home' && $store.state.event.prod.name === 'sn'" :src="custom.logo2" :alt="custom.info">
                 <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
-              <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item v-if="prodName === 'sn'" index="/" :route="menu.about">帮助</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -245,9 +243,11 @@
 
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item v-if="prodName === 'sn'" index="/register" :route="menu.register" class="sn-register register">免费注册</el-menu-item>
-              <el-menu-item v-else index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/" :route="menu.about">帮助</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/register" :route="menu.register" class="sn-register register fr">免费注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -638,8 +638,11 @@
   }
   .nav-right .el-menu-header {
     min-width: 120px;
+    width: 100%;
   }
-
+  .fr {
+    float: right !important;
+  }
   .header-layout {
     position: absolute;
     left: 0;
@@ -1085,7 +1088,7 @@
   .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
     border-bottom: none;
   }
-  /* 神农大脑 */
+  /* 神农大脑 start*/
   .sn-register {
     padding: 0 12px !important;
     height:30px !important;
@@ -1111,4 +1114,5 @@
     color: #3171FF;
     background: none;
   }
+  /* 神农大脑 end*/
 </style>

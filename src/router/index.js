@@ -173,7 +173,7 @@ let routes = [
   },
    // 服务条款
   {
-    path: '/terms',
+    path: '/sn_terms',
     name: 'sn_terms',
     meta: {
       title: '服务条款',
@@ -203,7 +203,7 @@ let routes = [
   },
   // 神农大脑交易保障
   {
-    path: '/trade',
+    path: '/sn_trade',
     name: 'sn_trade',
     meta: {
       title: '交易保障',

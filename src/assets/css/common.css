@@ -203,6 +203,9 @@
 .margin-b-15 {
   margin-bottom: 15px;
 }
+.margin-b-m50 {
+  margin-bottom: -50px;
+}
 .margin-t-36 {
   margin-top: 36px;
 }
