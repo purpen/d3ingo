@@ -1603,6 +1603,9 @@ export default {
             }
             row.design_cost = this.designCost
           }
+          if (this.custom.id === 3) {
+            row.son_source = 'c'
+          }
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {

@@ -16,7 +16,7 @@
             <router-link  v-else-if="prod.id === 3" :to="{name: 'sn_terms'}" class="">服务条款</router-link>
           </div>
           <div v-if="prod.id === 3" class="j-c-item">
-            <router-link :to="{name: 'sn_terms'}" class="">帮助</router-link>
+            <router-link :to="{name: 'SNhelp'}" class="">帮助</router-link>
           </div>
         </el-col>
       </el-row>
