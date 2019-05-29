@@ -572,6 +572,35 @@ module.exports = [
     component: require('@/components/pages/content_manage/List')
   },
   {
+    path: '/content_manage/SNhelp',
+    name: 'SNhelp',
+    meta: {
+      title: '帮助中心列表'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNhelp')
+  },
+  // 神农注册
+  {
+    path: '/content_manage/SNRegister',
+    name: 'SNRegister',
+    meta: {
+      title: '注册'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNRegister')
+  },
+  // 神农登录
+  {
+    path: '/content_manage/SNlogin',
+    name: 'SNlogin',
+    meta: {
+      title: '登录'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNlogin')
+  },
+  {
     path: '/content_manage/AssistShow',
     name: 'contentManageAssistShow',
     meta: {

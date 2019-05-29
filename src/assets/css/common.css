@@ -191,6 +191,9 @@
 .margin-t-10 {
   margin-top: 10px;
 }
+.margin-t-14 {
+  margin-top: 14px;
+}
 .margin-t-20 {
   margin-top: 20px;
 }
@@ -199,6 +202,9 @@
 }
 .margin-b-15 {
   margin-bottom: 15px;
+}
+.margin-b-m50 {
+  margin-bottom: -50px;
 }
 .margin-t-36 {
   margin-top: 36px;
@@ -241,6 +247,18 @@
 }
 .padding-b20 {
   padding-bottom: 20px;
+}
+.padding-b40 {
+  padding-bottom: 40px;
+}
+.padding-b30 {
+  padding-bottom: 30px;
+}
+.padding-b60 {
+  padding-bottom: 60px;
+}
+.padding-b80 {
+  padding-bottom: 80px;
 }
 .margin-b-10 {
   margin-bottom: 10px

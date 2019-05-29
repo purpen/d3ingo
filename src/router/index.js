@@ -171,6 +171,16 @@ let routes = [
     },
     component: require('@/components/pages/home/Item')
   },
+   // 服务条款
+  {
+    path: '/sn_terms',
+    name: 'sn_terms',
+    meta: {
+      title: '服务条款',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/SnItem')
+  },
   // 常见问题
   {
     path: '/question',
@@ -190,6 +200,16 @@ let routes = [
       requireAuth: false
     },
     component: require('@/components/pages/home/Trade')
+  },
+  // 神农大脑交易保障
+  {
+    path: '/sn_trade',
+    name: 'sn_trade',
+    meta: {
+      title: '交易保障',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/SnTrade')
   },
   {
     path: '/apply',
@@ -409,7 +429,15 @@ let routes = [
     },
     component: require('@/components/pages/auth/Forget')
   },
-
+  // 神农大脑找回密码
+  {
+    path: '/sn_forget',
+    name: 'sn_forget',
+    meta: {
+      title: '找回密码'
+    },
+    component: require('@/components/pages/content_manage/SnForget')
+  },
   // 发布需求(第一步) 支付
   {
     path: '/item/submit_one',
