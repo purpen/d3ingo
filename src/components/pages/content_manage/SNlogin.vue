@@ -32,7 +32,7 @@
               <label for="passwd" class="password-show no-select" >记住我</label>
             </p>
             <p class="forget">
-              <router-link :to="{name: 'forget'}">忘记密码?</router-link>
+              <router-link :to="{name: 'sn_forget'}">忘记密码?</router-link>
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
@@ -41,13 +41,14 @@
         <!-- 跳转注册 -->
         <div class="regtShow">
           <span>还没有账户？</span>
-          <span class="regter"> 立即注册 </span>
+          <!-- <span class="regter"> 立即注册 </span> -->
+          <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
         </div>
         <!-- 底部 -->
         <div class="SNfooter">
           <div class="line"></div>
           <div class="flex">
-            <img src="../../../assets/images/works/Release.png" class="footerImg" alt="">
+            <img src="../../../assets/images/promote_sn/sn_login_icon.png" class="footerImg" alt="">
             <span class="footer_title">京东云登录</span>
           </div>
           <div class="line"></div>
@@ -577,6 +578,7 @@
   .footerImg{
     width: 21px;
     height: 18px;
+    margin-right: 5px;
   }
   .footer_title{
     font-size:12px;

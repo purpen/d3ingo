@@ -1863,6 +1863,7 @@ p.sn-sub-title {
 }
 .f-layer {
   display: none;
+  padding: 0 20px;
   position: absolute;
   top: 0;
   left: 0;
@@ -1875,6 +1876,9 @@ p.sn-sub-title {
   font-family:PingFangSC-Regular;
   font-weight:400;
   color: #FFFFFF;
+}
+.f-layer > span {
+  line-height: 28px;
 }
 .product-right {
   height: 580px;

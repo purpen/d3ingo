@@ -51,7 +51,7 @@
       <div class="reg">
         <p>已有账户 ?
           <!-- {{prod.login}}，您可以 -->
-          <router-link :to="{name: 'login'}">立即登录</router-link>
+          <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
           或者 
           <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
         </p>
@@ -72,8 +72,15 @@
 </template> 
 <script>
   import api from '@/api/api'
+  import auth from '@/helper/auth'
   export default {
     name: 'SNRegister',
+    props: {
+      second: {
+        type: Number,
+        default: 60
+      }
+    },
     data() {
       let checkPassword = (rule, value, callback) => {
         if (value === '') {
@@ -250,6 +257,88 @@
           this.time = this.time - 1
           setTimeout(this.timer, 1000)
         }
+      },
+      submit(formName) {
+        const that = this
+        that.$refs[formName].validate((valid) => {
+          if (valid) {
+            // if (this.prod.name) {
+            //   this.selectUser()
+            // }
+            let account = this.form.account
+            let password = this.form.password
+            let smsCode = this.form.smsCode
+            let type = this.form.type
+            // if (!type) {
+            //   that.$message.error('请选择客户或设计服务商')
+            //   return false
+            // }
+            that.isLoadingBtn = true
+            // 验证通过，注册
+            that.$http.post(api.register, {account: account, password: password, type: type, sms_code: smsCode})
+              .then(function (response) {
+                if (response.data.meta.status_code === 200) {
+                  let token = response.data.data.token
+                  let ticket = response.data.data.ticket
+                  // 写入localStorage
+                  auth.write_token(token, ticket)
+                  // ajax拉取用户信息
+                  that.$http.get(api.user, {})
+                    .then(function (response) {
+                      if (response.data.meta.status_code === 200) {
+                        auth.write_user(response.data.data)
+
+                        that.$message({
+                          showClose: true,
+                          message: '注册成功!',
+                          type: 'success'
+                        })
+
+                        that.$router.replace({name: 'vcenterControl'})
+                      } else {
+                        auth.logout(true)
+                        that.$message({
+                          showClose: true,
+                          message: response.data.meta.message,
+                          type: 'error'
+                        })
+                        that.isLoadingBtn = false
+                      }
+                    })
+                    .catch(function (error) {
+                      auth.logout(true)
+                      that.$message({
+                        showClose: true,
+                        message: error.message,
+                        type: 'error'
+                      })
+                      that.isLoadingBtn = false
+                    })
+                } else {
+                  that.$message({
+                    showClose: true,
+                    message: response.data.meta.message,
+                    type: 'error'
+                  })
+                  that.isLoadingBtn = false
+                }
+              })
+              .catch(function (error) {
+                that.$message({
+                  showClose: true,
+                  message: error.message,
+                  type: 'error'
+                })
+                that.isLoadingBtn = false
+                console.error(error.message)
+                return false
+              })
+            return false
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       }
     },
     created() {
