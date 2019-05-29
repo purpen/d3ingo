@@ -362,7 +362,7 @@
           content_manage: {path: '/content_manage/list'},
           sn_login: {path: '/content_manage/SNlogin'},
           sn_about: {path: '/content_manage/SNhelp'},
-          sn_register: {path: '/content_manage/SNRegister'}
+          sn_register: {path: '/content_manage/1SNRegister'}
         },
         menuHide: true,
         msgHide: true,
