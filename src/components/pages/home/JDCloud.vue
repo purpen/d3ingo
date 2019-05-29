@@ -848,14 +848,14 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="demand">
-                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                        <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -900,7 +900,7 @@
         class="find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
-            <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+            <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="contact">
             <el-input v-model="form.contact" maxlength="20"></el-input>
