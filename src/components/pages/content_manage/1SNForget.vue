@@ -4,7 +4,7 @@
     <div class="forget-cart">
       <div class="cart-left">
         <h4 class="bb-e6">找回密码</h4>
-        
+
 
       <div class="forget-content">
 
@@ -46,7 +46,7 @@
       <div class="cart-right">
         <p>找回您的密码</p>
         <div class="img-box">
-          <!-- <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt=""> -->
+          <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt="">
         </div>
       </div>
     </div>
@@ -318,7 +318,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 .cart-right p {
   font-size:14px;
@@ -326,12 +326,11 @@ export default {
   font-weight:400;
   color: #9FA3A7;
 }
-.cart-right .img-box {
-  width: 233px;
-  height: 216px;
-  background: url('../../../assets/images/promote_sn/RetrievePassword@2x.png') no-repeat left/contain;
+.img-box{
+  margin-top: 50px;
 }
 .img-box img {
-  /* width: 233px; */
+  width: 282px;
+  height: auto;
 }
 </style>

@@ -499,6 +499,9 @@
     color:rgba(93,94,102,1);
     margin-top: 20px;
   }
+  .imgCodeInput{
+    padding-left: 0
+  }
   .btn{
     width:420px;
     margin-top: 25px;
@@ -526,7 +529,6 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(159,163,167,1);
-    margin-top: 50px;
     text-align: center;
   }
   #passwd {
@@ -608,6 +610,6 @@
   .introduceImg{
     width: 282px;
     height: auto;
-    margin-top: 20px;
+    margin-top: 50px;
   }
 </style>

@@ -63,7 +63,7 @@
         <div class="title">我是需求方</div>
         <div class="describe">发布项目需求，找到设计服务商</div>
       </div>
-      <img src="../../../assets/images/works/Release.png" alt="">
+      <img src="../../../assets/images/promote_sn/DemandSide@2x.png" alt="">
     </div>
     <div class="introduce" v-else>
       <div>
@@ -416,14 +416,13 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(93,94,102,1);
-    margin-top: 20px;
   }
   .describe{
     font-size:14px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(159,163,167,1);
-    margin-top: 20px;
+    margin:20px 0 40px 0;
   }
   img{
     width: 282px;
