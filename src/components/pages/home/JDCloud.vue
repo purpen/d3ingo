@@ -681,7 +681,7 @@
         </div>
       </section>
     </div>
-    <div v-if="custom.name === 'sn'" :class="['jd-cloud', {'sn': custom.name === 'sn'}]">
+    <div v-if="custom.name === 'sn'" :class="['jd-cloud', 'margin-b-m50', {'sn': custom.name === 'sn'}]">
       <div class="sn-banner">
         <div class="container banner-box">
           <el-row>
@@ -736,24 +736,24 @@
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h1}}</div>
+                        <div class="f-layer"><span>{{d.h1}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="12">
                       <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h2}}</div>
+                        <div class="f-layer"><span>{{d.h2}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="24">
                       <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}">
-                        <div class="f-layer">{{d.h3}}</div>
+                        <div class="f-layer"><span>{{d.h3}}</span></div>
                       </div>
                     </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="12">
                   <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}">
-                    <div class="f-layer">{{d.h4}}</div>
+                    <div class="f-layer"><span>{{d.h4}}</span></div>
                   </div>
                 </el-col>
               </el-row>
@@ -848,14 +848,14 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="demand">
-                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                        <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -900,7 +900,7 @@
         class="find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
-            <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+            <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="contact">
             <el-input v-model="form.contact" maxlength="20"></el-input>
@@ -1305,10 +1305,10 @@ export default {
       caseData: [
         {
           case: 'logo',
-          img1: require('assets/images/promote_sn/case/logo/Logo01@2x.png'),
-          img2: require('assets/images/promote_sn/case/logo/Logo02@2x.png'),
-          img3: require('assets/images/promote_sn/case/logo/Logo03@2x.png'),
-          img4: require('assets/images/promote_sn/case/logo/Logo04@2x.png'),
+          img1: require('assets/images/promote_sn/case/logo/Logo11@2x.png'),
+          img2: require('assets/images/promote_sn/case/logo/Logo12@2x.png'),
+          img3: require('assets/images/promote_sn/case/logo/Logo13@2x.png'),
+          img4: require('assets/images/promote_sn/case/logo/Logo14@2x.png'),
           h1: '苏泊尔新品上市设计',
           h2: '中国家电及消费电子博览会视觉形象设计',
           h3: 'AMIRO LUX明肌高清化妆镜',
@@ -1603,6 +1603,9 @@ export default {
             }
             row.design_cost = this.designCost
           }
+          if (this.custom.id === 3) {
+            row.son_source = 'c'
+          }
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
@@ -1737,13 +1740,18 @@ export default {
   height:60px;
   line-height: 60px;
   width:220px;
-  background: #ffffff;
-  color: #3171FF;
+  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  color: #fff;
   font-family:PingFangSC-Semibold;
   font-weight:600;
   border-radius:40px;
   font-size:20px;
   text-align: center;
+}
+.sn-release:hover,
+.sn-release:active {
+  background: #ffffff;
+  color: #3171FF;
 }
 .sn-banner-word {
   background: #2B3042;
@@ -1863,6 +1871,7 @@ p.sn-sub-title {
 }
 .f-layer {
   display: none;
+  padding: 0 20px;
   position: absolute;
   top: 0;
   left: 0;
@@ -1875,6 +1884,9 @@ p.sn-sub-title {
   font-family:PingFangSC-Regular;
   font-weight:400;
   color: #FFFFFF;
+}
+.f-layer > span {
+  line-height: 28px;
 }
 .product-right {
   height: 580px;

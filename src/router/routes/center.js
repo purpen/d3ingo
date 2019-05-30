@@ -582,13 +582,13 @@ module.exports = [
   },
   // 神农注册
   {
-    path: '/content_manage/SNRegister',
+    path: '/content_manage/1SNRegister',
     name: 'SNRegister',
     meta: {
       title: '注册'
       // requireAuth: true
     },
-    component: require('@/components/pages/content_manage/SNRegister')
+    component: require('@/components/pages/content_manage/1SNRegister')
   },
   // 神农登录
   {
@@ -599,6 +599,35 @@ module.exports = [
       // requireAuth: true
     },
     component: require('@/components/pages/content_manage/SNlogin')
+  },
+  // 神农大脑找回密码 前面加1是因为git忽略大小写,以后改回来
+  {
+    path: '/content_manage/1SNForget',
+    name: 'content_manage-SNForget',
+    meta: {
+      title: '找回密码'
+    },
+    component: require('@/components/pages/content_manage/1SNForget')
+  },
+   // 神农大脑服务条款
+  {
+    path: '/home/1SNLtem',
+    name: 'home-SNItem',
+    meta: {
+      title: '服务条款',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/1SNLtem')
+  },
+  // 神农大脑交易保障
+  {
+    path: '/home/1SNTrade',
+    name: 'home-SNTrade',
+    meta: {
+      title: '交易保障',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/1SNTrade')
   },
   {
     path: '/content_manage/AssistShow',

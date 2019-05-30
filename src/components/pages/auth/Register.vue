@@ -325,16 +325,6 @@
         }
       },
       fetchImgCaptcha() {
-        // let ti = 0
-        // clearInterval(this.timeInterval)
-        // this.timeInterval = setInterval(() => {
-        //   ti++
-        //   console.log(ti)
-        //   if (ti === 600) {
-        //     clearInterval(this.timeInterval)
-        //     this.fetchImgCaptcha()
-        //   }
-        // }, 1000)
         this.$http.get(api.fetch_img_captcha)
         .then((res) => {
           if (res.data.meta.status_code === 200) {
