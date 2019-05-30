@@ -7,7 +7,7 @@
             <router-link v-if="prod.id === 1" :to="{name: 'SaaSIndex'}">艺火首页</router-link>
             <router-link v-else-if="prod.id === 3" :to="{name: 'SaaSIndex'}">首页</router-link>
           </div>
-          <div  class="j-c-item border-lr">
+          <div  class="j-c-item">
             <router-link  v-if="prod.id === 1" :to="{name: 'trade'}" class="">交易保障</router-link>
             <router-link  v-else-if="prod.id === 3" :to="{name: 'home-SNTrade'}" class="">交易保障</router-link>
           </div>
@@ -343,11 +343,15 @@
     padding: 40px 0 20px 0;
     border-bottom: 1px solid hsla(0,0%,100%,.1);
   }
+  .jd-cloud-title .j-c-item:last-child {
+    border-right: none;
+  }
   .j-c-item {
     display: inline-block;
     font-size: 16px;
     color:#5D5E66;
     padding: 0 20px;
+    border-right: 1px solid #5B5C65;
   }
   .j-c-item:hover a {
     color:#0989C5;

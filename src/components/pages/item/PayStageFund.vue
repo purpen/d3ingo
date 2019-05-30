@@ -11,7 +11,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="details">选择支付方式</p>
-          <div class="pay-type" v-if="item.source === 0">
+          <div class="pay-type" v-if="item.source === 0 || item.source === 4">
             <ul v-if="!isMob">
               <li>
                 <!-- <label> 支付宝暂时隐藏
