@@ -213,8 +213,9 @@
         opporId: 0,
         sourcelist: [
           { value: -1, text: '太火鸟' },
-          { value: 1, text: '京东' },
-          { value: 2, text: '义乌' }
+          { value: 1, text: '京东/艺火' },
+          { value: 2, text: '义乌' },
+          { value: 3, text: '京东/神农大脑' }
         ],
         opporvalue: '全部项目',
         typeid: 0,
@@ -340,11 +341,15 @@
               },
               {
                 value: 'a',
-                label: '京东'
+                label: '京东/艺火'
               },
               {
                 value: 'b',
                 label: '优客工场'
+              },
+              {
+                value: 'c',
+                label: '京东/神农大脑'
               }]
           },
           {
@@ -505,11 +510,15 @@
             children: [
               {
                 value: 'a',
-                label: '京东'
+                label: '京东/艺火'
               },
               {
                 value: 'b',
                 label: '优客工场'
+              },
+              {
+                value: 'c',
+                label: '京东/神农大脑'
               }]
           },
           {
@@ -738,7 +747,7 @@
               let time = this.tableData[i].created_at.date_format().format('yyyy-MM-dd')
               Vue.set(this.tableData[i], 'time', time)
               if (this.tableData[i].source === 1) {
-                Vue.set(this.tableData[i], 'sourcecont', '京东')
+                Vue.set(this.tableData[i], 'sourcecont', '京东/艺火')
               } else if (this.tableData[i].source === 2) {
                 Vue.set(this.tableData[i], 'sourcecont', '义乌')
               } else if (this.tableData[i].source === 0) {
@@ -788,7 +797,7 @@
             let time = that.tableData[i].created_at.date_format().format('yyyy-MM-dd')
             Vue.set(that.tableData[i], 'time', time)
             if (that.tableData[i].source === 1) {
-              Vue.set(that.tableData[i], 'sourcecont', '京东')
+              Vue.set(that.tableData[i], 'sourcecont', '京东/艺火')
             } else if (that.tableData[i].source === 2) {
               Vue.set(that.tableData[i], 'sourcecont', '义乌')
             } else if (that.tableData[i].source === 0) {
