@@ -107,7 +107,7 @@
               <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
-                <el-col :span="isMob ? 16 : 8">
+                <el-col :span="isMob ? 24 : 18">
                   <el-form-item prop="sort" style="margin: 0">
                     <el-radio-group  v-model.number="form.sort" @change="genStageInput">
                       <el-radio-button 
@@ -126,7 +126,7 @@
                 <p class="title font-size-16 mar-t-b-20">第{{ index + 1 }}阶段</p>
                 <input type="hidden" v-model.number="form.stages[index].sort"/>
                 <el-row :gutter="6">
-                  <el-col :span="isMob ? 24 : 12">
+                  <el-col :span="isMob ? 24 : 18">
                     <el-form-item
                       style="margin: 0"
                       :prop="'stages.' + index + '.title'"
@@ -140,7 +140,7 @@
                 </el-row>
 
                 <el-row :gutter="10">
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
                       :rules="{
@@ -152,7 +152,7 @@
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
@@ -166,7 +166,7 @@
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
                     >
@@ -179,7 +179,7 @@
                 </el-row>
 
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
-                  <el-col :span="isMob ? 24 : 12">
+                  <el-col :span="isMob ? 24 : 18">
                     <el-form-item
                       :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
@@ -573,18 +573,6 @@
         return CONTRACT_SCALE
       }
     },
-    // watch: {
-    //   form: {
-    //     deep: true,
-    //     handler: function (val, oldVal) {
-    //       if (val.stages && val.stages.length > 0) {
-    //         this.stateMsg = '重置阶段'
-    //       } else {
-    //         this.stateMsg = '生成阶段'
-    //       }
-    //     }
-    //   }
-    // },
     created () {
       var that = this
       var id = this.$route.params.item_id
@@ -679,9 +667,9 @@
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone + ''
-                that.form.tax_price = parseFloat(item.item.tax)
+                that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.commission)
+                that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))

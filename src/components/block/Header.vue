@@ -176,7 +176,7 @@
       <Message></Message>
     </div>
     <div v-else
-    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn'}]">
+    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn', 'sn-header': $store.state.event.prod.name === 'sn'}]">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
@@ -1114,9 +1114,24 @@
   .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
-    border-bottom: none;
+    border-bottom: 3px solid transparent;
     color: #3171FF;
     background: none;
   }
+  .sn-header  .nav-header .el-menu--horizontal > .el-menu-item:hover,
+  .sn-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
+  .sn-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
+  .sn-header .nav-header .el-menu--horizontal > .el-menu-item.is-active {
+    border-bottom: 3px solid transparent;
+    color: #3171FF;
+    background: none;
+  }
+  .sn-header.black-header .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
+    color: #fff;
+  }
+  /* .sn-header .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu{
+    color: #666666;
+  } */
+
   /* 神农大脑 end*/
 </style>

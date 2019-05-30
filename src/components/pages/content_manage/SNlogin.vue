@@ -32,7 +32,7 @@
               <label for="passwd" class="password-show no-select" >记住我</label>
             </p>
             <p class="forget">
-              <router-link class="forgetHover" :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
+              <router-link  class="forgetHover" :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
