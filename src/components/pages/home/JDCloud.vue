@@ -2068,8 +2068,7 @@ p.sn-sub-title {
 }
 .sn-demand-left {
   height: 472px;
-  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/contain;
-  background-size: 115% 100%;
+  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/cover;
 }
 .sn-demand h5 {
   padding-bottom: 40px;
@@ -2178,7 +2177,6 @@ p.sn-sub-title {
     height: 47px;
     width: 180px;
     background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
-    box-shadow: 0 0 20px 0 rgba(0,0,0,0.05);
     border-radius: 30px;
     color: #fff;
     font-family: PingFangSC-Regular;
@@ -2186,6 +2184,7 @@ p.sn-sub-title {
     letter-spacing: 1px;
     text-align: center;
     margin:10px 0 30px 0;
+    box-shadow: 10px 10px 200px 0 rgba(0,0,0,0.05);
     border: 1px solid #fff;
   }
   .ius-round {
