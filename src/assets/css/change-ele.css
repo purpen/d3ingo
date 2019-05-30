@@ -874,6 +874,7 @@
     border-bottom-color: #e6e6e6;
   }
   .select-item-box .el-collapse-item__header {
+    border-top: 1px solid #e6e6e6;
     padding-left: 20px;
     font-size: 16px;
   }
