@@ -129,6 +129,21 @@ function showProd() {
         license: '万博大数据【浙ICP备18008501号-1】',
         copyright: 'Copyright © 2019'
       }
+    case 'sn':
+      return {
+        id: 3,
+        name: 'sn',
+        logo: require('assets/images/promote_sn/logo01@2x.png'),
+        logo2: require('assets/images/promote_sn/logo02@2x.png'),
+        login: '神农大脑',
+        info: '神农大脑',
+        title: '神农大脑-设计服务平台',
+        url: 'JDCloud.com',
+        fullurl: 'https://www.jdcloud.com',
+        license: '京东云【京ICP备11041704号-31】',
+        copyright: 'Copyright © 2012-2019',
+        business: '经营许可证:【京ICP证070359号】'
+      }
     default:
       return {
         id: 0,

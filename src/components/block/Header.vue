@@ -175,13 +175,15 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'}]" v-else>
+    <div v-else
+    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn'}]">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'" :src="custom.logo2" :alt="custom.info">
+                <img v-else-if="$route.name !== 'home' && $store.state.event.prod.name === 'sn'" :src="custom.logo2" :alt="custom.info">
                 <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
             </el-menu>
@@ -241,8 +243,12 @@
 
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register register fr">免费注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -353,7 +359,10 @@
           login: {path: '/login'},
           register: {path: '/register'},
           identity: {path: '/identity'},
-          content_manage: {path: '/content_manage/list'}
+          content_manage: {path: '/content_manage/list'},
+          sn_login: {path: '/content_manage/SNlogin'},
+          sn_about: {path: '/content_manage/SNhelp'},
+          sn_register: {path: '/content_manage/1SNRegister'}
         },
         menuHide: true,
         msgHide: true,
@@ -489,6 +498,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      prodName() {
+        return this.$store.state.event.prod.name
+      },
       token() {
         return this.$store.state.event.token
       },
@@ -598,6 +610,7 @@
       }
     },
     created: function () {
+      console.log(this.$route.name)
       if (this.token) {
         this.updateUser()
       }
@@ -629,8 +642,11 @@
   }
   .nav-right .el-menu-header {
     min-width: 120px;
+    width: 100%;
   }
-
+  .fr {
+    float: right !important;
+  }
   .header-layout {
     position: absolute;
     left: 0;
@@ -648,7 +664,10 @@
   .blue-header .header-buttom-line {
     box-shadow: none
   }
-
+  .black-header,
+  .black-header .nav-header  {
+    background: #13162A;
+  }
   .Flogin {
     background: #ff5a5f;
     border-color: #ff5a5f;
@@ -824,7 +843,8 @@
   }
   .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #ff5a5f !important;
+    /* color: #ff5a5f !important; */
+    color: #ff5a5f;
   }
  /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
@@ -1072,4 +1092,31 @@
   .nav-header .el-menu--horizontal > .el-menu-item.mr-15 {
     border-bottom: none;
   }
+  /* 神农大脑 start*/
+  .sn-register {
+    padding: 0 12px !important;
+    height:30px !important;
+    line-height: 30px !important;
+    background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%) !important;
+    border-radius:15px !important;
+  }
+  .black-header .project-menu-sub .el-menu,
+  .black-header .nav-header .el-menu,
+  .black-header .menu-header .el-menu {
+    background: #13162A;
+  }
+  .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover, 
+  .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus {
+    background: #13162A;
+    color: #3171FF;
+  }
+  .black-header   .nav-header .el-menu--horizontal > .el-menu-item:hover,
+  .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
+  .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
+  .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
+    border-bottom: none;
+    color: #3171FF;
+    background: none;
+  }
+  /* 神农大脑 end*/
 </style>

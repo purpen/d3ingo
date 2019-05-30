@@ -1741,6 +1741,10 @@ export default {
             {
               value: 'b',
               label: '优客工场'
+            },
+            {
+              value: 'c',
+              label: '神农大脑'
             }
           ]
         },
