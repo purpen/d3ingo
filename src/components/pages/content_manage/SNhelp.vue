@@ -16,7 +16,7 @@
         <div class="demand_cont"  v-loading="isLoading">
           <div class="demand_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="demandImg[index].img" alt="">
-              <router-link class="title" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
           </div>
           <div class="demand_list_last"></div>
         </div>
@@ -26,7 +26,7 @@
         <div class="design_cont"  v-loading="isLoading">
           <div class="design_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="designImg[index].img" alt="" alt="">
-              <router-link class="title" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
           </div>
           <div class="design_list_last"></div>
           <div class="design_list_last"></div>
@@ -110,6 +110,9 @@
     border-bottom: 1px solid rgba(246,247,252,1);
     cursor: pointer;
   }
+  .routerCss:hover{
+    color: #3171FF !important
+  }
   .cor{
     color: #3171FF;
     border-bottom: none;
@@ -166,7 +169,7 @@
   }
   .demand_list:hover{
     margin-top: 15px;
-    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 15px 3px rgba(0,0,0,.1);
   }
   .design_list{
     width: 280px;
@@ -184,7 +187,7 @@
   }
   .design_list:hover{
     margin-top: 15px;
-    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 15px 3px rgba(0,0,0,.1);
   }
   .demand_list_last{
     width: 280px;
