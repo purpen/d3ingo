@@ -818,7 +818,7 @@
     border: 1px solid #e6e6e6;
   }
   .el-input .el-input__inner:hover {
-    border: 1px solid #D2D2D2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
   }
   .el-form-item__content .el-input .el-input__inner:focus {
