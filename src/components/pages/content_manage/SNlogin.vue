@@ -32,7 +32,7 @@
               <label for="passwd" class="password-show no-select" >记住我</label>
             </p>
             <p class="forget">
-              <router-link :to="{name: 'forget'}">忘记密码?</router-link>
+              <router-link class="forgetHover" :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
@@ -484,6 +484,13 @@
     justify-content: center;
     align-items: center;
   }
+  .imgCode {
+    width: 102px;
+    height: 34px;
+    background-size: cover;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+  }
   .title{
     font-size:24px;
     font-family:PingFangSC-Regular;
@@ -524,6 +531,9 @@
   #passwd {
     display: none;
     color: #666666;
+  }
+  .forgetHover:hover{
+    color: #3171FF;
   }
   #passwd:checked ~.password-show::before {
     background: #3171FF;
@@ -583,6 +593,10 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(159,163,167,1);
+    cursor: pointer;
+  }
+  .footer_title:hover{
+    color: #3171FF;
   }
   .flex{
     display: flex;
