@@ -545,7 +545,12 @@
       // 新增／编辑合同
       contractBtn(event) {
         let itemId = parseInt(event.currentTarget.getAttribute('item_id'))
-        this.$router.push({name: 'vcenterContractSubmit', params: {item_id: itemId}})
+        if (this.custom.id === 3) {
+          // 神农
+          this.$router.push({name: 'vcenterContractSnSubmit', params: {item_id: itemId}})
+        } else {
+          this.$router.push({name: 'vcenterContractSubmit', params: {item_id: itemId}})
+        }
       },
       // 发送合同
       contractSendBtn(event) {
@@ -719,6 +724,9 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     filters: {
