@@ -1311,7 +1311,7 @@ export default {
           img4: require('assets/images/promote_sn/case/logo/Logo14@2x.png'),
           h1: '苏泊尔新品上市设计',
           h2: '中国家电及消费电子博览会视觉形象设计',
-          h3: 'AMIRO LUX明肌高清化妆镜',
+          h3: '新海外品牌标志VI设计',
           h4: '掌柜家的猫日料餐厅品牌视觉设计'
         },
         {
@@ -1321,7 +1321,7 @@ export default {
           img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.png'),
           img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.png'),
           h1: '智能数控门禁（红点奖获奖作品)',
-          h2: '超声波电动牙刷',
+          h2: 'GYENNO睿餐智能防抖勺',
           h3: 'AMIRO LUX明肌高清化妆镜',
           h4: '超声波电动牙刷'
         },
@@ -1331,7 +1331,7 @@ export default {
           img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.png'),
           img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.png'),
           img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.png'),
-          h1: '智能数控门禁（红点奖获奖作品)',
+          h1: '天晨品牌设计',
           h2: '满姐饺子品牌设计',
           h3: '韵见APP',
           h4: 'IPromise品牌视觉设计'
