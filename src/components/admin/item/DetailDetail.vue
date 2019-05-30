@@ -88,14 +88,14 @@
         </div>
       </div>
       <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
-        <div class="navegete-round flex-center" @click="viewContractBtn(3)">
-          <div class="navegete-to">查看太火鸟与京东的合同</div>
+        <div class="navegete-round flex-center" @click="viewContractBtn(2)">
+          <div class="navegete-to">查看服务商与太火鸟的合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
       <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
-        <div class="navegete-round flex-center" @click="viewContractBtn(2)">
-          <div class="navegete-to">查看服务商与太火鸟的合同</div>
+        <div class="navegete-round flex-center" @click="viewContractBtn(3)">
+          <div class="navegete-to">查看太火鸟与京东的合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
