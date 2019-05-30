@@ -90,7 +90,7 @@
                           <p>我们只承接预算费用1万元以上的项目</p>
                         </div>
                       </div>
-                      
+
                       <div class="pc-title-item margin-t-36">
                         <img src="../../../assets/images/promote/Service@2x.png" alt="">
                         <div class="text-box">
@@ -338,7 +338,7 @@
                 <p>我们只承接预算费用1万元以上的项目</p>
               </div>
             </div>
-        
+
             <div class="phone-title-item margin-t-28">
               <img src="../../../assets/images/promote/Service@2x.png" alt="">
               <div class="phone-text-box">
@@ -837,7 +837,7 @@
 
               </div>
             </el-col>
-          
+
             <el-col :span="10">
               <h5>您还在等什么？快来发布需求吧！</h5>
               <el-col class="header-style">
@@ -867,7 +867,7 @@
                                 <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                               </el-form-item>
                           </el-col>
-                        
+
                           <el-col :span="10">
                             <el-form-item prop="smsCode">
                               <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
@@ -1677,7 +1677,7 @@ export default {
 }
 </script>
 <style scoped>
-/* sn start */ 
+/* sn start */
 .sn-fetch-btn {
   border:1px solid #3171FF;
   color: #3171FF;
@@ -1812,11 +1812,13 @@ p.sn-sub-title {
   color:#212330;
   line-height:28px;
   text-align: center;
+  margin-bottom: 10px;
 }
 .sn-service-type .title-box span {
-  padding-top: 10px; 
+  padding-top: 10px;
   color: #9FA3A7;
   line-height:24px;
+  font-size: 14px;
 }
 
 .sn-case {
@@ -1863,7 +1865,7 @@ p.sn-sub-title {
 .case-product {
   padding-top: 40px;
 }
-.product-left1, 
+.product-left1,
 .product-left2,
 .product-left3 {
   height: 280px;
@@ -1893,7 +1895,7 @@ p.sn-sub-title {
   position: relative;
 }
 .product-right:hover .f-layer,
-.product-left1:hover .f-layer, 
+.product-left1:hover .f-layer,
 .product-left2:hover .f-layer,
 .product-left3:hover .f-layer {
   display: flex;
@@ -2066,7 +2068,7 @@ p.sn-sub-title {
 }
 .sn-demand-left {
   height: 472px;
-  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/contain;
+  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/cover;
 }
 .sn-demand h5 {
   padding-bottom: 40px;
@@ -2083,7 +2085,7 @@ p.sn-sub-title {
 
 
 .pc-title-box {
-  margin-top: 30px; 
+  margin-top: 30px;
 }
 .pc-title-item {
   display: flex;
@@ -2175,14 +2177,14 @@ p.sn-sub-title {
     height: 47px;
     width: 180px;
     background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
-    box-shadow: 0 0 20px 0 rgba(0,0,0,0.05);
     border-radius: 30px;
     color: #fff;
     font-family: PingFangSC-Regular;
     font-size: 16px;
     letter-spacing: 1px;
     text-align: center;
-    margin: 22px 0;
+    margin:10px 0 30px 0;
+    box-shadow: 10px 10px 200px 0 rgba(0,0,0,0.05);
     border: 1px solid #fff;
   }
   .ius-round {

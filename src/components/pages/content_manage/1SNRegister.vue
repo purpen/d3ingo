@@ -52,24 +52,28 @@
         <p>已有账户 ?
           <!-- {{prod.login}}，您可以 -->
           <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
-          或者 
+          或者
           <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
         </p>
       </div>
     </div>
     <!-- 介绍 -->
     <div class="introduce" v-if="tabVal === 1">
-      <div class="title">我是需求方</div>
-      <div class="describe">发布项目需求，找到设计服务商</div>
-      <img src="../../../assets/images/works/Release.png" alt="">
+      <div>
+        <div class="title">我是需求方</div>
+        <div class="describe">发布项目需求，找到设计服务商</div>
+      </div>
+      <img src="../../../assets/images/promote_sn/DemandSide@2x.png" alt="">
     </div>
     <div class="introduce" v-else>
-      <div class="title">我是设计服务商</div>
-      <div class="describe">为客户提供专业的设计服务</div>
+      <div>
+        <div class="title">我是设计服务商</div>
+        <div class="describe">为客户提供专业的设计服务</div>
+      </div>
       <img src="../../../assets/images/works/Release.png" alt="">
     </div>
   </div>
-</template> 
+</template>
 <script>
   import api from '@/api/api'
   import auth from '@/helper/auth'
@@ -404,7 +408,7 @@
     width: 100%;
     padding: 30px;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
   .title{
@@ -412,14 +416,13 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(93,94,102,1);
-    margin-top: 20px;
   }
   .describe{
     font-size:14px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(159,163,167,1);
-    margin-top: 20px;
+    margin:20px 0 40px 0;
   }
   img{
     width: 282px;
@@ -455,6 +458,6 @@
     cursor: pointer;
   }
   .reg p a {
-      color: #4A90E2 
+      color: #4A90E2
   }
 </style>
