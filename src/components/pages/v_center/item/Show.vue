@@ -1384,7 +1384,7 @@ export default {
             },
             {
               name: '项目工作地点',
-              title: self.item.province_value + ', ' + self.item.city_value
+              title: self.item.company_province_value ? self.item.company_province_value + ', ' + self.item.company_city_value : ''
             },
             {
               name: '相关附件',
