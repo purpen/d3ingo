@@ -32,11 +32,7 @@
               <label for="passwd" class="password-show no-select" >记住我</label>
             </p>
             <p class="forget">
-<<<<<<< HEAD
-              <router-link class="forgetHover" :to="{name: 'forget'}">忘记密码?</router-link>
-=======
-              <router-link :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
->>>>>>> origin/zzh-dev
+              <router-link class="forgetHover" :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
