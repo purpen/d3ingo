@@ -329,6 +329,16 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/contract/JdSubmit')
   },
+  // 在线合同编辑--神农
+  {
+    path: '/vcenter/contract/sn_submit/:item_id',
+    name: 'vcenterContractSnSubmit',
+    meta: {
+      title: '在线合同编辑',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/contract/SnSubmit')
+  },
   // 合同下载
   {
     path: '/vcenter/contract/download/:unique_id',
