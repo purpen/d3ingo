@@ -138,10 +138,11 @@ function showProd() {
         login: '神农大脑',
         info: '神农大脑',
         title: '神农大脑-设计服务平台',
-        url: 'zjbdos.com',
-        fullurl: 'http://www.zjbdos.com',
-        license: '万博大数据【浙ICP备18008501号-1】',
-        copyright: 'Copyright © 2019'
+        url: 'JDCloud.com',
+        fullurl: 'https://www.jdcloud.com',
+        license: '京东云【京ICP备11041704号-31】',
+        copyright: 'Copyright © 2012-2019',
+        business: '经营许可证:【京ICP证070359号】'
       }
     default:
       return {
