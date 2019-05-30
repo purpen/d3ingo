@@ -13,8 +13,8 @@
       </div>
     <!-- 需求 -->
       <div class="demand" v-if="tabVal === 1">
-        <div class="demand_cont">
-          <div class="demand_list margin-right" v-for="(item,index) in categoryList">
+        <div class="demand_cont"  v-loading="isLoading">
+          <div class="demand_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="demandImg[index].img" alt="">
               <router-link class="title" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
           </div>
@@ -23,27 +23,12 @@
       </div>
       <!-- 设计 -->
       <div class="design" v-if="tabVal === 2">
-        <div class="design_cont">
-          <div class="design_list margin-right">
-              <img src="../../../assets/images/works/HelpMob.png" alt="">
-              <span class="title">注册与认证</span>
+        <div class="design_cont"  v-loading="isLoading">
+          <div class="design_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
+              <img :src="designImg[index].img" alt="" alt="">
+              <router-link class="title" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
           </div>
-          <div class="design_list margin-right">
-              <img src="../../../assets/images/works/HelpMob.png" alt="">
-              <span class="title">注册与认证</span>
-          </div>
-          <div class="design_list">
-              <img src="../../../assets/images/works/HelpMob.png" alt="">
-              <span class="title">注册与认证</span>
-          </div>
-          <div class="design_list margin-right">
-              <img src="../../../assets/images/works/HelpMob.png" alt="">
-              <span class="title">注册与认证</span>
-          </div>
-          <div class="design_list margin-right">
-              <img src="../../../assets/images/works/HelpMob.png" alt="">
-              <span class="title">注册与认证</span>
-          </div>
+          <div class="design_list_last"></div>
           <div class="design_list_last"></div>
         </div>
       </div>
@@ -64,6 +49,12 @@
           { img: require('../../../assets/images/works/ProjectDocking.png') },
           { img: require('../../../assets/images/works/projectManagement.png') },
           { img: require('../../../assets/images/works/evaluate.png') }
+        ],
+        designImg: [
+          { img: require('../../../assets/images/works/register.png') },
+          { img: require('../../../assets/images/works/UndertakingProjects.png') },
+          { img: require('../../../assets/images/works/projectManagement.png') },
+          { img: require('../../../assets/images/works/AcceptanceSettlement.png') }
         ]
       }
     },
@@ -71,10 +62,7 @@
 
     },
     methods: {
-      tabClick(val) {
-        this.tabVal = val
-      },
-      updateType(type) {
+      tabClick(type) {
         if (this.tabVal === type) {
           return
         }
