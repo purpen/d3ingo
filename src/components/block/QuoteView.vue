@@ -144,6 +144,7 @@ export default {
     font-family: PingFangSC-Medium;
     font-weight: 500;
     color: rgba(255,90,95,1);
+    white-space: nowrap
   }
   .number-people {
     font-size: 14px;

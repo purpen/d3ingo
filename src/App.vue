@@ -134,7 +134,7 @@ export default {
         console.log(this.timer + 's')
         this.fetchUser()
         window.clearInterval(this.intervalId)
-        if (this.timer > 1200) {
+        if (this.timer > 7200) {
           console.log('刷新页面')
           window.location.reload(true)
         } else {

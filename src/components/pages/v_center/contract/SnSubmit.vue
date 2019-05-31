@@ -72,7 +72,7 @@
               </el-form-item>
               -->
               <p id="line-hei-30">依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：</p>
-              <p id="line-hei-30">客户（以下简称“客户”）在“京东云艺火”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；</p>
+              <p id="line-hei-30">客户（以下简称“客户”）在“京东神农大脑”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；</p>
               <p id="line-hei-30">甲方作为平台官方授权的合作伙伴，将项目发包给乙方，并有权为履行本合同之目的，要求乙方履行本合同项下全部或部分权利义务；</p>
               <p id="line-hei-30">甲、乙双方一致同意按照本合同的约定，由乙方向客户提供项目所包含的设计服务成果交付等相应支持，为客户实现设计需求。</p>
               <p id="line-hei-30">关于双方合作的相关细节约定如下：</p>
@@ -329,7 +329,7 @@
   import { CONTRACT_THN, CONTRACT_SCALE, CONTRACT_JD } from '@/config'
 
   export default {
-    name: 'vcenter_contract_jd_submit',
+    name: 'vcenter_contract_sn_submit',
     components: {
       vMenu,
       vMenuSub
@@ -573,18 +573,6 @@
         return CONTRACT_SCALE
       }
     },
-    // watch: {
-    //   form: {
-    //     deep: true,
-    //     handler: function (val, oldVal) {
-    //       if (val.stages && val.stages.length > 0) {
-    //         this.stateMsg = '重置阶段'
-    //       } else {
-    //         this.stateMsg = '生成阶段'
-    //       }
-    //     }
-    //   }
-    // },
     created () {
       var that = this
       var id = this.$route.params.item_id
@@ -649,7 +637,7 @@
                           })
                         }
                       }
-//                      console.log(response.data.data)
+                      // console.log(response.data.data)
                     }
                   })
               } else {  // 合同首次创建，从项目表调用基础信息

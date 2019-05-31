@@ -694,6 +694,11 @@
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
                 }
+                // 如果是神农大脑，跳转
+                if (item.contract.source === 4) {
+                  that.$router.replace({name: 'vcenterContractSnSubmit', params: {item_id: id}})
+                  return
+                }
                 that.contractId = item.contract.id
                 that.$http.get(api.contractId.format(item.contract.unique_id), {})
                   .then(function (response) {
@@ -751,6 +756,11 @@
                 // 如果是京东，跳转
                 if (item.item.source === 1) {
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
+                  return
+                }
+                // 如果是神农大脑，跳转
+                if (item.item.source === 4) {
+                  that.$router.replace({name: 'vcenterContractSnSubmit', params: {item_id: id}})
                   return
                 }
                 that.form.item_content = that.item.item.item_content ? that.item.item.item_content : ''
