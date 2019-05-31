@@ -259,6 +259,7 @@ export default {
             this.$router.push({name: 'projectMatch', params: {id: this.id}})
           } else {
             this.$message.error(res.data.meta.message)
+            console.log(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err)
