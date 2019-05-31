@@ -1,65 +1,67 @@
 <template>
-  <div class="login">
-    <div class="from">
-      <!-- tab -->
-      <div class="login-title">
-          登录
-      </div>
-      <!-- 表单 -->
-      <div class="from_list">
+  <div class="bg">
+    <div class="login">
+      <div class="from">
+        <!-- tab -->
+        <div class="login-title">
+            登录
+        </div>
+        <!-- 表单 -->
+        <div class="from_list">
 
-        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="0px" class="inner-place">
-          <el-form-item label="" prop="account" class="input">
-            <el-input v-model="form.account" name="username"
-              :maxlength="11"
-              ref="account" auto-complete="on"
-              placeholder="手机号" @change="checkAccount"></el-input>
-          </el-form-item>
-          <el-form-item label="" prop="password" class="input">
-            <el-input v-model="form.password" type="password" name="password" ref="password"
-                      placeholder="密码"></el-input>
-          </el-form-item>
-          <el-form-item v-if="showImgCode" label="" prop="imgCode">
-            <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
-              <template slot="append">
-                <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
-              </template>
-            </el-input>
-          </el-form-item>
-          <div class="opt">
-            <p class="rember">
-              <input type="checkbox" id="passwd"/>
-              <label for="passwd" class="password-show no-select" >记住我</label>
-            </p>
-            <p class="forget">
-              <router-link  class="forgetHover" :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
-            </p>
+          <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="0px" class="inner-place">
+            <el-form-item label="" prop="account" class="input">
+              <el-input v-model="form.account" name="username"
+                :maxlength="11"
+                ref="account" auto-complete="on"
+                placeholder="手机号" @change="checkAccount"></el-input>
+            </el-form-item>
+            <el-form-item label="" prop="password" class="input">
+              <el-input v-model="form.password" type="password" name="password" ref="password"
+                        placeholder="密码"></el-input>
+            </el-form-item>
+            <el-form-item v-if="showImgCode" label="" prop="imgCode">
+              <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
+                <template slot="append">
+                  <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
+                </template>
+              </el-input>
+            </el-form-item>
+            <div class="opt">
+              <p class="rember">
+                <input type="checkbox" id="passwd"/>
+                <label for="passwd" class="password-show no-select" >记住我</label>
+              </p>
+              <p class="forget">
+                <router-link class="forgetHover" :to="{name: 'content_manage-SNForget'}">忘记密码?</router-link>
+              </p>
+            </div>
+            <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
+            </el-button>
+          </el-form>
+          <!-- 跳转注册 -->
+          <div class="regtShow">
+            <span>还没有账户？</span>
+            <!-- <span class="regter"> 立即注册 </span> -->
+            <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
           </div>
-          <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="btn">登录
-          </el-button>
-        </el-form>
-        <!-- 跳转注册 -->
-        <div class="regtShow">
-          <span>还没有账户？</span>
-          <!-- <span class="regter"> 立即注册 </span> -->
-          <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
-        </div>
-        <!-- 底部 -->
-        <div class="SNfooter">
-          <div class="line"></div>
-          <div class="flex">
-            <img src="../../../assets/images/promote_sn/sn_login_icon.png" class="footerImg" alt="">
-            <span class="footer_title">京东云登录</span>
+          <!-- 底部 -->
+          <div class="SNfooter">
+            <div class="line"></div>
+            <div class="flex">
+              <img src="../../../assets/images/promote_sn/sn_login_icon.png" class="footerImg" alt="">
+              <span class="footer_title">京东云登录</span>
+            </div>
+            <div class="line"></div>
           </div>
-          <div class="line"></div>
         </div>
       </div>
-    </div>
-    <!-- 介绍 -->
-    <div class="introduce">
-      <div>
-        <div class="describe">登录神农大脑设计服务平台</div>
-        <img src="../../../assets/images/promote_sn/SignIn@2x.png" alt="" class="introduceImg">
+      <!-- 介绍 -->
+      <div class="introduce">
+        <div>
+          <div class="describe">登录神农大脑设计服务平台</div>
+          <img src="../../../assets/images/promote_sn/SignIn@2x.png" alt="" class="introduceImg">
+        </div>
       </div>
     </div>
   </div>
@@ -425,6 +427,11 @@
   }
 </script>
 <style scoped>
+  .bg{
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
+    background-size:100% 80%;
+    margin-bottom: -50px;
+  }
   .login{
     width: 880px;
     background:rgba(255,255,255,1);
@@ -519,6 +526,7 @@
   .btn:hover{
     background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%) !important;
     border: none !important;
+    box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
   }
   .btn:focus{
     background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%) !important;

@@ -1,76 +1,78 @@
 <template>
-  <div class="login">
-    <div class="from">
-      <!-- tab -->
-      <div class="tabs bb-e6">
-        <div class="tab_list" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
-          <span>需求方注册</span>
-          <!-- <div class="active" v-if="tabVal === 1"></div> -->
+  <div class="bg">
+    <div class="login">
+      <div class="from">
+        <!-- tab -->
+        <div class="tabs bb-e6">
+          <div class="tab_list" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
+            <span>需求方注册</span>
+            <!-- <div class="active" v-if="tabVal === 1"></div> -->
+          </div>
+          <!-- <div class="tab_list" :class="tabVal === 2 ? 'cor' : ''" @click="tabClick(2)">
+            <span>设计服务商</span>
+            <div class="active" v-if="tabVal === 2"></div>
+          </div> -->
         </div>
-        <!-- <div class="tab_list" :class="tabVal === 2 ? 'cor' : ''" @click="tabClick(2)">
-          <span>设计服务商</span>
-          <div class="active" v-if="tabVal === 2"></div>
-        </div> -->
-      </div>
-      <!-- 表单 -->
+        <!-- 表单 -->
 
-      <div class="register-content">
-        <el-form  :model="form" :rules="ruleForm" ref="ruleForm"
-                 class="input">
-          <el-form-item label="" prop="account">
-            <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
-          </el-form-item>
-          <el-form-item v-if="form.account && form.account.length === 11" label="" prop="imgCode">
-            <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
-              <template slot="append">
-                <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="" prop="smsCode">
-            <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
-              <template slot="append">
-                <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
-                </el-button>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="" prop="password">
-            <el-input v-model="form.password" type="password" name="password" ref="password"
-                      placeholder="密码"></el-input>
-          </el-form-item>
-          <el-form-item label="" prop="checkPassword">
-            <el-input v-model="form.checkPassword" type="password" name="checkPassword" ref="checkPassword"
-                      placeholder="确认密码"></el-input>
-          </el-form-item>
-          <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="register-btn">
-            注册
-          </el-button>
-        </el-form>
+        <div class="register-content">
+          <el-form  :model="form" :rules="ruleForm" ref="ruleForm"
+                   class="input">
+            <el-form-item label="" prop="account">
+              <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
+            </el-form-item>
+            <el-form-item v-if="form.account && form.account.length === 11" label="" prop="imgCode">
+              <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
+                <template slot="append">
+                  <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="" prop="smsCode">
+              <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+                <template slot="append">
+                  <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
+                  </el-button>
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="" prop="password">
+              <el-input v-model="form.password" type="password" name="password" ref="password"
+                        placeholder="密码"></el-input>
+            </el-form-item>
+            <el-form-item label="" prop="checkPassword">
+              <el-input v-model="form.checkPassword" type="password" name="checkPassword" ref="checkPassword"
+                        placeholder="确认密码"></el-input>
+            </el-form-item>
+            <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="register-btn">
+              注册
+            </el-button>
+          </el-form>
+        </div>
+        <div class="reg">
+          <p>已有账户 ?
+            <!-- {{prod.login}}，您可以 -->
+            <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
+            或者
+            <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
+          </p>
+        </div>
       </div>
-      <div class="reg">
-        <p>已有账户 ?
-          <!-- {{prod.login}}，您可以 -->
-          <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
-          或者
-          <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
-        </p>
+      <!-- 介绍 -->
+      <div class="introduce" v-if="tabVal === 1">
+        <div>
+          <div class="title">我是需求方</div>
+          <div class="describe">发布项目需求，找到设计服务商</div>
+        </div>
+        <img src="../../../assets/images/promote_sn/DemandSide@2x.png" alt="">
       </div>
-    </div>
-    <!-- 介绍 -->
-    <div class="introduce" v-if="tabVal === 1">
-      <div>
-        <div class="title">我是需求方</div>
-        <div class="describe">发布项目需求，找到设计服务商</div>
+      <div class="introduce" v-else>
+        <div>
+          <div class="title">我是设计服务商</div>
+          <div class="describe">为客户提供专业的设计服务</div>
+        </div>
+        <img src="../../../assets/images/works/Release.png" alt="">
       </div>
-      <img src="../../../assets/images/promote_sn/DemandSide@2x.png" alt="">
-    </div>
-    <div class="introduce" v-else>
-      <div>
-        <div class="title">我是设计服务商</div>
-        <div class="describe">为客户提供专业的设计服务</div>
-      </div>
-      <img src="../../../assets/images/works/Release.png" alt="">
     </div>
   </div>
 </template>
@@ -359,6 +361,11 @@
   }
 </script>
 <style scoped>
+  .bg{
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
+    background-size:100% 80%;
+    margin-bottom: -50px;
+  }
   .login{
     width: 880px;
     margin: 40px auto;
@@ -444,7 +451,9 @@
   }
   .register-btn:hover {
     background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%);
+    box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
     color: #fff;
+    border: none;
   }
   .reg {
     text-align: center;

@@ -459,11 +459,12 @@
               that.$message.error('阶段比例之和应为60!')
               return false
             }
-            let stagePrice = that.form.stage_money
-            if (totalAmount !== stagePrice) {
-              that.$message.error('阶段金额总和不正确！')
-              return false
-            }
+            // let stagePrice = that.form.stage_money
+            // console.log(stagePrice - totalAmount > 0.01)
+            // if (stagePrice - totalAmount > 0.01) {
+            //   that.$message.error('阶段金额总和不正确！')
+            //   return false
+            // }
             let apiUrl = null
             let method = null
 
@@ -537,7 +538,7 @@
           if (!error) {
             let total = self.form.total
             let per = self.form.stages[index].percentage.mul(0.01)
-            self.form.stages[index].amount = total.mul(per).toFixed(2)
+            self.form.stages[index].amount = total.mul(per)
             // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })

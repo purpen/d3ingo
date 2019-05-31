@@ -140,9 +140,9 @@
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
                     <div v-if="surveyDemandCompany">
-                      <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id">拒绝此单
                         <!-- noOfferDialog -->
-                      </el-button>
+                      <!-- <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id">拒绝此单
+                      </el-button> -->
                       <el-button class="is-custom" @click="greeCompanyBtn" :index="index"
                                 :company_id="d.design_company.id" type="primary">确认合作
                       </el-button>

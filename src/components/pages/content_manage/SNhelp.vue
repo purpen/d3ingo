@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg" v-loading="isLoading">
     <!-- tab -->
       <div class="tabs">
         <div class="tab_list" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
@@ -13,20 +13,22 @@
       </div>
     <!-- 需求 -->
       <div class="demand" v-if="tabVal === 1">
-        <div class="demand_cont"  v-loading="isLoading">
+        <div class="demand_cont">
           <div class="demand_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="demandImg[index].img" alt="">
-              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <a class="title routerCss">{{item.name}}</a>
+              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
           </div>
           <div class="demand_list_last"></div>
         </div>
       </div>
       <!-- 设计 -->
       <div class="design" v-if="tabVal === 2">
-        <div class="design_cont"  v-loading="isLoading">
+        <div class="design_cont">
           <div class="design_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="designImg[index].img" alt="" alt="">
-              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <a class="title routerCss">{{item.name}}</a>
+              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
           </div>
           <div class="design_list_last"></div>
           <div class="design_list_last"></div>
@@ -95,6 +97,10 @@
   }
 </script>
 <style scoped>
+  .bg{
+    background: #F6F8FF;
+    margin-bottom: -50px;
+  }
   .tabs{
     display: flex;
     justify-content: center;

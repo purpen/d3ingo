@@ -131,7 +131,7 @@ function showProd() {
       }
     case 'sn':
       return {
-        id: 3,
+        id: 4,
         name: 'sn',
         logo: require('assets/images/promote_sn/logo01@2x.png'),
         logo2: require('assets/images/promote_sn/logo02@2x.png'),

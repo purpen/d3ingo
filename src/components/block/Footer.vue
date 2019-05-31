@@ -1,21 +1,21 @@
 <template>
   <div class="footer clear" v-if="!hideFooter">
-    <div v-if="prod.id === 1 || prod.id === 3" :class="[{'sn-footer': prod.id === 3}]">
+    <div v-if="prod.id === 1 || prod.id === 4" :class="[{'sn-footer': prod.id === 4}]">
       <el-row class="jd-cloud-title">
         <el-col class="text-center">
           <div class="j-c-item">
             <router-link v-if="prod.id === 1" :to="{name: 'SaaSIndex'}">艺火首页</router-link>
-            <router-link v-else-if="prod.id === 3" :to="{name: 'SaaSIndex'}">首页</router-link>
+            <router-link v-else-if="prod.id === 4" :to="{name: 'SaaSIndex'}">首页</router-link>
           </div>
           <div  class="j-c-item">
             <router-link  v-if="prod.id === 1" :to="{name: 'trade'}" class="">交易保障</router-link>
-            <router-link  v-else-if="prod.id === 3" :to="{name: 'home-SNTrade'}" class="">交易保障</router-link>
+            <router-link  v-else-if="prod.id === 4" :to="{name: 'home-SNTrade'}" class="">交易保障</router-link>
           </div>
           <div class="j-c-item">
             <router-link v-if="prod.id === 1" :to="{name: 'terms'}" class="">服务条款</router-link>
-            <router-link  v-else-if="prod.id === 3" :to="{name: 'home-SNItem'}" class="">服务条款</router-link>
+            <router-link  v-else-if="prod.id === 4" :to="{name: 'home-SNItem'}" class="">服务条款</router-link>
           </div>
-          <div v-if="prod.id === 3" class="j-c-item">
+          <div v-if="prod.id === 4" class="j-c-item">
             <router-link :to="{name: 'SNhelp'}" class="">帮助</router-link>
           </div>
         </el-col>
@@ -340,7 +340,7 @@
     height: 100px;
   }
   .jd-cloud-title {
-    padding: 40px 0 20px 0;
+    padding: 40px 0 0 0;
     border-bottom: 1px solid hsla(0,0%,100%,.1);
   }
   .jd-cloud-title .j-c-item:last-child {
