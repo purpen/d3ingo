@@ -14,7 +14,7 @@ var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var os = require('os')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === 'jdc') {
+if (costum.CUSTOM === 'jdc' || costum.CUSTOM === 'sn') {
   favicon = './static/yh.ico'
 } else if (costum.CUSTOM === 'yw') {
   favicon = './static/yw.png'

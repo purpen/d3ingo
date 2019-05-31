@@ -87,21 +87,35 @@
           <div class="arrow-right"></div>
         </div>
       </div>
-      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
+      <div class="flex-center pad-left-47">
         <div class="navegete-round flex-center" @click="viewContractBtn(2)">
           <div class="navegete-to">查看服务商与太火鸟的合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
-      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
+      <div class="flex-center pad-left-47">
         <div class="navegete-round flex-center" @click="viewContractBtn(3)">
-          <div class="navegete-to">查看太火鸟与京东的合同</div>
+          <div class="navegete-to">财务专用合同</div>
           <div class="arrow-right"></div>
         </div>
       </div>
     </div>
-    <div class="flex pad-top-18" ref="contract" v-if="contract.source === 0">
-      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
+    <div class="flex pad-top-18" ref="contract" v-else-if="contract.source === 4">
+      <div class="flex-center">
+        <div class="navegete-round flex-center" @click="viewContractBtn('太火鸟')">
+          <div class="navegete-to">查看服务商与太火鸟的合同</div>
+          <div class="arrow-right"></div>
+        </div>
+      </div>
+      <div class="flex-center pad-left-47">
+        <div class="navegete-round flex-center" @click="viewContractBtn(3)">
+          <div class="navegete-to">财务专用合同</div>
+          <div class="arrow-right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex pad-top-18" ref="contract" v-else>
+      <div class="flex-center">
         <div class="navegete-round flex-center" @click="viewContractBtn('太火鸟')">
           <div class="navegete-to">查看服务商与太火鸟的合同</div>
           <div class="arrow-right"></div>
@@ -326,14 +340,14 @@ export default {
     cursor: pointer;
   }
   .navegete-to {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(255,90,95,1);
   }
   .arrow-right {
-    width: 14px;
-    height: 14px;
+    width: 20px;
+    height: 20px;
     background: url('../../../assets/images/icon/rightArrow@2x.png') no-repeat center / contain;
   }
   .title {
@@ -379,19 +393,19 @@ export default {
     background: url('../../../assets/images/icon/ellipsis.png') no-repeat center / contain;
   }
   .order-money {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
     color: rgba(250,173,21,1);
   }
   .order-date {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(153,153,153,1);
   }
   .order-title {
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);

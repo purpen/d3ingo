@@ -1,12 +1,13 @@
 
 <template>
-  <div class="sn-forget">
-    <div class="forget-cart">
-      <div class="cart-left">
-        <h4 class="bb-e6">找回密码</h4>
+  <div class="bg">
+    <div class="sn-forget">
+      <div class="forget-cart">
+        <div class="cart-left">
+          <h4 class="bb-e6">找回密码</h4>
 
 
-      <div class="forget-content">
+        <div class="forget-content">
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="username">
@@ -42,12 +43,13 @@
           </el-button>
         </el-form>
 
-      </div>
-      </div>
-      <div class="cart-right">
-        <p>找回您的密码</p>
-        <div class="img-box">
-          <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt="">
+        </div>
+        </div>
+        <div class="cart-right">
+          <p>找回您的密码</p>
+          <div class="img-box">
+            <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -264,6 +266,11 @@ export default {
 }
 </script>
 <style scoped>
+  .bg{
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
+    background-size:100% 80%;
+    margin-bottom: -50px;
+  }
 .sn-forget {
   padding: 30px 0;
 }
