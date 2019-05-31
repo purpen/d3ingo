@@ -444,7 +444,9 @@
   }
   .register-btn:hover {
     background:linear-gradient(45deg,rgba(22,170,239,1) 0%,rgba(187,99,229,1) 100%);
+    box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
     color: #fff;
+    border: none;
   }
   .reg {
     text-align: center;
