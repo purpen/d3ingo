@@ -340,7 +340,7 @@
     height: 100px;
   }
   .jd-cloud-title {
-    padding: 40px 0 20px 0;
+    padding: 40px 0 0 0;
     border-bottom: 1px solid hsla(0,0%,100%,.1);
   }
   .jd-cloud-title .j-c-item:last-child {
