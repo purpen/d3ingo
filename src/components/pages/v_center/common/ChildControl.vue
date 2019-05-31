@@ -223,7 +223,7 @@
             name = 'projectType'
             break
           case 3:
-            name = 'projectInfo'
+            name = 'projectRelease'
             break
         }
         this.$router.push({name: name, params: {id: itemId}})

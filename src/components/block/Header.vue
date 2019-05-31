@@ -1150,6 +1150,7 @@
   .sn-header .nav-header .nav-right .sn-register {
     border: none;
     height: 24px;
+    padding: 0 30px !important;
     line-height: 24px;
     margin-top: 23px;
     color: #fff !important;
