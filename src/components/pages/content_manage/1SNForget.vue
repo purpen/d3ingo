@@ -8,9 +8,10 @@
 
       <div class="forget-content">
 
-        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input pass-place">
+        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="username">
-            <el-input v-model="form.username" ref="username" auto-complete="on"
+            <el-input v-model="form.username" ref="account"
+            name="username"
                       placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="imgCode">
@@ -21,7 +22,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
-            <el-input v-model="form.smsCode" auto-complete="off" ref="smsCode" placeholder="验证码">
+            <el-input v-model="form.smsCode"  ref="smsCode" name="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
@@ -112,17 +113,17 @@ export default {
       const that = this
       that.$refs[formName].validate((valid) => {
         if (valid) {
-          var username = this.form.username
-          var password = this.form.password
-          var smsCode = this.form.smsCode
-
+          let phone = this.form.username
+          let password = this.form.password
+          let smsCode = this.form.smsCode
+          console.log(this.form)
           that.isLoadingBtn = true
           // 验证通过，重置
-          that.$http.post(api.forget, {phone: username, password: password, sms_code: smsCode})
+          that.$http.post(api.forget, {phone: phone, password: password, sms_code: smsCode})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
                 that.$message.success('重置密码成功!')
-                that.$router.replace('/login')
+                that.$router.push({name: 'SNlogin'})
                 return
               } else if (response.data.meta.status_code === 412) {
                 that.$message.error(response.data.meta.message)
