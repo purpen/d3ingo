@@ -460,10 +460,14 @@
               return false
             }
             let stagePrice = that.form.stage_money
-            if (totalAmount !== stagePrice) {
+            console.log(stagePrice - totalAmount > 0.01)
+            if (stagePrice - totalAmount > 0.01) {
               that.$message.error('阶段金额总和不正确！')
               return false
             }
+            row.item_stage.forEach(d => {
+              d.amount = d.amount.toFixed(2)
+            })
             let apiUrl = null
             let method = null
 
@@ -537,7 +541,7 @@
           if (!error) {
             let total = self.form.total
             let per = self.form.stages[index].percentage.mul(0.01)
-            self.form.stages[index].amount = total.mul(per).toFixed(2)
+            self.form.stages[index].amount = total.mul(per)
             // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })
