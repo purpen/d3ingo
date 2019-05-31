@@ -1,6 +1,6 @@
 <template>
-  <div class="bg">
-    <div class="login">
+  <div class="bg margin-b-m50">
+    <div class="login bg-f">
       <div class="from">
         <!-- tab -->
         <div class="tabs bb-e6">
@@ -61,7 +61,7 @@
       <!-- 介绍 -->
       <div class="introduce" v-if="tabVal === 1">
         <div>
-          <div class="title">我是需求方</div>
+          <div class="title text-center">我是需求方</div>
           <div class="describe">发布项目需求，找到设计服务商</div>
         </div>
         <img src="../../../assets/images/promote_sn/DemandSide@2x.png" alt="">
@@ -362,9 +362,7 @@
 </script>
 <style scoped>
   .bg{
-    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
-    background-size:100% 80%;
-    margin-bottom: -50px;
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/2880px 400px;
   }
   .login{
     width: 880px;
