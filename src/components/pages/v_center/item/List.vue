@@ -903,7 +903,7 @@
     font-size: 1.4rem;
     color: #222;
     margin-top: 20px;
-    line-height: 0;
+    line-height: 1;
   }
 
   .opt {

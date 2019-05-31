@@ -731,28 +731,28 @@
           </div>
           <div class="case-product">
             <div v-for="(d, index) in caseData" :key="index">
-              <el-row :gutter="20" v-if="d.case === currentCase">
+              <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
-                  <el-row :gutter="20">
+                  <el-row :gutter="10">
                     <el-col :span="12">
-                      <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
+                      <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h1}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="12">
-                      <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
+                      <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h2}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="24">
-                      <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}">
+                      <div class="product-left3 margin-t-10" :style="{background:'url('+d.img3 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h3}}</span></div>
                       </div>
                     </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="12">
-                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}">
+                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /cover'}">
                     <div class="f-layer"><span>{{d.h4}}</span></div>
                   </div>
                 </el-col>
@@ -830,66 +830,67 @@
       </div>
       <!-- 发布需求 -->
       <div class="sn-demand margin-t-14">
-        <div class="">
-          <el-row>
-            <el-col :span="13">
-              <div class="sn-demand-left">
-
-              </div>
-            </el-col>
-
-            <el-col :span="10">
-              <h5>您还在等什么？快来发布需求吧！</h5>
-              <el-col class="header-style">
-                <el-col :span="24" class="ius-round">
-                  <span class="free-color"></span>立即发布项目需求
-                </el-col>
-                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+        <div class="bg-f6f8ff padding-b50">
+          <div class="container">
+            <div class="sn-demand-box">
+                <div class="sn-demand-left">
+                  <div class="img-box"></div>
+                </div>
+                <div class="sn-demand-right">
+                  <h5>您还在等什么？快来发布需求吧！</h5>
                   <el-row>
-                    <el-col :span="20" :offset="2">
-                      <el-form-item prop="demand">
-                        <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="20" :offset="2">
-                      <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="20" :offset="2">
-                      <el-row :gutter="10">
-                          <el-col :span="14">
-                              <el-form-item prop="account">
-                                <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
-                              </el-form-item>
-                          </el-col>
-
-                          <el-col :span="10">
-                            <el-form-item prop="smsCode">
-                              <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
-                                <template slot="append">
-                                  <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
-                                  </el-button>
-                                </template>
-                              </el-input>
+                    <el-col class="header-style">
+                      <el-col :span="24" class="ius-round">
+                        <span class="free-color"></span>立即发布项目需求
+                      </el-col>
+                      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                        <el-row>
+                          <el-col :span="20" :offset="2">
+                            <el-form-item prop="demand">
+                              <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
                             </el-form-item>
                           </el-col>
-                      </el-row>
+                        </el-row>
+                        <el-row>
+                          <el-col :span="20" :offset="2">
+                            <el-form-item prop="contact">
+                              <el-input v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
+                            </el-form-item>
+                          </el-col>
+                        </el-row>
+                        <el-row>
+                          <el-col :span="20" :offset="2">
+                            <el-row :gutter="10">
+                                <el-col :span="14">
+                                    <el-form-item prop="account">
+                                      <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                                    </el-form-item>
+                                </el-col>
+
+                                <el-col :span="10">
+                                  <el-form-item prop="smsCode">
+                                    <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                                      <template slot="append">
+                                        <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                                        </el-button>
+                                      </template>
+                                    </el-input>
+                                  </el-form-item>
+                                </el-col>
+                            </el-row>
+                          </el-col>
+                        </el-row>
+                        <el-col>
+                          <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                            立即发布需求
+                          </button>
+                        </el-col>
+                      </el-form>
                     </el-col>
                   </el-row>
-                  <el-col>
-                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      立即发布需求
-                    </button>
-                  </el-col>
-                </el-form>
-              </el-col>
-            </el-col>
-          </el-row>
+                </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -897,6 +898,7 @@
         title="发布项目需求"
         :visible.sync="boolFindDesign"
         width="480px"
+        :close-on-click-modal="false"
         class="find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
@@ -1678,6 +1680,9 @@ export default {
 </script>
 <style scoped>
 /* sn start */
+.bg-f6f8ff {
+  background: #F6F8FF;
+}
 .sn-fetch-btn {
   border:1px solid #3171FF;
   color: #3171FF;
@@ -1868,7 +1873,7 @@ p.sn-sub-title {
 .product-left1,
 .product-left2,
 .product-left3 {
-  height: 280px;
+  height: 285px;
   position: relative;
 }
 .f-layer {
@@ -2063,12 +2068,26 @@ p.sn-sub-title {
 }
 
 .sn-demand {
-  padding: 176px 34px 50px;
-  background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat left top/cover;
+  padding-top: 176px;
+  background:url('../../../assets/images/promote_sn/footer_bg.png') no-repeat left top/contain;
+}
+.sn-demand-box {
+  display: flex;
 }
 .sn-demand-left {
+  position: relative;
+  width: 800px;
+}
+.sn-demand-left .img-box {
+  position: absolute;
+  left: -80px;
+  width: 800px;
   height: 472px;
-  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/cover;
+  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/contain;
+}
+.sn-demand-right {
+  display: flex;
+  flex-direction: column;
 }
 .sn-demand h5 {
   padding-bottom: 40px;

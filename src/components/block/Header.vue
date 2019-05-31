@@ -245,7 +245,7 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">免费注册</el-menu-item>
               <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
               <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
@@ -1132,6 +1132,39 @@
   /* .sn-header .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu{
     color: #666666;
   } */
-
+  .black-header  .el-menu-info .el-submenu .el-submenu__title .b-nickname {
+    color: #fff;
+  }
+  .nav-header .nav-right a .fx-icon-notice:before {
+    color: #fff;
+  }
+  .black-header .el-menu.el-menu--popup {
+    background: #fff;
+  }
+  .black-header .el-submenu__title .el-icon-arrow-down {
+    color: #fff;
+  }
+  .sn-header .nav-header .nav-right .sn-register {
+    border: none;
+    height: 24px;
+    line-height: 24px;
+    margin-top: 23px;
+    color: #fff !important;
+    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    border-radius: 2px;
+    transition: 0.268s all ease;
+  }
+  .sn-header .nav-header .nav-right .sn-register:hover {
+    background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    color: #fff!important;
+  }
+  .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+  .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #3171FF;
+  }
+  .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):focus,
+  .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):hover {
+    color: #ffffff;
+  }
   /* 神农大脑 end*/
 </style>
