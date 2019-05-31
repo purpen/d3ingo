@@ -838,7 +838,7 @@
               </div>
             </el-col>
 
-            <el-col :span="10">
+            <el-col :span="10" style="margin-left:-100px;">
               <h5>您还在等什么？快来发布需求吧！</h5>
               <el-col class="header-style">
                 <el-col :span="24" class="ius-round">
@@ -883,7 +883,7 @@
                   </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      立即发布需求
+                        立即发布需求
                     </button>
                   </el-col>
                 </el-form>
@@ -2068,7 +2068,7 @@ p.sn-sub-title {
 }
 .sn-demand-left {
   height: 472px;
-  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat left/cover;
+  background: url('../../../assets/images/promote_sn/BottomPicture@2x.png') no-repeat right/contain;
 }
 .sn-demand h5 {
   padding-bottom: 40px;
@@ -2184,8 +2184,11 @@ p.sn-sub-title {
     letter-spacing: 1px;
     text-align: center;
     margin:10px 0 30px 0;
-    box-shadow: 10px 10px 200px 0 rgba(0,0,0,0.05);
-    border: 1px solid #fff;
+    /* box-shadow:0px 0px 100px 0px rgba(0,0,0,0.3); */
+    border: transparent
+  }
+  .issue-bt:hover{
+    box-shadow:0px 0px 15px 0px rgba(0,0,0,0.3);
   }
   .ius-round {
     font-family: PingFangSC-Light;
