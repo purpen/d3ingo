@@ -429,7 +429,8 @@
 <style scoped>
   .bg{
     background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
-    border: 1px solid red;
+    background-size:100% 80%;
+    margin-bottom: -50px;
   }
   .login{
     width: 880px;

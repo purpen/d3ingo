@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg">
     <!-- tab -->
       <div class="tabs">
         <div class="tab_list" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
