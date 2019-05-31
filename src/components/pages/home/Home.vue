@@ -760,7 +760,7 @@
         this.prompt = false
       },
       toServer() {
-        this.$router.push({name: 'register', params: {type: 2}})
+        this.$router.push({name: 'registerWithType', params: {type: 2}})
       },
       toPrompt() {
         this.prompt = true

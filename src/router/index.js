@@ -377,6 +377,14 @@ let routes = [
     component: require('@/components/pages/auth/choiceIdentity')
   },
   {
+    path: '/register/:type',
+    name: 'registerWithType',
+    meta: {
+      title: '注册'
+    },
+    component: require('@/components/pages/auth/Register')
+  },
+  {
     path: '/register',
     name: 'register',
     meta: {

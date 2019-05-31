@@ -164,7 +164,7 @@ export default {
   methods: {
     upload() {
       store.commit(types.PREV_URL_NAME, 'InnovationIndex')
-      this.$router.push({name: 'register', params: { type: 2 }})
+      this.$router.push({name: 'registerWithType', params: { type: 2 }})
     }
   },
   computed: {
