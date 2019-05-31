@@ -769,12 +769,12 @@
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
-            <div @click="changeOfferType('product')" :class="[{'active': currentOffer === 'product'}]">产品设计</div>
+            <!-- <div @click="changeOfferType('product')" :class="[{'active': currentOffer === 'product'}]">产品设计</div> -->
             <div @click="changeOfferType('packing')" :class="[{'active': currentOffer === 'packing'}]">包装设计</div>
-            <div @click="changeOfferType('vidio')" :class="[{'active': currentOffer === 'vidio'}]">视频制作</div>
+            <!-- <div @click="changeOfferType('vidio')" :class="[{'active': currentOffer === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="blank60 offer-content">
-              <div v v-for="(item, i) in snOfferprint" :key="i" class="print-box">
+              <div v v-for="(item, i) in snOfferData" :key="i" class="print-box">
                 <div class="print-item">
                   <div class="img-box">
                     <img :src="item.img" alt="">
@@ -1216,51 +1216,152 @@ export default {
         }
       ],
       currentCase: 'product',
-      currentOffer: 'product',
-      snOfferprint: [
+      currentOffer: 'logo',
+      snOfferData: [],
+      snOfferprintPacking: [
         {
           img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
           h1: '基础版',
-          h2: '推荐1名设计师服务',
-          h3: ' 设计2款3d产品创意方案任选其一',
-          h4: ' 选中设计方案支持2次免费修改',
-          h5: '专业设计顾问全程服务',
-          h6: ' 签订合同，开具发票',
-          money: '1万'
+          h2: '1.推荐1名设计师服务',
+          h3: '2.设计2款3d产品创意方案任选其一',
+          h4: '3. 选中设计方案支持2次免费修改',
+          h5: '4专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          money: '2万'
         },
         {
           img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
           h1: '进阶版',
-          h2: '推荐2名设计师服务',
-          h3: ' 设计4款3d产品创意方案任选其一',
-          h4: ' 选中设计方案支持3次免费修改',
-          h5: '专业设计顾问全程服务',
-          h6: '签订合同，开具发票',
-          h7: '半年内设计方案免费咨询',
+          h2: '1.推荐2名设计师服务',
+          h3: '2.设计4款3d产品创意方案任选其一',
+          h4: '3.选中设计方案支持3次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.半年内设计方案免费咨询',
           money: '3万'
         },
         {
           img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
           h1: '综合版',
-          h2: '推荐3名设计师服务',
-          h3: ' 设计6款3d产品创意方案任选其一',
-          h4: ' 选中设计方案支持4次免费修改',
-          h5: '专业设计顾问全程服务',
-          h6: '签订合同，开具发票',
-          h7: '一年内设计方案免费咨询',
-          h8: '方案执行全程跟踪',
+          h2: '1.推荐3名设计师服务',
+          h3: '2.设计6款3d产品创意方案任选其一',
+          h4: '3.选中设计方案支持4次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.一年内设计方案免费咨询',
+          h8: '7.方案执行全程跟踪',
           money: '5万'
         },
         {
           img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
           h1: '全能版',
-          h2: '推荐4名设计师服务',
-          h3: ' 设计8款3d产品创意方案任选其一',
-          h4: ' 选中设计方案支持6次免费修改',
-          h5: '专业设计顾问全程服务',
-          h6: ' 签订合同，开具发票',
-          h7: '一年内设计方案免费咨询',
-          h8: '一对一客服方案执行全程跟踪',
+          h2: '1.推荐4名设计师服务',
+          h3: '2.设计8款3d产品创意方案任选其一',
+          h4: '3.选中设计方案支持6次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5. 签订合同，开具发票',
+          h7: '6.一年内设计方案免费咨询',
+          h8: '7.一对一客服方案执行全程跟踪',
+          money: '8万'
+        }
+      ],
+      snOfferprintLogo: [
+        {
+          img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
+          h1: '基础版',
+          h2: '1.推荐1名设计师服务',
+          h3: '2.设计3款logo方案任选其一',
+          h4: '3.选中设计方案支持2次免费修改',
+          h5: '4专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          money: '2万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
+          h1: '进阶版',
+          h2: '1.推荐2名设计师服务',
+          h3: '2.设计4款logo方案任选其一',
+          h4: '3.选中设计方案支持3次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.半年内logo方案免费应用咨询',
+          money: '3万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
+          h1: '综合版',
+          h2: '1.推荐3名设计师服务',
+          h3: '2.设计6款创意方案任选其一',
+          h4: '3.选中设计方案支持4次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.一年内logo方案免费应用咨询',
+          h8: '7.logo应用执行全程跟踪指导',
+          money: '5万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
+          h1: '全能版',
+          h2: '1.推荐4名设计师服务',
+          h3: '2.设计10款创意方案任选其一',
+          h4: '3.选中设计方案支持5次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5. 签订合同，开具发票',
+          h7: '6.一年内logo方案免费应用咨询',
+          h8: '7.logo应用执行全程跟踪指导',
+          money: '8万'
+        }
+      ],
+      snOfferprintVision: [
+        {
+          img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
+          h1: '基础版',
+          h2: '1.推荐1名设计师服务',
+          h3: '2.设计2套方案任选其一',
+          h4: '3.选中设计方案支持2次免费修改',
+          h5: '4专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过10项',
+          h8: '7.出具vi标准应用手册1本',
+          money: '2万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
+          h1: '进阶版',
+          h2: '1.推荐2名设计师服务',
+          h3: '2.设计3套方案任选其一',
+          h4: '3.选中设计方案支持3次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过15项',
+          h8: '7.出具vi标准应用手册2本',
+          h9: '8.半年内VI方案免费应用咨询',
+          money: '3万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
+          h1: '综合版',
+          h2: '1.推荐3名设计师服务',
+          h3: '2.设计4套方案任选其一',
+          h4: '3.选中设计方案支持5次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过30项',
+          h8: '7.出具vi标准应用手册4本',
+          h9: '8.半年内VI方案免费应用咨询',
+          money: '5万'
+        },
+        {
+          img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
+          h1: '全能版',
+          h2: '1.推荐4名设计师服务',
+          h3: '2.设计8套方案任选其一',
+          h4: '3.选中设计方案支持6次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过50项',
+          h8: '7.出具vi标准应用手册46本',
+          h9: '8.一年内VI方案免费应用咨询',
           money: '8万'
         }
       ],
@@ -1318,10 +1419,10 @@ export default {
         },
         {
           case: 'product',
-          img1: require('assets/images/promote_sn/case/product/ProductDesign01@2x.png'),
-          img2: require('assets/images/promote_sn/case/product/ProductDesign02@2x.png'),
-          img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.png'),
-          img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.png'),
+          img1: require('assets/images/promote_sn/case/product/ProductDesign01@2x.jpg'),
+          img2: require('assets/images/promote_sn/case/product/ProductDesign02@2x.jpg'),
+          img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.jpg'),
+          img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.jpg'),
           h1: '智能数控门禁（红点奖获奖作品)',
           h2: 'GYENNO睿餐智能防抖勺',
           h3: 'AMIRO LUX明肌高清化妆镜',
@@ -1329,10 +1430,10 @@ export default {
         },
         {
           case: 'vision',
-          img1: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.png'),
-          img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.png'),
-          img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.png'),
-          img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.png'),
+          img1: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
+          img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.jpg'),
+          img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.jpg'),
+          img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.jpg'),
           h1: '天晨品牌设计',
           h2: '满姐饺子品牌设计',
           h3: '韵见APP',
@@ -1442,6 +1543,7 @@ export default {
     }
     this.formatQuery(this.$route.query)
     this.generalize(this.query)
+    this.snOfferData = this.snOfferprintLogo
   },
   mounted () {
     let that = this
@@ -1666,6 +1768,13 @@ export default {
     },
     changeOfferType(e) {
       this.currentOffer = e
+      if (e === 'vision') {
+        this.snOfferData = this.snOfferprintVision
+      } else if (e === 'logo') {
+        this.snOfferData = this.snOfferprintLogo
+      } else if (e === 'packing') {
+        this.snOfferData = this.snOfferprintVision
+      }
     }
   },
   components: {
@@ -1970,7 +2079,7 @@ p.sn-sub-title {
 }
 .server-list {
   height: 260px;
-  padding: 0 7px;
+  padding: 0 3px;
 }
 .server-list > h6 {
   padding-bottom: 22px;

@@ -531,10 +531,10 @@
             let stagePrice = that.form.stage_money
             console.log(totalAmount)
             console.log(stagePrice)
-            if (totalAmount - stagePrice) {
-              that.$message.error('阶段金额总和不正确！')
-              return false
-            }
+            // if (totalAmount - stagePrice) {
+            //   that.$message.error('阶段金额总和不正确！')
+            //   return false
+            // }
             let apiUrl = null
             let method = null
 
