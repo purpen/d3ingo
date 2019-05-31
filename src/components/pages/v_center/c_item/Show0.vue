@@ -312,7 +312,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%">
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1240px" top="2%">
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
       <!--
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">

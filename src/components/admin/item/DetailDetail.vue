@@ -80,8 +80,8 @@
       <div class="grey-title">签约日期</div>
       <div class="grey-text">{{contract.true_time || '—' |timeFormat2}}</div>
     </div>
-    <div class="flex pad-top-18" ref="contract">
-      <div class="flex-center" v-if="contract.source === 1">
+    <div class="flex pad-top-18" ref="contract" v-if="contract.source === 1">
+      <div class="flex-center">
         <div class="navegete-round flex-center" @click="viewContractBtn(1)">
           <div class="navegete-to">查看客户与艺火的合同</div>
           <div class="arrow-right"></div>
@@ -89,6 +89,20 @@
       </div>
       <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
         <div class="navegete-round flex-center" @click="viewContractBtn(2)">
+          <div class="navegete-to">查看服务商与太火鸟的合同</div>
+          <div class="arrow-right"></div>
+        </div>
+      </div>
+      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
+        <div class="navegete-round flex-center" @click="viewContractBtn(3)">
+          <div class="navegete-to">查看太火鸟与京东的合同</div>
+          <div class="arrow-right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex pad-top-18" ref="contract" v-if="contract.source === 0">
+      <div class="flex-center" :class="{'pad-left-47' : contract.source === 1}">
+        <div class="navegete-round flex-center" @click="viewContractBtn('太火鸟')">
           <div class="navegete-to">查看服务商与太火鸟的合同</div>
           <div class="arrow-right"></div>
         </div>
@@ -157,6 +171,9 @@
       <div v-else-if="contractEvt === 2">
         <v-jd-design-contract-view :propForm="contract"></v-jd-design-contract-view>
       </div>
+      <div v-else-if="contractEvt === 3">
+        <v-jd-THN-contract-view :propForm="contract"></v-jd-THN-contract-view>
+      </div>
       <div v-else>
         <v-contract-view :propForm="contract"></v-contract-view>
       </div>
@@ -171,12 +188,14 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
 const vJdDemandContractView = () => import('@/components/block/JdDemandContractView')
 const vJdDesignContractView = () => import('@/components/block/JdDesignContractView')
+const vJdTHNContractView = () => import('@/components/block/JD&THN')
 export default {
   components: {
     vQuoteView,
     vContractView,
     vJdDemandContractView,
-    vJdDesignContractView
+    vJdDesignContractView,
+    vJdTHNContractView
   },
   props: ['quotation', 'contract', 'payOrders', 'oldItem', 'itemStage', 'trueDesign', 'toContras'],
   data() {
@@ -198,10 +217,13 @@ export default {
           that.contract.source_value = '太火鸟'
           break
         case 1:
-          that.contract.source_value = '京东/艺火'
+          that.contract.source_value = '京东云/艺火'
           break
         case 2:
           that.contract.source_value = '义乌'
+          break
+        case 4:
+          that.contract.source_value = '京东云/神农大脑'
           break
       }
       for (let index in that.itemStage) {

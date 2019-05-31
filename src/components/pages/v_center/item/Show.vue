@@ -139,12 +139,19 @@
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
-                    <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id" >拒绝此单
-                      <!-- noOfferDialog -->
-                    </el-button>
-                    <el-button class="is-custom" @click="greeCompanyBtn" :index="index"
-                               :company_id="d.design_company.id" type="primary">确认合作
-                    </el-button>
+                    <div v-if="surveyDemandCompany">
+                      <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id">拒绝此单
+                        <!-- noOfferDialog -->
+                      </el-button>
+                      <el-button class="is-custom" @click="greeCompanyBtn" :index="index"
+                                :company_id="d.design_company.id" type="primary">确认合作
+                      </el-button>
+                    </div>
+                    <div v-else>
+                      <span class="fz-14 tc-9">您还没有申请企业实名认证!</span>
+                      <el-button class="is-custom" @click="goVerify" :index="index" :company_id="d.design_company.id" type="primary">去认证
+                      </el-button>
+                    </div>
                   </div>
                 </div>
 
@@ -554,6 +561,7 @@
 
 <script>
 import api from '@/api/api'
+import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import vItemProgress from '@/components/block/ItemProgress'
 import { sliceImgName } from '@/assets/js/common'
 const vQuoteView = () => import('@/components/block/QuoteView')
@@ -565,6 +573,7 @@ export default {
   },
   data() {
     return {
+      surveyDemandCompany: false,
       origin: location.origin,
       showStickCompanyBtn: true,
       comfirmLoadingBtn: false,
@@ -635,6 +644,22 @@ export default {
     }
   },
   methods: {
+    goVerify() {
+      this.$router.push({name: 'vcenterDComputerBase'})
+    },
+    getStatus() {
+      this.$http.get(api.surveyDemandCompanySurvey, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          if (res.data.data.demand_verify_status === 1) {
+            this.surveyDemandCompany = true
+          }
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    },
     // 跳转到匹配公司页
     redirectMatch() {
       this.$router.push({
@@ -1044,6 +1069,8 @@ export default {
     }
   },
   created: function() {
+    // 获取需求公司认证状态
+    this.getStatus()
     let id = this.$route.params.id
     if (!id) {
       this.$message.error('缺少请求参数!')
@@ -1384,7 +1411,7 @@ export default {
             },
             {
               name: '项目工作地点',
-              title: self.item.province_value + ', ' + self.item.city_value
+              title: self.item.company_province_value ? self.item.company_province_value + ', ' + self.item.company_city_value : ''
             },
             {
               name: '相关附件',
