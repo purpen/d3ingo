@@ -1132,6 +1132,17 @@
   /* .sn-header .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu{
     color: #666666;
   } */
-
+  .black-header  .el-menu-info .el-submenu .el-submenu__title .b-nickname {
+    color: #fff;
+  }
+  .nav-header .nav-right a .fx-icon-notice:before {
+    color: #fff;
+  }
+  .black-header .el-menu.el-menu--popup {
+    background: #fff;
+  }
+  .black-header .el-submenu__title .el-icon-arrow-down {
+    color: #fff;
+  }
   /* 神农大脑 end*/
 </style>
