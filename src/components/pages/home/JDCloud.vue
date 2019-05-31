@@ -731,28 +731,28 @@
           </div>
           <div class="case-product">
             <div v-for="(d, index) in caseData" :key="index">
-              <el-row :gutter="20" v-if="d.case === currentCase">
+              <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
-                  <el-row :gutter="20">
+                  <el-row :gutter="10">
                     <el-col :span="12">
-                      <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /contain'}">
+                      <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h1}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="12">
-                      <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /contain'}">
+                      <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h2}}</span></div>
                       </div>
                     </el-col>
                     <el-col :span="24">
-                      <div class="product-left3 margin-t-20" :style="{background:'url('+d.img3 +') no-repeat center /contain'}">
+                      <div class="product-left3 margin-t-10" :style="{background:'url('+d.img3 +') no-repeat center /cover'}">
                         <div class="f-layer"><span>{{d.h3}}</span></div>
                       </div>
                     </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="12">
-                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /contain'}">
+                  <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /cover'}">
                     <div class="f-layer"><span>{{d.h4}}</span></div>
                   </div>
                 </el-col>
@@ -1868,7 +1868,7 @@ p.sn-sub-title {
 .product-left1,
 .product-left2,
 .product-left3 {
-  height: 280px;
+  height: 285px;
   position: relative;
 }
 .f-layer {
