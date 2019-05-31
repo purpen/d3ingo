@@ -898,6 +898,7 @@
         title="发布项目需求"
         :visible.sync="boolFindDesign"
         width="480px"
+        :close-on-click-modal="false"
         class="find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
