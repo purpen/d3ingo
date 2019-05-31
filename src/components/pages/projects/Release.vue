@@ -207,7 +207,7 @@ import RegionPicker from '@/components/block/RegionPicker'
 import { CYCLE_OPTIONS, DESIGN_COST_OPTIONS, INDUSTRY } from '@/config'
 import ECharts from 'vue-echarts'
 export default {
-  name: 'projectInfo',
+  name: 'projectRelease',
   components: {
     RegionPicker,
     menuSub: menuSub,
