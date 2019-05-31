@@ -1,52 +1,54 @@
 
 <template>
-  <div class="sn-forget">
-    <div class="forget-cart">
-      <div class="cart-left">
-        <h4 class="bb-e6">找回密码</h4>
+  <div class="bg">
+    <div class="sn-forget">
+      <div class="forget-cart">
+        <div class="cart-left">
+          <h4 class="bb-e6">找回密码</h4>
 
 
-      <div class="forget-content">
+        <div class="forget-content">
 
-        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input pass-place">
-          <el-form-item label="" prop="username">
-            <el-input v-model="form.username" ref="username" auto-complete="on"
-                      placeholder="手机号"></el-input>
-          </el-form-item>
-          <el-form-item label="" prop="imgCode">
-            <el-input class="imgCodeInput" v-model="form.imgCode" ref="imgCode" placeholder="图形验证码">
-              <template slot="append">
-                <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
-            <el-input v-model="form.smsCode" auto-complete="off" ref="smsCode" placeholder="验证码">
-              <template slot="append">
-                <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
-                </el-button>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="" prop="password">
-            <el-input v-model="form.password" type="password" ref="password" auto-complete="off"
-                      placeholder="重置密码"></el-input>
-          </el-form-item>
-          <el-form-item label="" prop="checkPassword">
-            <el-input v-model="form.checkPassword" type="password" ref="checkPassword"
-                      auto-complete="off" placeholder="确认密码"></el-input>
-          </el-form-item>
-          <el-button  :loading="isLoadingBtn" @click="submit('ruleForm')" class="forget-btn">
-            确认
-          </el-button>
-        </el-form>
+          <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input pass-place">
+            <el-form-item label="" prop="username">
+              <el-input v-model="form.username" ref="username" auto-complete="on"
+                        placeholder="手机号"></el-input>
+            </el-form-item>
+            <el-form-item label="" prop="imgCode">
+              <el-input class="imgCodeInput" v-model="form.imgCode" ref="imgCode" placeholder="图形验证码">
+                <template slot="append">
+                  <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
+              <el-input v-model="form.smsCode" auto-complete="off" ref="smsCode" placeholder="验证码">
+                <template slot="append">
+                  <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
+                  </el-button>
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="" prop="password">
+              <el-input v-model="form.password" type="password" ref="password" auto-complete="off"
+                        placeholder="重置密码"></el-input>
+            </el-form-item>
+            <el-form-item label="" prop="checkPassword">
+              <el-input v-model="form.checkPassword" type="password" ref="checkPassword"
+                        auto-complete="off" placeholder="确认密码"></el-input>
+            </el-form-item>
+            <el-button  :loading="isLoadingBtn" @click="submit('ruleForm')" class="forget-btn">
+              确认
+            </el-button>
+          </el-form>
 
-      </div>
-      </div>
-      <div class="cart-right">
-        <p>找回您的密码</p>
-        <div class="img-box">
-          <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt="">
+        </div>
+        </div>
+        <div class="cart-right">
+          <p>找回您的密码</p>
+          <div class="img-box">
+            <img src="../../../assets/images/promote_sn/RetrievePassword@2x.png" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -263,6 +265,11 @@ export default {
 }
 </script>
 <style scoped>
+  .bg{
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
+    background-size:100% 80%;
+    margin-bottom: -50px;
+  }
 .sn-forget {
   padding: 30px 0;
 }
