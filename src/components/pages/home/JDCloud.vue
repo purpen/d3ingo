@@ -725,8 +725,8 @@
           <div class="case-title">
             <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">视觉设计</div>
             <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">logo设计</div>
-            <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">产品设计</div>
             <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">包装设计</div>
+            <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">产品设计</div>
             <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="case-product">
@@ -765,7 +765,7 @@
       <div class="sn-offer padding-b80">
         <div class="container">
           <p class="sn-sub-title padding-b40">报价方案</p>
-          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择</div>
+          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
@@ -789,9 +789,9 @@
                     <p class="add-services" v-if="item.h7">{{item.h7}}</p>
                     <p class="add-services" v-if="item.h8">{{item.h8}}</p>
                   </div>
-                  <div class="price padding-b30">
-                    <p class="price-money">	&yen;<span>{{item.money}}</span>起</p>
-                    <el-button class="buy-btn" size="large">购买</el-button>
+                  <div class="price padding-b40">
+                    <p class="price-money">	&yen;<span>{{item.money}}</span><i class="fz-14">起</i></p>
+                    <!-- <el-button class="buy-btn" size="large">购买</el-button> -->
                   </div>
                 </div>
               </div>
@@ -837,7 +837,7 @@
                   <div class="img-box"></div>
                 </div>
                 <div class="sn-demand-right">
-                  <h5>您还在等什么？快来发布需求吧！</h5>
+                  <h5 class="text-center">您还在等什么？</h5>
                   <el-row>
                     <el-col class="header-style">
                       <el-col :span="24" class="ius-round">
@@ -882,7 +882,7 @@
                         </el-row>
                         <el-col>
                           <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                            立即发布需求
+                            发布需求
                           </button>
                         </el-col>
                       </el-form>
@@ -895,7 +895,7 @@
       </div>
 
       <el-dialog
-        title="发布项目需求"
+        title="发布需求"
         :visible.sync="boolFindDesign"
         width="480px"
         :close-on-click-modal="false"
@@ -905,10 +905,10 @@
             <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="contact">
-            <el-input v-model="form.contact" maxlength="20"></el-input>
+            <el-input v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="account">
-            <el-input v-model="form.account"  maxlength="11"></el-input>
+            <el-input v-model="form.account"  maxlength="11" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
               <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
@@ -1192,27 +1192,27 @@ export default {
         {
           img: require('assets/images/promote_sn/service_type/vision@2x.png'),
           title: '视觉设计',
-          title2: '平面设计 插画设计 书籍设计 画册设计'
+          title2: '平面 插画 书籍 宣传册 UI/UX'
         },
         {
           img: require('assets/images/promote_sn/service_type/logo@2x.png'),
           title: 'logo设计',
-          title2: '文字logo设计 图形logo设计 图像logo设计...'
-        },
-        {
-          img: require('assets/images/promote_sn/service_type/ProductDesign@2x.png'),
-          title: '产品设计',
-          title2: '产品外观设计 产品结构设计'
+          title2: '字母 文字 图形 抽象 吉祥物 徽标'
         },
         {
           img: require('assets/images/promote_sn/service_type/PackingDesign@2x.png'),
           title: '包装设计',
-          title2: '包装造型设计 包装结构设计'
+          title2: '造型 结构 装潢'
+        },
+        {
+          img: require('assets/images/promote_sn/service_type/ProductDesign@2x.png'),
+          title: '产品设计',
+          title2: '结构 功能 外观'
         },
         {
           img: require('assets/images/promote_sn/service_type/video@2x.png'),
           title: '视频制作',
-          title2: '视频剪辑 Mg动画制作'
+          title2: '视频剪辑 动画制作'
         }
       ],
       currentCase: 'product',
@@ -1929,6 +1929,8 @@ p.sn-sub-title {
   margin-bottom: 10px;
 }
 .sn-service-type .title-box span {
+  display: inline-block;
+  max-width: 110px;
   padding-top: 10px;
   color: #9FA3A7;
   line-height:24px;
@@ -2104,8 +2106,6 @@ p.sn-sub-title {
   font-family:PingFangSC-Medium;
   font-weight:400;
   font-size: 20px;
-  /* height:42px;
-  line-height:42px; */
 }
 .price-money > span {
   font-family:PingFangSC-Medium;
@@ -2207,6 +2207,10 @@ p.sn-sub-title {
 }
 .sn-demand .header-style {
   width: 600px;
+}
+
+.issue-bt:hover {
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
 }
 /* sn end */
 
@@ -2312,8 +2316,9 @@ p.sn-sub-title {
     letter-spacing: 1px;
     text-align: center;
     margin:10px 0 30px 0;
-    box-shadow: 10px 10px 200px 0 rgba(0,0,0,0.05);
+    /* box-shadow: 10px 10px 200px 0 rgba(0,0,0,0.05); */
     border: 1px solid #fff;
+    transition: 268ms all ease;
   }
   .ius-round {
     font-family: PingFangSC-Light;

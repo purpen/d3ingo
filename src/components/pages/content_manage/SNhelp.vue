@@ -16,7 +16,8 @@
         <div class="demand_cont">
           <div class="demand_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="demandImg[index].img" alt="">
-              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <a class="title routerCss">{{item.name}}</a>
+              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
           </div>
           <div class="demand_list_last"></div>
         </div>
@@ -26,7 +27,8 @@
         <div class="design_cont">
           <div class="design_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
               <img :src="designImg[index].img" alt="" alt="">
-              <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link>
+              <a class="title routerCss">{{item.name}}</a>
+              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
           </div>
           <div class="design_list_last"></div>
           <div class="design_list_last"></div>
