@@ -392,9 +392,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .el-input-group__append:hover {
   border-color: #e6e6e6;
 }
-.el-input__inner {
-  color: #222;
-}
 .subsidiary .el-input__inner {
   height: auto;
 }
@@ -784,11 +781,11 @@ button.is-custom.is-outlined.is-loading:after {
 /**
  * Footer mobile
  */
-/* input */
 .el-input__inner {
+  color: #222;
   border: 1px solid #e6e6e6;
   color: #666;
-  /* cursor: pointer; */
+  line-height: 20px;
 }
 .el-input__inner:hover,
 .el-input__inner:focus {
