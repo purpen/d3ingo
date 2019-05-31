@@ -712,6 +712,7 @@
                 <div class="title-box">
                   <p>{{item.title}}</p>
                   <span>{{item.title2}}</span>
+                  <div class="fz-14 tc-9 line-height24">{{item.title3}}</div>
                 </div>
               </div>
             </el-col>
@@ -788,6 +789,7 @@
                     <p>{{item.h6}}</p>
                     <p class="add-services" v-if="item.h7">{{item.h7}}</p>
                     <p class="add-services" v-if="item.h8">{{item.h8}}</p>
+                    <p class="add-services" v-if="item.h9">{{item.h9}}</p>
                   </div>
                   <div class="price padding-b40">
                     <p class="price-money">	&yen;<span>{{item.money}}</span><i class="fz-14">起</i></p>
@@ -1192,12 +1194,14 @@ export default {
         {
           img: require('assets/images/promote_sn/service_type/vision@2x.png'),
           title: '视觉设计',
-          title2: '平面 插画 书籍 宣传册 UI/UX'
+          title2: '平面 插画 书籍',
+          title3: '宣传册 UI/UX'
         },
         {
           img: require('assets/images/promote_sn/service_type/logo@2x.png'),
           title: 'logo设计',
-          title2: '字母 文字 图形 抽象 吉祥物 徽标'
+          title2: '字母 文字 图形',
+          title3: '抽象 吉祥物 徽标'
         },
         {
           img: require('assets/images/promote_sn/service_type/PackingDesign@2x.png'),
@@ -1799,6 +1803,7 @@ export default {
 .sn-fetch-btn:hover {
   background:  #3171FF;
   color: #fff;
+  border-color: transparent;
 }
 .add-services {
   position: relative;
@@ -1929,9 +1934,6 @@ p.sn-sub-title {
   margin-bottom: 10px;
 }
 .sn-service-type .title-box span {
-  display: inline-block;
-  max-width: 110px;
-  padding-top: 10px;
   color: #9FA3A7;
   line-height:24px;
   font-size: 14px;
@@ -2080,7 +2082,7 @@ p.sn-sub-title {
   width: 100px;
 }
 .server-list {
-  height: 260px;
+  height: 280px;
   padding: 0 3px;
 }
 .server-list > h6 {
@@ -2102,10 +2104,14 @@ p.sn-sub-title {
   text-align: center;
 }
 .price > .price-money {
-  color: #212121;
+  color: #222222;
   font-family:PingFangSC-Medium;
   font-weight:400;
   font-size: 20px;
+}
+.print-box:hover .price-money {
+  color: #3171FF;
+  font-weight:600;
 }
 .price-money > span {
   font-family:PingFangSC-Medium;
@@ -2211,6 +2217,7 @@ p.sn-sub-title {
 
 .issue-bt:hover {
   box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
+  border: none;
 }
 /* sn end */
 
