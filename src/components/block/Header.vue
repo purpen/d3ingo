@@ -245,9 +245,9 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item>
               <el-menu-item v-if="prodName !== 'sn'"  index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item> -->
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
               <el-menu-item  v-if="prodName !== 'sn'" index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
@@ -1150,7 +1150,7 @@
   .sn-header .nav-header .nav-right .sn-register {
     border: none;
     height: 24px;
-    padding: 0 30px !important;
+    padding: 0 24px !important;
     line-height: 24px;
     margin-top: 23px;
     color: #fff !important;
