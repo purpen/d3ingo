@@ -1219,16 +1219,16 @@ export default {
           title2: '视频剪辑 动画制作'
         }
       ],
-      currentCase: 'product',
-      currentOffer: 'logo',
+      currentCase: 'vision',
+      currentOffer: 'vision',
       snOfferData: [],
       snOfferprintPacking: [
         {
           img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
           h1: '基础版',
           h2: '1.推荐1名设计师服务',
-          h3: '2.设计2款3d产品创意方案任选其一',
-          h4: '3. 选中设计方案支持2次免费修改',
+          h3: '2.设计2款产品创意方案任选其一',
+          h4: '3.选中设计方案支持2次免费修改',
           h5: '4专业设计顾问全程服务',
           h6: '5.签订合同，开具发票',
           money: '2万'
@@ -1237,7 +1237,7 @@ export default {
           img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
           h1: '进阶版',
           h2: '1.推荐2名设计师服务',
-          h3: '2.设计4款3d产品创意方案任选其一',
+          h3: '2.设计4款产品创意方案任选其一',
           h4: '3.选中设计方案支持3次免费修改',
           h5: '4.专业设计顾问全程服务',
           h6: '5.签订合同，开具发票',
@@ -1248,7 +1248,7 @@ export default {
           img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
           h1: '综合版',
           h2: '1.推荐3名设计师服务',
-          h3: '2.设计6款3d产品创意方案任选其一',
+          h3: '2.设计6款产品创意方案任选其一',
           h4: '3.选中设计方案支持4次免费修改',
           h5: '4.专业设计顾问全程服务',
           h6: '5.签订合同，开具发票',
@@ -1260,7 +1260,7 @@ export default {
           img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
           h1: '全能版',
           h2: '1.推荐4名设计师服务',
-          h3: '2.设计8款3d产品创意方案任选其一',
+          h3: '2.设计8款产品创意方案任选其一',
           h4: '3.选中设计方案支持6次免费修改',
           h5: '4.专业设计顾问全程服务',
           h6: '5. 签订合同，开具发票',
@@ -1547,7 +1547,7 @@ export default {
     }
     this.formatQuery(this.$route.query)
     this.generalize(this.query)
-    this.snOfferData = this.snOfferprintLogo
+    this.snOfferData = this.snOfferprintVision
   },
   mounted () {
     let that = this
@@ -1777,7 +1777,7 @@ export default {
       } else if (e === 'logo') {
         this.snOfferData = this.snOfferprintLogo
       } else if (e === 'packing') {
-        this.snOfferData = this.snOfferprintVision
+        this.snOfferData = this.snOfferprintPacking
       }
     }
   },
