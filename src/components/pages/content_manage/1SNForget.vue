@@ -267,16 +267,16 @@ export default {
 </script>
 <style scoped>
   .bg{
-    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
-    background-size:100% 80%;
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/2880px 400px;
     margin-bottom: -50px;
   }
 .sn-forget {
-  padding: 30px 0;
+  padding-top: 30px;
 }
 .forget-cart {
   margin: 0 auto;
   width: 880px;
+  height: 570px;
   background: #ffffff;
   display: flex;
   box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
@@ -338,7 +338,7 @@ export default {
   margin-top: 50px;
 }
 .img-box img {
-  width: 282px;
+  width: 300px;
   height: auto;
 }
 </style>
