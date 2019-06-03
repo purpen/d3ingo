@@ -209,6 +209,9 @@
 .sn-footer {
   background-color: #F6F8FF;
 }
+.sn-footer .jd-cloud-title {
+  border-bottom: 1px solid hsla(0,0%,100%,.1);
+}
   .foot-main {
     padding-bottom: 20px;
     max-width: 1180px;
@@ -341,7 +344,7 @@
   }
   .jd-cloud-title {
     padding: 40px 0 0 0;
-    border-bottom: 1px solid hsla(0,0%,100%,.1);
+    /* border-bottom: 1px solid hsla(0,0%,100%,.1); */
   }
   .jd-cloud-title .j-c-item:last-child {
     border-right: none;
