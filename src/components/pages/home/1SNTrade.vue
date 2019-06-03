@@ -31,7 +31,7 @@
   
   <div class="bg-F6F7FC">
     <div class="contant">
-      <div class="safeguard1">
+      <div class="safeguard3">
           <div class="safe-box">
             <div class="img-box"></div>
           </div>
