@@ -1441,7 +1441,7 @@ export default {
           h1: '天晨品牌设计',
           h2: '满姐饺子品牌设计',
           h3: '韵见APP',
-          h4: 'IPromise品牌视觉设计'
+          h4: '熊本食堂品牌视觉设计'
         },
         {
           case: 'packing',
