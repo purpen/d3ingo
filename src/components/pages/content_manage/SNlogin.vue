@@ -428,12 +428,12 @@
 </script>
 <style scoped>
   .bg{
-    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/contain;
-    background-size:100% 80%;
+    background: url('../../../assets/images/promote_sn/footer_bg.png') no-repeat bottom/2880px 400px;
     margin-bottom: -50px;
   }
   .login{
     width: 880px;
+    height: 570px;
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
     border-radius:6px;
@@ -616,8 +616,8 @@
     padding: 0 5px;
   }
   .introduceImg{
-    width: 282px;
+    width: 300px;
     height: auto;
-    margin-top: 50px;
+    margin-top: 40px;
   }
 </style>

@@ -1052,6 +1052,7 @@ export default {
   }
   .project-item-box .el-upload-list__item .el-progress {
     top: 26px;
+    width: 93%;
   }
   .project-item-box .el-progress__text {
     margin-right: 10px;

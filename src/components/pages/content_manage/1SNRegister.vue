@@ -50,10 +50,10 @@
           </el-form>
         </div>
         <div class="reg">
-          <p>已有账户 ?
+          <p>已有账户?&nbsp;
             <!-- {{prod.login}}，您可以 -->
-            <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
-            或者
+            <router-link :to="{name: 'SNlogin'}"  class="padding-r-30">立即登录</router-link>
+            或者&nbsp;
             <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
           </p>
         </div>
@@ -366,6 +366,7 @@
   }
   .login{
     width: 880px;
+    height: 570px;
     margin: 40px auto;
     display: flex;
     justify-content: space-around;
@@ -429,8 +430,8 @@
     color:rgba(159,163,167,1);
     margin:20px 0 40px 0;
   }
-  img{
-    width: 282px;
+  .introduce img{
+    width: 300px;
     height: auto;
   }
 
