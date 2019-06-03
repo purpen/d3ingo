@@ -686,7 +686,7 @@
             name = 'projectType'
             break
           case 3:
-            name = 'projectInfo'
+            name = 'projectRelease'
             break
         }
         if (progress) {
