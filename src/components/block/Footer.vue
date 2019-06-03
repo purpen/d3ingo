@@ -212,12 +212,16 @@
 .sn-footer .jd-cloud-title {
   border-bottom: 1px solid hsla(0,0%,100%,.1);
 }
-  .foot-main {
-    padding-bottom: 20px;
-    max-width: 1180px;
-    margin: 0 auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
-  }
+.sn-footer .j-c-item:hover a,
+.sn-footer .j-c-item a:focus {
+  color: #3171ff;
+}
+.foot-main {
+  padding-bottom: 20px;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+}
 
   .server {
     min-height: 114px;
@@ -355,10 +359,11 @@
     color:#5D5E66;
     padding: 0 20px;
     border-right: 1px solid #5B5C65;
-  }
-  .j-c-item:hover a {
-    color:#0989C5;
     cursor: pointer;
+  }
+  .j-c-item:hover a,
+  .j-c-item:focus a {
+    color:#0989C5;
   }
   .border-lr {
     border-left: 1px solid #5B5C65;
