@@ -62,9 +62,7 @@ export default {
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
       ],
-      fwh: FWH,
-      timer: 0, // 定时器时间
-      intervalId: 0
+      fwh: FWH
     }
   },
   watch: {
@@ -106,42 +104,6 @@ export default {
     if (loading) {
       loading.setAttribute('class', classVal)
     }
-    // document的可见性
-    // 找到当前浏览器支持的hidden属性名和visibilitychange事件名
-    let hidden, visibilityChange
-    if (typeof document.hidden !== 'undefined') {
-      hidden = 'hidden'
-      visibilityChange = 'visibilitychange'
-    } else if (typeof document.mozHidden !== 'undefined') {
-      hidden = 'mozHidden'
-      visibilityChange = 'mozvisibilitychange'
-    } else if (typeof document.msHidden !== 'undefined') {
-      hidden = 'msHidden'
-      visibilityChange = 'msvisibilitychange'
-    } else if (typeof document.webkitHidden !== 'undefined') {
-      hidden = 'webkitHidden'
-      visibilityChange = 'webkitvisibilitychange'
-    } else {
-      return
-    }
-    document.addEventListener(visibilityChange, () => {
-      let windowStatus = document[hidden]
-      if (windowStatus) {
-        this.intervalId = setInterval(() => {
-          this.timer = this.timer + 1
-        }, 1000)
-      } else {
-        console.log(this.timer + 's')
-        this.fetchUser()
-        window.clearInterval(this.intervalId)
-        if (this.timer > 7200) {
-          console.log('刷新页面')
-          window.location.reload(true)
-        } else {
-          this.timer = 0
-        }
-      }
-    })
   },
   created() {
     if (!this.hideCustomer.hideCustomer) {
