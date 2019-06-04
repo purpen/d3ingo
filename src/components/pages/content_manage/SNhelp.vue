@@ -170,7 +170,7 @@
     flex-direction: column;
     text-align: center;
     margin-top: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition:all .218s ease;
   }
   .demand_list:hover{
@@ -188,7 +188,7 @@
     flex-direction: column;
     text-align: center;
     margin-top: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition:all .218s ease;
   }
   .design_list:hover{
