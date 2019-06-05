@@ -1715,7 +1715,7 @@ export default {
             }
             row.design_cost = this.designCost
           }
-          if (this.custom.id === 3) {
+          if (this.custom.id === 4) {
             row.son_source = 'c'
           }
           this.$http.post(api.pcAdd, row)
