@@ -846,7 +846,7 @@
                   <el-row>
                     <el-col class="header-style">
                       <el-col :span="24" class="ius-round">
-                        <span class="free-color"></span>立即发布项目需求
+                        <div class="sn-demand-title2">立即发布项目需求</div>
                       </el-col>
                       <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
                         <el-row>
@@ -876,7 +876,7 @@
                                   <el-form-item prop="smsCode">
                                     <el-input   v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
                                       <template slot="append">
-                                        <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn">{{ codeMsg }}
                                         </el-button>
                                       </template>
                                     </el-input>
@@ -2228,6 +2228,9 @@ p.sn-sub-title {
   display: flex;
   flex-direction: column;
 }
+.sn-demand-right .sn-demand-title2 {
+  font-size: 20px;
+}
 .sn-demand h5 {
   padding-bottom: 40px;
   font-size:30px;
@@ -2244,9 +2247,9 @@ p.sn-sub-title {
   border: none;
 }
 
-.get-btn:hover {
-  background: #f7f7f7;
-  border-color: #f7f7f7;
+.sn-get-btn:hover {
+  background: #f7f7f7 !important;
+  border-color: #f7f7f7 !important;
 }
 /* sn end */
 
