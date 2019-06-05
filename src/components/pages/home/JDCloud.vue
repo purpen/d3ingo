@@ -694,7 +694,7 @@
         </div>
       </div>
       <div class="sn-banner-word">
-        <div class="b-word-box">
+        <div class="b-word-box container">
           <div class="b-word-l">100%精品原创设计承诺</div>
           <div class="b-word-r">100%专业设计服务机构</div>
         </div>
@@ -737,7 +737,10 @@
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /cover'}">
-                        <div class="f-layer"><span>{{d.h1}}</span></div>
+                        <div class="f-layer">
+                          <span>{{d.h1}}</span>
+                          <div class="title2" v-if="d.h5">{{d.h5}}</div>
+                        </div>
                       </div>
                     </el-col>
                     <el-col :span="12">
@@ -1427,10 +1430,11 @@ export default {
           img2: require('assets/images/promote_sn/case/product/ProductDesign02@2x.jpg'),
           img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.jpg'),
           img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.jpg'),
-          h1: '智能数控门禁（红点奖获奖作品)',
+          h1: '智能数控门禁',
           h2: 'GYENNO睿餐智能防抖勺',
           h3: 'AMIRO LUX明肌高清化妆镜',
-          h4: '超声波电动牙刷'
+          h4: '超声波电动牙刷',
+          h5: '(红点奖获奖作品)'
         },
         {
           case: 'vision',
@@ -1440,7 +1444,7 @@ export default {
           img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.jpg'),
           h1: '天晨品牌设计',
           h2: '满姐饺子品牌设计',
-          h3: '韵见APP',
+          h3: '韵见APP UI/UX设计',
           h4: '熊本食堂品牌视觉设计'
         },
         {
@@ -1612,8 +1616,11 @@ export default {
     },
     // pc 右下角
     contact () {
+      if (this.custom.id === 4) {
+        this.query.mark = 'c'
+      }
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from || 3, son_source: this.query.mark || 'b'})
+        this.$http.post(api.pcAdd, {phone: this.phone, source: this.query.from || 3, son_source: this.query.mark})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1659,11 +1666,14 @@ export default {
     submit_app (form) {
       this.$refs[form].validate(valid => {
         if (valid) {
+          if (this.custom.id === 4) {
+            this.query.mark = 'c'
+          }
           let row = {
             user_name: this.form1.name,
             phone: this.form1.account,
             source: this.query.from || 3,
-            son_source: this.query.mark || 'b'
+            son_source: this.query.mark
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1684,12 +1694,17 @@ export default {
     submit (form, p) {
       this.$refs[form].validate(valid => {
         if (valid) {
+          let url = api.pcAdd
+          if (this.custom.id === 4) {
+            this.query.mark = 'c'
+            url = api.pcAdd2
+          }
           let row = {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
             source: this.query.from || 3,
-            son_source: this.query.mark || 'b'
+            son_source: this.query.mark
           }
           // 是否为移动端
           if (p) {
@@ -1711,10 +1726,11 @@ export default {
             }
             row.design_cost = this.designCost
           }
-          if (this.custom.id === 3) {
+          if (this.custom.id === 4) {
             row.son_source = 'c'
+            row.sms_code = this.form.smsCode
           }
-          this.$http.post(api.pcAdd, row)
+          this.$http.post(url, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
@@ -1742,9 +1758,12 @@ export default {
       }
     },
     generalize(query) {
+      if (this.custom.id === 4) {
+        this.query.mark = 'c'
+      }
       this.$http.post(api.generalize, {
         url: location.href,
-        son_source: this.query.mark || 'b',
+        son_source: this.query.mark,
         device: this.isMob ? 2 : 1,
         new_from: this.query.from || 3
       }).then(res => {
@@ -1878,7 +1897,8 @@ export default {
 .b-word-box {
   height: 100px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  padding: 0 80px;
   align-items: center;
   color: #ffffff;
   font-size:24px;
@@ -2008,6 +2028,9 @@ p.sn-sub-title {
 .f-layer > span {
   line-height: 28px;
 }
+.f-layer .title2 {
+  line-height: 28px;
+}
 .product-right {
   height: 580px;
   position: relative;
@@ -2019,6 +2042,7 @@ p.sn-sub-title {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .sn-offer {
@@ -2167,7 +2191,7 @@ p.sn-sub-title {
 }
 .awards-box {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .awards-item {
   width: 150px;
