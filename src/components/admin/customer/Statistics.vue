@@ -2053,8 +2053,9 @@ export default {
                 'name': '官方'
               },
               cooperation: {
-                'a': '京东',
+                'a': '京东云艺火',
                 'b': '优客工场',
+                'c': '京东云神农大脑',
                 'name': '合作伙伴'
               },
               internal_push: {

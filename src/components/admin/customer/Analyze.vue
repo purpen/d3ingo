@@ -633,12 +633,12 @@
         this.$http.get(api.adminGeneralizeLists).then((response) => {
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
-              let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
+              // let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
               // let device = ['', 'pc端', '移动端', 'app']
               response.data.data.forEach(item => {
-                item.new_from = from[item.new_from]
-                item.son_source_value = item.son_source_value || item.son_source
+                // item.new_from = from[item.new_from]
                 // item.device = device[item.device]
+                item.son_source_value = item.son_source_value || item.son_source
               })
             }
             this.tableData4 = response.data.data

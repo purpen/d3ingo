@@ -258,7 +258,7 @@
 
         <div class="el-menu-item logo">
           <img :src="custom.logo" :alt="custom.info">
-          <!-- <span class="logo">京东云 艺火</span> -->
+          <!-- <span class="logo">京东云艺火</span> -->
         </div>
         <div class="bars" @click="mMenuHide"></div>
         <section class="m-Menu" ref="mMenu" @click="mNavClick">
