@@ -1694,8 +1694,10 @@ export default {
     submit (form, p) {
       this.$refs[form].validate(valid => {
         if (valid) {
+          let url = api.pcAdd
           if (this.custom.id === 4) {
             this.query.mark = 'c'
+            url = api.pcAdd2
           }
           let row = {
             user_name: this.form.contact,   // 联系人
@@ -1726,8 +1728,9 @@ export default {
           }
           if (this.custom.id === 4) {
             row.son_source = 'c'
+            row.sms_code = this.form.smsCode
           }
-          this.$http.post(api.pcAdd, row)
+          this.$http.post(url, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
