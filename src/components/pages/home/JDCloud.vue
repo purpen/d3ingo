@@ -694,7 +694,7 @@
         </div>
       </div>
       <div class="sn-banner-word">
-        <div class="b-word-box">
+        <div class="b-word-box container">
           <div class="b-word-l">100%精品原创设计承诺</div>
           <div class="b-word-r">100%专业设计服务机构</div>
         </div>
@@ -737,7 +737,10 @@
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /cover'}">
-                        <div class="f-layer"><span>{{d.h1}}</span></div>
+                        <div class="f-layer">
+                          <span>{{d.h1}}</span>
+                          <div class="title2" v-if="d.h5">{{d.h5}}</div>
+                        </div>
                       </div>
                     </el-col>
                     <el-col :span="12">
@@ -1427,10 +1430,11 @@ export default {
           img2: require('assets/images/promote_sn/case/product/ProductDesign02@2x.jpg'),
           img3: require('assets/images/promote_sn/case/product/ProductDesign03@2x.jpg'),
           img4: require('assets/images/promote_sn/case/product/ProductDesign04@2x.jpg'),
-          h1: '智能数控门禁（红点奖获奖作品)',
+          h1: '智能数控门禁',
           h2: 'GYENNO睿餐智能防抖勺',
           h3: 'AMIRO LUX明肌高清化妆镜',
-          h4: '超声波电动牙刷'
+          h4: '超声波电动牙刷',
+          h5: '(红点奖获奖作品)'
         },
         {
           case: 'vision',
@@ -1878,7 +1882,8 @@ export default {
 .b-word-box {
   height: 100px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  padding: 0 80px;
   align-items: center;
   color: #ffffff;
   font-size:24px;
@@ -2008,6 +2013,9 @@ p.sn-sub-title {
 .f-layer > span {
   line-height: 28px;
 }
+.f-layer .title2 {
+  line-height: 28px;
+}
 .product-right {
   height: 580px;
   position: relative;
@@ -2019,6 +2027,7 @@ p.sn-sub-title {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .sn-offer {
@@ -2167,7 +2176,7 @@ p.sn-sub-title {
 }
 .awards-box {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .awards-item {
   width: 150px;
