@@ -1444,7 +1444,7 @@ export default {
           img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.jpg'),
           h1: '天晨品牌设计',
           h2: '满姐饺子品牌设计',
-          h3: '韵见APP',
+          h3: '韵见APP UI/UX设计',
           h4: '熊本食堂品牌视觉设计'
         },
         {
