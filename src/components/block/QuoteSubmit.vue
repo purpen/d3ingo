@@ -767,6 +767,15 @@ export default {
       }
     }
   },
+  filters: {
+    formatNumber(val) {
+      if (/^[0-9]+[0-9]*$/.test(val)) {
+        return parseFloat(val).toLocaleString('en-US') + '.00'
+      } else {
+        return parseFloat(val).toLocaleString('en-US')
+      }
+    }
+  },
   computed: {
     // 含税价
     taxTotalMoney() {

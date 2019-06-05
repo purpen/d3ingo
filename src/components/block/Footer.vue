@@ -1,16 +1,22 @@
 <template>
   <div class="footer clear" v-if="!hideFooter">
-    <div v-if="prod.id === 1">
+    <div v-if="prod.id === 1 || prod.id === 4" :class="[{'sn-footer': prod.id === 4}]">
       <el-row class="jd-cloud-title">
         <el-col class="text-center">
           <div class="j-c-item">
-            <router-link :to="{name: 'SaaSIndex'}">艺火首页</router-link>
-          </div>
-          <div  class="j-c-item border-lr">
-            <router-link :to="{name: 'trade'}" class="">交易保障</router-link>
+            <router-link v-if="prod.id === 1" :to="{name: 'SaaSIndex'}">艺火首页</router-link>
+            <router-link v-else-if="prod.id === 4" :to="{name: 'SaaSIndex'}">首页</router-link>
           </div>
           <div  class="j-c-item">
-            <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
+            <router-link  v-if="prod.id === 1" :to="{name: 'trade'}" class="">交易保障</router-link>
+            <router-link  v-else-if="prod.id === 4" :to="{name: 'home-SNTrade'}" class="">交易保障</router-link>
+          </div>
+          <div class="j-c-item">
+            <router-link v-if="prod.id === 1" :to="{name: 'terms'}" class="">服务条款</router-link>
+            <router-link  v-else-if="prod.id === 4" :to="{name: 'home-SNItem'}" class="">服务条款</router-link>
+          </div>
+          <div v-if="prod.id === 4" class="j-c-item">
+            <router-link :to="{name: 'SNhelp'}" class="">帮助</router-link>
           </div>
         </el-col>
       </el-row>
@@ -200,12 +206,22 @@
     }
   }
 
-  .foot-main {
-    padding-bottom: 20px;
-    max-width: 1180px;
-    margin: 0 auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
-  }
+.sn-footer {
+  background-color: #F6F8FF;
+}
+.sn-footer .jd-cloud-title {
+  border-bottom: 1px solid hsla(0,0%,100%,.1);
+}
+.sn-footer .j-c-item:hover a,
+.sn-footer .j-c-item a:focus {
+  color: #3171ff;
+}
+.foot-main {
+  padding-bottom: 20px;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+}
 
   .server {
     min-height: 114px;
@@ -331,18 +347,23 @@
     height: 100px;
   }
   .jd-cloud-title {
-    padding: 40px 0 20px 0;
-    border-bottom: 1px solid hsla(0,0%,100%,.1);
+    padding: 40px 0 0 0;
+    /* border-bottom: 1px solid hsla(0,0%,100%,.1); */
+  }
+  .jd-cloud-title .j-c-item:last-child {
+    border-right: none;
   }
   .j-c-item {
     display: inline-block;
     font-size: 16px;
     color:#5D5E66;
     padding: 0 20px;
-  }
-  .j-c-item:hover a {
-    color:#0989C5;
+    border-right: 1px solid #5B5C65;
     cursor: pointer;
+  }
+  .j-c-item:hover a,
+  .j-c-item:focus a {
+    color:#0989C5;
   }
   .border-lr {
     border-left: 1px solid #5B5C65;

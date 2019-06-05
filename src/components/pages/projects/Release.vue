@@ -207,7 +207,7 @@ import RegionPicker from '@/components/block/RegionPicker'
 import { CYCLE_OPTIONS, DESIGN_COST_OPTIONS, INDUSTRY } from '@/config'
 import ECharts from 'vue-echarts'
 export default {
-  name: 'projectInfo',
+  name: 'projectRelease',
   components: {
     RegionPicker,
     menuSub: menuSub,
@@ -1052,6 +1052,7 @@ export default {
   }
   .project-item-box .el-upload-list__item .el-progress {
     top: 26px;
+    width: 93%;
   }
   .project-item-box .el-progress__text {
     margin-right: 10px;

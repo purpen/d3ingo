@@ -531,10 +531,10 @@
             let stagePrice = that.form.stage_money
             console.log(totalAmount)
             console.log(stagePrice)
-            if (totalAmount - stagePrice) {
-              that.$message.error('阶段金额总和不正确！')
-              return false
-            }
+            // if (totalAmount - stagePrice) {
+            //   that.$message.error('阶段金额总和不正确！')
+            //   return false
+            // }
             let apiUrl = null
             let method = null
 
@@ -694,6 +694,11 @@
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
                 }
+                // 如果是神农大脑，跳转
+                if (item.contract.source === 4) {
+                  that.$router.replace({name: 'vcenterContractSnSubmit', params: {item_id: id}})
+                  return
+                }
                 that.contractId = item.contract.id
                 that.$http.get(api.contractId.format(item.contract.unique_id), {})
                   .then(function (response) {
@@ -751,6 +756,11 @@
                 // 如果是京东，跳转
                 if (item.item.source === 1) {
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
+                  return
+                }
+                // 如果是神农大脑，跳转
+                if (item.item.source === 4) {
+                  that.$router.replace({name: 'vcenterContractSnSubmit', params: {item_id: id}})
                   return
                 }
                 that.form.item_content = that.item.item.item_content ? that.item.item.item_content : ''

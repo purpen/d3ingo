@@ -57,7 +57,7 @@
       </div>
       <div class="project-foot" v-if="matchComplete && (demand_verify_status === 1 || demand_verify_status === 3)">
         <div class="buttons clearfix">
-          <router-link v-if="projectStatus === -2" :to="{name: 'projectInfo', params: {id: id}}">重新编辑</router-link>
+          <router-link v-if="projectStatus === -2" :to="{name: 'projectRelease', params: {id: id}}">重新编辑</router-link>
           <p class="clearfix" v-if="projectStatus !== -2 && projectStatus !== 2">
             <button v-if="demand_verify_status === 1" @click="submit" class="middle-button full-red-button">查看匹配结果</button>
             <button v-else class="middle-button disabled-button">查看匹配结果</button>

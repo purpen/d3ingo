@@ -329,6 +329,16 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/contract/JdSubmit')
   },
+  // 在线合同编辑--神农
+  {
+    path: '/vcenter/contract/sn_submit/:item_id',
+    name: 'vcenterContractSnSubmit',
+    meta: {
+      title: '在线合同编辑',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/contract/SnSubmit')
+  },
   // 合同下载
   {
     path: '/vcenter/contract/download/:unique_id',
@@ -570,6 +580,64 @@ module.exports = [
       // requireAuth: true
     },
     component: require('@/components/pages/content_manage/List')
+  },
+  {
+    path: '/content_manage/SNhelp',
+    name: 'SNhelp',
+    meta: {
+      title: '帮助中心列表'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNhelp')
+  },
+  // 神农注册
+  {
+    path: '/content_manage/1SNRegister',
+    name: 'SNRegister',
+    meta: {
+      title: '注册'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/1SNRegister')
+  },
+  // 神农登录
+  {
+    path: '/content_manage/SNlogin',
+    name: 'SNlogin',
+    meta: {
+      title: '登录'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/SNlogin')
+  },
+  // 神农大脑找回密码 前面加1是因为git忽略大小写,以后改回来
+  {
+    path: '/content_manage/1SNForget',
+    name: 'content_manage-SNForget',
+    meta: {
+      title: '找回密码'
+    },
+    component: require('@/components/pages/content_manage/1SNForget')
+  },
+   // 神农大脑服务条款
+  {
+    path: '/home/1SNLtem',
+    name: 'home-SNItem',
+    meta: {
+      title: '服务条款',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/1SNLtem')
+  },
+  // 神农大脑交易保障
+  {
+    path: '/home/1SNTrade',
+    name: 'home-SNTrade',
+    meta: {
+      title: '交易保障',
+      requireAuth: false
+    },
+    component: require('@/components/pages/home/1SNTrade')
   },
   {
     path: '/content_manage/AssistShow',

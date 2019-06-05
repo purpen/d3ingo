@@ -417,7 +417,6 @@ let routes = [
     },
     component: require('@/components/pages/auth/Forget')
   },
-
   // 发布需求(第一步) 支付
   {
     path: '/item/submit_one',

@@ -548,8 +548,9 @@ export default {
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51,51,51,1);
+    height: 20px;
     white-space: nowrap;
-    line-height: 16px
+    line-height: 20px;
   }
   .com-name:hover {
     color: #ff5a5f;

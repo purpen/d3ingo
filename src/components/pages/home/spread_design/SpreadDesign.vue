@@ -322,6 +322,9 @@ export default {
   computed: {
     isMob() {
       return this.$store.state.event.isMob
+    },
+    custom() {
+      return this.$store.state.event.prod
     }
   },
   methods: {

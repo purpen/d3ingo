@@ -686,7 +686,7 @@
             name = 'projectType'
             break
           case 3:
-            name = 'projectInfo'
+            name = 'projectRelease'
             break
         }
         if (progress) {
@@ -903,7 +903,7 @@
     font-size: 1.4rem;
     color: #222;
     margin-top: 20px;
-    line-height: 0;
+    line-height: 1;
   }
 
   .opt {
