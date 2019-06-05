@@ -72,7 +72,7 @@ export default {
     if (that.oldItem && (that.oldItem.source === 0 || that.oldItem.source)) {
       switch (that.oldItem.source) {
         case 1:
-          that.oldItem.source_value = '京东云/艺火'
+          that.oldItem.source_value = '京东云艺火'
           break
         case 2:
           that.oldItem.source_value = '义乌'

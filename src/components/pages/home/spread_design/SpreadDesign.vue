@@ -329,10 +329,7 @@ export default {
   },
   methods: {
     goRegister() {
-      if (this.custom.id === 4) {
-        location.href = 'https://saas.taihuoniao.com/register/2'
-      }
-      this.$router.push({name: 'register', params: {type: 2}})
+      this.$router.push({name: 'registerWithType', params: {type: 2}})
     }
   },
   created() {

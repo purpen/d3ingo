@@ -363,7 +363,7 @@
       })
     },
     created() {
-      this.form.type = this.$route.params.type
+      this.form.type = this.$route.params.type ? this.$route.params.type - 0 : 1
       if (this.form.type === 2) {
         this.cActive = true
       }

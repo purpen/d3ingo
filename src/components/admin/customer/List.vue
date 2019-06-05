@@ -475,9 +475,9 @@
               </div>
               <div v-if="scope.row.new_source === 3" class="fz-14 tc-3">
                 <p class="fz-12 tc-6">合作伙伴</p>
-                <span v-if="scope.row.son_source === 'a'">京东</span>
+                <span v-if="scope.row.son_source === 'a'">京东云艺火</span>
                 <span v-else-if="scope.row.son_source === 'b'">优客工场</span>
-                <span v-else-if="scope.row.son_source === 'c'">神农大脑</span>
+                <span v-else-if="scope.row.son_source === 'c'">京东云神农大脑</span>
                 <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
@@ -1047,7 +1047,7 @@ export default {
             },
             {
               value: 'a',
-              label: '京东'
+              label: '京东云艺火'
             },
             {
               value: 'b',
@@ -1055,7 +1055,7 @@ export default {
             },
             {
               value: 'c',
-              label: '神农大脑'
+              label: '京东云神农大脑'
             }
           ]
         },
@@ -1217,7 +1217,7 @@ export default {
           children: [
             {
               value: 'a',
-              label: '京东'
+              label: '京东云艺火'
             },
             {
               value: 'b',
@@ -1225,7 +1225,7 @@ export default {
             },
             {
               value: 'c',
-              label: '神农大脑'
+              label: '京东云神农大脑'
             }
           ]
         },

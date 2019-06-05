@@ -18,7 +18,7 @@
                 <el-option label="自平台" value="1"></el-option>
                 <el-option label="支付宝" value="2"></el-option>
                 <el-option label="微信" value="3"></el-option>
-                <el-option label="京东" value="4"></el-option>
+                <el-option label="京东云" value="4"></el-option>
                 <el-option label="银行转账" value="5"></el-option>
               </el-select>
             </el-form-item>

@@ -48,7 +48,7 @@
       </p>
       <div v-if="!code">
         <p v-if="!isMob">还没有{{prod.login}}账户？
-          <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
+          <router-link v-if="type" :to="{name: 'registerWithType',params:{type: type}}">立即注册</router-link>
           <router-link v-else :to="{name: 'register'}" :class="{'shake-reg': isShake}">立即注册</router-link>
         </p>
         <p v-else>还没有{{prod.login}}账户？

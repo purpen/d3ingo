@@ -163,8 +163,8 @@ export default {
   name: 'innoAbout',
   methods: {
     upload() {
-      store.commit(types.PREV_URL_NAME, '/innovation_index/home')
-      this.$router.push({name: 'register', params: { type: 2 }})
+      store.commit(types.PREV_URL_NAME, 'InnovationIndex')
+      this.$router.push({name: 'registerWithType', params: { type: 2 }})
     }
   },
   computed: {
