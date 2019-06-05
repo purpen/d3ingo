@@ -14,7 +14,7 @@
           <span class="fz-18 tc-2 header-source">{{item.name}}</span>
           <span class="tc-6">来源:</span>
           <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
-          <span v-else-if="item.source === 1" class="header-source">京东</span>
+          <span v-else-if="item.source === 1" class="header-source">京东云</span>
           <span class="tc-6">项目状态 : </span>
           <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
           <div class="fixe-header">

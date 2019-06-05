@@ -1736,7 +1736,7 @@ export default {
           children: [
             {
               value: 'a',
-              label: '京东'
+              label: '京东云艺火'
             },
             {
               value: 'b',
@@ -1744,7 +1744,7 @@ export default {
             },
             {
               value: 'c',
-              label: '神农大脑'
+              label: '京东云神农大脑'
             }
           ]
         },

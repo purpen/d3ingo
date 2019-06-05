@@ -2397,7 +2397,7 @@ const OTHERADMINMENU = {
     },
     children: [
       {
-        name: '列表',
+        name: '进入后台',
         route: 'adminDashBoard',
         statement: {
           params: {},

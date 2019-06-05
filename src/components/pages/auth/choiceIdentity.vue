@@ -24,10 +24,10 @@
           </article>
         </div>
       </label>
-      <router-link :to="{name: 'register', params: {type: 1}}" class="cus">
+      <router-link :to="{name: 'registerWithType', params: {type: 1}}" class="cus">
         <el-button class="pub-btn full-red-button large-button" type="primary" size="large">下一步</el-button>
       </router-link>
-      <router-link :to="{name: 'register', params: {type: 2}}" class="bus">
+      <router-link :to="{name: 'registerWithType', params: {type: 2}}" class="bus">
         <el-button class="pub-btn full-red-button large-button" type="primary" size="large">下一步</el-button>
       </router-link>
     </div>
