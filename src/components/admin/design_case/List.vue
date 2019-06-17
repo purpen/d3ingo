@@ -49,7 +49,8 @@
         label="内容"
         min-width="250">
           <template slot-scope="scope">
-            <p>标题: <a :href="origin+ '/static_page/design_case/view?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p>
+            <!-- <p>标题: <a :href="'/design_case/show/?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p> -->
+            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}"></router-link></p>
             <p>类型: {{ scope.row.type_label }}</p>
             <p>服务客户: {{ scope.row.customer }}</p>
             <p>标签: {{ scope.row.tags }}</p>
@@ -67,8 +68,9 @@
         label="所属公司">
           <template slot-scope="scope">
             <p>
-              <a :href="origin+ '/static_page/company/view?id=' + scope.row.design_company.id"
-                target="_blank">{{ scope.row.design_company.company_name }}</a>
+              <router-link tag="a" :to="{ name: 'companyShow', params: { id : scope.row.design_company.id }}">
+                {{ scope.row.design_company.company_name }}
+              </router-link>
             </p>
           </template>
       </el-table-column>

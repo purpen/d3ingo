@@ -69,8 +69,10 @@
           <img v-else class="company-logo" :src="require('assets/images/avatar_100.png')">
           <div class="company-detail flex1" v-if="designCasesDetail && designCasesDetail.design_company">
               <p class="company-name">
-              <a class="tc-2"
-              :href="origin+ '/static_page/company/view?id='+designCasesDetail.design_company.id">{{designCasesDetail.design_company.company_name}}</a></p>
+                <router-link tag="a" :to="{ name: 'companyShow', params: { id : designCasesDetail.design_company.id }}" class="tc-2">
+                  {{designCasesDetail.design_company.company_name}}
+                </router-link>
+              </p>
               <p class="company-addr"><i class="fx-icon-location"></i>{{designCasesDetail.design_company.province_value}} {{designCasesDetail.design_company.city_value}}</p>
           </div>
           <div class="rank clearfix">
@@ -83,18 +85,18 @@
           <el-row :gutter="20" class="anli-elrow" v-if="designCasesDetail.design_cases && designCasesDetail.design_cases.length">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCasesDetail.design_cases" :key="index">
               <el-card :body-style="{ padding: '0px' }" class="card">
-                  <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                    :target="isMob ? '_self' : '_blank'">
+                <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
+
                   <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
                       <!-- <img v-lazy="d.cover.middle"> -->
                   </div>
                   <div class="case-box">
-                      <a class="title" :href="origin+ '/static_page/design_case/view?id='+d.id"
-                      target="_blank">{{ d.title }}
-                    </a>
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}" class="title">
+                        {{ d.title }}
+                      </router-link>
                     <p class="des">{{ d.profile }}</p>
                   </div>
-                </a>
+                </router-link>
               </el-card>
             </el-col>
           </el-row>

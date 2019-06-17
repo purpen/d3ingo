@@ -29,9 +29,9 @@
                       </div>
                     </div>
                     <div class="content">
-                      <a :href="origin+ '/static_page/design_case/view?id='+d.id" target="_blank">
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
                         {{ d.title }}
-                      </a>
+                      </router-link>
                     </div>
                   </div>
                 </el-col>
@@ -125,7 +125,7 @@
 <style scoped>
 
   .design-case-list {
-  
+
   }
   .design-case-list .item {
     height: 250px;
@@ -152,7 +152,7 @@
   }
   .design-case-list .img:hover .opt a {
     color: #ccc;
-    margin: 0 5px 0 0; 
+    margin: 0 5px 0 0;
   }
   .design-case-list .img:hover .opt a i {
   }

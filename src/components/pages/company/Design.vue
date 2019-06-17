@@ -60,12 +60,12 @@
           <el-col v-for="(d, index) in designCases" :key="index" :span="8">
             <div class="cases-item">
               <div class="img-box">
-                <a v-if="d.cover" :href="origin+ '/static_page/design_case/view?id='+d.id" :target="isMob ? '_self' : '_blank'" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
+                <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}" v-if="d.cover" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
                   <!-- <img v-if="d.cover" :src="d.cover.middle"> -->
-                </a>
+                </router-link>
 
-                <a v-else :href="origin+ '/static_page/design_case/view?id='+d.id" class="df-case-a">
-                </a>
+                <router-link v-else tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}" class="df-case-a">
+                </router-link>
               </div>
               <div class="cases-item-box">
                 <p class="cases-item-title">{{d.title}}</p>

@@ -137,12 +137,14 @@
                     </span></p>
                   <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
                     <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span>
-                    <a :href="origin+ '/static_page/company/view?id='+ d.id" 
-                    target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name}}</a>
+                    <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.id }}" :class="{'tc-green':i.type === 2}">
+                      {{ d.company_name}}
+                    </router-link>
                   </p>
                   <p v-if="i.type === 5&&i.designCompany">
-                    <a 
-                    :href="origin+ '/static_page/company/view?id='+ i.design_company.id" target="_blank" :class="{'tc-green':i.type === 2}">{{ i.designCompany.company_name}}</a>
+                    <router-link tag="a" :to="{ name: 'companyShow', params: { id : i.design_company.id }}" :class="{'tc-green':i.type === 2}">
+                      {{ i.designCompany.company_name}}
+                    </router-link>
                   </p>
                 </div>
               </div>
@@ -516,11 +518,9 @@
             <el-col :span="22" :offset="2">
               <div class="eva-content">
                 <p class="ev-c-name">
-                  <a
-                    :href="origin+ '/static_page/company/view?id='+ item.design_company_id" 
-                    target="_blank" v-if="quotation1">
+                  <router-link tag="a" :to="{ name: 'companyShow', params: { id : item.design_company_id }}" v-if="quotation1">
                     设计服务商: {{quotation1.design_company_name}}
-                  </a>
+                  </router-link>
                 </p>
                 <el-row class="grade pl">
                   <el-col :span="8">

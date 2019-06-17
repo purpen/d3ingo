@@ -22,7 +22,7 @@
               <el-tag type="gray" v-for="(d, index) in item.design_type_val" :key="index" v-if="d">{{ d }}</el-tag>
             </p>
           </div>
-  
+
           <div class="cate" v-if="item.good_field_value && item.good_field_value.length">
             <p class="c-title">擅长领域</p>
             <p class="tag">
@@ -51,16 +51,15 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
                     <div class="image-box">
-                      <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                        :target="isMob ? '_self' : '_blank'">
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
                         <img v-if="d.cover" :src="d.cover.middle">
-                      </a>
+                      </router-link>
                     </div>
                     <el-tooltip :content="d.title" placement="bottom">
                       <div class="content">
-                        <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                        :target="isMob ? '_self' : '_blank'">{{ d.title }}
-                        </a>
+                        <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
+                          {{ d.title }}
+                        </router-link>
                       </div>
                     </el-tooltip>
                   </el-card>

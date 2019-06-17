@@ -132,8 +132,9 @@ export default {
       this.erCode = location.origin + '/api/designCompanyCase/getAppCode?id=' + scope.row.id
     },
     toCaseDetail(id) {
-      const href = location.origin + '/static_page/design_case/view?id=' + id
-      window.open(href, '_target')
+      this.$router.push({name: 'vcenterDesignCaseShow', params: {id: id}})
+      // const href = '/design_case/show/?id=' + id
+      // window.open(href, '_target')
     },
     getOpen(index, id, evt, value) {
       let self = this
