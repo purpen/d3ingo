@@ -917,14 +917,13 @@
     display: none;
     position: absolute;
     z-index: 999;
-    top: 56px;
+    top: 66px;
     right: 0;
     width: 220px;
     background: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
-    0 0 6px 0 rgba(0, 0, 0, .04);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    border: 1px solid #e6e6e6;
+    /* border: 1px solid #e6e6e6; */
     border-radius: 4px;
     transition: transform .3s cubic-bezier(.23,1,.32,1) .1s,opacity .3s cubic-bezier(.23,1,.32,1) .1s;
   }
