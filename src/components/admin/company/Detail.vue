@@ -788,7 +788,7 @@ export default {
     display: flex;
     align-items: flex-start;
   }
-  
+
   .share {
     display: flex;
     padding-bottom: 20px;
