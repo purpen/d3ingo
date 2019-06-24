@@ -79,25 +79,22 @@
                     <el-row class="content">
                       <el-col :xs="24" :sm="2" :md="2" :lg="2">
                         <div class="img">
-                          <a 
-                          :href="origin+ '/static_page/company/view?id='+ d.id" target="_blank">
+                          <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.id }}">
                             <img class="avatar" v-if="d.logo_url" :src="d.logo_url" width="50"/>
                             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/>
-                          </a>
+                          </router-link>
                         </div>
                       </el-col>
                       <el-col
-                        :xs="24" 
-                        :sm="d.cases.length ? 12 : 10" 
-                        :md="d.cases.length ? 12 : 10" 
+                        :xs="24"
+                        :sm="d.cases.length ? 12 : 10"
+                        :md="d.cases.length ? 12 : 10"
                         :lg="d.cases.length ? 12 : 10">
                         <div class="company-title">
                           <h3 class="company-name">
-                            <a 
-                            :href="origin+ '/static_page/company/view?id='+ d.id"
-                            target="_blank">{{ d.company_name
-                              }}
-                            </a>
+                            <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.id }}">
+                              {{ d.company_name}}
+                            </router-link>
                           </h3>
                           <p class="company-addr"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ d.city_arr.join(',') }}</p>
                           <p class="des company-padding" v-if="d.item_type"><span>类型: </span>{{ d.item_type_label }}</p>
@@ -106,10 +103,9 @@
                       </el-col>
                       <el-col :xs="24" :sm="10" :md="10" :lg="10" v-if="d.cases.length">
                         <div class="case-box">
-                          <a v-for="(m, index) in d.cases" :key="index"
-                          :href="origin+ '/static_page/design_case/view?id='+m.id" target="_blank"
-                            :title="m.title">
-                            <img width="120" :src="m.cover_url"/></a>
+                          <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : m.id }}" v-for="(m, index) in d.cases" :key="index">
+                            <img width="120" :src="m.cover_url"/>
+                          </router-link>
                         </div>
                       </el-col>
                     </el-row>
@@ -133,18 +129,15 @@
 
                   <div class="item-logo">
                     <div class="fl">
-                      <a 
-                      :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
-                      target="_blank">
+                      <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.design_company.id }}">
                         <img class="avatar fl" v-if="d.design_company.logo_url" :src="d.design_company.logo_url"
                              width="40"/>
                         <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
-                      </a>
+                      </router-link>
                       <p class="p-title minititle fl">
-                        <a
-                        :href="origin+ '/static_page/company/view?id='+ d.design_company.id" target="_blank">
+                        <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.design_company.id }}">
                           {{ d.design_company.company_name }}
-                        </a>
+                        </router-link>
                       </p>
                       <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top"
                                   v-if="d.design_company_status === 2 && !isMob">
@@ -175,7 +168,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a 
+                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
                     <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
@@ -201,18 +194,15 @@
 
                   <div class="item-logo">
                     <div class="fl">
-                      <a
-                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                      target="_blank">
+                      <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
                         <img class="avatar fl" v-if="cooperateCompany.design_company.logo_url"
                              :src="cooperateCompany.design_company.logo_url" width="40"/>
                         <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
-                      </a>
+                      </router-link>
                       <p class="p-title minititle fl">
-                        <a
-                        :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                        target="_blank">{{ cooperateCompany.design_company.company_name }}
-                        </a>
+                        <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
+                          {{ cooperateCompany.design_company.company_name }}
+                        </router-link>
                       </p>
                       <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="!isMob">
                         <p class="contact">联系人: {{ cooperateCompany.design_company.contact_name }}</p>
@@ -402,12 +392,9 @@
                   </p>
                   <div class="eva-content fl">
                     <p class="ev-c-name">
-
-                      <a
-                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                      target="_blank">
+                      <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
                         {{ cooperateCompany.design_company.company_name }}
-                      </a>
+                      </router-link>
                     </p>
                     <p class="eva-score">
                       <el-rate
@@ -1679,4 +1666,3 @@ section ul li a {
     width: 100%;
   }
 </style>
-

@@ -11,7 +11,7 @@
       <div class="admin-menu-sub-list">
         <router-link :to="{name: 'adminDesignCaseList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">通过</router-link>
       </div>
-      <div class="fr admin-menu-sub-list">
+      <div class="fr admin-menu-sub-list flex">
         <el-input
           placeholder="请输入内容按Enter搜索"
           size="mini"
@@ -19,6 +19,14 @@
           v-model="query.value"
           @change="searchDesignCase">
         </el-input>
+        <div class="dot">
+          <div class="dot-hover">
+            <div class="dot-flex">
+              <i class="el-icon-download dot-img1"></i>
+              <div class="dot-text">下载报表</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -49,7 +57,8 @@
         label="内容"
         min-width="250">
           <template slot-scope="scope">
-            <p>标题: <a :href="origin+ '/static_page/design_case/view?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p>
+            <!-- <p>标题: <a :href="'/design_case/show/?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p> -->
+            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}"></router-link></p>
             <p>类型: {{ scope.row.type_label }}</p>
             <p>服务客户: {{ scope.row.customer }}</p>
             <p>标签: {{ scope.row.tags }}</p>
@@ -67,8 +76,9 @@
         label="所属公司">
           <template slot-scope="scope">
             <p>
-              <a :href="origin+ '/static_page/company/view?id=' + scope.row.design_company.id"
-                target="_blank">{{ scope.row.design_company.company_name }}</a>
+              <router-link tag="a" :to="{ name: 'companyShow', params: { id : scope.row.design_company.id }}">
+                {{ scope.row.design_company.company_name }}
+              </router-link>
             </p>
           </template>
       </el-table-column>
@@ -337,8 +347,58 @@ export default {
 .admin-menu-sub {
   height: 36px;
 }
+.flex {
+  display: flex;
+}
 .admin-menu-sub-list {
   line-height: 34px;
 }
-
+.dot {
+  cursor: pointer;
+  width: 30px;
+  margin-left: 10px;
+  height: 35px;
+  background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
+  position: relative;
+}
+.dot:hover {
+  width: 30px;
+  height: 35px;
+  background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
+}
+.dot:hover .dot-hover {
+  display: flex;
+}
+.dot-hover {
+  position: absolute;
+  z-index: 999;
+  top: 35px;
+  bottom: 0;
+  right: 8px;
+  width: 130px;
+  height: 40px;
+  display: none;
+  flex-direction: column;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 4px 0px rgba(0,0,0,0.4);
+}
+.dot-text {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(51,51,51,1);
+  padding-left: 7px;
+}
+.dot-flex {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.dot-flex:hover {
+  background-color: #f7f7f7;
+}
+.dot-img1 {
+  font-size: 14px;
+  margin-left: 20px;
+}
 </style>

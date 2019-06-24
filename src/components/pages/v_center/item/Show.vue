@@ -89,19 +89,15 @@
 
                   <div class="item-logo">
                     <div class="fl">
-                      <a
-                      :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
-                      target="_blank">
+                      <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.design_company.id }}">
                         <img class="avatar fl" v-if="d.design_company.logo_url" :src="d.design_company.logo_url"
                              width="40"/>
                         <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
-                      </a>
+                      </router-link>
                       <p class="p-title minititle fl">
-                        <a 
-                        :href="origin+ '/static_page/company/view?id='+ d.design_company.id"
-                        target="_blank">
+                        <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.design_company.id }}">
                           {{ d.design_company.company_name }}
-                        </a>
+                        </router-link>
                       </p>
                       <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top"
                                   v-if="d.design_company_status === 2 && !isMob">
@@ -166,18 +162,15 @@
 
                   <div class="item-logo">
                     <div class="fl">
-                      <a 
-                      :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                      target="_blank">
+                      <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
                         <img class="avatar fl" v-if="cooperateCompany.design_company.logo_url"
                              :src="cooperateCompany.design_company.logo_url" width="40"/>
                         <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
-                      </a>
+                      </router-link>
                       <p class="p-title minititle fl">
-                        <a 
-                        :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                        target="_blank">{{ cooperateCompany.design_company.company_name }}
-                        </a>
+                        <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
+                          {{ cooperateCompany.design_company.company_name }}
+                        </router-link>
                       </p>
                       <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="!isMob">
                         <p class="contact">联系人: {{ cooperateCompany.design_company.contact_name }}</p>
@@ -429,12 +422,9 @@
                     <el-col :span="22">
                       <div class="eva-content">
                         <p class="ev-c-name">
-
-                          <a 
-                          :href="origin+ '/static_page/company/view?id='+ cooperateCompany.design_company.id"
-                          target="_blank">
+                          <router-link tag="a" :to="{ name: 'companyShow', params: { id : cooperateCompany.design_company.id }}">
                             {{ cooperateCompany.design_company.company_name }}
-                          </a>
+                          </router-link>
                         </p>
                         <!-- <p class="eva-score">
                           <el-rate
@@ -2043,4 +2033,3 @@ section ul li a {
     background: url('../../../../assets/images/item/wait@2x.png') no-repeat center left / contain
   }
 </style>
-

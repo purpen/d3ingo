@@ -168,7 +168,7 @@
       <el-row :gutter="20" class="card-list">
       <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCaseList" :key="index">
         <el-card class="card" :body-style="{ padding: '0px' }">
-          <a :href="origin+ '/static_page/design_case/view?id='+d.id" :target="isMob ? '_self' : '_blank'">
+          <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
             <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.middle">
             </div>
@@ -182,7 +182,7 @@
                 <span>{{d.design_company.company_name}}</span>
               </p>
             </div>
-          </a>
+          </router-link>
         </el-card>
       </el-col>
     </el-row>
