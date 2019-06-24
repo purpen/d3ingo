@@ -343,8 +343,9 @@
             </el-col>
             <el-col :span="spanVal">
               <p class="fl tc-2" v-for="(d, index) in stickCompany" :key="index">
-                <a :href="origin+ '/static_page/company/view?id='+ d.id"
-                target="_blank">{{ d.company_name }}</a>;&nbsp;&nbsp;&nbsp;</p>
+                <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.id }}">
+                  {{ d.company_name }}
+                </router-link>;&nbsp;&nbsp;&nbsp;</p>
             </el-col>
             <el-col :span="spanOpt">
             </el-col>
@@ -355,8 +356,10 @@
               <p>已选择</p>
             </el-col>
             <el-col :span="spanVal">
-              <p v-for="(d, index) in offerCompany" :key="index"><a 
-              :href="origin+ '/static_page/company/view?id='+ d.design_company.id" target="_blank">{{ d.design_company.company_name }}</a>---<span>[{{ d.status_value }}]</span></p>
+              <p v-for="(d, index) in offerCompany" :key="index">
+                <router-link tag="a" :to="{ name: 'companyShow', params: { id : d.design_company.id }}">
+                  {{ d.design_company.company_name }}
+                </router-link>---<span>[{{ d.status_value }}]</span></p>
             </el-col>
             <el-col :span="spanOpt">
             </el-col>
@@ -919,7 +922,7 @@ export default {
     padding: 5px;
     border-bottom: 1px solid #D2D2D2;
   }
-  
+
   .admin-menu-sub .item {
     border: none;
     padding: 0;

@@ -67,10 +67,7 @@
         label="所属公司">
         <template slot-scope="scope">
           <p>
-            <!--<a :href="origin+ '/static_page/company/view?id=' + scope.row.design_company.id"-->
-               <!--target="_blank">-->
               {{ scope.row.design_company }}
-            <!--</a>-->
           </p>
         </template>
       </el-table-column>

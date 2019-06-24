@@ -47,8 +47,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8" :md="8" :lg="8"
               v-for="(d, index) in designCaseList" :key="index">
-              <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                  :target="isMob ? '_self' : '_blank'">
+              <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
                 <el-card :body-style="{ padding: '0px' }" class="item">
                   <div class="image-box">
                       <img v-if="d.cover" :src="d.cover.middle">
@@ -60,7 +59,7 @@
                     <p class="prize-time">{{d.prize_time}}</p>
                   </div>
                 </el-card>
-              </a>
+              </router-link>
             </el-col>
           </el-row>
         </div>

@@ -80,18 +80,28 @@
           </el-select>
         </div>
 
-        <div class="sever-right flex-ali-center">
-          <el-select v-model="companyReault" placeholder="请选择" class="sever-right-left">
-            <el-option
-              v-for="item in companyChoose"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              popper-class="drop-down">
-            </el-option>
-          </el-select>
-          <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue" @keyup.enter="selectLoad()"/>
-          <div class="select-img" @click="selectLoad()"></div>
+        <div style="display: flex">
+          <div class="sever-right flex-ali-center">
+            <el-select v-model="companyReault" placeholder="请选择" class="sever-right-left">
+              <el-option
+                v-for="item in companyChoose"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                popper-class="drop-down">
+              </el-option>
+            </el-select>
+            <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue" @keyup.enter="selectLoad()"/>
+            <div class="select-img" @click="selectLoad()"></div>
+          </div>
+          <div class="dot">
+            <div class="dot-hover">
+              <div class="dot-flex">
+                <i class="el-icon-download dot-img1"></i>
+                <div class="dot-text">下载报表</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -436,6 +446,54 @@ export default {
 </script>
 
 <style scoped>
+  .dot {
+    cursor: pointer;
+    width: 30px;
+    margin-left: 10px;
+    height: 35px;
+    background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
+    position: relative;
+  }
+  .dot:hover {
+    width: 30px;
+    height: 35px;
+    background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
+  }
+  .dot:hover .dot-hover {
+    display: flex;
+  }
+  .dot-hover {
+    position: absolute;
+    z-index: 999;
+    top: 35px;
+    bottom: 0;
+    right: 8px;
+    width: 130px;
+    height: 40px;
+    display: none;
+    flex-direction: column;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 4px 0px rgba(0,0,0,0.4);
+  }
+  .dot-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51,51,51,1);
+    padding-left: 7px;
+  }
+  .dot-flex {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .dot-flex:hover {
+    background-color: #f7f7f7;
+  }
+  .dot-img1 {
+    font-size: 14px;
+    margin-left: 20px;
+  }
   .header {
     display: flex;
     padding: 20px 0 0 20px;

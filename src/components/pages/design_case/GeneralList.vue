@@ -17,8 +17,7 @@
       <el-row :gutter="20" class="anli-elrow">
         <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="card">
-              <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                :target="isMob ? '_self' : '_blank'">
+            <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
 
               <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / contain'}">
                   <!-- <img v-lazy="d.cover.middle"> -->
@@ -26,9 +25,9 @@
               <div class="image-box" v-else :style="{background: 'url('+require('assets/images/Bitmap.png')+') no-repeat center', backgroundSize: 'contain'}">
               </div>
               <div class="content">
-                <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                  :target="isMob ? '_self' : '_blank'">{{ d.title }}
-                </a>
+                <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
+                  {{ d.title }}
+                </router-link>
                 <p class="des">{{ d.profile }}</p>
 
                 <p class="company">
@@ -38,7 +37,7 @@
                   <span>{{d.design_company.company_name}}</span>
                 </p>
               </div>
-            </a>
+            </router-link>
           </el-card>
         </el-col>
       </el-row>

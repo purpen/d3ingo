@@ -784,8 +784,7 @@
         })
       },
       caseDetail(id) {
-        const href = location.origin + '/static_page/design_case/view?id=' + id
-        window.open(href, 'blank')
+        this.$router.push({name: 'vcenterDesignCaseShow', params: { id: id }})
       }
     },
     mounted() {
@@ -1962,8 +1961,8 @@
     height: 24px;
     width: 106px;
   }
-  
-  
+
+
 
 
 
@@ -2196,4 +2195,3 @@
     }
   }
 </style>
-
