@@ -43,7 +43,7 @@
             <div class="design-case-slide">
               <div class="info">
                 <!-- <a 
-                :href="location.origin+ '/static_page/company/view?id=' + item.design_company.id"
+                :href="location.origin+ '/static_page/company/?id=' + item.design_company.id"
                 target="_blank">
                   <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
                   <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>

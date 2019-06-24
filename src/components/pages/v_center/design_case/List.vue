@@ -34,20 +34,15 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <a v-if="d.cover" :href="origin+ '/static_page/design_case/view?id='+d.id"
-                        :target="isMob ? '_self' : '_blank'"
-                        :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
-                      </a>
-                      <a v-else 
-                        :href="origin+ '/static_page/design_case/view?id='+d.id"
-                        :target="isMob ? '_self' : '_blank'">
-                      </a>
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}"  v-if="d.cover" :style="{background: 'url('+ d.cover.middle +') no-repeat center / contain'}">
+                      </router-link>
+                      <router-link v-else tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
+                      </router-link>
                     </div>
                     <div class="content">
-                      <a :href="origin+ '/static_page/design_case/view?id='+d.id"
-                        :target="isMob ? '_self' : '_blank'"
-                        class="tc-2 protrude">{{ d.title }}
-                      </a>
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}" class="tc-2 protrude">
+                        {{ d.title }}
+                      </router-link>
                       <span class="fz-12 tc-9">{{ d.date }}</span>
                     </div>
                   </el-card>

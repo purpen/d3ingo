@@ -25,11 +25,10 @@
       <el-col :xs="24" :sm="6" :md="6" :lg="6">
         <div class="design-case-slide">
           <div class="info">
-            <a v-if="item.company_id"
-              :href="origin+ '/static_page/company/view?id='+ item.company_id" target="_blank">
+            <router-link tag="a" :to="{ name: 'companyShow', params: { id : item.company_id }}">
               <img class="avatar" v-if="item.company.logo_url" :src="item.company.logo_url" width="100" />
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100" />
-            </a>
+            </router-link>
             <h3>{{ item.company.company_name }}</h3>
             <p class="com-addr">
               <span>{{ item.company.province_value }}</span>&nbsp;&nbsp;&nbsp;
