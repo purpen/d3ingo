@@ -697,7 +697,7 @@
           </div>
       </div>
       <!-- banner 轮播图 -->
-      <el-carousel trigger="click" height="500px" class="carousel-x">
+      <el-carousel trigger="click" height="500px" class="carousel-x sn-carousel">
         <el-carousel-item >
           <div class="sn-banner">
             <div class="container banner-box banner-box01">
@@ -1946,14 +1946,39 @@ export default {
       }
     },
     goAnchor(id) {
-      console.log(id)
       const anchorTop = this.$el.querySelector(id).offsetTop
-      document.documentElement.scrollTop = anchorTop
-      // let t1 = 0
-      // t1 = window.setInterval(function() {
-      //   document.documentElement.scrollTop -= anchorTop
-      //   window.clearInterval(t1)
-      // }, 50)
+      let wScrollTop = 0
+      if (document.documentElement && document.documentElement.scrollTop) {
+        wScrollTop = document.documentElement.scrollTop
+      } else if (document.body) { // IE
+        wScrollTop = document.body.scrollTop
+      }
+      let num = Math.trunc(Math.abs(wScrollTop - anchorTop) / 50)
+      let count = 0
+      let t1 = 0
+      let arrIds = []
+      t1 = window.setInterval(function() {
+        if (count < num) {
+          if (wScrollTop < anchorTop) { // 下滑
+            if (document.documentElement && document.documentElement.scrollTop) {
+              document.documentElement.scrollTop += 50
+            } else if (document.body) { // IE
+              document.body.scrollTop += 50
+            }
+          } else {
+            if (document.documentElement && document.documentElement.scrollTop) {
+              document.documentElement.scrollTop -= 50
+            } else if (document.body) { // IE
+              document.body.scrollTop -= 50
+            }
+          }
+        } else {
+          console.log(arrIds)
+          arrIds.forEach(id => window.clearInterval(id))
+        }
+        arrIds.push(t1)
+        count++
+      }, 17)
     }
   },
   components: {
@@ -3461,7 +3486,22 @@ p.sn-sub-title {
   width: 305px;
   margin-right: 10px;
 }
+/* carousel 样式重置  statrt*/
 .carousel-x.el-carousel {
   overflow: inherit;
 }
+.sn-carousel .el-carousel__button {
+  padding: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  margin: 0 6px;
+  opacity: 0.5;
+}
+.sn-carousel .el-carousel__indicators .is-active .el-carousel__button {
+  width: 30px;
+  border-radius: 5px;
+}
+/* carousel 样式重置  end*/
 </style>
