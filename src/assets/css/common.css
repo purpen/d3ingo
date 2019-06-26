@@ -284,6 +284,9 @@
 .blank13 {
   padding-top: 13px;
 }
+.blank15 {
+  padding-top: 15px;
+}
 
 .blank20 {
   padding-top: 20px;
@@ -303,6 +306,9 @@
 
 .blank60 {
   padding-top: 60px;
+}
+.blank90 {
+  padding-top: 90px;
 }
 .padding-r-30 {
   padding-right: 30px;
