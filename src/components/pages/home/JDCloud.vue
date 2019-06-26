@@ -2542,6 +2542,7 @@ p.sn-sub-title {
   line-height:20px;
   font-size:14px;
   padding: 0 20px;
+  text-align: left;
 }
 .awards-title2 {
   text-align: center;
