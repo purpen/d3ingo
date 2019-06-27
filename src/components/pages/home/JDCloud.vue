@@ -689,16 +689,16 @@
               <div class="nav-logo-img"></div>
             </div>
             <div class="nav-list fl">
-              <span v-for="(item, index) in snNavList" :key="index" @click="goAnchor(item.id)">{{item.name}}</span>
+              <span v-for="(item, index) in snNavList" :key="index" :class="{'active': currentNav === item.id}" @click="goAnchor(item.id)">{{item.name}}</span>
             </div>
             <div class="fr blank15">
-              <span class="nav-btn" @click="boolFindDesign = true">发布需求</span>
+              <span class="nav-btn fz-14" @click="boolFindDesign = true">发布需求</span>
             </div>
           </div>
       </div>
       <!-- banner 轮播图 -->
-      <el-carousel trigger="click" height="500px" class="carousel-x sn-carousel">
-        <el-carousel-item >
+      <swiper :options="snSwiperOption1" class="clearfix sn-banner">
+        <swiper-slide>
           <div class="sn-banner">
             <div class="container banner-box banner-box01">
               <el-row>
@@ -710,8 +710,8 @@
               </el-row>
             </div>
           </div>
-        </el-carousel-item>
-        <el-carousel-item >
+        </swiper-slide>
+        <swiper-slide>
           <div class="sn-banner">
             <div class="container banner-box banner-box02">
               <el-row>
@@ -723,8 +723,8 @@
               </el-row>
             </div>
           </div>
-        </el-carousel-item>
-        <el-carousel-item >
+        </swiper-slide>
+        <swiper-slide>
           <div class="sn-banner">
             <div class="container banner-box banner-box03">
               <el-row>
@@ -736,8 +736,9 @@
               </el-row>
             </div>
           </div>
-        </el-carousel-item>
-      </el-carousel>
+        </swiper-slide>
+        <div class="sn-swiper-page swiper-pagination" slot="pagination"></div>
+      </swiper>
 
       <div class="sn-banner-word">
         <div class="b-word-box container">
@@ -777,6 +778,41 @@
             <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="case-product">
+            <!-- <swiper :options="snSwiperOption3" ref="mySwiper3" class="clearfix">
+              <swiper-slide  v-for="(d, index) in caseData" :key="index">
+                <div>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <el-row :gutter="10">
+                          <el-col :span="12">
+                            <div class="product-left1" :style="{background:'url('+d.img1 +') no-repeat center /cover'}">
+                              <div class="f-layer">
+                                <span>{{d.h1}}</span>
+                                <div class="title2" v-if="d.h5">{{d.h5}}</div>
+                              </div>
+                            </div>
+                          </el-col>
+                          <el-col :span="12">
+                            <div class="product-left2" :style="{background:'url('+d.img2 +') no-repeat center /cover'}">
+                              <div class="f-layer"><span>{{d.h2}}</span></div>
+                            </div>
+                          </el-col>
+                          <el-col :span="24">
+                            <div class="product-left3 margin-t-10" :style="{background:'url('+d.img3 +') no-repeat center /cover'}">
+                              <div class="f-layer"><span>{{d.h3}}</span></div>
+                            </div>
+                          </el-col>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12">
+                        <div class="product-right" :style="{background:'url('+d.img4 +') no-repeat center /cover'}">
+                          <div class="f-layer"><span>{{d.h4}}</span></div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                </div>
+              </swiper-slide>
+            </swiper> -->
             <div v-for="(d, index) in caseData" :key="index">
               <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
@@ -875,33 +911,21 @@
             <p class="sn-sub-title tc-f">入驻设计公司</p>
             <div class="design-title2 tc-f">1000+ 优质设计公司入驻</div>
             <div class="blank50">
-                <el-carousel trigger="click" height="340px" class="carousel-x sn-carousel design-carousel">
-                  <el-carousel-item>
-                    <div class="sn-design-list container">
-                      <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
-                        <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
-                        <div class="design-name">{{item.name}}</div>
-                        <div class="design-title margin-t-14">{{item.title}}</div>
+            <swiper :options="snSwiperOption2" class="clearfix">
+              <swiper-slide  v-for="(d, index) in snDesignCompany" :key="index">
+                  <div class="sn-design-list container">
+                    <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
+                      <!-- :style="{background:'url('+item.img +') no-repeat center / contain'}" -->
+                      <div class="img-box">
+                        <img :src="item.img" alt="">
                       </div>
+                      <div class="design-name">{{item.name}}</div>
+                      <div class="design-title margin-t-14">{{item.title}}</div>
                     </div>
-                  </el-carousel-item>
-                  <el-carousel-item >
-                    <div class="sn-design-list container">
-                      <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
-                        <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
-                        <div class="design-name">{{item.name}}</div>
-                        <div class="design-title margin-t-14">{{item.title}}</div>
-                      </div>
-                    </div>
-                  </el-carousel-item>
-                </el-carousel>
-              <!-- <div class="sn-design-list">
-                <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
-                  <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
-                  <div class="design-name">{{item.name}}</div>
-                  <div class="design-title margin-t-14">{{item.title}}</div>
-                </div>
-              </div> -->
+                  </div>
+              </swiper-slide>
+              <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
+            </swiper>
             </div>
           </div>
         </div>
@@ -993,7 +1017,7 @@
         title="发布需求"
         :visible.sync="boolFindDesign"
         width="480px"
-        :close-on-click-modal="false"
+        :close-on-click-modal="true"
         class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
@@ -1312,6 +1336,26 @@ export default {
           title2: '视频剪辑 动画制作'
         }
       ],
+      snSwiperOption1: { // sn-banner
+        pagination: '.swiper-pagination',
+        // pagination: '.sn-swiper-page',
+        paginationClickable: true,
+        lazyLoading: true,
+        autoplay: 2000,
+        loop: true
+      },
+      snSwiperOption2: { // sn-banner
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        lazyLoading: true,
+        autoplay: 2000,
+        loop: true
+      },
+      snSwiperOption3: { // sn-案例
+        lazyLoading: true,
+        autoplay: 2000,
+        loop: true
+      },
       currentCase: 'vision',
       currentOffer: 'vision',
       snOfferData: [],
@@ -1577,37 +1621,67 @@ export default {
         {id: '#sn5', name: '入驻设计公司'},
         {id: '#sn6', name: '所获奖项'}
       ],
+      currentNav: '#sn1',
       snDesignCompany: [
         {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+          company: [
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            }
+          ]
         },
         {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-        },
-        {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-        },
-        {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-        },
-        {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-        },
-        {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-          name: '凸凹设计',
-          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+          company: [
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            },
+            {
+              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+              name: '凸凹设计',
+              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+            }
+          ]
         }
+
       ],
       isShowNav: false, // sn nav
       jdAccount: {},
@@ -1703,6 +1777,18 @@ export default {
     this.formatQuery(this.$route.query)
     this.generalize(this.query)
     this.snOfferData = this.snOfferprintVision
+    // sn
+    if (this.custom.id === 4) {
+      let wScrollTop = 0
+      if (document.documentElement && document.documentElement.scrollTop) {
+        wScrollTop = document.documentElement.scrollTop
+      } else if (document.body) { // IE
+        wScrollTop = document.body.scrollTop
+      }
+      if (wScrollTop > 500) {
+        this.isShowNav = true
+      }
+    }
   },
   mounted () {
     let that = this
@@ -1745,6 +1831,7 @@ export default {
         this.isShowNav = false
       }
     })
+    console.log(this.swiperSlides)
   },
   methods: {
     // 关闭弹窗
@@ -1966,6 +2053,7 @@ export default {
       }
     },
     goAnchor(id) {
+      this.currentNav = ''
       const anchorTop = this.$el.querySelector(id).offsetTop
       let wScrollTop = 0
       if (document.documentElement && document.documentElement.scrollTop) {
@@ -1973,32 +2061,52 @@ export default {
       } else if (document.body) { // IE
         wScrollTop = document.body.scrollTop
       }
-      let num = Math.trunc(Math.abs(wScrollTop - anchorTop) / 50)
+      let num = Math.ceil(Math.abs(wScrollTop - anchorTop) / 50)
+      const remainder = Math.abs(Math.abs(wScrollTop - anchorTop) - (50 * num))
+      console.log(remainder)
       let count = 0
       let t1 = 0
       let arrIds = []
-      t1 = window.setInterval(function() {
+      t1 = window.setInterval(() => {
         if (count < num) {
           if (wScrollTop < anchorTop) { // 下滑
             if (document.documentElement && document.documentElement.scrollTop) {
-              document.documentElement.scrollTop += 50
+              if ((num - count) === 1) {
+                document.documentElement.scrollTop += remainder
+              } else {
+                document.documentElement.scrollTop += 50
+              }
             } else if (document.body) { // IE
-              document.body.scrollTop += 50
+              if ((num - count) === 1) {
+                document.body.scrollTop += remainder
+              } else {
+                document.body.scrollTop += 50
+              }
             }
           } else {
             if (document.documentElement && document.documentElement.scrollTop) {
-              document.documentElement.scrollTop -= 50
+              if ((num - count) === 1) {
+                document.documentElement.scrollTop -= remainder
+              } else {
+                document.documentElement.scrollTop -= 50
+              }
             } else if (document.body) { // IE
-              document.body.scrollTop -= 50
+              if ((num - count) === 1) {
+                document.body.scrollTop -= remainder
+              } else {
+                document.body.scrollTop -= 50
+              }
             }
           }
         } else {
-          console.log(arrIds)
+          this.$nextTick(_ => {
+            this.currentNav = id
+          })
           arrIds.forEach(id => window.clearInterval(id))
         }
         arrIds.push(t1)
         count++
-      }, 17)
+      }, 16)
     }
   },
   components: {
@@ -2042,6 +2150,10 @@ export default {
 .nav-list span {
   margin-left: 40px;
   cursor: pointer;
+}
+.nav-list span:hover,
+.nav-list span.active {
+  color: #3171FF;
 }
 .nav-btn {
   display: inline-block;
@@ -2492,7 +2604,7 @@ p.sn-sub-title {
 }
 .sn-d-item {
   width: 180px;
-  height:222px;
+  height:162px;
   padding-top: 60px;
   position: relative;
   background: #ffffff;
@@ -2507,6 +2619,11 @@ p.sn-sub-title {
   top: -40px;
 	transform: translateX(-50%);
   left: 50%;
+  border-radius: 50%;
+}
+.sn-d-item .img-box img {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
 }
 .design-name {
@@ -3508,28 +3625,39 @@ p.sn-sub-title {
   width: 305px;
   margin-right: 10px;
 }
-/* carousel 样式重置  statrt*/
-.carousel-x.el-carousel {
-  overflow: inherit;
+/* swiper 样式重置  statrt*/
+.sn-banner.swiper-container {
+  padding-bottom: 0;
 }
-.sn-carousel .el-carousel__button {
-  padding: 0;
+.sn-swiper-page .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
-  background: #ffffff;
-  margin: 0 6px;
-  opacity: 0.5;
-}
-.sn-carousel .el-carousel__arrow {
-  display: none;
-}
-.sn-carousel .el-carousel__indicators .is-active .el-carousel__button {
+  background: #FFFFFF;
+  opacity:0.5;
+} 
+.sn-swiper-page .swiper-pagination-bullet-active {
   width: 30px;
-  border-radius: 5px;
+  opacity: 1;
+  background: #FFFFFF !important;
+  border-radius: 15px;
 }
-.design-carousel.sn-carousel .el-carousel__button {
+.sn-swiper-page {
+  bottom: 20px !important;
+}
+.sn-swiper-page2 {
+  bottom: 0 !important;
+}
+.sn-swiper-page2 .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
   background: #BADBFF;
+  opacity:0.5;
 }
-/* carousel 样式重置  end*/
+.sn-swiper-page2 .swiper-pagination-bullet-active {
+  width: 30px;
+  opacity: 1;
+  background: #BADBFF !important;
+  border-radius: 15px;
+}
+/* swiper 样式重置  end*/
 </style>

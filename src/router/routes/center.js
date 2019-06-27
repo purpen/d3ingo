@@ -581,6 +581,7 @@ module.exports = [
     },
     component: require('@/components/pages/content_manage/List')
   },
+  // 神农帮助中心
   {
     path: '/content_manage/SNhelp',
     name: 'SNhelp',
@@ -589,6 +590,15 @@ module.exports = [
       // requireAuth: true
     },
     component: require('@/components/pages/content_manage/SNhelp')
+  },
+  {
+    path: '/content_manage/SNhelpContent',
+    name: 'SNhelpContent',
+    meta: {
+      title: '帮助中心内容'
+      // requireAuth: true
+    },
+    component: require('@/components/pages/content_manage/HelpConent')
   },
   // 神农注册
   {
