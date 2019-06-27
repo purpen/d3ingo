@@ -778,7 +778,7 @@
             <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="case-product">
-            <!-- <swiper :options="snSwiperOption3" ref="mySwiper3" class="clearfix">
+            <swiper :options="snSwiperOption3" ref="mySwiper3" class="clearfix">
               <swiper-slide  v-for="(d, index) in caseData" :key="index">
                 <div>
                     <el-row :gutter="10">
@@ -812,8 +812,8 @@
                     </el-row>
                 </div>
               </swiper-slide>
-            </swiper> -->
-            <div v-for="(d, index) in caseData" :key="index">
+            </swiper>
+            <!-- <div v-for="(d, index) in caseData" :key="index">
               <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
                   <el-row :gutter="10">
@@ -843,7 +843,7 @@
                   </div>
                 </el-col>
               </el-row>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -2054,16 +2054,17 @@ export default {
     },
     goAnchor(id) {
       this.currentNav = ''
-      const anchorTop = this.$el.querySelector(id).offsetTop
+      const anchorTop = this.$el.querySelector(id).offsetTop + 10
       let wScrollTop = 0
       if (document.documentElement && document.documentElement.scrollTop) {
         wScrollTop = document.documentElement.scrollTop
       } else if (document.body) { // IE
         wScrollTop = document.body.scrollTop
       }
-      let num = Math.ceil(Math.abs(wScrollTop - anchorTop) / 50)
-      const remainder = Math.abs(Math.abs(wScrollTop - anchorTop) - (50 * num))
-      console.log(remainder)
+      console.log(wScrollTop)
+      let num = Math.floor(Math.abs(wScrollTop - anchorTop) / 50) + 1
+      const remainder = Math.abs(wScrollTop - anchorTop) % 50
+      // console.log(remainder)
       let count = 0
       let t1 = 0
       let arrIds = []
@@ -2102,6 +2103,8 @@ export default {
           this.$nextTick(_ => {
             this.currentNav = id
           })
+          console.log(anchorTop)
+          console.log(document.documentElement.scrollTop)
           arrIds.forEach(id => window.clearInterval(id))
         }
         arrIds.push(t1)
