@@ -871,17 +871,37 @@
       <!-- 入驻设计公司 -->
       <div class="sn-design" id="sn5">
         <div class="sn-design-box">
-          <div class="container">
+          <div class="content-box">
             <p class="sn-sub-title tc-f">入驻设计公司</p>
             <div class="design-title2 tc-f">1000+ 优质设计公司入驻</div>
-            <div class="blank90">
-              <div class="sn-design-list">
+            <div class="blank50">
+                <el-carousel trigger="click" height="340px" class="carousel-x sn-carousel design-carousel">
+                  <el-carousel-item>
+                    <div class="sn-design-list container">
+                      <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
+                        <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
+                        <div class="design-name">{{item.name}}</div>
+                        <div class="design-title margin-t-14">{{item.title}}</div>
+                      </div>
+                    </div>
+                  </el-carousel-item>
+                  <el-carousel-item >
+                    <div class="sn-design-list container">
+                      <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
+                        <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
+                        <div class="design-name">{{item.name}}</div>
+                        <div class="design-title margin-t-14">{{item.title}}</div>
+                      </div>
+                    </div>
+                  </el-carousel-item>
+                </el-carousel>
+              <!-- <div class="sn-design-list">
                 <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
                   <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
                   <div class="design-name">{{item.name}}</div>
                   <div class="design-title margin-t-14">{{item.title}}</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -2441,7 +2461,7 @@ p.sn-sub-title {
   height: 380px;
   background:url('../../../assets/images/promote_sn/BG.jpg') no-repeat left top/cover;
 }
-.sn-design-box .container {
+.sn-design-box .content-box {
   position: relative;
   z-index: 1;
 }
@@ -2468,6 +2488,7 @@ p.sn-sub-title {
 .sn-design-list {
   display: flex;
   justify-content: space-between;
+  margin-top: 40px;
 }
 .sn-d-item {
   width: 180px;
@@ -3500,9 +3521,15 @@ p.sn-sub-title {
   margin: 0 6px;
   opacity: 0.5;
 }
+.sn-carousel .el-carousel__arrow {
+  display: none;
+}
 .sn-carousel .el-carousel__indicators .is-active .el-carousel__button {
   width: 30px;
   border-radius: 5px;
+}
+.design-carousel.sn-carousel .el-carousel__button {
+  background: #BADBFF;
 }
 /* carousel 样式重置  end*/
 </style>
