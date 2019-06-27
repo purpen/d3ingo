@@ -2233,7 +2233,7 @@ p.sn-sub-title {
   width: 100%;
   height: 4px;
   position: relative;
-  top: 16px;
+  top: 17px;
   left: 0;
   background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
 }
