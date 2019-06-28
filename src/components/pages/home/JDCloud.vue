@@ -921,7 +921,7 @@
                         <img :src="item.img" alt="">
                       </div>
                       <div class="design-name">{{item.name}}</div>
-                      <div v-if="item.title" :class="['design-title', 'text-left', 'margin-t-14', {'no': item.isEllips}]">{{item.title}}</div>
+                      <div v-if="item.title" :class="['design-title', 'text-left', {'no': item.isEllips}]">{{item.title}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more1">{{item.more1}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more2">{{item.more2}}</div>
                     </div>
@@ -1025,16 +1025,16 @@
         class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
-            <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
+            <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="contact">
-            <el-input v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
+            <el-input class="el-input-c8" v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="account">
-            <el-input v-model="form.account"  maxlength="11" placeholder="请输入手机号"></el-input>
+            <el-input class="el-input-c8" v-model="form.account"  maxlength="11" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
-              <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
+              <el-input class="el-input-c8" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
               <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
               </el-button>
           </el-form-item>
@@ -1345,8 +1345,9 @@ export default {
         pagination: {
           el: '.swiper-pagination',
           clickable: true
+          // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
         },
-        lazyLoading: true,
+        lazy: true, // 设为true开启图片延迟加载默认值
         autoplay: {
           delay: 5000
         },
@@ -1357,14 +1358,14 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
-        lazyLoading: true,
+        lazy: true,
         autoplay: {
           delay: 5000
         },
         loop: true
       },
       snSwiperOption3: { // sn-案例
-        lazyLoading: true,
+        lazy: true,
         autoplay: {
           delay: 5000
         },
@@ -1570,17 +1571,17 @@ export default {
         {
           img: require('assets/images/promote_sn/awards/prize03@2x.png'),
           country: '日本',
-          name: '日本优良设计奖',
+          name: '优良设计奖',
           explain: '日本“G-Mark”奖，素有“东方设计奥斯卡奖”之称'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize04@2x.png'),
+          img: require('assets/images/promote_sn/awards/prize05@2x.png'),
           country: '美国',
           name: 'IDEA设计奖',
           explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize05@2x.png'),
+          img: require('assets/images/promote_sn/awards/prize04@2x.png'),
           country: '台湾',
           name: '金点设计奖',
           explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
@@ -2320,6 +2321,7 @@ export default {
   background: #16192F;
 }
 .banner-box {
+  box-sizing: border-box;
   height: 500px;
   padding-top: 90px;
   background: url('../../../assets/images/promote_sn/HeadPicture@2x.png') no-repeat bottom right/700px;
@@ -2752,7 +2754,7 @@ p.sn-sub-title {
 .design-title {
   line-height:20px;
   font-size:14px;
-  margin: 0 20px;
+  margin: 14px 20px 20px 20px;
   height: 100px;
   position: relative;
   overflow: hidden;
