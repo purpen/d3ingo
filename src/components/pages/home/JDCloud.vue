@@ -779,7 +779,7 @@
             <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="case-product">
-            <!-- <swiper :options="snSwiperOption3" ref="mySwiper3">
+            <swiper :options="snSwiperOption3" ref="mySwiper3">
               <swiper-slide  v-for="(d, index) in caseData" :key="index">
                 <div>
                     <el-row :gutter="10">
@@ -813,8 +813,8 @@
                     </el-row>
                 </div>
               </swiper-slide>
-            </swiper> -->
-            <div v-for="(d, index) in caseData" :key="index">
+            </swiper>
+            <!-- <div v-for="(d, index) in caseData" :key="index">
               <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
                   <el-row :gutter="10">
@@ -844,7 +844,7 @@
                   </div>
                 </el-col>
               </el-row>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -1073,6 +1073,7 @@ export default {
         }
       }
     }
+    const that = this
     return {
       colList: [
         {
@@ -1365,23 +1366,23 @@ export default {
       snSwiperOption3: { // sn-案例
         lazyLoading: true,
         autoplay: {
-          delay: 1000
+          delay: 5000
         },
         loop: true,
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
-            console.log(this.activeIndex)
-            console.log(swiper.activeIndex)
-            let index = swiper.realIndex
+            // console.log(this.activeIndex)
+            // console.log(swiper.activeIndex)
+            let index = this.realIndex
             if (index === 0) {
-              this.currentCase = 'vision'
+              that.currentCase = 'vision'
             } else if (index === 1) {
-              this.currentCase = 'logo'
+              that.currentCase = 'logo'
             } else if (index === 2) {
-              this.currentCase = 'packing'
+              that.currentCase = 'packing'
             } else if (index === 3) {
-              this.currentCase = 'product'
+              that.currentCase = 'product'
             }
           }
         }
@@ -2136,17 +2137,17 @@ export default {
       }
     },
     changeCaseType(e) {
-      // console.log(this.$refs.mySwiper3)
+      // console.log(this.swiperObj)
       this.currentCase = e
-      // if (e === 'vision') {
-      //   this.swiperObj.slideToLoop(0)
-      // } else if (e === 'logo') {
-      //   this.swiperObj.slideToLoop(1)
-      // } else if (e === 'packing') {
-      //   this.swiperObj.slideToLoop(2)
-      // } else if (e === 'product') {
-      //   this.swiperObj.slideToLoop(3)
-      // }
+      if (e === 'vision') {
+        this.swiperObj.slideToLoop(0)
+      } else if (e === 'logo') {
+        this.swiperObj.slideToLoop(1)
+      } else if (e === 'packing') {
+        this.swiperObj.slideToLoop(2)
+      } else if (e === 'product') {
+        this.swiperObj.slideToLoop(3)
+      }
       // console.log(this.swiperObj)
     },
     changeOfferType(e) {
