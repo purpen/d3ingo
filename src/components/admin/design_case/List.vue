@@ -19,12 +19,14 @@
           v-model="query.value"
           @change="searchDesignCase">
         </el-input>
-        <div class="dot">
+        <div class="dot" v-if="menuType === 3">
           <div class="dot-hover">
-            <div class="dot-flex">
+            <!-- <a :href="httpUrl + '/api/admin/designCase/exportExcel?token=' + token "> -->
+            <div class="dot-flex" @click="download()">
               <i class="el-icon-download dot-img1"></i>
-              <div class="dot-text">下载报表</div>
+              <div class="dot-text">下载案例</div>
             </div>
+            <!-- </a> -->
           </div>
         </div>
       </div>
@@ -144,6 +146,7 @@
 
 <script>
 import api from '@/api/api'
+import conf from 'conf/prod.env'
 export default {
   name: 'admin_design_case_list',
   data () {
@@ -163,7 +166,8 @@ export default {
         value: '',
         test: null
       },
-      msg: ''
+      msg: '',
+      token: ''
     }
   },
   methods: {
@@ -327,10 +331,37 @@ export default {
         this.$message.error(error.message)
         this.isLoading = false
       })
+    },
+    download() {
+      let url = 'https://sa.taihuoniao.com/admin/designCase/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/designCase/exportExcel'
+      }
+      const data = {
+        token: this.token
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      // 表单元素需要添加到主文档中.
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
     }
   },
   created: function() {
     this.loadList()
+    // this.httpUrl = location.origin
+    this.token = this.$store.state.event.token
   },
   watch: {
     '$route' (to, from) {

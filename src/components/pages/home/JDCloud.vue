@@ -682,17 +682,63 @@
       </section>
     </div>
     <div v-if="custom.name === 'sn'" :class="['jd-cloud', 'margin-b-m50', {'sn': custom.name === 'sn'}]">
-      <div class="sn-banner">
-        <div class="container banner-box">
-          <el-row>
-            <el-col>
-              <div class="banner-title">神农大脑 设计服务平台</div>
-              <div class="banner-second-title">定制化产品创新造物平台</div>
-              <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
-            </el-col>
-          </el-row>
-        </div>
+      <!-- 顶部导航栏 -->
+      <div v-if="isShowNav" class="nav-head">
+          <div class="container nav-head-box clearfix">
+            <div class="nav-logo fl">
+              <div class="nav-logo-img"></div>
+            </div>
+            <div class="nav-list fl">
+              <span v-for="(item, index) in snNavList" :key="index" @click="goAnchor(item.id)">{{item.name}}</span>
+            </div>
+            <div class="fr blank15">
+              <span class="nav-btn" @click="boolFindDesign = true">发布需求</span>
+            </div>
+          </div>
       </div>
+      <!-- banner 轮播图 -->
+      <el-carousel trigger="click" height="500px" class="carousel-x sn-carousel">
+        <el-carousel-item >
+          <div class="sn-banner">
+            <div class="container banner-box banner-box01">
+              <el-row>
+                <el-col>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item >
+          <div class="sn-banner">
+            <div class="container banner-box banner-box02">
+              <el-row>
+                <el-col>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item >
+          <div class="sn-banner">
+            <div class="container banner-box banner-box03">
+              <el-row>
+                <el-col>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+
       <div class="sn-banner-word">
         <div class="b-word-box container">
           <div class="b-word-l">100%精品原创设计承诺</div>
@@ -700,7 +746,7 @@
         </div>
       </div>
       <!-- 设计服务类型 -->
-      <div class="sn-service-type padding-b60">
+      <div class="sn-service-type padding-b60" id="sn1">
         <div class="container">
           <p class="sn-sub-title padding-b40">设计服务类型</p>
           <el-row :gutter="20" type="flex">
@@ -720,7 +766,7 @@
         </div>
       </div>
       <!-- 部分案例展示 -->
-      <div class="sn-case">
+      <div class="sn-case" id="sn2">
         <div class="container">
           <p class="sn-sub-title padding-b40">部分案例展示</p>
           <div class="case-title">
@@ -766,7 +812,7 @@
         </div>
       </div>
       <!-- 报价方案 -->
-      <div class="sn-offer padding-b80">
+      <div class="sn-offer padding-b80" id="sn3">
         <div class="container">
           <p class="sn-sub-title padding-b40">报价方案</p>
           <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
@@ -804,7 +850,7 @@
         </div>
       </div>
       <!-- 我们的优势 -->
-      <div class="sn-advantage padding-b80">
+      <div class="sn-advantage padding-b80" id="sn4">
         <div class="container">
           <p class="sn-sub-title padding-b40">我们的优势</p>
           <el-row :gutter="30">
@@ -822,13 +868,37 @@
           </el-row>
         </div>
       </div>
+      <!-- 入驻设计公司 -->
+      <div class="sn-design" id="sn5">
+        <div class="sn-design-box">
+          <div class="container">
+            <p class="sn-sub-title tc-f">入驻设计公司</p>
+            <div class="design-title2 tc-f">1000+ 优质设计公司入驻</div>
+            <div class="blank90">
+              <div class="sn-design-list">
+                <div v-for="(item, i) in snDesignCompany" :key="i" class="sn-d-item">
+                  <div class="img-box" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
+                  <div class="design-name">{{item.name}}</div>
+                  <div class="design-title margin-t-14">{{item.title}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- 所获奖项 -->
-      <div class="bg-f sn-awards padding-b80">
+      <div class="bg-f sn-awards padding-b80" id="sn6">
         <div class="container">
           <p class="sn-sub-title padding-b15">所获奖项</p>
           <div class="awards-title2  padding-b40">3000+ 全球设计大奖</div>
           <div class="awards-box">
-            <div class="awards-item" v-for="(item, i) in snAwards" :key="i" :style="{background:'url('+item.img +') no-repeat center / contain'}">
+            <div class="awards-item" v-for="(item, i) in snAwards" :key="i">
+              <div class="img-box">
+                <div class="img" :style="{background:'url('+item.img +') no-repeat center / contain'}"></div>
+              </div>
+              <div class="awards-name">{{item.name}}</div>
+              <div class="awards-country">{{item.country}}</div>
+              <div class="awards-explain">{{item.explain}}</div>
             </div>
           </div>
         </div>
@@ -904,7 +974,7 @@
         :visible.sync="boolFindDesign"
         width="480px"
         :close-on-click-modal="false"
-        class="find-design">
+        class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
             <el-input v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
@@ -1391,26 +1461,46 @@ export default {
       ],
       snAwards: [
         {
-          img: require('assets/images/promote_sn/awards/prize01@2x.png')
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          country: '德国',
+          name: '红点设计奖',
+          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize02@2x.png')
+          img: require('assets/images/promote_sn/awards/prize02@2x.png'),
+          country: '德国',
+          name: 'IF设计奖',
+          explain: '“设计界奥斯卡”之称的德国设计奖，全球三大设计奖之一'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize03@2x.png')
+          img: require('assets/images/promote_sn/awards/prize03@2x.png'),
+          country: '日本',
+          name: '日本优良设计奖',
+          explain: '日本“G-Mark”奖，素有“东方设计奥斯卡奖”之称'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize04@2x.png')
+          img: require('assets/images/promote_sn/awards/prize04@2x.png'),
+          country: '美国',
+          name: 'IDEA设计奖',
+          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize05@2x.png')
+          img: require('assets/images/promote_sn/awards/prize05@2x.png'),
+          country: '台湾',
+          name: '金点设计奖',
+          explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
         },
         {
-          img: require('assets/images/promote_sn/awards/prize06@2x.png')
-        },
-        {
-          img: require('assets/images/promote_sn/awards/prize07@2x.png')
+          img: require('assets/images/promote_sn/awards/prize06@2x.png'),
+          country: '中国',
+          name: '红星奖',
+          explain: '中国唯一具有国际影响力的设计奖，“中国设计界的奥斯卡”'
         }
+        // {
+        //   img: require('assets/images/promote_sn/awards/prize07@2x.png'),
+        //   country: '德国',
+        //   explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+        // }
       ],
       caseData: [
         {
@@ -1459,6 +1549,47 @@ export default {
           h4: '中国节月饼全套设计'
         }
       ],
+      snNavList: [
+        {id: '#sn1', name: '服务类型'},
+        {id: '#sn2', name: '案例展示'},
+        {id: '#sn3', name: '报价方案'},
+        {id: '#sn4', name: '我们的优势'},
+        {id: '#sn5', name: '入驻设计公司'},
+        {id: '#sn6', name: '所获奖项'}
+      ],
+      snDesignCompany: [
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        },
+        {
+          img: require('assets/images/promote_sn/awards/prize01@2x.png'),
+          name: '凸凹设计',
+          title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+        }
+      ],
+      isShowNav: false, // sn nav
       jdAccount: {},
       isShowBounced: false, // 弹窗
       quantity: '', // 数量
@@ -1577,6 +1708,21 @@ export default {
         this.userList.forEach(item => {
           item.created_at = parseInt((date - item.created_at) / 60)
         })
+      }
+    })
+    // sn 页面滚动
+    window.addEventListener ('scroll', () => {
+      let wScrollTop = 0
+      if (document.documentElement && document.documentElement.scrollTop) {
+        wScrollTop = document.documentElement.scrollTop
+      } else if (document.body) { // IE
+        wScrollTop = document.body.scrollTop
+      }
+      // console.log(wScrollTop)
+      if (wScrollTop > 500) {
+        this.isShowNav = true
+      } else {
+        this.isShowNav = false
       }
     })
   },
@@ -1798,6 +1944,41 @@ export default {
       } else if (e === 'packing') {
         this.snOfferData = this.snOfferprintPacking
       }
+    },
+    goAnchor(id) {
+      const anchorTop = this.$el.querySelector(id).offsetTop
+      let wScrollTop = 0
+      if (document.documentElement && document.documentElement.scrollTop) {
+        wScrollTop = document.documentElement.scrollTop
+      } else if (document.body) { // IE
+        wScrollTop = document.body.scrollTop
+      }
+      let num = Math.trunc(Math.abs(wScrollTop - anchorTop) / 50)
+      let count = 0
+      let t1 = 0
+      let arrIds = []
+      t1 = window.setInterval(function() {
+        if (count < num) {
+          if (wScrollTop < anchorTop) { // 下滑
+            if (document.documentElement && document.documentElement.scrollTop) {
+              document.documentElement.scrollTop += 50
+            } else if (document.body) { // IE
+              document.body.scrollTop += 50
+            }
+          } else {
+            if (document.documentElement && document.documentElement.scrollTop) {
+              document.documentElement.scrollTop -= 50
+            } else if (document.body) { // IE
+              document.body.scrollTop -= 50
+            }
+          }
+        } else {
+          console.log(arrIds)
+          arrIds.forEach(id => window.clearInterval(id))
+        }
+        arrIds.push(t1)
+        count++
+      }, 17)
     }
   },
   components: {
@@ -1812,6 +1993,50 @@ export default {
 </script>
 <style scoped>
 /* sn start */
+.nav-head {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 60px;
+  background:rgba(19, 22, 42, .8);
+}
+.nav-head-box {
+  /* height: 60px */
+}
+.nav-logo {
+  /* padding: 15px 0; */
+}
+.nav-logo-img {
+  width: 114px;
+  height: 60px;
+  background: url('../../../assets/images/promote_sn/logo01@2x.png') no-repeat top 12px left 0/114px;
+}
+.nav-list {
+  height: 60px;
+  line-height: 60px;
+  font-size:14px;
+  color: #FFFFFF;
+  font-weight:400;
+}
+.nav-list span {
+  margin-left: 40px;
+  cursor: pointer;
+}
+.nav-btn {
+  display: inline-block;
+  width:100px;
+  height:30px;
+  line-height: 30px;
+  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  border-radius:15px;
+  cursor: pointer;
+  color: #ffffff;
+  text-align: center;
+}
+.nav-btn:hover {
+  box-shadow: 0 0 10px 0 rgba(3,0,76,.3);
+}
 .bg-f6f8ff {
   background: #F6F8FF;
 }
@@ -1857,6 +2082,12 @@ export default {
   background: url('../../../assets/images/promote_sn/HeadPicture@2x.png') no-repeat bottom right/700px;
   color:#FFFFFF;
 }
+.banner-box02 {
+  background: url('../../../assets/images/promote_sn/banner02@2x.png') no-repeat bottom right/615px !important;
+}
+.banner-box03 {
+  background: url('../../../assets/images/promote_sn/banner03@2x.png') no-repeat bottom right/615px !important;
+}
 .banner-box .banner-title {
   height:70px;
   font-size:50px;
@@ -1895,27 +2126,27 @@ export default {
   background: #2B3042;
 }
 .b-word-box {
-  height: 100px;
+  height: 60px;
   display: flex;
   justify-content: space-between;
-  padding: 0 80px;
+  padding: 0 175px;
   align-items: center;
   color: #ffffff;
-  font-size:24px;
+  font-size:20px;
   font-family:PingFangSC-Medium;
-  font-weight:500;
+  font-weight:400;
 }
 .b-word-box > div {
   height: 60px;
   line-height: 60px;
-  padding-left: 90px;
+  padding-left: 60px;
 }
 .b-word-box .b-word-l {
   height: 60px;
-  background: url('../../../assets/images/promote_sn/Promise@2x.png') no-repeat left/ 60px;
+  background: url('../../../assets/images/promote_sn/Promise@2x.png') no-repeat left/ 40px 40px;
 }
 .b-word-box .b-word-r {
-  background: url('../../../assets/images/promote_sn/Major@2x.png') no-repeat left/ 60px;
+  background: url('../../../assets/images/promote_sn/Major@2x.png') no-repeat left/ 40px 40px;
 }
 p.sn-sub-title {
   padding-top: 60px;
@@ -1929,6 +2160,12 @@ p.sn-sub-title {
   height: 280px;
   background:rgba(255,255,255,1);
   box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+.service-type-contant:hover {
+  box-shadow:0 0 10px 6px rgba(20,34,67,.1);
 }
 .service-type-contant .img-box {
   background: #F6F8FF;
@@ -1996,7 +2233,7 @@ p.sn-sub-title {
   width: 100%;
   height: 4px;
   position: relative;
-  top: 16px;
+  top: 17px;
   left: 0;
   background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
 }
@@ -2159,9 +2396,15 @@ p.sn-sub-title {
 .sn-advantage {
   background: #F6F8FF;
 }
+
 .s-a-item {
   display: flex;
+  -webkit-transition: all .25s ease;
+	transition: all .25s ease;
   box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+}
+.s-a-item:hover {
+  box-shadow:0 0 10px 6px rgba(20,34,67,.1);
 }
 .s-a-item > .img-box {
   padding: 28px;
@@ -2189,14 +2432,117 @@ p.sn-sub-title {
   color:#9FA3A7;
   line-height:20px;
 }
+/* sn-design start */
+.sn-design {
+  height: 586px;
+}
+.sn-design-box {
+  position: relative;
+  height: 380px;
+  background:url('../../../assets/images/promote_sn/BG.jpg') no-repeat left top/cover;
+}
+.sn-design-box .container {
+  position: relative;
+  z-index: 1;
+}
+.sn-design-box::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .5);
+}
+.sn-design p.sn-sub-title {
+  color: #ffffff;
+  padding-bottom: 14px;
+}
+.design-title2 {
+  height: 28px;
+  line-height:28px;
+  font-size:20px;
+  font-weight:400;
+  text-align: center;
+}
+.sn-design-list {
+  display: flex;
+  justify-content: space-between;
+}
+.sn-d-item {
+  width: 180px;
+  height:222px;
+  padding-top: 60px;
+  position: relative;
+  background: #ffffff;
+  text-align: center;
+  color:#999;
+  box-shadow:0px 0px 20px 0px rgba(0,0,0,0.1);
+}
+.sn-d-item .img-box {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: -40px;
+	transform: translateX(-50%);
+  left: 50%;
+  border-radius: 50%;
+}
+.design-name {
+  height:28px;
+  font-size:20px;
+  line-height:28px;
+  font-weight:400;
+  color: #222222;
+}
+.design-title {
+  line-height:20px;
+  font-size:14px;
+  padding: 0 20px;
+}
+/* sn-design end */
 .awards-box {
   display: flex;
   justify-content: space-between;
 }
 .awards-item {
-  width: 150px;
-  height: 80px;
+  width: 180px;
+  height: 225px;
+  text-align: center;
+  font-weight:400;
+  color:#999;
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.06);
+  transition: all .25s ease;
+  -webkit-transition: all .25s ease;
+}
+.awards-item:hover {
+  box-shadow:0 0 10px 6px rgba(20,34,67,.1);
+}
+.awards-item .img-box {
+  height: 90px;
+  padding: 10px 0;
+}
+.img-box .img {
+  height: 100%;
+}
+.awards-item .awards-name {
+  height:28px;
+  font-size:20px;
+  line-height:28px;
+  font-weight:400;
+  color: #222222;
+}
+.awards-item .awards-country {
+  height:20px;
+  font-size:14px;
+  line-height:20px;
+  margin: 4px 0;
+}
+.awards-item .awards-explain {
+  line-height:20px;
+  font-size:14px;
+  padding: 0 20px;
+  text-align: left;
 }
 .awards-title2 {
   text-align: center;
@@ -3116,19 +3462,47 @@ p.sn-sub-title {
 .phone-jd-cloud .el-radio-button__inner {
   width: 104px;
 }
-.find-design .el-dialog__header {
-  padding: 20px 20px 18px 20px;
+.sn-find-design .el-dialog__header {
+  height: 150px;
+  background: url('../../../assets/images/promote_sn/Releaserequirements@2x.png') no-repeat top/cover;
+}
+.sn-find-design .el-dialog__title {
+  font-size:26px;
+  color: #ffffff;
+  font-weight: 400;
+}
+.sn-find-design .el-dialog__headerbtn .el-dialog__close {
+  font-size: 20px;
+  color: #ffffff;
 }
 .sn-fetch-code .el-form-item__label {
   width: 100%;
   text-align: left;
 }
-.find-design .el-dialog__body {
+.sn-find-design .el-dialog__body {
   padding: 0 20px;
   padding-top: 10px;
 }
-.find-design .sn-fetch-code .el-input {
+.sn-find-design .sn-fetch-code .el-input {
   width: 305px;
   margin-right: 10px;
 }
+/* carousel 样式重置  statrt*/
+.carousel-x.el-carousel {
+  overflow: inherit;
+}
+.sn-carousel .el-carousel__button {
+  padding: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  margin: 0 6px;
+  opacity: 0.5;
+}
+.sn-carousel .el-carousel__indicators .is-active .el-carousel__button {
+  width: 30px;
+  border-radius: 5px;
+}
+/* carousel 样式重置  end*/
 </style>

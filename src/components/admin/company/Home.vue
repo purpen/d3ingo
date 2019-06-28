@@ -96,9 +96,9 @@
           </div>
           <div class="dot">
             <div class="dot-hover">
-              <div class="dot-flex">
+              <div class="dot-flex" @click="downloads()">
                 <i class="el-icon-download dot-img1"></i>
-                <div class="dot-text">下载报表</div>
+                <div class="dot-text">下载列表</div>
               </div>
             </div>
           </div>
@@ -215,10 +215,12 @@
 <script>
 import REGION_DATA from 'china-area-data'
 import api from '@/api/api'
+import conf from 'conf/prod.env'
 export default {
   region: REGION_DATA,
   data() {
     return {
+      token: '',
       designChoose: [{
         value: '0',
         label: '全部设计服务商'
@@ -286,6 +288,7 @@ export default {
       that.designReault = that.query.type
       that.companyReault = that.query.evt
     }
+    that.token = that.$store.state.event.token
     that.loadList()
     that.getDesignCount()
   },
@@ -440,6 +443,31 @@ export default {
         self.homeLoading = false
         self.$message.error(error.message)
       })
+    },
+    downloads() {
+      let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/designCompany/exportExcel'
+      }
+      const data = {
+        token: this.token
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      // 表单元素需要添加到主文档中.
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
     }
   }
 }
@@ -450,13 +478,13 @@ export default {
     cursor: pointer;
     width: 30px;
     margin-left: 10px;
-    height: 35px;
+    height: 38px;
     background: url('../../../assets/images/design_admin/more@2x.png') no-repeat center / contain;
     position: relative;
   }
   .dot:hover {
     width: 30px;
-    height: 35px;
+    height: 38px;
     background: url('../../../assets/images/design_admin/MoreHover@2x.png') no-repeat center / contain;
   }
   .dot:hover .dot-hover {
@@ -465,7 +493,7 @@ export default {
   .dot-hover {
     position: absolute;
     z-index: 999;
-    top: 35px;
+    top: 38px;
     bottom: 0;
     right: 8px;
     width: 130px;
