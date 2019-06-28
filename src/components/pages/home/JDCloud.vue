@@ -920,7 +920,7 @@
                         <img :src="item.img" alt="">
                       </div>
                       <div class="design-name">{{item.name}}</div>
-                      <div v-if="item.title" class="design-title margin-t-14">{{item.title}}</div>
+                      <div v-if="item.title" class="design-title text-left margin-t-14">{{item.title}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more1">{{item.more1}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more2">{{item.more2}}</div>
                     </div>
@@ -1679,7 +1679,7 @@ export default {
             {
               img: require('assets/images/promote_sn/design_company/05.jpg'),
               name: '杭州领跑者',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              title: '品物集团是中国首家秉承“以人为核心，重塑商业价值”的创新咨询与设计集团。在15年的进化历程中，品物不断迸发出最具前瞻性及生命力的思想与观点，创造出优秀的逻辑模型与创新工具，帮助数以百计的企业更深刻的理解他们的用户，改变企业与用户的关系圈，并以此为支点，成功塑造千余款产品与品牌的商业价值，完成了作为行业方法论缔造者与变革者的行业使命。 品物以商业价值创新为目标，以终端用户为原点，为企业提供从用户价值认知与情景体验创新，到商业价值传播的一站式全案创新咨询与落地执行服务。其中，囊括了产品策划与设计，品牌定位与包装，传播规划与传播物料执行三大服务板块。 现在，品物300余名核心团队成员携手，以北京集团总部为核心，以中国杭州、上海、深圳、南京，及英国曼彻斯特等子公司为触点，聚焦区位优势资源，携手媒体、制造、资本等多领域近百名重要合作伙伴，实现跨地域与跨行业的联动式商业创新，打造开放性商业创新资源平台，为我们的客户与合作伙伴赢得竞争先机，探索中国商业创新［新航向］'
             },
             {
               img: require('assets/images/promote_sn/design_company/06.png'),
