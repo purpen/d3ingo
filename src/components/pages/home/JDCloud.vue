@@ -737,7 +737,8 @@
             </div>
           </div>
         </swiper-slide>
-        <div class="sn-swiper-page swiper-pagination" slot="pagination"></div>
+        <!-- sn-swiper-page  -->
+        <div class="swiper-pagination sn-swiper-page" slot="pagination"></div>
       </swiper>
 
       <div class="sn-banner-word">
@@ -913,14 +914,14 @@
             <div class="blank50">
             <swiper :options="snSwiperOption2" class="clearfix">
               <swiper-slide  v-for="(d, index) in snDesignCompany" :key="index">
-                <div class="container">>
+                <div class="container">
                   <div class="sn-design-list">
                     <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
                       <div class="img-box">
                         <img :src="item.img" alt="">
                       </div>
                       <div class="design-name">{{item.name}}</div>
-                      <div v-if="item.title" class="design-title text-left margin-t-14">{{item.title}}</div>
+                      <div v-if="item.title" :class="['design-title', 'text-left', 'margin-t-14', {'no': item.isEllips}]">{{item.title}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more1">{{item.more1}}</div>
                       <div class="tc-9 fz-20 line-height28" v-if="item.more2">{{item.more2}}</div>
                     </div>
@@ -1347,7 +1348,7 @@ export default {
         paginationClickable: true,
         lazyLoading: true,
         autoplay: {
-          delay: 3000
+          delay: 5000
         },
         loop: true
       },
@@ -1359,7 +1360,7 @@ export default {
         paginationClickable: true,
         lazyLoading: true,
         autoplay: {
-          delay: 3000
+          delay: 5000
         },
         loop: true
       },
@@ -1698,7 +1699,7 @@ export default {
             {
               img: require('assets/images/promote_sn/design_company/08.jpg'),
               name: '顺德宏翼',
-              title: '宏翼设计创立于2005年，总部位于世界家电制造重镇——广东顺德，是国内优秀产品创新设计机构，拥有60余人的专业创新团队，有1000余项产品设计案例积淀，服务涵盖产品策略、产品设计、基础研究、技术工程、供应链支持等范畴。 目前公司服务主要分为三大块，一是常规服务周边家电制造商，二是与长期合作的客户形成战略合作，三是孵化了自主品牌“卡蛙科技”“如果科技”等。'
+              title: '宏翼设计创立于2005年，总部位于世界家电制造重镇——广东顺德，是国内优秀产品创新设计机构， 拥有60余人的专业创新团队，有1000余项产品设计案例积淀，服务涵盖产品策略、产品设计、基础研究、技术工程、供应链支持等范畴。 目前公司服务主要分为三大块，一是常规服务周边家电制造商，二是与长期合作的客户形成战略合作，三是孵化了自主品牌“卡蛙科技”“如果科技”等。'
             },
             {
               img: require('assets/images/promote_sn/design_company/09.jpg'),
@@ -1708,7 +1709,8 @@ export default {
             {
               img: require('assets/images/promote_sn/design_company/10.jpg'),
               name: '西安天酬',
-              title: '公司主营：LOGO及VI，画册排版，导视设计，展览展示，空间设计，网站建设，包装插画等。'
+              title: '公司主营：LOGO及VI，画册排版，导视设计，展览展示，空间设计，网站建设，包装插画等。',
+              isEllips: true
             },
             {
               img: require('assets/images/promote_sn/design_company/11.jpg'),
@@ -1927,7 +1929,7 @@ export default {
         this.isShowNav = false
       }
     })
-    console.log(this.swiperObj)
+    // console.log(this.swiperObj)
   },
   methods: {
     // 关闭弹窗
@@ -2756,15 +2758,26 @@ p.sn-sub-title {
   position: relative;
   overflow: hidden;
 }
-.design-title::after {
-  /* content: '...';
+.design-title.no::before {
+  display: none;
+}
+.design-title::before {
+  content: '...';
   position:absolute;
   font-weight:bold;
   bottom:0;
   right:0;
-  width: 20px;
-  height: 20px;
-  background: #fff; */
+  width: 1em;
+  background: #fff;
+}
+.design-title::after {
+  content: '';
+  position:absolute;
+  right: 0;
+  width: 1em;
+  height: 1em;
+  margin-top: 3.2em;
+  background: #fff;
 }
 /* sn-design end */
 .awards-box {
@@ -3762,7 +3775,8 @@ p.sn-sub-title {
   height: 10px;
   background: #FFFFFF;
   opacity:0.5;
-} 
+  margin: 0 10px;
+}
 .sn-swiper-page .swiper-pagination-bullet-active {
   width: 30px;
   opacity: 1;
