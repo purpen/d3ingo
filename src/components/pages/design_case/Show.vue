@@ -127,6 +127,11 @@ export default {
       return this.$store.state.event.isMob
     }
   },
+  watch: {
+    '$route'(to, from) {
+      this.getDesignCase(to.params.id)
+    }
+  },
   methods: {
     getAppCode(id) {
       this.$http.get(api.getAppCode, {params: {id: id}})
