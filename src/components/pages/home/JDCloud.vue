@@ -778,7 +778,7 @@
             <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
           </div>
           <div class="case-product">
-            <swiper :options="snSwiperOption3" ref="mySwiper3" class="clearfix">
+            <!-- <swiper :options="snSwiperOption3" ref="mySwiper3">
               <swiper-slide  v-for="(d, index) in caseData" :key="index">
                 <div>
                     <el-row :gutter="10">
@@ -812,8 +812,8 @@
                     </el-row>
                 </div>
               </swiper-slide>
-            </swiper>
-            <!-- <div v-for="(d, index) in caseData" :key="index">
+            </swiper> -->
+            <div v-for="(d, index) in caseData" :key="index">
               <el-row :gutter="10" v-if="d.case === currentCase">
                 <el-col :span="12">
                   <el-row :gutter="10">
@@ -843,7 +843,7 @@
                   </div>
                 </el-col>
               </el-row>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -913,16 +913,19 @@
             <div class="blank50">
             <swiper :options="snSwiperOption2" class="clearfix">
               <swiper-slide  v-for="(d, index) in snDesignCompany" :key="index">
-                  <div class="sn-design-list container">
+                <div class="container">>
+                  <div class="sn-design-list">
                     <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
-                      <!-- :style="{background:'url('+item.img +') no-repeat center / contain'}" -->
                       <div class="img-box">
                         <img :src="item.img" alt="">
                       </div>
                       <div class="design-name">{{item.name}}</div>
-                      <div class="design-title margin-t-14">{{item.title}}</div>
+                      <div v-if="item.title" class="design-title margin-t-14">{{item.title}}</div>
+                      <div class="tc-9 fz-20 line-height28" v-if="item.more1">{{item.more1}}</div>
+                      <div class="tc-9 fz-20 line-height28" v-if="item.more2">{{item.more2}}</div>
                     </div>
                   </div>
+                </div>
               </swiper-slide>
               <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -1337,24 +1340,52 @@ export default {
         }
       ],
       snSwiperOption1: { // sn-banner
-        pagination: '.swiper-pagination',
-        // pagination: '.sn-swiper-page',
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 2000,
+        autoplay: {
+          delay: 3000
+        },
         loop: true
       },
       snSwiperOption2: { // sn-banner
-        pagination: '.swiper-pagination',
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 2000,
+        autoplay: {
+          delay: 3000
+        },
         loop: true
       },
       snSwiperOption3: { // sn-案例
         lazyLoading: true,
-        autoplay: 2000,
-        loop: true
+        autoplay: {
+          delay: 1000
+        },
+        loop: true,
+        on: {
+          slideChange: function(swiper) {
+            // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
+            console.log(this.activeIndex)
+            console.log(swiper.activeIndex)
+            let index = swiper.realIndex
+            if (index === 0) {
+              this.currentCase = 'vision'
+            } else if (index === 1) {
+              this.currentCase = 'logo'
+            } else if (index === 2) {
+              this.currentCase = 'packing'
+            } else if (index === 3) {
+              this.currentCase = 'product'
+            }
+          }
+        }
       },
       currentCase: 'vision',
       currentOffer: 'vision',
@@ -1568,6 +1599,17 @@ export default {
       ],
       caseData: [
         {
+          case: 'vision',
+          img1: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
+          img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.jpg'),
+          img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.jpg'),
+          img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.jpg'),
+          h1: '天晨品牌设计',
+          h2: '满姐饺子品牌设计',
+          h3: '韵见APP UI/UX设计',
+          h4: '熊本食堂品牌视觉设计'
+        },
+        {
           case: 'logo',
           img1: require('assets/images/promote_sn/case/logo/Logo11@2x.png'),
           img2: require('assets/images/promote_sn/case/logo/Logo12@2x.png'),
@@ -1577,6 +1619,17 @@ export default {
           h2: '中国家电及消费电子博览会视觉形象设计',
           h3: '新海外品牌标志VI设计',
           h4: '掌柜家的猫日料餐厅品牌视觉设计'
+        },
+        {
+          case: 'packing',
+          img1: require('assets/images/promote_sn/case/pack/Packing01.png'),
+          img2: require('assets/images/promote_sn/case/pack/Packing02.png'),
+          img3: require('assets/images/promote_sn/case/pack/Packing03.png'),
+          img4: require('assets/images/promote_sn/case/pack/Packing04.png'),
+          h1: '中国风切糕包装设计',
+          h2: '西安年最中国包装设计',
+          h3: '中国节龙棕包装设计',
+          h4: '中国节月饼全套设计'
         },
         {
           case: 'product',
@@ -1589,28 +1642,6 @@ export default {
           h3: 'AMIRO LUX明肌高清化妆镜',
           h4: '超声波电动牙刷',
           h5: '(红点奖获奖作品)'
-        },
-        {
-          case: 'vision',
-          img1: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-          img2: require('assets/images/promote_sn/case/vision/VisualDesign02@2x.jpg'),
-          img3: require('assets/images/promote_sn/case/vision/VisualDesign03@2x.jpg'),
-          img4: require('assets/images/promote_sn/case/vision/VisualDesign04@2x.jpg'),
-          h1: '天晨品牌设计',
-          h2: '满姐饺子品牌设计',
-          h3: '韵见APP UI/UX设计',
-          h4: '熊本食堂品牌视觉设计'
-        },
-        {
-          case: 'packing',
-          img1: require('assets/images/promote_sn/case/pack/Packing01.png'),
-          img2: require('assets/images/promote_sn/case/pack/Packing02.png'),
-          img3: require('assets/images/promote_sn/case/pack/Packing03.png'),
-          img4: require('assets/images/promote_sn/case/pack/Packing04.png'),
-          h1: '中国风切糕包装设计',
-          h2: '西安年最中国包装设计',
-          h3: '中国节龙棕包装设计',
-          h4: '中国节月饼全套设计'
         }
       ],
       snNavList: [
@@ -1626,62 +1657,124 @@ export default {
         {
           company: [
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
+              img: require('assets/images/promote_sn/design_company/01.jpg'),
+              name: '苏州上品',
+              title: 'TOPDESIGN上品设计机构是一家专注于为客户提升产品竞争力的创新型设计公司，作为中国工业设计的著名品牌，北京上品设计成立于2009年，并迅速由一家工业设计公司发展成为一家实力雄厚的整合创新机构。旗下设立“北京上品设计机构”“北京上品卓越科技”“宠米（北京）科技”“上品创新学院””苏州上品设计机构”“杭州上品设计机构”“河北上品设计机构”“济南上品设计机构”“南通上品设计机构”“上品设计院”等分公司，拥有高端奢侈品牌X-SHOT。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/02.jpg'),
+              name: '北京品物堂',
+              title: '品物集团是中国首家秉承“以人为核心，重塑商业价值”的创新咨询与设计集团。在16年的进化历程中，品物不断迸发出最具前瞻性及生命力的思想与观点，创造出优秀的逻辑模型与创新工具，帮助数以百计的企业更深刻的理解他们的用户，改变企业与用户的关系圈，并以此为支点，成功塑造千余款产品与品牌的商业价值，完成了作为行业方法论缔造者与变革者的行业使命。 品物以商业价值创新为目标，以终端用户为原点，为企业提供从用户价值认知与情景体验创新，到商业价值传播的一站式全案创新咨询与落地执行服务。其中，囊括了产品策划与设计，品牌定位与包装，传播规划与传播物料执行三大服务板块。 现在，品物300余名核心团队成员携手，以北京集团总部为核心，以中国杭州、上海、深圳、南京，及英国曼彻斯特等子公司为触点，聚焦区位优势资源，携手媒体、制造、资本等多领域近百名重要合作伙伴，实现跨地域与跨行业的联动式商业创新，打造开放性商业创新资源平台，为我们的客户与合作伙伴赢得竞争先机，探索中国商业创新新航向。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/03.jpg'),
+              name: '杭州飞鱼',
+              title: '在对的时间 找对的方向 做对的设计 2002年，飞鱼整合设计机构创立于中国杭州。以“设计为人”的核心理念，从用户研究到产品创新再到用户体验，为企业提供产品创新设计、品牌策略、设计孵化等相关服务。 15年来，相继在上海、深圳、郑州、广州等地设立分公司，为客户提供更高效、零距离的优质创新服务。作品多次荣获reddot、IF、IDEA、G-mark、PIN-UP、红星奖、财富最佳设计等国内外奖项近50项，并被评为第一批中国十佳设计机构，中国品牌设计十佳品牌，省重点设计研究院，省工业设计中心，工业设计师范基地等多项荣誉。目前，设计专业级人员分别来自设计、金融、咨询、零售、研发、营销等不同专业领域，从研究、诊断、创新、设计到生产、推广、营销，为实现创新产品的真实落地和产生营销实效，全方位为客户提供一流的解决方案。 因为信赖，飞鱼与诸多品牌缔结战略合作伙伴关系，累计服务国内外400多家企业及品牌，包括GE、OLYMPUS、BOSCH、OTIS、施耐德、海尔、美的、公牛、松下、格力、九阳、苏泊尔、安吉尔、林内、德意、雀友等国内外领先品牌。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/04.jpg'),
+              name: '上海木马',
+              title: '木马设计创立于2002年，中国十佳设计公司，致力于为客户提供从产品概念设计到市场导入的全面解决方案。理解人、品牌和技术的本质并在她们的驱动下不断创新，是木马设计的灵魂。木马客户遍及全球，从财富500强的Philips、GE、OTIS、National到国内知名的中兴通讯、海尔电器、欧琳厨电等。木马设计精英秉承严谨的科学精神和造型美学，严格遵循木马设计流程，为不同领域的企业提供富有创造性的和切实可行的产品设计解决方案。设计经验涵盖医疗器械、家用电器、信息产品、智慧城市等领域。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/05.jpg'),
+              name: '杭州领跑者',
               title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
             },
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-            },
-            {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-            },
-            {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
-            },
-            {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/06.png'),
+              name: '深圳佳简几何',
+              title: '佳简几何创立于2014年，致力成为一家代表中国的全球化创新设计团队。我们以产品设计为核心，提供涵盖产品策略、结构设计、供应链管理、品牌策略和品牌设计六大创新服务模块。现团队共获得Reddot/IF/IDEA /Good Design等国际设计大奖四十余项，是中国工业设计历史上成立时间最短、获得国际大奖最多的工业设计公司。佳简几何的客户遍布全球三大洲、全国24个城市。合作的企业包括阿里巴巴、百度、360、微软、腾讯、奥飞集团、海尔、美的、中国移动等世界500强企业及中国领导品牌。CCTV13、CNN、BBC、《福布斯》、《第一财经周刊》、《南方都市报》等海内外媒体对佳简几何进行了关注与跟进报道。'
             }
           ]
         },
         {
           company: [
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/07.jpg'),
+              name: '北京智加问道',
+              title: '智加设计创新集团成立于2009年，拥有超过200人的产品创新设计团队，全球据点布及北京、深圳、沈阳、杭州、石家庄、廊坊、绍兴、诸暨、米兰等城市，十年间已发展成为一家专注提供整体创新设计服务的国际型集团化设计机构。 荣获包括德国IF设计奖、红点奖、美国IDEA奖、智造大奖、2014北美脊柱外科学会最高技术奖、中国红星奖金奖、金点奖等100多项设计大奖。 智加设计荣获“北京市设计创新中心、高薪技术企业、AAA级信用等级企业、工业设计协会会员，设计标准分会理事单位、轨道交通分会理事单位”等资质。 创始人熊伟、杭州公司斯莉娅先后荣获“中国设计业十大杰出青年'
             },
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/08.jpg'),
+              name: '顺德宏翼',
+              title: '宏翼设计创立于2005年，总部位于世界家电制造重镇——广东顺德，是国内优秀产品创新设计机构，拥有60余人的专业创新团队，有1000余项产品设计案例积淀，服务涵盖产品策略、产品设计、基础研究、技术工程、供应链支持等范畴。 目前公司服务主要分为三大块，一是常规服务周边家电制造商，二是与长期合作的客户形成战略合作，三是孵化了自主品牌“卡蛙科技”“如果科技”等。'
             },
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/09.jpg'),
+              name: '重庆纽森',
+              title: '纽森工业设计是一家专注于产品创新设计服务为主工业设计公司。设计领域涵盖智能设备、消费电子、医疗仪器、生活用品、军工用品等。为客户提供从产品外观设计、结构设计、样品制作、产品展示动画制作服务。设计服务企业有小米公司微型手机充电器设计、汉能集团折叠式太阳能充电宝、重庆川仪多功能调节阀设计、中国核动力研究院起重设备设计、重庆锕维科技军工设备、重庆Mike美妆用品口红瓶设计等。公司拥有专利37项，国际PCT专利1项，巴黎公约专利1项。同时，我公司设计并销售的生活用品系列，也深受市场欢迎。纽森公司坚持“我们不仅是您的设计师，还是你的产品经理”的服务理念，立足重庆，面向全国，创意服务。'
             },
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/10.jpg'),
+              name: '西安天酬',
+              title: '公司主营：LOGO及VI，画册排版，导视设计，展览展示，空间设计，网站建设，包装插画等。'
             },
             {
-              img: require('assets/images/promote_sn/awards/prize01@2x.png'),
-              name: '凸凹设计',
-              title: '凸凹设计创立于2003年，专注于原创设计的工业设计服务机构，曾服务于多个全球500强企业及国内一线消费…'
+              img: require('assets/images/promote_sn/design_company/11.jpg'),
+              name: '杭州正负极',
+              title: '正负极工业设计（PMUSEDESIGN）成立于2015年，由合伙人赵长胜、陈翔翀、庄林共同创立的精英化设计机构。【理性思维，和谐设计】是我们的核心理念，坚持采用创新设计理念为客户私人定制属于客户专属的设计服务体系，秉承合适的设计才是最好的设计的核心观点。我们以产品设计为核心，提供涵盖产品策略、结构设计、供应链管理、品牌策略和品牌设计六大创新服务模块。现团队共获得国际设计大奖五十余项，红点奖全球排名第六名的设计机构。是中国工业设计历史上成立时间最短、获得国际设计大奖最多、最年轻的工业设计公司之一。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/12.jpg'),
+              name: '杭州略懂',
+              title: '略懂创新@设计是一家有着互联网基因的设计驱动型的综合创新商业设计公司，用设计驱动行业升级，聚焦产品战略创新，打造“新设计+新技术+新模式”的全链路式创新设计公司。 公司致力于综合商业创新设计服务和创新设计孵化两大板块，综合商业创新设计服务为客户提供以品牌战略为核心的综合商业创新设计解决方案，包括：品牌策略及设计、用户研究、产品策略、工业设计、品牌展示空间、交互设计、结构工程设计等；创新设计孵化业务以自主创新设计运营，旨在为消费者提供极致产品消费体验。'
+            }
+          ]
+        },
+        {
+          company: [
+            {
+              img: require('assets/images/promote_sn/design_company/13.jpg'),
+              name: '杭州奥格',
+              title: '奥格工业设计有限公司，成立于2005年1月，致力于设计、技术与信息三大核心能力的融合运用，延伸工业设计的服务领域和服务模式，推动企业产品和服务的创新升级。目前服务板块主要服务类型有产品开发前期的研究与策略，工业设计，结构设计，UI设计，包装设计，产品商业推广期的品牌设计，产品的自主研发和开发，产业化落地及销售，产品与品牌的新媒体运营等多个模块。为进一步推进工业设计的发展，奥格努力开展全国布局,先后成立义乌奥格、合肥奥智、厦门奥致等多个分公司和板块，以及土豆爸爸等品牌，并与韩国、西班牙等国外优秀设计公司合作，学习国外先进的设计理念的助力中国工业设计走出去，走向国际。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/14.jpg'),
+              name: '北京锐变',
+              title: '锐变品牌是一家策略型品牌设计公司， 我们致力于品牌全案设计，品牌全案改造和升级。 锐变从品牌的核心定位出发，从品牌策略、品牌表达，及品牌管理三个层面打造强势品牌。为品牌打造360度的品牌体验。锐变客户遍布全球，为众多500强客户及一线品牌提供服务。我们跨足各项领域和行业，靠专业的口碑吸引众多客户.'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/15.png'),
+              name: '北京元物',
+              title: 'XL%元物设计工作室，是一个由不同年龄、经历的平面设计师，产品设计师与建筑设计师组成的团体。 我们从品牌出发，工作范围在平面设计、空间设计、包装设计和产品设计。用构建品牌体系与服务设计的思维逻辑将产品设计、平面设计、空间设计统一起来，提出“不同领域，一个设计”的思想。 我们认为，设计作品的社会价值就是，不断的发现生活中可以被提升让人感到愉悦的地方，设计让这些美好变得更美好。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/16.png'),
+              name: '天津奈夫',
+              title: '你的云端设计部，为您提供触手可及的产品与设计能力。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/17.png'),
+              name: '天津埃迪森',
+              title: '埃迪森（IDS）设计，目前已经发展为具有特色的工业设计品牌。埃迪森走差异化的创新设计之路，是国内最早开展三防设计、国内第一家提出“设计+VE”理念管控设计流程的设计机构，多次获得红点及红星等国内外设计大奖，帮助客户以用户为中心，以市场为导向进行创新设计，帮助客户摆脱同质化寻求差异化的方向，精准定义产品并实现落地，从而提升市场竞争力。埃迪森借助常年积累的强大的上下游产业链，为双创企业和具有优势产业的传统企业提供全方位的设计服务，以促进双创企业落地和提质增效，促进传统企业转型升级，并通过创新实践形成产品设计孵化的产业模式。致力于最终帮助企业通过创新设计，以产品战略为核心实现产品升级、品牌升级。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/18.png'),
+              name: '河北上品',
+              title: '河北上品是北京上品集团旗下在河北注册的子公司，于2018年初成立于河北省石家庄科技创新中心，为客户提供全产业链各个环节设计服务。'
+            }
+          ]
+        },
+        {
+          company: [
+            {
+              img: require('assets/images/promote_sn/design_company/19.png'),
+              name: '广州零点壹',
+              title: '一群来自国内一流工业设计大学和一流大型设计公司总监于2019年创立，公司目前以年轻团队为主。是一个有活力，有想法，有能力的团队。目前团队有专业设计师多名、资深工程师多名，实力强大、经验丰富。对产品设计、工艺生产、市场发展有深入的研究和了解。 公司设计理念：细致入微，从零到壹 公司发展目标：成为3-5个行业的专家型设计机构。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/20.png'),
+              name: '顺德潜龙',
+              title: '潜龙工业设计，是一家品牌+产品+服务一体化全案设计公司。 成立于2002年，唯一入选中国中小企业创新服务平台设计企业，并拥有多年服务全球客 户及中国市场的经验，专注为企业提供创造战略精品，创设领先品牌，创设全新品牌体 验系统解决方案，核心服务包括：品牌设计、产品设计、服务设计，为新一代创业者创 设领先品牌，让更多人实现创新创业。 总部坐落于广东工业设计城，是国家高新技术企业和国家级中小企业创新设计服务 平台企业；公司拥有40多名资深策划师，设计师，工程师设计团队。作品获得多项国际 奖项，以用户至上，协同创新的合作理念，与客户一起共同打造行业领先品牌。 专注六大核心领域：智能家电、智能装备、服务业、母婴用品，汽车工具、健康生活。'
+            },
+            {
+              img: require('assets/images/promote_sn/design_company/more.png'),
+              more1: '更多公司',
+              more2: '敬请期待'
             }
           ]
         }
-
       ],
       isShowNav: false, // sn nav
       jdAccount: {},
@@ -1766,6 +1859,9 @@ export default {
     },
     codeMsg() {
       return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
+    },
+    swiperObj() {
+      return this.$refs.mySwiper3.swiper
     }
   },
   created() {
@@ -1831,7 +1927,7 @@ export default {
         this.isShowNav = false
       }
     })
-    console.log(this.swiperSlides)
+    console.log(this.swiperObj)
   },
   methods: {
     // 关闭弹窗
@@ -2040,7 +2136,18 @@ export default {
       }
     },
     changeCaseType(e) {
+      // console.log(this.$refs.mySwiper3)
       this.currentCase = e
+      // if (e === 'vision') {
+      //   this.swiperObj.slideToLoop(0)
+      // } else if (e === 'logo') {
+      //   this.swiperObj.slideToLoop(1)
+      // } else if (e === 'packing') {
+      //   this.swiperObj.slideToLoop(2)
+      // } else if (e === 'product') {
+      //   this.swiperObj.slideToLoop(3)
+      // }
+      // console.log(this.swiperObj)
     },
     changeOfferType(e) {
       this.currentOffer = e
@@ -2354,6 +2461,7 @@ p.sn-sub-title {
   font-family:PingFangSC-Regular;
   font-weight:400;
   cursor: pointer;
+  transition: all .25s ease;
 }
 .offer-title > div {
   color: #ffffff;
@@ -2370,6 +2478,7 @@ p.sn-sub-title {
   position: relative;
   top: 17px;
   left: 0;
+  transition: all .25s ease;
   background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
 }
 .case-product {
@@ -2602,8 +2711,10 @@ p.sn-sub-title {
 }
 .sn-design-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-top: 40px;
+  margin-left: -10px;
+  margin-right: -10px;
 }
 .sn-d-item {
   width: 180px;
@@ -2614,6 +2725,7 @@ p.sn-sub-title {
   text-align: center;
   color:#999;
   box-shadow:0px 0px 20px 0px rgba(0,0,0,0.1);
+  margin: 0 10px;
 }
 .sn-d-item .img-box {
   width: 80px;
@@ -2639,7 +2751,20 @@ p.sn-sub-title {
 .design-title {
   line-height:20px;
   font-size:14px;
-  padding: 0 20px;
+  margin: 0 20px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+.design-title::after {
+  /* content: '...';
+  position:absolute;
+  font-weight:bold;
+  bottom:0;
+  right:0;
+  width: 20px;
+  height: 20px;
+  background: #fff; */
 }
 /* sn-design end */
 .awards-box {
