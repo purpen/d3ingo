@@ -659,8 +659,7 @@
             el: '.swiper-pagination',
             clickable: true
           },
-          paginationClickable: true,
-          lazyLoading: true,
+          lazy: true,
           autoplay: {
             delay: 5000
           },

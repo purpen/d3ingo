@@ -820,29 +820,34 @@
         ],
         // swiper
         swiperOption: {
-          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          lazyLoading: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          },
+          lazy: true,
           // autoplay: 5000,
           spaceBetween: 20,
           loop: true
         },
         // 底部
         swiperOption2: {
-          lazyLoading: true,
+          lazy: true,
           direction: 'vertical',
-          autoplay: 1000,
+          autoplay: {
+            delay: 1000
+          },
           slidesPerView: 4,
           // observer: true,
           spaceBetween: 0,
-          paginationClickable: true,
           loop: true
         },
         // pc
         swiperOption3: {
-          lazyLoading: true,
+          lazy: true,
           direction: 'vertical',
-          autoplay: 1000,
+          autoplay: {
+            delay: 1000
+          },
           slidesPerView: 4,
           // observer: true,
           spaceBetween: 0,
@@ -850,14 +855,15 @@
           loop: true
         },
         swiperOption4: {
-          lazyLoading: true,
+          lazy: true,
           direction: 'vertical',
-          autoplay: 1000,
-          slidesPerView: 4,
+          autoplay: {
+            delay: 1000
+          },
+          slidesPerView: 4, // 设置slider容器能够同时显示的slides数量
           // observer: true,
-          spaceBetween: 0,
-          paginationClickable: true,
-          initialSlide: 6,
+          spaceBetween: 0, // slide之间的距离
+          initialSlide: 6, // 设定初始化时slide的索引。
           loop: true
         },
         ruleForm: {
