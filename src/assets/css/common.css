@@ -348,6 +348,7 @@
 .pointer {
   cursor: pointer;
 }
+/* 单行文本省略 */
 .text-overflow {
   word-break: keep-all;
   white-space: nowrap;
