@@ -1345,7 +1345,6 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
-        paginationClickable: true,
         lazyLoading: true,
         autoplay: {
           delay: 5000
@@ -1357,7 +1356,6 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
-        paginationClickable: true,
         lazyLoading: true,
         autoplay: {
           delay: 5000
