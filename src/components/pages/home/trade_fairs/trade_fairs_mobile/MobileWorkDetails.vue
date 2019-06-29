@@ -172,23 +172,35 @@
         viewCover: false,
         dialogBuy: false,
         swiperOption: {
-          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          lazyLoading: true,
-          autoplay: 5000,
-          prevButton: '.swiper-button-prev',
-          nextButton: '.swiper-button-next',
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          },
+          lazy: true,
+          autoplay: {
+            delay: 5000
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          },
           spaceBetween: 0,
           loop: true
           // slidesPerView:'auto'
         },
         swiperOption2: {
-          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          lazyLoading: true,
-          autoplay: 5000,
-          prevButton: '.swiper-button-prev',
-          nextButton: '.swiper-button-next',
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          },
+          lazy: true,
+          autoplay: {
+            delay: 5000
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          },
           spaceBetween: 0,
           loop: true
           // slidesPerView:'auto'

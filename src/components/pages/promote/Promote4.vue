@@ -558,18 +558,22 @@
         },
         // swiper
         swiperOption: {
-          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          lazyLoading: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          },
+          lazy: true,
           // autoplay: 5000,
           spaceBetween: 20,
           loop: true
         },
         // 底部
         swiperOption2: {
-          lazyLoading: true,
+          lazy: true,
           direction: 'vertical',
-          autoplay: 1000,
+          autoplay: {
+            delay: 1000
+          },
           slidesPerView: 3,
           // observer: true,
           spaceBetween: 0,

@@ -1373,8 +1373,6 @@ export default {
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
-            // console.log(this.activeIndex)
-            // console.log(swiper.activeIndex)
             let index = this.realIndex
             if (index === 0) {
               that.currentCase = 'vision'
@@ -1812,15 +1810,15 @@ export default {
       //   loop: true
       // },
       // 底部
-      swiperOption2: {
-        lazyLoading: true,
-        direction: 'vertical',
-        autoplay: 800,
-        slidesPerView: 8,
-        // observer: true,
-        paginationClickable: true,
-        loop: true
-      },
+      // swiperOption2: {
+      //   lazyLoading: true,
+      //   direction: 'vertical',
+      //   autoplay: 800,
+      //   slidesPerView: 8,
+      //   // observer: true,
+      //   paginationClickable: true,
+      //   loop: true
+      // },
       ruleForm: {
         account: [
           {validator: checkNumber, trigger: 'blur', required: true}
