@@ -434,8 +434,8 @@
     font-size: 18px;
     color: #222222; }
   .el-dialog__body {
-    padding: 30px 20px;
-    color: #606266;
+    padding: 20px;
+    color: #666;
     font-size: 14px; }
   .el-dialog__footer {
     padding: 20px;

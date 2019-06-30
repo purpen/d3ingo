@@ -234,7 +234,7 @@
                 <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
                 <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
                 <el-menu-item index="/vcenter/account/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2 || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <!-- <el-menu-item :index="custom.id === 0?'/admin/dashboard':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -524,6 +524,9 @@
         return user
       },
       isAdmin() {
+        if (this.$store.state.event.user.source_admin === 6) {
+          return true
+        }
         return this.$store.state.event.user.role_id >= 10
       },
       // is-active下划线添加
