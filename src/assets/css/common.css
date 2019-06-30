@@ -242,6 +242,9 @@
 .padding26 {
   padding-bottom: 26px;
 }
+.padding-b10 {
+  padding-bottom: 10px;
+}
 .padding-b15 {
   padding-bottom: 15px;
 }
@@ -312,6 +315,11 @@
 }
 .padding-r-30 {
   padding-right: 30px;
+}
+.over-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
 }
 .text-center {
   text-align: center
@@ -717,4 +725,21 @@ button.el-button.is-custom.is-disabled,
 .el-input-c8 .el-textarea__inner:-ms-input-placeholder,
 .el-input-c8 .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #c8c8c8!important;
+}
+/* el-dialog */
+.el-dialog-confirm {
+  text-align: center
+}
+.el-dialog-confirm p {
+  line-height: 40px;
+  height: 40px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666
+}
+.el-dialog-confirm .buttons {
+  font-size: 0
+}
+.el-dialog-confirm .cancel {
+  margin-right: 15px;
 }

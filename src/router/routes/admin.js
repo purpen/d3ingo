@@ -71,6 +71,30 @@ module.exports = [
         },
         component: require('@/components/admin/customer/UserInfo')
       },
+      // 小程序需求列表
+      {
+        path: '/admin/WeChatDemand/WeChatDemandList',
+        name: 'adminWeChatDemandList',
+        meta: {
+          title: '小程序需求列表',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/WeChatDemand/WeChatDemandList')
+      },
+      // 小程序需求列表
+      {
+        path: '/admin/WeChatDemand/WeChatDemandDetail/:id',
+        name: 'adminWeChatDemandDetail',
+        meta: {
+          title: '小程序需求详情',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/WeChatDemand/WeChatDemandDetail')
+      },
       // 商机分析
       {
         path: '/admin/customer/analyze',

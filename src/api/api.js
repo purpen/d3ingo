@@ -417,6 +417,11 @@ export default {
   // 附件管理
   adminAssetUrlUpload: '/admin/urlUpload', // GET 图片地址上传
 
+  // DPA
+  dpaSetSolveStatus: '/admin/dpaDemand/setSolveStatus', // PUT DPA设计需求标记需求完成、急需帮助
+  dpaSetStatus: '/admin/dpaDemand/setStatus', // PUT DPA设计需求项目审核
+  dpaDemandList: '/admin/dpaDemand/lists', // GET DPA设计需求列表
+  dpaDemandShow: '/admin/dpaDemand/show', // GET DPA设计需求详情
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',
