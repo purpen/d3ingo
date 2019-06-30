@@ -2,6 +2,12 @@
   <div v-loading="detailLoading">
     <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatDemandList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
     <div class="detail">
+      <div class="company-verify flex">
+        <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
+        <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
+        <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
+        <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
+      </div>
       <div class="flex item">
         <div class="detail-key">联系人: </div>
         <div class="detail-value tc-6">{{detail.contact_name}}</div>
@@ -40,11 +46,8 @@
         <div class="detail-key">需解决的问题: </div>
         <pre class="detail-value tc-6">{{detail.problem}}</pre>
       </div>
-      <div class="company-verify flex">
-        <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
-        <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
-        <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
-        <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
+      <div class="item" v-if="detail.assets_value && detail.assets_value.length">
+        <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.big">
       </div>
     </div>
     <el-dialog
@@ -194,6 +197,7 @@ export default {
   }
   .company-verify {
     padding-top: 20px;
+    padding-bottom: 20px;
   }
   .company-verify .tag {
     width: 100px;
