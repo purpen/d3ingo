@@ -529,6 +529,10 @@
       }
     },
     created: function () {
+      if (this.$store.state.event.user.source_admin === 6 && this.$store.state.event.user.role_id < 10) {
+        this.$router.push({name: 'adminWeChatDemandList'})
+        return
+      }
       this.getCurrentItem()
       this.getSurveyIndex()
       this.getAdminOverviewCompany()

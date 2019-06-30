@@ -276,6 +276,10 @@ export default {
         {
           value: 2,
           label: '义乌管理员'
+        },
+        {
+          value: 6,
+          label: '小程序管理员'
         }
       ]
     }

@@ -2325,6 +2325,9 @@ const ADMINDETAIL = {
   },
   adminDesignCasecCawlingSubmit: {
     redirect: 'adminDesignCasecCawlingList'
+  },
+  adminWeChatDemandDetail: {
+    redirect: 'adminWeChatDemandList'
   }
 }
 const OTHERADMINMENU = {

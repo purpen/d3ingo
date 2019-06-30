@@ -1,6 +1,69 @@
 <template>
-  <div>
-    {{id}}
+  <div v-loading="detailLoading">
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatDemandList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
+    <div class="detail">
+      <div class="flex item">
+        <div class="detail-key">联系人: </div>
+        <div class="detail-value tc-6">{{detail.contact_name}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">联系方式: </div>
+        <div class="detail-value tc-6">{{detail.phone}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">地区: </div>
+        <div class="detail-value tc-6" v-if="detail.province">{{detail.province}} / {{detail.city}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">需求类型: </div>
+        <div class="detail-value tc-6">{{detail.type | formatType}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">状态: </div>
+        <div class="detail-value tc-6"
+        :class="{'tc-6': detail.status === 1,
+        'tc-green': detail.status === 2,
+        'tc-red': detail.status === 3}">{{detail.status | formatStatus}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">标记: </div>
+        <div class="detail-value tc-6"
+          :class="{'tc-green': detail.solve_status === 2,
+          'tc-red': detail.solve_status === 1}">
+          {{detail.solve_status | formatSolveStatus}}</div>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">项目情况: </div>
+        <pre class="detail-value tc-6">{{detail.describe}}</pre>
+      </div>
+      <div class="flex item">
+        <div class="detail-key">需解决的问题: </div>
+        <pre class="detail-value tc-6">{{detail.problem}}</pre>
+      </div>
+      <div class="company-verify flex">
+        <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
+        <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
+        <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
+        <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
+      </div>
+    </div>
+    <el-dialog
+      title="这是个弹窗"
+      :visible.sync="dialogVisible"
+      width="380px">
+      <div class="el-dialog-confirm">
+        <p v-if="alertObj.type === 1">确认通过审核?</p>
+        <p v-if="alertObj.type === 2">确认拒绝审核?</p>
+        <p v-if="alertObj.type === 3">确认标记急需解决?</p>
+        <p v-if="alertObj.type === 4">确认标记解决?</p>
+        <div class="buttons">
+          <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button></div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -10,11 +73,19 @@ export default {
   data() {
     return {
       id: 1,
-      detail: {}
+      detail: {},
+      isLoading: false,
+      detailLoading: false,
+      dialogVisible: false,
+      alertObj: {
+        id: 0,
+        type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4
+      }
     }
   },
   methods: {
     getDetail(id) {
+      this.detailLoading = true
       this.$http.get(api.dpaDemandShow, {params: {id: id}})
       .then(res => {
         console.log(res.data.data)
@@ -26,7 +97,77 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message.error(err.message)
+      }).finally(_ => {
+        this.detailLoading = false
       })
+    },
+    showDiaLog(id, type) {
+      this.dialogVisible = true
+      this.$set(this, 'alertObj', {id, type})
+    },
+    changeStatus(id, status) {
+      if (!this.isLoading) {
+        this.isLoading = true
+        this.$http.put(api.dpaSetStatus, {
+          id: id,
+          status: status
+        }).then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$set(this.detail, 'status', status)
+          }
+        }).finally(_ => {
+          this.dialogVisible = false
+          this.isLoading = false
+        })
+      }
+    },
+    changeSolveStatus(id, solveStatus) {
+      if (!this.isLoading) {
+        this.isLoading = true
+        this.$http.put(api.dpaSetSolveStatus, {
+          id: id,
+          solve_status: solveStatus
+        }).then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$set(this.detail, 'solve_status', solveStatus)
+          }
+        }).finally(_ => {
+          this.dialogVisible = false
+          this.isLoading = false
+        })
+      }
+    }
+  },
+  filters: {
+    formatStatus(val) {
+      switch (val) {
+        case 1:
+          return '未审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '拒绝审核'
+      }
+    },
+    formatSolveStatus(val) {
+      switch (val) {
+        case 1:
+          return '急需解决'
+        case 2:
+          return '已解决'
+      }
+    },
+    formatType(val) {
+      switch (val) {
+        case 1:
+          return '传统产业转型升级'
+        case 2:
+          return '乡村风貌设计'
+        case 3:
+          return '农产品品牌设计'
+        case 4:
+          return '非遗及手工艺再造'
+      }
     }
   },
   created() {
@@ -36,5 +177,34 @@ export default {
 }
 </script>
 <style scoped>
-
+  .company {
+    margin-bottom: 20px;
+  }
+  .item {
+    line-height: 24px
+  }
+  .detail-key {
+    min-width: 80px;
+    font-size: 14px;
+    color: #222;
+    margin-right: 15px;
+  }
+  .detail-value {
+    font-size: 14px
+  }
+  .company-verify {
+    padding-top: 20px;
+  }
+  .company-verify .tag {
+    width: 100px;
+    height: 34px;
+    line-height: 32px;
+    margin-right: 15px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .detail {
+    padding-left: 20px;
+  }
 </style>
