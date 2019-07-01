@@ -8,49 +8,101 @@
         <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
         <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
       </div>
-      <div class="flex item">
-        <div class="detail-key">联系人: </div>
-        <div class="detail-value tc-6">{{detail.contact_name}}</div>
+      <div class="bb-e6 margin-b-10 tc-red option text-right clearfix">
+        <span class="fl tc-2">详情</span>
+        <span v-if="isEdit" @click="editDetail">保存</span>
+        <span v-else @click="isEdit = true">编辑</span>
       </div>
-      <div class="flex item">
-        <div class="detail-key">联系方式: </div>
-        <div class="detail-value tc-6">{{detail.phone}}</div>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">地区: </div>
-        <div class="detail-value tc-6" v-if="detail.province">{{detail.province}} / {{detail.city}}</div>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">需求类型: </div>
-        <div class="detail-value tc-6">{{detail.type | formatType}}</div>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">状态: </div>
-        <div class="detail-value tc-6"
-        :class="{'tc-6': detail.status === 1,
-        'tc-green': detail.status === 2,
-        'tc-red': detail.status === 3}">{{detail.status | formatStatus}}</div>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">标记: </div>
-        <div class="detail-value tc-6"
-          :class="{'tc-green': detail.solve_status === 2,
-          'tc-red': detail.solve_status === 1}">
-          {{detail.solve_status | formatSolveStatus}}</div>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">项目情况: </div>
-        <pre class="detail-value tc-6">{{detail.describe}}</pre>
-      </div>
-      <div class="flex item">
-        <div class="detail-key">需解决的问题: </div>
-        <pre class="detail-value tc-6">{{detail.problem}}</pre>
-      </div>
-      <div class="item" v-if="detail.assets_value && detail.assets_value.length">
-        <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.big">
-      </div>
+      <section v-if="!isEdit">
+        <div class="flex item">
+          <div class="detail-key">联系人: </div>
+          <div class="detail-value tc-6">{{detail.contact_name}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">联系方式: </div>
+          <div class="detail-value tc-6">{{detail.phone}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">地区: </div>
+          <div class="detail-value tc-6" v-if="detail.province">{{detail.province}} / {{detail.city}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">需求类型: </div>
+          <div class="detail-value tc-6">{{detail.type | formatType}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">状态: </div>
+          <div class="detail-value tc-6"
+          :class="{'tc-6': detail.status === 1,
+          'tc-green': detail.status === 2,
+          'tc-red': detail.status === 3}">{{detail.status | formatStatus}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">标记: </div>
+          <div class="detail-value tc-6"
+            :class="{'tc-green': detail.solve_status === 2,
+            'tc-red': detail.solve_status === 1}">
+            {{detail.solve_status | formatSolveStatus}}</div>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">项目情况: </div>
+          <pre class="detail-value tc-6">{{detail.describe}}</pre>
+        </div>
+        <div class="flex item">
+          <div class="detail-key">需解决的问题: </div>
+          <pre class="detail-value tc-6">{{detail.problem}}</pre>
+        </div>
+        <div class="blank20 item" v-if="edit.assets_value && edit.assets_value.length">
+          <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.big">
+        </div>
+      </section>
+      <section v-else v-loading="isEditing">
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">联系人: </div>
+          <el-input class="detail-value" v-model="edit.contact_name"></el-input>
+        </div>
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">联系方式: </div>
+          <el-input type="number" class="detail-value" maxlength="11" v-model.number="edit.phone"></el-input>
+        </div>
+        <!-- <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">地区: </div>
+          <div class="detail-value tc-6" v-if="edit.province">{{edit.province}} / {{edit.city}}</div>
+        </div> -->
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">需求类型: </div>
+            <el-select v-model="edit.type" placeholder="请选择">
+            <el-option
+              v-for="item in typeArr"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <!-- <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">状态: </div>
+          <el-input class="detail-value" v-model="edit.status"></el-input>
+        </div>
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">标记: </div>
+          <el-input class="detail-value" v-model="edit.solve_status"></el-input>
+        </div> -->
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">项目情况: </div>
+          <el-input class="detail-value" v-model="edit.describe"
+            type="textarea" :autosize="{minRows: 1}"></el-input>
+        </div>
+        <div class="flex-vertical-center margin-b-20 item">
+          <div class="detail-key">需解决的问题: </div>
+          <el-input class="detail-value" type="textarea" :autosize="{minRows: 1}"
+            v-model="edit.problem"></el-input>
+        </div>
+      </section>
     </div>
     <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       title="这是个弹窗"
       :visible.sync="dialogVisible"
       width="380px">
@@ -76,24 +128,64 @@ export default {
   data() {
     return {
       id: 1,
+      isEdit: false, // 编辑页面
+      isEditing: false, // 编辑提交请求
       detail: {},
+      edit: {},
       isLoading: false,
       detailLoading: false,
       dialogVisible: false,
       alertObj: {
         id: 0,
         type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4
-      }
+      },
+      typeArr: [
+        {
+          label: '传统产业转型升级',
+          value: 1
+        },
+        {
+          label: '乡村风貌设计',
+          value: 2
+        },
+        {
+          label: '特色农产品品牌设计',
+          value: 3
+        },
+        {
+          label: '非遗及手工艺再造',
+          value: 4
+        }
+      ]
     }
   },
   methods: {
+    editDetail() {
+      if (!this.isEditing) {
+        this.isEditing = true
+        this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
+          console.log(res)
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$set(this, 'detail', this.edit)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        }).finally(_ => {
+          this.isEdit = false
+          this.isEditing = false
+        })
+      }
+    },
     getDetail(id) {
       this.detailLoading = true
       this.$http.get(api.dpaDemandShow, {params: {id: id}})
       .then(res => {
         console.log(res.data.data)
         if (res.data && res.data.meta.status_code === 200) {
-          this.detail = res.data.data
+          this.$set(this, 'detail', res.data.data)
+          this.$set(this, 'edit', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -187,13 +279,15 @@ export default {
     line-height: 24px
   }
   .detail-key {
-    min-width: 80px;
+    min-width: 90px;
     font-size: 14px;
     color: #222;
     margin-right: 15px;
   }
   .detail-value {
-    font-size: 14px
+    font-size: 14px;
+    flex: 1 1 auto;
+    white-space: normal
   }
   .company-verify {
     padding-top: 20px;
@@ -210,5 +304,14 @@ export default {
   }
   .detail {
     padding-left: 20px;
+  }
+  .option span {
+    font-size: 14px;
+    display: inline-block;
+    line-height: 28px;
+    cursor: pointer;
+  }
+  .option span:first-child {
+    font-size: 18px;
   }
 </style>

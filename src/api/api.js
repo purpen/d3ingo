@@ -422,6 +422,7 @@ export default {
   dpaSetStatus: '/admin/dpaDemand/setStatus', // PUT DPA设计需求项目审核
   dpaDemandList: '/admin/dpaDemand/lists', // GET DPA设计需求列表
   dpaDemandShow: '/admin/dpaDemand/show', // GET DPA设计需求详情
+  dpaDemandEdit: '/admin/dpaDemand/edit', // PUT DPA设计需求编辑
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',

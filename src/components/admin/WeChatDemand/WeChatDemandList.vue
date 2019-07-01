@@ -95,6 +95,8 @@
       </el-pagination>
     </div>
     <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       title="这是个弹窗"
       :visible.sync="dialogVisible"
       width="380px">
