@@ -47,6 +47,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        width="260px"
         label="项目情况">
         <template slot-scope="scope">
             <!-- <el-popover
@@ -63,6 +64,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        width="260px"
         label="需解决的问题">
         <template slot-scope="scope">
           <el-tooltip  effect="dark" :content="scope.row.problem" placement="top-start">
@@ -71,6 +73,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        width="100px"
         label="操作">
         <template slot-scope="scope">
           <div class="company-verify">

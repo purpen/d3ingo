@@ -8,7 +8,7 @@
         <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
         <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
       </div>
-      <div class="bb-e6 margin-b-10 tc-red option text-right clearfix">
+      <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
         <span class="fl tc-2">详情</span>
         <span v-if="isEdit" @click="editDetail">保存</span>
         <span v-else @click="isEdit = true">编辑</span>
@@ -167,13 +167,13 @@ export default {
           console.log(res)
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this, 'detail', this.edit)
+            this.isEdit = false
           } else {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err)
         }).finally(_ => {
-          this.isEdit = false
           this.isEditing = false
         })
       }
