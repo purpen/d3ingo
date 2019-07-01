@@ -167,13 +167,13 @@ export default {
           console.log(res)
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this, 'detail', this.edit)
+            this.isEdit = false
           } else {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err)
         }).finally(_ => {
-          this.isEdit = false
           this.isEditing = false
         })
       }
