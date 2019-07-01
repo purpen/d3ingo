@@ -58,7 +58,7 @@
               <p slot="reference">{{scope.row.describe}}</p>
             </el-popover> -->
           <el-tooltip  effect="dark" :content="scope.row.describe" placement="top-start">
-            <p class="text-overflow">{{scope.row.describe}}</p>
+            <p class="ellipsis">{{scope.row.describe}}</p>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -66,7 +66,7 @@
         label="需解决的问题">
         <template slot-scope="scope">
           <el-tooltip  effect="dark" :content="scope.row.problem" placement="top-start">
-            <p class="text-overflow">{{scope.row.problem}}</p>
+            <p class="ellipsis">{{scope.row.problem}}</p>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -259,5 +259,12 @@ export default {
     line-height: 24px;
     border-radius: 4px;
     text-align: center
+  }
+  .ellipsis {
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 </style>
