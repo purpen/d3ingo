@@ -18,7 +18,11 @@
 .flex {
   display: flex;
 }
-.flex-jus-center {
+.flex-vertical-center {
+  display: flex;
+  align-items: center
+}
+.flex-justify-center {
   display: flex;
   justify-content: center
 }
@@ -200,8 +204,14 @@
 .margin-t-28 {
   margin-top: 28px;
 }
+.margin-b-10 {
+  margin-bottom: 10px
+}
 .margin-b-15 {
   margin-bottom: 15px;
+}
+.margin-b-20 {
+  margin-bottom: 20px
 }
 .margin-b-m50 {
   margin-bottom: -50px;
@@ -266,12 +276,6 @@
 .padding-b80 {
   padding-bottom: 80px;
 }
-.margin-b-10 {
-  margin-bottom: 10px
-}
-.margin-b-20 {
-  margin-bottom: 20px
-}
 .blank4 {
   padding-top: 4px;
 }
@@ -326,6 +330,9 @@
 }
 .text-left {
   text-align: left;
+}
+.text-right {
+  text-align: right;
 }
 .va-bottom {
   vertical-align: bottom
