@@ -66,7 +66,7 @@
             <div class="detail-key">联系人: </div>
           <el-form-item class="detail-value"
             prop="contact_name">
-            <el-input maxlength="" v-model="edit.contact_name"></el-input>
+            <el-input maxlength="50" v-model="edit.contact_name"></el-input>
           </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
@@ -103,16 +103,18 @@
             <div class="detail-key">项目情况: </div>
             <el-form-item class="detail-value"
               prop="describe">
-              <el-input v-model="edit.describe"
-              type="textarea" :autosize="{minRows: 1}"></el-input>
+              <el-input maxlength="1000"
+                v-model="edit.describe"
+                type="textarea" :autosize="{minRows: 1}"></el-input>
             </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
             <div class="detail-key">需解决的问题: </div>
             <el-form-item class="detail-value"
               prop="problem">
-              <el-input type="textarea" :autosize="{minRows: 1}"
-              v-model="edit.problem"></el-input>
+              <el-input maxlength="1000"
+                type="textarea" :autosize="{minRows: 1}"
+                v-model="edit.problem"></el-input>
             </el-form-item>
           </div>
           <div>
