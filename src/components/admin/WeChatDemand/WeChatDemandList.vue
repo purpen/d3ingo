@@ -101,7 +101,7 @@
     <el-dialog
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      title="这是个弹窗"
+      title="需求列表"
       :visible.sync="dialogVisible"
       width="380px">
       <div class="el-dialog-confirm">
@@ -130,6 +130,7 @@ export default {
     return {
       isLoading: false,
       isLoading2: false,
+      isDeleteing: false,
       dialogVisible: false,
       alertObj: {
         id: 0,
@@ -267,6 +268,7 @@ export default {
           }
         }).finally(_ => {
           this.isDeleteing = false
+          this.dialogVisible = false
         })
       }
     }

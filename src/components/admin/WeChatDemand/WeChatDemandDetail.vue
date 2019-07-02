@@ -111,6 +111,9 @@
               v-model="edit.problem"></el-input>
             </el-form-item>
           </div>
+          <div>
+            <p v-if="showResetImg" @click="resetImg">撤销</p>
+          </div>
           <div class="flex item" v-if="false">
             <div class="detail-key">项目或产品图片: </div>
             <div class="flex-wrap flex11">
@@ -128,7 +131,7 @@
     <el-dialog
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      title="这是个弹窗"
+      title="需求列表"
       :visible.sync="dialogVisible"
       width="380px">
       <div class="el-dialog-confirm">
@@ -207,6 +210,7 @@ export default {
       isLoading: false,
       detailLoading: false,
       dialogVisible: false,
+      showResetImg: false,
       alertObj: {
         id: 0,
         type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4
@@ -241,6 +245,11 @@ export default {
     }
   },
   methods: {
+    resetImg() {
+      this.showResetImg = false
+      this.$set(this.edit, 'assets', this.detail.assets)
+      this.$set(this.edit, 'assets_value', this.detail.assets_value)
+    },
     isEmpty(value) {
       let bool = true
       value.split('').forEach(item => {
@@ -264,6 +273,7 @@ export default {
       this.edit.assets_value.forEach((item, index, array) => {
         this.edit.assets.push(item.id)
         if (item.id === id) {
+          this.showResetImg = true
           array.splice(index, 1)
           this.edit.assets.splice(this.edit.assets.indexOf(index), 1)
         }
