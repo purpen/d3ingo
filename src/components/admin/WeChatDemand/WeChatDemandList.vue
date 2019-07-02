@@ -129,6 +129,7 @@ export default {
   name: 'WeChatDemand',
   data() {
     return {
+      tableHeight: 0,
       isLoading: false,
       isLoading2: false,
       isDeleteing: false,
@@ -281,6 +282,13 @@ export default {
           this.dialogVisible = false
         })
       }
+    },
+    changeHeight() {
+      // console.log(111)
+      if (this.$refs['WeChatDemandContent']) {
+        this.tableHeight = this.$refs['WeChatDemandContent'].offsetHeight - 52
+        console.log(this.tableHeight)
+      }
     }
   },
   watch: {
@@ -296,6 +304,17 @@ export default {
       this.$set(this.query, i, this.$route.query[i])
     }
     this.getList()
+    this.changeHeight()
+    console.log('created')
+  },
+  mounted() {
+    console.log('mounted')
+    this.changeHeight()
+    window.addEventListener('resize', this.changeHeight())
+  },
+  destroyed() {
+    console.log('destroyed')
+    window.removeEventListener('resize', this.changeHeight())
   }
 }
 </script>

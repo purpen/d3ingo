@@ -239,6 +239,12 @@ export default {
       }, {
         value: '5',
         label: '未审核的设计服务商'
+      }, {
+        value: '6',
+        label: '已匹配过的设计服务商'
+      }, {
+        value: '7',
+        label: '未匹配过的设计服务商'
       }],
       designReault: '0',
       companyChoose: [{
