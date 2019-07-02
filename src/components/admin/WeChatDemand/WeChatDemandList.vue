@@ -193,6 +193,8 @@ export default {
                 this.$set(item, 'status', status)
               }
             })
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).finally(_ => {
           this.dialogVisible = false
@@ -213,6 +215,8 @@ export default {
                 this.$set(item, 'solve_status', solveStatus)
               }
             })
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).finally(_ => {
           this.dialogVisible = false
@@ -247,6 +251,8 @@ export default {
           } else {
             this.$message.error(res.data.meta.message)
           }
+        } else {
+          this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
         console.log(err)
@@ -254,7 +260,7 @@ export default {
       })
     },
     redirectDetail(id) {
-      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}})
+      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}, query: this.$router.query})
     },
     delItem(id) {
       if (!this.isDeleteing) {
@@ -262,9 +268,12 @@ export default {
         this.$http.delete(api.dpaDemandDel, {params: {id: id}})
         .then(res => {
           if (res.data && res.data.meta.status_code === 200) {
+            this.$message.success('删除成功')
             this.demandList = this.demandList.filter(item => {
               return item.id !== id
             })
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).finally(_ => {
           this.isDeleteing = false

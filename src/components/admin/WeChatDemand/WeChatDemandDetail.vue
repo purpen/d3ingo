@@ -3,10 +3,13 @@
     <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatDemandList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
     <div class="detail">
       <div class="company-verify flex">
-        <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
-        <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
-        <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
-        <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
+        <div class="flex flex11">
+          <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
+          <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
+          <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
+          <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
+        </div>
+          <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
       </div>
       <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
         <span class="fl tc-2">详情</span>
@@ -139,12 +142,15 @@
         <p v-if="alertObj.type === 2">确认拒绝审核?</p>
         <p v-if="alertObj.type === 3">确认标记急需解决?</p>
         <p v-if="alertObj.type === 4">确认标记解决?</p>
+        <p v-if="alertObj.type === 5">确认删除?</p>
         <div class="buttons">
           <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button></div>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -208,6 +214,8 @@ export default {
       detail: {},
       edit: {},
       isLoading: false,
+      isLoading2: false,
+      isDeleteing: false,
       detailLoading: false,
       dialogVisible: false,
       showResetImg: false,
@@ -245,6 +253,23 @@ export default {
     }
   },
   methods: {
+    delItem(id) {
+      if (!this.isDeleteing) {
+        this.isDeleteing = true
+        this.$http.delete(api.dpaDemandDel, {params: {id: id}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$message.success('删除成功')
+            this.$router.push({name: 'adminWeChatDemandList', query: this.$route.query})
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).finally(_ => {
+          this.isDeleteing = false
+          this.dialogVisible = false
+        })
+      }
+    },
     resetImg() {
       this.showResetImg = false
       this.$set(this.edit, 'assets', this.detail.assets)
@@ -340,6 +365,8 @@ export default {
         }).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this.detail, 'status', status)
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).finally(_ => {
           this.dialogVisible = false
@@ -348,18 +375,20 @@ export default {
       }
     },
     changeSolveStatus(id, solveStatus) {
-      if (!this.isLoading) {
-        this.isLoading = true
+      if (!this.isLoading2) {
+        this.isLoading2 = true
         this.$http.put(api.dpaSetSolveStatus, {
           id: id,
           solve_status: solveStatus
         }).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this.detail, 'solve_status', solveStatus)
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).finally(_ => {
           this.dialogVisible = false
-          this.isLoading = false
+          this.isLoading2 = false
         })
       }
     }
@@ -421,9 +450,14 @@ export default {
     white-space: normal;
     margin-bottom: 0;
   }
+  img.detail-value {
+    margin: 0 10px 10px 0;
+    vertical-align: top
+  }
   .company-verify {
     padding-top: 20px;
     padding-bottom: 20px;
+    justify-content: space-around
   }
   .company-verify .tag {
     width: 100px;
@@ -433,6 +467,9 @@ export default {
     border-radius: 4px;
     text-align: center;
     cursor: pointer;
+  }
+  .company-verify .tag:last-child {
+    margin-right: 0
   }
   .detail {
     padding-left: 20px;
