@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-height relative" ref="WeChatDemandContent">
     <el-table
       :data="demandList">
       <el-table-column
@@ -87,8 +87,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagecss" v-if="query.total > query.per_page">
+    <div class="pagecss blank20 flex-justify-center pagination" v-if="query.total > query.per_page">
       <el-pagination
+        ref="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="query.current_page"
@@ -260,7 +261,7 @@ export default {
       })
     },
     redirectDetail(id) {
-      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}, query: this.$router.query})
+      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}, query: this.query})
     },
     delItem(id) {
       if (!this.isDeleteing) {
@@ -313,5 +314,12 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+  }
+  .pagination {
+    /* position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    margin: auto; */
   }
 </style>

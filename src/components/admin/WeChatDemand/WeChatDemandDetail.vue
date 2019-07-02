@@ -13,6 +13,7 @@
       </div>
       <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
         <span class="fl tc-2">详情</span>
+        <span v-if="isEdit" @click="resetDetail()">取消</span>
         <span v-if="isEdit" @click="editDetail()">保存</span>
         <span v-else @click="isEdit = true">编辑</span>
       </div>
@@ -272,8 +273,8 @@ export default {
     },
     resetImg() {
       this.showResetImg = false
-      this.$set(this.edit, 'assets', this.detail.assets)
-      this.$set(this.edit, 'assets_value', this.detail.assets_value)
+      this.$set(this.edit, 'assets', [...this.detail.assets])
+      this.$set(this.edit, 'assets_value', [...this.detail.assets_value])
     },
     isEmpty(value) {
       let bool = true
@@ -304,6 +305,10 @@ export default {
         }
       })
     },
+    resetDetail() {
+      this.$set(this, 'edit', {...this.detail})
+      this.isEdit = false
+    },
     editDetail() {
       // console.log(this.$refs['ruleForm'])
       // this.$refs['ruleForm'].validate(function (valid) {
@@ -322,7 +327,7 @@ export default {
         this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
           console.log(res)
           if (res.data && res.data.meta.status_code === 200) {
-            this.$set(this, 'detail', this.edit)
+            this.$set(this, 'detail', {...this.edit})
             this.isEdit = false
           } else {
             this.$message.error(res.data.meta.message)
@@ -340,8 +345,8 @@ export default {
       .then(res => {
         console.log(res.data.data)
         if (res.data && res.data.meta.status_code === 200) {
-          this.$set(this, 'detail', res.data.data)
-          this.$set(this, 'edit', res.data.data)
+          this.$set(this, 'detail', {...res.data.data})
+          this.$set(this, 'edit', {...res.data.data})
         } else {
           this.$message.error(res.data.meta.message)
         }
