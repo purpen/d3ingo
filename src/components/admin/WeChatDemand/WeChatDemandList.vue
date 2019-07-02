@@ -1,7 +1,6 @@
 <template>
   <div class="full-height relative" ref="WeChatDemandContent">
     <el-table
-      :height="tableHeight"
       :data="demandList">
       <el-table-column
         prop="id"
@@ -130,7 +129,6 @@ export default {
   name: 'WeChatDemand',
   data() {
     return {
-      tableHeight: 0,
       isLoading: false,
       isLoading2: false,
       isDeleteing: false,
@@ -283,9 +281,6 @@ export default {
           this.dialogVisible = false
         })
       }
-    },
-    changeHeight() {
-      this.tableHeight = this.$refs['WeChatDemandContent'].offsetHeight - 52
     }
   },
   watch: {
@@ -301,13 +296,6 @@ export default {
       this.$set(this.query, i, this.$route.query[i])
     }
     this.getList()
-  },
-  mounted() {
-    this.changeHeight()
-    window.addEventListener('resize', this.changeHeight())
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.changeHeight())
   }
 }
 </script>
@@ -328,10 +316,10 @@ export default {
     width: 100%;
   }
   .pagination {
-    position: absolute;
+    /* position: absolute;
     left: 0;
     right: 0;
     bottom: 30px;
-    margin: auto;
+    margin: auto; */
   }
 </style>
