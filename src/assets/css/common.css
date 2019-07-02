@@ -750,3 +750,29 @@ button.el-button.is-custom.is-disabled,
 .el-dialog-confirm .cancel {
   margin-right: 15px;
 }
+.icon-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: #ff5a5f;
+  border-radius: 50%;
+}
+.icon-close::before,
+.icon-close::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background: #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transform: rotate(45deg);
+}
+.icon-close::after {
+  transform: rotate(-45deg);
+}

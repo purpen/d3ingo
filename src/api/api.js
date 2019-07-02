@@ -423,6 +423,7 @@ export default {
   dpaDemandList: '/admin/dpaDemand/lists', // GET DPA设计需求列表
   dpaDemandShow: '/admin/dpaDemand/show', // GET DPA设计需求详情
   dpaDemandEdit: '/admin/dpaDemand/edit', // PUT DPA设计需求编辑
+  dpaDemandDel: '/admin/dpaDemand/del', // DELETE DPA设计需求删除
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',
