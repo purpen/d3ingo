@@ -81,6 +81,7 @@
             <p class="tag tag-pass margin-b-10" v-else @click="showDiaLog(scope.row.id, 1)">通过审核</p>
             <p class="tag tag-pass margin-b-10" v-if="scope.row.solve_status === 1" @click="showDiaLog(scope.row.id, 4)">标记解决</p>
             <!-- <p class="tag tag-refuse margin-b-10" v-else @click="showDiaLog(scope.row.id, 3)">急需解决</p> -->
+            <p class="tag red-button margin-b-10" @click="showDiaLog(scope.row.id, 5)">删除</p>
             <p class="tag tag-view" @click="redirectDetail(scope.row.id)">查看</p>
           </div>
         </template>
@@ -108,12 +109,15 @@
         <p v-if="alertObj.type === 2">确认拒绝审核?</p>
         <p v-if="alertObj.type === 3">确认标记急需解决?</p>
         <p v-if="alertObj.type === 4">确认标记解决?</p>
+        <p v-if="alertObj.type === 5">确认删除?</p>
         <div class="buttons">
           <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button></div>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -125,10 +129,11 @@ export default {
   data() {
     return {
       isLoading: false,
+      isLoading2: false,
       dialogVisible: false,
       alertObj: {
         id: 0,
-        type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4
+        type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4, 删除: 5
       },
       query: {
         current_page: 1,
@@ -195,8 +200,8 @@ export default {
       }
     },
     changeSolveStatus(id, solveStatus) {
-      if (!this.isLoading) {
-        this.isLoading = true
+      if (!this.isLoading2) {
+        this.isLoading2 = true
         this.$http.put(api.dpaSetSolveStatus, {
           id: id,
           solve_status: solveStatus
@@ -210,29 +215,29 @@ export default {
           }
         }).finally(_ => {
           this.dialogVisible = false
-          this.isLoading = false
+          this.isLoading2 = false
         })
       }
     },
     // 总页数
     handleSizeChange(val) {
       this.query.per_page = val
-      this.getList(this.query)
+      // this.getList()
+      this.$router.push({name: this.$router.name, query: this.query})
     },
     // 当前页
     handleCurrentChange(val) {
-      this.query.page = val
-      this.getList(this.query)
+      this.query.current_page = val
+      this.$router.push({name: this.$router.name, query: this.query})
     },
-    getList(query) {
-      query = query || this.query
+    getList() {
       this.$http.get(api.dpaDemandList, {params: {
         solve_status: 0,
         status: 0,
         type: 0,
         sort: 0,
-        per_page: query.per_page,
-        page: query.current_page
+        per_page: this.query.per_page,
+        page: this.query.current_page
       }}).then(res => {
         if (res.data && res.data.data) {
           if (res.data.meta.status_code === 200) {
@@ -249,9 +254,35 @@ export default {
     },
     redirectDetail(id) {
       this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}})
+    },
+    delItem(id) {
+      if (!this.isDeleteing) {
+        this.isDeleteing = true
+        this.$http.delete(api.dpaDemandDel, {params: {id: id}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.demandList = this.demandList.filter(item => {
+              return item.id !== id
+            })
+          }
+        }).finally(_ => {
+          this.isDeleteing = false
+        })
+      }
+    }
+  },
+  watch: {
+    $route(to, from) {
+      for (let i in to.query) {
+        this.$set(this.query, i, to.query[i])
+      }
+      this.getList()
     }
   },
   created() {
+    for (let i in this.$route.query) {
+      this.$set(this.query, i, this.$route.query[i])
+    }
     this.getList()
   }
 }
@@ -261,7 +292,7 @@ export default {
     cursor: pointer;
     width: 70px;
     height: 24px;
-    line-height: 24px;
+    line-height: 22px;
     border-radius: 4px;
     text-align: center
   }

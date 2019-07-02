@@ -10,7 +10,7 @@
       </div>
       <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
         <span class="fl tc-2">详情</span>
-        <span v-if="isEdit" @click="editDetail">保存</span>
+        <span v-if="isEdit" @click="editDetail()">保存</span>
         <span v-else @click="isEdit = true">编辑</span>
       </div>
       <section v-if="!isEdit">
@@ -53,51 +53,76 @@
           <pre class="detail-value tc-6">{{detail.problem}}</pre>
         </div>
         <div class="blank20 item" v-if="edit.assets_value && edit.assets_value.length">
-          <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.big">
+          <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.file">
         </div>
       </section>
       <section v-else v-loading="isEditing">
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">联系人: </div>
-          <el-input class="detail-value" v-model="edit.contact_name"></el-input>
-        </div>
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">联系方式: </div>
-          <el-input type="number" class="detail-value" maxlength="11" v-model.number="edit.phone"></el-input>
-        </div>
-        <!-- <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">地区: </div>
-          <div class="detail-value tc-6" v-if="edit.province">{{edit.province}} / {{edit.city}}</div>
-        </div> -->
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">需求类型: </div>
-            <el-select v-model="edit.type" placeholder="请选择">
-            <el-option
-              v-for="item in typeArr"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <!-- <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">状态: </div>
-          <el-input class="detail-value" v-model="edit.status"></el-input>
-        </div>
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">标记: </div>
-          <el-input class="detail-value" v-model="edit.solve_status"></el-input>
-        </div> -->
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">项目情况: </div>
-          <el-input class="detail-value" v-model="edit.describe"
-            type="textarea" :autosize="{minRows: 1}"></el-input>
-        </div>
-        <div class="flex-vertical-center margin-b-20 item">
-          <div class="detail-key">需解决的问题: </div>
-          <el-input class="detail-value" type="textarea" :autosize="{minRows: 1}"
-            v-model="edit.problem"></el-input>
-        </div>
+        <el-form :rules="ruleForm" :model="edit" ref="ruleForm">
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">联系人: </div>
+          <el-form-item class="detail-value"
+            prop="contact_name">
+            <el-input maxlength="" v-model="edit.contact_name"></el-input>
+          </el-form-item>
+          </div>
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">联系方式: </div>
+            <el-form-item class="detail-value"
+              prop="phone">
+              <el-input type="number" maxlength="11" v-model.number="edit.phone"></el-input>
+            </el-form-item>
+          </div>
+          <!-- <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">地区: </div>
+            <div class="detail-value tc-6" v-if="edit.province">{{edit.province}} / {{edit.city}}</div>
+          </div> -->
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">需求类型: </div>
+              <el-select v-model="edit.type" placeholder="请选择">
+              <el-option
+                v-for="item in typeArr"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <!-- <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">状态: </div>
+            <el-input class="detail-value" v-model="edit.status"></el-input>
+          </div>
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">标记: </div>
+            <el-input class="detail-value" v-model="edit.solve_status"></el-input>
+          </div> -->
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">项目情况: </div>
+            <el-form-item class="detail-value"
+              prop="describe">
+              <el-input v-model="edit.describe"
+              type="textarea" :autosize="{minRows: 1}"></el-input>
+            </el-form-item>
+          </div>
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">需解决的问题: </div>
+            <el-form-item class="detail-value"
+              prop="problem">
+              <el-input type="textarea" :autosize="{minRows: 1}"
+              v-model="edit.problem"></el-input>
+            </el-form-item>
+          </div>
+          <div class="flex item" v-if="false">
+            <div class="detail-key">项目或产品图片: </div>
+            <div class="flex-wrap flex11">
+              <div :class="['img-cover', {'img-cover-active': changeList.includes(ele.id)}]"
+                v-for="(ele, index) in detail.assets_value" :key="index"
+                @click="selectImg(ele.id)"
+                :style="{'background-image': 'url('+ ele.logo +')'}">
+                <span @click.stop="delImage(ele.id)" v-if="changeList.includes(ele.id)" class="icon-close"></span>
+                </div>
+            </div>
+          </div>
+        </el-form>
       </section>
     </div>
     <el-dialog
@@ -126,10 +151,57 @@ import api from '@/api/api'
 export default {
   name: 'adminWeChatDemandDetail',
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
+    let checkName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写联系人'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写联系人'))
+        }
+      }
+    }
+    let checkDescribe = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请描述项目情况'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请描述项目情况'))
+        }
+      }
+    }
+    let checkProblem = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请描述问题'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请描述问题'))
+        }
+      }
+    }
     return {
       id: 1,
       isEdit: false, // 编辑页面
-      isEditing: false, // 编辑提交请求
+      isEditing: false, // 提交编辑请求
       detail: {},
       edit: {},
       isLoading: false,
@@ -156,11 +228,60 @@ export default {
           label: '非遗及手工艺再造',
           value: 4
         }
-      ]
+      ],
+      ruleForm: {
+        contact_name: [
+          { validator: checkName, trigger: 'change' }
+        ],
+        phone: [{validator: checkNumber, trigger: 'blur'}],
+        describe: [{ validator: checkDescribe, trigger: 'blur' }],
+        problem: [{ validator: checkProblem, trigger: 'blur' }]
+      },
+      changeList: []
     }
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
+    selectImg(id) {
+      console.log(id)
+      if (this.changeList.includes(id)) {
+        this.changeList.splice(this.changeList.indexOf(id), 1)
+      } else {
+        this.changeList.push(id)
+      }
+    },
+    delImage(id) {
+      console.log(id)
+      this.edit.assets = []
+      this.edit.assets_value.forEach((item, index, array) => {
+        this.edit.assets.push(item.id)
+        if (item.id === id) {
+          array.splice(index, 1)
+          this.edit.assets.splice(this.edit.assets.indexOf(index), 1)
+        }
+      })
+    },
     editDetail() {
+      // console.log(this.$refs['ruleForm'])
+      // this.$refs['ruleForm'].validate(function (valid) {
+      //   console.log(111, valid)
+      // })
+      // this.$refs['ruleForm'].validate((valid) => {
+      //   if (valid) {
+
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
       if (!this.isEditing) {
         this.isEditing = true
         this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
@@ -279,7 +400,7 @@ export default {
     line-height: 24px
   }
   .detail-key {
-    min-width: 90px;
+    min-width: 110px;
     font-size: 14px;
     color: #222;
     margin-right: 15px;
@@ -287,7 +408,8 @@ export default {
   .detail-value {
     font-size: 14px;
     flex: 1 1 auto;
-    white-space: normal
+    white-space: normal;
+    margin-bottom: 0;
   }
   .company-verify {
     padding-top: 20px;
@@ -313,5 +435,18 @@ export default {
   }
   .option span:first-child {
     font-size: 18px;
+  }
+  .img-cover {
+    cursor: pointer;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    margin: 0 10px 10px 0;
+    border: 1px solid #fff;
+  }
+  .img-cover-active {
+    border: 1px dashed #ff5a5f;
   }
 </style>
