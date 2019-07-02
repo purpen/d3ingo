@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="full-height relative" ref="WeChatDemandContent">
     <el-table
+      :height="tableHeight"
       :data="demandList">
       <el-table-column
         prop="id"
@@ -87,8 +88,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagecss" v-if="query.total > query.per_page">
+    <div class="pagecss blank20 flex-justify-center pagination" v-if="query.total > query.per_page">
       <el-pagination
+        ref="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="query.current_page"
@@ -128,6 +130,7 @@ export default {
   name: 'WeChatDemand',
   data() {
     return {
+      tableHeight: 0,
       isLoading: false,
       isLoading2: false,
       isDeleteing: false,
@@ -260,7 +263,7 @@ export default {
       })
     },
     redirectDetail(id) {
-      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}, query: this.$router.query})
+      this.$router.push({name: 'adminWeChatDemandDetail', params: {id: id}, query: this.query})
     },
     delItem(id) {
       if (!this.isDeleteing) {
@@ -280,6 +283,9 @@ export default {
           this.dialogVisible = false
         })
       }
+    },
+    changeHeight() {
+      this.tableHeight = this.$refs['WeChatDemandContent'].offsetHeight - 52
     }
   },
   watch: {
@@ -295,6 +301,13 @@ export default {
       this.$set(this.query, i, this.$route.query[i])
     }
     this.getList()
+  },
+  mounted() {
+    this.changeHeight()
+    window.addEventListener('resize', this.changeHeight())
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.changeHeight())
   }
 }
 </script>
@@ -313,5 +326,12 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+  }
+  .pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    margin: auto;
   }
 </style>
