@@ -56,7 +56,7 @@
           <div class="detail-key">需解决的问题: </div>
           <pre class="detail-value tc-6">{{detail.problem}}</pre>
         </div>
-        <div class="blank20 item" v-if="edit.assets_value && edit.assets_value.length">
+        <div class="blank20 item" v-if="detail.assets_value && detail.assets_value.length">
           <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.file">
         </div>
       </section>
@@ -66,7 +66,7 @@
             <div class="detail-key">联系人: </div>
           <el-form-item class="detail-value"
             prop="contact_name">
-            <el-input maxlength="" v-model="edit.contact_name"></el-input>
+            <el-input maxlength="50" v-model="edit.contact_name"></el-input>
           </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
@@ -103,26 +103,28 @@
             <div class="detail-key">项目情况: </div>
             <el-form-item class="detail-value"
               prop="describe">
-              <el-input v-model="edit.describe"
-              type="textarea" :autosize="{minRows: 1}"></el-input>
+              <el-input maxlength="1000"
+                v-model="edit.describe"
+                type="textarea" :autosize="{minRows: 1}"></el-input>
             </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
             <div class="detail-key">需解决的问题: </div>
             <el-form-item class="detail-value"
               prop="problem">
-              <el-input type="textarea" :autosize="{minRows: 1}"
-              v-model="edit.problem"></el-input>
+              <el-input maxlength="1000"
+                type="textarea" :autosize="{minRows: 1}"
+                v-model="edit.problem"></el-input>
             </el-form-item>
           </div>
-          <div>
-            <p v-if="showResetImg" @click="resetImg">撤销</p>
+          <div class="clearfix">
+            <p class="fr tc-red pointer" v-if="showResetImg" @click="resetImg">撤销</p>
           </div>
-          <div class="flex item" v-if="false">
+          <div class="flex item">
             <div class="detail-key">项目或产品图片: </div>
             <div class="flex-wrap flex11">
               <div :class="['img-cover', {'img-cover-active': changeList.includes(ele.id)}]"
-                v-for="(ele, index) in detail.assets_value" :key="index"
+                v-for="(ele, index) in edit.assets_value" :key="index"
                 @click="selectImg(ele.id)"
                 :style="{'background-image': 'url('+ ele.logo +')'}">
                 <span @click.stop="delImage(ele.id)" v-if="changeList.includes(ele.id)" class="icon-close"></span>
@@ -286,7 +288,6 @@ export default {
       return bool
     },
     selectImg(id) {
-      console.log(id)
       if (this.changeList.includes(id)) {
         this.changeList.splice(this.changeList.indexOf(id), 1)
       } else {
@@ -294,15 +295,15 @@ export default {
       }
     },
     delImage(id) {
-      console.log(id)
-      this.edit.assets = []
-      this.edit.assets_value.forEach((item, index, array) => {
-        this.edit.assets.push(item.id)
-        if (item.id === id) {
-          this.showResetImg = true
-          array.splice(index, 1)
-          this.edit.assets.splice(this.edit.assets.indexOf(index), 1)
-        }
+      this.showResetImg = true
+      this.edit.assets_value = this.edit.assets_value.filter(item => {
+        return item.id !== id
+      })
+      this.edit.assets = this.edit.assets.filter(item => {
+        return item !== id
+      })
+      this.changeList = this.changeList.filter(item => {
+        return item !== id
       })
     },
     resetDetail() {
@@ -325,7 +326,6 @@ export default {
       if (!this.isEditing) {
         this.isEditing = true
         this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
-          console.log(res)
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this, 'detail', {...this.edit})
             this.isEdit = false
@@ -343,7 +343,6 @@ export default {
       this.detailLoading = true
       this.$http.get(api.dpaDemandShow, {params: {id: id}})
       .then(res => {
-        console.log(res.data.data)
         if (res.data && res.data.meta.status_code === 200) {
           this.$set(this, 'detail', {...res.data.data})
           this.$set(this, 'edit', {...res.data.data})
