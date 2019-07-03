@@ -1,6 +1,6 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> / {{detail.title}}</h2>
     <div class="detail">
       <div class="company-verify flex">
         <div class="flex flex11">
