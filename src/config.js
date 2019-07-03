@@ -2277,6 +2277,14 @@ const ADMINMENU = {
         params: {},
         query: {}
       }
+    },
+    {
+      name: '新闻资讯列表',
+      route: 'adminWeChatNewsList',
+      statement: {
+        params: {},
+        query: {}
+      }
     }]
   }
 }
@@ -2328,6 +2336,9 @@ const ADMINDETAIL = {
   },
   adminWeChatDemandDetail: {
     redirect: 'adminWeChatDemandList'
+  },
+  adminWeChatNewsDetail: {
+    redirect: 'adminWeChatNewsList'
   }
 }
 const OTHERADMINMENU = {

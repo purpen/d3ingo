@@ -1,13 +1,11 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatDemandList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> / {{detail.company}}</h2>
     <div class="detail">
       <div class="company-verify flex">
         <div class="flex flex11">
           <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
           <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
-          <p class="tag tag-pass" v-if="detail.solve_status === 1" @click="showDiaLog(detail.id, 4)">标记解决</p>
-          <p class="tag tag-refuse" v-else @click="showDiaLog(detail.id, 3)">急需解决</p>
         </div>
           <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
       </div>
@@ -17,23 +15,18 @@
         <span v-if="isEdit" @click="editDetail()">保存</span>
         <span v-else @click="isEdit = true, getImgToken()">编辑</span>
       </div>
-      <section v-if="!isEdit">
+      <section class="detail" v-if="!isEdit">
         <div class="flex item">
-          <div class="detail-key">联系人: </div>
-          <div class="detail-value tc-6">{{detail.contact_name}}</div>
+          <div class="detail-key">标题: </div>
+          <div class="detail-value tc-6">{{detail.title}}</div>
         </div>
         <div class="flex item">
-          <div class="detail-key">联系方式: </div>
-          <div class="detail-value tc-6">{{detail.phone}}</div>
+          <div class="detail-key">链接: </div>
+          <a class="detail-value tc-6 wrap" :href="detail.url">{{detail.url}}</a>
         </div>
         <div class="flex item">
-          <div class="detail-key">地区: </div>
-          <div class="detail-value tc-6" v-if="detail.province">{{detail.province}} / {{detail.city}}</div>
-        </div>
-        <div class="flex item">
-          <div class="detail-key">需求类型: </div>
-          <div class="detail-value tc-6">{{detail.type | formatType}}
-          </div>
+          <div class="detail-key">时间: </div>
+          <div class="detail-value tc-6">{{detail.time | formatTime}}</div>
         </div>
         <div class="flex item">
           <div class="detail-key">状态: </div>
@@ -42,108 +35,56 @@
           'tc-green': detail.status === 2,
           'tc-red': detail.status === 3}">{{detail.status | formatStatus}}</div>
         </div>
-        <div class="flex item">
-          <div class="detail-key">标记: </div>
-          <div class="detail-value tc-6"
-            :class="{'tc-green': detail.solve_status === 2,
-            'tc-red': detail.solve_status === 1}">
-            {{detail.solve_status | formatSolveStatus}}</div>
-        </div>
-        <div class="flex item">
-          <div class="detail-key">项目情况: </div>
-          <pre class="detail-value tc-6 pre-value">{{detail.describe}}</pre>
-        </div>
-        <div class="flex item">
-          <div class="detail-key">需解决的问题: </div>
-          <pre class="detail-value tc-6 pre-value">{{detail.problem}}</pre>
-        </div>
-        <div class="blank20 item" v-if="detail.assets_value && detail.assets_value.length">
-          <img class="max-full-width detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.file">
+        <div class="flex item" v-if="detail.assets_value">
+          <div class="detail-key">封面图: </div>
+          <img class="img-cover tc-6" v-lazy="detail.assets_value.logo">
         </div>
       </section>
-      <section v-else v-loading="isEditing">
+      <section class="edit" v-else v-loading="isEditing">
         <el-form :rules="ruleForm" :model="edit" ref="ruleForm">
           <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">联系人: </div>
-          <el-form-item class="detail-value"
-            prop="contact_name">
-            <el-input maxlength="50" v-model="edit.contact_name"></el-input>
-          </el-form-item>
-          </div>
-          <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">联系方式: </div>
+            <div class="detail-key">标题: </div>
             <el-form-item class="detail-value"
-              prop="phone">
-              <el-input type="number" maxlength="11" v-model.number="edit.phone"></el-input>
-            </el-form-item>
-          </div>
-          <!-- <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">地区: </div>
-            <div class="detail-value tc-6" v-if="edit.province">{{edit.province}} / {{edit.city}}</div>
-          </div> -->
-          <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">需求类型: </div>
-              <el-select v-model="edit.type" placeholder="请选择">
-              <el-option
-                v-for="item in typeArr"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <!-- <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">状态: </div>
-            <el-input class="detail-value" v-model="edit.status"></el-input>
-          </div>
-          <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">标记: </div>
-            <el-input class="detail-value" v-model="edit.solve_status"></el-input>
-          </div> -->
-          <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">项目情况: </div>
-            <el-form-item class="detail-value"
-              prop="describe">
-              <el-input maxlength="1000"
-                v-model="edit.describe"
-                type="textarea" :autosize="{minRows: 1}"></el-input>
+              prop="title">
+              <el-input maxlength="50" v-model="edit.title"></el-input>
             </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
-            <div class="detail-key">需解决的问题: </div>
+            <div class="detail-key">链接: </div>
             <el-form-item class="detail-value"
-              prop="problem">
-              <el-input maxlength="1000"
-                type="textarea" :autosize="{minRows: 1}"
-                v-model="edit.problem"></el-input>
+              prop="url">
+              <el-input v-model="edit.url"></el-input>
             </el-form-item>
           </div>
-          <!-- <div class="clearfix">
-            <p class="fr tc-red pointer" v-if="showResetImg" @click="resetImg">撤销</p>
-          </div> -->
+          <div class="flex-vertical-center margin-b-20 item">
+            <div class="detail-key">时间: </div>
+            <el-form-item class="detail-value"
+              prop="time">
+              <el-date-picker
+                prefix-icon="el-icon-date"
+                v-model="edit.timeStr"
+                type="datetime"
+                @change="changeTime"
+                placeholder="选择日期时间">
+              </el-date-picker>
+            </el-form-item>
+          </div>
           <div class="flex item">
-            <div class="detail-key">项目或产品图片: </div>
-            <div class="flex-wrap flex11" v-if="edit.assets_value">
-              <div :class="['img-cover', {'img-cover-active': changeList.includes(ele.id)}]"
-                v-for="(ele, index) in edit.assets_value" :key="index"
-                @click="selectImg(ele.id)"
-                :style="{'background-image': 'url('+ ele.logo +')'}">
-                <span @click.stop="delImage(ele.id)" v-if="changeList.includes(ele.id)" class="icon-close"></span>
-              </div>
-              <div :class="['img-cover flex-center', {'img-cover-active': changeList.includes(ele.uid), 'no-bg': ele.percentage < 100}]"
-                v-for="(ele) in fileList" :key="ele.uid"
-                @click="selectImg(ele.uid)"
-                :style="{'background-image': ele.percentage < 100 ? '#fafafa' : 'url('+ ele.logo +')'}">
-                <span @click.stop="delImage2(ele.uid, ele.asset_id, ele.file)" v-if="changeList.includes(ele.uid)" class="icon-close"></span>
-                <p v-if="ele.percentage < 100" class="tc-6 img-name over-ellipsis">{{ele.name}}</p>
-                <el-progress v-if="ele.percentage < 100" :width="50" type="circle" :percentage="ele.percentage"
+            <div class="detail-key">封面图: </div>
+            <div class="flex-wrap flex11">
+              <div v-if="edit.assets_value" :class="['img-cover flex-center',
+                {'img-cover-active': changeList.includes(edit.assets_value.id)}]"
+                :style="{'background-image': edit.assets_value.percentage !== 100 ? 'url('+ edit.assets_value.logo +')' : 'none'}">
+                <!-- @click="selectImg(edit.assets_value.id)"> -->
+                <span @click.stop="delImage()" v-if="changeList.includes(edit.assets_value.id)" class="icon-close"></span>
+                <el-progress v-if="edit.assets_value.percentage < 100" :width="50"
+                  type="circle" :percentage="edit.assets_value.percentage"
                   status="success"></el-progress>
               </div>
               <div class="img-cover" @click="getImgToken">
                 <el-upload
-                  :disabled="imgLength < 1"
                   ref="upload"
-                  :class="['upload-box', imgLength < 1 ? 'disabled': '']"
+                  :class="['upload-box']"
                   :action="qiniuToken.upload_url"
                   :data="qiniuToken"
                   :on-preview="handlePreview"
@@ -152,16 +93,13 @@
                   :on-error="handleError"
                   :on-change="handleChange"
                   :on-progress="handleProgress"
-                  :on-exceed="handleExceed"
                   :before-remove="beforeRemove"
                   :before-upload="beforeUpload"
-                  :multiple="true"
                   :drag="true"
-                  :limit="imgLength"
                   :show-file-list="false"
                   :file-list="fileList">
                   <i slot="default" class="el-icon-plus tc-6 fz-16"></i>
-                  <p class="fz-14 tc-6">上传图片</p>
+                  <p class="fz-14 tc-6">更换图片</p>
                 </el-upload>
               </div>
             </div>
@@ -178,15 +116,11 @@
       <div class="el-dialog-confirm">
         <p v-if="alertObj.type === 1">确认通过审核?</p>
         <p v-if="alertObj.type === 2">确认拒绝审核?</p>
-        <p v-if="alertObj.type === 3">确认标记急需解决?</p>
-        <p v-if="alertObj.type === 4">确认标记解决?</p>
         <p v-if="alertObj.type === 5">确认删除?</p>
         <div class="buttons">
           <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 3" @click="changeSolveStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 4" @click="changeSolveStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading2"></i></button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
         </div>
       </div>
@@ -198,50 +132,33 @@ import api from '@/api/api'
 export default {
   name: 'adminWeChatDemandDetail',
   data() {
-    let checkNumber = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('请填写手机号'))
-      } else {
-        if (!Number.isInteger(Number(value))) {
-          callback(new Error('手机号只能为数字！'))
-        } else {
-          let len = value.toString().length
-          if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
-              callback()
-            } else {
-              callback(new Error('手机号格式不正确'))
-            }
-          } else {
-            callback(new Error('手机号长度应为11位'))
-          }
-        }
-      }
-    }
     let checkName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请填写联系人'))
+        return callback(new Error('请填写标题'))
       } else {
         if (this.isEmpty(value)) {
-          return callback(new Error('请填写联系人'))
+          return callback(new Error('请填写标题'))
         }
       }
     }
-    let checkDescribe = (rule, value, callback) => {
+    let checkTime = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请描述项目情况'))
-      } else {
-        if (this.isEmpty(value)) {
-          return callback(new Error('请描述项目情况'))
-        }
+        return callback(new Error('请选择时间'))
       }
+      //   else {
+      //   if (this.isEmpty(value)) {
+      //     return callback(new Error('请选择时间'))
+      //   } else if (!Number.isInteger(Number(value))) {
+      //     callback(new Error('时间格式不正确'))
+      //   }
+      // }
     }
-    let checkProblem = (rule, value, callback) => {
+    let checkUrl = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请描述问题'))
+        return callback(new Error('请填写链接'))
       } else {
         if (this.isEmpty(value)) {
-          return callback(new Error('请描述问题'))
+          return callback(new Error('请填写链接'))
         }
       }
     }
@@ -252,40 +169,23 @@ export default {
       detail: {},
       edit: {},
       isLoading: false,
-      isLoading2: false,
       isDeleteing: false,
       detailLoading: false,
       dialogVisible: false,
-      showResetImg: false,
       alertObj: {
         id: 0,
         type: 0 // 审核: 通过: 1, 拒绝: 2; 标记: 急需解决: 3, 解决: 4
       },
-      typeArr: [
-        {
-          label: '传统产业转型升级',
-          value: 1
-        },
-        {
-          label: '乡村风貌设计',
-          value: 2
-        },
-        {
-          label: '特色农产品品牌设计',
-          value: 3
-        },
-        {
-          label: '非遗及手工艺再造',
-          value: 4
-        }
-      ],
       ruleForm: {
-        contact_name: [
+        title: [
           { validator: checkName, trigger: 'change' }
         ],
-        phone: [{validator: checkNumber, trigger: 'blur'}],
-        describe: [{ validator: checkDescribe, trigger: 'blur' }],
-        problem: [{ validator: checkProblem, trigger: 'blur' }]
+        time: [
+          { validator: checkTime, trigger: 'change' }
+        ],
+        url: [
+          { validator: checkUrl, trigger: 'change' }
+        ]
       },
       changeList: [],
       qiniuToken: {
@@ -299,16 +199,14 @@ export default {
       fileList: []
     }
   },
-  computed: {
-    imgLength() {
-      if (this.edit.assets) {
-        return 8 - this.edit.assets.length - this.fileList.length
-      } else {
-        return 8
-      }
-    }
-  },
   methods: {
+    changeTime(val) {
+      if (val) {
+        this.edit.time = Math.floor(val.getTime() / 1000)
+      } else {
+        this.edit.time = 0
+      }
+    },
     handlePreview(file) {
       console.log('preview', file)
     },
@@ -331,22 +229,9 @@ export default {
         return false
       }
     },
-    handleExceed(files, fileList) {
-      this.$nextTick(_ => {
-        this.$message.warning(`最多上传8张图片`)
-      })
-    },
-    handleSuccess(response, file, fileList) {
-      this.edit.assets.push(response.asset_id)
-      this.fileList = fileList.map(item => {
-        item.id = item.uid
-        if (file.uid === item.uid) {
-          item.imgObj = response
-          item.asset_id = response.asset_id
-          item.logo = response.logo
-        }
-        return item
-      })
+    handleSuccess(res, file, fileList) {
+      this.edit.assets_id = res.asset_id
+      this.$set(this.edit, 'assets_value', res)
     },
     handleError(err, file, fileList) {
       console.log('error', err)
@@ -358,24 +243,30 @@ export default {
       })
     },
     handleProgress(event, file, fileList) {
-      this.fileList = fileList.map(item => {
-        console.log(item)
-        item.id = item.uid
-        return item
-      })
+      this.$set(this.edit.assets_value, 'percentage', file.percentage)
     },
+    // 获取图片token
     getImgToken() {
-      this.$http.get(api.dpaDemandUpToken, {params: {token: 'XRjaEtleSI6MSwiY2FsbGJhY2tCb2R5Ijoib'}}).then(res => {
+      this.$http.get(api.upToken, {})
+      .then ((res) => {
         if (res.data && res.data.meta.status_code === 200) {
-          this.qiniuToken = {
-            token: res.data.data.upToken,
-            upload_url: res.data.data.upload_url,
-            'x:random': res.data.data.upToken.random,
-            'x:type': 44,
-            'x:user_id': 0,
-            'x:target_id': 0
+          if (res.data.data) {
+            this.qiniuToken['token'] = res.data.data.upToken
+            this.qiniuToken['x:type'] = 46
+            this.qiniuToken['x:random'] = res.data.data.random
+            this.qiniuToken['upload_url'] = res.data.data.upload_url
+            this.qiniuToken['x:user_id'] = this.$store.state.event.user.id
+            this.qiniuToken['x:target_id'] = this.id
           }
         }
+      })
+      .catch ((error) => {
+        this.$message({
+          showClose: true,
+          message: error.message,
+          type: 'error'
+        })
+        return false
       })
     },
     submitUpload() {
@@ -384,11 +275,11 @@ export default {
     delItem(id) {
       if (!this.isDeleteing) {
         this.isDeleteing = true
-        this.$http.delete(api.dpaDemandDel, {params: {id: id}})
+        this.$http.delete(api.dpaNewsDel, {params: {id: id}})
         .then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$message.success('删除成功')
-            this.$router.push({name: 'adminWeChatDemandList', query: this.$route.query})
+            this.$router.push({name: 'adminWeChatNewsList', query: this.$route.query})
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -397,11 +288,6 @@ export default {
           this.dialogVisible = false
         })
       }
-    },
-    resetImg() {
-      this.showResetImg = false
-      this.$set(this.edit, 'assets', [...this.detail.assets])
-      this.$set(this.edit, 'assets_value', [...this.detail.assets_value])
     },
     isEmpty(value) {
       let bool = true
@@ -419,32 +305,9 @@ export default {
         this.changeList.push(id)
       }
     },
-    delImage(id) {
-      this.showResetImg = true
-      this.edit.assets_value = this.edit.assets_value.filter(item => {
-        return item.id - 0 !== id - 0
-      })
-      this.edit.assets = this.edit.assets.filter(item => {
-        return item - 0 !== id - 0
-      })
-      this.changeList = this.changeList.filter(item => {
-        return item - 0 !== id - 0
-      })
-    },
-    delImage2(id, assetId, file) {
-      this.edit.assets_value = this.edit.assets_value.filter(item => {
-        return item.id - 0 !== assetId - 0
-      })
-      this.edit.assets = this.edit.assets.filter(item => {
-        return item - 0 !== assetId - 0
-      })
-      this.changeList = this.changeList.filter(item => {
-        return item - 0 !== id - 0
-      })
-      this.fileList = this.fileList.filter(item => {
-        return item.id - 0 !== id - 0
-      })
-      this.$refs.upload.abort(file)
+    delImage() {
+      this.edit.assets_value = null
+      this.edit.assets_id = 0
     },
     clearUpload() {
       this.$refs.upload.clearFiles()
@@ -472,17 +335,13 @@ export default {
         this.isEditing = true
         let obj = {
           id: this.edit.id,
-          type: this.edit.type,
-          company: this.edit.company,
-          describe: this.edit.describe,
+          time: this.edit.time,
+          url: this.edit.url,
           problem: this.edit.problem,
-          assets: this.edit.assets,
-          province: this.edit.province,
-          city: this.edit.city,
-          contact_name: this.edit.contact_name,
-          phone: this.edit.phone
+          assets_id: this.edit.assets_id,
+          title: this.edit.title
         }
-        this.$http.put(api.dpaDemandEdit, obj).then(res => {
+        this.$http.put(api.dpaNewsEdit, obj).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this, 'detail', {...res.data.data})
             this.$set(this, 'edit', {...res.data.data})
@@ -500,9 +359,10 @@ export default {
     },
     getDetail(id) {
       this.detailLoading = true
-      this.$http.get(api.dpaDemandShow, {params: {id: id}})
+      this.$http.get(api.dpaNewsShow, {params: {id: id}})
       .then(res => {
         if (res.data && res.data.meta.status_code === 200) {
+          res.data.data.timeStr = res.data.data.time.date_format().format('yyyy-MM-dd hh:mm')
           this.$set(this, 'detail', {...res.data.data})
           this.$set(this, 'edit', {...res.data.data})
         } else {
@@ -522,7 +382,7 @@ export default {
     changeStatus(id, status) {
       if (!this.isLoading) {
         this.isLoading = true
-        this.$http.put(api.dpaSetStatus, {
+        this.$http.put(api.dpaNewsSetStatus, {
           id: id,
           status: status
         }).then(res => {
@@ -536,27 +396,16 @@ export default {
           this.isLoading = false
         })
       }
-    },
-    changeSolveStatus(id, solveStatus) {
-      if (!this.isLoading2) {
-        this.isLoading2 = true
-        this.$http.put(api.dpaSetSolveStatus, {
-          id: id,
-          solve_status: solveStatus
-        }).then(res => {
-          if (res.data && res.data.meta.status_code === 200) {
-            this.$set(this.detail, 'solve_status', solveStatus)
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).finally(_ => {
-          this.dialogVisible = false
-          this.isLoading2 = false
-        })
-      }
     }
   },
   filters: {
+    formatTime(val) {
+      if (val) {
+        return (val - 0).date_format().format('yyyy年MM月dd hh:mm')
+      } else {
+        return '-'
+      }
+    },
     formatStatus(val) {
       switch (val) {
         case 1:
@@ -565,14 +414,6 @@ export default {
           return '审核通过'
         case 3:
           return '拒绝审核'
-      }
-    },
-    formatSolveStatus(val) {
-      switch (val) {
-        case 1:
-          return '急需解决'
-        case 2:
-          return '已解决'
       }
     },
     formatType(val) {
@@ -602,16 +443,19 @@ export default {
     line-height: 24px
   }
   .detail-key {
-    min-width: 110px;
+    min-width: 70px;
     font-size: 14px;
     color: #222;
     margin-right: 15px;
   }
   .detail-value {
     font-size: 14px;
-    flex: 1 1 auto;
+    word-break: break-word;
     white-space: normal;
     margin-bottom: 0;
+  }
+  .edit .detail-value {
+    flex: 1 1 auto
   }
   .pre-value {
     white-space: pre-wrap;
@@ -657,7 +501,7 @@ export default {
     background-size: cover;
     background-position: center;
     margin: 0 10px 10px 0;
-    border: 1px solid #fff;
+    border: 1px solid #e6e6e6;
   }
   .no-bg {
     border: 1px dashed #e6e6e6;
