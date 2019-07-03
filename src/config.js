@@ -2339,6 +2339,9 @@ const ADMINDETAIL = {
   },
   adminWeChatNewsDetail: {
     redirect: 'adminWeChatNewsList'
+  },
+  adminWeChatNewsCreate: {
+    redirect: 'adminWeChatNewsList'
   }
 }
 const OTHERADMINMENU = {
