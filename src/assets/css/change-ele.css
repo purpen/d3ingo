@@ -1395,3 +1395,6 @@
 .height30-datepicker.el-date-editor .el-range__close-icon {
   line-height: 24px;
 }
+.el-upload-dragger.is-dragover {
+  background: #f7f7f7
+}

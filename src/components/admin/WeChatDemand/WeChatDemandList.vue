@@ -3,6 +3,7 @@
     <el-table
       :data="demandList">
       <el-table-column
+        width="50px"
         prop="id"
         label="id">
       </el-table-column>
@@ -81,8 +82,8 @@
             <p class="tag tag-pass margin-b-10" v-else @click="showDiaLog(scope.row.id, 1)">通过审核</p>
             <p class="tag tag-pass margin-b-10" v-if="scope.row.solve_status === 1" @click="showDiaLog(scope.row.id, 4)">标记解决</p>
             <!-- <p class="tag tag-refuse margin-b-10" v-else @click="showDiaLog(scope.row.id, 3)">急需解决</p> -->
-            <p class="tag red-button margin-b-10" @click="showDiaLog(scope.row.id, 5)">删除</p>
-            <p class="tag tag-view" @click="redirectDetail(scope.row.id)">查看</p>
+            <p class="tag red-button margin-b-10 margin-r-10 tag-small" @click="showDiaLog(scope.row.id, 5)">删除</p>
+            <p class="tag tag-view tag-small" @click="redirectDetail(scope.row.id)">查看</p>
           </div>
         </template>
       </el-table-column>
@@ -321,11 +322,15 @@ export default {
 <style scoped>
   .company-verify .tag {
     cursor: pointer;
-    width: 70px;
+    width: 80px;
     height: 24px;
     line-height: 22px;
     border-radius: 4px;
     text-align: center
+  }
+  .company-verify .tag-small {
+    width: 35px;
+    float: left;
   }
   .ellipsis {
     word-break: keep-all;

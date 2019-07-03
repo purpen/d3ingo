@@ -15,7 +15,7 @@
         <span class="fl tc-2">详情</span>
         <span v-if="isEdit" @click="resetDetail()">取消</span>
         <span v-if="isEdit" @click="editDetail()">保存</span>
-        <span v-else @click="isEdit = true">编辑</span>
+        <span v-else @click="isEdit = true, getImgToken()">编辑</span>
       </div>
       <section v-if="!isEdit">
         <div class="flex item">
@@ -50,14 +50,14 @@
         </div>
         <div class="flex item">
           <div class="detail-key">项目情况: </div>
-          <pre class="detail-value tc-6">{{detail.describe}}</pre>
+          <pre class="detail-value tc-6 pre-value">{{detail.describe}}</pre>
         </div>
         <div class="flex item">
           <div class="detail-key">需解决的问题: </div>
-          <pre class="detail-value tc-6">{{detail.problem}}</pre>
+          <pre class="detail-value tc-6 pre-value">{{detail.problem}}</pre>
         </div>
         <div class="blank20 item" v-if="detail.assets_value && detail.assets_value.length">
-          <img class="detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.file">
+          <img class="max-full-width detail-value tc-6" v-for="(ele, index) in detail.assets_value" :key="index" v-lazy="ele.file">
         </div>
       </section>
       <section v-else v-loading="isEditing">
@@ -117,9 +117,9 @@
                 v-model="edit.problem"></el-input>
             </el-form-item>
           </div>
-          <div class="clearfix">
+          <!-- <div class="clearfix">
             <p class="fr tc-red pointer" v-if="showResetImg" @click="resetImg">撤销</p>
-          </div>
+          </div> -->
           <div class="flex item">
             <div class="detail-key">项目或产品图片: </div>
             <div class="flex-wrap flex11">
@@ -128,7 +128,40 @@
                 @click="selectImg(ele.id)"
                 :style="{'background-image': 'url('+ ele.logo +')'}">
                 <span @click.stop="delImage(ele.id)" v-if="changeList.includes(ele.id)" class="icon-close"></span>
-                </div>
+              </div>
+              <div :class="['img-cover flex-center', {'img-cover-active': changeList.includes(ele.uid), 'no-bg': ele.percentage < 100}]"
+                v-for="(ele) in fileList" :key="ele.uid"
+                @click="selectImg(ele.uid)"
+                :style="{'background-image': ele.percentage < 100 ? '#fafafa' : 'url('+ ele.logo +')'}">
+                <span @click.stop="delImage2(ele.uid, ele.asset_id, ele.file)" v-if="changeList.includes(ele.uid)" class="icon-close"></span>
+                <p v-if="ele.percentage < 100" class="tc-6 img-name over-ellipsis">{{ele.name}}</p>
+                <el-progress v-if="ele.percentage < 100" :width="50" type="circle" :percentage="ele.percentage"
+                  status="success"></el-progress>
+              </div>
+              <div class="img-cover" @click="getImgToken">
+                <el-upload
+                  ref="upload"
+                  class="upload-box"
+                  :action="qiniuToken.upload_url"
+                  :data="qiniuToken"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :before-remove="beforeRemove"
+                  :before-upload="beforeUpload"
+                  :on-success="handleSuccess"
+                  :on-error="handleError"
+                  :on-change="handleChange"
+                  :on-progress="handleProgress"
+                  multiple
+                  :drag="true"
+                  :limit="8"
+                  :on-exceed="handleExceed"
+                  :show-file-list="false"
+                  :file-list="fileList">
+                  <i slot="default" class="el-icon-plus tc-6 fz-16"></i>
+                  <p class="fz-14 tc-6">上传图片</p>
+                </el-upload>
+              </div>
             </div>
           </div>
         </el-form>
@@ -156,6 +189,7 @@
         </div>
       </div>
     </el-dialog>
+    <!-- <el-button @click="viewList" type="success" :disabled="qiniuToken.upload_url">上传服务器</el-button> -->
   </div>
 </template>
 <script>
@@ -212,7 +246,7 @@ export default {
     }
     return {
       id: 1,
-      isEdit: false, // 编辑页面
+      isEdit: true, // 编辑页面
       isEditing: false, // 提交编辑请求
       detail: {},
       edit: {},
@@ -252,10 +286,89 @@ export default {
         describe: [{ validator: checkDescribe, trigger: 'blur' }],
         problem: [{ validator: checkProblem, trigger: 'blur' }]
       },
-      changeList: []
+      changeList: [],
+      qiniuToken: {
+        token: '',
+        upload_url: '',
+        'x:random': '',
+        'x:type': 44,
+        'x:user_id': 0,
+        'x:target_id': 0
+      },
+      fileList: []
     }
   },
   methods: {
+    handlePreview(file) {
+      console.log('preview', file)
+    },
+    handleRemove(file) {
+      console.log('remove', file)
+    },
+    beforeRemove(file, fileList) {
+      console.log('beforeRemove', file, fileList)
+    },
+    beforeUpload(file) {
+      const arr = ['image/jpeg', 'image/gif', 'image/png']
+      const isLt5M = file.size / 1024 / 1024 > 10
+
+      if (arr.indexOf(file.type) === -1) {
+        this.$message.error('上传文件格式不正确!')
+        return false
+      }
+      if (isLt5M) {
+        this.$message.error('上传文件大小不能超过 10MB!')
+        return false
+      }
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 8 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    handleSuccess(response, file, fileList) {
+      this.edit.assets.push(response.asset_id)
+      this.fileList = fileList.map(item => {
+        item.id = item.uid
+        if (file.uid === item.uid) {
+          item.imgObj = response
+          item.asset_id = response.asset_id
+          item.logo = response.logo
+        }
+        return item
+      })
+    },
+    handleError(err, file, fileList) {
+      console.log('error', err)
+    },
+    handleChange(files, fileList) {
+      this.fileList = fileList.map(item => {
+        item.id = item.uid
+        return item
+      })
+    },
+    handleProgress(event, file, fileList) {
+      this.fileList = fileList.map(item => {
+        console.log(item)
+        item.id = item.uid
+        return item
+      })
+    },
+    getImgToken() {
+      this.$http.get(api.dpaDemandUpToken, {params: {token: 'XRjaEtleSI6MSwiY2FsbGJhY2tCb2R5Ijoib'}}).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          this.qiniuToken = {
+            token: res.data.data.upToken,
+            upload_url: res.data.data.upload_url,
+            'x:random': res.data.data.upToken.random,
+            'x:type': 44,
+            'x:user_id': 0,
+            'x:target_id': 0
+          }
+        }
+      })
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
+    },
     delItem(id) {
       if (!this.isDeleteing) {
         this.isDeleteing = true
@@ -306,9 +419,30 @@ export default {
         return item !== id
       })
     },
+    delImage2(id, assetId, file) {
+      this.edit.assets_value = this.edit.assets_value.filter(item => {
+        return item.id !== assetId
+      })
+      this.edit.assets = this.edit.assets.filter(item => {
+        return item !== assetId
+      })
+      this.changeList = this.changeList.filter(item => {
+        return item !== id
+      })
+      this.fileList = this.fileList.filter(item => {
+        return item.id !== id
+      })
+      this.$refs.upload.abort(file)
+      console.log('assets', this.edit.assets)
+    },
+    clearUpload() {
+      this.$refs.upload.clearFiles()
+      this.fileList = []
+    },
     resetDetail() {
       this.$set(this, 'edit', {...this.detail})
       this.isEdit = false
+      this.clearUpload()
     },
     editDetail() {
       // console.log(this.$refs['ruleForm'])
@@ -327,8 +461,10 @@ export default {
         this.isEditing = true
         this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
-            this.$set(this, 'detail', {...this.edit})
+            this.$set(this, 'detail', {...res.data.data})
+            this.$set(this, 'edit', {...res.data.data})
             this.isEdit = false
+            this.clearUpload()
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -454,6 +590,9 @@ export default {
     white-space: normal;
     margin-bottom: 0;
   }
+  .pre-value {
+    white-space: pre-wrap;
+  }
   img.detail-value {
     margin: 0 10px 10px 0;
     vertical-align: top
@@ -497,7 +636,52 @@ export default {
     margin: 0 10px 10px 0;
     border: 1px solid #fff;
   }
+  .no-bg {
+    border: 1px dashed #e6e6e6;
+  }
   .img-cover-active {
     border: 1px dashed #ff5a5f;
+  }
+  .img-name {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+  }
+  .upload-box {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #e6e6e6;
+    background: #fafafa;
+    border-radius: 4px;
+    padding: 10px;
+    position: relative;
+  }
+  .max-full-width {
+    max-width: 100%
+  }
+</style>
+<style>
+ .upload-box .el-upload-dragger {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    border: none;
+    width: inherit;
+    height: inherit;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column
+  }
+ .upload-box .el-upload-dragger.is-dragover {
+    border: 1px dashed #FF5A5F;
   }
 </style>
