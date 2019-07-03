@@ -32,7 +32,8 @@
         </div>
         <div class="flex item">
           <div class="detail-key">需求类型: </div>
-          <div class="detail-value tc-6">{{detail.type | formatType}}</div>
+          <div class="detail-value tc-6">{{detail.type | formatType}}
+          </div>
         </div>
         <div class="flex item">
           <div class="detail-key">状态: </div>
@@ -140,8 +141,9 @@
               </div>
               <div class="img-cover" @click="getImgToken">
                 <el-upload
+                  :disabled="imgLength < 1"
                   ref="upload"
-                  class="upload-box"
+                  :class="['upload-box', imgLength < 1 ? 'disabled': '']"
                   :action="qiniuToken.upload_url"
                   :data="qiniuToken"
                   :on-preview="handlePreview"
@@ -154,7 +156,7 @@
                   :on-progress="handleProgress"
                   multiple
                   :drag="true"
-                  :limit="8"
+                  :limit="imgLength"
                   :on-exceed="handleExceed"
                   :show-file-list="false"
                   :file-list="fileList">
@@ -246,7 +248,7 @@ export default {
     }
     return {
       id: 1,
-      isEdit: true, // 编辑页面
+      isEdit: false, // 编辑页面
       isEditing: false, // 提交编辑请求
       detail: {},
       edit: {},
@@ -298,6 +300,15 @@ export default {
       fileList: []
     }
   },
+  computed: {
+    imgLength() {
+      if (this.edit.assets) {
+        return 8 - this.edit.assets.length - this.fileList.length
+      } else {
+        return 8
+      }
+    }
+  },
   methods: {
     handlePreview(file) {
       console.log('preview', file)
@@ -322,7 +333,9 @@ export default {
       }
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 8 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$nextTick(_ => {
+        this.$message.warning(`最多上传8张图片`)
+      })
     },
     handleSuccess(response, file, fileList) {
       this.edit.assets.push(response.asset_id)
@@ -410,30 +423,29 @@ export default {
     delImage(id) {
       this.showResetImg = true
       this.edit.assets_value = this.edit.assets_value.filter(item => {
-        return item.id !== id
+        return item.id - 0 !== id - 0
       })
       this.edit.assets = this.edit.assets.filter(item => {
-        return item !== id
+        return item - 0 !== id - 0
       })
       this.changeList = this.changeList.filter(item => {
-        return item !== id
+        return item - 0 !== id - 0
       })
     },
     delImage2(id, assetId, file) {
       this.edit.assets_value = this.edit.assets_value.filter(item => {
-        return item.id !== assetId
+        return item.id - 0 !== assetId - 0
       })
       this.edit.assets = this.edit.assets.filter(item => {
-        return item !== assetId
+        return item - 0 !== assetId - 0
       })
       this.changeList = this.changeList.filter(item => {
-        return item !== id
+        return item - 0 !== id - 0
       })
       this.fileList = this.fileList.filter(item => {
-        return item.id !== id
+        return item.id - 0 !== id - 0
       })
       this.$refs.upload.abort(file)
-      console.log('assets', this.edit.assets)
     },
     clearUpload() {
       this.$refs.upload.clearFiles()
@@ -459,7 +471,19 @@ export default {
       // })
       if (!this.isEditing) {
         this.isEditing = true
-        this.$http.put(api.dpaDemandEdit, this.edit).then(res => {
+        let obj = {
+          id: this.edit.id,
+          type: this.edit.type,
+          company: this.edit.company,
+          describe: this.edit.describe,
+          problem: this.edit.problem,
+          assets: this.edit.assets,
+          province: this.edit.province,
+          city: this.edit.city,
+          contact_name: this.edit.contact_name,
+          phone: this.edit.phone
+        }
+        this.$http.put(api.dpaDemandEdit, obj).then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$set(this, 'detail', {...res.data.data})
             this.$set(this, 'edit', {...res.data.data})
@@ -684,4 +708,7 @@ export default {
  .upload-box .el-upload-dragger.is-dragover {
     border: 1px dashed #FF5A5F;
   }
+ .disabled .el-upload-dragger {
+   cursor: not-allowed
+ }
 </style>
