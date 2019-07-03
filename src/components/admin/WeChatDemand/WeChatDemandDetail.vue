@@ -148,16 +148,16 @@
                   :data="qiniuToken"
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
-                  :before-remove="beforeRemove"
-                  :before-upload="beforeUpload"
                   :on-success="handleSuccess"
                   :on-error="handleError"
                   :on-change="handleChange"
                   :on-progress="handleProgress"
-                  multiple
+                  :on-exceed="handleExceed"
+                  :before-remove="beforeRemove"
+                  :before-upload="beforeUpload"
+                  :multiple="true"
                   :drag="true"
                   :limit="imgLength"
-                  :on-exceed="handleExceed"
                   :show-file-list="false"
                   :file-list="fileList">
                   <i slot="default" class="el-icon-plus tc-6 fz-16"></i>
@@ -191,7 +191,6 @@
         </div>
       </div>
     </el-dialog>
-    <!-- <el-button @click="viewList" type="success" :disabled="qiniuToken.upload_url">上传服务器</el-button> -->
   </div>
 </template>
 <script>
@@ -248,7 +247,7 @@ export default {
     }
     return {
       id: 1,
-      isEdit: false, // 编辑页面
+      isEdit: true, // 编辑页面
       isEditing: false, // 提交编辑请求
       detail: {},
       edit: {},
