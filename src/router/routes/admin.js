@@ -83,7 +83,7 @@ module.exports = [
         },
         component: require('@/components/admin/WeChatDemand/WeChatDemandList')
       },
-      // 小程序需求列表
+      // 小程序需求详情
       {
         path: '/admin/WeChatDemand/WeChatDemandDetail/:id',
         name: 'adminWeChatDemandDetail',
@@ -94,6 +94,30 @@ module.exports = [
           hideFooter: true
         },
         component: require('@/components/admin/WeChatDemand/WeChatDemandDetail')
+      },
+      // 小程序新闻资讯
+      {
+        path: '/admin/WeChatNews/WeChatNewsList',
+        name: 'adminWeChatNewsList',
+        meta: {
+          title: '小程序新闻资讯列表',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/WeChatNews/WeChatNewsList')
+      },
+      // 小程序新闻咨询详情
+      {
+        path: '/admin/WeChatNews/WeChatNewsDetail/:id',
+        name: 'adminWeChatNewsDetail',
+        meta: {
+          title: '小程序新闻咨询详情',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/WeChatNews/WeChatNewsDetail')
       },
       // 商机分析
       {

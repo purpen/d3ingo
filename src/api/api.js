@@ -425,6 +425,14 @@ export default {
   dpaDemandEdit: '/admin/dpaDemand/edit', // PUT DPA设计需求编辑
   dpaDemandDel: '/admin/dpaDemand/del', // DELETE DPA设计需求删除
   dpaDemandUpToken: 'dpaDemand/upToken', // GET 生成上传图片upToken
+
+  dpaNewsSetStatus: '/adminDpaNews/setStatus', // PUT DPA设计需求项目审核
+  dpaNewsList: '/adminDpaNews/lists', // GET DPA新闻咨询列表
+  dpaNewsStore: '/adminDpaNews/store', // POST DPA新闻咨询创建
+  dpaNewsShow: '/adminDpaNews/show', // GET DPA新闻咨询详情
+  dpaNewsEdit: '/adminDpaNews/edit', // PUT DPA新闻咨询编辑
+  // dpaNewsDel: '/adminDpaNews/del', // DELETE DPA新闻咨询删除
+
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',
