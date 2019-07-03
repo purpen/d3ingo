@@ -109,6 +109,18 @@ module.exports = [
       },
       // 小程序新闻咨询详情
       {
+        path: '/admin/WeChatNews/WeChatNewsDetail/create',
+        name: 'adminWeChatNewsCreate',
+        meta: {
+          title: '新建小程序新闻咨询',
+          requireAuth: true,
+          hideCustomer: true,
+          hideFooter: true
+        },
+        component: require('@/components/admin/WeChatNews/WeChatNewsDetail')
+      },
+      // 小程序新闻咨询详情
+      {
         path: '/admin/WeChatNews/WeChatNewsDetail/:id',
         name: 'adminWeChatNewsDetail',
         meta: {

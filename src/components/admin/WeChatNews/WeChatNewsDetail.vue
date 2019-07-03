@@ -1,15 +1,15 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> / {{detail.title}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> <span v-if="detail.title">/</span> {{detail.title}}</h2>
     <div class="detail">
-      <div class="company-verify flex">
+      <div class="company-verify flex" v-if="!isCreate">
         <div class="flex flex11">
           <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">撤销发布</p>
           <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">发布</p>
         </div>
           <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
       </div>
-      <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
+      <div class="bb-e6 margin-b-20 tc-red option text-right clearfix" v-if="!isCreate">
         <span class="fl tc-2">详情</span>
         <span v-if="isEdit" @click="resetDetail()">取消</span>
         <span v-if="isEdit" @click="editDetail()">保存</span>
@@ -72,7 +72,7 @@
           <div class="flex item">
             <div class="detail-key">封面图: </div>
             <div class="flex-wrap flex11">
-              <div v-if="edit.assets_value" :class="['img-cover flex-center',
+              <div v-if="edit.assets_value && edit.assets_value.logo" :class="['img-cover flex-center',
                 {'img-cover-active': changeList.includes(edit.assets_value.id)}]"
                 :style="{'background-image': edit.assets_value.percentage !== 100 ? 'url('+ edit.assets_value.logo +')' : 'none'}">
                 <!-- @click="selectImg(edit.assets_value.id)"> -->
@@ -106,6 +106,11 @@
           </div>
         </el-form>
       </section>
+      
+      <div class="company-verify clearfix">
+        <p class="tag full-red-button fr" @click="createNews" v-if="isCreate"><i class="el-icon-loading" v-if="isCreateNews"></i>创建</p>
+        <p class="tag white-button fr margin-r-15" @click="directList" v-if="isCreate">取消</p>
+      </div>
     </div>
     <el-dialog
       :close-on-click-modal="false"
@@ -166,8 +171,20 @@ export default {
       id: 1,
       isEdit: false, // 编辑页面
       isEditing: false, // 提交编辑请求
-      detail: {},
-      edit: {},
+      detail: {
+        title: '',
+        url: '',
+        time: 0,
+        assets_id: 0,
+        assets_value: {}
+      },
+      edit: {
+        title: '',
+        url: '',
+        time: 0,
+        assets_id: 0,
+        assets_value: {}
+      },
       isLoading: false,
       isDeleteing: false,
       detailLoading: false,
@@ -178,13 +195,13 @@ export default {
       },
       ruleForm: {
         title: [
-          { validator: checkName, trigger: 'change' }
+          { validator: checkName, trigger: 'blur' }
         ],
         time: [
-          { validator: checkTime, trigger: 'change' }
+          { validator: checkTime, trigger: 'blur' }
         ],
         url: [
-          { validator: checkUrl, trigger: 'change' }
+          { validator: checkUrl, trigger: 'blur' }
         ]
       },
       changeList: [],
@@ -196,10 +213,42 @@ export default {
         'x:user_id': 0,
         'x:target_id': 0
       },
-      fileList: []
+      fileList: [],
+      isCreate: false,
+      isCreateNews: false
     }
   },
   methods: {
+    directList() {
+      this.$router.push({name: 'adminWeChatNewsList', query: this.$route.query})
+    },
+    createNews() {
+      if (!this.isCreateNews) {
+        this.isCreateNews = true
+        let obj = {
+          id: this.edit.id,
+          time: this.edit.time,
+          url: this.edit.url,
+          assets_id: this.edit.assets_id,
+          title: this.edit.title
+        }
+        this.$http.post(api.dpaNewsStore, obj).then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.directList()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          if (err.status_code === 422) {
+            this.$message.error('数据错误')
+          } else {
+            this.$message.error(err.message)
+          }
+        }).finally(_ => {
+          this.isCreateNews = false
+        })
+      }
+    },
     changeTime(val) {
       if (val) {
         this.edit.time = Math.floor(val.getTime() / 1000)
@@ -279,7 +328,7 @@ export default {
         .then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.$message.success('删除成功')
-            this.$router.push({name: 'adminWeChatNewsList', query: this.$route.query})
+            this.directList()
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -334,10 +383,8 @@ export default {
       if (!this.isEditing) {
         this.isEditing = true
         let obj = {
-          id: this.edit.id,
           time: this.edit.time,
           url: this.edit.url,
-          problem: this.edit.problem,
           assets_id: this.edit.assets_id,
           title: this.edit.title
         }
@@ -351,7 +398,7 @@ export default {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
-          console.error(err)
+          this.$message.error(err)
         }).finally(_ => {
           this.isEditing = false
         })
@@ -430,8 +477,13 @@ export default {
     }
   },
   created() {
-    this.id = this.$route.params.id
-    this.getDetail(this.id)
+    if (this.$route.name === 'adminWeChatNewsCreate') {
+      this.isEdit = true
+      this.isCreate = true
+    } else {
+      this.id = this.$route.params.id
+      this.getDetail(this.id)
+    }
   }
 }
 </script>

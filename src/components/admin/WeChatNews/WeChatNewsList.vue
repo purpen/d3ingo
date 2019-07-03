@@ -1,7 +1,7 @@
 <template>
   <div class="full-height relative" ref="WeChatDemandContent">
     <p class="clearfix margin-b-10 fz-14">
-      <button class="red-button small-button fr"><i class="el-icon-plus"></i>新建</button>
+      <button class="red-button small-button fr" @click="createNews"><i class="el-icon-plus margin-r-5"></i>新建</button>
     </p>
     <el-table
       :data="demandList">
@@ -68,11 +68,11 @@
         ref="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="query.current_page"
+        :current-page="query.current_page - 0"
         :page-sizes="[20, 50, 100]"
-        :page-size="query.per_page"
+        :page-size="query.per_page - 0"
         layout="total, sizes, prev, pager, next"
-        :total="query.total">
+        :total="query.total - 0">
       </el-pagination>
     </div>
     <el-dialog
@@ -136,6 +136,9 @@ export default {
     }
   },
   methods: {
+    createNews() {
+      this.$router.push({name: 'adminWeChatNewsCreate', query: this.query})
+    },
     showDiaLog(id, type) {
       this.dialogVisible = true
       this.$set(this, 'alertObj', {id, type})
@@ -283,5 +286,8 @@ export default {
   }
   .cover-pic {
     width: 50px;
+  }
+  .fz-14 {
+    font-size: 14px;
   }
 </style>
