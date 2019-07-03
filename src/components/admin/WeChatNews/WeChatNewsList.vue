@@ -55,8 +55,8 @@
         label="操作">
         <template slot-scope="scope">
           <div class="company-verify">
-            <p class="tag tag-refuse margin-b-10" v-if="scope.row.status === 2" @click="showDiaLog(scope.row.id, 2)">拒绝审核</p>
-            <p class="tag tag-pass margin-b-10" v-else @click="showDiaLog(scope.row.id, 1)">通过审核</p>
+            <p class="tag tag-refuse margin-b-10" v-if="scope.row.status === 2" @click="showDiaLog(scope.row.id, 2)">撤销发布</p>
+            <p class="tag tag-pass margin-b-10" v-else @click="showDiaLog(scope.row.id, 1)">发布</p>
             <!-- <p class="tag red-button margin-b-10 margin-r-10 tag-small" @click="showDiaLog(scope.row.id, 5)">删除</p> -->
             <p class="tag tag-view" @click="redirectDetail(scope.row.id)">查看</p>
           </div>
@@ -82,14 +82,14 @@
       :visible.sync="dialogVisible"
       width="380px">
       <div class="el-dialog-confirm">
-        <p v-if="alertObj.type === 1">确认通过审核?</p>
-        <p v-if="alertObj.type === 2">确认拒绝审核?</p>
+        <p v-if="alertObj.type === 1">确认发布?</p>
+        <p v-if="alertObj.type === 2">确认撤销发布?</p>
         <p v-if="alertObj.type === 5">确认删除?</p>
         <div class="buttons">
           <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5 && false" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
         </div>
       </div>
     </el-dialog>

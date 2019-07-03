@@ -4,8 +4,8 @@
     <div class="detail">
       <div class="company-verify flex">
         <div class="flex flex11">
-          <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">拒绝审核</p>
-          <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">通过审核</p>
+          <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">撤销发布</p>
+          <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">发布</p>
         </div>
           <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
       </div>
@@ -114,13 +114,13 @@
       :visible.sync="dialogVisible"
       width="380px">
       <div class="el-dialog-confirm">
-        <p v-if="alertObj.type === 1">确认通过审核?</p>
-        <p v-if="alertObj.type === 2">确认拒绝审核?</p>
+        <p v-if="alertObj.type === 1">确认发布?</p>
+        <p v-if="alertObj.type === 2">确认撤销发布?</p>
         <p v-if="alertObj.type === 5">确认删除?</p>
         <div class="buttons">
           <button class="small-button cancel white-button" @click="dialogVisible = false">取消</button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 1" @click="changeStatus(alertObj.id, 2)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
-          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 3)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
+          <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 2" @click="changeStatus(alertObj.id, 1)">确定<i class="el-icon-loading" v-if="isLoading"></i></button>
           <button class="small-button confirm full-red-button" type="primary" v-if="alertObj.type === 5" @click="delItem(alertObj.id)">确定<i class="el-icon-loading" v-if="isDeleteing"></i></button>
         </div>
       </div>
