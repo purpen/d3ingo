@@ -584,6 +584,9 @@ export default {
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
   trueAllRead: '/message/trueAllRead', // PUT 一键已读
 
+  // jd AI
+  jdCodeToken: '/jdai/auth/codeToken', // GET 通过jd的授权code返回用户信息
+  jdCodeBind: '/jdai/auth/phoneBind', // POST 手机号绑定
   // jd账号
   jdAccount: '/jd/jdAccount', // GET 获取京东account
   jdCheckAccount: '/jd/checkAccount', // GET 检查京东account是否存在
