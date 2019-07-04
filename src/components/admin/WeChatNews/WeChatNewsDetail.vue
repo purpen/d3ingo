@@ -1,13 +1,13 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> <span v-if="detail.title">/</span> {{detail.title}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">新闻资讯列表</router-link> <span v-if="detail.title">{{id}}/</span> {{detail.title}}</h2>
     <div class="detail">
       <div class="company-verify flex" v-if="!isCreate">
         <div class="flex flex11">
           <p class="tag tag-refuse" v-if="detail.status === 2" @click="showDiaLog(detail.id, 2)">撤销发布</p>
           <p class="tag tag-pass" v-else @click="showDiaLog(detail.id, 1)">发布</p>
         </div>
-          <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
+          <!-- <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p> -->
       </div>
       <div class="bb-e6 margin-b-20 tc-red option text-right clearfix" v-if="!isCreate">
         <span class="fl tc-2">详情</span>
@@ -53,7 +53,7 @@
             <div class="detail-key">链接: </div>
             <el-form-item class="detail-value"
               prop="url">
-              <el-input v-model="edit.url"></el-input>
+              <el-input maxlength="500" v-model="edit.url"></el-input>
             </el-form-item>
           </div>
           <div class="flex-vertical-center margin-b-20 item">
@@ -61,6 +61,7 @@
             <el-form-item class="detail-value"
               prop="time">
               <el-date-picker
+                format="yyyy-MM-dd hh:mm"
                 prefix-icon="el-icon-date"
                 v-model="edit.timeStr"
                 type="datetime"
@@ -99,7 +100,7 @@
                   :show-file-list="false"
                   :file-list="fileList">
                   <i slot="default" class="el-icon-plus tc-6 fz-16"></i>
-                  <p class="fz-14 tc-6">更换图片</p>
+                  <p class="fz-14 tc-6">{{edit.assets_value && edit.assets_value.logo ? '更换图片' : '上传图片'}}</p>
                 </el-upload>
               </div>
             </div>
@@ -226,7 +227,6 @@ export default {
       if (!this.isCreateNews) {
         this.isCreateNews = true
         let obj = {
-          id: this.edit.id,
           time: this.edit.time,
           url: this.edit.url,
           assets_id: this.edit.assets_id,
@@ -383,6 +383,7 @@ export default {
       if (!this.isEditing) {
         this.isEditing = true
         let obj = {
+          id: this.id,
           time: this.edit.time,
           url: this.edit.url,
           assets_id: this.edit.assets_id,
@@ -477,6 +478,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$route.name, this.$route)
     if (this.$route.name === 'adminWeChatNewsCreate') {
       this.isEdit = true
       this.isCreate = true

@@ -1398,3 +1398,6 @@
 .el-upload-dragger.is-dragover {
   background: #f7f7f7
 }
+.el-button.el-picker-panel__link-btn.el-button--text.el-button--mini:hover {
+  color: #ff5a5f
+}
