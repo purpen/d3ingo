@@ -35,7 +35,7 @@
         width="300px"
         label="链接">
         <template slot-scope="scope">
-          <a class="ellipsis" :href="scope.row.url">
+          <a class="ellipsis pointer" target="_blank" @click="goWebSite(scope.row.url)">
             {{scope.row.url}}
           </a>
         </template>
@@ -136,6 +136,15 @@ export default {
     }
   },
   methods: {
+    goWebSite(url) {
+      let urlRegex = /http:\/\/|https:\/\//
+      let web = url
+      console.log(urlRegex.test(url))
+      if (!urlRegex.test(url)) {
+        web = 'http://' + url
+      }
+      window.open(web, '_blank')
+    },
     createNews() {
       this.$router.push({name: 'adminWeChatNewsCreate', query: this.query})
     },
