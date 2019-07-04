@@ -129,7 +129,7 @@ export default {
     },
     formatTime(val) {
       if (val) {
-        return val.date_format().format('yyyy年MM月dd')
+        return val.date_format().format('yyyy年MM月dd日')
       } else {
         return '-'
       }

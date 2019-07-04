@@ -451,7 +451,7 @@ export default {
   filters: {
     formatTime(val) {
       if (val) {
-        return (val - 0).date_format().format('yyyy年MM月dd')
+        return (val - 0).date_format().format('yyyy年MM月dd日')
       } else {
         return '-'
       }
