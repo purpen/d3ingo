@@ -1,6 +1,6 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">小程序需求列表</router-link> <span v-if="detail.title">/</span> {{detail.title}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">新闻资讯列表</router-link> <span v-if="detail.title">/</span> {{detail.title}}</h2>
     <div class="detail">
       <div class="company-verify flex" v-if="!isCreate">
         <div class="flex flex11">
@@ -227,7 +227,6 @@ export default {
       if (!this.isCreateNews) {
         this.isCreateNews = true
         let obj = {
-          id: this.edit.id,
           time: this.edit.time,
           url: this.edit.url,
           assets_id: this.edit.assets_id,
@@ -479,6 +478,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$route.name, this.$route)
     if (this.$route.name === 'adminWeChatNewsCreate') {
       this.isEdit = true
       this.isCreate = true
