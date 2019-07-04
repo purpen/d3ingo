@@ -1,6 +1,6 @@
 <template>
   <div v-loading="detailLoading">
-    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">新闻资讯列表</router-link> <span v-if="detail.title">{{id}}/</span> {{detail.title}}</h2>
+    <h2 class="company fz-16 tc-2"><router-link :to="{name: 'adminWeChatNewsList'}">新闻资讯列表</router-link> <span v-if="detail.title">/</span> {{detail.title}}</h2>
     <div class="detail">
       <div class="company-verify flex" v-if="!isCreate">
         <div class="flex flex11">
@@ -61,10 +61,10 @@
             <el-form-item class="detail-value"
               prop="time">
               <el-date-picker
-                format="yyyy-MM-dd hh:mm"
+                format="yyyy-MM-dd"
                 prefix-icon="el-icon-date"
                 v-model="edit.timeStr"
-                type="datetime"
+                type="date"
                 @change="changeTime"
                 placeholder="选择日期时间">
               </el-date-picker>
@@ -183,6 +183,7 @@ export default {
         title: '',
         url: '',
         time: 0,
+        timeStr: '',
         assets_id: 0,
         assets_value: {}
       },
@@ -410,9 +411,10 @@ export default {
       this.$http.get(api.dpaNewsShow, {params: {id: id}})
       .then(res => {
         if (res.data && res.data.meta.status_code === 200) {
-          res.data.data.timeStr = res.data.data.time.date_format().format('yyyy-MM-dd hh:mm')
+          res.data.data.timeStr = res.data.data.time.date_format().format('yyyy-MM-dd')
           this.$set(this, 'detail', {...res.data.data})
           this.$set(this, 'edit', {...res.data.data})
+          console.log(res.data.data.timeStr, this.edit.timeStr)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -449,7 +451,7 @@ export default {
   filters: {
     formatTime(val) {
       if (val) {
-        return (val - 0).date_format().format('yyyy年MM月dd hh:mm')
+        return (val - 0).date_format().format('yyyy年MM月dd')
       } else {
         return '-'
       }
@@ -478,7 +480,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.name, this.$route)
     if (this.$route.name === 'adminWeChatNewsCreate') {
       this.isEdit = true
       this.isCreate = true
