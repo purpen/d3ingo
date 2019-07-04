@@ -88,13 +88,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagecss blank20 flex-justify-center pagination" v-if="query.total > query.per_page">
+    <div class="pagecss blank20 flex-justify-center pagination">
       <el-pagination
         ref="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="query.current_page"
-        :page-sizes="[20, 50, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :page-size="query.per_page"
         layout="total, sizes, prev, pager, next"
         :total="query.total">
@@ -230,6 +230,7 @@ export default {
     // 总页数
     handleSizeChange(val) {
       this.query.per_page = val
+      this.query.current_page = 1
       // this.getList()
       this.$router.push({name: this.$router.name, query: this.query})
     },
