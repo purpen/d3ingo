@@ -6,7 +6,7 @@
         <h2>绑定艺火账号</h2>
       </div>
       <div class="register-content">
-        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
+        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
           <el-form-item label="" prop="account">
             <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
@@ -98,7 +98,6 @@ export default {
       isLoadingBtn: false,
       jdToken: '',
       time: 0,
-      labelPosition: 'top',
       form: {
         account: '',
         smsCode: '',
@@ -220,7 +219,7 @@ export default {
         })
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            that.time = that.second
+            this.time = 60
             that.timer()
           } else {
             console.log('验证码错误')
