@@ -22,7 +22,7 @@
         </div>
         <div class="flex item">
           <div class="detail-key">链接: </div>
-          <a class="detail-value tc-6 wrap" :href="detail.url">{{detail.url}}</a>
+          <a class="detail-value tc-6 wrap pointer" target="_blank" @click="goWebSite(detail.url)">{{detail.url}}</a>
         </div>
         <div class="flex item">
           <div class="detail-key">时间: </div>
@@ -221,6 +221,15 @@ export default {
     }
   },
   methods: {
+    goWebSite(url) {
+      let urlRegex = /http:\/\/|https:\/\//
+      let web = url
+      console.log(urlRegex.test(url))
+      if (!urlRegex.test(url)) {
+        web = 'http://' + url
+      }
+      window.open(web, '_blank')
+    },
     directList() {
       this.$router.push({name: 'adminWeChatNewsList', query: this.$route.query})
     },
