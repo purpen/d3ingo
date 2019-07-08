@@ -169,7 +169,7 @@
       <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3">
         <div class="z-index-5">
           <el-form-item prop="contact">
-            <input type="text" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+            <input type="text" maxlength="50" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
           </el-form-item>
           <div class="pc-send-code-90">
             <el-row :gutter="20">
@@ -362,13 +362,13 @@ export default {
             phone: this.form3.account, // 手机号
             code: this.form3.smsCode // 验证码
           }
-          this.outerVisible = false
-          this.isMatching = true
-          this.showForm = false
           let url = api.release
           this.$http({method: 'post', url: url, data: row})
           .then(res => {
             if (res.data.meta.status_code === 200) {
+              this.outerVisible = false
+              this.isMatching = true
+              this.showForm = false
               let arr = this.formatList(res.data.data)
               setTimeout(_ => {
                 this.designList = arr || []
@@ -379,12 +379,10 @@ export default {
                   if (this.designList.length) {
                     this.formatRadar(arr)
                   }
-                }, 1000)
-              }, 500)
+                }, 1500)
+              }, 1000)
               // this.$router.push({name: 'projectMatch', params: {id: this.id}})
             } else {
-              this.isMatching = false
-              this.showForm = true
               this.$message.error(res.data.meta.message)
             }
           }).catch(err => {
@@ -930,7 +928,7 @@ export default {
   }
 
   .pc-wait-input-round {
-    width: 500px;
+    width: 540px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;
@@ -956,7 +954,7 @@ export default {
     margin-right: 10px;
   }
   .pc-code-90-round {
-    width: 188px;
+    width: 192px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;
