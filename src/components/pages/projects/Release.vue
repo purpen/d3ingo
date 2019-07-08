@@ -169,7 +169,7 @@
       <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3">
         <div class="z-index-5">
           <el-form-item prop="contact">
-            <input type="text" maxlength="50" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+            <input type="text" maxlength="20" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
           </el-form-item>
           <div class="pc-send-code-90">
             <el-row :gutter="20">
