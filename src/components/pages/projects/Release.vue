@@ -930,7 +930,7 @@ export default {
   }
 
   .pc-wait-input-round {
-    width: 500px;
+    width: 540px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;
@@ -956,7 +956,7 @@ export default {
     margin-right: 10px;
   }
   .pc-code-90-round {
-    width: 188px;
+    width: 192px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;

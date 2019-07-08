@@ -776,7 +776,7 @@
       handleChange(value) {
       },
       uploadError(err, file, fileList) {
-        this.uploadMsg = '上传失败'
+        this.uploadMsg = '上传失败, 请刷新页面'
         this.$message ({
           showClose: true,
           message: '文件上传失败!',
