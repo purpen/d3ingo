@@ -81,15 +81,12 @@ phenix.arr_sort_reverse = function (name, minor) {
 }
 // cookie
 phenix.getCookie = function(name) {
-  //获取name在Cookie中起止位置
-  var start = document.cookie.indexOf(name + '=')
-  if (start != -1) {
-    start = start + name.length + 1
-    var end = document.cookie.indexOf(";", start)
-    if (end == -1)
-        end = document.cookie.length
-    return unescape(document.cookie.substring(start,end))
-  }
-  return null
+  var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
+phenix.setCookie = function(name, value, days) {
+  var d = new Date;
+  d.setTime(d.getTime() + 24*60*60*1000*days);
+  document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
 }
 export default phenix;
