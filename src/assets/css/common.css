@@ -115,6 +115,9 @@
 .tc-blue {
   color: #0989C5
 }
+.border-r-none {
+  border-right: none
+}
 .b-e6 {
   border: 1px solid #e6e6e6
 }
@@ -792,4 +795,9 @@ button.el-button.is-custom.is-disabled,
 }
 .icon-close::after {
   transform: rotate(-45deg);
+}
+.border-l-none,
+.el-form-item__content .border-l-none .el-input .el-input__inner,
+.el-form-item__content .border-l-none .el-input.is-focus .el-input__inner {
+  border-left: none
 }

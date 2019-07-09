@@ -105,7 +105,7 @@
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
                     <p class="tc-2 protrude">项目报价:
-                      <span class="tc-6 fw-normal p-price">{{ quotation.price }} 元</span>
+                      <span class="tc-6 fw-normal p-price">{{ Math.round(quotation.price) }} 元</span>
                     <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
                     class="tc-red" href="javascript:void(0);"
                     @click="showQuotaBtn(quotation)">详情>></a></span></p>
@@ -427,6 +427,8 @@
 
     <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1240px" top="2%" @close="isClose = false"
     @open="isClose = true"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
     </el-dialog>
@@ -1387,8 +1389,8 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = parseFloat(self.quotation.price).toLocaleString('en-US')
-              self.takingPriceForm.o_price = self.quotation.price
+              self.takingPriceForm.price = Math.round(self.quotation.price)
+              self.takingPriceForm.o_price = Math.round(self.quotation.price)
               self.takingPriceForm.summary = self.quotation.summary
             }
             // 是否显示提交报价单按钮

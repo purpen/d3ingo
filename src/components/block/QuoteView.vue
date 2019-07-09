@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     formatPrice(price) {
-      return parseFloat(price).toFixed(2).toLocaleString('en-US')
+      return Math.round(price)
     }
   },
   computed: {
@@ -83,11 +83,11 @@ export default {
     // 格式化价格
     taxTotalMoneyFormat() {
       // return parseFloat(this.form.price).toLocaleString('en-US')
-      return parseFloat(this.form.price).toFixed(2).toLocaleString('en-US')
+      return Math.round(this.form.price)
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return parseFloat(this.form.total_price).toFixed(2).toLocaleString('en-US')
+      return Math.round(this.form.total_price)
     }
   },
   watch: {

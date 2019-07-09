@@ -16,7 +16,7 @@
         <el-form-item>
           <div v-show="form.plan_format.length">
             <p class="laber-title-font">项目工作计划及费用</p>
-            <el-row style="padding: 20px 25px">
+            <el-row style="padding: 20px 25px 10px">
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <p class="font-14">工作内容</p>
               </el-col>
@@ -92,7 +92,7 @@
                           :rules="{
                           required: true, type: 'number', message: '请选择人数', trigger: 'change'}">
                           <el-select
-                            class="no-border_radius"
+                            class="no-border_radius border-l-none"
                             v-model="form.plan_format[index].arranged[c_index].number"
                             size="small"
                             default-first-option
@@ -107,7 +107,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :xs="4" :sm="2" :md="2" :lg="2">
-                        <el-button class="right-border_radius" size="small"
+                        <el-button class="border-l-none right-border_radius" size="small"
                           :style="{minWidth: '36px', width: '100%', height: '40px'}"
                           v-if="c_index === 0" @click="addPlanMember(index, c_index)">
                           <i class="el-icon-plus"></i>
@@ -154,7 +154,7 @@
                     <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit padd-l-6"></i></p>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0" class="dis-flex">
+                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0" class="dis-flex" v-if="index !== 0">
                   <p class="plan-opt-icon"><i class="fx fx-icon-close-sm mar-t-24" @click.stop="delPlanBtn(d.content, index)"></i></p>
                 </el-col>
               </el-row>
@@ -367,21 +367,19 @@ export default {
   data() {
     let checkNumber = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请填写正确金额'))
+        return callback(new Error('请填写正确费用'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('金额只能为数字！'))
+          return callback(new Error('费用只能为数字！'))
         } else {
-          if (value <= 0) {
-            return callback(new Error('金额必须大于0元！'))
-          } else {
-            let len = (value + '')
-            if (len.split('.')[0].length > 8) {
-              return callback(new Error('金额不能大于千万'))
-            } else {
-              return callback()
-            }
+          let len = (value + '')
+          if (len.split('.')[0].length > 8) {
+            return callback(new Error('费用不能大于千万'))
           }
+          if (!/^[1-9][0-9]*?$/.test(value)) {
+            return callback(new Error('费用必须是正整数'))
+          }
+          return callback()
         }
       }
     }
@@ -390,18 +388,16 @@ export default {
         return callback(new Error('请填写正确天数'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('天数只能为数字！'))
+          return callback(new Error('请填写正确天数'))
         } else {
-          if (value <= 0) {
-            return callback(new Error('数字必须大于0！'))
-          } else {
-            let len = (value + '')
-            if (len.split('.')[0].length > 8) {
-              return callback(new Error('设置天数过大'))
-            } else {
-              return callback()
-            }
+          if (!/^[1-9][0-9]*?$/.test(value)) {
+            return callback(new Error('天数必须是正整数'))
           }
+          let len = (value + '')
+          if (len.split('.')[0].length > 8) {
+            return callback(new Error('天数过大'))
+          }
+          return callback()
         }
       }
     }
@@ -789,13 +785,13 @@ export default {
       }
       return parseFloat(this.totalMoney.add(taxPrice)).toFixed(2)
     },
-    // 格式化价格
+    // 格式化价格 总计含税
     taxTotalMoneyFormat() {
-      return parseFloat(this.taxTotalMoney).toLocaleString('en-US')
+      return Math.round(this.taxTotalMoney)
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return parseFloat(this.totalMoney).toLocaleString('en-US')
+      return Math.round(this.totalMoney)
     }
   },
   watch: {
