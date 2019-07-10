@@ -609,7 +609,7 @@
         }
         // 处理网址前缀
         if (mark === 'web' && row['company_web']) {
-          let urlRegex = /http:\/\/|https:\/\//
+          let urlRegex = /^(http)/
           if (!urlRegex.test(that.form.company_web)) {
             row.company_web = 'http://' + row['company_web']
           }
@@ -635,7 +635,7 @@
                 that.form.company_property_value = item.company_property_value
               } else if (mark === 'web') {
                 that.form.web = row.company_web
-                let urlRegex = /http:\/\/|https:\/\//
+                let urlRegex = /^(http)/
                 if (urlRegex.test(row.company_web)) {
                   that.form.company_web = row.company_web.replace(urlRegex, '')
                 }
@@ -919,7 +919,7 @@
                   }
                   // 处理网址前缀
                   if (this.form.company_web) {
-                    let urlRegex = /http:\/\/|https:\/\//
+                    let urlRegex = /^(http)/
                     if (urlRegex.test(this.form.company_web)) {
                       this.form.company_web = this.form.company_web.replace(urlRegex, '')
                     }

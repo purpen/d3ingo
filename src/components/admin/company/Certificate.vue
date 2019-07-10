@@ -263,6 +263,7 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     padding-top: 15px;
   }
   .flex {

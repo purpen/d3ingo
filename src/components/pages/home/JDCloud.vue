@@ -703,7 +703,7 @@
             <div class="container banner-box banner-box01">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑1 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -716,7 +716,7 @@
             <div class="container banner-box banner-box02">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑2 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -729,7 +729,7 @@
             <div class="container banner-box banner-box03">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑3 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -1040,7 +1040,7 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 交</el-button>
+          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 1交</el-button>
         </span>
       </el-dialog>
     </div>
@@ -1233,7 +1233,7 @@ export default {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 5000000,
+        autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
         spaceBetween: 0
@@ -1347,10 +1347,7 @@ export default {
           clickable: true
           // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
         },
-        lazy: true, // 设为true开启图片延迟加载默认值
-        autoplay: {
-          delay: 5000
-        },
+        lazy: true,
         loop: true
       },
       snSwiperOption2: { // sn-banner
@@ -1359,16 +1356,10 @@ export default {
           clickable: true
         },
         lazy: true,
-        autoplay: {
-          delay: 5000
-        },
         loop: true
       },
       snSwiperOption3: { // sn-案例
         lazy: true,
-        autoplay: {
-          delay: 5000
-        },
         loop: true,
         on: {
           slideChange: function(swiper) {
@@ -1815,7 +1806,7 @@ export default {
       swiperOption2: {
         lazyLoading: true,
         direction: 'vertical',
-        autoplay: 800,
+        autoplay: 5000,
         slidesPerView: 8,
         // observer: true,
         paginationClickable: true,

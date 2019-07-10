@@ -719,6 +719,7 @@ export default {
   .flex-center {
     display: flex;
     align-items: center;
+    justify-content: flex-start
   }
   .flex-start {
     display: flex;

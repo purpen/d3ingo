@@ -19,12 +19,14 @@
           v-model="query.value"
           @change="searchDesignCase">
         </el-input>
-        <div class="dot">
+        <div class="dot" v-if="menuType === 3">
           <div class="dot-hover">
-            <div class="dot-flex">
+            <!-- <a :href="httpUrl + '/api/admin/designCase/exportExcel?token=' + token "> -->
+            <div class="dot-flex" @click="download()">
               <i class="el-icon-download dot-img1"></i>
-              <div class="dot-text">下载报表</div>
+              <div class="dot-text">下载案例</div>
             </div>
+            <!-- </a> -->
           </div>
         </div>
       </div>
@@ -58,7 +60,7 @@
         min-width="250">
           <template slot-scope="scope">
             <!-- <p>标题: <a :href="'/design_case/show/?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p> -->
-            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}"></router-link></p>
+            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}">{{scope.row.title}}</router-link></p>
             <p>类型: {{ scope.row.type_label }}</p>
             <p>服务客户: {{ scope.row.customer }}</p>
             <p>标签: {{ scope.row.tags }}</p>
@@ -117,6 +119,9 @@
               <a href="javascript:void(0);" v-if="scope.row.recommended === 1" @click="setRecommend(scope.$index, scope.row, 0)">取消推荐</a>
               <a href="javascript:void(0);" v-else @click="setRecommend(scope.$index, scope.row, 1)">推荐</a>
             </p>
+            <p>
+              <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}">查看详情</router-link>
+            </p>
             <!--
             <p>
               <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
@@ -144,6 +149,7 @@
 
 <script>
 import api from '@/api/api'
+import conf from 'conf/prod.env'
 export default {
   name: 'admin_design_case_list',
   data () {
@@ -163,7 +169,8 @@ export default {
         value: '',
         test: null
       },
-      msg: ''
+      msg: '',
+      token: ''
     }
   },
   methods: {
@@ -327,10 +334,37 @@ export default {
         this.$message.error(error.message)
         this.isLoading = false
       })
+    },
+    download() {
+      let url = 'https://sa.taihuoniao.com/admin/designCase/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/designCase/exportExcel'
+      }
+      const data = {
+        token: this.token
+      }
+      let form = document.createElement('form')
+      let node = document.createElement('input')
+      form.action = url
+      form.target = '_self'
+      form.method = 'POST'
+      for (let name in data) {
+        node.name = name
+        node.value = data[name].toString()
+        form.appendChild(node.cloneNode())
+      }
+      // 表单元素需要添加到主文档中.
+      form.style.display = 'none'
+      document.body.appendChild(form)
+      form.submit()
+      // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+      document.body.removeChild(form)
     }
   },
   created: function() {
     this.loadList()
+    // this.httpUrl = location.origin
+    this.token = this.$store.state.event.token
   },
   watch: {
     '$route' (to, from) {
