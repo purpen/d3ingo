@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     goWebSite(url) {
-      let urlRegex = /http:\/\/|https:\/\//
+      let urlRegex = /^(http)/
       let web = url
       console.log(urlRegex.test(url))
       if (!urlRegex.test(url)) {

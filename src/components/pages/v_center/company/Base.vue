@@ -1385,7 +1385,7 @@
         }
         // 处理网址前缀
         if (mark === 'web' && row['web']) {
-          let urlRegex = /http:\/\/|https:\/\//
+          let urlRegex = /^(http)/
           if (!urlRegex.test(that.form.web)) {
             row.web = 'http://' + row['web']
           }
@@ -1446,7 +1446,7 @@
                 that.form.establish_time = establishTime
               } else if (mark === 'web') {
                 that.form.web_p = row.web
-                let urlRegex = /http:\/\/|https:\/\//
+                let urlRegex = /^(http)/
                 if (urlRegex.test(row.web)) {
                   that.form.web = row.web.replace(urlRegex, '')
                 }
@@ -1816,7 +1816,7 @@
                   this.fileList = this.form.license_image
                   // 处理网址前缀
                   if (this.form.web) {
-                    let urlRegex = /http:\/\/|https:\/\//
+                    let urlRegex = /^(http)/
                     if (urlRegex.test(this.form.web)) {
                       this.form.web = this.form.web.replace(urlRegex, '')
                     }
