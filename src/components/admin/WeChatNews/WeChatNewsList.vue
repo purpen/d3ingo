@@ -1,9 +1,11 @@
 <template>
-  <div class="full-height relative" ref="WeChatDemandContent">
+  <div class="full-height relative flex-column" ref="WeChatDemandContent">
     <p class="clearfix margin-b-10 fz-14">
       <button class="red-button small-button fr" @click="createNews"><i class="el-icon-plus margin-r-5"></i>新建</button>
     </p>
     <el-table
+      height="100%"
+      style="width: 100%"
       :data="demandList">
       <el-table-column
         width="50px"
@@ -287,17 +289,13 @@ export default {
     text-overflow: ellipsis;
     width: 100%;
   }
-  .pagination {
-    /* position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 30px;
-    margin: auto; */
-  }
   .cover-pic {
     width: 50px;
   }
   .fz-14 {
     font-size: 14px;
+  }
+  .pagination {
+    margin: 0 0 -20px;
   }
 </style>

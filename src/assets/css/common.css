@@ -15,11 +15,23 @@
 .block {
   display: block
 }
+.disabled {
+  cursor: not-allowed
+}
 .flex {
   display: flex;
 }
-.disabled {
-  cursor: not-allowed
+.flex0 {
+  flex: 0 0 auto
+}
+.flex1 {
+  flex: 1 1 auto
+}
+.flex10 {
+  flex: 1 0 auto
+}
+.flex11 {
+  flex: 1 1 auto
 }
 .flex-vertical-center {
   display: flex;
@@ -35,19 +47,8 @@
   align-items: center
 }
 .flex-column {
+  display: flex;
   flex-direction: column
-}
-.flex1 {
-  flex: 1 1 auto
-}
-.flex11 {
-  flex: 1 1 auto
-}
-.flex0 {
-  flex: 0 0 auto
-}
-.flex10 {
-  flex: 1 0 auto
 }
 .flex-wrap {
   display: flex;
