@@ -2261,6 +2261,31 @@ const ADMINMENU = {
         }
       }
     ]
+  },
+  adminWeChatDemandList: {
+    name: '需求列表',
+    route: 'adminWeChatDemandList',
+    icon: require('assets/images/admin/menu/Case@2x.png'),
+    statement: {
+      params: {},
+      query: {}
+    },
+    children: [{
+      name: '小程序需求列表',
+      route: 'adminWeChatDemandList',
+      statement: {
+        params: {},
+        query: {}
+      }
+    },
+    {
+      name: '新闻资讯列表',
+      route: 'adminWeChatNewsList',
+      statement: {
+        params: {},
+        query: {}
+      }
+    }]
   }
 }
 const ADMINDETAIL = {
@@ -2308,6 +2333,15 @@ const ADMINDETAIL = {
   },
   adminDesignCasecCawlingSubmit: {
     redirect: 'adminDesignCasecCawlingList'
+  },
+  adminWeChatDemandDetail: {
+    redirect: 'adminWeChatDemandList'
+  },
+  adminWeChatNewsDetail: {
+    redirect: 'adminWeChatNewsList'
+  },
+  adminWeChatNewsCreate: {
+    redirect: 'adminWeChatNewsList'
   }
 }
 const OTHERADMINMENU = {

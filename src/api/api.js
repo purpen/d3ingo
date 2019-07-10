@@ -417,6 +417,22 @@ export default {
   // 附件管理
   adminAssetUrlUpload: '/admin/urlUpload', // GET 图片地址上传
 
+  // DPA
+  dpaSetSolveStatus: '/admin/dpaDemand/setSolveStatus', // PUT DPA设计需求标记需求完成、急需帮助
+  dpaSetStatus: '/admin/dpaDemand/setStatus', // PUT DPA设计需求项目审核
+  dpaDemandList: '/admin/dpaDemand/lists', // GET DPA设计需求列表
+  dpaDemandShow: '/admin/dpaDemand/show', // GET DPA设计需求详情
+  dpaDemandEdit: '/admin/dpaDemand/edit', // PUT DPA设计需求编辑
+  dpaDemandDel: '/admin/dpaDemand/del', // DELETE DPA设计需求删除
+  dpaDemandUpToken: 'dpaDemand/upToken', // GET 生成上传图片upToken
+
+  dpaNewsSetStatus: '/adminDpaNews/setStatus', // PUT DPA设计需求项目审核
+  dpaNewsList: '/adminDpaNews/lists', // GET DPA新闻咨询列表
+  dpaNewsStore: '/adminDpaNews/store', // POST DPA新闻咨询创建
+  dpaNewsShow: '/adminDpaNews/show', // GET DPA新闻咨询详情
+  dpaNewsEdit: '/adminDpaNews/edit', // PUT DPA新闻咨询编辑
+  // dpaNewsDel: '/adminDpaNews/del', // DELETE DPA新闻咨询删除
+
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',
@@ -568,6 +584,9 @@ export default {
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
   trueAllRead: '/message/trueAllRead', // PUT 一键已读
 
+  // jd AI
+  jdCodeToken: '/jdai/auth/codeToken', // GET 通过jd的授权code返回用户信息
+  jdCodeBind: '/jdai/auth/phoneBind', // POST 手机号绑定
   // jd账号
   jdAccount: '/jd/jdAccount', // GET 获取京东account
   jdCheckAccount: '/jd/checkAccount', // GET 检查京东account是否存在

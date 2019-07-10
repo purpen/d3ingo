@@ -60,7 +60,7 @@
         min-width="250">
           <template slot-scope="scope">
             <!-- <p>标题: <a :href="'/design_case/show/?id='+scope.row.id" target="_blank">{{ scope.row.title }}</a></p> -->
-            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}"></router-link></p>
+            <p>标题: <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}">{{scope.row.title}}</router-link></p>
             <p>类型: {{ scope.row.type_label }}</p>
             <p>服务客户: {{ scope.row.customer }}</p>
             <p>标签: {{ scope.row.tags }}</p>
@@ -118,6 +118,9 @@
             <p>
               <a href="javascript:void(0);" v-if="scope.row.recommended === 1" @click="setRecommend(scope.$index, scope.row, 0)">取消推荐</a>
               <a href="javascript:void(0);" v-else @click="setRecommend(scope.$index, scope.row, 1)">推荐</a>
+            </p>
+            <p>
+              <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : scope.row.id }}">查看详情</router-link>
             </p>
             <!--
             <p>
