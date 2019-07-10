@@ -703,7 +703,7 @@
             <div class="container banner-box banner-box01">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑1 设计服务平台</div>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -716,7 +716,7 @@
             <div class="container banner-box banner-box02">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑2 设计服务平台</div>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -729,7 +729,7 @@
             <div class="container banner-box banner-box03">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑3 设计服务平台</div>
+                  <div class="banner-title">神农大脑 设计服务平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -1021,7 +1021,8 @@
         title="发布需求"
         :visible.sync="boolFindDesign"
         width="480px"
-        :close-on-click-modal="true"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
         class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
@@ -1040,7 +1041,7 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 1交</el-button>
+          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 交</el-button>
         </span>
       </el-dialog>
     </div>
@@ -1347,6 +1348,9 @@ export default {
           clickable: true
           // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
         },
+        autoplay: {
+          delay: 5000
+        },
         lazy: true,
         loop: true
       },
@@ -1355,12 +1359,18 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
+        autoplay: {
+          delay: 5000
+        },
         lazy: true,
         loop: true
       },
       snSwiperOption3: { // sn-案例
         lazy: true,
         loop: true,
+        autoplay: {
+          delay: 5000
+        },
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
@@ -2074,6 +2084,7 @@ export default {
           }
           this.$http.post(url, row)
             .then(res => {
+              this.boolFindDesign = false
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
                 this.form = {}
@@ -2085,6 +2096,7 @@ export default {
               }
             })
             .catch(error => {
+              this.boolFindDesign = false
               this.$message.error(error)
             })
         } else {
@@ -2131,6 +2143,7 @@ export default {
     changeCaseType(e) {
       // console.log(this.swiperObj)
       this.currentCase = e
+      console.log(this.$refs.mySwiper3)
       if (e === 'vision') {
         this.swiperObj.slideToLoop(0)
       } else if (e === 'logo') {
