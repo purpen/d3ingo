@@ -305,7 +305,8 @@
                 }
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                // item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                item.first_rest_payment = Math.round(Number(item.first_payment) - (Number(item.commission) + Number(item.tax_price)))
                 that.form = item
                 if (!that.form.thn_company_name) {
                   that.form.thn_company_name = that.companyThn.company_name

@@ -56,10 +56,10 @@
                       <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
                       </router-link>
                     </p>
-                    <p>项目预算: {{ d.item.design_cost_value }}</p>
-                    <p>设计类型: {{ d.item.type_value }}</p>
-                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>交付时间: {{ d.item.cycle_value }}</p>
+                    <p>项目预算: <span class="tc-6">{{ d.item.design_cost_value }}</span></p>
+                    <p>设计类型: <span class="tc-6">{{ d.item.type_value }}</span></p>
+                    <p>设计类别: <span class="tc-6">{{ d.item.design_types_value | formatEnd }}</span></p>
+                    <p>交付时间: <span class="tc-6">{{ d.item.cycle_value }}</span></p>
                   </el-col>
                   <el-col :span="isMob ? 24 : 3">
                     <p>
@@ -849,7 +849,7 @@
     color: #fff;
   } */
   .btn {
-    font-size: 1.2rem;
+    font-size: 12px;
   }
 
   .btn p {
@@ -904,7 +904,7 @@
   }
 
   .status-str span {
-    font-size: 1.2rem;
+    font-size: 12px;
     color: #FF5A5F;
   }
 
@@ -915,15 +915,15 @@
   }
 
   .item-title p {
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 1.8;
   }
 
-  p.c-title {
-    font-size: 1.6rem;
+  p.c-title a {
+    font-size: 14px;
     color: #333;
     padding: 0 5px 10px 0;
-    line-height: 1;
+    line-height: 18px;
   }
 
   .item-content {

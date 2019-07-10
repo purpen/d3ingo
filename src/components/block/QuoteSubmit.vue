@@ -376,8 +376,8 @@ export default {
           if (len.split('.')[0].length > 8) {
             return callback(new Error('费用不能大于千万'))
           }
-          if (!/^[1-9][0-9]*?$/.test(value)) {
-            return callback(new Error('费用必须是正整数'))
+          if (!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)) {
+            return callback(new Error('费用必须是正数,最多保留两位小数'))
           }
           return callback()
         }
