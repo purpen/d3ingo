@@ -615,20 +615,21 @@
           if (!error) {
             let stages = self.form.stages
             let total = self.form.total
-            let per = self.form.stages[index].percentage.mul(0.01)
-            let amount = 0
+            let per = stages[index].percentage.mul(0.01)
             let money = 0
-            for (var i = 0; i < stages.length; i++) {
+            for (var i = 0; i < stages.length - 1; i++) {
               if (stages[i].amount && stages[i].amount !== '') {
-                amount += 1
                 money += Number(stages[i].amount)
               }
             }
-            if (amount === stages.length - 1) {
-              self.form.stages[index].amount = Math.floor(Number((total * 0.6)) - money)
+            let count = 0
+            if (index === stages.length - 1) {
+              count = total - money - self.form.first_payment
+              stages[index].amount = count
             } else {
-              self.form.stages[index].amount = Math.floor(total.mul(per))
+              stages[index].amount = Math.floor(total.mul(per))
             }
+            console.log('total', total, 'money', money, 'first_payment', self.form.first_payment, 'count', count)
           }
         })
       }
