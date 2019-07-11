@@ -105,7 +105,7 @@
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
                     <p class="tc-2 protrude">项目报价:
-                      <span class="tc-6 fw-normal p-price">{{ Math.round(quotation.price) }} 元</span>
+                      <span class="tc-6 fw-normal p-price">{{ Math.floor(quotation.price) }} 元</span>
                     <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
                     class="tc-red" href="javascript:void(0);"
                     @click="showQuotaBtn(quotation)">详情>></a></span></p>
@@ -1284,7 +1284,7 @@
       // 应打首付款金额（首付款 - 佣金 - 税点）
       firstRestPayment() {
         if (this.contract) {
-          return Math.round((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))))
+          return Math.floor((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))))
         }
         return 0.00
       },
@@ -1389,8 +1389,8 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = Math.round(self.quotation.price)
-              self.takingPriceForm.o_price = Math.round(self.quotation.price)
+              self.takingPriceForm.price = Math.floor(self.quotation.price)
+              self.takingPriceForm.o_price = Math.floor(self.quotation.price)
               self.takingPriceForm.summary = self.quotation.summary
             }
             // 是否显示提交报价单按钮

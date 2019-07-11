@@ -126,7 +126,7 @@
                     :prop="'plan_format.' + index + '.duration'"
                     :rules="ruleForm.count"
                     class="line-hei-20">
-                    <el-input type="number"
+                    <el-input
                       autosize
                       :maxlength="8"
                       v-model.number="form.plan_format[index].duration"
@@ -140,7 +140,7 @@
                     :prop="'plan_format.' + index + '.price'"
                     :rules="ruleForm.price"
                     class="line-hei-20">
-                    <el-input type="number"
+                    <el-input
                       :maxlength="8"
                       autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
@@ -377,7 +377,7 @@ export default {
             return callback(new Error('费用不能大于千万'))
           }
           if (!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)) {
-            return callback(new Error('费用必须是正数,最多保留两位小数'))
+            return callback(new Error('费用必须是数字,最多保留两位小数'))
           }
           return callback()
         }
@@ -391,7 +391,7 @@ export default {
           return callback(new Error('请填写正确天数'))
         } else {
           if (!/^[1-9][0-9]*?$/.test(value)) {
-            return callback(new Error('天数必须是正整数'))
+            return callback(new Error('天数必须是数字'))
           }
           let len = (value + '')
           if (len.split('.')[0].length > 8) {
@@ -739,7 +739,7 @@ export default {
           price += parseFloat(this.form.plan_format[i].price)
         }
       }
-      this.totalMoney = parseFloat(price.toFixed(2))
+      this.totalMoney = Math.floor(price)
     },
     // check 税率事件
     checkRate() {
@@ -781,17 +781,17 @@ export default {
         rate = this.rate.mul(0.01)
       }
       if (this.totalMoney) {
-        taxPrice = parseFloat(this.totalMoney.mul(rate)).toFixed(2)
+        taxPrice = Math.floor(this.totalMoney.mul(rate))
       }
-      return parseFloat(this.totalMoney.add(taxPrice)).toFixed(2)
+      return Math.floor(this.totalMoney.add(taxPrice))
     },
     // 格式化价格 总计含税
     taxTotalMoneyFormat() {
-      return Math.round(this.taxTotalMoney)
+      return Math.floor(this.taxTotalMoney)
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return Math.round(this.totalMoney)
+      return Math.floor(this.totalMoney)
     }
   },
   watch: {
@@ -885,7 +885,7 @@ export default {
     this.$set(this.taxRate, 'taxableType', form.taxable_type ? form.taxable_type : 1)
     this.$set(this.taxRate, 'invoiceType', form.invoice_type ? form.invoice_type : 1)
     this.rate = form.tax_rate ? form.tax_rate : 6
-    this.totalMoney = parseFloat(form.total_price ? form.total_price : 0)
+    this.totalMoney = Math.floor(form.total_price ? form.total_price : 0)
     if (form.area === 0) form.area = ''
     if (form.design_area === 0) form.design_area = ''
     this.form = form

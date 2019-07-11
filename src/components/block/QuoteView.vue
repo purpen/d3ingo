@@ -18,9 +18,9 @@
               </div>
             </div>
             <div class="week-day">{{d.duration}}个&nbsp;&nbsp;&nbsp;&nbsp;工作日</div>
-            <div class="">{{d.summary}}</div>
+            <div class="break-all">{{d.summary}}</div>
           </div>
-          <div class="content-right">¥ {{ formatPrice(d.price) }}</div>
+          <div class="content-right">¥{{ formatPrice(d.price) }}</div>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     formatPrice(price) {
-      return Math.round(price)
+      return Math.floor(price)
     }
   },
   computed: {
@@ -83,11 +83,11 @@ export default {
     // 格式化价格
     taxTotalMoneyFormat() {
       // return parseFloat(this.form.price).toLocaleString('en-US')
-      return Math.round(this.form.price)
+      return Math.floor(this.form.price)
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return Math.round(this.form.total_price)
+      return Math.floor(this.form.total_price)
     }
   },
   watch: {
@@ -119,6 +119,7 @@ export default {
     font-weight: 400;
     color: rgba(102,102,102,1);
     line-height: 20px;
+    word-break: break-all;
   }
   .line {
     border-top: 1px solid #EBEBEB;
@@ -126,10 +127,10 @@ export default {
   }
   .content-left {
     width: 120px;
-    font-size: 16px;
+    font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(34,34,34,1);
+    color: #666;
     line-height: 22px;
     margin-right: 20px;
     word-break: break-all;

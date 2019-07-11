@@ -590,9 +590,9 @@
                         }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
-                        contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.warranty_money)
-                        contract.first_payment = parseFloat(contract.first_payment)
+                        contract.total = Math.floor(contract.total)
+                        contract.warranty_money = Math.floor(contract.warranty_money)
+                        contract.first_payment = Math.floor(contract.first_payment)
                         contract.stage_money =
                           (contract.total - (contract.warranty_money + contract.first_payment)).toFixed(2)
                         that.form = contract
@@ -604,7 +604,7 @@
                         }
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
-                          that.form.commission = item.item.commission
+                          that.form.commission = Math.floor(item.item.commission)
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
                           for (let i = 0; i < that.form.item_stage.length; i++) {
@@ -613,7 +613,7 @@
                             newStageRow.sort = parseInt(stageRow.sort)
                             newStageRow.title = stageRow.title
                             newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                            newStageRow.amount = parseFloat(stageRow.amount)
+                            newStageRow.amount = Math.floor(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
                             that.form.stages.push(newStageRow)
@@ -632,15 +632,15 @@
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
-                that.form.commission = item.item.commission
+                that.form.commission = Math.floor(item.item.commission)
 
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone + ''
-                that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.warranty_money)
-                that.form.first_payment = parseFloat(item.item.first_payment)
+                that.form.total = Math.floor(item.item.price)
+                that.form.warranty_money = Math.floor(item.item.warranty_money)
+                that.form.first_payment = Math.floor(item.item.first_payment)
                 that.form.stage_money =
                   (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
 

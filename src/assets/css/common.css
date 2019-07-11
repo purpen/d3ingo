@@ -383,6 +383,9 @@
 .pointer {
   cursor: pointer;
 }
+.break-all {
+  word-break: break-all
+}
 .text-overflow {
   word-break: keep-all;
   white-space: nowrap;
