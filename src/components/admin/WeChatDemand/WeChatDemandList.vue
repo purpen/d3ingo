@@ -1,6 +1,8 @@
 <template>
-  <div class="full-height relative" ref="WeChatDemandContent">
+  <div class="full-height relative flex-column" ref="WeChatDemandContent">
     <el-table
+      height="100%"
+      style="width: 100%"
       :data="demandList">
       <el-table-column
         width="50px"
@@ -341,10 +343,6 @@ export default {
     width: 100%;
   }
   .pagination {
-    /* position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 30px;
-    margin: auto; */
+    margin: 0 0 -20px;
   }
 </style>

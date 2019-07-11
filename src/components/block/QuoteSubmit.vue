@@ -129,7 +129,7 @@
                     <el-input
                       autosize
                       :maxlength="8"
-                      v-model.number="form.plan_format[index].duration"
+                      v-model="form.plan_format[index].duration"
                       placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
@@ -142,7 +142,7 @@
                     class="line-hei-20">
                     <el-input
                       :maxlength="8"
-                      autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                      autosize v-model="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -473,81 +473,83 @@ export default {
   methods: {
     // 提交
     submit(formName) {
-      this.$refs[formName].validate((valid) => {
-        // 验证通过，提交
-        if (!valid) {
-          console.log('error submit!!')
-          return false
-        }
+      this.$nextTick(_ => {
+        this.$refs[formName].validate((valid) => {
+          // 验证通过，提交
+          if (!valid) {
+            console.log('error submit!!')
+            return false
+          }
 
-        this.$set(this.form, 'is_tax', this.taxRate.isTax)
-        this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
-        this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
-        this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
-        this.$set(this.form, 'tax_rate', this.rate)
-        this.$set(this.form, 'price', this.taxTotalMoney)
-        this.$set(this.form, 'total_price', this.totalMoney)
+          this.$set(this.form, 'is_tax', this.taxRate.isTax)
+          this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
+          this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
+          this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
+          this.$set(this.form, 'tax_rate', this.rate)
+          this.$set(this.form, 'price', this.taxTotalMoney)
+          this.$set(this.form, 'total_price', this.totalMoney)
 
-        if (!this.form.province || !this.form.city) {
-          // this.$message.error('请补全客户方地址信息')
-          // return
-        }
-        if (!this.form.area) {
-          this.$set(this.form, 'area', 0)
-        }
-        if (!this.form.design_province || !this.form.design_city) {
-          // this.$message.error('请补全服务方地址信息')
-          // return
-        }
-        if (!this.form.area) {
-          this.$set(this.form, 'design_area', 0)
-        }
+          if (!this.form.province || !this.form.city) {
+            // this.$message.error('请补全客户方地址信息')
+            // return
+          }
+          if (!this.form.area) {
+            this.$set(this.form, 'area', 0)
+          }
+          if (!this.form.design_province || !this.form.design_city) {
+            // this.$message.error('请补全服务方地址信息')
+            // return
+          }
+          if (!this.form.area) {
+            this.$set(this.form, 'design_area', 0)
+          }
 
-        if (this.form.plan_format.length === 0) {
-          this.$message.error('请填写项目工作计划及费用')
-          return
-        }
-        this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
+          if (this.form.plan_format.length === 0) {
+            this.$message.error('请填写项目工作计划及费用')
+            return
+          }
+          this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
 
-        let apiUrl
-        let method
-        this.isLoadingBtn = true
-        if (this.param.quoteId) {
-          apiUrl = api.updateQuotation.format(this.param.quoteId)
-          method = 'put'
-        } else {
-          apiUrl = api.addQuotation
-          method = 'post'
-        }
+          let apiUrl
+          let method
+          this.isLoadingBtn = true
+          if (this.param.quoteId) {
+            apiUrl = api.updateQuotation.format(this.param.quoteId)
+            method = 'put'
+          } else {
+            apiUrl = api.addQuotation
+            method = 'post'
+          }
 
-        this.$http({method: method, url: apiUrl, data: this.form})
-          .then((response) => {
-            this.isLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              if (this.param.quoteId) {
-                this.$message.success('更新成功！')
+          this.$http({method: method, url: apiUrl, data: this.form})
+            .then((response) => {
+              this.isLoadingBtn = false
+              if (response.data.meta.status_code === 200) {
+                if (this.param.quoteId) {
+                  this.$message.success('更新成功！')
+                } else {
+                  this.$message.success('创建成功！')
+                }
+
+                this.$set(this.form, 'id', response.data.data.id)
+                this.$set(this.form, 'plan_format', response.data.data.plan)
+                this.$set(this.form, 'plan', response.data.data.plan)
+                this.$set(this.form, 'status', 0)
+
+                this.form = response.data.data
+                console.log(response.data.data)
+                this.param.isShow = false
+                this.param.isUpdate = true
               } else {
-                this.$message.success('创建成功！')
+                this.$message.error(response.data.meta.message)
               }
-
-              this.$set(this.form, 'id', response.data.data.id)
-              this.$set(this.form, 'plan_format', response.data.data.plan)
-              this.$set(this.form, 'plan', response.data.data.plan)
-              this.$set(this.form, 'status', 0)
-
-              this.form = response.data.data
-              console.log(response.data.data)
-              this.param.isShow = false
-              this.param.isUpdate = true
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.isLoadingBtn = false
-            console.error(error.message)
-          })
+            })
+            .catch((error) => {
+              this.$message.error(error.message)
+              this.isLoadingBtn = false
+              console.error(error.message)
+            })
+        })
       })
     },
     // 改变城市组件值- 客户方信息
