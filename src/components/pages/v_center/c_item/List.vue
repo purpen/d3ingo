@@ -260,7 +260,7 @@
         title="提示"
         :visible.sync="sureDialog"
         width="380px">
-        <span>{{ sureDialogMessage }}</span>
+        <p class="text-center">{{ sureDialogMessage }}</p>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="currentItemId"/>
           <input type="hidden" ref="currentIndex"/>
