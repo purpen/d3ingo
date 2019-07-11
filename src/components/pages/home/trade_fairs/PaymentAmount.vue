@@ -126,7 +126,7 @@
           <div class="server" v-if="custom.id === 0">
             <p>如果您有任何疑问，请立即联系客服。</p>
             <p>邮箱：support@taihuoniao.com</p>
-            <p>电话：010-84599328</p>
+            <p>电话：13031154842</p>
           </div>
           <div class="server" v-if="custom.id === 1">
             <p>如果您有任何疑问，请立即联系客服。</p>

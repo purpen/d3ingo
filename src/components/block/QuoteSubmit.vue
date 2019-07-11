@@ -129,7 +129,7 @@
                     <el-input
                       autosize
                       :maxlength="8"
-                      v-model.number="form.plan_format[index].duration"
+                      v-model="form.plan_format[index].duration"
                       placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
@@ -142,7 +142,7 @@
                     class="line-hei-20">
                     <el-input
                       :maxlength="8"
-                      autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                      autosize v-model="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
