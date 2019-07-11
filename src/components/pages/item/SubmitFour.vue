@@ -175,7 +175,7 @@ export default {
           }
           let web = that.form.company_web
           if (that.form.company_web) {
-            let urlRegex = /http:\/\/|https:\/\//
+            let urlRegex = /^(http)/
             if (!urlRegex.test(that.form.company_web)) {
               web = 'http://' + that.form.company_web
             }
@@ -272,7 +272,7 @@ export default {
             let row = response.data.data.item
             let web = row.company_web
             if (web) {
-              let urlRegex = /http:\/\/|https:\/\//
+              let urlRegex = /^(http)/
               if (urlRegex.test(web)) {
                 web = web.replace(urlRegex, '')
               }
@@ -305,7 +305,7 @@ export default {
                     let bRow = response.data.data
                     let bWeb = bRow.company_web
                     if (bWeb) {
-                      let urlRegex = /http:\/\/|https:\/\//
+                      let urlRegex = /^(http)/
                       if (urlRegex.test(bWeb)) {
                         bWeb = bWeb.replace(urlRegex, '')
                       }
