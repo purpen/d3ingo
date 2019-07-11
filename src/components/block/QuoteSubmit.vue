@@ -8,10 +8,9 @@
         label-position="top"
         :rules="ruleForm"
         ref="ruleForm">
-
-        <el-form-item label="项目目标" :prop="form.summary">
+        <el-form-item label="项目目标" prop="summary">
           <el-input  type="textarea" :rows="5" v-model="form.summary"
-                    placeholder="请详细描述项目的主要目标和主要重点"></el-input>
+            placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
         <el-form-item>
           <div v-show="form.plan_format.length">
@@ -51,8 +50,7 @@
                   <el-form-item
                     class="work-content line-hei-20"
                     :prop="'plan_format.' + index + '.content'"
-                    :rules="{
-                    required: true, message: '请填写工作内容', trigger: 'blur'}">
+                    :rules="ruleForm.content">
                     <el-input
                     type="textarea" :maxlength="50" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
@@ -401,6 +399,16 @@ export default {
         }
       }
     }
+    let checkContent = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写内容'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写内容'))
+        }
+        return callback()
+      }
+    }
     return {
       id: 0,
       itemId: 0,
@@ -434,8 +442,13 @@ export default {
         design_area: [{ required: true, message: '请选择地区', trigger: 'change' }],
         design_address: [{ required: true, message: '请填写详细地址', trigger: 'blur' }],
         summary: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请填写项目目标', trigger: 'blur' },
           {min: 20, max: 500, message: '长度在 20 到 500 个字符之间', trigger: 'blur'}
+        ],
+        content: [
+          {validator: checkContent, trigger: 'blur'},
+          {required: true, message: '请填写工作内容', trigger: 'blur'}
         ]
       },
       clientForm: {},
@@ -471,6 +484,15 @@ export default {
     }
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
     // 提交
     submit(formName) {
       this.$nextTick(_ => {

@@ -130,10 +130,7 @@
                     <el-form-item
                       style="margin: 0"
                       :prop="'stages.' + index + '.title'"
-                      :rules="{
-                      required: true, message: '请填写阶段标题', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.content">
                       <el-input v-model="form.stages[index].title" placeholder="阶段标题"></el-input>
                     </el-form-item>
                   </el-col>
@@ -143,10 +140,7 @@
                   <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
-                      :rules="{
-                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.number">
                       <el-input v-model.number="form.stages[index].time" placeholder="">
                         <template slot="append">工作日</template>
                       </el-input>
@@ -182,10 +176,7 @@
                   <el-col :span="isMob ? 24 : 18">
                     <el-form-item
                       :prop="'stages.' + index + '.content.' + i + ''"
-                      :rules="{
-                      required: true, message: '请填写内容', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.content">
                       <el-input v-model="form.stages[index].content[i]" placeholder="阶段内容">
                         <template slot="append">
                           <el-button @click="removeSubStage" :index="i" :stage_index="index">删除</el-button>
@@ -335,6 +326,34 @@
       vMenuSub
     },
     data () {
+      let checkContent = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写内容'))
+        } else {
+          if (this.isEmpty(value)) {
+            return callback(new Error('请填写内容'))
+          }
+          return callback()
+        }
+      }
+      let checkCount = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写正确天数'))
+        } else {
+          if (typeof Number(value) !== 'number') {
+            return callback(new Error('请填写正确天数'))
+          } else {
+            if (!/^[1-9][0-9]*?$/.test(value)) {
+              return callback(new Error('天数必须是数字'))
+            }
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('天数过大'))
+            }
+            return callback()
+          }
+        }
+      }
       return {
         itemId: '',
         item: '',
@@ -408,15 +427,28 @@
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
-          ]
+          ],
+          content: [
+            {validator: checkContent, trigger: 'blur'},
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          number: [{validator: checkCount, trigger: 'blur'}]
         },
         userId: this.$store.state.event.user.id
       }
     },
     methods: {
+      isEmpty(value) {
+        let bool = true
+        value.split('').forEach(item => {
+          if (item !== ' ') {
+            bool = false
+          }
+        })
+        return bool
+      },
       submit(formName) {
         const that = this
         that.$refs[formName].validate((valid) => {
