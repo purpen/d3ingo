@@ -131,7 +131,8 @@ export default {
           break
         case 5:
           if (this.item.source === 1) {
-            window.open('https://market.jdcloud.com/#/service/details/576846')
+            let data = {id: '578796', num: Number(this.item.amount)}
+            window.open('http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify(data))) // base64 编码
           }
           url = api.payItemBankPayId.format(this.item.id)
           break

@@ -1243,7 +1243,7 @@
     margin-bottom: 0;
   }
   .work-sty .el-input-group__append {
-    padding: 0 1px;
+    padding: 0 4px;
   }
   .wap-disabled-btn .el-button.is-disabled {
     color: #bfcbd9;

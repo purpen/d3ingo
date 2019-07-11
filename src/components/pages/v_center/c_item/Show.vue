@@ -105,7 +105,7 @@
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
                     <p class="tc-2 protrude">项目报价:
-                      <span class="tc-6 fw-normal p-price">{{ quotation.price }} 元</span>
+                      <span class="tc-6 fw-normal p-price">{{ Math.floor(quotation.price) }} 元</span>
                     <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
                     class="tc-red" href="javascript:void(0);"
                     @click="showQuotaBtn(quotation)">详情>></a></span></p>
@@ -183,12 +183,12 @@
                 <div class="capital-item" v-if="statusLabel.isPay">
                   <div v-if="invoceStat(1, 0) === 0">
                     <p>首付款已到账</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                    <p class="capital-money">{{ firstRestPayment }}元</p>
                     <p class="capital-des">项目首付款已转入您的账户中</p>
                   </div>
                   <div v-if="invoceStat(1, 0) === 1">
                     <p>首付款已转到{{custom.info}}平台托管</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                    <p class="capital-money">{{ firstRestPayment }}元</p>
                     <p class="pay-btn">
                       <el-button class="is-custom" @click="sendInvoiceBtn(1, 0)"
                                  type="primary">开发票
@@ -199,7 +199,7 @@
                   </div>
                   <div v-if="invoceStat(1, 0) === 2">
                     <p>首付款已转到{{custom.info}}平台托管</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                    <p class="capital-money">{{ firstRestPayment }}元</p>
                     <p class="pay-btn">
                       <span class="pay-await">发票确认中</span>
                     </p>
@@ -208,7 +208,7 @@
                   </div>
                   <div v-if="invoceStat(1, 0) === 3">
                     <p>首付款已到账</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                    <p class="capital-money">{{ firstRestPayment }}元</p>
                     <p class="pay-btn reviseBtn">
                       <router-link :to="{name: 'vcenterWalletList'}">
                         <el-button>查看详情</el-button>
@@ -219,7 +219,7 @@
                 </div>
                 <div class="capital-item" v-else>
                   <p>等待需求方付款</p>
-                  <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                  <p class="capital-money">{{ firstRestPayment }}元</p>
                   <p class="pay-btn">
                     <span>等待需求公司付款中 </span>
                   </p>
@@ -427,6 +427,8 @@
 
     <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1240px" top="2%" @close="isClose = false"
     @open="isClose = true"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
     </el-dialog>
@@ -1282,7 +1284,7 @@
       // 应打首付款金额（首付款 - 佣金 - 税点）
       firstRestPayment() {
         if (this.contract) {
-          return parseFloat((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price))))).toFixed(2)
+          return Math.floor((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))))
         }
         return 0.00
       },
@@ -1387,8 +1389,8 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = parseFloat(self.quotation.price).toLocaleString('en-US')
-              self.takingPriceForm.o_price = self.quotation.price
+              self.takingPriceForm.price = Math.floor(self.quotation.price)
+              self.takingPriceForm.o_price = Math.floor(self.quotation.price)
               self.takingPriceForm.summary = self.quotation.summary
             }
             // 是否显示提交报价单按钮

@@ -15,7 +15,7 @@
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}" class="font-14">项目详情</router-link>
+              <router-link :to="{ name: 'vcenterItemShow', params: {id: item.item_id}}" class="font-14">项目详情</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
@@ -106,7 +106,7 @@
               <div class="outline-pay jd-pay" v-if="item.source === 1 && item.status !== 1" v-show="item.pay_type === 5">
                 <p class="detail-banner">京东云市场支付</p>
                 <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
-                <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
+                <a target="_blank" :href="jsPayUrl"
                 class="to-pay middle-button full-red-button">去支付</a>
                 <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
               </div>
@@ -239,6 +239,9 @@
       }
     },
     computed: {
+      jsPayUrl() {
+        return 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify({id: '578796', num: Number(this.item.amount)}))
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

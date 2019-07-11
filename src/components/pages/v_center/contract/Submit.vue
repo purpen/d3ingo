@@ -137,7 +137,7 @@
                 <span v-if="form.product_features">&nbsp;&nbsp;</span>{{form.product_features}}
               </p> -->
               <p class="font-size-16 mar-b-10">3、费用</p>
-              <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
+              <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled>{{form.total}}</span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled>{{form.commission_rate}}</span>%，也就是人民币<span class="bottom-border" type="text" disabled>{{form.commission}}</span>元作为佣金。</p>
               <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
               <div class="blank20"></div>
@@ -448,7 +448,6 @@
           demand_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
           design_company_name: [
             {required: true, message: '请填写公司名称', trigger: 'blur'}
           ],
@@ -616,20 +615,21 @@
           if (!error) {
             let stages = self.form.stages
             let total = self.form.total
-            let per = self.form.stages[index].percentage.mul(0.01)
-            let amount = 0
+            let per = stages[index].percentage.mul(0.01)
             let money = 0
-            for (var i = 0; i < stages.length; i++) {
+            for (var i = 0; i < stages.length - 1; i++) {
               if (stages[i].amount && stages[i].amount !== '') {
-                amount += 1
                 money += Number(stages[i].amount)
               }
             }
-            if (amount === stages.length - 1) {
-              self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
+            let count = 0
+            if (index === stages.length - 1) {
+              count = total - money - self.form.first_payment
+              stages[index].amount = count
             } else {
-              self.form.stages[index].amount = total.mul(per).toFixed(2)
+              stages[index].amount = Math.floor(total.mul(per))
             }
+            console.log('total', total, 'money', money, 'first_payment', self.form.first_payment, 'count', count)
           }
         })
       }
@@ -712,12 +712,12 @@
                         }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
-                        contract.total = parseFloat(contract.total)
-                        contract.warranty_money = contract.commission ? parseFloat(contract.commission) : 0
-                        contract.first_payment = parseFloat(contract.first_payment)
-                        contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
-                        contract.tax_price = contract.tax_price ? parseFloat(contract.tax_price) : 0
-                        contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
+                        contract.total = Math.floor(contract.total)
+                        contract.warranty_money = contract.commission ? Math.floor(contract.commission) : 0
+                        contract.first_payment = Math.floor(contract.first_payment)
+                        contract.stage_money = Math.floor(contract.total.sub(contract.first_payment))
+                        contract.tax_price = contract.tax_price ? Math.floor(contract.tax_price) : 0
+                        contract.first_rest_payment = Math.floor(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
                         that.form.type_value = item.item.type_value ? item.item.type_value : ''
                         that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
@@ -730,7 +730,7 @@
                         }
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
-                          that.form.commission = item.item.commission
+                          that.form.commission = Math.floor(item.item.commission)
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
                           let stageList = []
@@ -740,7 +740,7 @@
                             newStageRow.sort = parseInt(stageRow.sort)
                             newStageRow.title = stageRow.title
                             newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                            newStageRow.amount = parseFloat(stageRow.amount)
+                            newStageRow.amount = Math.floor(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
                             stageList.push(newStageRow)
@@ -771,18 +771,18 @@
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
-                that.form.commission = item.item.commission
+                that.form.commission = Math.floor(item.item.commission)
 
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone + ''
-                that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
-                that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
-                that.form.first_payment = parseFloat(item.item.first_payment)
-                that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
-                that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
+                that.form.tax_price = item.item.tax ? Math.floor(item.item.tax) : 0
+                that.form.total = Math.floor(item.item.price)
+                that.form.warranty_money = item.item.commission ? Math.floor(item.item.commission) : 0
+                that.form.first_payment = Math.floor(item.item.first_payment)
+                that.form.stage_money = Math.floor(that.form.total.sub(that.form.first_payment))
+                that.form.first_rest_payment = Math.floor(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
                 that.form.type_value = item.item.type_value ? item.item.type_value : ''
                 that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
                 that.form.product_features = item.item.product_features
