@@ -271,7 +271,7 @@ export default {
     margin-bottom: -50px;
   }
 .sn-forget {
-  padding-top: 30px;
+  padding-top: 40px;
 }
 .forget-cart {
   margin: 0 auto;
@@ -284,19 +284,17 @@ export default {
 }
 .cart-left {
   width: 480px;
-  border-right: 2px dashed #E6E6E6;
+  border-right: 1px dashed #E6E6E6
 }
 .cart-left h4 {
   height: 80px;
-  line-height: 79px;
+  line-height: 80px;
   text-align: center;
   font-size:20px;
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:rgba(93,94,102,1);
-}
-.cart-right {
-  width: 400px;
+  border-bottom: 1px solid rgba(0,0,0,0.09)
 }
 .forget-content {
   padding: 30px;
@@ -327,6 +325,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1
 }
 .cart-right p {
   font-size:14px;

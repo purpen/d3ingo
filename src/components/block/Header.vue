@@ -827,7 +827,7 @@
     border-bottom: 3px solid transparent;
     color: #666;
     padding: 0 3px;
-    margin: 0 22px;
+    margin: 0 22px 0 0;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1116,14 +1116,14 @@
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus {
     background: #13162A;
-    color: #3171FF;
+    color: #3171fe;
   }
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
   }
   .sn-header  .nav-header .el-menu--horizontal > .el-menu-item:hover,
@@ -1131,7 +1131,7 @@
   .sn-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .sn-header .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
     /* background: none; */
   }
@@ -1173,7 +1173,7 @@
   }
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #3171FF;
+    color: #3171fe;
   }
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):hover {

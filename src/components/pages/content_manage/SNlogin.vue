@@ -434,12 +434,11 @@
   .login{
     width: 880px;
     height: 570px;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
-    border-radius:6px;
     margin: 40px auto;
+    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+    background:rgba(255,255,255,1);
+    border-radius:6px;
     display: flex;
-    justify-content: space-around;
   }
   .from_list{
     padding: 30px;
@@ -456,18 +455,19 @@
     justify-content: space-between;
   }
   .login-title{
-    text-align: center;
     height: 80px;
+    line-height: 80px;
+    text-align: center;
     font-size:20px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(93,94,102,1);
-    line-height: 80px;
-    border-bottom: 1px solid rgba(0,0,0,0.09);
+    border-bottom: 1px solid rgba(0,0,0,0.09)
   }
   .from{
-    width: 100%;
-    border-right: 1px dashed #E6E6E6;
+    flex: 1 1 auto;
+    max-width: 480px;
+    border-right: 1px dashed #E6E6E6
   }
   .regtShow{
     font-size:14px;
@@ -478,15 +478,15 @@
     margin-top: 20px;
   }
   .regter{
-    color: #3171FF;
+    color: #3171fe;
     cursor: pointer;
   }
   .forget:hover{
     color: none;
   }
   .introduce{
+    flex: 1;
     display: flex;
-    width: 100%;
     padding: 30px;
     flex-direction: column;
     justify-content: center;
@@ -544,11 +544,11 @@
     color: #666666;
   }
   .forgetHover:hover{
-    color: #3171FF;
+    color: #3171fe;
   }
   #passwd:checked ~.password-show::before {
-    background: #3171FF;
-    border: 1px solid #3171FF;
+    background: #3171fe;
+    border: 1px solid #3171fe;
   }
   #passwd:checked ~.password-show::after {
     content: "";
@@ -563,7 +563,7 @@
     transform: rotate(45deg);
   }
   #passwd:checked ~.password-show{
-    color: #3171FF;
+    color: #3171fe;
   }
   .password-show {
     padding-left: 20px;
@@ -608,7 +608,7 @@
     cursor: pointer;
   }
   .footer_title:hover{
-    color: #3171FF;
+    color: #3171fe;
   }
   .flex{
     display: flex;

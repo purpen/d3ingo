@@ -214,7 +214,7 @@
 }
 .sn-footer .j-c-item:hover a,
 .sn-footer .j-c-item a:focus {
-  color: #3171ff;
+  color: #3171fe;
 }
 .foot-main {
   padding-bottom: 20px;

@@ -155,7 +155,7 @@ export default {
 }
 .case-header li:hover,
 .case-header li.active {
-  color: #3171FF
+  color: #3171fe
 }
 .case-header li::before {
   content: '';
@@ -168,7 +168,7 @@ export default {
   transition: 0.2s all ease
 }
 .case-header li.active::before {
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .empty {
   height: 400px;
@@ -208,5 +208,6 @@ export default {
   font-size: 14px;
   line-height: 28px;
   height: 28px;
+  margin: 4px 0 10px;
 }
 </style>

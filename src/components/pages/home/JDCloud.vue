@@ -2247,11 +2247,10 @@ export default {
   height: 56px;
   line-height: 54px;
   border: 1px solid #e6e6e6;
-  background: #fafafa;
   border-radius: 28px;
 }
 .sn-list:hover {
-  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   border-color: rgba(0,0,0,0);
   color: #fff;
 }
@@ -2287,14 +2286,14 @@ export default {
 }
 .nav-list span:hover,
 .nav-list span.active {
-  color: #3171FF;
+  color: #3171fe;
 }
 .nav-btn {
   display: inline-block;
   width:100px;
   height:30px;
   line-height: 30px;
-  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   border-radius:15px;
   cursor: pointer;
   color: #ffffff;
@@ -2307,11 +2306,11 @@ export default {
   background: #F6F8FF;
 }
 .sn-fetch-btn {
-  border:1px solid #3171FF;
-  color: #3171FF;
+  border:1px solid #3171fe;
+  color: #3171fe;
 }
 .sn-fetch-btn:hover {
-  background:  #3171FF;
+  background:  #3171fe;
   color: #fff;
   border-color: transparent;
 }
@@ -2323,7 +2322,7 @@ export default {
 }
 .sn-post-btn:hover {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .add-services::before {
   content: '';
@@ -2376,7 +2375,7 @@ export default {
   height:60px;
   line-height: 60px;
   width:220px;
-  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   color: #fff;
   font-family:PingFangSC-Semibold;
   font-weight:600;
@@ -2387,7 +2386,9 @@ export default {
 .sn-release:hover,
 .sn-release:active {
   background: #ffffff;
-  color: #3171FF;
+  color: #3171fe;
+  /* background: linear-gradient(270deg,#3171fe 0%,#a04faf 100%);
+  color: #fff; */
 }
 .sn-banner-word {
   background: #2B3042;
@@ -2492,7 +2493,7 @@ p.sn-sub-title {
   color: #ffffff;
 }
 .case-title > div.active {
-  color: #3171FF;
+  color: #3171fe;
 }
 .case-title > div.active::after,
 .offer-title > div.active::after {
@@ -2504,7 +2505,7 @@ p.sn-sub-title {
   top: 17px;
   left: 0;
   transition: all .25s ease;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .case-product {
   padding-top: 40px;
@@ -2524,7 +2525,7 @@ p.sn-sub-title {
   bottom: 0;
   right: 0;
   text-align: center;
-  background: linear-gradient(306deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(306deg,#a04faf 0%,#3171fe 100%);
   opacity:0.7;
   font-size:20px;
   font-family:PingFangSC-Regular;
@@ -2602,7 +2603,7 @@ p.sn-sub-title {
 }
 .print-item:hover .buy-btn {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .print-item > .img-box {
   text-align: center;
@@ -2640,7 +2641,7 @@ p.sn-sub-title {
   font-size: 20px;
 }
 .print-box:hover .price-money {
-  color: #3171FF;
+  color: #3171fe;
   font-weight:600;
 }
 .price-money > span {
@@ -2659,7 +2660,7 @@ p.sn-sub-title {
 }
 .price > .buy-btn:hover {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 
 .sn-advantage {

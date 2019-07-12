@@ -3,7 +3,7 @@
     <div class="login bg-f">
       <div class="from">
         <!-- tab -->
-        <div class="tabs flex bb-e6">
+        <div class="tabs flex">
           <div class="tab_list flex10" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
             <span>需求方</span>
             <div class="active" v-if="tabVal === 1"></div>
@@ -365,18 +365,22 @@
     width: 880px;
     height: 570px;
     margin: 40px auto;
-    display: flex;
-    justify-content: space-around;
     box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+    background:rgba(255,255,255,1);
+    border-radius:6px;
+    display: flex;
   }
   .tabs {
+    height: 80px;
+    line-height: 76px;
     display: flex;
-    padding-top: 26px;
     justify-content: center;
+    border-bottom: 1px solid rgba(0,0,0,0.09)
   }
   .from {
-    width: 100%;
-    border-right: 2px solid #E6E6E6;
+    flex: 1 1 auto;
+    max-width: 480px;
+    border-right: 1px dashed #E6E6E6
   }
   .tab_list {
     text-align: center;
@@ -389,10 +393,9 @@
   }
   .tab_list > span:first-child {
     display: inline-block;
-    padding-bottom: 20px;
   }
   .cor{
-    color: #3171FF;
+    color: #3171fe;
     border-bottom: none;
   }
   .active{
@@ -402,14 +405,14 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(49,113,255,1);
-    background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+    background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   }
   .active2 {
-    background: linear-gradient(270deg,rgba(49,113,254,1) 0%,rgba(160,79,175,1) 100%);
+    background: linear-gradient(270deg,#3171fe 0%,#a04faf 100%);
   }
   .introduce{
+    flex: 1;
     display: flex;
-    width: 100%;
     padding: 30px;
     flex-direction: column;
     justify-content: center;
