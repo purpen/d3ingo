@@ -326,7 +326,7 @@
               return callback(new Error('天数必须是整数'))
             }
             let len = (value + '')
-            if (len.split('.')[0].length > 8) {
+            if (len.split('.')[0].length > 3) {
               return callback(new Error('天数过大'))
             }
             return callback()
