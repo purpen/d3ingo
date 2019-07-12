@@ -398,6 +398,10 @@ export default {
     })
   },
   created: function() {
+    if (this.prod.name === 'sn') {
+      this.$router.push({name: 'SNlogin', query: this.$route.query, params: this.$route.params})
+      return
+    }
     if (ENV === 'prod') {
       this.jdURL = 'http://oauth2.jdcloud.com/authorize?client_id=9741542107197570&redirect_uri=https://c.jdcloud.com/binding_jd&response_type=code&state=matrixapp'
     }

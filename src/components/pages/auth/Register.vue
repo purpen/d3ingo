@@ -363,6 +363,10 @@
       })
     },
     created() {
+      if (this.prod.name === 'sn') {
+        this.$router.push({name: 'SNRegister', query: this.$route.query, params: this.$route.params})
+        return
+      }
       this.form.type = this.$route.params.type ? this.$route.params.type - 0 : 1
       if (this.form.type === 2) {
         this.cActive = true

@@ -50,11 +50,8 @@
           </el-form>
         </div>
         <div class="reg">
-          <p>已有账户?&nbsp;
-            <!-- {{prod.login}}，您可以 -->
-            <router-link :to="{name: 'SNlogin'}"  class="padding-r-30">立即登录</router-link>
-            或者&nbsp;
-            <router-link :to="{name: 'spreadDesign'}">设计服务商入驻</router-link>
+          <p>已有账户? <router-link :to="{name: 'SNlogin'}"  class="padding-r-30">立即登录</router-link>
+            或者 <a href="https://saas.taihuoniao.com/spread_design">设计服务商入驻</a>
           </p>
         </div>
       </div>
