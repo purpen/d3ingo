@@ -1102,8 +1102,11 @@
     padding: 0 12px !important;
     height:30px !important;
     line-height: 30px !important;
-    background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%) !important;
+    background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%) !important;
     border-radius:15px !important;
+  }
+  .sn-register:hover {
+    background:linear-gradient(270deg,#3171fe 0%,#a04faf 100%) !important;
   }
   .black-header .project-menu-sub .el-menu,
   .black-header .nav-header .el-menu,
@@ -1165,7 +1168,7 @@
     transition: 0.268s all ease;
   }
   .sn-header .nav-header .nav-right .sn-register:hover {
-    background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    background-image: linear-gradient(-90deg, #995CB6 0%, #5D6FBC 45%, #0989C5 100%);
     color: #fff!important;
   }
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
