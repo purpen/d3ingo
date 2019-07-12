@@ -846,7 +846,9 @@
               </el-row>
             </div> -->
           </div>
-          <router-link :to="{name: 'designSNList'}" class="text-center tc-6 fz-20 pointer">查看更多</router-link>
+          <div class="text-center">
+            <router-link :to="{name: 'designSNList'}" class="sn-list text-center tc-6 pointer">查看更多</router-link>
+          </div>
         </div>
       </div>
       <!-- 报价方案 -->
@@ -2238,6 +2240,21 @@ export default {
 </script>
 <style scoped>
 /* sn start */
+.sn-list {
+  font-size: 16px;
+  display: inline-block;
+  width: 180px;
+  height: 56px;
+  line-height: 54px;
+  border: 1px solid #e6e6e6;
+  background: #fafafa;
+  border-radius: 28px;
+}
+.sn-list:hover {
+  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  border-color: rgba(0,0,0,0);
+  color: #fff;
+}
 .nav-head {
   position: fixed;
   top: 0;
