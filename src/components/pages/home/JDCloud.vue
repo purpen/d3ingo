@@ -111,26 +111,26 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="demand">
-                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                        <el-input maxlength="200" v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input maxlength="20" v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="account">
-                        <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                        <el-input maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
                     </el-col>
                     <!-- <el-col :span="10">
                       <el-form-item prop="smsCode">
-                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                        <el-input maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
                             <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                             </el-button>
@@ -353,28 +353,28 @@
           <el-row>
             <el-col :span="24">
               <el-form-item prop="demand">
-                <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                <el-input maxlength="200" v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item prop="contact">
-                <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                <el-input maxlength="20" v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item prop="account">
-                <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                <el-input maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <!-- <el-row>
             <el-col :span="24">
               <el-form-item prop="smsCode" class="call-ele">
-                <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+                <el-input maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                     </el-button>
@@ -590,13 +590,13 @@
         <div class="form mtop_40">
           <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-10">
             <el-form-item prop="name" class="pad-bot-15">
-              <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
+              <el-input maxlength="20" v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
             </el-form-item>
             <el-form-item prop="account" class="pad-bot-15">
-              <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
+              <el-input maxlength="11" v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
             </el-form-item>
             <!-- <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
-              <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+              <el-input class="" maxlength="6" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                 <template slot="append">
                   <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                   </el-button>
@@ -971,14 +971,14 @@
                         <el-row>
                           <el-col :span="20" :offset="2">
                             <el-form-item prop="demand">
-                              <el-input class="el-input-c8"  v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
+                              <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
                             </el-form-item>
                           </el-col>
                         </el-row>
                         <el-row>
                           <el-col :span="20" :offset="2">
                             <el-form-item prop="contact">
-                              <el-input class="el-input-c8"  v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
+                              <el-input class="el-input-c8" v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
                             </el-form-item>
                           </el-col>
                         </el-row>
@@ -987,13 +987,13 @@
                             <el-row :gutter="10">
                                 <el-col :span="14">
                                     <el-form-item prop="account">
-                                      <el-input class="el-input-c8"  v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                                      <el-input class="el-input-c8" maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                                     </el-form-item>
                                 </el-col>
 
                                 <el-col :span="10">
                                   <el-form-item prop="smsCode">
-                                    <el-input   v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
+                                    <el-input   v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
                                       <template slot="append">
                                         <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn">{{ codeMsg }}
                                         </el-button>
@@ -1033,10 +1033,10 @@
             <el-input class="el-input-c8" v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="account">
-            <el-input class="el-input-c8" v-model="form.account"  maxlength="11" placeholder="请输入手机号"></el-input>
+            <el-input class="el-input-c8" v-model="form.account" maxlength="11" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
-              <el-input class="el-input-c8" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
+              <el-input class="el-input-c8" maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
               <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
               </el-button>
           </el-form-item>
