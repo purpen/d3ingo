@@ -29,7 +29,7 @@
             <p class="font-size-16">1、项目内容：<span class="bottom-border">{{form.title}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">2、项目费用：</p>
-            <p class="mar-b-10">本项目总费用共计<span class="bottom-border">{{form.total}}</span> 元（人民币：<span class="bottom-border">{{form.total_han}}</span>元整）</p>
+            <p class="mar-b-10">本项目总费用共计<span class="bottom-border">{{form.total | formatInt}}</span> 元（人民币：<span class="bottom-border">{{form.total_han}}</span>元整）</p>
 
             <p class="title mar-t-40 font-size-18">二、项目交付内容及交付时间</p>
             <p>经甲、乙双方协商，本项目共分
@@ -38,7 +38,7 @@
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
               第 <span class="bottom-border">{{d.sort}}</span> 阶段：乙方在本合同签订之日起 <span
               class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
-              class="bottom-border">{{d.title}}</span>，设计费：<span class="bottom-border">{{d.amount}}</span>（RMB）元;
+              class="bottom-border">{{d.title}}</span>，设计费：<span class="bottom-border">{{d.amount | formatInt}}</span>（RMB）元;
               <!--
               <span if="d.content">包含:
                 <span class="bottom-border" v-for="(m, i) in d.content" :key="i + 'm'">
@@ -50,10 +50,10 @@
             </p>
 
             <p class="title mar-t-40 font-size-18">三、结算条款</p>
-            <p>本项目总费用共计 <span class="bottom-border">{{form.total}}</span> 元，由甲方分<span class="bottom-border">{{form.sort + 1}}</span>期支付给乙方。甲方履行付款义务的期限及支付金额如下：</p>
-            <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向乙方支付首付款项，即总设计费用款项<span class="bottom-border">{{form.first_payment_proportion_p}}</span>%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>（RMB）元。</p>
+            <p>本项目总费用共计 <span class="bottom-border">{{form.total | formatInt}}</span> 元，由甲方分<span class="bottom-border">{{form.sort + 1}}</span>期支付给乙方。甲方履行付款义务的期限及支付金额如下：</p>
+            <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向乙方支付首付款项，即总设计费用款项<span class="bottom-border">{{form.first_payment_proportion_p | formatInt}}</span>%： ¥ <span class="bottom-border" type="text" disabled>{{form.first_payment | formatInt}}</span>（RMB）元。</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向乙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元</p>
+              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向乙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled>{{d.amount | formatInt}}</span>（RMB）元</p>
             </div>
             <p>&nbsp;</p>
             <p style="color: #FF5A5F">注：首付款项收到后启动项目，最终款项收到后提交项目涉及的所有文件。</p>
@@ -207,6 +207,11 @@
         userId: this.$store.state.event.user.id
       }
     },
+    filters: {
+      formatInt(val) {
+        return Number(val)
+      }
+    },
     methods: {
       // 同意合同
       agreeBtn() {
@@ -284,14 +289,14 @@
                     newStageRow.sort = parseInt(stageRow.sort)
                     newStageRow.title = stageRow.title
                     newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                    newStageRow.amount = parseFloat(stageRow.amount).toFixed(2)
+                    newStageRow.amount = Math.floor(stageRow.amount)
                     newStageRow.time = parseInt(stageRow.time)
                     item.stages.push(newStageRow)
                   }
                 }
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price)))).toFixed(2)
+                item.first_rest_payment = Math.floor(Math.floor(item.first_payment).sub(Math.floor(item.commission).add(Math.floor(item.tax_price))))
                 that.form = item
                 if (!that.form.thn_company_name) {
                   that.form.thn_company_name = that.companyThn.company_name

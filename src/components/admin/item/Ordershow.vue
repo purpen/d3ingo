@@ -215,7 +215,8 @@
           { value: -1, text: '太火鸟' },
           { value: 1, text: '京东云艺火' },
           { value: 2, text: '义乌' },
-          { value: 3, text: '京东云神农大脑' }
+          { value: 3, text: '京东云神农大脑' },
+          { value: 4, text: '京东云神农大脑' }
         ],
         opporvalue: '全部项目',
         typeid: 0,
@@ -750,6 +751,8 @@
                 Vue.set(this.tableData[i], 'sourcecont', '京东云艺火')
               } else if (this.tableData[i].source === 2) {
                 Vue.set(this.tableData[i], 'sourcecont', '义乌')
+              } else if (this.tableData[i].source === 4 || this.tableData[i].source === 3) {
+                Vue.set(this.tableData[i], 'sourcecont', '京东云神农大脑')
               } else if (this.tableData[i].source === 0) {
                 Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
               }
@@ -800,6 +803,8 @@
               Vue.set(that.tableData[i], 'sourcecont', '京东云艺火')
             } else if (that.tableData[i].source === 2) {
               Vue.set(that.tableData[i], 'sourcecont', '义乌')
+            } else if (that.tableData[i].source === 4 || that.tableData[i].source === 3) {
+              Vue.set(that.tableData[i], 'sourcecont', '京东云神农大脑')
             } else if (that.tableData[i].source === 0) {
               Vue.set(that.tableData[i], 'sourcecont', '太火鸟')
             }
