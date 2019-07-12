@@ -173,8 +173,8 @@
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
-                      type: 'number', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
-                      min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
+                      type: 'integer', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
+                      min: 10, max: 50, message: '比例在10-50之间整数', trigger: 'blur'
                     }"
                     >
                       <el-input v-model.number="form.stages[index].percentage" placeholder="阶段百分比"
@@ -323,7 +323,7 @@
             return callback(new Error('请填写正确天数'))
           } else {
             if (!/^[1-9][0-9]*?$/.test(value)) {
-              return callback(new Error('天数必须是数字'))
+              return callback(new Error('天数必须是整数'))
             }
             let len = (value + '')
             if (len.split('.')[0].length > 8) {
