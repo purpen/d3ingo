@@ -166,34 +166,33 @@
       </div>
     </div>
     <el-dialog :close-on-click-modal="false" :close-on-press-escape="false" title="填写用户信息" width="580px" :visible.sync="outerVisible">
+    <!-- <el-dialog :close-on-click-modal="false" :close-on-press-escape="false" title="填写用户信息" width="580px" :visible.sync="outerVisible"> -->
       <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3">
-        <div class="z-index-5">
-          <el-form-item prop="contact">
-            <input type="text" maxlength="20" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+        <el-form-item prop="contact">
+          <input type="text" maxlength="20" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+        </el-form-item>
+        <div class="flex">
+          <el-form-item class="flex10" prop="account">
+            <input type="text" class="pc-wait-input-round2" placeholder="手机号"
+            maxlength="11" v-model="form3.account" ref="account">
           </el-form-item>
-          <div class="pc-send-code-90">
-            <el-row :gutter="20">
-              <el-col :span="18">
-                <el-form-item prop="account">
-                  <input type="text" class="pc-wait-input-round2" placeholder="手机号码" v-model="form3.account" ref="account">
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item prop="smsCode">
-                  <div class="pc-code-90-round">
-                    <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
-                    <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
-                    <div class="pc-code-90-send" @click="fetchCode3" v-else>{{ codeMsg }}</div>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="pc-send-btn-2">
-            <div class="pc-send-btn-text2" @click="submit3('ruleForm3')">立即发布需求</div>
-          </div>
-          <div slot="footer" class="dialog-footer"></div>
+          <el-form-item class="flex10" prop="smsCode">
+            <div class="pc-code-90-round">
+              <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode" maxlength="6">
+              <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
+              <div class="pc-code-90-send" @click="fetchCode3" v-else>
+                <i class="el-icon-loading" v-if="isCoding"></i>
+                {{ codeMsg }}
+              </div>
+            </div>
+          </el-form-item>
         </div>
+        <div class="pc-send-btn-2">
+          <div class="pc-send-btn-text2" @click="submit3('ruleForm3')">
+            <i class="el-icon-loading" v-if="isSubmiting"></i>
+            立即发布需求</div>
+        </div>
+        <div slot="footer" class="dialog-footer"></div>
       </el-form>
     </el-dialog>
   </div>
@@ -241,6 +240,9 @@ export default {
       }
     }
     return {
+      isGettingCode: false,
+      isCoding: false,
+      isSubmiting: false,
       origin: location.origin,
       ruleForm: {
         account: [
@@ -260,7 +262,7 @@ export default {
       },
       time: 0,
       second: 60,
-      outerVisible: false, // 填写用户信息弹窗
+      outerVisible: true, // 填写用户信息弹窗
       showForm: true,
       showList: false, // 是否展示设计公司列表
       designList: [], // 后台展示设计公司列表
@@ -340,6 +342,9 @@ export default {
   },
   methods: {
     submit3 (form) {
+      if (this.isSubmiting) {
+        return
+      }
       this.$refs[form].validate(valid => {
         if (valid) {
           if (this.form3.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form3.account)) {
@@ -350,6 +355,7 @@ export default {
             })
             return
           }
+          this.isSubmiting = true
           let row = {
             id: this.id,
             cycle: this.form.cycle,
@@ -365,6 +371,7 @@ export default {
           let url = api.release
           this.$http({method: 'post', url: url, data: row})
           .then(res => {
+            this.isSubmiting = false
             if (res.data.meta.status_code === 200) {
               this.outerVisible = false
               this.isMatching = true
@@ -386,6 +393,7 @@ export default {
               this.$message.error(res.data.meta.message)
             }
           }).catch(err => {
+            this.isSubmiting = false
             console.error(err)
           })
         }
@@ -396,15 +404,27 @@ export default {
         this.$message.error('请输入手机号')
         return
       }
+      if (this.isGettingCode) {
+        return
+      }
+      if (this.isCoding) {
+        return
+      }
+      this.isCoding = true
+      this.isGettingCode = true
       this.$http.post(api.fetch_wx_code, {phone: this.form3.account})
       .then(res => {
+        this.isCoding = false
         if (res.data && res.data.meta.status_code === 200) {
           this.time = this.second
           this.timer()
         } else {
+          this.isGettingCode = false
           this.$message.error(res.data.meta.message)
         }
       }).catch (err => {
+        this.isCoding = false
+        this.isGettingCode = false
         this.$message.error(err.message)
       })
     },
@@ -412,6 +432,8 @@ export default {
       if (this.time > 0) {
         this.time = this.time - 1
         setTimeout(this.timer, 1000)
+      } else {
+        this.isGettingCode = false
       }
     },
     getToken() {
@@ -954,7 +976,7 @@ export default {
     margin-right: 10px;
   }
   .pc-code-90-round {
-    width: 192px;
+    margin-left: 20px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;
@@ -969,6 +991,7 @@ export default {
   }
   .pc-code-90-send {
     cursor: pointer;
+    width: 0;
     flex: 1 1 auto;
     height: 20px;
     font-size: 14px;
