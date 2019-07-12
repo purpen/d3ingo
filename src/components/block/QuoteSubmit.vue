@@ -389,7 +389,7 @@ export default {
           return callback(new Error('请填写正确天数'))
         } else {
           if (!/^[1-9][0-9]*?$/.test(value)) {
-            return callback(new Error('天数必须是数字'))
+            return callback(new Error('天数必须是整数'))
           }
           let len = (value + '')
           if (len.split('.')[0].length > 8) {
