@@ -36,7 +36,6 @@ module.exports = {
       'static': resolve('/static'),
       'components': resolve('src/components'),
       'assets': resolve('src/assets'),
-      'static': resolve('/static'),
       'pages': resolve('src/components/pages'),
       'admin': resolve('src/components/admin')
     }
