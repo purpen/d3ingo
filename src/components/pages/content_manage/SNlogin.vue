@@ -46,7 +46,7 @@
             <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
           </div>
           <!-- 底部 -->
-          <div class="SNfooter">
+          <div class="SNfooter" v-if="false">
             <div class="line"></div>
             <div class="flex">
               <img src="../../../assets/images/promote_sn/sn_login_icon.png" class="footerImg" alt="">

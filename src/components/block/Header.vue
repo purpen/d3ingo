@@ -246,10 +246,10 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
-              <el-menu-item index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item> -->
-              <el-menu-item index="/login" :route="menu.login" class="fr">登录</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -1130,6 +1130,7 @@
     border-bottom: 3px solid transparent;
     color: #3171FF;
     background: none;
+    /* background: none; */
   }
   .sn-header.black-header .nav-header .el-menu-header .el-menu-item, .sn-header.black-header .m-nav-header .el-menu-header .el-menu-item, .sn-header.black-header .el-menu-header .el-submenu {
     color: #fff;
