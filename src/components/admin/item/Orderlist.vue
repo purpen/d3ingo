@@ -1069,6 +1069,12 @@
                 case 2:
                   that.contract.source_value = '义乌'
                   break
+                case 3:
+                  that.contract.source_value = '京东云神农大脑'
+                  break
+                case 4:
+                  that.contract.source_value = '京东云神农大脑'
+                  break
               }
             }
           } else {

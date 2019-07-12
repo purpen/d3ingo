@@ -44,7 +44,7 @@
             <p class="font-size-16">2、项目内容：<span class="fz-14 bottom-border">{{form.item_content}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">3、费用：</p>
-            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span>（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
+            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span>（小写：<span class="bottom-border">{{form.total | formatInt}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission | formatInt}}</span> 元作为佣金。</p>
             <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
             <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
@@ -68,10 +68,10 @@
             <p>&nbsp;</p>
             <p>设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。</p>
             <p>&nbsp;</p>
-            <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向丙方支付首付款项，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
+            <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向丙方支付首付款项，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled>{{form.first_payment | formatInt}}</span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
             <p>&nbsp;</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
+              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled>{{d.amount | formatInt}}</span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled>{{d.amount | formatInt}}</span>元一次性全额支付给乙方。</p>
               <p>&nbsp;</p>
             </div>
             <p style="color: #FF5A5F">注：首付款收到后启动项目，尾款收到后提交所有文件。</p>
@@ -213,6 +213,11 @@
         userId: this.$store.state.event.user.id
       }
     },
+    filters: {
+      formatInt(val) {
+        return Number(val)
+      }
+    },
     methods: {
       // 同意合同
       agreeBtn() {
@@ -305,7 +310,8 @@
                 }
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                // item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                item.first_rest_payment = Math.round(Number(item.first_payment) - (Number(item.commission) + Number(item.tax_price)))
                 that.form = item
                 if (!that.form.thn_company_name) {
                   that.form.thn_company_name = that.companyThn.company_name

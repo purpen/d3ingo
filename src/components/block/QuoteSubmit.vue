@@ -8,15 +8,14 @@
         label-position="top"
         :rules="ruleForm"
         ref="ruleForm">
-
-        <el-form-item label="项目目标" :prop="form.summary">
+        <el-form-item label="项目目标" prop="summary">
           <el-input  type="textarea" :rows="5" v-model="form.summary"
-                    placeholder="请详细描述项目的主要目标和主要重点"></el-input>
+            placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
         <el-form-item>
           <div v-show="form.plan_format.length">
             <p class="laber-title-font">项目工作计划及费用</p>
-            <el-row style="padding: 20px 25px">
+            <el-row style="padding: 20px 25px 10px">
               <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <p class="font-14">工作内容</p>
               </el-col>
@@ -51,8 +50,7 @@
                   <el-form-item
                     class="work-content line-hei-20"
                     :prop="'plan_format.' + index + '.content'"
-                    :rules="{
-                    required: true, message: '请填写工作内容', trigger: 'blur'}">
+                    :rules="ruleForm.content">
                     <el-input
                     type="textarea" :maxlength="50" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
@@ -92,7 +90,7 @@
                           :rules="{
                           required: true, type: 'number', message: '请选择人数', trigger: 'change'}">
                           <el-select
-                            class="no-border_radius"
+                            class="no-border_radius border-l-none"
                             v-model="form.plan_format[index].arranged[c_index].number"
                             size="small"
                             default-first-option
@@ -107,7 +105,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :xs="4" :sm="2" :md="2" :lg="2">
-                        <el-button class="right-border_radius" size="small"
+                        <el-button class="border-l-none right-border_radius" size="small"
                           :style="{minWidth: '36px', width: '100%', height: '40px'}"
                           v-if="c_index === 0" @click="addPlanMember(index, c_index)">
                           <i class="el-icon-plus"></i>
@@ -126,10 +124,10 @@
                     :prop="'plan_format.' + index + '.duration'"
                     :rules="ruleForm.count"
                     class="line-hei-20">
-                    <el-input type="number"
+                    <el-input
                       autosize
                       :maxlength="8"
-                      v-model.number="form.plan_format[index].duration"
+                      v-model="form.plan_format[index].duration"
                       placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
@@ -140,9 +138,9 @@
                     :prop="'plan_format.' + index + '.price'"
                     :rules="ruleForm.price"
                     class="line-hei-20">
-                    <el-input type="number"
+                    <el-input
                       :maxlength="8"
-                      autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                      autosize v-model="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -154,7 +152,7 @@
                     <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit padd-l-6"></i></p>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0" class="dis-flex">
+                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0" class="dis-flex" v-if="index !== 0">
                   <p class="plan-opt-icon"><i class="fx fx-icon-close-sm mar-t-24" @click.stop="delPlanBtn(d.content, index)"></i></p>
                 </el-col>
               </el-row>
@@ -367,21 +365,19 @@ export default {
   data() {
     let checkNumber = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请填写正确金额'))
+        return callback(new Error('请填写正确费用'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('金额只能为数字！'))
+          return callback(new Error('费用只能为数字！'))
         } else {
-          if (value <= 0) {
-            return callback(new Error('金额必须大于0元！'))
-          } else {
-            let len = (value + '')
-            if (len.split('.')[0].length > 8) {
-              return callback(new Error('金额不能大于千万'))
-            } else {
-              return callback()
-            }
+          let len = (value + '')
+          if (len.split('.')[0].length > 8) {
+            return callback(new Error('费用不能大于千万'))
           }
+          if (!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)) {
+            return callback(new Error('费用必须是数字,最多保留两位小数'))
+          }
+          return callback()
         }
       }
     }
@@ -390,19 +386,27 @@ export default {
         return callback(new Error('请填写正确天数'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('天数只能为数字！'))
+          return callback(new Error('请填写正确天数'))
         } else {
-          if (value <= 0) {
-            return callback(new Error('数字必须大于0！'))
-          } else {
-            let len = (value + '')
-            if (len.split('.')[0].length > 8) {
-              return callback(new Error('设置天数过大'))
-            } else {
-              return callback()
-            }
+          if (!/^[1-9][0-9]*?$/.test(value)) {
+            return callback(new Error('天数必须是数字'))
           }
+          let len = (value + '')
+          if (len.split('.')[0].length > 8) {
+            return callback(new Error('天数过大'))
+          }
+          return callback()
         }
+      }
+    }
+    let checkContent = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写内容'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写内容'))
+        }
+        return callback()
       }
     }
     return {
@@ -438,8 +442,13 @@ export default {
         design_area: [{ required: true, message: '请选择地区', trigger: 'change' }],
         design_address: [{ required: true, message: '请填写详细地址', trigger: 'blur' }],
         summary: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请填写项目目标', trigger: 'blur' },
           {min: 20, max: 500, message: '长度在 20 到 500 个字符之间', trigger: 'blur'}
+        ],
+        content: [
+          {validator: checkContent, trigger: 'blur'},
+          {required: true, message: '请填写工作内容', trigger: 'blur'}
         ]
       },
       clientForm: {},
@@ -475,83 +484,94 @@ export default {
     }
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
     // 提交
     submit(formName) {
-      this.$refs[formName].validate((valid) => {
-        // 验证通过，提交
-        if (!valid) {
-          console.log('error submit!!')
-          return false
-        }
+      this.$nextTick(_ => {
+        this.$refs[formName].validate((valid) => {
+          // 验证通过，提交
+          if (!valid) {
+            console.log('error submit!!')
+            return false
+          }
 
-        this.$set(this.form, 'is_tax', this.taxRate.isTax)
-        this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
-        this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
-        this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
-        this.$set(this.form, 'tax_rate', this.rate)
-        this.$set(this.form, 'price', this.taxTotalMoney)
-        this.$set(this.form, 'total_price', this.totalMoney)
+          this.$set(this.form, 'is_tax', this.taxRate.isTax)
+          this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
+          this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
+          this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
+          this.$set(this.form, 'tax_rate', this.rate)
+          this.$set(this.form, 'price', this.taxTotalMoney)
+          this.$set(this.form, 'total_price', this.totalMoney)
 
-        if (!this.form.province || !this.form.city) {
-          // this.$message.error('请补全客户方地址信息')
-          // return
-        }
-        if (!this.form.area) {
-          this.$set(this.form, 'area', 0)
-        }
-        if (!this.form.design_province || !this.form.design_city) {
-          // this.$message.error('请补全服务方地址信息')
-          // return
-        }
-        if (!this.form.area) {
-          this.$set(this.form, 'design_area', 0)
-        }
+          if (!this.form.province || !this.form.city) {
+            // this.$message.error('请补全客户方地址信息')
+            // return
+          }
+          if (!this.form.area) {
+            this.$set(this.form, 'area', 0)
+          }
+          if (!this.form.design_province || !this.form.design_city) {
+            // this.$message.error('请补全服务方地址信息')
+            // return
+          }
+          if (!this.form.area) {
+            this.$set(this.form, 'design_area', 0)
+          }
 
-        if (this.form.plan_format.length === 0) {
-          this.$message.error('请填写项目工作计划及费用')
-          return
-        }
-        this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
+          if (this.form.plan_format.length === 0) {
+            this.$message.error('请填写项目工作计划及费用')
+            return
+          }
+          this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
 
-        let apiUrl
-        let method
-        this.isLoadingBtn = true
-        if (this.param.quoteId) {
-          apiUrl = api.updateQuotation.format(this.param.quoteId)
-          method = 'put'
-        } else {
-          apiUrl = api.addQuotation
-          method = 'post'
-        }
+          let apiUrl
+          let method
+          this.isLoadingBtn = true
+          if (this.param.quoteId) {
+            apiUrl = api.updateQuotation.format(this.param.quoteId)
+            method = 'put'
+          } else {
+            apiUrl = api.addQuotation
+            method = 'post'
+          }
 
-        this.$http({method: method, url: apiUrl, data: this.form})
-          .then((response) => {
-            this.isLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              if (this.param.quoteId) {
-                this.$message.success('更新成功！')
+          this.$http({method: method, url: apiUrl, data: this.form})
+            .then((response) => {
+              this.isLoadingBtn = false
+              if (response.data.meta.status_code === 200) {
+                if (this.param.quoteId) {
+                  this.$message.success('更新成功！')
+                } else {
+                  this.$message.success('创建成功！')
+                }
+
+                this.$set(this.form, 'id', response.data.data.id)
+                this.$set(this.form, 'plan_format', response.data.data.plan)
+                this.$set(this.form, 'plan', response.data.data.plan)
+                this.$set(this.form, 'status', 0)
+
+                this.form = response.data.data
+                console.log(response.data.data)
+                this.param.isShow = false
+                this.param.isUpdate = true
               } else {
-                this.$message.success('创建成功！')
+                this.$message.error(response.data.meta.message)
               }
-
-              this.$set(this.form, 'id', response.data.data.id)
-              this.$set(this.form, 'plan_format', response.data.data.plan)
-              this.$set(this.form, 'plan', response.data.data.plan)
-              this.$set(this.form, 'status', 0)
-
-              this.form = response.data.data
-              console.log(response.data.data)
-              this.param.isShow = false
-              this.param.isUpdate = true
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.isLoadingBtn = false
-            console.error(error.message)
-          })
+            })
+            .catch((error) => {
+              this.$message.error(error.message)
+              this.isLoadingBtn = false
+              console.error(error.message)
+            })
+        })
       })
     },
     // 改变城市组件值- 客户方信息
@@ -743,7 +763,7 @@ export default {
           price += parseFloat(this.form.plan_format[i].price)
         }
       }
-      this.totalMoney = parseFloat(price.toFixed(2))
+      this.totalMoney = Math.floor(price)
     },
     // check 税率事件
     checkRate() {
@@ -785,17 +805,17 @@ export default {
         rate = this.rate.mul(0.01)
       }
       if (this.totalMoney) {
-        taxPrice = parseFloat(this.totalMoney.mul(rate)).toFixed(2)
+        taxPrice = Math.floor(this.totalMoney.mul(rate))
       }
-      return parseFloat(this.totalMoney.add(taxPrice)).toFixed(2)
+      return Math.floor(this.totalMoney.add(taxPrice))
     },
-    // 格式化价格
+    // 格式化价格 总计含税
     taxTotalMoneyFormat() {
-      return parseFloat(this.taxTotalMoney).toLocaleString('en-US')
+      return Math.floor(this.taxTotalMoney)
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return parseFloat(this.totalMoney).toLocaleString('en-US')
+      return Math.floor(this.totalMoney)
     }
   },
   watch: {
@@ -889,7 +909,7 @@ export default {
     this.$set(this.taxRate, 'taxableType', form.taxable_type ? form.taxable_type : 1)
     this.$set(this.taxRate, 'invoiceType', form.invoice_type ? form.invoice_type : 1)
     this.rate = form.tax_rate ? form.tax_rate : 6
-    this.totalMoney = parseFloat(form.total_price ? form.total_price : 0)
+    this.totalMoney = Math.floor(form.total_price ? form.total_price : 0)
     if (form.area === 0) form.area = ''
     if (form.design_area === 0) form.design_area = ''
     this.form = form

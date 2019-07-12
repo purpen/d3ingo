@@ -33,7 +33,7 @@
               依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供
               <span class="bottom-border">{{form.title}}</span>
               设计。本合同设计费用总额为人民币(￥)
-              <span class="bottom-border">{{form.total}}</span>，丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span>作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。
+              <span class="bottom-border">{{form.total | formatInt}}</span>，丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission | formatInt}}</span>作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。
             </p>
 
             <p class="title">3、项目交付内容及工作周期</p>
@@ -55,13 +55,13 @@
             <p class="title">4、付款方式</p>
             <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： </p>
             <p>1、本合同签订后 <span class="bottom-border">{{form.demand_pay_limit}}</span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 <span class="bottom-border">{{form.first_payment_proportion_p}}</span>%，即人民币(￥) <span
-              class="bottom-border">{{form.first_payment}}</span> 整。</p>
+              class="bottom-border">{{form.first_payment | formatInt}}</span> 整。</p>
             <p v-for="(d, index) in form.stages" :key="index">
               {{ index + 2 }}、<span class="bottom-border">{{d.title}}</span>
-              确认后，支付该项目阶段款的<span class="bottom-border">{{d.percentage}}</span> %，即人民币(￥) <span class="bottom-border">{{d.amount}}</span> 整。
+              确认后，支付该项目阶段款的<span class="bottom-border">{{d.percentage}}</span> %，即人民币(￥) <span class="bottom-border">{{d.amount | formatInt}}</span> 整。
             </p>
             <p>{{ form.sort + 2 }}、设计全部完成确认后，支付该项目总金额尾款 <span class="bottom-border">{{form.warranty_money_proportion_p}}</span> %，即人民币(￥)
-            <span class="bottom-border">{{form.warranty_money}}</span>
+            <span class="bottom-border">{{form.warranty_money | formatInt}}</span>
               整。</p>
             <p>甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
             <p class="title">5、 甲方责任与义务  </p>
@@ -173,6 +173,11 @@
         sureDialogLoadingBtn: false,
         isLoadingBtn: false,
         userId: this.$store.state.event.user.id
+      }
+    },
+    filters: {
+      formatInt(val) {
+        return Number(val)
       }
     },
     methods: {

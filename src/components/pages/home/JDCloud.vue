@@ -1021,7 +1021,8 @@
         title="发布需求"
         :visible.sync="boolFindDesign"
         width="480px"
-        :close-on-click-modal="true"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
         class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
@@ -1233,7 +1234,7 @@ export default {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 5000000,
+        autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
         spaceBetween: 0
@@ -1347,10 +1348,10 @@ export default {
           clickable: true
           // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
         },
-        lazy: true, // 设为true开启图片延迟加载默认值
         autoplay: {
           delay: 5000
         },
+        lazy: true,
         loop: true
       },
       snSwiperOption2: { // sn-banner
@@ -1358,18 +1359,18 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
-        lazy: true,
         autoplay: {
           delay: 5000
         },
+        lazy: true,
         loop: true
       },
       snSwiperOption3: { // sn-案例
         lazy: true,
+        loop: true,
         autoplay: {
           delay: 5000
         },
-        loop: true,
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
@@ -1815,7 +1816,7 @@ export default {
       swiperOption2: {
         lazyLoading: true,
         direction: 'vertical',
-        autoplay: 800,
+        autoplay: 5000,
         slidesPerView: 8,
         // observer: true,
         paginationClickable: true,
@@ -2083,6 +2084,7 @@ export default {
           }
           this.$http.post(url, row)
             .then(res => {
+              this.boolFindDesign = false
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
                 this.form = {}
@@ -2094,6 +2096,7 @@ export default {
               }
             })
             .catch(error => {
+              this.boolFindDesign = false
               this.$message.error(error)
             })
         } else {
@@ -2140,6 +2143,7 @@ export default {
     changeCaseType(e) {
       // console.log(this.swiperObj)
       this.currentCase = e
+      console.log(this.$refs.mySwiper3)
       if (e === 'vision') {
         this.swiperObj.slideToLoop(0)
       } else if (e === 'logo') {

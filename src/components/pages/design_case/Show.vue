@@ -8,7 +8,7 @@
       </div>
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
-        <section class="flex-jus-center">
+        <section class="flex-justify-center">
           <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
           <span v-if="designCasesDetail.design_types_val && designCasesDetail.design_types_val.length">/ <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
           </p>
@@ -24,7 +24,7 @@
       </div>
       <div class="header-info">
         <h1>{{designCasesDetail.title}}</h1>
-        <section class="flex-jus-center">
+        <section class="flex-justify-center">
           <p class="type"><i class="fx fx-icon-classify"></i>{{designCasesDetail.type_val}}
           <span v-if="designCasesDetail.design_types_val && designCasesDetail.design_types_val.length"> / <span v-for="(ele, index) in designCasesDetail.design_types_val" :key="index">{{ele}} </span></span>
           </p>
@@ -421,7 +421,7 @@ export default {
   white-space: nowrap;
   line-height: 40px
 }
-.flex-jus-center i:hover {
+.flex-justify-center i:hover {
   color: #fff
 }
 </style>

@@ -234,7 +234,7 @@
                 <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
                 <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
                 <el-menu-item index="/vcenter/account/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2 || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <!-- <el-menu-item :index="custom.id === 0?'/admin/dashboard':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -246,10 +246,10 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
-              <el-menu-item v-if="prodName !== 'sn'"  index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item> -->
-              <el-menu-item  v-if="prodName !== 'sn'" index="/login" :route="menu.login" class="fr">登录</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -525,6 +525,9 @@
         return user
       },
       isAdmin() {
+        if (this.$store.state.event.user.source_admin === 6) {
+          return true
+        }
         return this.$store.state.event.user.role_id >= 10
       },
       // is-active下划线添加
@@ -1127,6 +1130,7 @@
     border-bottom: 3px solid transparent;
     color: #3171FF;
     background: none;
+    /* background: none; */
   }
   .sn-header.black-header .nav-header .el-menu-header .el-menu-item, .sn-header.black-header .m-nav-header .el-menu-header .el-menu-item, .sn-header.black-header .el-menu-header .el-submenu {
     color: #fff;

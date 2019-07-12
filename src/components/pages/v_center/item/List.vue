@@ -20,7 +20,7 @@
             <div v-if="type === 1" v-loading="isLoading">
               <div v-if="isEmpty">
                 <div class="empty"></div>
-                <p class="prompt">暂时没有待完善项目， 请发布需求～</p>
+                <p class="prompt">暂时没有待完善项目，请发布需求～</p>
               </div>
               <div v-if="itemIngList.length">
                 <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
@@ -69,9 +69,9 @@
                   </div>
                 </div>
               </div>
-
+              <!-- v-if="query.total > query.pageSize && contentShowIndex === index" -->
               <el-pagination
-                v-if="query.total > query.pageSize && contentShowIndex === index"
+                v-if="query.total > query.pageSize"
                 class="pagination"
                 @current-change="handleCurrentChange"
                 :current-page="query.page"
@@ -114,7 +114,6 @@
                       <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
                       </router-link>
                     </p>
-                    <p>项目预算: {{ d.item.design_cost_value }}</p>
                     <!-- <p v-if="d.item.type === 1">
                       {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
                       }}{{d.item}}</p>
@@ -123,10 +122,11 @@
                       {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
                     <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
                     -->
-                    <p>设计类型: {{ d.item.type_value }}</p>
-                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>交付时间: {{ d.item.cycle_value }}</p>
-                    <p class="fc-content">产品功能: {{d.item.product_features }}</p>
+                    <p>项目预算: <span class="tc-6">{{ d.item.design_cost_value }}</span></p>
+                    <p>设计类型: <span class="tc-6">{{ d.item.type_value }}</span></p>
+                    <p>设计类别: <span class="tc-6">{{ d.item.design_types_value | formatEnd }}</span></p>
+                    <p>交付时间: <span class="tc-6">{{ d.item.cycle_value }}</span></p>
+                    <p class="fc-content">产品功能: <span class="tc-6">{{d.item.product_features }}</span></p>
                   </el-col>
                   <el-col :span="3">
                     <p>
@@ -927,7 +927,7 @@
   }
 
   .btn {
-    font-size: 1.2rem;
+    font-size: 12px;
   }
 
   .btn p {
@@ -969,20 +969,20 @@
 
   .status-str {
     color: #FF5A5F;
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 1.3;
   }
 
   .item-title p {
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 1.8;
   }
 
-  p.c-title {
-    font-size: 1.6rem;
-    color: #222;
+  p.c-title a {
+    font-size: 14px;
+    color: #333;
     padding: 0 5px 10px 0;
-    line-height: 1;
+    line-height: 18px;
   }
 
   h3 {

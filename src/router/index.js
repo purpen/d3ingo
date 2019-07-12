@@ -361,6 +361,16 @@ let routes = [
     component: require('@/components/pages/auth/Login')
   },
   {
+    path: '/loginWithNeuHub',
+    name: 'loginWithNeuHub',
+    meta: {
+      title: '登录',
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/auth/JDNeuHub')
+  },
+  {
     path: '/logout',
     name: 'logout',
     meta: {

@@ -15,21 +15,40 @@
 .block {
   display: block
 }
+.disabled {
+  cursor: not-allowed
+}
 .flex {
   display: flex;
 }
-.flex-jus-center {
-  display: flex;
-  justify-content: center
-}
-.flex-column {
-  flex-direction: column
+.flex0 {
+  flex: 0 0 auto
 }
 .flex1 {
   flex: 1 1 auto
 }
-.flex0 {
-  flex: 0 0 auto
+.flex10 {
+  flex: 1 0 auto
+}
+.flex11 {
+  flex: 1 1 auto
+}
+.flex-vertical-center {
+  display: flex;
+  align-items: center
+}
+.flex-justify-center {
+  display: flex;
+  justify-content: center
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.flex-column {
+  display: flex;
+  flex-direction: column
 }
 .flex-wrap {
   display: flex;
@@ -96,6 +115,9 @@
 }
 .tc-blue {
   color: #0989C5
+}
+.border-r-none {
+  border-right: none
 }
 .b-e6 {
   border: 1px solid #e6e6e6
@@ -200,8 +222,14 @@
 .margin-t-28 {
   margin-top: 28px;
 }
+.margin-b-10 {
+  margin-bottom: 10px
+}
 .margin-b-15 {
   margin-bottom: 15px;
+}
+.margin-b-20 {
+  margin-bottom: 20px
 }
 .margin-b-m50 {
   margin-bottom: -50px;
@@ -214,6 +242,9 @@
 }
 .margin-l-10 {
   margin-left: 10px;
+}
+.margin-r-5 {
+  margin-right: 5px;
 }
 .margin-r-10 {
   margin-right: 10px;
@@ -242,6 +273,9 @@
 .padding26 {
   padding-bottom: 26px;
 }
+.padding-b10 {
+  padding-bottom: 10px;
+}
 .padding-b15 {
   padding-bottom: 15px;
 }
@@ -262,12 +296,6 @@
 }
 .padding-b80 {
   padding-bottom: 80px;
-}
-.margin-b-10 {
-  margin-bottom: 10px
-}
-.margin-b-20 {
-  margin-bottom: 20px
 }
 .blank4 {
   padding-top: 4px;
@@ -313,11 +341,19 @@
 .padding-r-30 {
   padding-right: 30px;
 }
+.over-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
 .text-center {
   text-align: center
 }
 .text-left {
   text-align: left;
+}
+.text-right {
+  text-align: right;
 }
 .va-bottom {
   vertical-align: bottom
@@ -349,6 +385,9 @@
   cursor: pointer;
 }
 /* 单行文本省略 */
+.break-all {
+  word-break: break-all
+}
 .text-overflow {
   word-break: keep-all;
   white-space: nowrap;
@@ -718,4 +757,52 @@ button.el-button.is-custom.is-disabled,
 .el-input-c8 .el-textarea__inner:-ms-input-placeholder,
 .el-input-c8 .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #c8c8c8!important;
+}
+/* el-dialog */
+.el-dialog-confirm {
+  text-align: center
+}
+.el-dialog-confirm p {
+  line-height: 40px;
+  height: 40px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666
+}
+.el-dialog-confirm .buttons {
+  font-size: 0
+}
+.el-dialog-confirm .cancel {
+  margin-right: 15px;
+}
+.icon-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: #ff5a5f;
+  border-radius: 50%;
+}
+.icon-close::before,
+.icon-close::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background: #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transform: rotate(45deg);
+}
+.icon-close::after {
+  transform: rotate(-45deg);
+}
+.border-l-none,
+.el-form-item__content .border-l-none .el-input .el-input__inner,
+.el-form-item__content .border-l-none .el-input.is-focus .el-input__inner {
+  border-left: none
 }

@@ -8,7 +8,8 @@
           <input :maxlength="100" class="name" v-model="name" placeholder="请输入您要设计的项目名称">
         </div>
         <div>
-          <button class="full-red-button big-button" @click="submit">{{val}}</button>
+          <button class="full-red-button big-button" @click="submit">
+            <i class="el-icon-loading margin-r-5" v-if="isLoading"></i>{{val}}</button>
         </div>
       </div>
     </div>
@@ -27,7 +28,8 @@ export default {
       id: 0,
       name: '',
       selectObject: {},
-      val: '提交'
+      val: '提交',
+      isLoading: false
     }
   },
   created() {
@@ -53,6 +55,10 @@ export default {
       }
     },
     submit() {
+      if (this.isLoading) {
+        return
+      }
+      this.isLoading = true
       let url = ''
       let row = {}
       let method = ''
@@ -68,6 +74,7 @@ export default {
       if (this.name) {
         this.$http({method: method, url: url, data: row})
         .then(res => {
+          this.isLoading = false
           if (res.data.meta.status_code === 200) {
             let item = res.data.data.item
             if (item) {
@@ -77,6 +84,7 @@ export default {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
+          this.isLoading = false
           console.error(err)
         })
       } else {

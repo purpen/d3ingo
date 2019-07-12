@@ -28,7 +28,7 @@
             <p class="font-size-16">1、项目名称：<span class="bottom-border">{{form.title}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">2、费用：</p>
-            <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，甲方收取全部项目设计费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
+            <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled>{{form.total | formatInt}}</span> 元，甲方收取全部项目设计费的<span class="bottom-border" type="text" disabled>{{form.commission_rate}}</span>%，也就是人民币<span class="bottom-border" type="text" disabled>{{form.commission | formatInt}}</span>元作为佣金。</p>
             <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
             <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
@@ -53,11 +53,11 @@
             <p>设计过程中需开具的发票，按实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。甲方为一般纳税人，若乙方为小规模纳税人，则乙方给甲方开票涉及的差额税费由甲方方从设计费用中扣除并代缴。</p>
             <p>&nbsp;</p>
 
-            <p>1、合同签定后，甲方在收到平台发放的首批款项后，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>元，在三个工作日内，将抽取全部佣金后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
+            <p>1、合同签定后，甲方在收到平台发放的首批款项后，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled>{{form.first_payment | formatInt}}</span>元，在三个工作日内，将抽取全部佣金后的剩余款项¥ <span class="bottom-border" type="text" disabled>{{form.first_payment | formatInt}}</span>元一次性全额支付给乙方。</p>
             <p>&nbsp;</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第 {{  d.sort  }} 阶段  <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在收到平台发放的阶段款项后，即总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-text="d.amount"></span>元，在三个工
-作日内通知乙方开税票，收到乙方税票后三个工作日内，将该阶段款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
+              <p>{{ index + 2 }}、第 {{  d.sort  }} 阶段  <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在收到平台发放的阶段款项后，即总设计费用款项 <span class="bottom-border" type="text" disabled>{{d.percentage | formatInt}}</span> %： ¥ <span class="bottom-border" type="text" disabled>{{d.amount | formatInt}}</span>元，在三个工
+作日内通知乙方开税票，收到乙方税票后三个工作日内，将该阶段款项¥ <span class="bottom-border" type="text" disabled>{{d.amount | formatInt}}</span>元一次性全额支付给乙方。</p>
               <p>&nbsp;</p>
             </div>
             <p style="color: #FF5A5F">注：首付款收到后启动项目，尾款收到后提交所有文件。</p>
@@ -208,6 +208,11 @@
         sureDialogLoadingBtn: false,
         isLoadingBtn: false,
         userId: this.$store.state.event.user.id
+      }
+    },
+    filters: {
+      formatInt(val) {
+        return Number(val)
       }
     },
     methods: {
