@@ -131,6 +131,15 @@ let routes = [
     component: require('@/components/pages/design_case/GeneralList')
   },
   {
+    path: '/design_case/sn_list',
+    name: 'designSNList',
+    meta: {
+      title: '设计案例',
+      requireAuth: false
+    },
+    component: require('@/components/pages/design_case/SNDesignCase')
+  },
+  {
     path: '/design_case/awards_list',
     name: 'designAwardsList',
     meta: {

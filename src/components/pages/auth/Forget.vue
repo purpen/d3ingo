@@ -248,6 +248,10 @@
       })
     },
     created: function () {
+      if (this.prod.name === 'sn') {
+        this.$router.push({name: 'content_manage-SNForget', query: this.$route.query, params: this.$route.params})
+        return
+      }
       if (this.$store.state.event.token) {
         this.$message.error('已经登录!')
         this.$router.replace({name: 'home'})
