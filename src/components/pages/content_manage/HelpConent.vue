@@ -2,7 +2,7 @@
   <div class="sn-bg margin-b-m50 bb-e6 padding-b40">
     <div class="container">
       <div class="header">
-        <router-link :to="''" class="tc-9">帮助中心</router-link>
+        <router-link :to="{name: 'SNhelp', query: {type: $route.query.type}}" class="tc-9">帮助中心</router-link>
         <i class="el-icon-arrow-right tc-9 margin-lr-5"></i>
         <span class="tc-6" v-if="type === 1">需求方</span>
         <span class="tc-6" v-else>服务方</span>
