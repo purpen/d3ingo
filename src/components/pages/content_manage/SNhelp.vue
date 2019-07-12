@@ -98,10 +98,10 @@
     cursor: pointer;
   }
   .routerCss:hover{
-    color: #3171FF !important
+    color: #3171fe !important
   }
   .cor{
-    color: #3171FF;
+    color: #3171fe;
     border-bottom: none;
   }
   .active{
@@ -112,7 +112,7 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(49,113,255,1);
-    background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+    background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   }
   .demand{
     width: 900px;

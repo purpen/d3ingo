@@ -295,7 +295,7 @@ export default {
 .left-menu > p.active,
 .left-menu > p:hover {
   background: #fafafa;
-  color: #3171FF;
+  color: #3171fe;
 }
 /* right */
 .right-box {
