@@ -262,7 +262,7 @@ export default {
       },
       time: 0,
       second: 60,
-      outerVisible: true, // 填写用户信息弹窗
+      outerVisible: false, // 填写用户信息弹窗
       showForm: true,
       showList: false, // 是否展示设计公司列表
       designList: [], // 后台展示设计公司列表
