@@ -8,7 +8,7 @@
       <li :class="{'active': isActive === 4}" @click="changeActive(4)">产品设计</li>
       <li :class="{'active': isActive === 5}" @click="changeActive(5)">视频制作</li>
     </ul>
-    <div class="case-list blank10" v-loading="isLoading">
+    <div v-if="!isEmpty" class="case-list blank10" v-loading="isLoading">
       <el-row :gutter="20" class="anli-elrow">
         <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="card">
@@ -34,7 +34,10 @@
         </el-col>
       </el-row>
     </div>
-    
+    <div v-else class="blank20 empty">
+      <img :src="require('assets/images/icon/SNEmpty.png')" alt="">
+      <p class="fz-16 tc-9">暂时没有相关案例～</p>
+    </div>
     <div class="pager">
       <el-pagination v-if="query.total > query.per_page" class="pagination"   
         :current-page="query.page" :page-size="query.per_page"
@@ -66,6 +69,7 @@ export default {
       this.$router.push({name: this.$route.name, query: {...this.$route.query, page: 1, active: active}})
     },
     fetchList() {
+      this.isEmpty = false
       this.isLoading = true
       // this.$http.get(api.designCaseOpenLists, {params: {
       this.$http.get(api.snDesignCaseList, {params: {
@@ -76,7 +80,13 @@ export default {
         this.isLoading = false
         if (res.data && res.data.meta.status_code === 200) {
           let data = res.data
-          this.itemList = data.data
+          if (data.data && data.data.length) {
+            this.itemList = data.data
+            this.isEmpty = false
+          } else {
+            this.itemList = data.data
+            this.isEmpty = true
+          }
           // pagination
           let pagination = data.meta.pagination
           this.query.per_page = pagination.per_page
@@ -160,7 +170,17 @@ export default {
 .case-header li.active::before {
   background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
 }
-
+.empty {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.empty img {
+  width: 100px;
+  margin-bottom: 20px;
+}
 /* img-box */
 
 .image-box {
