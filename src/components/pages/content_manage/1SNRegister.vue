@@ -3,15 +3,15 @@
     <div class="login bg-f">
       <div class="from">
         <!-- tab -->
-        <div class="tabs bb-e6">
-          <div class="tab_list" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
-            <span>需求方注册</span>
-            <!-- <div class="active" v-if="tabVal === 1"></div> -->
+        <div class="tabs flex bb-e6">
+          <div class="tab_list flex10" :class="tabVal === 1 ? 'cor' : ''" @click="tabClick(1)">
+            <span>需求方</span>
+            <div class="active" v-if="tabVal === 1"></div>
           </div>
-          <!-- <div class="tab_list" :class="tabVal === 2 ? 'cor' : ''" @click="tabClick(2)">
+          <div class="tab_list flex10" :class="tabVal === 2 ? 'cor' : ''" @click="tabClick(2)">
             <span>设计服务商</span>
-            <div class="active" v-if="tabVal === 2"></div>
-          </div> -->
+            <div class="active active2" v-if="tabVal === 2"></div>
+          </div>
         </div>
         <!-- 表单 -->
 
@@ -50,8 +50,8 @@
           </el-form>
         </div>
         <div class="reg">
-          <p>已有账户? <router-link :to="{name: 'SNlogin'}"  class="padding-r-30">立即登录</router-link>
-            或者 <a href="https://saas.taihuoniao.com/spread_design">设计服务商入驻</a>
+          <p>已有账户? <router-link :to="{name: 'SNlogin'}">立即登录</router-link>
+            <!-- 或者 <a href="https://saas.taihuoniao.com/spread_design">设计服务商入驻</a> -->
           </p>
         </div>
       </div>
@@ -68,7 +68,7 @@
           <div class="title">我是设计服务商</div>
           <div class="describe">为客户提供专业的设计服务</div>
         </div>
-        <img src="../../../assets/images/works/Release.png" alt="">
+        <img src="../../../assets/images/promote_sn/banner03@2x.png" alt="">
       </div>
     </div>
   </div>
@@ -271,7 +271,7 @@
             let account = this.form.account
             let password = this.form.password
             let smsCode = this.form.smsCode
-            let type = this.form.type
+            let type = this.tabVal
             // if (!type) {
             //   that.$message.error('请选择客户或设计服务商')
             //   return false
@@ -369,18 +369,16 @@
     justify-content: space-around;
     box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
   }
-  .tabs{
+  .tabs {
     display: flex;
-    /* padding: 30px; */
     padding-top: 26px;
     justify-content: center;
   }
-  .from{
+  .from {
     width: 100%;
-    border-right: 2px dashed #E6E6E6;
+    border-right: 2px solid #E6E6E6;
   }
   .tab_list {
-    width: 210px;
     text-align: center;
     font-size:20px;
     font-family:PingFangSC-Regular;
@@ -394,17 +392,20 @@
     padding-bottom: 20px;
   }
   .cor{
-    color: #666;
+    color: #3171FF;
     border-bottom: none;
   }
   .active{
-    width: 210px;
+    width: 100%;
     height:3px;
     font-size:20px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(49,113,255,1);
     background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  }
+  .active2 {
+    background: linear-gradient(270deg,rgba(49,113,254,1) 0%,rgba(160,79,175,1) 100%);
   }
   .introduce{
     display: flex;
@@ -428,10 +429,9 @@
     margin:20px 0 40px 0;
   }
   .introduce img{
-    width: 300px;
-    height: auto;
+    width: 280px;
+    height: 238px;
   }
-
 
   .register-content {
     padding: 30px 30px 0;
