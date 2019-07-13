@@ -87,16 +87,21 @@
             <p class="num">根据您的需求筛选出<i>{{designList.length}}家</i>设计服务商</p>
         </section>
         <div v-if="matchComplete && !designList.length">
-          <p class="num">智能匹配未筛选到合适的设计服务商</p>
-          <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+          <div v-if="custom.name === 'sn'">
+            <h3 class="text-center">神农大脑将对您发布的需求进行匹配，请耐心等待...</h3>
+            <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+              <button class="full-red-button small-button" v-if="showBackList">返回需求列表</button>
+            </router-link>
+          </div>
+          <div v-else>
+            <p class="num">智能匹配未筛选到合适的设计服务商</p>
+            <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+          </div>
         </div>
       </div>
     </div>
     <div v-if="showList" class="project-cover clearfix">
-      <div v-if="custom.name === 'sn'">
-        <h3 class="text-center">匹配中...<span class="tc-red"></span></h3>
-      </div>
-      <div v-else>
+      <div>
         <div class="project-item-box project-item-box-company">
           <h3 v-if="designList.length" class="text-center">根据您的需求，筛选出 <span class="tc-red">{{designList.length}}</span> 家设计服务商</h3>
           <h3 v-else class="text-center">根据您的需求，智能匹配未筛选到合适的设计服务商</h3>
@@ -245,6 +250,7 @@ export default {
       }
     }
     return {
+      showBackList: false,
       isGettingCode: false,
       isCoding: false,
       isSubmiting: false,
@@ -381,19 +387,26 @@ export default {
               this.outerVisible = false
               this.isMatching = true
               this.showForm = false
-              let arr = this.formatList(res.data.data)
-              setTimeout(_ => {
-                this.designList = arr || []
+              if (this.custom.name === 'sn') {
                 this.matchComplete = true
                 setTimeout(_ => {
-                  this.isMatching = false
-                  this.showList = true
-                  if (this.designList.length) {
-                    this.formatRadar(arr)
-                  }
-                }, 1500)
-              }, 1000)
-              // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+                  this.showBackList = true
+                }, 1000)
+              } else {
+                let arr = this.formatList(res.data.data)
+                setTimeout(_ => {
+                  this.designList = arr || []
+                  this.matchComplete = true
+                  setTimeout(_ => {
+                    this.isMatching = false
+                    this.showList = true
+                    if (this.designList.length) {
+                      this.formatRadar(arr)
+                    }
+                  }, 1500)
+                }, 1000)
+                // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+              }
             } else {
               this.$message.error(res.data.meta.message)
             }
