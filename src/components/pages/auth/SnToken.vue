@@ -1,5 +1,5 @@
 <template>
-  <h1 class="tc-2 fz-20 text-center">{{token}}</h1>
+  <h1 class="tc-2 fz-0 text-center">{{token}}</h1>
 </template>
 <script>
 import api from '@/api/api'
@@ -15,22 +15,25 @@ export default {
   },
   created() {
     this.token = this.$route.query.token
+    auth.write_SnToken(this.token)
+    this.unionLogin()
   },
   methods: {
-    unionLogin(formName) {
+    unionLogin() {
       auth.logout(true)
       // 验证通过，登录
       this.$http
-      .post(api.login, {token: this.token})
-      .then(response => {
-        if (response.data.meta.status_code === 200) {
-          auth.write_token(response.data.data.token, 'unionLogin')
+      .post(api.snToken, {token: this.token})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          auth.write_token(res.data.data.token, 'unionLogin')
           this.fetchUser()
         } else {
-          this.$message.error(response.data.meta.message)
+          this.$message.error(res.data.meta.message)
         }
       })
-      .catch(function(error) {
+      .catch(error => {
         this.$message.error(error.message)
       })
     },
@@ -51,7 +54,6 @@ export default {
             this.$store.commit(MENU_STATUS, '')
             auth.write_user(res.data.data)
             this.timeLoadMessage()
-            this.getStatus(this.$store.state.event.user.type)
             let prevUrlName = this.$store.state.event.prevUrlName
             if (prevUrlName) {
               // 清空上一url
@@ -70,7 +72,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       })
-      .catch(function(error) {
+      .catch((error) => {
         auth.logout(true)
         this.$message.error(error.message)
       })

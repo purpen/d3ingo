@@ -10,7 +10,8 @@ import {
   MENU_STATUS,
   HIDE_HEADER,
   HIDE_FOOTER,
-  LEFT_WIDTH
+  LEFT_WIDTH,
+  WRITE_SNTOKEN
 } from './mutation-types.js'
 import prod from 'conf/prod.env'
 import phenix from 'assets/js/base.js'
@@ -19,6 +20,16 @@ import phenix from 'assets/js/base.js'
 let isLoggedIn = function () {
   // TODO 此处可以写异步请求，到后台一直比较Token
   let token = localStorage.getItem('token')
+  if (token) {
+    return JSON.parse(token)
+  } else {
+    return false
+  }
+}
+// 判断是否登录
+let getSntoken = function () {
+  // TODO 此处可以写异步请求，到后台一直比较Token
+  let token = localStorage.getItem('sntoken')
   if (token) {
     return JSON.parse(token)
   } else {
@@ -164,6 +175,7 @@ function showProd() {
 const state = {
   ticket: getTicket() || null,
   token: isLoggedIn() || null,
+  sntoken: getSntoken() || null,
   user: userInfo() || {},
   loading: false, // 是否显示loading
   apiUrl: 'http://sa.taihuoniao.com', // 接口base url
@@ -210,6 +222,10 @@ const mutations = {
     localStorage.setItem('token', null)
     localStorage.setItem('token', JSON.stringify(token))
     state.token = token
+  },
+  [WRITE_SNTOKEN](state, token) {
+    localStorage.setItem('sntoken', JSON.stringify(token))
+    state.sntoken = token
   },
   [USER_TICKET](state, ticket) {
     localStorage.setItem('ticket', JSON.stringify(ticket))
