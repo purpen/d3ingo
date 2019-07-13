@@ -243,6 +243,10 @@
 .margin-l-10 {
   margin-left: 10px;
 }
+.margin-lr-5 {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 .margin-r-5 {
   margin-right: 5px;
 }
@@ -384,6 +388,7 @@
 .pointer {
   cursor: pointer;
 }
+/* 单行文本省略 */
 .break-all {
   word-break: break-all
 }
@@ -741,20 +746,15 @@ button.el-button.is-custom.is-disabled,
     padding-top: 0
   }
 }
-.el-input-c8 .el-textarea__inner::-webkit-input-placeholder,
-.el-input-c8 .el-input__inner::-webkit-input-placeholder { /* WebKit browsers */
-  color: #c8c8c8 !important;
-}
-.el-input-c8 .el-textarea__inner:-moz-placeholder,
-.el-input-c8 .el-input__inner:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: #999!important;
-}
-.el-input-c8 .el-textarea__inner::-moz-placeholder,
-.el-input-c8 .el-input__inner::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: #c8c8c8!important;
-}
-.el-input-c8 .el-textarea__inner:-ms-input-placeholder,
-.el-input-c8 .el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
+input, textarea,
+.el-textarea__inner::-webkit-input-placeholder,
+.el-input__inner::-webkit-input-placeholder,
+.el-textarea__inner:-moz-placeholder,
+.el-input__inner:-moz-placeholder,
+.el-textarea__inner::-moz-placeholder,
+.el-input__inner::-moz-placeholder,
+.el-textarea__inner:-ms-input-placeholder,
+.el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #c8c8c8!important;
 }
 /* el-dialog */

@@ -12,7 +12,7 @@
   import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
-    name: 'vcenterContractJdDemandDown',
+    name: 'vcenter_contract_down',
     components: {},
     data () {
       return {
@@ -31,25 +31,23 @@
         let stageInfo = []
         for (let i = 0; i < this.form.item_stage.length; i++) {
           let d = this.form.item_stage[i]
-          // let content = ''
-          // if (d.content.length > 0) {
-          //   content = '包含: '
-          //   for (let j = 0; j < d.content.length; j++) {
-          //     content += d.content[j] + ' '
-          //   }
-          // }
+          let content = ''
+          if (d.content.length > 0) {
+            content = '包含: '
+            for (let j = 0; j < d.content.length; j++) {
+              content += d.content[j] + ' '
+            }
+          }
           let item = {
             text: [
               {text: '第'},
               {text: '    ' + d.sort + '   ', style: 'write'},
-              {text: '阶段：乙方在本合同签订之日起'},
+              {text: '阶段：设计服务商在'},
               {text: '    ' + d.time + '   ', style: 'write'},
               {text: '个工作日内提交'},
               {text: '    ' + d.title + '   ', style: 'write'},
-              {text: '，设计费：'},
-              {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: '（RMB）元;'}
-              // {text: content}
+              {text: '; '},
+              {text: content, style: 'write'}
             ],
             style: 'p'
           }
@@ -64,11 +62,13 @@
               {text: '    ' + d.sort + '   ', style: 'write'},
               {text: '阶段'},
               {text: '    ' + d.title + '   ', style: 'write'},
-              {text: '确认后，甲方在三个工作日内向乙方支付总设计费用款项项'},
+              {text: '确认后，甲方在收到平台发放的阶段款项后，即总设计费用款项'},
               {text: '    ' + d.percentage + '   ', style: 'write'},
               {text: '%： ¥'},
               {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: '（RMB）元 '}
+              {text: '元，在三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将该阶段款项¥ '},
+              {text: '    ' + d.amount + '   ', style: 'write'},
+              {text: ' 元一次性全额支付给乙方。'}
             ],
             style: 'p'
           }
@@ -79,88 +79,91 @@
           content: [
             {text: this.itemName, style: 'header'},
             {text: '基本信息', style: 'title'},
-            {text: '甲方（客户）：', style: 'p'},
-            {text: '公司名称: ' + this.form.demand_company_name, style: 'p'},
-            {text: '地址: ' + this.form.demand_company_address, style: 'p'},
-            {text: '联系人: ' + this.form.demand_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.demand_company_phone, style: 'p'},
+            {text: '甲方(太火鸟)：', style: 'p'},
+            {text: '公司名称: ' + this.form.thn_company_name, style: 'p'},
+            {text: '地址: ' + this.form.thn_company_address, style: 'p'},
+            {text: '联系人: ' + this.form.thn_company_legal_person, style: 'p'},
+            {text: '电话: ' + this.form.thn_company_phone, style: 'p'},
             {text: '', style: 'marTB'},
-            {text: '乙方：', style: 'p'},
-            {text: '公司名称: ' + this.form.other_company_name, style: 'p'},
-            {text: '地址: ' + this.form.other_company_address, style: 'p'},
-            {text: '联系人: ' + this.form.other_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.other_company_phone, style: 'p'},
+            {text: '乙方(设计服务商)：', style: 'p'},
+            {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
+            {text: '地址: ' + this.form.design_company_address, style: 'p'},
+            {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},
+            {text: '电话: ' + this.form.design_company_phone, style: 'p'},
             {text: '', style: 'marTB'},
             {text: '依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：', style: 'p'},
-            {text: '甲方在“京东云艺火”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；', style: 'p'},
-            {text: '乙方通过平台承接项目，并有权为履行本合同之目的，委托第三方设计服务商履行本合同项下全部或部分权利义务；', style: 'p'},
-            {text: '甲、乙双方一致同意按照本合同的约定，由乙方向甲方提供项目所包含的设计服务成果交付等相应支持，为甲方实现设计需求。', style: 'p'},
+            {text: '客户（以下简称“客户”）在“京东云艺火”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；', style: 'p'},
+            {text: '甲方作为平台官方授权的合作伙伴，将项目发包给乙方，并有权为履行本合同之目的，要求乙方履行本合同项下全部或部分权利义务；', style: 'p'},
+            {text: '甲、乙双方一致同意按照本合同的约定，由乙方向客户提供项目所包含的设计服务成果交付等相应支持，为客户实现设计需求。', style: 'p'},
             {text: '关于双方合作的相关细节约定如下：', style: 'p'},
-            {text: '一、项目内容和项目费用', style: 'title'},
+
+            {text: '一、项目名称和费用', style: 'title'},
             {
               text: [
-                {text: '1、项目内容：', style: 'p'},
-                {text: this.form.title}
-              ]
-            },
-            {text: '', style: 'p'},
-            {text: '2、项目费用：', style: 'p'},
-            {
-              text: [
-                {text: '本项目总费用共计'},
-                // {text: '     ' + this.form.total_han + '     ', style: 'write'},
-                // {text: '整（小写：'},
-                {text: '     ' + this.form.total + '     ', style: 'write'},
-                {text: '（人民币：'},
-                {text: '     ' + this.form.total_han + '     ', style: 'write'},
-                {text: '元整）'}
+                {text: '1、项目名称：'},
+                {text: this.form.title, style: 'write'}
               ],
               style: 'p'
             },
-            // {text: '', style: 'marB'},
             {text: '', style: 'p'},
-            {text: '二、项目交付内容及交付时间', style: 'title'},
+            {text: '2、费用：', style: 'p'},
+            {
+              text: [
+                {text: '本合同设计费用总额为人民币'},
+                // {text: '     ' + this.form.total_han + '     ', style: 'p'},
+                {text: '     ' + this.form.total + '     ', style: 'write'},
+                {text: '元，'},
+                // {text: '     ' + this.form.total + '     ', style: 'write'},
+                {text: '甲方收取全部项目设计费的'},
+                {text: '     ' + this.form.commission_rate + '     ', style: 'write'},
+                {text: '%，也就是人民币(￥)'},
+                {text: '     ' + this.form.commission + '     ', style: 'write'},
+                {text: '元作为佣金。'}
+              ],
+              style: 'p'
+            },
+            {
+              text: [
+                {text: '注：本合同中所有涉及费用金额均为含税。'}
+              ],
+              style: 'p'
+            },
+
+            {text: '二、项目交付内容及工作周期', style: 'title'},
             {
               text: [
                 {text: '经甲、乙双方协商，本项目共分'},
                 {text: ' ' + this.form.sort + ' ', style: 'write'},
-                {text: '个阶段进行，各阶段交付内容、交付时间及设计费如下：'}
+                {text: '个阶段进行，细节流程与时间节点如下：'}
               ],
               style: 'p'
             },
             stages,
-            {text: '三、结算条款', style: 'title'},
+
+            {text: '三、付款方式', style: 'title'},
+            {text: '甲方按以下约定向乙方支付设计费，如果客户与乙合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。', style: 'p'},
+            {text: '设计过程中需开具的发票，按实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。甲方为一般纳税人，若乙方为小规模纳税人，则乙方给甲方开票涉及的差额税费由甲方方从设计费用中扣除并代缴。', style: 'p'},
             {
               text: [
-                {text: '本项目总费用共计 '},
-                {text: ' ' + this.form.total + ' ', style: 'write'},
-                {text: '元，由甲方分'},
-                {text: '   ' + parseInt(this.form.sort + 1) + '   ', style: 'write'},
-                {text: '期支付给乙方。甲方履行付款义务的期限及支付金额如下：'}
-              ],
-              style: 'p'
-            },
-            {
-              text: [
-                {text: '1、合同签定后，甲方在', style: 'p'},
-                {text: '   ' + this.form.demand_pay_limit + '   ', style: 'write'},
-                {text: '个工作日内向乙方支付首付款项，即总设计费用款项', style: 'p'},
-                {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
-                {text: '%： ¥'},
+                {text: '1、合同签定后，甲方在收到平台发放的首批款项后，即总设计费用款项40%： ', style: 'p'},
+                // {text: '   ' + this.form.demand_pay_limit + '   ', style: 'write'},
+                // {text: '个工作日内向丙方支付首付款项，即总设计费用款项', style: 'p'},
+                // {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
+                {text: ' ¥'},
                 {text: '   ' + this.form.first_payment + '   ', style: 'write'},
-                {text: 'RMB）元。', style: 'p'}
+                {text: '元，在三个工作日内，将抽取全部佣金后的剩余款项¥', style: 'p'},
+                {text: '   ' + this.form.first_rest_payment + '   ', style: 'write'},
+                {text: '元一次性全额支付给乙方。', style: 'p'}
               ],
               style: 'p'
             },
             stageInfo,
-            {text: '', style: 'p'},
             {
               text: [
-                {text: '注：首付款项收到后启动项目，最终款项收到后提交项目涉及的所有文件。'}
+                {text: '注：首付款收到后启动项目，尾款收到后提交所有文件。'}
               ],
               style: 'p'
             },
-            {text: '甲方可自行登录京东云市场（https://market.jdcloud.com/）完成合同款支付，乙方收到上述款项后三个工作日内向甲方开具相应金额的增值税发票。', style: 'p'},
 
             {text: '四、甲方责任与义务', style: 'title'},
             {text: '1、以书面形式提出对本设计项目的要求及有关技术资料。在合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系；', style: 'p'},
@@ -184,13 +187,10 @@
             {text: '3、乙方在设计过程中应及时通过书面提请甲方进行设计、技术研究和阶段性确认；', style: 'p'},
             {text: '4、乙方保证平台上承接的服务及相关内容与国家相关的法律、法规不相抵触且并不侵犯任何第三方的权益；', style: 'p'},
             {text: '5、协助甲方对产品生产加工过程中涉及外观设计、结构设计等方面的内容进行监督管理；', style: 'p'},
-            {
-              text: '6、在合同签订后，对于项目涉及内容略有调整的情况，双方应友好协商解决。',
-              style: 'p'
-            },
+
             {text: '六、知识产权', style: 'title'},
             {
-              text: '1、对因本合同产生的甲方选定方案，在甲方按照本合同约定完成相关的付款义务后，其全部知识产权归甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方平台内设计服务商所有。若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断该等知识产权的相关事宜；',
+              text: '1、对因本合同产生的甲方选定方案，在甲方按照本合同约定完成相关的付款义务后，其全部知识产权归甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方所有。 若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断该等知识产权的相关事宜；',
               style: 'p'
             },
             {text: '2、乙方保证其设计方案不侵犯任何第三方的知识产权；', style: 'p'},
@@ -211,56 +211,43 @@
             {text: '1、本合同所指不可抗力包括地震、水灾、火灾、战争、政府行动、意外事件或其他各方所不能预见、不能避免并不能克服的事件；', style: 'p'},
             {text: '2、由于不可抗力原因致使本合同无法履行时，无法履行合同义务的一方应在15日内将不能履行合同的事实通知另一方，本合同自动终止；', style: 'p'},
             {text: '3、由于不可抗力原因致使本合同项目开发中断，项目交付日期及付款日期相应顺延，各方不承担违约责任。如中断超过30日，本合同自动终止。', style: 'p'},
-            {text: '', style: 'marB'},
+
             {text: '九、争议解决', style: 'title'},
             {
               text: '1、本合同签订后，未经双方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向北京市大兴区有管辖权的人民法院起诉。',
               style: 'p'
             },
-            {text: ' ', style: 'marTB'},
             {text: '十、保密条款', style: 'title'},
             {
               text: '1、甲乙双方在签署及履行本协议过程中获得的有关技术方案、业务数据、投资者信息、费用支付及本协议内容等所有信息、资料和数据（无论其载体如何）、双方各自对投资者基于本协议约定的产生的业务数据均为保密信息。双方在方案设计、系统开发及业务开展的任何阶段，都应对保密信息承担保密义务。未经对方书面同意，任何一方不得在任何时间以任何方式向任何第三方透漏相关保密信息。但以下情况除外：',
               style: 'p'
             },
             {
-              text: '1.1 因非本方原因使保密信息已经进入公众知晓渠道；',
+              text: '1.1、因非本方原因使保密信息已经进入公众知晓渠道；',
               style: 'p'
             },
             {
-              text: '1.2 根据相关法律法规的规定或中国证监会、中国银监会的规定应予以披露；',
+              text: '1.2、根据相关法律法规的规定或中国证监会、中国银监会的规定应予以披露；',
               style: 'p'
             },
             {
-              text: '1.3 根据司法机关或其他有关行政机关的决定应予以披露。',
+              text: '1.3、根据司法机关或其他有关行政机关的决定应予以披露。',
               style: 'p'
             },
             {
-              text: '2、除法律法规另有规定或司法机关、有关行政机关决定外，未经投资者授权，双方不得通过任何方式将投资者的信息、交易数据，包括基金认购、申购、赎回、持有份额、未分配收益信息等，泄露给甲乙方之外的其他机构。对投资者在申请开通本业务过程中主动授权双方相互共享必要交易信息的，双方可以依据授权相互提供投资者业务申请信息。',
+              text: '1.3、根据司法机关或其他有关行政机关的决定应予以披露。',
               style: 'p'
             },
-            {
-              text: '3、乙方不得将甲乙双方合作过程中获取甲方任何直接间接资料存储在甲乙双方之外的云或者第三方服务器；如需使用第三方提供的数据存储和传输技术服务，需主动向甲方报备并经甲方书面同意。届时，甲方有权选择解除合同或者选择继续履行合同；如甲方选择解除合同的，乙方应向甲方支付【 壹佰 】万元违约金，如果乙方拒绝支付，甲方有权自甲方或甲方关联公司与乙方的任何应付款中直接予以扣除；如果甲方选择继续履行合同的，乙方应设置防火墙（包括但不限于区分团队人员、资料分类管理等手段）以确保甲方商业秘密不被泄露，同时双方需就合同条款等内容进行重新协商。',
-              style: 'p'
-            },
-            {
-              text: '4、因任何一方的原因导致保密信息外泄，并给投资者或其他方造成损失的，责任方应承担赔偿责任。',
-              style: 'p'
-            },
-            {
-              text: '5、本合同保密条款不因双方合作的终止、本合同的解除而无效。',
-              style: 'p'
-            },
+            // {text: '', style: 'p'},
             {text: '十一、其它', style: 'title'},
             {
-              text: '1、本合同如有未尽事宜，须经双方协商补充规定，补充规定与合同具有同等效力。',
+              text: '1、本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。',
               style: 'p'
             },
             {
-              text: '2、本合同一式两份，甲乙方各持一份，自双方在平台确认之日起生效，具同等法律效力。',
+              text: '2、本合同一式两份，甲乙方各持一份，自签订双方在平台确认之日起生效，具同等法律效力。',
               style: 'p'
-            },
-            {text: '', style: 'p'}
+            }
           ],
           defaultStyle: {
             font: 'NotoSansCJK',
@@ -277,7 +264,7 @@
             title: {
               fontSize: 12,
               bold: true,
-              margin: [0, 20, 0, 5],
+              margin: [0, 20, 0, 2],
               fontWeight: 900
             },
             p: {
@@ -285,12 +272,12 @@
               margin: [0, 2, 0, 2],
               lineHeight: 2
             },
-            marB: {
-              marginBottom: 40
+            martop: {
+              marginTop: 5
             },
             marTB: {
               // marginTop: 5,
-              marginBottom: 13
+              marginBottom: 15
             },
             write: {
               decoration: 'underline'
@@ -343,22 +330,24 @@
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
+              console.log(item)
               if (item) {
-                // if (item.version === 0) {
-                //   that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
-                //   return false
-                // }
-                // // 是否来源京东
-                // if (item.source === 1) {
-                //   let uType = that.$store.state.event.user.type
-                //   // 如果是设计服务商
-                //   if (uType === 2) {
-                //     that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
-                //   } else {
-                //     that.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
-                //   }
-                //   return
-                // }
+                if (item.version === 0) {
+                  that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
+                  return false
+                }
+                // 是否来源京东
+                if (item.source === 1) {
+                  let uType = that.$store.state.event.user.type
+                  console.log(uType)
+                  // 如果是设计服务商
+                  if (uType === 2) {
+                    that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
+                  } else {
+                    that.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
+                  }
+                  return
+                }
                 item.stages = []
                 if (!item.demand_pay_limit) {
                   item.demand_pay_limit = that.contractScale.demand_pay_limit
@@ -393,8 +382,8 @@
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {
-                    require('../../../../../lib/js/pdfmake.min.js')
-                    require('../../../../../lib/js/vfs_fonts.js')
+                    require('lib/js/pdfmake.min.js')
+                    require('lib/js/vfs_fonts.js')
                     that.downBtn()
                   })
                 })

@@ -14,22 +14,24 @@
     <!-- 需求 -->
       <div class="demand" v-if="tabVal === 1">
         <div class="demand_cont">
-          <div class="demand_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
-              <img :src="demandImg[index].img" alt="">
-              <a class="title routerCss">{{item.name}}</a>
-              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
-          </div>
+          <router-link class="demand_list margin-right"
+            :to="{name: 'SNhelpContent', query: {type: 1, option: index + 1}}"
+            v-for="(item, index) in demandImg" :key="index">
+            <img :src="item.img" alt="">
+            <a class="title routerCss">{{item.name}}</a>
+          </router-link>
           <div class="demand_list_last"></div>
         </div>
       </div>
       <!-- 设计 -->
       <div class="design" v-if="tabVal === 2">
         <div class="design_cont">
-          <div class="design_list margin-right" v-for="(item,index) in categoryList"  v-if="!isLoading">
-              <img :src="designImg[index].img" alt="" alt="">
-              <a class="title routerCss">{{item.name}}</a>
-              <!-- <router-link class="title routerCss" :to="{name: 'contentManageAssistShow', query: {categoryId: item.id}}">{{item.name}}</router-link> -->
-          </div>
+          <router-link class="design_list margin-right"
+            :to="{name: 'SNhelpContent', query: {type: 2, option: index + 1}}"
+            v-for="(item, index) in designImg" :key="index">
+            <img :src="item.img" alt="">
+            <a class="title routerCss">{{item.name}}</a>
+          </router-link>
           <div class="design_list_last"></div>
           <div class="design_list_last"></div>
         </div>
@@ -37,7 +39,6 @@
   </div>
 </template>
 <script>
-  import api from '@/api/api'
   export default {
     name: 'SNhelp',
     data() {
@@ -46,53 +47,33 @@
         categoryList: [],
         isLoading: false,
         demandImg: [
-          { img: require('../../../assets/images/works/register.png') },
-          { img: require('../../../assets/images/works/Release.png') },
-          { img: require('../../../assets/images/works/ProjectDocking.png') },
-          { img: require('../../../assets/images/works/projectManagement.png') },
-          { img: require('../../../assets/images/works/evaluate.png') }
+          { name: '注册与认证', img: require('../../../assets/images/works/register.png') },
+          { name: '发布需求', img: require('../../../assets/images/works/Release.png') },
+          { name: '项目对接', img: require('../../../assets/images/works/ProjectDocking.png') },
+          { name: '项目管理', img: require('../../../assets/images/works/projectManagement.png') },
+          { name: '验收及评价', img: require('../../../assets/images/works/evaluate.png') }
         ],
         designImg: [
-          { img: require('../../../assets/images/works/register.png') },
-          { img: require('../../../assets/images/works/UndertakingProjects.png') },
-          { img: require('../../../assets/images/works/projectManagement.png') },
-          { img: require('../../../assets/images/works/AcceptanceSettlement.png') }
+          { name: '注册与认证', img: require('../../../assets/images/works/register.png') },
+          { name: '承接项目', img: require('../../../assets/images/works/UndertakingProjects.png') },
+          { name: '项目管理', img: require('../../../assets/images/works/projectManagement.png') },
+          { name: '验收结算', img: require('../../../assets/images/works/AcceptanceSettlement.png') }
         ]
       }
     },
     computed: {
-
     },
     methods: {
       tabClick(type) {
-        if (this.tabVal === type) {
-          return
-        }
         this.tabVal = type
-        this.getCategory(type)
-      },
-      getCategory(type) {
-        if (type) {
-          this.tabVal = type
-        }
-        this.isLoading = true
-        this.$http.get(api.assistCategoryList, {params: {son_type: this.tabVal}}).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            if (response.data.data && response.data.data.length) {
-              this.categoryList = response.data.data
-            }
-            this.isLoading = false
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        })
-        .catch(function (error) {
-          this.$message.error(error)
-        })
+        this.$router.push({name: this.$route.name, query: {type: type}})
       }
     },
     created() {
-      this.getCategory()
+      this.tabVal = this.$route.query.type || 1
+      if (this.tabVal) {
+        this.tabVal = Number(this.tabVal)
+      }
     }
   }
 </script>
@@ -117,10 +98,10 @@
     cursor: pointer;
   }
   .routerCss:hover{
-    color: #3171FF !important
+    color: #3171fe !important
   }
   .cor{
-    color: #3171FF;
+    color: #3171fe;
     border-bottom: none;
   }
   .active{
@@ -131,7 +112,7 @@
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(49,113,255,1);
-    background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+    background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   }
   .demand{
     width: 900px;

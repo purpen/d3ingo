@@ -246,10 +246,10 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
-              <el-menu-item v-if="prodName !== 'sn'"  index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item> -->
-              <el-menu-item  v-if="prodName !== 'sn'" index="/login" :route="menu.login" class="fr">登录</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item>
+              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -363,6 +363,7 @@
           identity: {path: '/identity'},
           content_manage: {path: '/content_manage/list'},
           sn_login: {path: '/content_manage/SNlogin'},
+          // sn_about: {path: '/content_manage/SNhelp'},
           sn_about: {path: '/content_manage/SNhelp'},
           sn_register: {path: '/content_manage/1SNRegister'}
         },
@@ -826,7 +827,7 @@
     border-bottom: 3px solid transparent;
     color: #666;
     padding: 0 3px;
-    margin: 0 22px;
+    margin: 0 22px 0 0;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1101,8 +1102,11 @@
     padding: 0 12px !important;
     height:30px !important;
     line-height: 30px !important;
-    background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%) !important;
+    background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%) !important;
     border-radius:15px !important;
+  }
+  .sn-register:hover {
+    background:linear-gradient(270deg,#3171fe 0%,#a04faf 100%) !important;
   }
   .black-header .project-menu-sub .el-menu,
   .black-header .nav-header .el-menu,
@@ -1112,14 +1116,14 @@
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus {
     background: #13162A;
-    color: #3171FF;
+    color: #3171fe;
   }
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
   }
   .sn-header  .nav-header .el-menu--horizontal > .el-menu-item:hover,
@@ -1127,8 +1131,9 @@
   .sn-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .sn-header .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
+    /* background: none; */
   }
   .sn-header.black-header .nav-header .el-menu-header .el-menu-item, .sn-header.black-header .m-nav-header .el-menu-header .el-menu-item, .sn-header.black-header .el-menu-header .el-submenu {
     color: #fff;
@@ -1163,12 +1168,12 @@
     transition: 0.268s all ease;
   }
   .sn-header .nav-header .nav-right .sn-register:hover {
-    background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    background-image: linear-gradient(-90deg, #995CB6 0%, #5D6FBC 45%, #0989C5 100%);
     color: #fff!important;
   }
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #3171FF;
+    color: #3171fe;
   }
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):hover {

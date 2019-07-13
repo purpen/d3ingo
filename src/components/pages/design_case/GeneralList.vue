@@ -19,10 +19,10 @@
           <el-card :body-style="{ padding: '0px' }" class="card">
             <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">
 
-              <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / contain'}">
+              <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center / cover'}">
                   <!-- <img v-lazy="d.cover.middle"> -->
               </div>
-              <div class="image-box" v-else :style="{background: 'url('+require('assets/images/Bitmap.png')+') no-repeat center', backgroundSize: 'contain'}">
+              <div class="image-box" v-else :style="{background: 'url('+require('assets/images/Bitmap.png')+') no-repeat center', backgroundSize: 'cover'}">
               </div>
               <div class="content">
                 <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : d.id }}">

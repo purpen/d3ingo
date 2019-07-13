@@ -25,6 +25,37 @@
       }
     },
     methods: {
+      selectContract(item) { // 默认0 艺火1 义乌2 神农4
+        let source = item.source
+        let uType = this.$store.state.event.user.type
+        let uniqueId = this.$route.params.unique_id
+        if (item.version === 0) {
+          this.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
+          return false
+        }
+        switch (source) {
+          case 1:
+            if (uType === 2) {
+              this.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
+            } else {
+              this.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
+            }
+            return false
+          case 2:
+            this.$router.push({name: '', params: {unique_id: uniqueId}})
+            return false
+          case 4:
+            if (uType === 2) {
+              this.$router.replace({name: 'vcenterContractSnDesignDown', params: {unique_id: uniqueId}})
+            } else {
+              this.$router.replace({name: 'vcenterContractSnDemandDown', params: {unique_id: uniqueId}})
+            }
+            return false
+          default:
+            this.$router.push({name: '', params: {unique_id: uniqueId}})
+            return false
+        }
+      },
       // 下载
       downBtn() {
         let stages = []
@@ -311,21 +342,22 @@
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
               if (item) {
-                if (item.version === 0) {
-                  that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
-                  return false
-                }
-                // 是否来源京东
-                if (item.source === 1) {
-                  let uType = that.$store.state.event.user.type
-                  // 如果是设计服务商
-                  if (uType === 2) {
-                    that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
-                  } else {
-                    that.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
-                  }
-                  return
-                }
+                // if (item.version === 0) {
+                //   that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
+                //   return false
+                // }
+                // // 是否来源京东
+                // if (item.source === 1) {
+                //   let uType = that.$store.state.event.user.type
+                //   // 如果是设计服务商
+                //   if (uType === 2) {
+                //     that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
+                //   } else {
+                //     that.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
+                //   }
+                //   return
+                // }
+                that.selectContract()
                 item.stages = []
                 if (!item.demand_pay_limit) {
                   item.demand_pay_limit = that.contractScale.demand_pay_limit
@@ -361,8 +393,8 @@
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {
-                    require('../../../../../lib/js/pdfmake.min.js')
-                    require('../../../../../lib/js/vfs_fonts.js')
+                    require('lib/js/pdfmake.min.js')
+                    require('lib/js/vfs_fonts.js')
                     that.downBtn()
                   })
                 })

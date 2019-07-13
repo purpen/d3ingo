@@ -1,7 +1,7 @@
 <template>
   <section :class="['menu-sub','project-menu-sub', {'jdc': custom.name === 'jdc', 'yw': custom.name === 'yw'}]">
     <div class="nav-left nav-menu">
-      <router-link :to="{name: 'home'}" class="el-menu-item logo">
+      <router-link :to="{name: 'home'}" class="el-menu-item logo" :class="{'sn': custom.name === 'sn'}">
         <img :src="custom.logo" :alt="custom.info">
       </router-link>
       <div class="flex">
@@ -147,7 +147,9 @@ export default {
   .logo img {
     height: 50px;
   }
+  .sn img,
   .yw img {
+    width: auto;
     height: 30px;
   }
   .logo:hover {

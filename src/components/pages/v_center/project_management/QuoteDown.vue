@@ -119,8 +119,8 @@
           // 生成pdf插件太大，实现懒加载
           var self = this
           require.ensure([], function (require) {
-            require('../../../../../lib/js/pdfmake.min.js')
-            require('../../../../../lib/js/vfs_fonts.js')
+            require('lib/js/pdfmake.min.js')
+            require('lib/js/vfs_fonts.js')
             self.downBtn()
           })
         }

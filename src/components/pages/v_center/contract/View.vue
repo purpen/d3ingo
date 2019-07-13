@@ -219,6 +219,37 @@
       }
     },
     methods: {
+      selectContract(item) { // 默认0 艺火1 义乌2 神农4
+        let source = item.source
+        let uType = this.$store.state.event.user.type
+        let uniqueId = this.$route.params.unique_id
+        if (item.version === 0) {
+          this.$router.push({name: 'vcenterContractView0', query: {unique_id: uniqueId}})
+          return false
+        }
+        switch (source) {
+          case 1:
+            if (uType === 2) {
+              this.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
+            } else {
+              this.$router.replace({name: 'vcenterContractJdDemandView', params: {unique_id: uniqueId}})
+            }
+            return false
+          case 2:
+            this.$router.push({name: '', params: {unique_id: uniqueId}})
+            return false
+          case 4:
+            if (uType === 2) {
+              this.$router.replace({name: 'vcenterContractSnDesignView', params: {unique_id: uniqueId}})
+            } else {
+              this.$router.replace({name: 'vcenterContractSnDemandView', params: {unique_id: uniqueId}})
+            }
+            return false
+          default:
+            this.$router.push({name: '', params: {unique_id: uniqueId}})
+            return false
+        }
+      },
       // 同意合同
       agreeBtn() {
         this.sureDialogMessage = '本合同具有法律效力，确认合同后将按照合同内容付款并开始项目，请确保熟知合同内容。'
@@ -273,22 +304,22 @@
               let item = response.data.data
               console.log(item)
               if (item) {
-                if (item.version === 0) {
-                  that.$router.push({name: 'vcenterContractView1', query: {unique_id: uniqueId}})
-                  return false
-                }
-                // 是否来源京东
-                if (item.source === 1) {
-                  console.log(1)
-                  let uType = that.$store.state.event.user.type
-                  // 如果是设计服务商
-                  if (uType === 2) {
-                    that.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
-                  } else {
-                    that.$router.replace({name: 'vcenterContractJdDemandView', params: {unique_id: uniqueId}})
-                  }
-                  return
-                }
+                // if (item.version === 0) {
+                //   that.$router.push({name: 'vcenterContractView0', query: {unique_id: uniqueId}})
+                //   return false
+                // }
+                // // 是否来源京东
+                // if (item.source === 1 || item.source === 4) {
+                //   let uType = that.$store.state.event.user.type
+                //   // 如果是设计服务商
+                //   if (uType === 2) {
+                //     that.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
+                //   } else {
+                //     that.$router.replace({name: 'vcenterContractJdDemandView', params: {unique_id: uniqueId}})
+                //   }
+                //   return
+                // }
+                that.selectContract(item)
                 that.itemId = item.id
                 that.itemName = item.title + '合同'
                 item.stages = []
