@@ -568,6 +568,9 @@
         this.$refs['ruleForm'].validateField('stages.' + index + '.percentage', function (error) {
           if (!error) {
             let stages = self.form.stages
+            if (index === stages.length - 1) {
+              stages[index].amount = Math.floor(total.mul(per))
+            }
             let total = self.form.total
             let per = stages[index].percentage.mul(0.01)
             let money = 0
@@ -577,12 +580,8 @@
               }
             }
             let count = 0
-            if (index === stages.length - 1) {
-              count = total - money - self.form.first_payment
-              stages[index].amount = count
-            } else {
-              stages[index].amount = Math.floor(total.mul(per))
-            }
+            count = total - money - self.form.first_payment
+            stages[stages.length - 1].amount = count
             console.log('total', total, 'money', money, 'first_payment', self.form.first_payment, 'count', count)
           }
         })
