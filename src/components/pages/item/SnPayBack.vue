@@ -31,6 +31,7 @@ export default {
           this.$router.push({name: 'vcenterOrderShow', params: {id: this.THOrderId}})
         } else {
           this.$message.error(res.data.meta.message)
+          this.$router.push({name: 'vcenterItemList', query: {type: 2}})
         }
       }
     }).catch(err => {
