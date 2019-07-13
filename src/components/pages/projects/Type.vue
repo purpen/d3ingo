@@ -3,9 +3,14 @@
     <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box" v-if="type">
-        <h3 v-if="type!==4&&type!==5">请确定设计项目类型</h3>
-        <div class="item items-flex" v-if="type!==4&&type!==5">
+        <h3 v-if="type !== 4 && type !== 5">请确定设计项目类型</h3>
+        <div class="item items-flex" v-if="type !== 4 && type !== 5 && type !== 6">
           <i :class="{'active': designType.indexOf(ele.id) !== -1}" v-for="(ele, index) in COMPANY_TYPE[type - 1]['designType']"
+          :key="index"
+            @click="addDesignType(ele.id)">{{ele.name}}</i>
+        </div>
+        <div class="item items-flex" v-if="type === 6">
+          <i :class="{'active': designType.indexOf(ele.id) !== -1}" v-for="(ele, index) in COMPANY_TYPE[4]['designType']"
           :key="index"
             @click="addDesignType(ele.id)">{{ele.name}}</i>
         </div>

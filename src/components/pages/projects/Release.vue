@@ -90,7 +90,7 @@
           <div v-if="custom.name === 'sn'">
             <h3 class="text-center">神农大脑将对您发布的需求进行匹配，请耐心等待...</h3>
             <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
-              <button class="full-red-button small-button" v-if="showBackList">返回需求列表</button>
+              <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
             </router-link>
           </div>
           <div v-else>
