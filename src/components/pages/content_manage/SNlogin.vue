@@ -197,7 +197,6 @@
                             that.$store.commit(MENU_STATUS, '')
                             auth.write_user(response.data.data)
                             that.timeLoadMessage()
-                            that.restoreMember()
                             that.getStatus(that.$store.state.event.user.type)
                             let prevUrlName = that.$store.state.event.prevUrlName
                             if (prevUrlName) {

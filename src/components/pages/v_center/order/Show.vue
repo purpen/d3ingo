@@ -241,7 +241,8 @@
     },
     computed: {
       jsPayUrl() {
-        return 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify({id: '578796', num: Number(this.item.amount)}))
+        let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
+        return 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(data)
       },
       isMob() {
         return this.$store.state.event.isMob
