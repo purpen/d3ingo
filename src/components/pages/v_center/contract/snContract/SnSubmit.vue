@@ -154,8 +154,9 @@
                       min: 10, max: 50, message: '比例在10-50之间整数', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model.number="form.stages[index].percentage" placeholder="阶段百分比"
-                                @blur="fetchAmount(index)">
+                      <el-input v-model.number="form.stages[index].percentage"
+                        placeholder="阶段百分比"
+                        @blur="fetchAmount(index)">
                         <template slot="append">%</template>
                       </el-input>
                     </el-form-item>
@@ -186,8 +187,7 @@
                   </el-col>
                 </el-row>
 
-                <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
-                                                                                 aria-hidden="true"></i> 添加交付内容
+                <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle" aria-hidden="true"></i> 添加交付内容
                 </div>
                 <div class="blank20"></div>
               </div>
@@ -563,27 +563,32 @@
         let index = parseInt(event.currentTarget.getAttribute('index'))
         this.form.stages[stageIndex].content.splice(index, 1)
       },
+      lastIndex(index) {
+        let stages = this.form.stages
+        let total = this.form.total
+        let money = 0
+        for (var i = 0; i < stages.length - 1; i++) {
+          console.log(stages[i].amount)
+          if (stages[i].amount && stages[i].amount !== '') {
+            money += Number(stages[i].amount)
+          }
+        }
+        let amount = 0
+        amount = total - money - this.form.first_payment
+        stages[stages.length - 1].amount = amount
+      },
       // 获取阶段金额
       fetchAmount(index) {
         let self = this
         this.$refs['ruleForm'].validateField('stages.' + index + '.percentage', function (error) {
           if (!error) {
             let stages = self.form.stages
-            if (index === stages.length - 1) {
+            let per = stages[index].percentage.mul(0.01)
+            let total = self.form.total
+            if (index !== stages.length - 1) {
               stages[index].amount = Math.floor(total.mul(per))
             }
-            let total = self.form.total
-            let per = stages[index].percentage.mul(0.01)
-            let money = 0
-            for (var i = 0; i < stages.length - 1; i++) {
-              if (stages[i].amount && stages[i].amount !== '') {
-                money += Number(stages[i].amount)
-              }
-            }
-            let count = 0
-            count = total - money - self.form.first_payment
-            stages[stages.length - 1].amount = count
-            console.log('total', total, 'money', money, 'first_payment', self.form.first_payment, 'count', count)
+            self.lastIndex(index)
           }
         })
       }
