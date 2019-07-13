@@ -280,7 +280,7 @@ module.exports = [
     },
     // 按需加载
     component: (resolve) => {
-      require(['@/components/pages/v_center/contract/JdDemandView'], resolve)
+      require(['@/components/pages/v_center/contract/jdContract/JdDemandView'], resolve)
     }
   },
   // 在线合同预览--京东云-设计服务商
@@ -293,13 +293,39 @@ module.exports = [
     },
     // 按需加载
     component: (resolve) => {
-      require(['@/components/pages/v_center/contract/JdDesignView'], resolve)
+      require(['@/components/pages/v_center/contract/jdContract/JdDesignView'], resolve)
     }
   },
-  // 在线合同预览--version 0
+  // 在线合同预览--神农-需求公司
+  {
+    path: '/vcenter/contract/sn_demand_show/:unique_id',
+    name: 'vcenterContractSnDemandView',
+    meta: {
+      title: '合同预览',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/snContract/SnDemandView'], resolve)
+    }
+  },
+  // 在线合同预览--神农-设计服务商
+  {
+    path: '/vcenter/contract/sn_design_show/:unique_id',
+    name: 'vcenterContractSnDesignView',
+    meta: {
+      title: '合同预览',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/snContract/SnDesignView'], resolve)
+    }
+  },
+  // 在线合同预览--version 0 老版本不考虑
   {
     path: '/vcenter/contract/show0/:unique_id',
-    name: 'vcenterContractView1',
+    name: 'vcenterContractView0',
     meta: {
       title: '合同预览',
       requireAuth: true
@@ -327,7 +353,7 @@ module.exports = [
       title: '在线合同编辑',
       requireAuth: true
     },
-    component: require('@/components/pages/v_center/contract/JdSubmit')
+    component: require('@/components/pages/v_center/contract/jdContract/JdSubmit')
   },
   // 在线合同编辑--神农
   {
@@ -337,7 +363,7 @@ module.exports = [
       title: '在线合同编辑',
       requireAuth: true
     },
-    component: require('@/components/pages/v_center/contract/SnSubmit')
+    component: require('@/components/pages/v_center/contract/snContract/SnSubmit')
   },
   // 合同下载
   {
@@ -375,7 +401,7 @@ module.exports = [
     },
     // 按需加载
     component: (resolve) => {
-      require(['@/components/pages/v_center/contract/JdDemandDown'], resolve)
+      require(['@/components/pages/v_center/contract/jdContract/JdDemandDown'], resolve)
     }
   },
   // 合同下载--京东（设计服务商）
@@ -388,7 +414,33 @@ module.exports = [
     },
     // 按需加载
     component: (resolve) => {
-      require(['@/components/pages/v_center/contract/JdDesignDown'], resolve)
+      require(['@/components/pages/v_center/contract/jdContract/JdDesignDown'], resolve)
+    }
+  },
+  // 合同下载--神农（需求方）
+  {
+    path: '/vcenter/contract/sn_demand_download/:unique_id',
+    name: 'vcenterContractSnDemandDown',
+    meta: {
+      title: '合同下载',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/snContract/SnDemandDown'], resolve)
+    }
+  },
+  // 合同下载--神农（设计服务商）
+  {
+    path: '/vcenter/contract/sn_design_download/:unique_id',
+    name: 'vcenterContractSnDesignDown',
+    meta: {
+      title: '合同下载',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/snContract/SnDesignDown'], resolve)
     }
   },
   // 基本设置

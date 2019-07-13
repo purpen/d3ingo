@@ -270,7 +270,7 @@
               let item = response.data.data
               if (item) {
                 if (item.version === 0) {
-                  that.$router.push({name: 'vcenterContractView1', query: {unique_id: uniqueId}})
+                  that.$router.push({name: 'vcenterContractView0', query: {unique_id: uniqueId}})
                   return false
                 }
                 // 是否来源铟果
