@@ -378,7 +378,8 @@
             </el-col>
             <el-col :span="spanVal">
               <p v-if="item.source === 0">铟果</p>
-              <p v-else-if="item.source === 1">京东云</p>
+              <p v-else-if="item.source === 1">京东云艺火</p>
+              <p v-else-if="item.source === 3">京东云神农大脑</p>
             </el-col>
           </el-row>
 

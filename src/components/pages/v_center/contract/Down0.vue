@@ -334,8 +334,8 @@
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {
-                    require('../../../../../lib/js/pdfmake.min.js')
-                    require('../../../../../lib/js/vfs_fonts.js')
+                    require('lib/js/pdfmake.min.js')
+                    require('lib/js/vfs_fonts.js')
                     that.downBtn()
                   })
                 })
