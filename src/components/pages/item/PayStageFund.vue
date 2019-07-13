@@ -100,7 +100,7 @@ export default {
           url = 'wxpay'
           break
         case 5:
-          if (this.item.source === 1) {
+          if (this.item.source) {
             let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
             let payUrl = ''
             if (ENV === 'prod') {
@@ -273,6 +273,7 @@ export default {
 
 .pay-type .item.active .pay-active {
   display: block;
+  width: 30px;
 }
 
 .pay-type .item p {
