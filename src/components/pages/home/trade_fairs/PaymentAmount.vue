@@ -107,19 +107,20 @@
               <p>订单编号: <span>{{ item.uid }}</span></p>
               <!-- <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: <span>{{ item.summary }}</span></p> -->
               <p>创建时间: <span>{{ item.created_at }}</span></p>
-              
-              <div class="outline-pay" v-if="item.source === 0 && item.status !== 1" v-show="item.pay_type === 5">
-                <p class="detail-banner">对公转账</p>
-                <p>收款公司: <span>杭州太火鸟科技有限公司</span></p>
-                <p>收款账户: <span>2010 0019 4545 213</span></p>213
-                <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
-              </div>
-              <div class="outline-pay jd-pay" v-if="item.source === 1 && item.status !== 1" v-show="item.pay_type === 5">
-                <p class="detail-banner">京东云市场支付</p>
-                <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
-                <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
-                class="to-pay middle-button full-red-button">去支付</a>
-                <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
+              <div v-if="item.status !== 1">
+                <div class="outline-pay" v-if="item.source === 0" v-show="item.pay_type === 5">
+                  <p class="detail-banner">对公转账</p>
+                  <p>收款公司: <span>杭州太火鸟科技有限公司</span></p>
+                  <p>收款账户: <span>2010 0019 4545 213</span></p>213
+                  <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
+                </div>
+                <div class="outline-pay jd-pay" v-else v-show="item.pay_type === 5">
+                  <p class="detail-banner">京东云市场支付</p>
+                  <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
+                  <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
+                  class="to-pay middle-button full-red-button">去支付</a>
+                  <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
+                </div>
               </div>
             </div>
           </div>

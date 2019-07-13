@@ -29,8 +29,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="font-size-16 mar-t-30 mar-b-10">选择支付方式</p>
-          <!-- <div class="pay-type" v-if="item.source === 0"> -->
-          <div class="pay-type">
+          <div class="pay-type clearfix">
             <ul v-if="!isMob">
               <!-- <li> 支付宝暂时隐藏
                 <label>
@@ -48,11 +47,20 @@
               <!--</div>-->
               <!--</label>-->
               <!--</li>-->
-              <li>
+              <li v-if="item.source === 0">
                 <label>
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
                     <p>对公转账</p>
+                    <img class="pay-active" src="../../../../assets/images/icon/pay_checked2.png"/>
+                  </div>
+                </label>
+              </li>
+              <li v-else>
+                <label>
+                  <div :class="{'item': true, active: payType === 5 ? true : false}"
+                       @click="checkedPayBtn(5)">
+                    <p>京东云市场支付</p>
                     <img class="pay-active" src="../../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>

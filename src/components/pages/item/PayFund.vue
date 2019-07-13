@@ -28,7 +28,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="font-size-16 mar-t-30 mar-b-10">选择支付方式</p>
-          <div class="pay-type">
+          <div class="pay-type clearfix">
             <ul v-if="!isMob">
               <!-- <li> 支付宝暂时隐藏
                 <label>
