@@ -320,7 +320,7 @@
                             <p class="capital-money">¥ {{ d.amount }}</p>
                             <p class="pay-btn">
                               <el-button type="primary" @click="payStageRedierct(d.id)" size="small"
-                                        class="is-custom"> 立即支付
+                                        class="is-custom"> 立即支付1
                               </el-button>
                             </p>
                             <p class="capital-des">项目第{{ d.no }}阶段已确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
