@@ -12,7 +12,7 @@ export default {
     }
   },
   created() {
-    this.THOrderId = this.$route.query.THOrderId || '071320150300051123'
+    this.THOrderId = this.$route.query.THOrderId
     this.jdOrderNumber = this.$route.query.jdOrderNumber || 1
     this.$http.post(api.demandSnPay, {
       THOrderId: this.THOrderId,
