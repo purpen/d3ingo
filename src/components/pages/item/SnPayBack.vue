@@ -11,14 +11,14 @@ export default {
   name: '',
   data() {
     return {
-      THOrderId: 0,
-      jdOrderNumber: 0,
+      THOrderId: '',
+      jdOrderNumber: 1,
       message: ''
     }
   },
   created() {
-    this.THOrderId = this.$route.query.THOrderId
-    this.jdOrderNumber = this.$route.query.jdOrderNumber
+    this.THOrderId = this.$route.query.THOrderId || '071320150300051123'
+    this.jdOrderNumber = this.$route.query.jdOrderNumber || 1
     this.$http.post(api.demandSnPay, {
       THOrderId: this.THOrderId,
       jdOrderNumber: this.jdOrderNumber
