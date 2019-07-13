@@ -43,7 +43,7 @@
           <div class="regtShow">
             <span>还没有账户？</span>
             <!-- <span class="regter"> 立即注册 </span> -->
-            <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
+            <router-link class="regter" :to="{name: 'SNRegister'}" :class="{'shake-reg': isShake}">立即注册</router-link>
           </div>
           <!-- 底部 -->
           <div class="SNfooter" v-if="false">
@@ -95,6 +95,7 @@
         }
       }
       return {
+        requestMessageTask: null,
         tabVal: 1,
         checked: false,
         isShake: false,
@@ -282,22 +283,6 @@
           }
         }, 30000)
       },
-      restoreMember() {
-        if (this.code) {
-          this.$http.put(api.restoreMember, {rand_string: this.code})
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              // console.log(res)
-            } else {
-              this.$message.error(res)
-            }
-          }).catch(err => {
-            this.$message.error(err.message)
-          })
-        } else {
-          return
-        }
-      },
       getItem() {
         if (this.code) {
           this.$http.get(api.inviteValue, {params: {rand_string: this.code}})
@@ -348,7 +333,6 @@
               this.$set(this.user, 'type', this.userType)
               auth.write_user(this.user)
               this.timeLoadMessage()
-              this.restoreMember()
               this.getStatus(this.$store.state.event.user.type)
               let prevUrlName = this.$store.state.event.prevUrlName
               if (prevUrlName) {
