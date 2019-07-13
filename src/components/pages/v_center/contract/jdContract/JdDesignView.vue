@@ -221,15 +221,15 @@
         let uType = this.$store.state.event.user.type
         let uniqueId = this.$route.params.unique_id
         if (item.version === 0) {
-          this.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
+          this.$router.push({name: 'vcenterContractView0', query: {unique_id: uniqueId}})
           return false
         }
         switch (source) {
           case 1:
             if (uType === 2) {
-              this.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
+              this.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
             } else {
-              this.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
+              this.$router.replace({name: 'vcenterContractJdDemandView', params: {unique_id: uniqueId}})
             }
             return false
           case 2:
@@ -237,9 +237,9 @@
             return false
           case 4:
             if (uType === 2) {
-              this.$router.replace({name: 'vcenterContractSnDesignDown', params: {unique_id: uniqueId}})
+              this.$router.replace({name: 'vcenterContractSnDesignView', params: {unique_id: uniqueId}})
             } else {
-              this.$router.replace({name: 'vcenterContractSnDemandDown', params: {unique_id: uniqueId}})
+              this.$router.replace({name: 'vcenterContractSnDemandView', params: {unique_id: uniqueId}})
             }
             return false
           default:
