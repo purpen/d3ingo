@@ -132,6 +132,7 @@
 </template>
 
 <script>
+  import {ENV} from 'conf/prod.env.js'
   import api from '@/api/api'
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/order/MenuSub'
@@ -242,7 +243,13 @@
     computed: {
       jsPayUrl() {
         let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
-        return 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(data)
+        let payUrl = ''
+        if (ENV === 'prod') {
+          payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        } else {
+          payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        }
+        return payUrl + window.btoa(data)
       },
       isMob() {
         return this.$store.state.event.isMob

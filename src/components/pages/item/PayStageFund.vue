@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import {ENV} from 'conf/prod.env.js'
 import api from '@/api/api'
 export default {
   name: 'item_stage_payment',
@@ -116,7 +117,13 @@ export default {
         case 5:
           if (this.item.source === 1) {
             let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
-            window.open('http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify(data))) // base64 编码
+            let payUrl = ''
+            if (ENV === 'prod') {
+              payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            } else {
+              payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            }
+            window.open(payUrl + window.btoa(JSON.stringify(data))) // base64 编码
           }
           url = api.payItemBankPayId.format(this.item.id)
           break
