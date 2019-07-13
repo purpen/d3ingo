@@ -380,6 +380,16 @@ let routes = [
     component: require('@/components/pages/auth/JDNeuHub')
   },
   {
+    path: '/loginWithSnToken',
+    name: 'loginWithSnToken',
+    meta: {
+      title: '授权登录',
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/auth/SnToken')
+  },
+  {
     path: '/logout',
     name: 'logout',
     meta: {
