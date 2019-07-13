@@ -543,6 +543,18 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/order/Show')
   },
+  // 订单详情
+  {
+    path: '/SnPayBack',
+    name: 'vcenterSnPayBack',
+    meta: {
+      title: '订单详情',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/item/SnPayBack')
+  },
   // 消息列表
   {
     path: '/vcenter/message',

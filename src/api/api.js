@@ -54,6 +54,7 @@ export default {
   // 支付
   demandAlipay: '/pay/demandAliPay', // GET 支付保证金-支付宝
   demandJdPay: '/pay/demandJdPay', // GET 支付保证金-京东
+  demandSnPay: '/pay/shennongPay', // GET 支付保证金-神农
   demandWxPay: '/pay/demandWxPay', // GET 支付保证金-微信
   firstOrderItemId: '/pay/firstPayOrder/{0}', // GET 创建首付款支付订单
   payStagePayOrderStageId: '/pay/stagePayOrder/{0}', // GET 创建阶段款支付订单

@@ -357,7 +357,7 @@
                 //   }
                 //   return
                 // }
-                that.selectContract()
+                that.selectContract(item)
                 item.stages = []
                 if (!item.demand_pay_limit) {
                   item.demand_pay_limit = that.contractScale.demand_pay_limit
