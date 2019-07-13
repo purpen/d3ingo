@@ -549,7 +549,7 @@ module.exports = [
     name: 'vcenterSnPayBack',
     meta: {
       title: '订单详情',
-      hideHeader: true,
+      requireAuth: true,
       hideFooter: true
     },
     component: require('@/components/pages/item/SnPayBack')
