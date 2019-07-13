@@ -13,6 +13,7 @@ import {
   LEFT_WIDTH
 } from './mutation-types.js'
 import prod from 'conf/prod.env'
+import phenix from 'assets/js/base.js'
 
 // 判断是否登录
 let isLoggedIn = function () {
@@ -211,8 +212,8 @@ const mutations = {
     state.token = token
   },
   [USER_TICKET](state, ticket) {
-    localStorage.setItem('ticket', null)
     localStorage.setItem('ticket', JSON.stringify(ticket))
+    phenix.setCookie('ticket', JSON.stringify(ticket), 30)
     state.ticket = ticket
   },
   [USER_SIGNOUT](state) {
