@@ -549,7 +549,6 @@ module.exports = [
     name: 'vcenterSnPayBack',
     meta: {
       title: '订单详情',
-      requireAuth: true,
       hideHeader: true,
       hideFooter: true
     },
