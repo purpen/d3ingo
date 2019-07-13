@@ -26,7 +26,8 @@ export default {
       console.log(res)
       this.message = res.data.meta.message
       if (res.data && res.data.meta.status_code === 200) {
-        this.message = 'success'
+        this.$message.success('支付成功')
+        this.$router.push({name: 'vcenterItemShow', params: {id: res.data.data.item_id}})
       } else {
         this.$message.error(res.data.meta.message)
       }
