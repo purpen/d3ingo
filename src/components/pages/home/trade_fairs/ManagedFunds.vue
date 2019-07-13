@@ -58,8 +58,8 @@
               </li>
               <li v-else>
                 <label>
-                  <div :class="{'item': true, active: payType === 5 ? true : false}"
-                       @click="checkedPayBtn(5)">
+                  <div :class="{'item': true, active: payType === 6 ? true : false}"
+                       @click="checkedPayBtn(6)">
                     <p>京东云市场支付</p>
                     <img class="pay-active" src="../../../../assets/images/icon/pay_checked2.png"/>
                   </div>
@@ -199,6 +199,9 @@ export default {
           url = api.secondAlipayId.format(this.item.id)
           break
         case 5:
+          url = api.payItemBankPayId.format(this.item.id)
+          break
+        case 6:
           if (this.item.source) {
             let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
             let payUrl = ''
@@ -208,9 +211,9 @@ export default {
               payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
             }
             window.open(payUrl + window.btoa(JSON.stringify(data))) // base64 编码
+            return
           }
-          url = api.payItemBankPayId.format(this.item.id)
-          break
+          return
       }
       if (!url) {
         this.$message.error('支付方式错误')

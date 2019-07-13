@@ -1,3 +1,4 @@
+<!-- 项目押金,已取消 -->
 <template>
   <div class="container">
     <div :class="['payment', {'payment-m' : isMob}]">
