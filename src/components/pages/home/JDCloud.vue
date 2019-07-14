@@ -2039,7 +2039,7 @@ export default {
         this.timer()
       }).catch(err => {
         console.log('catch')
-        console.error(err)
+        this.$message.error(err.message)
         this.isFetchCode = false
         this.isFetching = false
       })
