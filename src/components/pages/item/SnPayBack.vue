@@ -13,7 +13,7 @@ export default {
   },
   created() {
     this.THOrderId = this.$route.query.THOrderId
-    this.jdOrderNumber = this.$route.query.jdOrderNumber || 1
+    this.jdOrderNumber = this.$route.query.jdOrderNumber
     this.$http.post(api.demandSnPay, {
       THOrderId: this.THOrderId,
       jdOrderNumber: this.jdOrderNumber,
