@@ -1938,7 +1938,7 @@ export default {
         this.$message.error('请填写联系人电话')
         return
       }
-      if (this.clientForm.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.clientForm.phone)) {
+      if (this.clientForm.phone.length !== 11 || !/^1\d{10}$/.test(this.clientForm.phone)) {
         this.$message({
           message: '手机号格式不正确!',
           type: 'error',

@@ -464,7 +464,7 @@ export default {
         this.$message.error('请输入手机号')
         return
       }
-      if (this.form.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form.phone)) {
+      if (this.form.phone.length !== 11 || !/^1\d{10}$/.test(this.form.phone)) {
         this.$message({
           message: '手机号格式不正确!',
           type: 'error',
@@ -487,7 +487,7 @@ export default {
     submit(form) {
       this.$refs[form].validate(valid => {
         if (valid) {
-          if (this.form.phone.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form.phone)) {
+          if (this.form.phone.length !== 11 || !/^1\d{10}$/.test(this.form.phone)) {
             this.$message({
               message: '手机号格式不正确!',
               type: 'error',
