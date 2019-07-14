@@ -999,7 +999,7 @@
                                   <el-form-item prop="smsCode">
                                     <el-input   v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
                                       <template slot="append">
-                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn">{{ codeMsg }}
+                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
                                         </el-button>
                                       </template>
                                     </el-input>
@@ -1041,7 +1041,7 @@
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
               <el-input class="el-input-c8" maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
-              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
+              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
               </el-button>
           </el-form-item>
         </el-form>
@@ -1081,6 +1081,9 @@ export default {
     }
     const that = this
     return {
+      isFetchCode: false,
+      isFetching: false,
+      isFetchCode1: false,
       colList: [
         {
           img: require('assets/images/home/jd/1.png'),
@@ -1851,7 +1854,7 @@ export default {
   props: {
     second: {
       type: Number,
-      default: 60
+      default: 10
     }
   },
   computed: {
@@ -1993,6 +1996,9 @@ export default {
     },
     // 点击获取验证码
     fetchCode() {
+      if (this.isFetchCode) {
+        return
+      }
       if (this.form.account.length !== 11 || !/^1\d{10}$/.test(this.form.account)) {
         this.$message({
           message: '手机号格式不正确!',
@@ -2001,13 +2007,22 @@ export default {
         })
         return
       }
+      this.isFetchCode = true
+      this.isFetching = true
       this.$http.post(api.fetch_wx_code, {phone: this.form.account})
-        .then(res => {
-          this.time = this.second
-          this.timer()
-        })
+      .then(res => {
+        this.isFetching = false
+        this.time = this.second
+        this.timer()
+      }).catch(err => {
+        console.error(err)
+        this.isFetching = false
+      })
     },
     fetchCode1() {
+      if (this.isFetchCode1) {
+        return
+      }
       if (this.form1.account.length !== 11 || !/^1\d{10}$/.test(this.form1.account)) {
         this.$message({
           message: '手机号格式不正确!',
@@ -2016,6 +2031,7 @@ export default {
         })
         return
       }
+      this.isFetchCode1 = true
       this.$http.post(api.fetch_wx_code, {phone: this.form1.account})
         .then(res => {
           this.time = this.second
@@ -2026,6 +2042,9 @@ export default {
       if (this.time > 0) {
         this.time = this.time - 1
         setTimeout(this.timer, 1000)
+      } else {
+        this.isFetchCode = false
+        this.isFetchCode1 = false
       }
     },
     submit_app (form) {
