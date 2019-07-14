@@ -961,9 +961,19 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         store.commit(types.PREV_URL_NAME, to.fullPath)
-        next({
-          name: 'login'
-        })
+        if (store.state.event.prod.name === 'sn') {
+          next({
+            name: 'home'
+          })
+          Message.error({
+            duration: 2000,
+            message: '请先登录'
+          })
+        } else {
+          next({
+            name: 'login'
+          })
+        }
         return false
       }
     }

@@ -59,12 +59,21 @@ axiosInstance.interceptors.response.use(
           } else {
             // 401 清除token信息并跳转到登录页面
             store.commit(types.USER_SIGNOUT)
-            router.replace({
-              path: '/login',
-              query: {
-                redirect: router.currentRoute.fullPath
-              }
-            })
+            if (store.state.event.prod.name === 'sn') {
+              router.replace({
+                path: '/home',
+                query: {
+                  redirect: router.currentRoute.fullPath
+                }
+              })
+            } else {
+              router.replace({
+                path: '/login',
+                query: {
+                  redirect: router.currentRoute.fullPath
+                }
+              })
+            }
             msg = '登录已失效, 请重新登录'
           }
           break
