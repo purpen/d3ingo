@@ -2011,11 +2011,14 @@ export default {
       this.isFetching = true
       this.$http.post(api.fetch_wx_code, {phone: this.form.account})
       .then(res => {
+        console.log('then')
         this.isFetching = false
         this.time = this.second
         this.timer()
       }).catch(err => {
+        console.log('catch')
         console.error(err)
+        this.isFetchCode = false
         this.isFetching = false
       })
     },
