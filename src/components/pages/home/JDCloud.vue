@@ -1059,6 +1059,16 @@ import api from '@/api/api'
 export default {
   name: 'JDCloud',
   data() {
+    let checkContent = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写内容'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写内容'))
+        }
+        return callback()
+      }
+    }
     let checkNumber = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('请填写手机号'))
@@ -1835,9 +1845,11 @@ export default {
           {validator: checkNumber, trigger: 'blur', required: true}
         ],
         demand: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的需求', trigger: 'blur' }
         ],
         contact: [
+          {validator: checkContent, trigger: 'blur'},
           {required: true, message: '请输入联系人', trigger: 'blur'}
         ],
         smsCode: [
@@ -1845,6 +1857,7 @@ export default {
         ],
         // app
         name: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ]
       },
@@ -1941,6 +1954,15 @@ export default {
     // console.log(this.swiperObj)
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
     // 关闭弹窗
     closeBounced () {
       this.isShowBounced = false

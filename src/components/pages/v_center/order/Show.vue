@@ -106,7 +106,7 @@
                 <div class="outline-pay jd-pay" v-else v-show="item.pay_type === 5 || item.pay_type === 6">
                   <p class="detail-banner">京东云市场支付</p>
                   <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
-                  <a target="_blank" :href="jsPayUrl"
+                  <a :href="jsPayUrl"
                   class="to-pay middle-button full-red-button">去支付</a>
                   <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
                 </div>
