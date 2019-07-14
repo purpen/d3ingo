@@ -999,7 +999,7 @@
                                   <el-form-item prop="smsCode">
                                     <el-input   v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
                                       <template slot="append">
-                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn">{{ codeMsg }}
+                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
                                         </el-button>
                                       </template>
                                     </el-input>
@@ -1041,7 +1041,7 @@
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
               <el-input class="el-input-c8" maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
-              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
+              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
               </el-button>
           </el-form-item>
         </el-form>
@@ -1059,6 +1059,16 @@ import api from '@/api/api'
 export default {
   name: 'JDCloud',
   data() {
+    let checkContent = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写内容'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写内容'))
+        }
+        return callback()
+      }
+    }
     let checkNumber = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('请填写手机号'))
@@ -1068,7 +1078,7 @@ export default {
         } else {
           let len = value.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+            if (/^1\d{10}$/.test(value)) {
               callback()
             } else {
               callback(new Error('手机号格式不正确'))
@@ -1081,6 +1091,9 @@ export default {
     }
     const that = this
     return {
+      isFetchCode: false,
+      isFetching: false,
+      isFetchCode1: false,
       colList: [
         {
           img: require('assets/images/home/jd/1.png'),
@@ -1832,9 +1845,11 @@ export default {
           {validator: checkNumber, trigger: 'blur', required: true}
         ],
         demand: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的需求', trigger: 'blur' }
         ],
         contact: [
+          {validator: checkContent, trigger: 'blur'},
           {required: true, message: '请输入联系人', trigger: 'blur'}
         ],
         smsCode: [
@@ -1842,6 +1857,7 @@ export default {
         ],
         // app
         name: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ]
       },
@@ -1938,6 +1954,15 @@ export default {
     // console.log(this.swiperObj)
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
     // 关闭弹窗
     closeBounced () {
       this.isShowBounced = false
@@ -1960,7 +1985,7 @@ export default {
         } else {
           let len = this.phone.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(this.phone)) {
+            if (/^1\d{10}$/.test(this.phone)) {
               this.contact()
             } else {
               this.$message.error('手机号格式不正确')
@@ -1993,7 +2018,10 @@ export default {
     },
     // 点击获取验证码
     fetchCode() {
-      if (this.form.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form.account)) {
+      if (this.isFetchCode) {
+        return
+      }
+      if (this.form.account.length !== 11 || !/^1\d{10}$/.test(this.form.account)) {
         this.$message({
           message: '手机号格式不正确!',
           type: 'error',
@@ -2001,14 +2029,26 @@ export default {
         })
         return
       }
+      this.isFetchCode = true
+      this.isFetching = true
       this.$http.post(api.fetch_wx_code, {phone: this.form.account})
-        .then(res => {
-          this.time = this.second
-          this.timer()
-        })
+      .then(res => {
+        console.log('then')
+        this.isFetching = false
+        this.time = this.second
+        this.timer()
+      }).catch(err => {
+        console.log('catch')
+        this.$message.error(err.message)
+        this.isFetchCode = false
+        this.isFetching = false
+      })
     },
     fetchCode1() {
-      if (this.form1.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form1.account)) {
+      if (this.isFetchCode1) {
+        return
+      }
+      if (this.form1.account.length !== 11 || !/^1\d{10}$/.test(this.form1.account)) {
         this.$message({
           message: '手机号格式不正确!',
           type: 'error',
@@ -2016,6 +2056,7 @@ export default {
         })
         return
       }
+      this.isFetchCode1 = true
       this.$http.post(api.fetch_wx_code, {phone: this.form1.account})
         .then(res => {
           this.time = this.second
@@ -2026,6 +2067,9 @@ export default {
       if (this.time > 0) {
         this.time = this.time - 1
         setTimeout(this.timer, 1000)
+      } else {
+        this.isFetchCode = false
+        this.isFetchCode1 = false
       }
     },
     submit_app (form) {

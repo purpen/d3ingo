@@ -103,7 +103,7 @@
           } else {
             let len = value.toString().length
             if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              if (/^1\d{10}$/.test(value)) {
                 callback()
               } else {
                 callback(new Error('手机号格式不正确'))

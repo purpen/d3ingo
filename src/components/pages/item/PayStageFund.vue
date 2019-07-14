@@ -111,7 +111,7 @@ export default {
             } else {
               payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
             }
-            window.open(payUrl + window.btoa(JSON.stringify(data))) // base64 编码
+            location.href = payUrl + window.btoa(JSON.stringify(data)) // base64 编码
             return
           }
           return
