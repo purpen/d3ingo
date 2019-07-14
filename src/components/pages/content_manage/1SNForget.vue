@@ -11,7 +11,7 @@
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="username">
-            <el-input v-model="form.username" ref="account"
+            <el-input maxlength="11" v-model="form.username" ref="account"
             name="username"
                       placeholder="手机号"></el-input>
           </el-form-item>
@@ -23,7 +23,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
-            <el-input v-model="form.smsCode"  ref="smsCode" name="smsCode" placeholder="验证码">
+            <el-input maxlength="6" v-model="form.smsCode"  ref="smsCode" name="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                 </el-button>

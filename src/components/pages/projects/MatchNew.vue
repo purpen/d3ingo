@@ -4,7 +4,8 @@
     <div class="project-cover clearfix">
       <div class="project-item-box">
         <div class="item">
-          <span :class="['pic', {
+          <span v-if="custom.name === 'sn'" class="pic pic-waiting"></span>
+          <span v-else :class="['pic', {
             'pic-done': matchComplete,
             'pic-done-code': matchComplete && (projectStatus === -2 || projectStatus === 2),
             'pic-fail': projectStatus === -2,
@@ -15,8 +16,16 @@
                 <p class="num">根据您的需求筛选出<i>{{IncNumber}}家</i>设计服务商</p>
               </div>
               <div v-else>
-                <p class="num">请用微信扫一扫小程序码</p>
-                <p class="verify fz-16">查看并管理您的项目</p>
+                <div v-if="custom.name === 'sn'">
+                  <p class="num margin-b-10">神农大脑将对您发布的需求进行匹配，请耐心等待...</p>
+                  <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+                    <button class="full-red-button small-button">返回项目列表</button>
+                  </router-link>
+                </div>
+                <div v-else>
+                  <p class="num">请用微信扫一扫小程序码</p>
+                  <p class="verify fz-16">查看并管理您的项目</p>
+                </div>
               </div>
             </section>
             <section v-else>
@@ -25,8 +34,16 @@
             </section>
           </section>
           <section v-else>
-            <p class="num">请用微信扫一扫小程序码</p>
-            <p class="verify fz-16">查看并管理您的项目</p>
+            <div v-if="custom.name === 'sn'">
+              <p class="num margin-b-10">神农大脑将对您发布的需求进行匹配，请耐心等待...</p>
+              <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+                <button class="full-red-button small-button">返回项目列表</button>
+              </router-link>
+            </div>
+            <div v-else>
+              <p class="num">请用微信扫一扫小程序码</p>
+              <p class="verify fz-16">查看并管理您的项目</p>
+            </div>
           </section>
         </div>
       </div>

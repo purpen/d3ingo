@@ -916,8 +916,12 @@
       },
       // 点击获取验证码
       fetchCode() {
-        if (!this.form.account) {
-          this.$message.error('请输入手机号')
+        if (this.form.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form.account)) {
+          this.$message({
+            message: '手机号格式不正确!',
+            type: 'error',
+            duration: 1000
+          })
           return
         }
         this.$http.post(api.fetch_wx_code, {phone: this.form.account})
@@ -927,8 +931,12 @@
           })
       },
       fetchCode1() {
-        if (!this.form1.account) {
-          this.$message.error('请输入手机号')
+        if (this.form1.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form1.account)) {
+          this.$message({
+            message: '手机号格式不正确!',
+            type: 'error',
+            duration: 1000
+          })
           return
         }
         this.$http.post(api.fetch_wx_code, {phone: this.form1.account})

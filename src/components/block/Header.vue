@@ -77,8 +77,6 @@
                   <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-                <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
-                <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item> -->
                 <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
                 <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
                 <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
@@ -87,20 +85,6 @@
               </el-submenu>
             </el-menu>
           </div>
-
-          <!-- <div class="nav-right" v-else>
-            <div class="server-in-btn">
-              <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-            </div>
-            <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
-              <el-menu-item index="" :route="menu.register" class="fc-red">
-                <span class="login-shadow">
-                  注册
-                </span>
-              </el-menu-item>
-            </el-menu>
-          </div> -->
 
         </div>
       </div>
@@ -246,9 +230,11 @@
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
-              <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item>
-              <el-menu-item v-else index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item>
+              <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
+              <el-menu-item v-if="prodName !== 'sn'" index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="" class="fr">
+                <a :href="'http://test-sndn.xjoycity.com/ic-passport-web/login/consumer?from=sndn&returnUrl='+ origin + '/loginWithSnToken'">授权登录</a>
+              </el-menu-item>
               <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
@@ -269,21 +255,8 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.server">服务</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.article">铟果说</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.design_case">灵感</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.commonly_sites">设计工具</router-link>
-            </li> -->
             <li @click="closeMenu">
               <router-link :to="menu.design_general_list">设计服务商入驻</router-link>
-              <!-- <a :href="menu.design_general_list">设计案例</a> -->
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
@@ -341,6 +314,7 @@
     name: 'head_menu',
     data() {
       return {
+        origin: location.origin,
         requestMessageTask: null,
         menu: {
           home: {path: '/home'},

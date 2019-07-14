@@ -1,41 +1,55 @@
 <template>
   <section>
     <div v-if="custom.name === 'jdc'" :class="['jd-cloud']">
-      <!-- <div class="jdc-banner">
-        <div class="content">
-          <section class="con-left">
-            <h2>京东云艺火</h2>
-            <h4>专业B2B设计交易服务SaaS平台</h4>
-            <p class="padding-t-10">结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
-            <p>为京东云客户提供定制化产品设计服务。</p>
-            <span @click="jump" class="release">发布项目需求</span>
-          </section>
-          <section class="con-right"> -->
-            <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
-          <!-- </section>
+      <!--
+        <div class="jdc-banner">
+          <div class="content">
+            <section class="con-left">
+              <h2>京东云艺火</h2>
+              <h4>专业B2B设计交易服务SaaS平台</h4>
+              <p class="padding-t-10">结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
+              <p>为京东云客户提供定制化产品设计服务。</p>
+              <span @click="jump" class="release">发布项目需求</span>
+            </section>
+            <section class="con-right"> -->
+              <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
+            <!-- </section>
+          </div>
         </div>
-      </div>
-      <div class="jdc-content tc-2 fz-14">
-        <h3>创意实现与升级</h3>
-        <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
-        <p class="text-center fz-14 tc-6 padding-b-50 max-880 ti-2">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
-        <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
-          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
-            <div class="col clearfix">
-              <img class="fl" :src="ele.img" alt="">
-              <p class="fl tc-6 table">
-                <span>{{ele.title}}</span>
-              </p>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <section class="bg-gray">
+        <div class="jdc-content tc-2 fz-14">
+          <h3>创意实现与升级</h3>
+          <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
+          <p class="text-center fz-14 tc-6 padding-b-50 max-880 ti-2">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
+          <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
+            <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
+              <div class="col clearfix">
+                <img class="fl" :src="ele.img" alt="">
+                <p class="fl tc-6 table">
+                  <span>{{ele.title}}</span>
+                </p>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <section class="bg-gray">
+          <div class="jdc-content">
+            <h3>四个关键亮点</h3>
+            <el-row class="flex padding-b-80">
+              <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
+                <div class="col col-column text-center">
+                  <img :src="ele.img" alt="">
+                  <p class="tc-6">{{ele.title}}</p>
+                  <p class="tc-6 fz-14">{{ele.title2}}</p>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </section>
         <div class="jdc-content">
-          <h3>四个关键亮点</h3>
-          <el-row class="flex padding-b-80">
-            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
-              <div class="col col-column text-center">
+          <h3>创意项目发布流程</h3>
+          <el-row class="flex padding-b-40">
+            <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
+              <div class="col col-column col-column2 text-center">
                 <img :src="ele.img" alt="">
                 <p class="tc-6">{{ele.title}}</p>
                 <p class="tc-6 fz-14">{{ele.title2}}</p>
@@ -43,35 +57,23 @@
             </el-col>
           </el-row>
         </div>
-      </section>
-      <div class="jdc-content">
-        <h3>创意项目发布流程</h3>
-        <el-row class="flex padding-b-40">
-          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
-            <div class="col col-column col-column2 text-center">
-              <img :src="ele.img" alt="">
-              <p class="tc-6">{{ele.title}}</p>
-              <p class="tc-6 fz-14">{{ele.title2}}</p>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
 
-      <section class="bg-gray">
-        <div class="anli">
-          <div class="container">
-            <h3 class="title">成功案例</h3>
+        <section class="bg-gray">
+          <div class="anli">
+            <div class="container">
+              <h3 class="title">成功案例</h3>
+            </div>
+            <el-row>
+              <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
+                <img class="anli-content" :src="ele.image" :alt="ele.title">
+                <div class="anli-title animated fadeInUp">
+                  {{ele.title}}
+                </div>
+              </el-col>
+            </el-row>
           </div>
-          <el-row>
-            <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
-              <img class="anli-content" :src="ele.image" :alt="ele.title">
-              <div class="anli-title animated fadeInUp">
-                {{ele.title}}
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </section> -->
+        </section>
+      -->
       <div class="round-backgound" v-if="!isMob">
         <div class="bg1">
         </div>
@@ -1991,8 +1993,12 @@ export default {
     },
     // 点击获取验证码
     fetchCode() {
-      if (!this.form.account) {
-        this.$message.error('请输入手机号')
+      if (this.form.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form.account)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
       this.$http.post(api.fetch_wx_code, {phone: this.form.account})
@@ -2002,8 +2008,12 @@ export default {
         })
     },
     fetchCode1() {
-      if (!this.form1.account) {
-        this.$message.error('请输入手机号')
+      if (this.form1.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form1.account)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
       this.$http.post(api.fetch_wx_code, {phone: this.form1.account})
@@ -2124,7 +2134,7 @@ export default {
         device: this.isMob ? 2 : 1,
         new_from: this.query.from || 3
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       }).catch(err => {
         console.error(err)
         this.$message.error(err.message)

@@ -550,7 +550,6 @@ module.exports = [
     meta: {
       title: '订单详情',
       requireAuth: true,
-      hideHeader: true,
       hideFooter: true
     },
     component: require('@/components/pages/item/SnPayBack')

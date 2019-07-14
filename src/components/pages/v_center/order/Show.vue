@@ -103,7 +103,7 @@
                   <p>收款账户: <span>2010 0019 4545 213</span></p>
                   <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
                 </div>
-                <div class="outline-pay jd-pay" v-else v-show="item.pay_type === 5">
+                <div class="outline-pay jd-pay" v-else v-show="item.pay_type === 5 || item.pay_type === 6">
                   <p class="detail-banner">京东云市场支付</p>
                   <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
                   <a target="_blank" :href="jsPayUrl"
@@ -132,6 +132,7 @@
 </template>
 
 <script>
+  import {ENV} from 'conf/prod.env.js'
   import api from '@/api/api'
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/order/MenuSub'
@@ -241,7 +242,14 @@
     },
     computed: {
       jsPayUrl() {
-        return 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify({id: '578796', num: Number(this.item.amount)}))
+        let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
+        let payUrl = ''
+        if (ENV === 'prod') {
+          payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        } else {
+          payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        }
+        return payUrl + window.btoa(data)
       },
       isMob() {
         return this.$store.state.event.isMob

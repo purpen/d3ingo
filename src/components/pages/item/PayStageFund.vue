@@ -8,12 +8,12 @@
         <p><span>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额:&nbsp;&nbsp; </span>¥ {{ item.amount }}</p>
         <p><span>订单编号:&nbsp;&nbsp; </span>{{ item.uid }}</p>
       </div>
-      <div class="pay-item">
+      <div class="pay-item clearfix">
         <div class="clearfix payItem-m">
           <p class="details">选择支付方式</p>
-          <div class="pay-type" v-if="item.source === 0 || item.source === 4">
+          <div class="pay-type clearfix">
             <ul v-if="!isMob">
-              <li>
+              <!-- <li> -->
                 <!-- <label> 支付宝暂时隐藏
                   <div :class="{'item': true, active: payType === 1 ? true : false}" @click="checkedPayBtn(1)">
                     <img src="../../../assets/images/icon/alipay.png"/>
@@ -29,7 +29,7 @@
               <!--</div>-->
               <!--</label>-->
               <!--</li>-->
-              <li>
+              <li v-if="item.source === 0">
                 <label>
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
@@ -38,34 +38,20 @@
                   </div>
                 </label>
               </li>
-            </ul>
-
-            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <!-- <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio> -->
-              <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
-            </el-radio-group>
-
-            <div class="clear"></div>
-          </div>
-
-          <div class="pay-type" v-if="item.source === 1">
-            <ul v-if="!isMob">
-              <li>
+              <li v-else>
                 <label>
-                  <div :class="{'item': true, active: payType === 5 ? true : false}"
-                       @click="checkedPayBtn(5)">
+                  <div :class="{'item': true, active: payType === 6 ? true : false}"
+                       @click="checkedPayBtn(6)">
                     <p>京东云市场支付</p>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
             </ul>
-
-            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
-            </el-radio-group>
-
-            <div class="clear"></div>
+            <!-- <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
+              <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio>
+              <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
+            </el-radio-group> -->
           </div>
         </div>
 
@@ -77,7 +63,6 @@
           <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p>
           <p v-if="!isMob" class="total-txt">总计：</p>
         </div>
-        <div class="clear"></div>
 
       </div>
 
@@ -87,6 +72,7 @@
 </template>
 
 <script>
+import {ENV} from 'conf/prod.env.js'
 import api from '@/api/api'
 export default {
   name: 'item_stage_payment',
@@ -114,12 +100,21 @@ export default {
           url = 'wxpay'
           break
         case 5:
-          if (this.item.source === 1) {
-            let data = {id: '578796', num: Number(this.item.amount)}
-            window.open('http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson=' + window.btoa(JSON.stringify(data))) // base64 编码
-          }
           url = api.payItemBankPayId.format(this.item.id)
           break
+        case 6:
+          if (this.item.source) {
+            let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
+            let payUrl = ''
+            if (ENV === 'prod') {
+              payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            } else {
+              payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            }
+            window.open(payUrl + window.btoa(JSON.stringify(data))) // base64 编码
+            return
+          }
+          return
       }
       if (!url) {
         this.$message.error('支付方式错误')
@@ -281,6 +276,7 @@ export default {
 
 .pay-type .item.active .pay-active {
   display: block;
+  width: 30px;
 }
 
 .pay-type .item p {

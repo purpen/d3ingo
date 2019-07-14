@@ -87,80 +87,90 @@
             <p class="num">根据您的需求筛选出<i>{{designList.length}}家</i>设计服务商</p>
         </section>
         <div v-if="matchComplete && !designList.length">
-          <p class="num">智能匹配未筛选到合适的设计服务商</p>
-          <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+          <div v-if="custom.name === 'sn'">
+            <h3 class="text-center">神农大脑将对您发布的需求进行匹配，请耐心等待...</h3>
+            <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+              <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
+            </router-link>
+          </div>
+          <div v-else>
+            <p class="num">智能匹配未筛选到合适的设计服务商</p>
+            <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+          </div>
         </div>
       </div>
     </div>
     <div v-if="showList" class="project-cover clearfix">
-      <div class="project-item-box project-item-box-company">
-        <h3 v-if="designList.length" class="text-center">根据您的需求，筛选出 <span class="tc-red">{{designList.length}}</span> 家设计服务商</h3>
-        <h3 v-else class="text-center">根据您的需求，智能匹配未筛选到合适的设计服务商</h3>
-        <div class="item">
-          <el-row :gutter="20" v-if="designList.length">
-            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in designList" :key="index">
-              <section class="company-info">
-                <div class="logo">
-                  <router-link tag="a" :to="{ name: 'companyShow', params: { id : ele.id }}">
-                    <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
-                    <img v-else :src="require('assets/images/avatar_100.png')"/>
-                  </router-link>
-                  <router-link tag="a" :to="{ name: 'companyShow', params: { id : ele.id }}">
-                    <span class="tc-2">{{ele.company_name}}</span>
-                  </router-link>
-                  <span class="tc-9">
-                    <i v-for="(e, i) in ele.city_arr" :key="i">
-                      {{e}}
-                    </i>
-                  </span>
-                </div>
-                <div class="radar">
-                  <ECharts
-                    :options="option"
-                    auto-resize
-                    :ref="`radar${index}`"></ECharts>
-                </div>
-              </section>
-              <div class="design-case">
-                <h4 v-if="ele.design_case.length">设计案例</h4>
-                <h4 v-else>暂无设计案例</h4>
-                <el-row v-if="ele.design_case.length">
-                  <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : e.id }}">
-                      <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
-                      </div>
-                      <div v-else class="img-box" >
-                      </div>
-                      <div class="case-content">
-                        <p class="title fz-14 tc-2 line-height24">
-                          {{e.title}}
-                        </p>
-                        <p class="tags fz-12 tc-9">
-                          {{e.design_types_val | formatType}}
-                        </p>
-                        <p class="fz-12 tc-9">
-                          {{e.created_at.date_format().format('yyyy-MM-dd')}}
-                        </p>
-                      </div>
+      <div>
+        <div class="project-item-box project-item-box-company">
+          <h3 v-if="designList.length" class="text-center">根据您的需求，筛选出 <span class="tc-red">{{designList.length}}</span> 家设计服务商</h3>
+          <h3 v-else class="text-center">根据您的需求，智能匹配未筛选到合适的设计服务商</h3>
+          <div class="item">
+            <el-row :gutter="20" v-if="designList.length">
+              <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in designList" :key="index">
+                <section class="company-info">
+                  <div class="logo">
+                    <router-link tag="a" :to="{ name: 'companyShow', params: { id : ele.id }}">
+                      <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
+                      <img v-else :src="require('assets/images/avatar_100.png')"/>
                     </router-link>
-                  </el-col>
-                </el-row>
-              </div>
-            </el-col>
-          </el-row>
+                    <router-link tag="a" :to="{ name: 'companyShow', params: { id : ele.id }}">
+                      <span class="tc-2">{{ele.company_name}}</span>
+                    </router-link>
+                    <span class="tc-9">
+                      <i v-for="(e, i) in ele.city_arr" :key="i">
+                        {{e}}
+                      </i>
+                    </span>
+                  </div>
+                  <div class="radar">
+                    <ECharts
+                      :options="option"
+                      auto-resize
+                      :ref="`radar${index}`"></ECharts>
+                  </div>
+                </section>
+                <div class="design-case">
+                  <h4 v-if="ele.design_case.length">设计案例</h4>
+                  <h4 v-else>暂无设计案例</h4>
+                  <el-row v-if="ele.design_case.length">
+                    <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
+                      <router-link tag="a" :to="{ name: 'vcenterDesignCaseShow', params: { id : e.id }}">
+                        <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                        </div>
+                        <div v-else class="img-box" >
+                        </div>
+                        <div class="case-content">
+                          <p class="title fz-14 tc-2 line-height24">
+                            {{e.title}}
+                          </p>
+                          <p class="tags fz-12 tc-9">
+                            {{e.design_types_val | formatType}}
+                          </p>
+                          <p class="fz-12 tc-9">
+                            {{e.created_at.date_format().format('yyyy-MM-dd')}}
+                          </p>
+                        </div>
+                      </router-link>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
         </div>
-      </div>
-      <div class="project-foot project-foot-compare">
-        <!-- <div class="buttons">
-          <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计服务商</span>
-          <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
-        </div> -->
-        <div class="foot-content">
-          <!-- <img class="qr-code margin-r-20" :src="require('assets/images/THN-WX-Assistant.jpg')" alt=""> -->
-          <div class="qr-code margin-r-20"></div>
-          <div>
-            <p class="line-height24 fz-16">请用微信扫一扫小程序码</p>
-            <p class="line-height24 fz-16">查看并管理您的项目</p>
+        <div class="project-foot project-foot-compare">
+          <!-- <div class="buttons">
+            <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计服务商</span>
+            <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
+          </div> -->
+          <div class="foot-content">
+            <!-- <img class="qr-code margin-r-20" :src="require('assets/images/THN-WX-Assistant.jpg')" alt=""> -->
+            <div class="qr-code margin-r-20"></div>
+            <div>
+              <p class="line-height24 fz-16">请用微信扫一扫小程序码</p>
+              <p class="line-height24 fz-16">查看并管理您的项目</p>
+            </div>
           </div>
         </div>
       </div>
@@ -240,6 +250,7 @@ export default {
       }
     }
     return {
+      showBackList: false,
       isGettingCode: false,
       isCoding: false,
       isSubmiting: false,
@@ -376,19 +387,26 @@ export default {
               this.outerVisible = false
               this.isMatching = true
               this.showForm = false
-              let arr = this.formatList(res.data.data)
-              setTimeout(_ => {
-                this.designList = arr || []
+              if (this.custom.name === 'sn') {
                 this.matchComplete = true
                 setTimeout(_ => {
-                  this.isMatching = false
-                  this.showList = true
-                  if (this.designList.length) {
-                    this.formatRadar(arr)
-                  }
-                }, 1500)
-              }, 1000)
-              // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+                  this.showBackList = true
+                }, 1000)
+              } else {
+                let arr = this.formatList(res.data.data)
+                setTimeout(_ => {
+                  this.designList = arr || []
+                  this.matchComplete = true
+                  setTimeout(_ => {
+                    this.isMatching = false
+                    this.showList = true
+                    if (this.designList.length) {
+                      this.formatRadar(arr)
+                    }
+                  }, 1500)
+                }, 1000)
+                // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+              }
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -400,8 +418,12 @@ export default {
       })
     },
     fetchCode3() {
-      if (!this.form3.account) {
-        this.$message.error('请输入手机号')
+      if (this.form3.account.length !== 11 || !/^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/.test(this.form3.account)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
         return
       }
       if (this.isGettingCode) {
