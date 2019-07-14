@@ -1854,7 +1854,7 @@ export default {
   props: {
     second: {
       type: Number,
-      default: 10
+      default: 60
     }
   },
   computed: {
