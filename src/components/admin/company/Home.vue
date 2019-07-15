@@ -453,7 +453,7 @@ export default {
     downloads() {
       let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
       if (conf.ENV === 'prod') {
-        url = 'https://d3in-admin.taihuoniao.com/designCompany/exportExcel'
+        url = 'https://d3in-admin.taihuoniao.com/admin/designCompany/exportExcel'
       }
       const data = {
         token: this.token
