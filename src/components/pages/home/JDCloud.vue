@@ -694,7 +694,7 @@
               <span v-for="(item, index) in snNavList" :key="index" :class="{'active': currentNav === item.id}" @click="goAnchor(item.id)">{{item.name}}</span>
             </div>
             <div class="fr blank15">
-              <span class="nav-btn fz-14" @click="boolFindDesign = true">发布需求</span>
+              <span class="nav-btn fz-14" @click.stop="boolFindDesign = true">发布需求</span>
             </div>
           </div>
       </div>
@@ -707,7 +707,7 @@
                 <el-col>
                   <div class="banner-title">神农大脑 设计服务平台</div>
                   <div class="banner-second-title">设计定制服务助力乡村振兴</div>
-                  <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
+                  <span class="sn-release pointer" @click.stop="boolFindDesign = true">发布需求</span>
                 </el-col>
               </el-row>
             </div>
@@ -720,7 +720,7 @@
                 <el-col>
                   <div class="banner-title">神农大脑 设计服务平台</div>
                   <div class="banner-second-title">设计定制服务助力乡村振兴</div>
-                  <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
+                  <span class="sn-release pointer" @click.stop="boolFindDesign = true">发布需求</span>
                 </el-col>
               </el-row>
             </div>
