@@ -22,7 +22,7 @@
                   {{ d.title }}
                 </div>
                 <p class="des">{{ d.profile }}</p>
-                <p class="company">
+                <p class="company over-ellipsis">
                   <img class="avatar" v-if="d.design_company.logo_image" :src="d.design_company.logo_image.logo"
                       width="30"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="30"/>

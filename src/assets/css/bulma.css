@@ -1583,30 +1583,6 @@ input[type="submit"].button {
   color: #7A7A7A;
   }
 
-.input[disabled]::-moz-placeholder, .input.is-disabled::-moz-placeholder,
-.textarea[disabled]::-moz-placeholder,
-.textarea.is-disabled::-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.input[disabled]::-webkit-input-placeholder, .input.is-disabled::-webkit-input-placeholder,
-.textarea[disabled]::-webkit-input-placeholder,
-.textarea.is-disabled::-webkit-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.input[disabled]:-moz-placeholder, .input.is-disabled:-moz-placeholder,
-.textarea[disabled]:-moz-placeholder,
-.textarea.is-disabled:-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.input[disabled]:-ms-input-placeholder, .input.is-disabled:-ms-input-placeholder,
-.textarea[disabled]:-ms-input-placeholder,
-.textarea.is-disabled:-ms-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
 .input[type="search"],
 .textarea[type="search"] {
   border-radius: 290486px;
@@ -1820,22 +1796,6 @@ input[type="submit"].button {
   border-color: whitesmoke;
   box-shadow: none;
   color: #7A7A7A;
-  }
-
-.select select[disabled]::-moz-placeholder, .select select.is-disabled::-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.select select[disabled]::-webkit-input-placeholder, .select select.is-disabled::-webkit-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.select select[disabled]:-moz-placeholder, .select select.is-disabled:-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
-  }
-
-.select select[disabled]:-ms-input-placeholder, .select select.is-disabled:-ms-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
   }
 
 .select select:hover {
