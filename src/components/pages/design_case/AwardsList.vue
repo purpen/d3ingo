@@ -7,7 +7,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="card">
             <router-link :to="{name: 'designAwardsShow', params: {id: d.id}}"
-                        :target="BMob ? '_self' : '_blank'">
+                        :target="isMob ? '_self' : '_blank'">
               <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                   <!-- <img v-lazy="d.cover.middle"> -->
               </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="blank20"></div>
     <div class="pager" v-if="query.totalCount">
-      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="BMob" :current-page="query.page" :page-size="query.pageSize"
+      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize"
                      :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper"
                      @current-change="handleCurrentChange">
       </el-pagination>
@@ -116,7 +116,7 @@ export default {
     this.loadList()
   },
   computed: {
-    BMob() {
+    isMob() {
       return this.$store.state.event.isMob
     }
   }

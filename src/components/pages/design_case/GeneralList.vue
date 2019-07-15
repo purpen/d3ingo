@@ -109,8 +109,8 @@ export default {
     }
   },
   created: function() {
-    this.loadList(this.$route.query.type = 0)
     this.query.page = Number(this.$route.query.page) || 1
+    this.loadList(this.$route.query.type = 0)
   },
   computed: {
     isMob() {
