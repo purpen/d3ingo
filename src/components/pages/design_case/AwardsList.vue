@@ -18,7 +18,7 @@
                 </router-link>
                 <p class="des">{{d.summary}}</p>
 
-                <p class="company">
+                <p class="company over-ellipsis">
                   <img class="avatar" :src="d.img"
                       width="30"/>
                   <span>{{d.category_value}}</span>
@@ -129,7 +129,7 @@ a {
   color: #222;
 }
 .container h3 {
-  font-size: 2rem;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -155,23 +155,24 @@ a {
 }
 
 .content a {
+  font-size: 18px;
+  font-family:PingFangSC-Regular;
   display: block;
-  font-size: 1.6rem;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;
+  color: #222;
+  font-weight:400;
 }
 
 .des{
-  margin: 10px 0;
+  margin: 5px 0;
   color: #666;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  font-size: 14px;
+  line-height: 24px;
+  white-space: nowrap;
   overflow: hidden;
-  height: 42px;
+  text-overflow: ellipsis;
 }
 
 .company {

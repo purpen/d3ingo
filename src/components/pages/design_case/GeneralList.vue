@@ -30,7 +30,7 @@
                 </router-link>
                 <p class="des">{{ d.profile }}</p>
 
-                <p class="company">
+                <p class="company over-ellipsis">
                   <img class="avatar" v-if="d.design_company.logo_image" :src="d.design_company.logo_image.logo"
                       width="30"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="30"/>
@@ -130,7 +130,7 @@ a {
   color: #222;
 }
 .container h3 {
-  font-size: 2rem;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -189,7 +189,7 @@ a {
 }
 
 .content a {
-  font-size: 1.8rem;
+  font-size: 18px;
   font-family:PingFangSC-Regular;
   display: block;
   overflow: hidden;
@@ -200,17 +200,13 @@ a {
 }
 
 .des {
-  margin: 10px 0;
+  margin: 5px 0;
   color: #666;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  font-size: 14px;
+  line-height: 24px;
+  white-space: nowrap;
   overflow: hidden;
-  font-family: PingFangSC-Regular;
-  height: 42px;
-  font-weight: 400;
+  text-overflow: ellipsis;
 }
 .company {
   color: #666;
