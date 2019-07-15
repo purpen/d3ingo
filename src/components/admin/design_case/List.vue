@@ -335,7 +335,7 @@ export default {
     download() {
       let url = 'https://sa.taihuoniao.com/admin/designCase/exportExcel'
       if (conf.ENV === 'prod') {
-        url = 'https://d3in-admin.taihuoniao.com/designCase/exportExcel'
+        url = 'https://d3in-admin.taihuoniao.com/admin/designCase/exportExcel'
       }
       const data = {
         token: this.token
