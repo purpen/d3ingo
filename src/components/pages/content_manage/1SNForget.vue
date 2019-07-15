@@ -4,7 +4,7 @@
     <div class="sn-forget">
       <div class="forget-cart">
         <div class="cart-left">
-          <h4 class="bb-e6">找回密码</h4>
+          <h4 class="border-b-e6">找回密码</h4>
 
 
         <div class="forget-content">
