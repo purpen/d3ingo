@@ -749,17 +749,6 @@ button.el-button.is-custom.is-disabled,
     padding-top: 0
   }
 }
-input, textarea,
-.el-textarea__inner::-webkit-input-placeholder,
-.el-input__inner::-webkit-input-placeholder,
-.el-textarea__inner:-moz-placeholder,
-.el-input__inner:-moz-placeholder,
-.el-textarea__inner::-moz-placeholder,
-.el-input__inner::-moz-placeholder,
-.el-textarea__inner:-ms-input-placeholder,
-.el-input__inner:-ms-input-placeholder { /* Internet Explorer 10+ */
-  color: #c8c8c8!important;
-}
 /* el-dialog */
 .el-dialog-confirm {
   text-align: center
