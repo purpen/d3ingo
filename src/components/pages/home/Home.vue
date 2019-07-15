@@ -361,10 +361,10 @@
                 <div class="case-header-arrow"></div>
               </div>
               <div v-if="item.cover" class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url(' + item.cover.middle +') no-repeat center / contain'}">
+              :style="{background: 'url(' + item.cover.middle +') no-repeat center / cover'}">
               </div>
               <div v-else class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / contain'}">
+              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / cover'}">
               </div>
               <div class="case-center-round">
                 <div class="case-center-title">{{item.title}}</div>

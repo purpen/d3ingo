@@ -8,7 +8,6 @@ import store from './store/index'
 import * as types from './store/mutation-types'
 import router from './router'
 import { SOURCE_TYPE } from 'conf/prod.env'
-import {FWH} from '../config/prod.env.js'
 // npm install axios的时候默认会安装qs
 // qs相关的问题请搜索"nodejs qs"或者看这里https://www.npmjs.com/package/qs
 import Qs from 'qs'
@@ -55,27 +54,24 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          if (FWH) {
+          // 401 清除token信息并跳转到登录页面
+          store.commit(types.USER_SIGNOUT)
+          if (store.state.event.prod.name === 'sn') {
+            router.replace({
+              path: '/home',
+              query: {
+                redirect: router.currentRoute.fullPath
+              }
+            })
           } else {
-            // 401 清除token信息并跳转到登录页面
-            store.commit(types.USER_SIGNOUT)
-            if (store.state.event.prod.name === 'sn') {
-              router.replace({
-                path: '/home',
-                query: {
-                  redirect: router.currentRoute.fullPath
-                }
-              })
-            } else {
-              router.replace({
-                path: '/login',
-                query: {
-                  redirect: router.currentRoute.fullPath
-                }
-              })
-            }
-            msg = '登录已失效, 请重新登录'
+            router.replace({
+              path: '/login',
+              query: {
+                redirect: router.currentRoute.fullPath
+              }
+            })
           }
+          msg = '登录已失效, 请重新登录'
           break
         case 403:
           // 无访问权限
