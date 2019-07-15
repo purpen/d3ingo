@@ -1302,9 +1302,9 @@
   }
   .case-center-round {
     max-width:380px;
-    height:90px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     padding-top: 12px;
   }
   .case-center-title {
@@ -1319,7 +1319,6 @@
     line-height: 16px;
   }
   .case-center-text {
-    height: 40px;
     font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1327,6 +1326,7 @@
     line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     margin-top: 10px;
   }
   .innovation {
