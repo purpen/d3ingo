@@ -94,7 +94,7 @@
             <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue" @keyup.enter="selectLoad()"/>
             <div class="select-img" @click="selectLoad()"></div>
           </div>
-          <div class="dot">
+          <div class="dot" v-if="tableData.length > 0">
             <div class="dot-hover">
               <div class="dot-flex" @click="downloads()">
                 <i class="el-icon-download dot-img1"></i>
@@ -468,7 +468,7 @@ export default {
       let form = document.createElement('form')
       let node = document.createElement('input')
       form.action = url
-      form.target = '_self'
+      form.target = '_blank'
       form.method = 'POST'
       for (let name in data) {
         node.name = name
