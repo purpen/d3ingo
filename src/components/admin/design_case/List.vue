@@ -351,7 +351,7 @@ export default {
       let form = document.createElement('form')
       let node = document.createElement('input')
       form.action = url
-      form.target = '_self'
+      form.target = '_blank'
       form.method = 'POST'
       for (let name in data) {
         node.name = name
