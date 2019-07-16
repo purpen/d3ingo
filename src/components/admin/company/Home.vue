@@ -215,7 +215,7 @@
 <script>
 import REGION_DATA from 'china-area-data'
 import api from '@/api/api'
-import conf from 'conf/prod.env'
+// import conf from 'conf/prod.env'
 export default {
   region: REGION_DATA,
   data() {
@@ -451,12 +451,19 @@ export default {
       })
     },
     downloads() {
-      let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
-      if (conf.ENV === 'prod') {
-        url = 'https://d3in-admin.taihuoniao.com/admin/designCompany/exportExcel'
-      }
+      // let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
+      // if (conf.ENV === 'prod') {
+      //   url = 'https://d3in-admin.taihuoniao.com/admin/designCompany/exportExcel'
+      // }
+      let url = location.origin + '/api/admin/designCompany/exportExcel'
       const data = {
-        token: this.token
+        token: this.token,
+        sort: this.query.sort,
+        type_verify_status: this.query.type,
+        evt: this.query.evt,
+        val: this.query.val,
+        province: this.query.province,
+        scale: this.query.scale
       }
       let form = document.createElement('form')
       let node = document.createElement('input')
