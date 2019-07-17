@@ -151,7 +151,7 @@
         </el-menu>
       </div>
     </section>
-    <section :class="['admin-container full-height', {'container-mini': leftWidth === 2}]">
+    <section :class="['admin-container', {'container-mini': leftWidth === 2}]">
       <router-view></router-view>
     </section>
     <div>
@@ -676,7 +676,8 @@
   }
   .admin-container {
     transition: 268ms all ease;
-    padding: 20px 40px 40px 280px
+    padding: 20px 40px 40px 280px;
+    height: calc(100vh - 70px)
   }
   .container-mini {
     padding-left: 100px;
