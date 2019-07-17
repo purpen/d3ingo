@@ -7,13 +7,13 @@
       <div class="vcenter-container" v-loading="isLoading">
         <el-row :gutter="20" class="mar-b-10">
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="!target">
-            <div class="head-item b-e6 border_radius mar-b-20">
+            <div class="head-item border-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度项目目标</span>
                 <span class="edit fr pointer"  @click="upcount()"></span>
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.count}} 个</h3>
-                <div class="number bb-e6">
+                <div class="number border-b-e6">
                   <el-tooltip class="item" effect="dark" 
                     :content="'已完成项目: ' + (totalItem.ok_count_percentage>=100?100:totalItem.ok_count_percentage) + '%'" 
                     placement="top">
@@ -30,7 +30,7 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="target">
-            <div class="head-item b-e6 border_radius mar-b-20">
+            <div class="head-item border-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度项目目标</span>
                 <span class="fr fz-14 tc-red"  @click="updataCount(1)">确定</span>
@@ -38,7 +38,7 @@
               <el-input placeholder="请输入内容" v-model="ecount" class="padding-t-10" @blur="blurCount">
                 <template slot="append">个</template>
               </el-input>
-              <div class="edit-centent mar-b-10 bb-e6">
+              <div class="edit-centent mar-b-10 border-b-e6">
                 <el-progress
                 status="exception"
                 :percentage="totalItem.ok_count_percentage>=100?100:totalItem.ok_count_percentage"
@@ -50,13 +50,13 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="!Turnover">
-            <div class="head-item b-e6 border_radius mar-b-20">
+            <div class="head-item border-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度营业额目标</span>
                 <span class="edit fr pointer" @click="upturnover()"></span>
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.turnover | formatUnit}} 万元</h3>
-              <div class="number bb-e6">
+              <div class="number border-b-e6">
                 <el-tooltip class="item" effect="dark" 
                   :content="'已收入: ' + (totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage) + '%'" placement="top">
                   <el-progress
@@ -71,7 +71,7 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="Turnover">
-            <div class="head-item b-e6 border_radius mar-b-20">
+            <div class="head-item border-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度营业额目标</span>
                 <span class="fr fz-14 tc-red"  @click="updataCount(2)">确定</span>
@@ -81,7 +81,7 @@
               >
                 <template slot="append">万元</template>
               </el-input>
-              <div class="edit-centent mar-b-10 bb-e6">
+              <div class="edit-centent mar-b-10 border-b-e6">
                 <el-progress
                 status="exception"
                 :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
@@ -93,13 +93,13 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6">
-            <div class="head-item b-e6 border_radius">
+            <div class="head-item border-e6 border_radius">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">收入</span>
                 <!-- <span class="edit fr pointer"></span> -->
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.ok_turnover | formatUnit}} 万元</h3>
-              <div class="number bb-e6 clearfix">
+              <div class="number border-b-e6 clearfix">
                 <p class="tc-9 fl">月环比: <span class="upper">{{totalItem.month_on_month}}%</span></p>
                 <p class="tc-9 fl">季度环比: <span class="down">{{totalItem.quarter_on_quarter}}%</span></p>
               </div>
@@ -107,13 +107,13 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6">
-            <div class="head-item b-e6 border_radius">
+            <div class="head-item border-e6 border_radius">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">项目</span>
                 <!-- <span class="edit fr pointer"></span> -->
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.total_item_counts}} 个</h3>
-              <div class="number bb-e6">
+              <div class="number border-b-e6">
                 <section class="lines">
                   <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
                   <el-tooltip class="item" effect="dark" placement="top">
@@ -141,8 +141,8 @@
           </el-col>
         </el-row>
         <p class="mar-b-20 tc-2">项目款</p>
-        <div class="line-map border_radius b-e6">
-          <div class="head bb-e6 tc-6 clearfix mar-b-10">
+        <div class="line-map border_radius border-e6">
+          <div class="head border-b-e6 tc-6 clearfix mar-b-10">
             <p class="fl">
               <span :class="['fz-14','mar-r-20',{'tc-red':isIncome}]" @click="isIncome=true">收入金额</span>
               <span :class="['fz-14',{'tc-red':!isIncome}]" @click="isIncome=false">项目数</span>

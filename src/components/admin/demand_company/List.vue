@@ -26,20 +26,20 @@
         </el-form-item>
         <el-form-item>
           <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-            <el-option label="公司ID" value="1"></el-option>
-            <el-option label="公司名称" value="2"></el-option>
-            <el-option label="公司简称" value="3"></el-option>
-            <el-option label="用户ID" value="4"></el-option>
+            <el-option label="公司ID" :value="1"></el-option>
+            <el-option label="公司名称" :value="2"></el-option>
+            <el-option label="公司简称" :value="3"></el-option>
+            <el-option label="用户ID" :value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-select v-model="query.source" placeholder="来源..." size="small">
-            <el-option label="全部" value="0"></el-option>
-            <el-option label="铟果" value="-1"></el-option>
-            <el-option label="艺火" value="1"></el-option>
-            <el-option label="义乌" value="2"></el-option>
-            <el-option label="神农" value="3"></el-option>
-            <el-option label="--" value="4"></el-option>
+            <el-option label="全部" :value="0"></el-option>
+            <el-option label="铟果" :value="-1"></el-option>
+            <el-option label="艺火" :value="1"></el-option>
+            <el-option label="义乌" :value="2"></el-option>
+            <el-option label="神农" :value="3"></el-option>
+            <el-option label="--" :value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -300,7 +300,7 @@ export default {
       self.query.sort = self.$route.query.sort
       self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
       self.menuType = parseInt(self.query.type)
-      self.query.source = self.$route.query.source || 0
+      self.query.source = parseInt(self.$route.query.source) || 0
       self.query.evt = self.$route.query.evt || '2'
       self.query.val = self.$route.query.val
       self.isLoading = true

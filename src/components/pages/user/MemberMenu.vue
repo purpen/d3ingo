@@ -6,7 +6,7 @@
     <input type="text" class="search" v-model.trim="searchKey">
     <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
-  <div class="menu-header bb-e6">
+  <div class="menu-header border-b-e6">
     <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
     <span :class="{'active': isActive === 2}" @click="changeActive(2)" v-if="false">部门</span>
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>

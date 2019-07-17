@@ -9,62 +9,48 @@
       </div>
 
       <div class="admin-search-form">
-        <el-form :inline="true" :model="query">
-        <el-row :gutter="5" justify="end">
-          <el-col :span="3">
-            <el-form-item>
-              <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
-                <el-option label="全部" value="0"></el-option>
-                <el-option label="用户" value="1"></el-option>
-                <el-option label="编辑" value="5"></el-option>
-                <el-option label="管理员" value="10"></el-option>
-                <el-option label="商务" value="12"></el-option>
-                <el-option label="管理员plus" value="15"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <el-select v-model="query.source" placeholder="来源..." size="small">
-                <el-option label="全部" value="0"></el-option>
-                <el-option label="铟果" value="-1"></el-option>
-                <el-option label="艺火" value="1"></el-option>
-                <el-option label="义乌" value="2"></el-option>
-                <el-option label="神农" value="3"></el-option>
-                <el-option label="--" value="4"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <el-select v-model="query.type" placeholder="目标人群..." size="small">
-                <el-option label="全部" value="0"></el-option>
-                <el-option label="需求方" value="1"></el-option>
-                <el-option label="设计服务商" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                <el-option label="ID" value="1"></el-option>
-                <el-option label="手机号" value="2"></el-option>
-                <el-option label="昵称" value="3"></el-option>
-                <el-option label="邮箱" value="4"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="2">
-            <el-form-item>
-              <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-            </el-form-item>
-          </el-col>
-          </el-row>
+        <el-form :inline="true" :model="query" class="clearfix">
+          <el-form-item class="fl" style="margin-right: 10px">
+            <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+          </el-form-item>
+          <el-form-item class="fl" style="margin-right: 10px">
+            <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
+              <el-option label="全部" value="0"></el-option>
+              <el-option label="用户" value="1"></el-option>
+              <el-option label="编辑" value="5"></el-option>
+              <el-option label="管理员" value="10"></el-option>
+              <el-option label="商务" value="12"></el-option>
+              <el-option label="管理员plus" value="15"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item class="fl" style="margin-right: 10px">
+            <el-select v-model="query.source" placeholder="来源..." size="small">
+              <el-option label="全部" value="0"></el-option>
+              <el-option label="铟果" value="-1"></el-option>
+              <el-option label="艺火" value="1"></el-option>
+              <el-option label="义乌" value="2"></el-option>
+              <el-option label="神农" value="3"></el-option>
+              <el-option label="--" value="4"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item class="fl" style="margin-right: 10px">
+            <el-select v-model="query.type" placeholder="目标人群..." size="small">
+              <el-option label="全部" value="0"></el-option>
+              <el-option label="需求方" value="1"></el-option>
+              <el-option label="设计服务商" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item class="fl" style="margin-right: 10px">
+            <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+              <el-option label="ID" value="1"></el-option>
+              <el-option label="手机号" value="2"></el-option>
+              <el-option label="昵称" value="3"></el-option>
+              <el-option label="邮箱" value="4"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item class="fl">
+            <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+          </el-form-item>
         </el-form>
       </div>
 
@@ -109,7 +95,7 @@
             </template>
         </el-table-column>
         <el-table-column
-          width="80"
+          width="100"
           label="类型">
             <template slot-scope="scope">
               <p v-if="scope.row.type === 2">设计服务商</p>

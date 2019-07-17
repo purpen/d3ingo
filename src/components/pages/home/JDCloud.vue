@@ -341,7 +341,7 @@
               </div>
             </div>
 
-            <div class="phone-title-item margin-t-28">
+            <div class="phone-title-item margin-t-30">
               <img src="../../../assets/images/promote/Service@2x.png" alt="">
               <div class="phone-text-box">
                 <div>专业设计服务机构</div>
@@ -750,9 +750,9 @@
         </div>
       </div>
       <!-- 设计服务类型 -->
-      <div class="sn-service-type padding-b60" id="sn1">
+      <div class="sn-service-type padding-b-60" id="sn1">
         <div class="container">
-          <p class="sn-sub-title padding-b40">设计服务类型</p>
+          <p class="sn-sub-title padding-b-40">设计服务类型</p>
           <el-row :gutter="20" type="flex">
             <el-col v-for="(item, i) in snServiceTyoe" :key="i">
               <div class="service-type-contant">
@@ -772,7 +772,7 @@
       <!-- 部分案例展示 -->
       <div class="sn-case" id="sn2">
         <div class="container">
-          <p class="sn-sub-title padding-b40">部分案例展示</p>
+          <p class="sn-sub-title padding-b-40">部分案例展示</p>
           <div class="case-title">
             <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">视觉设计</div>
             <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">logo设计</div>
@@ -854,9 +854,9 @@
         </div>
       </div>
       <!-- 报价方案 -->
-      <div class="sn-offer padding-b80" id="sn3">
+      <div class="sn-offer padding-b-80" id="sn3">
         <div class="container">
-          <p class="sn-sub-title padding-b40">报价方案</p>
+          <p class="sn-sub-title padding-b-40">报价方案</p>
           <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
@@ -882,7 +882,7 @@
                     <p class="add-services" v-if="item.h8">{{item.h8}}</p>
                     <p class="add-services" v-if="item.h9">{{item.h9}}</p>
                   </div>
-                  <div class="price padding-b40">
+                  <div class="price padding-b-40">
                     <p class="price-money">	&yen;<span>{{item.money}}</span><i class="fz-14">起</i></p>
                     <!-- <el-button class="buy-btn" size="large">购买</el-button> -->
                   </div>
@@ -892,9 +892,9 @@
         </div>
       </div>
       <!-- 我们的优势 -->
-      <div class="sn-advantage padding-b80" id="sn4">
+      <div class="sn-advantage padding-b-80" id="sn4">
         <div class="container">
-          <p class="sn-sub-title padding-b40">我们的优势</p>
+          <p class="sn-sub-title padding-b-40">我们的优势</p>
           <el-row :gutter="30">
             <el-col v-for="(item, i) in snAdvantage" :key="i" :span="8">
               <div class="s-a-item">
@@ -940,10 +940,10 @@
         </div>
       </div>
       <!-- 所获奖项 -->
-      <div class="bg-f sn-awards padding-b80" id="sn6">
+      <div class="bg-f sn-awards padding-b-80" id="sn6">
         <div class="container">
-          <p class="sn-sub-title padding-b15">所获奖项</p>
-          <div class="awards-title2  padding-b40">3000+ 全球设计大奖</div>
+          <p class="sn-sub-title padding-b-15">所获奖项</p>
+          <div class="awards-title2  padding-b-40">3000+ 全球设计大奖</div>
           <div class="awards-box">
             <div class="awards-item" v-for="(item, i) in snAwards" :key="i">
               <div class="img-box">
@@ -957,8 +957,8 @@
         </div>
       </div>
       <!-- 发布需求 -->
-      <div class="sn-demand margin-t-14">
-        <div class="bg-f6f8ff padding-b50">
+      <div class="sn-demand margin-t-15">
+        <div class="bg-f6f8ff padding-b-50">
           <div class="container">
             <div class="sn-demand-box">
                 <div class="sn-demand-left">

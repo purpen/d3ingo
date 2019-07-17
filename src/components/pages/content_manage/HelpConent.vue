@@ -1,5 +1,5 @@
 <template>
-  <div class="sn-bg margin-b-m50 bb-e6 padding-b40">
+  <div class="sn-bg margin-b-m50 border-b-e6 padding-b-40">
     <div class="container">
       <div class="header">
         <router-link :to="{name: 'SNhelp', query: {type: $route.query.type}}" class="tc-9">帮助中心</router-link>

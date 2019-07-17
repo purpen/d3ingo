@@ -1,6 +1,6 @@
 <template>
 <!-- 神农大脑 -->
-<div class="margin-b-m50 bb-e6">
+<div class="margin-b-m50 border-b-e6">
   <div class="bg-F6F7FC">
     <div class="contant">
       <div class="safeguard1">

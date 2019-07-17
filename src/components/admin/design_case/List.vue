@@ -19,7 +19,7 @@
           v-model="query.value"
           @change="searchDesignCase">
         </el-input>
-        <div class="dot" v-if="menuType === 3">
+        <div class="dot" v-if="menuType === 3 && itemList.length > 0">
           <div class="dot-hover">
             <!-- <a :href="httpUrl + '/api/admin/designCase/exportExcel?token=' + token "> -->
             <div class="dot-flex" @click="download()">
@@ -149,7 +149,7 @@
 
 <script>
 import api from '@/api/api'
-import conf from 'conf/prod.env'
+// import conf from 'conf/prod.env'
 export default {
   name: 'admin_design_case_list',
   data () {
@@ -336,17 +336,22 @@ export default {
       })
     },
     download() {
-      let url = 'https://sa.taihuoniao.com/admin/designCase/exportExcel'
-      if (conf.ENV === 'prod') {
-        url = 'https://d3in-admin.taihuoniao.com/designCase/exportExcel'
-      }
+      // let url = 'https://sa.taihuoniao.com/admin/designCase/exportExcel'
+      // if (conf.ENV === 'prod') {
+      //   url = 'https://d3in-admin.taihuoniao.com/admin/designCase/exportExcel'
+      // }
+      let url = location.origin + '/api/admin/designCase/exportExcel'
       const data = {
-        token: this.token
+        token: this.token,
+        sort: this.query.sort,
+        type: this.query.type,
+        open: this.query.open,
+        value: this.query.value
       }
       let form = document.createElement('form')
       let node = document.createElement('input')
       form.action = url
-      form.target = '_self'
+      form.target = '_blank'
       form.method = 'POST'
       for (let name in data) {
         node.name = name

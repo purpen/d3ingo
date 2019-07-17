@@ -13,11 +13,11 @@
           <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
         </template>
       </el-alert>
-      <router-view class="main-content"></router-view>
+      <router-view class="main-content full-height"></router-view>
       <v-footer></v-footer>
     </div>
     <p v-show="false">{{token}}</p>
-    <div v-if="!fwh">
+    <div>
       <iframe
         v-for="(ele, index) in path"
         :key="index"
@@ -39,7 +39,6 @@ import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
 import phenix from 'assets/js/base.js'
-import {FWH} from '../config/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -61,8 +60,7 @@ export default {
       srcListDev: [
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
-      ],
-      fwh: FWH
+      ]
     }
   },
   watch: {
@@ -126,10 +124,7 @@ export default {
         this.path = list
       }
     }
-    if (FWH) {
-    } else {
-      this.getVersion()
-    }
+    this.getVersion()
     if (!this.prod.name) {
       this.fetchUser()
     }

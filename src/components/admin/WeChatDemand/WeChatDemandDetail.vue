@@ -11,7 +11,7 @@
         </div>
           <p class="tag red-button" @click="showDiaLog(detail.id, 5)">删除</p>
       </div>
-      <div class="bb-e6 margin-b-20 tc-red option text-right clearfix">
+      <div class="border-b-e6 margin-b-20 tc-red option text-right clearfix">
         <span class="fl tc-2">详情</span>
         <span v-if="isEdit" @click="resetDetail()">取消</span>
         <span v-if="isEdit" @click="editDetail()">保存</span>
