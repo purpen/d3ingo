@@ -13,7 +13,7 @@
           <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
         </template>
       </el-alert>
-      <router-view class="main-content full-height"></router-view>
+      <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
     <p v-show="false">{{token}}</p>
