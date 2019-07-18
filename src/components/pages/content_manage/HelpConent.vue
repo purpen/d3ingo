@@ -104,7 +104,7 @@
             <section>
               <h4 class="title1">何时支付托管项目费用？</h4>
               <p class="title2 margin-t-10">确认合同后，您需要向平台支付托管项目首付款，同时在每个确认阶段文件后需向平台支付托管项目阶段款，（由平台做资金监管）保障设计质量，推动项目进行。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option4_02@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option4_01@2x.png')" alt="">
             </section>
             <section>
               <h4 class="title1">项目阶段验收</h4>
