@@ -13,9 +13,9 @@ export default {
       // location.href = 'http://www.baidu.com'
       let payUrl = ''
       if (ENV === 'prod') {
-        payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        payUrl = 'http://sndn.jdcloud.com/cms/jdccOrder/checkOrderService?service='
       } else {
-        payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        payUrl = 'http://test-sndn.xjoycity.com/demo-ic-cms/jdccOrder/checkOrderService?service='
       }
       this.$http.get(api.JDYPayOrder, {params: {
         pay_order_id: id
