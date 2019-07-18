@@ -63,7 +63,7 @@ export default {
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
   payBankTransferId: '/pay/bankTransfer/{0}', // PUT 确认上传凭证
-
+  JDYPayOrder: '/pay/JDYPayOrder', // GET 京东云支付下单加密-神农大脑
   // 项目需求
   itemList: '/demand/itemList', // 客户项目列表
   itemCreate: '/demand/create', // POST 创建项目
