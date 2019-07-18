@@ -50,7 +50,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     var useTime = Math.floor((d2 - d1) / 1000) + 's'
     var full = path.resolve(__dirname)
     console.log(full.split('/')[full.split('/').length - 2] + '发布成功')
-    axios.get('https://sc.ftqq.com/SCU51595T2a7b444cd453b15cb8b3af1f1d8e8cd15cdcd4257cd1e.send',
+    axios.get('https://sc.ftqq.com/SCU55545T9fc65f29ae3dfd5ee37a59281510da115d304772ba693.send',
       {params: {text: path.resolve(__dirname) + '||发布成功', desp: config.build.env.LOCAL_URL+ '用时:' + useTime}})
     .then(res => {
       // console.log(res.data.success)
