@@ -82,10 +82,11 @@
 </template>
 
 <script>
-import {ENV} from 'conf/prod.env.js'
 import api from '@/api/api'
+import JDMarket from '@/components/block/JDMarket'
 export default {
   name: 'item_payment',
+  mixins: [JDMarket],
   data() {
     return {
       item: '',
@@ -114,15 +115,7 @@ export default {
           break
         case 6:
           if (this.item.source) {
-            let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
-            let payUrl = ''
-            if (ENV === 'prod') {
-              payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
-            } else {
-              payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
-            }
-            location.href = payUrl + window.btoa(JSON.stringify(data)) // base64 编码
-            return
+            this.goToJdMarket(this.item.id)
           }
           return
       }

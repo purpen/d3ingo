@@ -92,7 +92,7 @@
               <h4 class="title1">如何与设计服务商签订合同？</h4>
               <p class="title2 margin-t-10">在您确认报价后，将由设计服务商以商定的报价为基础在神农大脑设计服务平台编辑提交在线合同。合同中包含明确的方案、价格、阶段及详细内容。收到合同后，您可以预览并确认，合同签订成功。</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option3_02@2x.png')" alt="">
-              <img class="img-box margin-t-10" :src="require('assets/images/promote_sn/help/demand/option3_03@2x.png')" alt="">
+              <!-- <img class="img-box margin-t-10" :src="require('assets/images/promote_sn/help/demand/option3_03@2x.png')" alt=""> -->
               <p class="title3"><i class="el-icon-warning margin-r-5"></i>温馨提示：如果您对合同内容有异议或者不满意，你可以沟通设计方重新编辑修改后再做确认合同操作。</p>
             </section>
           </div>
@@ -104,7 +104,7 @@
             <section>
               <h4 class="title1">何时支付托管项目费用？</h4>
               <p class="title2 margin-t-10">确认合同后，您需要向平台支付托管项目首付款，同时在每个确认阶段文件后需向平台支付托管项目阶段款，（由平台做资金监管）保障设计质量，推动项目进行。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option4_02@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option4_01@2x.png')" alt="">
             </section>
             <section>
               <h4 class="title1">项目阶段验收</h4>
