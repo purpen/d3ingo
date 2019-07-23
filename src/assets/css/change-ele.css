@@ -1002,7 +1002,7 @@
   }
   .el-tooltip__popper[x-placement^=right] .popper__arrow, .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
     border-color: transparent;
-    border-right-color: #C8C8C8;
+    border-right-color: #4c4c4c;
   }
   .el-tooltip__popper.is-add-tooltop[x-placement^="right"] {
     margin-left: 14px;
@@ -1020,7 +1020,7 @@
   }
   .el-tooltip__popper[x-placement^=left] .popper__arrow, .el-tooltip__popper[x-placement^=left] .popper__arrow::after {
     border-color: transparent;
-    border-left-color: #C8C8C8;
+    border-left-color: #4c4c4c;
   }
   .el-tooltip__popper.is-add-tooltop[x-placement^="left"] {
     margin-left: 14px;
