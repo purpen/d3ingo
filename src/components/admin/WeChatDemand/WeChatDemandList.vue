@@ -11,7 +11,7 @@
       </el-table-column>
       <el-table-column
         prop="type"
-        width="140px"
+        min-width="140px"
         label="需求类型">
         <template slot-scope="scope">
           <p>{{scope.row.type | formatType}}</p>
@@ -19,12 +19,12 @@
       </el-table-column>
       <el-table-column
         prop="contact_name"
-        width="100px"
+        min-width="100px"
         label="联系人">
       </el-table-column>
       <el-table-column
         prop="phone"
-        width="110px"
+        min-width="110px"
         label="手机号">
       </el-table-column>
       <el-table-column
@@ -76,6 +76,13 @@
           <el-tooltip  effect="dark" :content="scope.row.problem" placement="top-start">
             <p class="ellipsis">{{scope.row.problem}}</p>
           </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="260px"
+        label="时间">
+        <template slot-scope="scope">
+          <p>{{scope.row.created_at | formatTime}}</p>
         </template>
       </el-table-column>
       <el-table-column
@@ -152,6 +159,13 @@ export default {
     }
   },
   filters: {
+    formatTime(val) {
+      if (val) {
+        return (val - 0).date_format().format('yyyy/MM/dd hh:mm')
+      } else {
+        return '-'
+      }
+    },
     formatStatus(val) {
       switch (val) {
         case 1:
