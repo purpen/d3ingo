@@ -11,6 +11,7 @@
       </el-table-column>
       <el-table-column
         prop="type"
+        width="140px"
         label="需求类型">
         <template slot-scope="scope">
           <p>{{scope.row.type | formatType}}</p>
@@ -18,16 +19,18 @@
       </el-table-column>
       <el-table-column
         prop="contact_name"
+        width="100px"
         label="联系人">
       </el-table-column>
       <el-table-column
         prop="phone"
+        width="110px"
         label="手机号">
       </el-table-column>
       <el-table-column
         label="地区">
         <template slot-scope="scope">
-          <p>{{scope.row.province}}/{{scope.row.city}}</p>
+          <p>{{scope.row.province}} {{scope.row.city}}</p>
         </template>
       </el-table-column>
       <el-table-column
