@@ -18,8 +18,9 @@
                 <el-option label="自平台" value="1"></el-option>
                 <el-option label="支付宝" value="2"></el-option>
                 <el-option label="微信" value="3"></el-option>
-                <el-option label="京东云" value="4"></el-option>
+                <el-option label="京东云(原)" value="4"></el-option>
                 <el-option label="银行转账" value="5"></el-option>
+                <el-option label="京东云市场" value="6"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -469,7 +470,9 @@ export default {
             if (item.source === 0) {
               sourceVal = '铟果'
             } else if (item.source === 1) {
-              sourceVal = '京东云'
+              sourceVal = '京东云艺火'
+            } else if (item.source === 4) {
+              sourceVal = '京东云神农大脑'
             }
             item['type_value'] = typeValue
             item['source_value'] = sourceVal

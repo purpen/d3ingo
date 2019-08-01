@@ -356,20 +356,6 @@ ul.el-pager li.number.active {
 .list-shadow li:last-child {
   border-radius: 0 0 4px 4px
 }
-/**
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-  font-size: 1.2rem;
-}
-input:-moz-placeholder, textarea:-moz-placeholder {
-  font-size: 1.2rem;
-}
-input::-moz-placeholder, textarea::-moz-placeholder {
-  font-size: 1.2rem;
-}
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-  font-size: 1.2rem;
-}
-**/
 
 .field .select {
   font-size: 0.875rem;
@@ -786,6 +772,7 @@ button.is-custom.is-outlined.is-loading:after {
   border: 1px solid #e6e6e6;
   color: #666;
   line-height: 20px;
+  box-shadow: none;
 }
 .el-input__inner:hover,
 .el-input__inner:focus {

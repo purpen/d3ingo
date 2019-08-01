@@ -14,7 +14,8 @@
           <span class="fz-18 tc-2 header-source">{{item.name}}</span>
           <span class="tc-6">来源:</span>
           <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
-          <span v-else-if="item.source === 1" class="header-source">京东云</span>
+          <span v-else-if="item.source === 1" class="header-source">京东云艺火</span>
+          <span v-else-if="item.source === 1" class="header-source">京东云神农大脑</span>
           <span class="tc-6">项目状态 : </span>
           <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
           <div class="fixe-header">
@@ -813,7 +814,7 @@ export default {
         } else {
           let len = value.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+            if (/^1\d{10}$/.test(value)) {
               callback()
             } else {
               callback(new Error('手机号格式不正确'))

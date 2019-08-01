@@ -11,7 +11,7 @@
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="username">
-            <el-input v-model="form.username" ref="account"
+            <el-input maxlength="11" v-model="form.username" ref="account"
             name="username"
                       placeholder="手机号"></el-input>
           </el-form-item>
@@ -23,7 +23,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
-            <el-input v-model="form.smsCode"  ref="smsCode" name="smsCode" placeholder="验证码">
+            <el-input maxlength="6" v-model="form.smsCode"  ref="smsCode" name="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
@@ -163,7 +163,7 @@ export default {
           })
           return
         }
-        if (username.length !== 11 || !/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(username)) {
+        if (username.length !== 11 || !/^1\d{10}$/.test(username)) {
           this.$message({
             message: '手机号格式不正确!',
             type: 'error',
@@ -271,7 +271,7 @@ export default {
     margin-bottom: -50px;
   }
 .sn-forget {
-  padding-top: 30px;
+  padding-top: 40px;
 }
 .forget-cart {
   margin: 0 auto;
@@ -284,19 +284,17 @@ export default {
 }
 .cart-left {
   width: 480px;
-  border-right: 2px dashed #E6E6E6;
+  border-right: 1px dashed #E6E6E6
 }
 .cart-left h4 {
   height: 80px;
-  line-height: 79px;
+  line-height: 80px;
   text-align: center;
   font-size:20px;
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:rgba(93,94,102,1);
-}
-.cart-right {
-  width: 400px;
+  border-bottom: 1px solid rgba(0,0,0,0.09)
 }
 .forget-content {
   padding: 30px;
@@ -327,6 +325,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1
 }
 .cart-right p {
   font-size:14px;

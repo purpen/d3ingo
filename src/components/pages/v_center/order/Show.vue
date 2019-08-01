@@ -15,7 +15,7 @@
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}" class="font-14">项目详情</router-link>
+              <router-link :to="{ name: 'vcenterItemShow', params: {id: item.item_id}}" class="font-14">项目详情</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
@@ -96,26 +96,27 @@
               <p>订单编号: <span>{{ item.uid }}</span></p>
               <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: <span>{{ item.summary }}</span></p>
               <p>创建时间: <span>{{ item.created_at }}</span></p>
-              
-              <div class="outline-pay" v-if="item.source === 0 && item.status !== 1" v-show="item.pay_type === 5">
-                <p class="detail-banner">对公转账</p>
-                <p>收款公司: <span>杭州太火鸟科技有限公司</span></p>
-                <p>收款账户: <span>2010 0019 4545 213</span></p>
-                <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
-              </div>
-              <div class="outline-pay jd-pay" v-if="item.source === 1 && item.status !== 1" v-show="item.pay_type === 5">
-                <p class="detail-banner">京东云市场支付</p>
-                <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
-                <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
-                class="to-pay middle-button full-red-button">去支付</a>
-                <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
+              <div v-if="item.status !== 1">
+                <div class="outline-pay" v-if="item.source === 0" v-show="item.pay_type === 5">
+                  <p class="detail-banner">对公转账</p>
+                  <p>收款公司: <span>杭州太火鸟科技有限公司</span></p>
+                  <p>收款账户: <span>2010 0019 4545 213</span></p>
+                  <p>开&nbsp;&nbsp;户&nbsp;行: <span>杭州联合农村商业银行股份有限公司中山支行</span></p>
+                </div>
+                <div class="outline-pay jd-pay" v-else v-show="item.pay_type === 5 || item.pay_type === 6">
+                  <p class="detail-banner">京东云市场支付</p>
+                  <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
+                  <a :href="jsPayUrl"
+                  class="to-pay middle-button full-red-button">去支付</a>
+                  <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
+                </div>
               </div>
             </div>
           </div>
           <div class="server" v-if="custom.id === 0">
             <p>如果您有任何疑问，请立即联系客服。</p>
             <p>邮箱：support@taihuoniao.com</p>
-            <p>电话：010-84599328</p>
+            <p>电话：13031154842</p>
           </div>
           <div class="server" v-if="custom.id === 1">
             <p>如果您有任何疑问，请立即联系客服。</p>
@@ -131,6 +132,7 @@
 </template>
 
 <script>
+  import {ENV} from 'conf/prod.env.js'
   import api from '@/api/api'
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/order/MenuSub'
@@ -239,6 +241,16 @@
       }
     },
     computed: {
+      jsPayUrl() {
+        let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
+        let payUrl = ''
+        if (ENV === 'prod') {
+          payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        } else {
+          payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+        }
+        return payUrl + window.btoa(data)
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

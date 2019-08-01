@@ -100,7 +100,7 @@
           } else {
             let len = value.toString().length
             if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              if (/^1\d{10}$/.test(value)) {
                 callback()
               } else {
                 callback(new Error('手机号格式不正确'))
@@ -363,6 +363,10 @@
       })
     },
     created() {
+      if (this.prod.name === 'sn') {
+        this.$router.push({name: 'SNRegister', query: this.$route.query, params: this.$route.params})
+        return
+      }
       this.form.type = this.$route.params.type ? this.$route.params.type - 0 : 1
       if (this.form.type === 2) {
         this.cActive = true

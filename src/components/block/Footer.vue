@@ -16,7 +16,7 @@
             <router-link  v-else-if="prod.id === 4" :to="{name: 'home-SNItem'}" class="">服务条款</router-link>
           </div>
           <div v-if="prod.id === 4" class="j-c-item">
-            <router-link :to="{name: 'SNhelpContent'}" class="">帮助</router-link>
+            <router-link :to="{name: 'SNhelp'}" class="">帮助</router-link>
           </div>
         </el-col>
       </el-row>
@@ -214,7 +214,7 @@
 }
 .sn-footer .j-c-item:hover a,
 .sn-footer .j-c-item a:focus {
-  color: #3171ff;
+  color: #3171fe;
 }
 .foot-main {
   padding-bottom: 20px;

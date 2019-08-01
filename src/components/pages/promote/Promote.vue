@@ -753,7 +753,7 @@
           } else {
             let len = value.toString().length
             if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              if (/^1\d{10}$/.test(value)) {
                 callback()
               } else {
                 callback(new Error('手机号格式不正确'))
@@ -909,7 +909,7 @@
           } else {
             let len = this.phone.toString().length
             if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(this.phone)) {
+              if (/^1\d{10}$/.test(this.phone)) {
                 this.contact()
               } else {
                 this.$message.error('手机号格式不正确')
@@ -922,8 +922,12 @@
       },
       // 点击获取验证码
       fetchCode() {
-        if (!this.form.account) {
-          this.$message.error('请输入手机号')
+        if (this.form.account.length !== 11 || !/^1\d{10}$/.test(this.form.account)) {
+          this.$message({
+            message: '手机号格式不正确!',
+            type: 'error',
+            duration: 1000
+          })
           return
         }
         this.$http.post(api.fetch_wx_code, {phone: this.form.account})
@@ -933,8 +937,12 @@
           })
       },
       fetchCode1() {
-        if (!this.form1.account) {
-          this.$message.error('请输入手机号')
+        if (this.form1.account.length !== 11 || !/^1\d{10}$/.test(this.form1.account)) {
+          this.$message({
+            message: '手机号格式不正确!',
+            type: 'error',
+            duration: 1000
+          })
           return
         }
         this.$http.post(api.fetch_wx_code, {phone: this.form1.account})

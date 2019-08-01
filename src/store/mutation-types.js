@@ -1,4 +1,5 @@
 export const USER_SIGNIN = 'USER_SIGNIN' // 登录
+export const WRITE_SNTOKEN = 'WRITE_SNTOKEN' // SN token
 export const USER_TICKET = 'USER_TICKET' // 登录 ticket
 export const USER_SIGNOUT = 'USER_SIGNOUT' // 退出
 export const USER_INFO = 'USER_INFO' // 用户信息

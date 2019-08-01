@@ -365,7 +365,17 @@
         }
       },
       otherAdminMenu() {
-        return OTHERADMINMENU
+        let obj = {}
+        for (let i in OTHERADMINMENU) {
+          if (i === 'adminUserList') {
+            if (this.$store.state.event.user.role_id >= 10) {
+              obj[i] = OTHERADMINMENU[i]
+            }
+          } else {
+            obj[i] = OTHERADMINMENU[i]
+          }
+        }
+        return obj
       },
       adminDetail() {
         return ADMINDETAIL

@@ -41,6 +41,7 @@ export default {
   jdCode: '/jd/code', // GET 获取京东code
   jdToken: '/jd/jdAccount', // GET 获取京东云access_token
   deleteJdYun: '/auth/deleteJdYun', // POST 解绑京东云
+  snToken: '/shennong/snUserToken', // POST 京东token获取SaaS token
 
   // 栏目
   columnList: '/column/lists', // GET 列表
@@ -54,6 +55,7 @@ export default {
   // 支付
   demandAlipay: '/pay/demandAliPay', // GET 支付保证金-支付宝
   demandJdPay: '/pay/demandJdPay', // GET 支付保证金-京东
+  demandSnPay: '/pay/shennongPay', // GET 支付保证金-神农
   demandWxPay: '/pay/demandWxPay', // GET 支付保证金-微信
   firstOrderItemId: '/pay/firstPayOrder/{0}', // GET 创建首付款支付订单
   payStagePayOrderStageId: '/pay/stagePayOrder/{0}', // GET 创建阶段款支付订单
@@ -133,6 +135,8 @@ export default {
   designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
   designCaseLabel: '/designCaseLabel/lists', // GET 设计案例标签列表
   getAppCode: '/designCompany/getAppCode', // GET 获取设计交易小程序设计公司主页二维码
+  // sn 案例
+  snDesignCaseList: '/designCase/assignOpenLists', // GET 神农指定公司设计案例推荐列表
   exportExcel: '/admin/designCase/exportExcel', // POST 设计案例导出
   // 添加作品
   work: 'works',

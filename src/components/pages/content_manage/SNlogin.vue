@@ -43,10 +43,10 @@
           <div class="regtShow">
             <span>还没有账户？</span>
             <!-- <span class="regter"> 立即注册 </span> -->
-            <router-link class="regter" :to="{name: 'SNRegister'}">立即注册</router-link>
+            <router-link class="regter" :to="{name: 'SNRegister'}" :class="{'shake-reg': isShake}">立即注册</router-link>
           </div>
           <!-- 底部 -->
-          <div class="SNfooter">
+          <div class="SNfooter" v-if="false">
             <div class="line"></div>
             <div class="flex">
               <img src="../../../assets/images/promote_sn/sn_login_icon.png" class="footerImg" alt="">
@@ -83,7 +83,7 @@
           } else {
             let len = value.toString().length
             if (len === 11) {
-              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              if (/^1\d{10}$/.test(value)) {
                 callback()
               } else {
                 callback(new Error('手机号格式不正确'))
@@ -95,6 +95,7 @@
         }
       }
       return {
+        requestMessageTask: null,
         tabVal: 1,
         checked: false,
         isShake: false,
@@ -196,7 +197,6 @@
                             that.$store.commit(MENU_STATUS, '')
                             auth.write_user(response.data.data)
                             that.timeLoadMessage()
-                            that.restoreMember()
                             that.getStatus(that.$store.state.event.user.type)
                             let prevUrlName = that.$store.state.event.prevUrlName
                             if (prevUrlName) {
@@ -282,22 +282,6 @@
           }
         }, 30000)
       },
-      restoreMember() {
-        if (this.code) {
-          this.$http.put(api.restoreMember, {rand_string: this.code})
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              // console.log(res)
-            } else {
-              this.$message.error(res)
-            }
-          }).catch(err => {
-            this.$message.error(err.message)
-          })
-        } else {
-          return
-        }
-      },
       getItem() {
         if (this.code) {
           this.$http.get(api.inviteValue, {params: {rand_string: this.code}})
@@ -348,7 +332,6 @@
               this.$set(this.user, 'type', this.userType)
               auth.write_user(this.user)
               this.timeLoadMessage()
-              this.restoreMember()
               this.getStatus(this.$store.state.event.user.type)
               let prevUrlName = this.$store.state.event.prevUrlName
               if (prevUrlName) {
@@ -434,12 +417,11 @@
   .login{
     width: 880px;
     height: 570px;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
-    border-radius:6px;
     margin: 40px auto;
+    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+    background:rgba(255,255,255,1);
+    border-radius:6px;
     display: flex;
-    justify-content: space-around;
   }
   .from_list{
     padding: 30px;
@@ -456,18 +438,19 @@
     justify-content: space-between;
   }
   .login-title{
-    text-align: center;
     height: 80px;
+    line-height: 80px;
+    text-align: center;
     font-size:20px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(93,94,102,1);
-    line-height: 80px;
-    border-bottom: 1px solid rgba(0,0,0,0.09);
+    border-bottom: 1px solid rgba(0,0,0,0.09)
   }
   .from{
-    width: 100%;
-    border-right: 1px dashed #E6E6E6;
+    flex: 1 1 auto;
+    max-width: 480px;
+    border-right: 1px dashed #E6E6E6
   }
   .regtShow{
     font-size:14px;
@@ -478,15 +461,15 @@
     margin-top: 20px;
   }
   .regter{
-    color: #3171FF;
+    color: #3171fe;
     cursor: pointer;
   }
   .forget:hover{
     color: none;
   }
   .introduce{
+    flex: 1;
     display: flex;
-    width: 100%;
     padding: 30px;
     flex-direction: column;
     justify-content: center;
@@ -544,11 +527,11 @@
     color: #666666;
   }
   .forgetHover:hover{
-    color: #3171FF;
+    color: #3171fe;
   }
   #passwd:checked ~.password-show::before {
-    background: #3171FF;
-    border: 1px solid #3171FF;
+    background: #3171fe;
+    border: 1px solid #3171fe;
   }
   #passwd:checked ~.password-show::after {
     content: "";
@@ -563,7 +546,7 @@
     transform: rotate(45deg);
   }
   #passwd:checked ~.password-show{
-    color: #3171FF;
+    color: #3171fe;
   }
   .password-show {
     padding-left: 20px;
@@ -608,7 +591,7 @@
     cursor: pointer;
   }
   .footer_title:hover{
-    color: #3171FF;
+    color: #3171fe;
   }
   .flex{
     display: flex;

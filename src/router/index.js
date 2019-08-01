@@ -131,6 +131,15 @@ let routes = [
     component: require('@/components/pages/design_case/GeneralList')
   },
   {
+    path: '/design_case/sn_list',
+    name: 'designSNList',
+    meta: {
+      title: '设计案例',
+      requireAuth: false
+    },
+    component: require('@/components/pages/design_case/SNDesignCase')
+  },
+  {
     path: '/design_case/awards_list',
     name: 'designAwardsList',
     meta: {
@@ -369,6 +378,16 @@ let routes = [
       hideFooter: true
     },
     component: require('@/components/pages/auth/JDNeuHub')
+  },
+  {
+    path: '/loginWithSnToken',
+    name: 'loginWithSnToken',
+    meta: {
+      title: '授权登录',
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/auth/SnToken')
   },
   {
     path: '/logout',
@@ -942,9 +961,19 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         store.commit(types.PREV_URL_NAME, to.fullPath)
-        next({
-          name: 'login'
-        })
+        if (store.state.event.prod.name === 'sn') {
+          next({
+            name: 'home'
+          })
+          Message.error({
+            duration: 2000,
+            message: '请先登录'
+          })
+        } else {
+          next({
+            name: 'login'
+          })
+        }
         return false
       }
     }

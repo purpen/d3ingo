@@ -152,20 +152,14 @@
                   <el-col :span="isMob ? 24 : 8">
                     <el-form-item
                       :prop="'stages.' + index + '.title'"
-                      :rules="{
-                      required: true, message: '请填写阶段标题', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.content">
                       <el-input v-model="form.stages[index].title" placeholder="阶段标题" size="small"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="isMob ? 24 : 4">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
-                      :rules="{
-                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.number">
                       <el-input v-model.number="form.stages[index].time" placeholder="" size="small">
                         <template slot="append">工作日</template>
                       </el-input>
@@ -179,23 +173,20 @@
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
-                      type: 'number', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
-                      min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
+                      type: 'integer', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
+                      min: 10, max: 50, message: '比例在10-50之间整数', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model.number="form.stages[index].percentage" placeholder="阶段百分比"
-                                @blur="fetchAmount(index)" size="small">
+                      <el-input v-model.number="form.stages[index].percentage"  
+                        placeholder="阶段百分比"
+                        @blur="fetchAmount(index)">
                         <template slot="append">%</template>
                       </el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="isMob ? 12 : 4">
                     <el-form-item
-                      :prop="'stages.' + index + '.amount'"
-                      :rules="{
-                      type: 'number', required: true, message: '请填写阶段金额', trigger: 'blur'
-                    }"
-                    >
+                      :prop="'stages.' + index + '.amount'">
                       <el-input v-model.number="form.stages[index].amount" disabled placeholder="" size="small">
                         <template slot="append">元</template>
                       </el-input>
@@ -208,10 +199,7 @@
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
                       :prop="'stages.' + index + '.content.' + i + ''"
-                      :rules="{
-                      required: true, message: '请填写内容', trigger: 'blur'
-                    }"
-                    >
+                      :rules="ruleForm.content">
                       <el-input v-model="form.stages[index].content[i]" placeholder="阶段内容" size="small">
                         <template slot="append">
                           <el-button @click="removeSubStage" :index="i" :stage_index="index">删除</el-button>
@@ -318,6 +306,34 @@
       vMenuSub
     },
     data () {
+      let checkContent = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写内容'))
+        } else {
+          if (this.isEmpty(value)) {
+            return callback(new Error('请填写内容'))
+          }
+          return callback()
+        }
+      }
+      let checkCount = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写正确天数'))
+        } else {
+          if (typeof Number(value) !== 'number') {
+            return callback(new Error('请填写正确天数'))
+          } else {
+            if (!/^[1-9][0-9]*?$/.test(value)) {
+              return callback(new Error('天数必须是整数'))
+            }
+            let len = (value + '')
+            if (len.split('.')[0].length > 3) {
+              return callback(new Error('天数过大'))
+            }
+            return callback()
+          }
+        }
+      }
       return {
         itemId: '',
         item: '',
@@ -390,15 +406,28 @@
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
-          ]
+          ],
+          content: [
+            {validator: checkContent, trigger: 'blur'},
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          number: [{validator: checkCount, trigger: 'blur'}]
         },
         userId: this.$store.state.event.user.id
       }
     },
     methods: {
+      isEmpty(value) {
+        let bool = true
+        value.split('').forEach(item => {
+          if (item !== ' ') {
+            bool = false
+          }
+        })
+        return bool
+      },
       submit(formName) {
         const that = this
         that.$refs[formName].validate((valid) => {
@@ -512,15 +541,32 @@
         let index = parseInt(event.currentTarget.getAttribute('index'))
         this.form.stages[stageIndex].content.splice(index, 1)
       },
+      lastIndex(index) {
+        let stages = this.form.stages
+        let total = this.form.total
+        let money = 0
+        for (var i = 0; i < stages.length - 1; i++) {
+          console.log(stages[i].amount)
+          if (stages[i].amount && stages[i].amount !== '') {
+            money += Number(stages[i].amount)
+          }
+        }
+        let amount = 0
+        amount = total - money - this.form.first_payment
+        stages[stages.length - 1].amount = amount
+      },
       // 获取阶段金额
       fetchAmount(index) {
         let self = this
         this.$refs['ruleForm'].validateField('stages.' + index + '.percentage', function (error) {
           if (!error) {
-            let total = parseFloat(self.form.total.sub(self.form.warranty_money.add(self.form.first_payment)))
-            let per = self.form.stages[index].percentage.mul(0.01).mul(2)
-            self.form.stages[index].amount = total.mul(per)
-            // self.$set(self.form.stages[index], 'amount', total.mul(per))
+            let stages = self.form.stages
+            let per = stages[index].percentage.mul(0.01)
+            let total = self.form.total
+            if (index !== stages.length - 1) {
+              stages[index].amount = Math.floor(total.mul(per))
+            }
+            self.lastIndex(index)
           }
         })
       }
@@ -590,9 +636,9 @@
                         }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
-                        contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.warranty_money)
-                        contract.first_payment = parseFloat(contract.first_payment)
+                        contract.total = Math.floor(contract.total)
+                        contract.warranty_money = Math.floor(contract.warranty_money)
+                        contract.first_payment = Math.floor(contract.first_payment)
                         contract.stage_money =
                           (contract.total - (contract.warranty_money + contract.first_payment)).toFixed(2)
                         that.form = contract
@@ -604,7 +650,7 @@
                         }
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
-                          that.form.commission = item.item.commission
+                          that.form.commission = Math.floor(item.item.commission)
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
                           for (let i = 0; i < that.form.item_stage.length; i++) {
@@ -613,7 +659,7 @@
                             newStageRow.sort = parseInt(stageRow.sort)
                             newStageRow.title = stageRow.title
                             newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                            newStageRow.amount = parseFloat(stageRow.amount)
+                            newStageRow.amount = Math.floor(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
                             that.form.stages.push(newStageRow)
@@ -632,15 +678,15 @@
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
-                that.form.commission = item.item.commission
+                that.form.commission = Math.floor(item.item.commission)
 
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone + ''
-                that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.warranty_money)
-                that.form.first_payment = parseFloat(item.item.first_payment)
+                that.form.total = Math.floor(item.item.price)
+                that.form.warranty_money = Math.floor(item.item.warranty_money)
+                that.form.first_payment = Math.floor(item.item.first_payment)
                 that.form.stage_money =
                   (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
 

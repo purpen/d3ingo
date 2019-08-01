@@ -77,30 +77,11 @@
                   <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-                <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
-                <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item> -->
-                <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
+                <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>公司设置</el-menu-item>
                 <el-menu-item index="/admin/dashboard" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-                <el-menu-item index="" @click="logout">
-                  <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-              </el-submenu>
+                <el-menu-item index="" @click="logout"><i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item></el-submenu>
             </el-menu>
           </div>
-
-          <!-- <div class="nav-right" v-else>
-            <div class="server-in-btn">
-              <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-            </div>
-            <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
-              <el-menu-item index="" :route="menu.register" class="fc-red">
-                <span class="login-shadow">
-                  注册
-                </span>
-              </el-menu-item>
-            </el-menu>
-          </div> -->
 
         </div>
       </div>
@@ -229,16 +210,10 @@
                   <span v-if="eventUser.company && (eventUser.company.company_abbreviation || eventUser.company.company_name)" class="b-nickname">{{ eventUser.company.company_abbreviation || eventUser.company.company_name }}</span>
                   <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
-                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心
-                </el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-                <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2 || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
-                <!-- <el-menu-item :index="custom.id === 0?'/admin/dashboard':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
-                <el-menu-item index="" @click="logout">
-                  <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
-              </el-submenu>
+                <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+                <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
+                <el-menu-item index="/b_admin/item/list" v-if="isSysAdmin || (eventUser.source_admin === 1 && custom.name === 'jdc') || (eventUser.source_admin === 2 && custom.name === 'yw') || (eventUser.source_admin === 4 && custom.name === 'sn') || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item index="" @click="logout"><i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item></el-submenu>
             </el-menu>
           </div>
 
@@ -247,9 +222,11 @@
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
               <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
-              <el-menu-item v-if="prodName !== 'sn'"  index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
-              <!-- <el-menu-item v-if="prodName === 'sn'" index="/login" :route="menu.sn_login" class="fr">登录</el-menu-item> -->
-              <el-menu-item  v-if="prodName !== 'sn'" index="/login" :route="menu.login" class="fr">登录</el-menu-item>
+              <el-menu-item v-if="prodName !== 'sn'" index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="prodName === 'sn'" index="" class="fr">
+                <a :href="'http://test-sndn.xjoycity.com/ic-passport-web/login/consumer?from=sndn&returnUrl='+ origin + '/loginWithSnToken'">授权登录</a>
+              </el-menu-item>
+              <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -269,21 +246,8 @@
             <li @click="closeMenu">
               <router-link :to="menu.home">首页</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.server">服务</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.article">铟果说</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.design_case">灵感</router-link>
-            </li>
-            <li @click="closeMenu">
-              <router-link :to="menu.commonly_sites">设计工具</router-link>
-            </li> -->
             <li @click="closeMenu">
               <router-link :to="menu.design_general_list">设计服务商入驻</router-link>
-              <!-- <a :href="menu.design_general_list">设计案例</a> -->
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.m_spread_design">设计服务商入驻</router-link>
@@ -341,6 +305,7 @@
     name: 'head_menu',
     data() {
       return {
+        origin: location.origin,
         requestMessageTask: null,
         menu: {
           home: {path: '/home'},
@@ -364,7 +329,7 @@
           content_manage: {path: '/content_manage/list'},
           sn_login: {path: '/content_manage/SNlogin'},
           // sn_about: {path: '/content_manage/SNhelp'},
-          sn_about: {path: '/content_manage/SNhelpContent'},
+          sn_about: {path: '/content_manage/SNhelp'},
           sn_register: {path: '/content_manage/1SNRegister'}
         },
         menuHide: true,
@@ -498,6 +463,12 @@
       }
     },
     computed: {
+      isSysAdmin() {
+        if (this.$store.state.event.user.source_admin === 6) {
+          return true
+        }
+        return this.$store.state.event.user.role_id >= 10
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -827,7 +798,7 @@
     border-bottom: 3px solid transparent;
     color: #666;
     padding: 0 3px;
-    margin: 0 22px;
+    margin: 0 22px 0 0;
     font-size: 16px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1102,8 +1073,11 @@
     padding: 0 12px !important;
     height:30px !important;
     line-height: 30px !important;
-    background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%) !important;
+    background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%) !important;
     border-radius:15px !important;
+  }
+  .sn-register:hover {
+    background:linear-gradient(270deg,#3171fe 0%,#a04faf 100%) !important;
   }
   .black-header .project-menu-sub .el-menu,
   .black-header .nav-header .el-menu,
@@ -1113,14 +1087,14 @@
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
   .black-header .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus {
     background: #13162A;
-    color: #3171FF;
+    color: #3171fe;
   }
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .black-header  .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .black-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .black-header   .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
   }
   .sn-header  .nav-header .el-menu--horizontal > .el-menu-item:hover,
@@ -1128,8 +1102,9 @@
   .sn-header  .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .sn-header .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
-    color: #3171FF;
+    color: #3171fe;
     background: none;
+    /* background: none; */
   }
   .sn-header.black-header .nav-header .el-menu-header .el-menu-item, .sn-header.black-header .m-nav-header .el-menu-header .el-menu-item, .sn-header.black-header .el-menu-header .el-submenu {
     color: #fff;
@@ -1164,12 +1139,12 @@
     transition: 0.268s all ease;
   }
   .sn-header .nav-header .nav-right .sn-register:hover {
-    background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    background-image: linear-gradient(-90deg, #995CB6 0%, #5D6FBC 45%, #0989C5 100%);
     color: #fff!important;
   }
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    color: #3171FF;
+    color: #3171fe;
   }
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):focus,
   .sn-header .nav-header .el-menu--horizontal .sn-register.el-menu-item:not(.is-disabled):hover {

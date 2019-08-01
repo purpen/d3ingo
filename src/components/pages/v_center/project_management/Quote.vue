@@ -103,8 +103,8 @@ export default {
       var self = this
       this.downLoadingBtn = true
       require.ensure([], function (require) {
-        require('../../../../../lib/js/pdfmake.min.js')
-        require('../../../../../lib/js/vfs_fonts.js')
+        require('lib/js/pdfmake.min.js')
+        require('lib/js/vfs_fonts.js')
         self.download()
       })
     },

@@ -28,7 +28,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="font-size-16 mar-t-30 mar-b-10">选择支付方式</p>
-          <div class="pay-type" v-if="item.source === 0 || item.source === 4">
+          <div class="pay-type clearfix">
             <ul v-if="!isMob">
               <!-- <li> 支付宝暂时隐藏
                 <label>
@@ -46,7 +46,7 @@
               <!--</div>-->
               <!--</label>-->
               <!--</li>-->
-              <li>
+              <li v-if="item.source === 0">
                 <label>
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
@@ -55,54 +55,34 @@
                   </div>
                 </label>
               </li>
-            </ul>
-
-            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <!-- <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio> -->
-              <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
-            </el-radio-group>
-
-            <div class="clear"></div>
-          </div>
-          <div class="pay-type" v-if="item.source === 1">
-            <ul v-if="!isMob">
-              <li>
+              <li v-else>
                 <label>
-                  <div :class="{'item': true, active: payType === 5 ? true : false}"
-                       @click="checkedPayBtn(5)">
+                  <div :class="{'item': true, active: payType === 6 ? true : false}"
+                       @click="checkedPayBtn(6)">
                     <p>京东云市场支付</p>
                     <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
             </ul>
-
-            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
-            </el-radio-group>
-
-            <div class="clear"></div>
+          </div>
+          <div class="pay-box clearfix">
+            <p v-if="isMob" class="total-price-m">总计：<span>¥ {{ item.amount }}</span></p>
+            <p :class="{'btn' : isMob}">
+              <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button>
+            </p>
+            <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p>
+            <p v-if="!isMob" class="total-txt">总计：</p>
           </div>
         </div>
-
-        <div class="pay-box clearfix">
-          <p v-if="isMob" class="total-price-m">总计：<span>¥ {{ item.amount }}</span></p>
-          <p :class="{'btn' : isMob}">
-            <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button>
-          </p>
-          <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p>
-          <p v-if="!isMob" class="total-txt">总计：</p>
-        </div>
-        <div class="clear"></div>
-
       </div>
-
     </div>
     <div id="payBlock"></div>
   </div>
 </template>
 
 <script>
+import {ENV} from 'conf/prod.env.js'
 import api from '@/api/api'
 export default {
   name: 'item_payment',
@@ -130,11 +110,21 @@ export default {
           url = 'wxpay'
           break
         case 5:
-          if (this.item.source === 1) {
-            window.open('https://market.jdcloud.com/#/service/details/576846')
-          }
           url = api.payItemBankPayId.format(this.item.id)
           break
+        case 6:
+          if (this.item.source) {
+            let data = {id: '578796', num: Number(this.item.amount), THOrderId: this.item.uid}
+            let payUrl = ''
+            if (ENV === 'prod') {
+              payUrl = 'http://tongliang.sndn.jdcloud.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            } else {
+              payUrl = 'http://tongliang.sndn.xjoycity.com/#|view0::M::changyeyun/adminCenter|view1::M::chanyeyun/special-service-buy!routerjson='
+            }
+            location.href = payUrl + window.btoa(JSON.stringify(data)) // base64 编码
+            return
+          }
+          return
       }
       if (!url) {
         this.$message.error('支付方式错误')

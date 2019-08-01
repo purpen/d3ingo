@@ -103,7 +103,7 @@ export default {
         } else {
           let len = value.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+            if (/^1\d{10}$/.test(value)) {
               callback()
             } else {
               callback(new Error('手机号格式不正确'))
@@ -398,6 +398,10 @@ export default {
     })
   },
   created: function() {
+    if (this.prod.name === 'sn') {
+      this.$router.push({name: 'SNlogin', query: this.$route.query, params: this.$route.params})
+      return
+    }
     if (ENV === 'prod') {
       this.jdURL = 'http://oauth2.jdcloud.com/authorize?client_id=9741542107197570&redirect_uri=https://c.jdcloud.com/binding_jd&response_type=code&state=matrixapp'
     }

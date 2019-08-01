@@ -45,7 +45,8 @@
               <el-option label="铟果" value="-1"></el-option>
               <el-option label="艺火" value="1"></el-option>
               <el-option label="义乌" value="2"></el-option>
-              <el-option label="--" value="3"></el-option>
+              <el-option label="神农" value="3"></el-option>
+              <el-option label="--" value="4"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -103,7 +104,7 @@
               <p v-if="scope.row.item.source === 0">铟果</p>
               <p v-else-if="scope.row.item.source === 1">艺火</p>
               <p v-else-if="scope.row.item.source === 2">义乌</p>
-              <p v-else-if="scope.row.item.source === 3">--</p>
+              <p v-else-if="scope.row.source === 4">神农</p>
               <p v-else>--</p>
             </template>
         </el-table-column>

@@ -1,7 +1,7 @@
 import store from '@/store/index'
 import api from '@/api/api'
 import axios from '../http'
-import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
+import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME, WRITE_SNTOKEN } from '@/store/mutation-types'
 
 var mallache = {}
 mallache.write_token = function (token, ticket) {
@@ -10,6 +10,9 @@ mallache.write_token = function (token, ticket) {
     store.commit(USER_TICKET, ticket)
   }
   store.commit(USER_SIGNIN, token)
+}
+mallache.write_SnToken = function (token) {
+  store.commit(WRITE_SNTOKEN, token)
 }
 
 mallache.write_user = function (user) {

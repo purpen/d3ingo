@@ -154,7 +154,7 @@
             })
             return
           }
-          if (username.length !== 11 || !/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(username)) {
+          if (username.length !== 11 || !/^1\d{10}$/.test(username)) {
             this.$message({
               message: '手机号格式不正确!',
               type: 'error',
@@ -248,6 +248,10 @@
       })
     },
     created: function () {
+      if (this.prod.name === 'sn') {
+        this.$router.push({name: 'content_manage-SNForget', query: this.$route.query, params: this.$route.params})
+        return
+      }
       if (this.$store.state.event.token) {
         this.$message.error('已经登录!')
         this.$router.replace({name: 'home'})

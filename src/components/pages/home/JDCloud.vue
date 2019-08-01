@@ -1,41 +1,55 @@
 <template>
   <section>
     <div v-if="custom.name === 'jdc'" :class="['jd-cloud']">
-      <!-- <div class="jdc-banner">
-        <div class="content">
-          <section class="con-left">
-            <h2>京东云艺火</h2>
-            <h4>专业B2B设计交易服务SaaS平台</h4>
-            <p class="padding-t-10">结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
-            <p>为京东云客户提供定制化产品设计服务。</p>
-            <span @click="jump" class="release">发布项目需求</span>
-          </section>
-          <section class="con-right"> -->
-            <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
-          <!-- </section>
+      <!--
+        <div class="jdc-banner">
+          <div class="content">
+            <section class="con-left">
+              <h2>京东云艺火</h2>
+              <h4>专业B2B设计交易服务SaaS平台</h4>
+              <p class="padding-t-10">结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
+              <p>为京东云客户提供定制化产品设计服务。</p>
+              <span @click="jump" class="release">发布项目需求</span>
+            </section>
+            <section class="con-right"> -->
+              <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
+            <!-- </section>
+          </div>
         </div>
-      </div>
-      <div class="jdc-content tc-2 fz-14">
-        <h3>创意实现与升级</h3>
-        <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
-        <p class="text-center fz-14 tc-6 padding-b-50 max-880 ti-2">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
-        <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
-          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
-            <div class="col clearfix">
-              <img class="fl" :src="ele.img" alt="">
-              <p class="fl tc-6 table">
-                <span>{{ele.title}}</span>
-              </p>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <section class="bg-gray">
+        <div class="jdc-content tc-2 fz-14">
+          <h3>创意实现与升级</h3>
+          <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
+          <p class="text-center fz-14 tc-6 padding-b-50 max-880 ti-2">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
+          <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
+            <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
+              <div class="col clearfix">
+                <img class="fl" :src="ele.img" alt="">
+                <p class="fl tc-6 table">
+                  <span>{{ele.title}}</span>
+                </p>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <section class="bg-gray">
+          <div class="jdc-content">
+            <h3>四个关键亮点</h3>
+            <el-row class="flex padding-b-80">
+              <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
+                <div class="col col-column text-center">
+                  <img :src="ele.img" alt="">
+                  <p class="tc-6">{{ele.title}}</p>
+                  <p class="tc-6 fz-14">{{ele.title2}}</p>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </section>
         <div class="jdc-content">
-          <h3>四个关键亮点</h3>
-          <el-row class="flex padding-b-80">
-            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
-              <div class="col col-column text-center">
+          <h3>创意项目发布流程</h3>
+          <el-row class="flex padding-b-40">
+            <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
+              <div class="col col-column col-column2 text-center">
                 <img :src="ele.img" alt="">
                 <p class="tc-6">{{ele.title}}</p>
                 <p class="tc-6 fz-14">{{ele.title2}}</p>
@@ -43,35 +57,23 @@
             </el-col>
           </el-row>
         </div>
-      </section>
-      <div class="jdc-content">
-        <h3>创意项目发布流程</h3>
-        <el-row class="flex padding-b-40">
-          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
-            <div class="col col-column col-column2 text-center">
-              <img :src="ele.img" alt="">
-              <p class="tc-6">{{ele.title}}</p>
-              <p class="tc-6 fz-14">{{ele.title2}}</p>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
 
-      <section class="bg-gray">
-        <div class="anli">
-          <div class="container">
-            <h3 class="title">成功案例</h3>
+        <section class="bg-gray">
+          <div class="anli">
+            <div class="container">
+              <h3 class="title">成功案例</h3>
+            </div>
+            <el-row>
+              <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
+                <img class="anli-content" :src="ele.image" :alt="ele.title">
+                <div class="anli-title animated fadeInUp">
+                  {{ele.title}}
+                </div>
+              </el-col>
+            </el-row>
           </div>
-          <el-row>
-            <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
-              <img class="anli-content" :src="ele.image" :alt="ele.title">
-              <div class="anli-title animated fadeInUp">
-                {{ele.title}}
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </section> -->
+        </section>
+      -->
       <div class="round-backgound" v-if="!isMob">
         <div class="bg1">
         </div>
@@ -111,26 +113,26 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="demand">
-                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                        <el-input maxlength="200" v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input maxlength="20" v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="account">
-                        <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                        <el-input maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
                     </el-col>
                     <!-- <el-col :span="10">
                       <el-form-item prop="smsCode">
-                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                        <el-input maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
                             <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                             </el-button>
@@ -353,28 +355,28 @@
           <el-row>
             <el-col :span="24">
               <el-form-item prop="demand">
-                <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                <el-input maxlength="200" v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item prop="contact">
-                <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                <el-input maxlength="20" v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item prop="account">
-                <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                <el-input maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <!-- <el-row>
             <el-col :span="24">
               <el-form-item prop="smsCode" class="call-ele">
-                <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+                <el-input maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                     </el-button>
@@ -590,13 +592,13 @@
         <div class="form mtop_40">
           <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-10">
             <el-form-item prop="name" class="pad-bot-15">
-              <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
+              <el-input maxlength="20" v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
             </el-form-item>
             <el-form-item prop="account" class="pad-bot-15">
-              <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
+              <el-input maxlength="11" v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
             </el-form-item>
             <!-- <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
-              <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+              <el-input class="" maxlength="6" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                 <template slot="append">
                   <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                   </el-button>
@@ -704,7 +706,7 @@
               <el-row>
                 <el-col>
                   <div class="banner-title">神农大脑 设计服务平台</div>
-                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
               </el-row>
@@ -717,7 +719,7 @@
               <el-row>
                 <el-col>
                   <div class="banner-title">神农大脑 设计服务平台</div>
-                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
               </el-row>
@@ -730,7 +732,7 @@
               <el-row>
                 <el-col>
                   <div class="banner-title">神农大脑 设计服务平台</div>
-                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>
               </el-row>
@@ -845,6 +847,9 @@
                 </el-col>
               </el-row>
             </div> -->
+          </div>
+          <div class="text-center">
+            <router-link :to="{name: 'designSNList'}" class="sn-list text-center tc-6 pointer">查看更多</router-link>
           </div>
         </div>
       </div>
@@ -970,14 +975,14 @@
                         <el-row>
                           <el-col :span="20" :offset="2">
                             <el-form-item prop="demand">
-                              <el-input class="el-input-c8"  v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
+                              <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
                             </el-form-item>
                           </el-col>
                         </el-row>
                         <el-row>
                           <el-col :span="20" :offset="2">
                             <el-form-item prop="contact">
-                              <el-input class="el-input-c8"  v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
+                              <el-input class="el-input-c8" v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
                             </el-form-item>
                           </el-col>
                         </el-row>
@@ -986,15 +991,15 @@
                             <el-row :gutter="10">
                                 <el-col :span="14">
                                     <el-form-item prop="account">
-                                      <el-input class="el-input-c8"  v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                                      <el-input class="el-input-c8" maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                                     </el-form-item>
                                 </el-col>
 
                                 <el-col :span="10">
                                   <el-form-item prop="smsCode">
-                                    <el-input   v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
+                                    <el-input   v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele el-input-c8">
                                       <template slot="append">
-                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn">{{ codeMsg }}
+                                        <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
                                         </el-button>
                                       </template>
                                     </el-input>
@@ -1021,7 +1026,8 @@
         title="发布需求"
         :visible.sync="boolFindDesign"
         width="480px"
-        :close-on-click-modal="true"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
         class="sn-find-design">
         <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
           <el-form-item prop="demand"  label="项目需求">
@@ -1031,11 +1037,11 @@
             <el-input class="el-input-c8" v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="account">
-            <el-input class="el-input-c8" v-model="form.account"  maxlength="11" placeholder="请输入手机号"></el-input>
+            <el-input class="el-input-c8" v-model="form.account" maxlength="11" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item label="验证码" class="sn-fetch-code" prop="smsCode">
-              <el-input class="el-input-c8" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
-              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0">{{ codeMsg }}
+              <el-input class="el-input-c8" maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
+              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
               </el-button>
           </el-form-item>
         </el-form>
@@ -1053,6 +1059,16 @@ import api from '@/api/api'
 export default {
   name: 'JDCloud',
   data() {
+    let checkContent = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写内容'))
+      } else {
+        if (this.isEmpty(value)) {
+          return callback(new Error('请填写内容'))
+        }
+        return callback()
+      }
+    }
     let checkNumber = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('请填写手机号'))
@@ -1062,7 +1078,7 @@ export default {
         } else {
           let len = value.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+            if (/^1\d{10}$/.test(value)) {
               callback()
             } else {
               callback(new Error('手机号格式不正确'))
@@ -1075,6 +1091,9 @@ export default {
     }
     const that = this
     return {
+      isFetchCode: false,
+      isFetching: false,
+      isFetchCode1: false,
       colList: [
         {
           img: require('assets/images/home/jd/1.png'),
@@ -1233,7 +1252,7 @@ export default {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 5000000,
+        autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
         spaceBetween: 0
@@ -1347,10 +1366,10 @@ export default {
           clickable: true
           // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
         },
-        lazy: true, // 设为true开启图片延迟加载默认值
         autoplay: {
           delay: 5000
         },
+        lazy: true,
         loop: true
       },
       snSwiperOption2: { // sn-banner
@@ -1358,18 +1377,18 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         },
-        lazy: true,
         autoplay: {
           delay: 5000
         },
+        lazy: true,
         loop: true
       },
       snSwiperOption3: { // sn-案例
         lazy: true,
+        loop: true,
         autoplay: {
           delay: 5000
         },
-        loop: true,
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
@@ -1810,23 +1829,25 @@ export default {
       //   loop: true
       // },
       // 底部
-      // swiperOption2: {
-      //   lazyLoading: true,
-      //   direction: 'vertical',
-      //   autoplay: 800,
-      //   slidesPerView: 8,
-      //   // observer: true,
-      //   paginationClickable: true,
-      //   loop: true
-      // },
+      swiperOption2: {
+        lazyLoading: true,
+        direction: 'vertical',
+        autoplay: 5000,
+        slidesPerView: 8,
+        // observer: true,
+        paginationClickable: true,
+        loop: true
+      },
       ruleForm: {
         account: [
           {validator: checkNumber, trigger: 'blur', required: true}
         ],
         demand: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的需求', trigger: 'blur' }
         ],
         contact: [
+          {validator: checkContent, trigger: 'blur'},
           {required: true, message: '请输入联系人', trigger: 'blur'}
         ],
         smsCode: [
@@ -1834,6 +1855,7 @@ export default {
         ],
         // app
         name: [
+          {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ]
       },
@@ -1930,6 +1952,15 @@ export default {
     // console.log(this.swiperObj)
   },
   methods: {
+    isEmpty(value) {
+      let bool = true
+      value.split('').forEach(item => {
+        if (item !== ' ') {
+          bool = false
+        }
+      })
+      return bool
+    },
     // 关闭弹窗
     closeBounced () {
       this.isShowBounced = false
@@ -1952,7 +1983,7 @@ export default {
         } else {
           let len = this.phone.toString().length
           if (len === 11) {
-            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(this.phone)) {
+            if (/^1\d{10}$/.test(this.phone)) {
               this.contact()
             } else {
               this.$message.error('手机号格式不正确')
@@ -1985,21 +2016,45 @@ export default {
     },
     // 点击获取验证码
     fetchCode() {
-      if (!this.form.account) {
-        this.$message.error('请输入手机号')
+      if (this.isFetchCode) {
         return
       }
-      this.$http.post(api.fetch_wx_code, {phone: this.form.account})
-        .then(res => {
-          this.time = this.second
-          this.timer()
+      if (this.form.account.length !== 11 || !/^1\d{10}$/.test(this.form.account)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
         })
+        return
+      }
+      this.isFetchCode = true
+      this.isFetching = true
+      this.$http.post(api.fetch_wx_code, {phone: this.form.account})
+      .then(res => {
+        console.log('then')
+        this.isFetching = false
+        this.time = this.second
+        this.timer()
+      }).catch(err => {
+        console.log('catch')
+        this.$message.error(err.message)
+        this.isFetchCode = false
+        this.isFetching = false
+      })
     },
     fetchCode1() {
-      if (!this.form1.account) {
-        this.$message.error('请输入手机号')
+      if (this.isFetchCode1) {
         return
       }
+      if (this.form1.account.length !== 11 || !/^1\d{10}$/.test(this.form1.account)) {
+        this.$message({
+          message: '手机号格式不正确!',
+          type: 'error',
+          duration: 1000
+        })
+        return
+      }
+      this.isFetchCode1 = true
       this.$http.post(api.fetch_wx_code, {phone: this.form1.account})
         .then(res => {
           this.time = this.second
@@ -2010,6 +2065,9 @@ export default {
       if (this.time > 0) {
         this.time = this.time - 1
         setTimeout(this.timer, 1000)
+      } else {
+        this.isFetchCode = false
+        this.isFetchCode1 = false
       }
     },
     submit_app (form) {
@@ -2081,6 +2139,7 @@ export default {
           }
           this.$http.post(url, row)
             .then(res => {
+              this.boolFindDesign = false
               if (res.data.meta.status_code === 200) {
                 this.$message.success('发布成功')
                 this.form = {}
@@ -2092,6 +2151,7 @@ export default {
               }
             })
             .catch(error => {
+              this.boolFindDesign = false
               this.$message.error(error)
             })
         } else {
@@ -2116,7 +2176,7 @@ export default {
         device: this.isMob ? 2 : 1,
         new_from: this.query.from || 3
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       }).catch(err => {
         console.error(err)
         this.$message.error(err.message)
@@ -2138,6 +2198,7 @@ export default {
     changeCaseType(e) {
       // console.log(this.swiperObj)
       this.currentCase = e
+      console.log(this.$refs.mySwiper3)
       if (e === 'vision') {
         this.swiperObj.slideToLoop(0)
       } else if (e === 'logo') {
@@ -2231,6 +2292,20 @@ export default {
 </script>
 <style scoped>
 /* sn start */
+.sn-list {
+  font-size: 16px;
+  display: inline-block;
+  width: 180px;
+  height: 56px;
+  line-height: 54px;
+  border: 1px solid #e6e6e6;
+  border-radius: 28px;
+}
+.sn-list:hover {
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
+  border-color: rgba(0,0,0,0);
+  color: #fff;
+}
 .nav-head {
   position: fixed;
   top: 0;
@@ -2263,14 +2338,14 @@ export default {
 }
 .nav-list span:hover,
 .nav-list span.active {
-  color: #3171FF;
+  color: #3171fe;
 }
 .nav-btn {
   display: inline-block;
   width:100px;
   height:30px;
   line-height: 30px;
-  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   border-radius:15px;
   cursor: pointer;
   color: #ffffff;
@@ -2283,11 +2358,11 @@ export default {
   background: #F6F8FF;
 }
 .sn-fetch-btn {
-  border:1px solid #3171FF;
-  color: #3171FF;
+  border:1px solid #3171fe;
+  color: #3171fe;
 }
 .sn-fetch-btn:hover {
-  background:  #3171FF;
+  background:  #3171fe;
   color: #fff;
   border-color: transparent;
 }
@@ -2299,7 +2374,7 @@ export default {
 }
 .sn-post-btn:hover {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .add-services::before {
   content: '';
@@ -2352,7 +2427,7 @@ export default {
   height:60px;
   line-height: 60px;
   width:220px;
-  background:linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   color: #fff;
   font-family:PingFangSC-Semibold;
   font-weight:600;
@@ -2363,7 +2438,9 @@ export default {
 .sn-release:hover,
 .sn-release:active {
   background: #ffffff;
-  color: #3171FF;
+  color: #3171fe;
+  /* background: linear-gradient(270deg,#3171fe 0%,#a04faf 100%);
+  color: #fff; */
 }
 .sn-banner-word {
   background: #2B3042;
@@ -2468,7 +2545,7 @@ p.sn-sub-title {
   color: #ffffff;
 }
 .case-title > div.active {
-  color: #3171FF;
+  color: #3171fe;
 }
 .case-title > div.active::after,
 .offer-title > div.active::after {
@@ -2480,7 +2557,7 @@ p.sn-sub-title {
   top: 17px;
   left: 0;
   transition: all .25s ease;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .case-product {
   padding-top: 40px;
@@ -2500,7 +2577,7 @@ p.sn-sub-title {
   bottom: 0;
   right: 0;
   text-align: center;
-  background: linear-gradient(306deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(306deg,#a04faf 0%,#3171fe 100%);
   opacity:0.7;
   font-size:20px;
   font-family:PingFangSC-Regular;
@@ -2578,7 +2655,7 @@ p.sn-sub-title {
 }
 .print-item:hover .buy-btn {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .print-item > .img-box {
   text-align: center;
@@ -2616,7 +2693,7 @@ p.sn-sub-title {
   font-size: 20px;
 }
 .print-box:hover .price-money {
-  color: #3171FF;
+  color: #3171fe;
   font-weight:600;
 }
 .price-money > span {
@@ -2635,7 +2712,7 @@ p.sn-sub-title {
 }
 .price > .buy-btn:hover {
   color: #ffffff;
-  background: linear-gradient(270deg,rgba(160,79,175,1) 0%,rgba(49,113,254,1) 100%);
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 
 .sn-advantage {
