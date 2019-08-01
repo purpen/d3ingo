@@ -19,6 +19,7 @@
                 <el-col :span="24">
                   <el-form-item label="上传图片" prop="">
                     <el-upload
+                      @click.native="getToken"
                       class="upload-demo upload-design upload"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
@@ -775,7 +776,7 @@
       handleChange(value) {
       },
       uploadError(err, file, fileList) {
-        this.uploadMsg = '上传失败'
+        this.uploadMsg = '上传失败, 请刷新页面'
         this.$message ({
           showClose: true,
           message: '文件上传失败!',
@@ -835,6 +836,29 @@
           }
         }).catch(err => {
           console.error(err.message)
+        })
+      },
+      getToken() { // 获取图片token
+        console.log('token')
+        const that = this
+        that.$http.get (api.upToken, {})
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data) {
+              that.uploadParam['token'] = response.data.data.upToken
+              that.uploadParam['x:random'] = response.data.data.random
+              that.uploadUrl = response.data.data.upload_url
+            }
+          }
+        })
+        .catch (function (error) {
+          that.$message ({
+            showClose: true,
+            message: error.message,
+            type: 'error'
+          })
+          console.log (error.message)
+          return false
         })
       }
     },
@@ -1032,27 +1056,7 @@
       } else {
         that.itemId = null
       }
-
-      // 获取图片token
-      that.$http.get (api.upToken, {})
-        .then (function (response) {
-          if (response.data.meta.status_code === 200) {
-            if (response.data.data) {
-              that.uploadParam['token'] = response.data.data.upToken
-              that.uploadParam['x:random'] = response.data.data.random
-              that.uploadUrl = response.data.data.upload_url
-            }
-          }
-        })
-        .catch (function (error) {
-          that.$message ({
-            showClose: true,
-            message: error.message,
-            type: 'error'
-          })
-          console.log (error.message)
-          return false
-        })
+      this.getToken()
     }
   }
 

@@ -84,7 +84,7 @@
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
             <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
             <el-menu-item index="/vcenter/account/base"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
-            <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="/b_admin/item/list" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2 || eventUser.source_admin ===6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -340,7 +340,29 @@
         return saas
       },
       adminMenu() {
-        return ADMINMENU
+        if (this.$store.state.event.user.source_admin === 6 && this.$store.state.event.user.role_id < 10) {
+          return {
+            adminWeChatDemandList: {
+              name: '需求列表',
+              route: 'adminWeChatDemandList',
+              icon: require('assets/images/admin/menu/Case@2x.png'),
+              statement: {
+                params: {},
+                query: {}
+              },
+              children: [{
+                name: '小程序需求列表',
+                route: 'adminWeChatDemandList',
+                statement: {
+                  params: {},
+                  query: {}
+                }
+              }]
+            }
+          }
+        } else {
+          return ADMINMENU
+        }
       },
       otherAdminMenu() {
         return OTHERADMINMENU
@@ -379,6 +401,9 @@
       // 是否能查看后台
       isAdmin() {
         let roleId = this.$store.state.event.user.role_id
+        if (this.$store.state.event.user.source_admin === 6) {
+          return true
+        }
         if (roleId >= 10) {
           return true
         } else {
