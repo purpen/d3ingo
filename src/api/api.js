@@ -133,6 +133,7 @@ export default {
   designCaseRandomIndex: '/designCase/random/index', // GET 随机返回9条案例
   designCaseLabel: '/designCaseLabel/lists', // GET 设计案例标签列表
   getAppCode: '/designCompany/getAppCode', // GET 获取设计交易小程序设计公司主页二维码
+  exportExcel: '/admin/designCase/exportExcel', // POST 设计案例导出
   // 添加作品
   work: 'works',
   workid: 'works/{0}',
