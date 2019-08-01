@@ -53,7 +53,7 @@
             </div>
             <div class="dot">
               <div class="dot-hover">
-                <div class="dot-flex" v-if="item.is_test_data === 1" @click="setTest(2)">
+                <div class="dot-flex" v-if="item.is_test_data === 1" @click="setTest(0)">
                   <div class="dot-img1"></div>
                   <div class="dot-text">取消测试号</div>
                 </div>
