@@ -370,7 +370,7 @@
               </p>
             </el-col>
             <!-- <el-col :span="spanOpt">
-              <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(2)">取消测试号</el-button>
+              <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(0)">取消测试号</el-button>
               <el-button type="primary" class="is-custom" :loading="setTestLoadingBtn" size="small" v-else @click="setTest(1)">设为测式号</el-button>
             </el-col> -->
           </el-row>
