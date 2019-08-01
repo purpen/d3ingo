@@ -405,7 +405,7 @@
       setOpen(index, item, evt) {
         var id = item.id
         var self = this
-        self.$http.put(api.adminDesignCaseOpenInfo, {case_id: id, is_open: evt})
+        self.$http.put(api.adminDesignCaseSetStatus, {case_id: id, status: evt})
           .then (function(response) {
             if (response.data.meta.status_code === 200) {
               self.itemList[index].open = evt
