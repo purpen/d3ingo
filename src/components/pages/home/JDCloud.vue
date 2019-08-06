@@ -1392,8 +1392,6 @@ export default {
         on: {
           slideChange: function(swiper) {
             // alert(swiper.activeIndex) // 切换结束时，告诉我现在是第几个slide
-            // console.log(this.activeIndex)
-            // console.log(swiper.activeIndex)
             let index = this.realIndex
             if (index === 0) {
               that.currentCase = 'vision'

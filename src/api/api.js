@@ -343,7 +343,8 @@ export default {
   // 案例管理
   adminDesignCaseLists: '/admin/designCase/lists', // GET 案例列表
   adminDesignCaseSearch: '/admin/designCase/search', // GET 设计服务商案例搜索
-  adminDesignCaseOpenInfo: '/admin/designCase/openInfo', // PUT 案例是否公开
+  // adminDesignCaseOpenInfo: '/admin/designCase/openInfo', // PUT 案例是否公开
+  adminDesignCaseSetStatus: 'admin/designCase/setStatus', // PUT 设计案例状态修改
   adminDesignCaseRecommend: '/admin/designCase/recommend', // GET 推荐或取消推荐设计案例
 
   // 抓取案例列表
