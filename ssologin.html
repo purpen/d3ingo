@@ -13,17 +13,40 @@
     var ticket = ''
     var token = ''
     var url = ''
-    var getCookie = function(name) {
+    var getCookie = function (name) {
       //获取name在Cookie中起止位置
       var start = document.cookie.indexOf(name + '=')
       if (start != -1) {
         start = start + name.length + 1
         var end = document.cookie.indexOf(";", start)
         if (end == -1)
-            end = document.cookie.length
-        return unescape(document.cookie.substring(start,end))
+          end = document.cookie.length
+        return unescape(document.cookie.substring(start, end))
       }
       return null
+    }
+
+    function set_cookie(key, val) {
+      var Days = 30;
+      var exp = new Date();
+      exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+      document.cookie = key + '=' + val + ";expires=" + exp.toGMTString();
+      return;
+    }
+
+    function remove_cookie(cookie_string) {
+      var cookies = document.cookie.split(/;\s/g);
+      cookies.forEach(function (item) {
+        if (item.split('=')[0] == cookie_string) {
+          var date = new Date();
+          date.setTime(date.getTime() - 1);
+          document.cookie = cookie_string + '=;expires=' + date.toGMTString();
+          window.parent.postMessage(JSON.stringify({
+            type: 'loginout'
+          }), '*')
+        }
+      });
+      return;
     }
     window.addEventListener('message', function (res) {
       if (res.data) {
@@ -37,7 +60,7 @@
                 console.log('sso 清除token')
                 localStorage.setItem('token', '')
               }
-              document.cookie = 'ticket=' + data.ticket
+              set_cookie('ticket', data.ticket)
               localStorage.setItem('ticket', data.ticket)
               window.parent.postMessage(JSON.stringify({
                 type: 'login',
@@ -46,17 +69,7 @@
               }), '*')
             }
           } else if (data.type === 'loginout') {
-            var cookies = document.cookie.split(/;\s/g)
-            cookies.forEach(function (item) {
-              if (item.split('=')[0] == 'ticket') {
-                var date = new Date()
-                date.setTime(date.getTime() - 1)
-                document.cookie = 'ticket=' + '' + ';expires=' + date.toGMTString()
-                window.parent.postMessage(JSON.stringify({
-                  type: 'loginout'
-                }), '*')
-              }
-            })
+            remove_cookie('ticket')
             localStorage.removeItem('user')
             localStorage.removeItem('ticket')
             localStorage.removeItem('token')
@@ -69,6 +82,7 @@
         }
       }
     })
+
   </script>
 </body>
 
