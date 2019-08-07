@@ -579,7 +579,7 @@
               onClick(picker) {
                 const end = new Date()
                 const start = new Date()
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 270)
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
                 picker.$emit('pick', [start, end])
               }
             },
