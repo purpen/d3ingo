@@ -39,7 +39,13 @@
     window.addEventListener('message', function (e) {
       if (e.source != window.parent) return false;
       if (!e.data) return false;
-      var data = JSON.parse(e.data);
+      console.log(e.data)
+      if (typeof e.data == 'string') {
+        var data = JSON.parse(e.data);
+      } else {
+        var data = e.data;
+      }
+
       var from = data.from
       if (data.type == 'login' && data.ticket != undefined) {
         //设置COOKIE
