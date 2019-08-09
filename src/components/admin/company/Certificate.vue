@@ -17,7 +17,8 @@
         <div class="cer-left">营业执照</div>
         <template v-if="item.license_image && item.license_image.length">
           <div class="img-round pos-rea" v-for="(img, index) in item.license_image" :key="index">
-            <img :src="img.file" class="img-style"/>
+            <img :src="img.file" class="img-style" v-if="(/image\/(?:jpg|jpeg|png|gif)/.test(img.mime))"/>
+            <img :src="require('assets/images/tools/cloud_drive/file@2x.png')" alt="请点击预览" class="img-style" v-else/>
             <div class="fiex" @click="showImg(img.file)">点击预览</div>
           </div>
         </template>
@@ -42,7 +43,8 @@
         <div class="cer-left">法人证件附件</div>
         <template v-if="item.document_image && item.document_image.length">
           <div class="img-round pos-rea" v-for="(img, index) in item.document_image" :key="index">
-            <img :src="img.file" class="img-style" @click="showImg(img.file)"/>
+            <img :src="img.file" class="img-style" v-if="(/image\/(?:jpg|jpeg|png|gif)/.test(img.mime))"/>
+            <img :src="img.file" alt="请点击预览" class="img-style" v-else/>
             <div class="fiex" @click="showImg(img.file)">点击预览</div>
           </div>
         </template>
@@ -206,8 +208,9 @@ export default {
     },
     showImg(img) {
       // document.body.addEventListener('touchmove', this.bodyScroll(event), false)
-      this.fixed = true
-      this.img = img
+      // this.fixed = true
+      // this.img = img
+      window.open(img, '_blank')
     },
     closeImg() {
       // document.body.removeEventListener('touchmove', this.bodyScroll(event), false)
