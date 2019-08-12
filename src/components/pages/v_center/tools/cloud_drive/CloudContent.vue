@@ -255,12 +255,16 @@ export default {
         info: {}
       },
       swiperOption: {
-        lazyLoading: true,
-        autoplay: 0,
-        prevButton: '.swiper-button-prev',
-        nextButton: '.swiper-button-next',
+        lazy: true,
+        autoplay: {
+          delay: 0
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
         spaceBetween: 0,
-        onlyExternal: true
+        allowTouchMove: false // 设为false时，slide无法滑动
       },
       renameVal: '',
       currentPic: '',

@@ -9,66 +9,69 @@
 </head>
 
 <body>
-  <script>
+  <script type="text/javascript">
     var ticket = ''
     var token = ''
     var url = ''
-    var getCookie = function(name) {
-      //获取name在Cookie中起止位置
-      var start = document.cookie.indexOf(name + '=')
-      if (start != -1) {
-        start = start + name.length + 1
-        var end = document.cookie.indexOf(";", start)
-        if (end == -1)
-            end = document.cookie.length
-        return unescape(document.cookie.substring(start,end))
-      }
-      return null
-    }
-    window.addEventListener('message', function (res) {
-      if (res.data) {
-        if (res.source !== window.parent) return false
-        if (typeof res.data === 'string') {
-          var data = JSON.parse(res.data)
-          var from = data.from
-          if (data.type === 'login') { // login | loginout
-            if (data.ticket) {
-              if (getCookie('ticket') !== data.ticket) {
-                console.log('sso 清除token')
-                localStorage.setItem('token', '')
-              }
-              document.cookie = 'ticket=' + data.ticket
-              localStorage.setItem('ticket', data.ticket)
-              window.parent.postMessage(JSON.stringify({
-                type: 'login',
-                ticket: data.ticket,
-                from: from
-              }), '*')
-            }
-          } else if (data.type === 'loginout') {
-            var cookies = document.cookie.split(/;\s/g)
-            cookies.forEach(function (item) {
-              if (item.split('=')[0] == 'ticket') {
-                var date = new Date()
-                date.setTime(date.getTime() - 1)
-                document.cookie = 'ticket=' + '' + ';expires=' + date.toGMTString()
-                window.parent.postMessage(JSON.stringify({
-                  type: 'loginout'
-                }), '*')
-              }
-            })
-            localStorage.removeItem('user')
-            localStorage.removeItem('ticket')
-            localStorage.removeItem('token')
-            window.parent.postMessage(JSON.stringify({
-              type: 'loginout',
-              ticket: data.ticket,
-              from: from
-            }), '*')
-          }
+
+    function remove_cookie(cookie_string) {
+      var cookies = document.cookie.split(/;\s/g);
+      cookies.forEach(function (item) {
+        if (item.split('=')[0] == cookie_string) {
+          var date = new Date();
+          date.setTime(date.getTime() - 1);
+          document.cookie = cookie_string + '=;expires=' + date.toGMTString();
+          window.parent.postMessage(JSON.stringify({
+            type: 'loginout'
+          }), '*')
         }
+      });
+      return;
+    }
+
+    function set_cookie(key, val) {
+      var Days = 30;
+      var exp = new Date();
+      exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+      document.cookie = key + '=' + val + ";expires=" + exp.toGMTString();
+      return;
+    }
+    window.addEventListener('message', function (e) {
+      if (e.source != window.parent) return false;
+      if (!e.data) return false;
+      console.log(e.data)
+      if (typeof e.data == 'string') {
+        var data = JSON.parse(e.data);
+      } else {
+        var data = e.data;
       }
-    })
+
+      var from = data.from
+      if (data.type == 'login' && data.ticket != undefined) {
+        //设置COOKIE
+        set_cookie('ticket', data.ticket)
+        //删除COOKIE
+        remove_cookie('sher_asid')
+        remove_cookie('sher_sid')
+        //删除localStorage
+        localStorage.setItem('token', '')
+        localStorage.setItem('ticket', data.ticket)
+        window.parent.postMessage(JSON.stringify({
+          type: 'login',
+          ticket: data.ticket,
+          from: from
+        }), '*')
+      } else if (data.type == 'loginout') {
+        remove_cookie('ticket')
+        localStorage.removeItem('user')
+        localStorage.removeItem('ticket')
+        localStorage.removeItem('token')
+        window.parent.postMessage(JSON.stringify({
+          type: 'loginout'
+        }), '*')
+      }
+    }, false);
+
   </script>
 </body>
 
