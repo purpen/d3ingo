@@ -79,7 +79,7 @@ export default {
           break
         case 4:
           // that.oldItem.source_value = '京东云神农大脑'
-          that.oldItem.source_value = '京东云'
+          that.oldItem.source_value = '神农大脑设计平台'
           break
         default:
           that.oldItem.source_value = '太火鸟'

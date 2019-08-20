@@ -26,15 +26,15 @@
         <div class="right-box bg-f" v-if="type === 1">
           <div class="help-content" v-if="option === 1">
             <section>
-              <h4 class="title1">如何注册京东云设计服务平台客户账号？</h4>
-              <p class="title2 margin-t-10">若您还没有京东云设计服务平台账号，请点击注册，详细操作步骤如下：</p>
-              <p class="title2 margin-t-10">1.打开京东云设计服务平台首页，在右上方，点击“注册”按钮；</p>
+              <h4 class="title1">如何注册神农大脑设计平台客户账号？</h4>
+              <p class="title2 margin-t-10">若您还没有神农大脑设计平台账号，请点击注册，详细操作步骤如下：</p>
+              <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/optionnew1_01@2x.png')" alt="">
               <p class="title2">2.选择【需求方】，输入手机号，验证码，密码即可完成注册；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_02@2x.png')" alt="">
             </section>
             <section>
-              <h4 class="title1">如何正式入驻京东云设计服务平台成为客户？</h4>
+              <h4 class="title1">如何正式入驻神农大脑设计平台成为客户？</h4>
               <p class="title2 margin-t-10">登录成功后点击“编辑”或者“去认证” 按要求填写公司基本信息及提交公司实名认证所需资料。详细步骤操作如下：</p>
               <p class="title2 margin-t-10">1.点击“编辑”或者去认证；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_03@2x.png')" alt="">
@@ -90,7 +90,7 @@
             </section>
             <section>
               <h4 class="title1">如何与设计服务商签订合同？</h4>
-              <p class="title2 margin-t-10">在您确认报价后，将由设计服务商以商定的报价为基础在京东云设计服务平台编辑提交在线合同。合同中包含明确的方案、价格、阶段及详细内容。收到合同后，您可以预览并确认，合同签订成功。</p>
+              <p class="title2 margin-t-10">在您确认报价后，将由设计服务商以商定的报价为基础在神农大脑设计平台编辑提交在线合同。合同中包含明确的方案、价格、阶段及详细内容。收到合同后，您可以预览并确认，合同签订成功。</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option3_02@2x.png')" alt="">
               <img class="img-box margin-t-10" :src="require('assets/images/promote_sn/help/demand/option3_03@2x.png')" alt="">
               <p class="title3"><i class="el-icon-warning margin-r-5"></i>温馨提示：如果您对合同内容有异议或者不满意，你可以沟通设计方重新编辑修改后再做确认合同操作。</p>
@@ -139,14 +139,14 @@
           <div class="help-content" v-if="option === 1">
             <section>
               <h4 class="title1">如何成为太火鸟设计服务商？</h4>
-              <p class="title2 margin-t-10">若您还没有京东云设计服务平台账号，请点击注册，详细操作步骤如下：</p>
-              <p class="title2 margin-t-10">1.打开京东云设计服务平台首页，在右上方，点击“注册”按钮；</p>
+              <p class="title2 margin-t-10">若您还没有神农大脑设计平台账号，请点击注册，详细操作步骤如下：</p>
+              <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/design/optionnew1_01@2x.png')" alt="">
               <p class="title2">2.选择【设计服务商】，输入手机号，验证码，密码即可完成注册。</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/design/option1_02@2x.png')" alt="">
             </section>
             <section>
-              <h4 class="title1">认证正式入驻京东云设计服务平台</h4>
+              <h4 class="title1">认证正式入驻神农大脑设计平台</h4>
               <p class="title2 margin-t-10">登录成功后点击“编辑”或者“去认证” 按要求填写公司基本信息及提交公司实名认证所需资料。详细步骤操作如下：</p>
               <p class="title2 margin-t-10">1.点击“编辑”或者“去认证”；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/design/option1_03@2x.png')" alt="">
