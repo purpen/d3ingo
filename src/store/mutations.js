@@ -149,7 +149,7 @@ function showProd() {
         logo2: require('assets/images/promote_sn/logo02@2x.png'),
         login: '京东云',
         info: '京东云',
-        title: '京东云-设计服务平台',
+        title: '神农大脑设计平台',
         url: 'JDCloud.com',
         fullurl: 'https://www.jdcloud.com',
         license: '京东云【京ICP备11041704号-31】',
