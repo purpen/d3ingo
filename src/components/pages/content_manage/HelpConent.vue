@@ -31,13 +31,13 @@
               <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/101@2x.png')" alt="">
               <p class="title2">2.选择【需求方】，输入手机号，验证码，密码即可完成注册；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_02@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/demand1_02@2x.png')" alt="">
             </section>
             <section>
               <h4 class="title1">如何正式入驻神农大脑设计平台成为客户？</h4>
               <p class="title2 margin-t-10">登录成功后点击“编辑”或者“去认证” 按要求填写公司基本信息及提交公司实名认证所需资料。详细步骤操作如下：</p>
               <p class="title2 margin-t-10">1.点击“编辑”或者去认证；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_03@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/demand1_03@2x.png.png')" alt="">
               <p class="title2">2.点击图像上传公司logo，点击“编辑”完善公司基本信息，点击“去认证”，完善企业认证信息。</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_04@2x.png')" alt="">
             </section>
