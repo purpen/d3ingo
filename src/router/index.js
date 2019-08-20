@@ -9,7 +9,6 @@ import centerRoute from './routes/center.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
-import {FWH} from '../../config/prod.env.js'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -957,25 +956,21 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      if (FWH) {
-        next()
+      store.commit(types.PREV_URL_NAME, to.fullPath)
+      if (store.state.event.prod.name === 'sn') {
+        next({
+          name: 'home'
+        })
+        Message.error({
+          duration: 2000,
+          message: '请先登录'
+        })
       } else {
-        store.commit(types.PREV_URL_NAME, to.fullPath)
-        if (store.state.event.prod.name === 'sn') {
-          next({
-            name: 'home'
-          })
-          Message.error({
-            duration: 2000,
-            message: '请先登录'
-          })
-        } else {
-          next({
-            name: 'login'
-          })
-        }
-        return false
+        next({
+          name: 'login'
+        })
       }
+      return false
     }
   } else {
     next()

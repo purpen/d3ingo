@@ -123,14 +123,14 @@
             <div class="baseinfo-r-t flex bg-f">
               <div class="flex-column">
                 <span class="tc-9">公司创建时间</span>
-                <span v-if="companyInfo.establishment_time" class="line-height30 fz-20 tc-6 blank6">{{companyInfo.establishment_time}}年</span>
-                <span v-else class="tc-6 blank6 line-height30">—</span>
+                <span v-if="companyInfo.establishment_time" class="line-height30 fz-20 tc-6 blank5">{{companyInfo.establishment_time}}年</span>
+                <span v-else class="tc-6 blank5 line-height30">—</span>
               </div>
               <div class="line"></div>
               <div class="flex-column">
                 <span class="tc-9">公司规模</span>
-                <span v-if="companyInfo.company_size" class="tc-6 blank6 fz-20 line-height30">{{companyInfo.company_size | companySize}}</span>
-                <span v-else class="tc-6 blank6 line-height30">—</span>
+                <span v-if="companyInfo.company_size" class="tc-6 blank5 fz-20 line-height30">{{companyInfo.company_size | companySize}}</span>
+                <span v-else class="tc-6 blank5 line-height30">—</span>
               </div>
             </div>
 
@@ -172,16 +172,16 @@
                   <div class="padding30 exponent-right">
                     <div class="exponent-top flex">
                       <div class="flex-column aligin-item-c">
-                        <span class="tc-6 line-height1_5">设计创新力指数</span>
-                        <span v-if="companyInfo" class="tc-red blank6 fz-28 line-height30 fw-6">{{companyInfo.ave_score}}</span>
-                        <span v-else class="tc-6 blank6 line-height30">—</span>
+                        <span class="tc-6 line-height24">设计创新力指数</span>
+                        <span v-if="companyInfo" class="tc-red blank5 fz-28 line-height30 fw-6">{{companyInfo.ave_score}}</span>
+                        <span v-else class="tc-6 blank5 line-height30">—</span>
                       </div>
 
                       <div class="line border-c-e6"></div>
                       <div class="flex-column aligin-item-c">
-                        <span class="tc-6 tc-red line-height1_5 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
-                        <span v-if="companyInfo.no" class="tc-red blank6 fz-28 line-height30 fw-6">NO.{{companyInfo.no}}</span>
-                        <span v-else class="tc-6 blank6 line-height30">—</span>
+                        <span class="tc-6 tc-red line-height24 e-r-index pointer" @click="getCompanyExponent">创新力指数排行</span>
+                        <span v-if="companyInfo.no" class="tc-red blank5 fz-28 line-height30 fw-6">NO.{{companyInfo.no}}</span>
+                        <span v-else class="tc-6 blank5 line-height30">—</span>
                       </div>
                     </div>
                     <div class="exponent-info fz-14">

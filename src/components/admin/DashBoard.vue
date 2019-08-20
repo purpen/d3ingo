@@ -91,7 +91,7 @@
               <h2 class="sub-title">收入类型分布</h2>
             </div>
           </div>
-          <div class="blank13">
+          <div class="blank15">
             <ECharts :options="option" class="line-echarts">
             </ECharts>
           </div>

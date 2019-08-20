@@ -15,7 +15,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="12" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="item">
             <div class="image-box">
-              <a :href="d.url" :target="BMob ? '_self' : '_blank'">
+              <a :href="d.url" :target="isMob ? '_self' : '_blank'">
                 <img v-lazy="d.cover_url">
               </a>
             </div>
@@ -111,7 +111,7 @@
         })
     },
     computed: {
-      BMob() {
+      isMob() {
         return this.$store.state.event.isMob
       }
     }
