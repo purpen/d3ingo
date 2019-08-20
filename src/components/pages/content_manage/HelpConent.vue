@@ -29,7 +29,7 @@
               <h4 class="title1">如何注册神农大脑设计平台客户账号？</h4>
               <p class="title2 margin-t-10">若您还没有神农大脑设计平台账号，请点击注册，详细操作步骤如下：</p>
               <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/optionnew1_01@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/101@2x.png')" alt="">
               <p class="title2">2.选择【需求方】，输入手机号，验证码，密码即可完成注册；</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_02@2x.png')" alt="">
             </section>
@@ -54,9 +54,9 @@
               <h4 class="title1">如何发布需求? (方法一)</h4>
               <p class="title2 margin-t-10">快捷发布项目需求。具体步骤如下：</p>
               <p class="title2 margin-t-10">1.在首页，点击【发布需求】；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/optionnew2_01@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/01@2x.png')" alt="">
               <p class="title2">2.填写表单，等待平台客服联系您。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/optionnew2_02@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/02@2x.png')" alt="">
             </section>
             <section>
               <h4 class="title1">如何发布需求? (方法二)</h4>
@@ -141,7 +141,7 @@
               <h4 class="title1">如何成为太火鸟设计服务商？</h4>
               <p class="title2 margin-t-10">若您还没有神农大脑设计平台账号，请点击注册，详细操作步骤如下：</p>
               <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/design/optionnew1_01@2x.png')" alt="">
+              <img class="img-box" :src="require('assets/images/promote_sn/help/design/01@2x.png')" alt="">
               <p class="title2">2.选择【设计服务商】，输入手机号，验证码，密码即可完成注册。</p>
               <img class="img-box" :src="require('assets/images/promote_sn/help/design/option1_02@2x.png')" alt="">
             </section>
