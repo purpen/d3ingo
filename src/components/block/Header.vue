@@ -224,7 +224,7 @@
               <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
               <el-menu-item v-if="prodName !== 'sn'" index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="" class="fr">
-                <a :href="'http://test-sndn.xjoycity.com/ic-passport-web/login/consumer?from=sndn&returnUrl='+ origin + '/loginWithSnToken'">授权登录</a>
+                <a :href="snUrl">授权登录</a>
               </el-menu-item>
               <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
             </el-menu>
@@ -297,6 +297,7 @@
 </template>
 
 <script>
+  import {ENV} from 'conf/prod.env.js'
   import auth from '@/helper/auth'
   import api from '@/api/api'
   import { MSG_COUNT } from '@/store/mutation-types'
@@ -305,7 +306,7 @@
     name: 'head_menu',
     data() {
       return {
-        origin: location.origin,
+        snUrl: '',
         requestMessageTask: null,
         menu: {
           home: {path: '/home'},
@@ -587,6 +588,11 @@
       }
     },
     created: function () {
+      if (ENV === 'prod') {
+        this.snUrl = 'http://passport.sndn.jdcloud.com/login/consumer?from=sndn&returnUrl=' + location.origin + '/loginWithSnToken'
+      } else {
+        this.snUrl = 'http://test-sndn.xjoycity.com/ic-passport-web/login/consumer?from=sndn&returnUrl=' + location.origin + '/loginWithSnToken'
+      }
       console.log(this.$route.name)
       if (this.token) {
         this.updateUser()

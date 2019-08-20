@@ -7,7 +7,7 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="card">
             <router-link :to="{name: 'designAwardsShow', params: {id: d.id}}"
-                        :target="BMob ? '_self' : '_blank'">
+                        :target="isMob ? '_self' : '_blank'">
               <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                   <!-- <img v-lazy="d.cover.middle"> -->
               </div>
@@ -18,7 +18,7 @@
                 </router-link>
                 <p class="des">{{d.summary}}</p>
 
-                <p class="company">
+                <p class="company over-ellipsis">
                   <img class="avatar" :src="d.img"
                       width="30"/>
                   <span>{{d.category_value}}</span>
@@ -31,7 +31,7 @@
     </div>
     <div class="blank20"></div>
     <div class="pager" v-if="query.totalCount">
-      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="BMob" :current-page="query.page" :page-size="query.pageSize"
+      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize"
                      :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper"
                      @current-change="handleCurrentChange">
       </el-pagination>
@@ -116,7 +116,7 @@ export default {
     this.loadList()
   },
   computed: {
-    BMob() {
+    isMob() {
       return this.$store.state.event.isMob
     }
   }
@@ -129,7 +129,7 @@ a {
   color: #222;
 }
 .container h3 {
-  font-size: 2rem;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -155,23 +155,24 @@ a {
 }
 
 .content a {
+  font-size: 18px;
+  font-family:PingFangSC-Regular;
   display: block;
-  font-size: 1.6rem;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;
+  color: #222;
+  font-weight:400;
 }
 
 .des{
-  margin: 10px 0;
+  margin: 5px 0;
   color: #666;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  font-size: 14px;
+  line-height: 24px;
+  white-space: nowrap;
   overflow: hidden;
-  height: 42px;
+  text-overflow: ellipsis;
 }
 
 .company {

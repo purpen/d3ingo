@@ -46,18 +46,14 @@ table {
 	border-spacing: 0;
 }
 ::-webkit-input-placeholder { /* WebKit browsers */
-    color: #999!important;
+    color: #c8c8c8!important;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: #999!important;
+    color: #c8c8c8!important;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: #999!important;
+    color: #c8c8c8!important;
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: #999!important;
+    color: #c8c8c8!important;
 }
-/** RESET END *******/
-
-
-

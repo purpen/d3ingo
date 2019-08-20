@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!BMob">
+  <div v-if="!isMob">
     <div class="share-box">
       <span>
         <i class="el-icon-share"></i> 分享：</span>
@@ -56,7 +56,7 @@ export default {
     oSite() {
       return encodeURIComponent(this.site)
     },
-    BMob() {
+    isMob() {
       return this.$store.state.event.isMob
     }
   },

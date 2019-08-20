@@ -344,7 +344,7 @@
       this.countSize()
     },
     computed: {
-      BMob() {
+      isMob() {
         return this.$store.state.event.isMob
       }
     }
