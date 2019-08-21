@@ -705,7 +705,7 @@
             <div class="container banner-box banner-box01">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑设计平台</div>
                   <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click.stop="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -718,7 +718,7 @@
             <div class="container banner-box banner-box02">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑设计平台</div>
                   <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click.stop="boolFindDesign = true">发布需求</span>
                 </el-col>
@@ -731,7 +731,7 @@
             <div class="container banner-box banner-box03">
               <el-row>
                 <el-col>
-                  <div class="banner-title">神农大脑 设计服务平台</div>
+                  <div class="banner-title">神农大脑设计平台</div>
                   <div class="banner-second-title">设计定制服务助力乡村振兴</div>
                   <span class="sn-release pointer" @click="boolFindDesign = true">发布需求</span>
                 </el-col>

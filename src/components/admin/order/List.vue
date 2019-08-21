@@ -333,7 +333,8 @@ export default {
             } else if (item.source === 1) {
               sourceVal = '京东云艺火'
             } else if (item.source === 4) {
-              sourceVal = '京东云神农大脑'
+              // sourceVal = '京东云神农大脑'
+              sourceVal = '神农大脑设计平台'
             }
             item['type_value'] = typeValue
             item['source_value'] = sourceVal
