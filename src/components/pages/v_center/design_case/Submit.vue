@@ -414,7 +414,7 @@
         isfrist: false,
         uploadParam: {
           'token': '',
-          'x:random': '',
+          'x:random': (Math.random() + '').split('.')[1],
           'x:user_id': this.$store.state.event.user.id,
           'x:target_id': '',
           'x:type': 5
@@ -846,7 +846,7 @@
           if (response.data.meta.status_code === 200) {
             if (response.data.data) {
               that.uploadParam['token'] = response.data.data.upToken
-              that.uploadParam['x:random'] = response.data.data.random
+              // that.uploadParam['x:random'] = response.data.data.random
               that.uploadUrl = response.data.data.upload_url
             }
           }
@@ -994,6 +994,8 @@
       }
     },
     created: function () {
+      console.log(this.uploadParam['x:random'])
+      console.log(this.uploadParam['x:random'])
       this.getTags()
       const that = this
       let id = this.$route.params.id
