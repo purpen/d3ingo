@@ -89,7 +89,7 @@
         prop="verify_status"
         label="是否公开">
           <template slot-scope="scope">
-            <p v-if="scope.row.open === 1"><el-tag type="success">是</el-tag></p>
+            <p v-if="scope.row.status === 1"><el-tag type="success">是</el-tag></p>
             <p v-else><el-tag type="gray">否</el-tag></p>
           </template>
       </el-table-column>
@@ -110,7 +110,7 @@
         label="操作">
           <template slot-scope="scope">
             <p>
-              <a href="javascript:void(0);" v-if="scope.row.open === 1" @click="setOpen(scope.$index, scope.row, 0)">取消公开</a>
+              <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setOpen(scope.$index, scope.row, 0)">取消公开</a>
               <a href="javascript:void(0);" v-else @click="setOpen(scope.$index, scope.row, 1)">公开</a>
               <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)">禁用</a> -->
               <!-- <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)">启用</a> -->
@@ -191,7 +191,7 @@ export default {
       self.$http.put(api.adminDesignCaseSetStatus, {case_id: id, status: evt})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].open = evt
+          self.itemList[index].status = evt
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
