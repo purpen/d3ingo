@@ -994,8 +994,6 @@
       }
     },
     created: function () {
-      console.log(this.uploadParam['x:random'])
-      console.log(this.uploadParam['x:random'])
       this.getTags()
       const that = this
       let id = this.$route.params.id
