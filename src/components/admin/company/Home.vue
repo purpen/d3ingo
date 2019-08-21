@@ -94,7 +94,7 @@
             <input placeholder="在当前列表下搜索" class="sever-right-select" v-model="seleValue" @keyup.enter="selectLoad()"/>
             <div class="select-img" @click="selectLoad()"></div>
           </div>
-          <div class="dot">
+          <div class="dot" v-if="tableData.length > 0">
             <div class="dot-hover">
               <div class="dot-flex" @click="downloads()">
                 <i class="el-icon-download dot-img1"></i>
@@ -215,7 +215,7 @@
 <script>
 import REGION_DATA from 'china-area-data'
 import api from '@/api/api'
-import conf from 'conf/prod.env'
+// import conf from 'conf/prod.env'
 export default {
   region: REGION_DATA,
   data() {
@@ -451,17 +451,24 @@ export default {
       })
     },
     downloads() {
-      let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
-      if (conf.ENV === 'prod') {
-        url = 'https://d3in-admin.taihuoniao.com/designCompany/exportExcel'
-      }
+      // let url = 'https://sa.taihuoniao.com/admin/designCompany/exportExcel'
+      // if (conf.ENV === 'prod') {
+      //   url = 'https://d3in-admin.taihuoniao.com/admin/designCompany/exportExcel'
+      // }
+      let url = location.origin + '/api/admin/designCompany/exportExcel'
       const data = {
-        token: this.token
+        token: this.token,
+        sort: this.query.sort,
+        type_verify_status: this.query.type,
+        evt: this.query.evt,
+        val: this.query.val,
+        province: this.query.province,
+        scale: this.query.scale
       }
       let form = document.createElement('form')
       let node = document.createElement('input')
       form.action = url
-      form.target = '_self'
+      form.target = '_blank'
       form.method = 'POST'
       for (let name in data) {
         node.name = name

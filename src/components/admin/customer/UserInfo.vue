@@ -9,7 +9,7 @@
     </div>
     <div class="card-box" v-loading="userLoading">
       <div class="base-info box-contant">
-        <div class="clearfix head-c-top padding-b20">
+        <div class="clearfix head-c-top padding-b-20">
           <div class="fl margin-r120">
             <el-rate v-model="userForm.rank" disabled @change="changeLevel()"></el-rate>
             <span v-if="userForm.name" class="fz-22 line-height30">{{userForm.name}}</span>
@@ -560,7 +560,7 @@
                         <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
                       </li>
                       <li>
-                        <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 b-e6 pointer">查看全部设计服务商</p>
+                        <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 border-e6 pointer">查看全部设计服务商</p>
                       </li>
                     </ul>
                   </el-collapse-transition>
@@ -575,8 +575,8 @@
             </div>
           </div>
 
-          <div v-if="option === 'user'" class="fz-14 padding-b20">
-            <div class="bb-e6 client-title">
+          <div v-if="option === 'user'" class="fz-14 padding-b-20">
+            <div class="border-b-e6 client-title">
               <p class="padding-l30 clearfix line-height50">
                 <span class="tc-3 fl fw-5">基本信息</span>
                 <!-- <span class="fr pointer tc-hover-red" @click="editClientUser" v-if="isHasPower">编辑</span> -->
@@ -687,7 +687,7 @@
               </el-row>
             </div>
             <div class="other-info">
-              <div class="bb-e6 title">
+              <div class="border-b-e6 title">
                 <p class="line-height40">
                   <span class="tc-3 fw-5">其他信息</span>
                 </p>
@@ -733,7 +733,7 @@
           </div> -->
           <p class="log-title">记录</p>
           <div class="log-box">
-            <div class="log-input bb-e6">
+            <div class="log-input border-b-e6">
               <div class="progress">
                 <el-input type="textarea"
                   placeholder="记录你与客户沟通的情况"
@@ -772,7 +772,7 @@
               </div>
             </div>
 
-            <div class="padding-b20" v-if="activeLogList.length">
+            <div class="padding-b-20" v-if="activeLogList.length">
               <ul class="padding-l30  tc-6">
                 <li v-for="(item, i) in activeLogList" :key="i" class="log-li">
                   <p :class="{'phone': item.type === 1, 'wx': item.type === 2}">
@@ -781,14 +781,14 @@
                     <span class="fz-12 fr">{{item.date}}</span>
                   </p>
                   <p class="margin-t8 padding-l20">
-                    <span class="line-height1_4 tc-2">{{item.log}}</span>
+                    <span class="line-height24 tc-2">{{item.log}}</span>
                     <span class="name fz-12 fr">{{item.execute_user_name || ''}}</span>
                   </p>
                 </li>
               </ul>
             </div>
-            <div :class="['padding-l30', 'tc-6', 'padding-b20', {'blank20': activeLogList.length === 0}]" v-if="eventLogList.length">
-              <p class="event-title bb-e6">事件</p>
+            <div :class="['padding-l30', 'tc-6', 'padding-b-20', {'blank20': activeLogList.length === 0}]" v-if="eventLogList.length">
+              <p class="event-title border-b-e6">事件</p>
               <ul class="">
                 <li v-for="(item, i) in eventLogList" :key="i" class="log-li">
                   <p>
@@ -796,7 +796,7 @@
                     <span class="fz-12 fr">{{item.date}}</span>
                   </p>
                   <p class="margin-t8 padding-l20">
-                    <span class="line-height1_4 tc-2">{{item.log}}</span>
+                    <span class="line-height24 tc-2">{{item.log}}</span>
                     <span class="name fz-12 fr">{{item.execute_user_name || ''}}</span>
                   </p>
                 </li>
@@ -3712,9 +3712,6 @@ export default {
 }
 .padding-r40 {
   padding-right: 40px;
-}
-.padding-b10 {
-  padding-bottom: 10px;
 }
 
 .flex-a-c {

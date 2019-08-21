@@ -56,7 +56,7 @@
           <h3 class="title">平台客户</h3>
           <el-row :gutter="10">
             <el-col :span="12">
-              <div class="padding-b15">
+              <div class="padding-b-15">
                 <div class="sort">
                   <span>互联网</span>
                 </div>
@@ -69,7 +69,7 @@
               </div>
             </el-col>
             <el-col :span="12">
-              <div class="padding-b15">
+              <div class="padding-b-15">
                 <div class="sort"><span>快消</span></div>
                 <div class="flex-contant">
                   <img :src="require('assets/images/home/spread/mobile/logo/K01@2x.png')" alt="">
@@ -80,7 +80,7 @@
               </div>
             </el-col>
             <el-col :span="12">
-              <div class="padding-b15">
+              <div class="padding-b-15">
                 <div class="sort"><span>智能硬件</span></div>
                 <div class="flex-contant">
                   <img :src="require('assets/images/home/spread/mobile/logo/Z01@2x.png')" alt="">
@@ -91,7 +91,7 @@
               </div>
             </el-col>
             <el-col :span="12">
-              <div class="padding-b15">
+              <div class="padding-b-15">
                 <div class="sort"><span>生活美学</span></div>
                 <div class="flex-contant">
                   <img :src="require('assets/images/home/spread/mobile/logo/S01@2x.png')" alt="">
@@ -133,7 +133,7 @@
                 <div class="img-box">
                   <img :src="require('assets/images/home/spread/pc/CollaborativeSoftware@2x.png')" alt="">
                 </div>
-                <div class="advantage-title padding-b20">
+                <div class="advantage-title padding-b-20">
                   <p class="sub-title2">设计专属协作软件</p>
                     <p class="caption-txt">为设计公司打造的项目管理软件，帮助您和客户无缝对接，沟通、会议、项目进展，随时随地一站解决。</p>
                 </div>
@@ -143,7 +143,7 @@
                 <div class="img-box">
                   <img :src="require('assets/images/home/spread/pc/DesignResources@2x.png')" alt="">
                 </div>
-                <div class="advantage-title padding-b20">
+                <div class="advantage-title padding-b-20">
                   <p class="sub-title2">全网设计资源</p>
                     <p class="caption-txt">收录全网设计资源，行业趋势报告、各大奖项获奖案例展示、创意灵感网站等为您提供全球设计创意库。</p>
                 </div>
@@ -153,7 +153,7 @@
                 <div class="img-box">
                   <img :src="require('assets/images/home/spread/pc/BusinessCard@2x.png')" alt="">
                 </div>
-                <div class="advantage-title padding-b20">
+                <div class="advantage-title padding-b-20">
                   <p class="sub-title2">企业名片推广</p>
                     <p class="caption-txt">为您的公司提供整体介绍、设计案例、创始人专访等全方位包装，并通过太火鸟全媒体平台推广。</p>
                 </div>
@@ -163,7 +163,7 @@
                 <div class="img-box">
                   <img :src="require('assets/images/home/spread/pc/DesignAssistant@2x.png')" alt="">
                 </div>
-                <div class="advantage-title padding-b20">
+                <div class="advantage-title padding-b-20">
                   <p class="sub-title2">智能设计助手</p>
                     <p class="caption-txt">从设计需求智能匹配开始，快速响应双方反馈，帮助您第一时间解决客户问题，高效完成项目。</p>
                 </div>
@@ -241,8 +241,8 @@
       top="26vh"
       :visible.sync="dialogVisible"
       width="80%">
-      <p class="tc-6 line-height1_5 fw-4 fz-16 text-center">请复制以下链接到PC端进行操作</p>
-      <p class="blank5 is-exception fz-14 line-height1_5 text-center">{{link}}</p>
+      <p class="tc-6 line-height24 fw-4 fz-16 text-center">请复制以下链接到PC端进行操作</p>
+      <p class="blank5 is-exception fz-14 line-height24 text-center">{{link}}</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" class="btn-link" @click="copyLink">复制链接</el-button>
       </span>
@@ -288,7 +288,7 @@ export default {
 .bg7 {
   background: #f7f7f7;
 }
-.padding-b20 {
+.padding-b-20 {
   padding-bottom: 20px;
 }
 .padding-t10 {

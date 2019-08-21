@@ -1,6 +1,6 @@
 <template>
 <!-- 神农大脑 -->
-<div class="margin-b-m50 bb-e6">
+<div class="margin-b-m50 border-b-e6">
   <div class="bg-F6F7FC">
     <div class="contant">
       <div class="safeguard1">
@@ -20,7 +20,7 @@
       <div class="safeguard2">
           <div class="safe-word-box">
             <p>保证原创</p>
-            <span>神农大脑设计服务平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
+            <span>神农大脑设计平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
           </div>
           <div class="safe-box">
             <div class="img-box fr"></div>
@@ -37,7 +37,7 @@
           </div>
           <div class="safe-word-box">
             <p>版权保护</p>
-            <span>神农大脑设计服务平台保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
+            <span>神农大脑设计平台保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
         </div>
       </div>
     </div>

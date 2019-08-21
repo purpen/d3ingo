@@ -6,7 +6,7 @@
           <el-col class="margin-b-20">
             <div class="sub-cont padding20">
               <h2 class="sub-title">今日商机</h2>
-              <div class="sub-item clearfix flex bb-e6">
+              <div class="sub-item clearfix flex border-b-e6">
                 <p class="count-number flex1">{{BusinessOpportunity.today}}</p>
                 <p v-if="Number(BusinessOpportunityRateDay) > 0" class="index va-bottom tc-red">
                   <span>⬆</span>{{BusinessOpportunityRateDay}}%
@@ -28,7 +28,7 @@
           <el-col>
             <div class="sub-cont padding20">
               <h2 class="sub-title">本周商机</h2>
-              <div class="sub-item clearfix flex bb-e6">
+              <div class="sub-item clearfix flex border-b-e6">
                 <p class="count-number flex1">{{BusinessOpportunity.this_week}}</p>
                 <p v-if="Number(BusinessOpportunityRateWeek) > 0" class="index va-bottom tc-red">
                   <span>⬆</span>{{BusinessOpportunityRateWeek}}%
@@ -152,7 +152,7 @@
           </div>
           <div>
             <ul class="rank-list rank-list-8" v-loading="loading1" v-if="rank.source.length">
-              <li v-for="(ele, index) in rank.source" :key="index" class="clearfix rank-item bb-e6 fz-0">
+              <li v-for="(ele, index) in rank.source" :key="index" class="clearfix rank-item border-b-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
                   <span class="tc-6 fz-14">{{ele.name_value}}</span>
@@ -183,7 +183,7 @@
           </div>
           <div>
             <ul class="rank-list rank-list-8" v-loading="loading2" v-if="rank.budget.length">
-              <li v-for="(ele, index) in rank.budget" :key="index" class="clearfix rank-item bb-e6 fz-0">
+              <li v-for="(ele, index) in rank.budget" :key="index" class="clearfix rank-item border-b-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
                   <span class="tc-6 fz-14">{{ele.name_value}}</span>
@@ -216,7 +216,7 @@
           </div>
           <div>
             <ul class="rank-list" v-loading="loading3" v-if="rank.itemType.length">
-              <li v-for="(ele, index) in rank.itemType" :key="index" class="clearfix rank-item bb-e6 fz-0">
+              <li v-for="(ele, index) in rank.itemType" :key="index" class="clearfix rank-item border-b-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
                   <span class="tc-6 fz-14">{{ele.name_value}}</span>
@@ -247,7 +247,7 @@
           </div>
           <div>
             <ul class="rank-list" v-loading="loading4" v-if="rank.province.length">
-              <li v-for="(ele, index) in rank.province" :key="index" class="clearfix rank-item bb-e6 fz-0">
+              <li v-for="(ele, index) in rank.province" :key="index" class="clearfix rank-item border-b-e6 fz-0">
                 <div class="fl fz-0 rank-l">
                   <i :class="['fz-14', {'gold' : index + 1 === 1, 'silver' : index + 1 === 2, 'bronze' : index + 1 === 3}]">{{index + 1}}</i>
                   <span class="tc-6 fz-14">{{ele.province_value || '其他地区'}}</span>

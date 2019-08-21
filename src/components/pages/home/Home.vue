@@ -361,10 +361,10 @@
                 <div class="case-header-arrow"></div>
               </div>
               <div v-if="item.cover" class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url(' + item.cover.middle +') no-repeat center / contain'}">
+              :style="{background: 'url(' + item.cover.middle +') no-repeat center / cover'}">
               </div>
               <div v-else class="case-center text-a-center" @click="caseDetail(item.id)"
-              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / contain'}">
+              :style="{background: 'url('+ require('../../../assets/images/Bitmap.png') +') no-repeat center / cover'}">
               </div>
               <div class="case-center-round">
                 <div class="case-center-title">{{item.title}}</div>
@@ -1301,9 +1301,9 @@
   }
   .case-center-round {
     max-width:380px;
-    height:90px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     padding-top: 12px;
   }
   .case-center-title {
@@ -1318,7 +1318,6 @@
     line-height: 16px;
   }
   .case-center-text {
-    height: 40px;
     font-size: 14px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
@@ -1326,6 +1325,7 @@
     line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     margin-top: 10px;
   }
   .innovation {

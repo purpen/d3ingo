@@ -88,7 +88,7 @@
         </section>
         <div v-if="matchComplete && !designList.length">
           <div v-if="custom.name === 'sn'">
-            <h3 class="text-center">神农大脑将对您发布的需求进行匹配，请耐心等待...</h3>
+            <h3 class="text-center">京东云将对您发布的需求进行匹配，请耐心等待...</h3>
             <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
               <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
             </router-link>
@@ -186,7 +186,7 @@
             <input type="text" class="pc-wait-input-round2" placeholder="手机号"
             maxlength="11" v-model="form3.account" ref="account">
           </el-form-item>
-          <el-form-item class="flex10" prop="smsCode">
+          <el-form-item class="flex10 margin-l-10" prop="smsCode">
             <div class="pc-code-90-round">
               <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode" maxlength="6">
               <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
@@ -997,8 +997,12 @@ export default {
     padding: 15px;
     margin-right: 10px;
   }
+  .is-error .pc-wait-input-round,
+  .is-error .pc-wait-input-round2,
+  .is-error .pc-code-90-round {
+    border-color: #ff5a5f
+  }
   .pc-code-90-round {
-    margin-left: 20px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 4px;

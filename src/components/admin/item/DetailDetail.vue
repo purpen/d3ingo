@@ -237,7 +237,8 @@ export default {
           that.contract.source_value = '义乌'
           break
         case 4:
-          that.contract.source_value = '京东云神农大脑'
+          // that.contract.source_value = '京东云神农大脑'
+          that.contract.source_value = '神农大脑设计平台'
           break
       }
       for (let index in that.itemStage) {
