@@ -39,6 +39,10 @@
   display: flex;
   justify-content: center
 }
+.flex-justify-between {
+  display: flex;
+  justify-content: space-between;
+}
 .flex-center {
   display: flex;
   justify-content: center;
@@ -180,6 +184,9 @@
 .line-height20 {
   line-height: 20px
 }
+.height20 {
+  height: 20px
+}
 .line-height24 {
   line-height: 24px
 }
@@ -231,6 +238,9 @@
 }
 .margin-b-10 {
   margin-bottom: 10px
+}
+.margin-l-8 {
+  margin-left: 8px
 }
 .margin-l-10 {
   margin-left: 10px
@@ -306,6 +316,9 @@
 }
 .padding-b-60 {
   padding-bottom: 60px
+}
+.padding-b-65 {
+  padding-bottom: 65px;
 }
 .padding-b-80 {
   padding-bottom: 80px

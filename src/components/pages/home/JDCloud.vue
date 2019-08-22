@@ -1888,6 +1888,10 @@ export default {
   },
   created() {
     let that = this
+    if (that.custom.id === 5) {
+      that.$router.push({name: 'jdy_jn'})
+      return
+    }
     if (that.$store.state.event.prod.id === 0) {
       that.$router.replace({name: 'home'})
       return

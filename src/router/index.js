@@ -50,6 +50,15 @@ let routes = [
     },
     component: require('@/components/pages/home/JDCloud')
   },
+  // 京东云-济南首页
+  {
+    path: '/index',
+    name: 'jdy_jn',
+    meta: {
+      title: '京东云设计服务交易平台'
+    },
+    component: require('@/components/pages/home/jdy_jinan/Home')
+  },
   {
     path: '/jd_cloud',
     redirect: '/home'
