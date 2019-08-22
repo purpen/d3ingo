@@ -183,7 +183,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.page = val
-      this.$router.push({name: this.$route.name, query: {page: val}})
+      this.$router.push({name: this.$route.name, query: this.query})
     },
     setOpen(index, item, evt) {
       var id = item.id
