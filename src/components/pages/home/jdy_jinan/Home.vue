@@ -4,7 +4,7 @@
           <div class="container banner-box">
               <div class="banner-title">京东云设计服务交易平台</div>
               <div class="banner-second-title">定制化产品创新造物平台</div>
-              <span class="sn-release pointer" @click.stop="boolFindDesign = true">发布需求</span>
+              <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
           </div>
       </div>
         <!-- 设计服务类型 -->
@@ -177,7 +177,7 @@
         </div>
       </div>
       <!-- 所获奖项 -->
-      <div class="bg-f sn-awards padding-b-80" id="sn6">
+      <div class="sn-awards padding-b-80" id="sn6">
         <div class="container">
           <p class="sn-sub-title padding-b-15">所获奖项</p>
           <div class="awards-title2  padding-b-40">3000+ 全球设计大奖</div>
@@ -198,39 +198,66 @@
           <div class="container">
             <p class="sn-sub-title">您还在等什么？快来发布需求吧！</p>
             <div class="form-box">
-                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
-
-                      <el-form-item prop="demand">
-                        <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="200" placeholder="请输入您的需求"></el-input>
+              <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                  <el-form-item prop="demand">
+                    <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="50" placeholder="请输入您的需求"></el-input>
+                  </el-form-item>
+                  <el-form-item prop="contact">
+                    <el-input class="el-input-c8" v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
+                  </el-form-item>
+                  <div class="flex">
+                      <el-form-item prop="account">
+                        <el-input class="el-input-c8 phone" maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
 
-                      <el-form-item prop="contact">
-                        <el-input class="el-input-c8" v-model="form.contact" ref="contact" maxlength="20" placeholder="请输入联系人"></el-input>
+                      <el-form-item prop="smsCode">
+                        <el-input v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="el-input-c8 send-bt bt-chage-ele">
+                          <template slot="append">
+                            <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
+                            </el-button>
+                          </template>
+                        </el-input>
                       </el-form-item>
+                  </div>
+                  <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                    发布需求
+                  </button>
 
-                      <div class="flex">
-                        <el-form-item prop="account">
-                          <el-input class="el-input-c8 phone" maxlength="11" v-model="form.account" ref="account" placeholder="手机号码"></el-input>
-                        </el-form-item>
-
-                        <el-form-item prop="smsCode">
-                          <el-input   v-model="form.smsCode" maxlength="6" name="smsCode" ref="smsCode" placeholder="验证码" class="el-input-c8 send-bt bt-chage-ele">
-                            <template slot="append">
-                              <el-button @click="fetchCode" :disabled="time > 0" class="sn-get-btn"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
-                              </el-button>
-                            </template>
-                          </el-input>
-                        </el-form-item>
-                      </div>
-
-                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                      发布需求
-                    </button>
-
-                </el-form>
+              </el-form>
             </div>
+
           </div>
       </div>
+
+    
+      <el-dialog
+        title="发布需求"
+        :visible.sync="boolFindDesign"
+        width="480px"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @closed="resetForm('form')"
+        class="jdy-jn-design">
+        <el-form :model="form" class="form-data" :rules="ruleForm" ref="form">
+          <el-form-item prop="demand"  label="项目需求">
+            <el-input class="el-input-c8" v-model="form.demand" name="username" maxlength="50" placeholder="请输入您的需求"></el-input>
+          </el-form-item>
+          <el-form-item label="联系人" prop="contact">
+            <el-input class="el-input-c8" v-model="form.contact" maxlength="20" placeholder="请输入联系人"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="account">
+            <el-input class="el-input-c8" v-model="form.account" maxlength="11" placeholder="请输入手机号"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" class="sn-fetch-code jdy-jn" prop="smsCode">
+              <el-input class="el-input-c8" maxlength="6" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码"></el-input>
+              <el-button class="sn-fetch-btn"  @click="fetchCode" type="" size="large" :disabled="time > 0"><i class="el-icon-loading" v-if="isFetching"></i> {{ codeMsg }}
+              </el-button>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="large" class="sn-post-btn" @click="submit('form')">提 交</el-button>
+        </span>
+      </el-dialog>
   </div>
 </template>
 <script>
@@ -238,19 +265,61 @@
 import api from '@/api/api'
 export default {
   name: 'JDCloudJn',
+  props: {
+    second: {
+      type: Number,
+      default: 60
+    }
+  },
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^1\d{10}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     const that = this
     return {
       query: {
         from: 3,
-        mark: 'a'
+        mark: 'd'
       },
       time: 0,
       isFetching: false,
+      isFetchCode: false,
+      isLoadingBtn: false,
       form: {
       },
+
       ruleForm: {
+        account: [
+          {validator: checkNumber, trigger: 'blur', required: true}
+        ],
+        demand: [
+          { required: true, message: '请输入您的需求', trigger: 'blur' }
+        ],
+        contact: [
+          {required: true, message: '请输入联系人', trigger: 'blur'}
+        ],
+        smsCode: [
+          {required: true, message: '请输入验证码', trigger: 'blur'}
+        ]
       },
+      boolFindDesign: false,
       snServiceType: [
         {
           img: require('assets/images/promote_jdy_jn/home/design_service/01@2x.png'),
@@ -705,9 +774,21 @@ export default {
       }
       // console.log(this.swiperObj)
     },
+    showDialog() {
+      this.boolFindDesign = true
+      this.form = {}
+    },
+    resetForm(form) {
+      this.form = {}
+      this.$refs[form].clearValidate()
+    },
     // 点击获取验证码
     fetchCode() {
       if (this.isFetchCode) {
+        return
+      }
+      if (!this.form.account) {
+        this.$message.error('请输入手机号')
         return
       }
       if (this.form.account.length !== 11 || !/^1\d{10}$/.test(this.form.account)) {
@@ -733,13 +814,41 @@ export default {
         this.isFetching = false
       })
     },
+    submit(form) {
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          let url = api.pcAdd2
+          let row = {
+            user_name: this.form.contact,   // 联系人
+            phone: this.form.account,        // 手机号
+            item_name: this.form.demand,   // 需求
+            source: this.query.from,
+            sms_code: this.form.smsCode,
+            son_source: this.query.mark
+          }
+          this.$http.post(url, row).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.$message.success('发布成功')
+              this.boolFindDesign = false
+              this.form = {}
+              this.time = 0
+            } else {
+              this.$message.error(res.data.meta.message)
+              console.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.boolFindDesign = false
+            this.$message.error(error)
+          })
+        }
+      })
+    },
     timer() {
       if (this.time > 0) {
         this.time = this.time - 1
         setTimeout(this.timer, 1000)
       } else {
         this.isFetchCode = false
-        this.isFetchCode1 = false
       }
     }
   },
@@ -777,6 +886,13 @@ export default {
 }
 </script>
 <style  scoped>
+.sn-offer,
+.sn-awards,
+.service-customer,
+.sn-service-type,
+.demand {
+  background: #f6f8ff;
+}
 .banner-box {
   box-sizing: border-box;
   height: 500px;
@@ -815,11 +931,25 @@ export default {
 }
 .sn-release:hover,
 .sn-release:active {
-  background: #ffffff;
-  color: #3171fe;
+  /* background: #ffffff;
+  color: #3171fe; */
   /* background: linear-gradient(270deg,#3171fe 0%,#a04faf 100%);
   color: #fff; */
 }
+.sn-post-btn {
+  width: 160px;
+  border-radius: 20px;
+  color: #ffffff;
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
+  transition: 268ms all ease;
+}
+.sn-post-btn:hover {
+  color: #ffffff;
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.3);
+  border: none;
+  background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
+}
+
 .sn-banner-word {
   background: #2B3042;
 }
@@ -854,9 +984,7 @@ p.sn-sub-title {
   color:#212330;
   text-align: center;
 }
-.sn-service-type,
-.demand {
-  background: #f6f8ff;
+.sn-service-type{
 }
 .service-type-contant {
   height: 280px;
@@ -979,7 +1107,9 @@ p.sn-sub-title {
 }
 
 .sn-offer,
-.ervice-customer {
+.sn-awards,
+.ervice-customer,
+.service-customer {
   position: relative;
   background: #F6F8FF;
 }
@@ -1008,10 +1138,11 @@ p.sn-sub-title {
 
 .print-box {
   /* padding: 0 10px; */
-  background: #ffffff;
+  /* background: #ffffff; */
   transition: all .3s;
 }
 .print-box:hover {
+  background: #ffffff;
   -webkit-transform: scale(1.05);
 	-ms-transform: scale(1.05);
   transform: scale(1.05);
@@ -1081,6 +1212,7 @@ p.sn-sub-title {
   padding: 0 4px;
 }
 .price > .buy-btn {
+ background: #f6f8ff;
   width: 160px;
   margin-top: 18px;
   font-size:12px;
@@ -1404,4 +1536,37 @@ p.sn-sub-title {
 
 
 
+</style>
+<style>
+.jdy-jn-design .el-dialog__header {
+  padding-top: 20px;
+  height: 150px;
+  background: url('../../../../assets/images/promote_jdy_jn/home/release-requirements@2x.png') no-repeat top/cover;
+}
+.jdy-jn .sn-fetch-btn:hover {
+	background: #f5f5f5;
+	border: 1px solid #e6e6e6;
+	color: #999;
+}
+.jdy-jn-design .el-dialog__title {
+  font-size:24px;
+  color: #222222;
+  font-weight: 400;
+}
+.jdy-jn-design .el-dialog__headerbtn .el-dialog__close {
+  font-size: 20px;
+  color: #ffffff;
+}
+.sn-fetch-code .el-form-item__label {
+  width: 100%;
+  text-align: left;
+}
+.jdy-jn-design .el-dialog__body {
+  padding: 0 20px;
+  padding-top: 10px;
+}
+.jdy-jn-design .sn-fetch-code .el-input {
+  width: 305px;
+  margin-right: 10px;
+}
 </style>
