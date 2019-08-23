@@ -52,7 +52,7 @@ let routes = [
   },
   // 京东云-济南首页
   {
-    path: '/index',
+    path: '/jn_home',
     name: 'jdy_jn',
     meta: {
       title: '京东云设计服务交易平台'

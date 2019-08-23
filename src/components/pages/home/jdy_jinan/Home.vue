@@ -41,9 +41,9 @@
           <div class="case-product">
             <swiper :options="snSwiperOption3" ref="mySwiper3">
               <swiper-slide  v-for="(d, index) in caseData" :key="index">
-                <div>
+                <div class="blank10">
                     <el-row :gutter="20">
-                        <el-col :span="6" v-for="(item, index) in d.vision" :key="index">
+                        <el-col :span="6" v-for="(item, index) in d.data" :key="index">
                           <div class="product-item">
                             <div class="product-img" :style="{background:'url('+item.img +') no-repeat center /cover'}">
                             </div>
@@ -354,6 +354,7 @@ export default {
       snSwiperOption3: { // sn-案例
         lazy: true,
         loop: true,
+        spaceBetween: 20,
         autoplay: {
           delay: 500000
         },
@@ -386,38 +387,110 @@ export default {
       },
       caseData: [
         {
-          vision: [
+          data: [
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/1@2x.jpg'),
+              h1: '秘境-香薰加湿器'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/2@2x.jpg'),
+              h1: '超声波电动牙刷'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/3@2x.jpg'),
+              h1: '智能老年人手杖'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/4@2x.jpg'),
+              h1: 'GYENNO睿餐智能防抖勺'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/5@2x.jpg'),
+              h1: '智能数控门禁'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/6@2x.jpg'),
+              h1: '象善-拍拍灯'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/7@2x.jpg'),
+              h1: '猫王收音机丨旅行者2号'
             },
             {
-              img: require('assets/images/promote_sn/case/vision/VisualDesign01@2x.jpg'),
-              h1: '天晨品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/product/8@2x.jpg'),
+              h1: '水琉璃桌面加湿器'
+            }
+          ]
+        },
+        {
+          data: [
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/1@2x.jpg'),
+              h1: '满姐饺子品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/2@2x.jpg'),
+              h1: 'AFU酒店洗护套装包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/3@2x.jpg'),
+              h1: '谜鹿庄园品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/4@2x.jpg'),
+              h1: '大过中国节切糕包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/5@2x.jpg'),
+              h1: 'Earth Mover品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/6@2x.jpg'),
+              h1: '365ONE品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/7@2x.jpg'),
+              h1: '御美丽包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/8@2x.jpg'),
+              h1: '长寿乐大米包装设计'
+            }
+          ]
+        },
+        {
+          data: [
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/1@2x.jpg'),
+              h1: '满姐饺子品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/2@2x.jpg'),
+              h1: 'AFU酒店洗护套装包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/3@2x.jpg'),
+              h1: '谜鹿庄园品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/4@2x.jpg'),
+              h1: '大过中国节切糕包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/5@2x.jpg'),
+              h1: 'Earth Mover品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/6@2x.jpg'),
+              h1: '365ONE品牌设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/7@2x.jpg'),
+              h1: '御美丽包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/interactive/8@2x.jpg'),
+              h1: '长寿乐大米包装设计'
             }
           ]
         }
@@ -1081,7 +1154,7 @@ p.sn-sub-title {
   background: linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
 }
 .case-product {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 .product-item {
   background: #ffffff;
