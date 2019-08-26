@@ -160,7 +160,7 @@ function showProd() {
       return {
         id: 5,
         name: 'jdy_jn',
-        logo: require('assets/images/promote_sn/logo01@2x.png'),
+        logo: require('assets/images/promote_sn/logo02@2x.png'),
         logo2: require('assets/images/promote_sn/logo02@2x.png'),
         login: '京东云设计服务交易平台',
         info: '京东云设计服务交易平台',

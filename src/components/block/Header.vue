@@ -158,7 +158,10 @@
       <Message></Message>
     </div>
     <div v-else
-    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn', 'sn-header': $store.state.event.prod.name === 'sn'}]">
+        :class="['header-layout', 'other', 'jdc', 
+        {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 
+        'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn', 
+        'sn-header': $store.state.event.prod.name === 'sn'}]">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
