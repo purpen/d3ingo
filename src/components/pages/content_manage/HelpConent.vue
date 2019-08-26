@@ -265,8 +265,20 @@ export default {
       },
 
       jnImgOption1: {
+        img1: require('assets/images/promote_jdy_jn/help/demand/option1/01@2x.jpg'),
+        img2: require('assets/images/promote_jdy_jn/help/demand/option1/02@2x.jpg'),
+        img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
       },
       jnImgOption2: {
+        img1: require('assets/images/promote_jdy_jn/help/demand/option2/01@2x.jpg'),
+        img2: require('assets/images/promote_jdy_jn/help/demand/option2/02@2x.jpg'),
+        img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
       }
     }
   },
@@ -295,8 +307,8 @@ export default {
       this.imgObj1 = this.snImgOption1
       this.imgObj2 = this.snImgOption2
     } else if (this.custom.id === 5) {
-      this.imgObj1 = this.snImgOption1
-      this.imgObj2 = this.snImgOption2
+      this.imgObj1 = this.jnImgOption1
+      this.imgObj2 = this.jnImgOption2
     }
   },
   computed: {

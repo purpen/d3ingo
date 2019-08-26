@@ -29,37 +29,39 @@
       </div>
       <!-- 部分案例展示 -->
       <div class="sn-case" id="sn2">
-        <div class="container">
-          <p class="sn-sub-title padding-b-40">部分案例展示</p>
-          <div class="case-title">
-            <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">产品设计</div>
-            <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">视觉设计</div>
-            <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">交互设计</div>
-            <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">插画设计</div>
-            <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div>
-          </div>
-          <div class="case-product">
-            <swiper :options="snSwiperOption3" ref="mySwiper3">
-              <swiper-slide  v-for="(d, index) in caseData" :key="index">
-                <div class="blank10">
-                    <el-row :gutter="20">
-                        <el-col :span="6" v-for="(item, index) in d.data" :key="index">
-                          <div class="product-item">
-                            <div class="product-img" :style="{background:'url('+item.img +') no-repeat center /cover'}">
+          <div class="case-container">
+            <p class="sn-sub-title padding-b-40">部分案例展示</p>
+            <div class="padding-lr-10">
+              <div class="case-title">
+                <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">产品设计</div>
+                <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">视觉设计</div>
+                <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">交互设计</div>
+                <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">插画设计</div>
+                <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div>
+              </div>
+            </div>
+            <div class="case-product">
+              <swiper :options="snSwiperOption3" ref="mySwiper3">
+                <swiper-slide  v-for="(d, index) in caseData" :key="index">
+                  <div class="product-item-box">
+                      <el-row :gutter="20">
+                          <el-col :span="6" v-for="(item, index) in d.data" :key="index">
+                            <div class="product-item">
+                              <div class="product-img" :style="{background:'url('+item.img +') no-repeat center /cover'}">
+                              </div>
+                              <p class="product-title">{{item.h1}}</p>
                             </div>
-                            <p class="product-title">{{item.h1}}</p>
-                          </div>
-                        </el-col>
+                          </el-col>
 
-                    </el-row>
-                </div>
-              </swiper-slide>
-            </swiper>
+                      </el-row>
+                  </div>
+                </swiper-slide>
+              </swiper>
+            </div>
+            <div class="text-center">
+              <router-link :to="{name: 'designSNList'}" class="sn-list text-center tc-6 pointer">查看更多</router-link>
+            </div>
           </div>
-          <div class="text-center">
-            <router-link :to="{name: 'designSNList'}" class="sn-list text-center tc-6 pointer">查看更多</router-link>
-          </div>
-        </div>
       </div>
       <!-- 报价方案 -->
       <div class="sn-offer padding-b-80" id="sn3">
@@ -1115,6 +1117,13 @@ p.sn-sub-title {
 }
 .sn-case {
   padding-bottom: 80px;
+}
+.case-container {
+  width: 1200px;
+  margin: 0 auto;
+}
+.product-item-box {
+  padding: 20px 10px 0 10px;
 }
 .case-title,
 .offer-title {
