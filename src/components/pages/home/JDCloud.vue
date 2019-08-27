@@ -3112,12 +3112,12 @@ p.sn-sub-title {
   }
   .design-company {
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward1@2x.png") no-repeat center/contain;
   }
   .design-award {
     /* height: 200px; */
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward3@2x.png") no-repeat center/contain;
     /* background-size: 100% 100%; */
   }
   .customer {
