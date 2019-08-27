@@ -112,7 +112,7 @@
             <div class="design-company">
               <div class="line-height28">
                 <span class="number">1000+ </span>
-                <p class="design-title">顶级设计服务商</p>
+                <p class="design-title">设计服务商</p>
               </div>
               <ul class="d-w">
                 <li>
@@ -187,7 +187,7 @@
 
             <div class="design-award">
               <span class="number">300+ </span>
-              <p class="design-title">全球顶级设计大奖</p>
+              <p class="design-title">全球设计大奖</p>
               <img src="../../../assets/images/promote/design-award.png" alt="">
             </div>
 
@@ -413,7 +413,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 设计服务商<br/>提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
           </div>
           <div class="swiper">
@@ -450,11 +450,11 @@
           <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计服务商</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球设计服务商</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">300+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">服务项目获得全球顶级设计大奖</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">服务项目获得全球设计大奖</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">30亿+</div>
@@ -571,7 +571,7 @@
 						婴萌智能冲奶机
 					</span>
 					<span class="fs_14" style="display: block;">
-						获得顶级投资人数千万
+						获得投资人数千万
 					</span>
 					<span class="fs_14" style="display: block;">
 						战略投资

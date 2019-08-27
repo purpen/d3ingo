@@ -131,7 +131,7 @@
     </div>
     <div class="search">
       <div class="search-title">找到适合您的设计服务级别</div>
-      <div class="search-text pad-top-20">每个选项都包括大量顶级设计服务商。</div>
+      <div class="search-text pad-top-20">每个选项都包括大量设计服务商。</div>
       <div class="search-text">选择您需要的服务级别。</div>
       <div class="serve-level">
         <el-row :gutter="20">
@@ -207,7 +207,7 @@
         </div>
         <div class="pad-top-30">
           <div class="solve-datail" v-show="solveType === 1">
-            <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+顶尖设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
+            <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
             <div class="solve-img-round pad-top-60">
               <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
@@ -383,7 +383,7 @@
             <div class="carry-img pad-top-10">
               <div class="carry-img1"></div>
               <div class="carry-img-title">发布项目需求</div>
-              <div class="carry-img-text">告诉我们您的项目需求。我们将您与全国各地或最近的顶尖设计服务商联系起来。</div>
+              <div class="carry-img-text">告诉我们您的项目需求。我们将您与全国各地或最近的设计服务商联系起来。</div>
             </div>
           </el-col>
           <el-col :xs="12" :sm="6">
