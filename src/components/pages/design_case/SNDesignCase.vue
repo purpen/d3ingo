@@ -1,5 +1,15 @@
 <template>
   <div class="container">
+    <div v-if="custom.id === 5" class="banner-box">
+          <!-- <swiper :options="snSwiperOption" class="clearfix">
+            <swiper-slide v-for="(d, index) in bannerList" :key="index">
+              <div class="container">
+                {{d}}
+              </div>
+            </swiper-slide>
+            <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
+          </swiper> -->
+    </div>
     <ul class="case-header blank30">
       <li :class="{'active': isActive === 0}" @click="changeActive(0)">全部案例</li>
       <li :class="{'active': isActive === 1}" @click="changeActive(1)">视觉设计</li>
@@ -61,7 +71,20 @@ export default {
         total_pages: 1
       },
       itemList: [],
-      isLoading: false
+      isLoading: false,
+
+      bannerList: [1, 2, 3],
+      snSwiperOption: {
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        autoplay: {
+          delay: 5000
+        },
+        lazy: true,
+        loop: true
+      }
     }
   },
   methods: {
@@ -132,6 +155,22 @@ export default {
       this.query.per_page = query.per_page || 12
       this.formatNumber()
       this.fetchList()
+    }
+  },
+  computed: {
+    custom() {
+      return this.$store.state.event.prod
+    },
+    swiperObj() {
+      return this.$refs.mySwiper3.swiper
+    }
+  },
+  components: {
+    swiper: (resolve) => {
+      require(['vue-awesome-swiper/src/swiper'], resolve)
+    },
+    swiperSlide: (resolve) => {
+      require(['vue-awesome-swiper/src/slide'], resolve)
     }
   }
 }

@@ -156,6 +156,21 @@ function showProd() {
         copyright: 'Copyright © 2012-2019',
         business: '经营许可证:【京ICP证070359号】'
       }
+    case 'jdy_jn':
+      return {
+        id: 5,
+        name: 'jdy_jn',
+        logo: require('assets/images/promote_sn/logo02@2x.png'),
+        logo2: require('assets/images/promote_sn/logo02@2x.png'),
+        login: '京东云设计服务交易平台',
+        info: '京东云设计服务交易平台',
+        title: '京东云设计服务交易平台',
+        url: 'JDCloud.com',
+        fullurl: 'https://www.jdcloud.com',
+        license: '京东云【京ICP备11041704号-31】',
+        copyright: 'Copyright © 2012-2019',
+        business: '经营许可证:【京ICP证070359号】'
+      }
     default:
       return {
         id: 0,
