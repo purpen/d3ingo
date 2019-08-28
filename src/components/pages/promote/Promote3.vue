@@ -26,7 +26,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">优客工场联合太火鸟，首推B2B设计对接服务</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 设计服务商<br/>提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求，尊享全单6折优惠</div>
           </div>
           <div class="swiper">
@@ -63,11 +63,11 @@
           <div class="fs_16 mtop_20">真格基金、创新工场、麦顿资本、罗莱生活、<br>小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计服务商</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球设计服务商</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">300+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">服务项目获得全球顶级设计大奖</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">服务项目获得全球设计大奖</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">30亿+</div>
@@ -185,7 +185,7 @@
 						婴萌智能冲奶机
 					</span>
 					<span class="fs_14" style="display: block;">
-						获得顶级投资人数千万
+						获得投资人数千万
 					</span>
 					<span class="fs_14" style="display: block;">
 						战略投资

@@ -857,7 +857,7 @@
       <div class="sn-offer padding-b-80" id="sn3">
         <div class="container">
           <p class="sn-sub-title padding-b-40">报价方案</p>
-          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
+          <div class="secondary-title">每个选项都包括大量设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
@@ -1173,7 +1173,7 @@ export default {
           img: require('assets/images/home/jd/7-yw.png'),
           title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性',
-          title0: '100+国内顶尖设计机构'
+          title0: '100+国内设计机构'
         },
         {
           img: require('assets/images/home/jd/8-yw.png'),
@@ -1559,7 +1559,7 @@ export default {
         {
           img: require('assets/images/promote_sn/More@2x.png'),
           title: '更多',
-          title2: '1000+家顶尖设计公司资源随时待命'
+          title2: '1000+家设计公司资源随时待命'
         },
         {
           img: require('assets/images/promote_sn/MoreAccurate@2x.png'),
@@ -3116,12 +3116,12 @@ p.sn-sub-title {
   }
   .design-company {
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward1@2x.png") no-repeat center/contain;
   }
   .design-award {
     /* height: 200px; */
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward3@2x.png") no-repeat center/contain;
     /* background-size: 100% 100%; */
   }
   .customer {

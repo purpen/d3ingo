@@ -148,7 +148,7 @@ function showProd() {
         logo: require('assets/images/promote_sn/logo01@2x.png'),
         logo2: require('assets/images/promote_sn/logo02@2x.png'),
         login: '神农大脑设计平台',
-        info: '神农大脑设计平台',
+        info: '神农大脑设计',
         title: '神农大脑设计平台',
         url: 'JDCloud.com',
         fullurl: 'https://www.jdcloud.com',
