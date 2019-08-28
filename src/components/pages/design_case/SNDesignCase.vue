@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div v-if="custom.id === 5" class="banner-box">
-          <swiper :options="snSwiperOption" class="clearfix">
+          <!-- <swiper :options="snSwiperOption" class="clearfix">
             <swiper-slide v-for="(d, index) in bannerList" :key="index">
               <div class="container">
                 {{d}}
               </div>
             </swiper-slide>
             <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
-          </swiper>
+          </swiper> -->
     </div>
     <ul class="case-header blank30">
       <li :class="{'active': isActive === 0}" @click="changeActive(0)">全部案例</li>
