@@ -142,7 +142,7 @@
         </div>
         <div class="login-center">
           <span class="login-color">PC端登录进入专区操作</span>
-          <span class="web-color">www.d3ingo.com</span>
+          <span class="web-color">saas.taihuoniao.com</span>
         </div>
         <div class="host-text">
           <span class="host-text-style">有疑问请致电如下，我们将协助您完成操作
