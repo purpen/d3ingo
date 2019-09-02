@@ -152,21 +152,29 @@
           <div class="content-box">
             <p class="sn-sub-title">入驻设计公司</p>
             <div class="design-title2">甄选全国优质设计公司，一起做更好的设计</div>
-            <div class="blank40">
+            <div class="blank30">
             <swiper :options="snSwiperOption2" class="clearfix">
               <swiper-slide  v-for="(d, index) in snDesignCompany" :key="index">
                 <div class="container">
                   <div class="sn-design-list">
                     <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
                       <div class="img-box">
-                        <img :src="item.img" alt="">
+                        <img v-if="item.logo_image && item.logo_image.logo" :src="item.logo_image.logo" alt="">
                       </div>
-                      <div class="design-name">{{item.name}}</div>
+                      <div class="design-name">{{item.company_name}}</div>
                       <div class="flex-center height20 margin-t-20 margin-b-20">
-                        <span class="d-company-adress">杭州市</span>
+                        <span class="d-company-adress">{{item.city_value || item.province_value}}</span>
                         <span class="line"></span>
                         <span class="d-company-case">设计案例</span>
-                        <span class="case-num tc-red margin-l-8 fz-14">199</span>
+                        <span class="case-num tc-red margin-l-8 fz-14">{{item.cases_count}}</span>
+                      </div>
+                      <div class="design-case-list">
+                          <div v-for="(ele, i) in item.design_cases" :key="i" class="case-item">
+                          <div v-if="ele.cover && ele.cover.middle" class="image-box" :style="{background: 'url('+ ele.cover.middle + ') no-repeat center / cover'}"></div>
+                          </div>
+                      </div>
+                      <div class="text-center"> 
+                        <a class="case-btn pointer" @click.stop="showDialog">找他设计</a>
                       </div>
                     </div>
                   </div>
@@ -683,88 +691,7 @@ export default {
         }
       ],
 
-      snDesignCompany: [
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/01.png'),
-              name: '苏州上品',
-              title: 'TOPDESIGN上品设计机构是一家专注于为客户提升产品竞争力的创新型设计公司，作为中国工业设计的著名品牌，北京上品设计成立于2009年，并迅速由一家工业设计公司发展成为一家实力雄厚的整合创新机构。旗下设立“北京上品设计机构”“北京上品卓越科技”“宠米（北京）科技”“上品创新学院””苏州上品设计机构”“杭州上品设计机构”“河北上品设计机构”“济南上品设计机构”“南通上品设计机构”“上品设计院”等分公司，拥有高端奢侈品牌X-SHOT。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/02.png'),
-              name: '北京品物堂',
-              title: '品物集团是中国首家秉承“以人为核心，重塑商业价值”的创新咨询与设计集团。在16年的进化历程中，品物不断迸发出最具前瞻性及生命力的思想与观点，创造出优秀的逻辑模型与创新工具，帮助数以百计的企业更深刻的理解他们的用户，改变企业与用户的关系圈，并以此为支点，成功塑造千余款产品与品牌的商业价值，完成了作为行业方法论缔造者与变革者的行业使命。 品物以商业价值创新为目标，以终端用户为原点，为企业提供从用户价值认知与情景体验创新，到商业价值传播的一站式全案创新咨询与落地执行服务。其中，囊括了产品策划与设计，品牌定位与包装，传播规划与传播物料执行三大服务板块。 现在，品物300余名核心团队成员携手，以北京集团总部为核心，以中国杭州、上海、深圳、南京，及英国曼彻斯特等子公司为触点，聚焦区位优势资源，携手媒体、制造、资本等多领域近百名重要合作伙伴，实现跨地域与跨行业的联动式商业创新，打造开放性商业创新资源平台，为我们的客户与合作伙伴赢得竞争先机，探索中国商业创新新航向。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/03.png'),
-              name: '杭州飞鱼',
-              title: '在对的时间 找对的方向 做对的设计 2002年，飞鱼整合设计机构创立于中国杭州。以“设计为人”的核心理念，从用户研究到产品创新再到用户体验，为企业提供产品创新设计、品牌策略、设计孵化等相关服务。 15年来，相继在上海、深圳、郑州、广州等地设立分公司，为客户提供更高效、零距离的优质创新服务。作品多次荣获reddot、IF、IDEA、G-mark、PIN-UP、红星奖、财富最佳设计等国内外奖项近50项，并被评为第一批中国十佳设计机构，中国品牌设计十佳品牌，省重点设计研究院，省工业设计中心，工业设计师范基地等多项荣誉。目前，设计专业级人员分别来自设计、金融、咨询、零售、研发、营销等不同专业领域，从研究、诊断、创新、设计到生产、推广、营销，为实现创新产品的真实落地和产生营销实效，全方位为客户提供一流的解决方案。 因为信赖，飞鱼与诸多品牌缔结战略合作伙伴关系，累计服务国内外400多家企业及品牌，包括GE、OLYMPUS、BOSCH、OTIS、施耐德、海尔、美的、公牛、松下、格力、九阳、苏泊尔、安吉尔、林内、德意、雀友等国内外领先品牌。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/04.png'),
-              name: '上海木马',
-              title: '木马设计创立于2002年，中国十佳设计公司，致力于为客户提供从产品概念设计到市场导入的全面解决方案。理解人、品牌和技术的本质并在她们的驱动下不断创新，是木马设计的灵魂。木马客户遍及全球，从财富500强的Philips、GE、OTIS、National到国内知名的中兴通讯、海尔电器、欧琳厨电等。木马设计精英秉承严谨的科学精神和造型美学，严格遵循木马设计流程，为不同领域的企业提供富有创造性的和切实可行的产品设计解决方案。设计经验涵盖医疗器械、家用电器、信息产品、智慧城市等领域。'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/07.png'),
-              name: '北京智加问道'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/08.png'),
-              name: '顺德宏翼'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/09.png'),
-              name: '重庆纽森'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/10.png'),
-              name: '西安天酬'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/13.png'),
-              name: '杭州奥格'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/14.png'),
-              name: '北京锐变'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/15.png'),
-              name: '北京元物'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/16.png'),
-              name: '天津奈夫'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/19.png'),
-              name: '广州零点壹'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/20.png'),
-              name: '顺德潜龙'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/more.png'),
-              more1: '更多公司'
-            }
-          ]
-        }
-      ],
+      snDesignCompany: [],
       snAwards: [
         {
           img: require('assets/images/promote_sn/awards/prize01@2x.png'),
@@ -863,6 +790,29 @@ export default {
       this.boolFindDesign = true
       this.form = {}
     },
+    getDesignCompanyCase() {
+      let row = {
+        id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70 ]
+      }
+      this.$http.post(api.designCompanyCase, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          const data = res.data.data
+          if (res.data.data.length) {
+            this.snDesignCompany = [
+              {company: data.slice(0, 4)},
+              {company: data.slice(4, 8)}
+            ]
+          }
+          console.log(this.snDesignCompany)
+        } else {
+          console.error(res.data.meta)
+        }
+      }).catch(error => {
+        this.$message(error.message)
+        console.error(error.message)
+      })
+    },
     resetForm(form) {
       this.form = {}
       this.$refs[form].clearValidate()
@@ -940,6 +890,7 @@ export default {
   created() {
     this.formatQuery(this.$route.query)
     this.generalize(this.query)
+    this.getDesignCompanyCase()
     this.snOfferData = this.snOfferprintVision
   },
   computed: {
@@ -1109,7 +1060,7 @@ p.sn-sub-title {
   font-size: 14px;
 }
 
-.sn-list {
+.sn-list{
   font-size: 16px;
   display: inline-block;
   width: 180px;
@@ -1118,7 +1069,18 @@ p.sn-sub-title {
   border: 1px solid #e6e6e6;
   border-radius: 28px;
 }
-.sn-list:hover {
+.case-btn {
+  margin-top: 20px;
+  font-size: 14px;
+  display: inline-block;
+  width: 140px;
+  height: 40px;
+  line-height: 38px;
+  border: 1px solid #e6e6e6;
+  border-radius: 20px;
+}
+.sn-list:hover,
+.case-btn:hover {
   background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   border-color: rgba(0,0,0,0);
   color: #fff;
@@ -1371,7 +1333,7 @@ p.sn-sub-title {
 }
 /* sn-design start */
 .sn-design {
-  height: 606px;
+  height: 614px;
 }
 .sn-design-box {
   position: relative;
@@ -1399,7 +1361,7 @@ p.sn-sub-title {
 }
 .sn-d-item {
   width: 280px;
-  height: 240px;
+  height: 260px;
   padding-top: 60px;
   position: relative;
   background: #ffffff;
@@ -1450,6 +1412,25 @@ p.sn-sub-title {
   background: url('../../../../assets/images/promote_jdy_jn/home/design_company/case@2x.png') no-repeat left/contain;
 }
 .case-num {
+}
+.design-case-list {
+  display: flex;
+  height: 86px;
+  padding: 0 10px;
+}
+.design-case-list .case-item {
+  width: 86px;
+  height: 86px;
+  border:1px solid rgba(242,246,252,1);
+}
+.case-item .image-box {
+  width: 86px;
+  height: 86px;
+  background-size: 103% !important;
+	transition: all 0.1s ease-in-out;
+}
+.case-item .image-box:hover {
+  background-size: 108% !important;
 }
 /* sn-design end */
 .awards-box {
