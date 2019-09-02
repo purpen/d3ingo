@@ -1,12 +1,26 @@
 <template>
   <div>
-      <div class="banner">
-          <div class="container banner-box">
-              <div class="banner-title">京东云设计服务交易平台</div>
-              <div class="banner-second-title">定制化产品创新造物平台</div>
-              <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+      <swiper :options="snSwiperOption1" class="clearfix jn-banner">
+        <swiper-slide>
+          <div class="banner">
+              <div class="container banner-box banner-box1">
+                  <div class="banner-title">京东云设计服务交易平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+              </div>
           </div>
-      </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="banner">
+              <div class="container banner-box banner-box2">
+                  <div class="banner-title">京东云设计服务交易平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+              </div>
+          </div>
+        </swiper-slide>
+            <div class="swiper-pagination sn-banner-page" slot="pagination"></div>
+      </swiper>
         <!-- 设计服务类型 -->
       <div class="sn-service-type padding-b-60" id="sn1">
         <div class="container">
@@ -36,8 +50,8 @@
                 <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">产品设计</div>
                 <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">视觉设计</div>
                 <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">交互设计</div>
-                <!-- <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">插画设计</div>
-                <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
+                <div @click="changeCaseType('Illustration')" :class="[{'active': currentCase === 'Illustration'}]">插画设计</div>
+                <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
               </div>
             </div>
             <div class="case-product">
@@ -180,7 +194,7 @@
                   </div>
                 </div>
               </swiper-slide>
-              <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
+              <div class="sn-banner-page2 swiper-pagination" slot="pagination"></div>
             </swiper>
             </div>
           </div>
@@ -361,6 +375,18 @@ export default {
       ],
       currentCase: 'vision',
       currentOffer: 'vision',
+      snSwiperOption1: { // sn-banner
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+          // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
+        },
+        autoplay: {
+          delay: 5000
+        },
+        lazy: true,
+        loop: true
+      },
       snSwiperOption3: { // sn-案例
         lazy: true,
         loop: true,
@@ -379,7 +405,7 @@ export default {
             } else if (index === 2) {
               that.currentCase = 'packing'
             } else if (index === 3) {
-              that.currentCase = 'product'
+              that.currentCase = 'Illustration'
             }
           }
         }
@@ -501,6 +527,42 @@ export default {
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/8@2x.jpg'),
               h1: '及第理财APP'
+            }
+          ]
+        },
+        {
+          data: [
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/1@2x.jpg'),
+              h1: '太火鸟春节插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/2@2x.jpg'),
+              h1: '24节气插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/3@2x.jpg'),
+              h1: '2.5D插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/4@2x.jpg'),
+              h1: '旅游插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/5@2x.jpg'),
+              h1: '万圣节插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/6@2x.jpg'),
+              h1: '元旦2.5D插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/7@2x.jpg'),
+              h1: '人物插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/8@2x.jpg'),
+              h1: '中秋插画设计'
             }
           ]
         }
@@ -771,7 +833,7 @@ export default {
         this.swiperObj.slideToLoop(1)
       } else if (e === 'packing') {
         this.swiperObj.slideToLoop(2)
-      } else if (e === 'product') {
+      } else if (e === 'Illustration') {
         this.swiperObj.slideToLoop(3)
       }
       // console.log(this.swiperObj)
@@ -933,9 +995,13 @@ export default {
   box-sizing: border-box;
   height: 500px;
   padding-top: 148px;
+}
+.banner-box1 {
   background: url('../../../../assets/images/promote_jdy_jn/home/banner@2x.png') no-repeat top 30px right 0 /620px;
 }
-
+.banner-box2 {
+  background: url('../../../../assets/images/promote_jdy_jn/home/banner2@2x.png') no-repeat top 30px right 0 /620px;
+}
 .banner-box .banner-title {
   height:70px;
   font-size:50px;
@@ -1651,5 +1717,26 @@ p.sn-sub-title {
 .jdy-jn-design .sn-fetch-code .el-input {
   width: 305px;
   margin-right: 10px;
+}
+
+/* swiper 样式重置  statrt*/
+.jn-banner .swiper-container {
+  padding-bottom: 0;
+}
+.sn-banner-page .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #BADBFF;
+  opacity:0.5;
+  margin: 0 10px;
+}
+.sn-banner-page .swiper-pagination-bullet-active {
+  width: 30px;
+  opacity: 1;
+  background: #BADBFF !important;
+  border-radius: 15px;
+}
+.sn-banner-page {
+  bottom: 20px !important;
 }
 </style>
