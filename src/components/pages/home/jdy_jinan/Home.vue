@@ -667,19 +667,30 @@ export default {
         {
           img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
           h1: '基础版',
-          h2: '1.造型、结构设计二选一。',
-          h3: '2.项目时限为平均参考，不同项目设计有差异，以实际合同签约时限为准。',
+          h2: '1.推荐1名设计师服务',
+          h3: '2.设计2套方案任选其一',
+          h4: '3.选中设计方案支持2次免费修改',
+          h5: '4专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过10项',
+          h8: '7.出具vi标准应用手册1本',
           money: '2万'
         },
         {
           img: require('assets/images/promote_jdy_jn/home/offer/Advanced@2x.png'),
           h1: '进阶版',
-          h2: '1.结构设计复杂程度若涉及行业壁垒、多套精密零配件等高端技术，则需根据实际评估价格额外付费。',
-          h3: '2.中型、大型设计二选一，默认中型、若选择大型则跳转至综合版。',
-          h4: '3.项目时限为平均参考，不同项目设计有差异，以实际合同签约时限为准。',
+          h2: '1.推荐2名设计师服务',
+          h3: '2.设计3套方案任选其一',
+          h4: '3.选中设计方案支持3次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过15项',
+          h8: '7.出具vi标准应用手册2本',
+          h9: '8.半年内VI方案免费应用咨询',
           money: '3万'
         },
         {
+
           img: require('assets/images/promote_jdy_jn/home/offer/comprehensive@2x.png'),
           h1: '综合版',
           h2: '1.推荐3名设计师服务',
@@ -760,7 +771,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize01@2x.png'),
           country: '德国',
           name: '红点设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize02@2x.png'),
@@ -778,7 +789,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize05@2x.png'),
           country: '美国',
           name: 'IDEA设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize04@2x.png'),
