@@ -81,7 +81,7 @@
       <div class="sn-offer padding-b-80" id="sn3">
         <div class="container">
           <p class="sn-sub-title padding-b-40">报价方案</p>
-          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
+          <div class="secondary-title">每个选项都包括大量设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
