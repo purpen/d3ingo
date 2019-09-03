@@ -55,7 +55,7 @@ export default {
       path: [],
       srcListProd: [
         'https://saas.d3ingo.com/ssologin.html',
-        'https://www.taihuoniao.com/ssologin.html'
+        'https://old.taihuoniao.com/ssologin.html'
       ],
       srcListDev: [
         'http://saas-dev.taihuoniao.com/ssologin.html',
