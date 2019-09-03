@@ -286,6 +286,7 @@
 </template>
 <script>
 // import { calcImgSize } from 'assets/js/common'
+import conf from 'conf/prod.env'
 import api from '@/api/api'
 export default {
   name: 'JDCloudJn',
@@ -854,7 +855,12 @@ export default {
     },
     getDesignCompanyCase() {
       let row = {
-        id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70 ]
+        id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70, 11, 12, 14, 15, 16, 17, 19, 20, 22, 23, 24 ]
+      }
+      if (conf.ENV === 'prod') {
+        row = {
+          id: [ 425, 239, 227, 366, 141, 403, 416, 331, 389, 4, 14, 143, 490, 26, 372, 413, 282, 7, 419, 326 ]
+        }
       }
       this.$http.post(api.designCompanyCase, row).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -863,7 +869,10 @@ export default {
           if (res.data.data.length) {
             this.snDesignCompany = [
               {company: data.slice(0, 4)},
-              {company: data.slice(4, 8)}
+              {company: data.slice(4, 8)},
+              {company: data.slice(8, 12)},
+              {company: data.slice(12, 16)},
+              {company: data.slice(16, 20)}
             ]
           }
           console.log(this.snDesignCompany)
@@ -1723,14 +1732,16 @@ p.sn-sub-title {
 .jn-banner .swiper-container {
   padding-bottom: 0;
 }
-.sn-banner-page .swiper-pagination-bullet {
+.sn-banner-page .swiper-pagination-bullet,
+.sn-banner-page2 .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
   background: #BADBFF;
   opacity:0.5;
   margin: 0 10px;
 }
-.sn-banner-page .swiper-pagination-bullet-active {
+.sn-banner-page .swiper-pagination-bullet-active,
+.sn-banner-page2 .swiper-pagination-bullet-active {
   width: 30px;
   opacity: 1;
   background: #BADBFF !important;
@@ -1738,5 +1749,9 @@ p.sn-sub-title {
 }
 .sn-banner-page {
   bottom: 20px !important;
+}
+
+.sn-banner-page2 {
+  bottom: 0 !important;
 }
 </style>
