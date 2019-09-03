@@ -14,7 +14,7 @@
       <p class="clearfix">
         <span class="title">小米生态链负责人刘德</span>
         <span class="info">工业设计师创业的底牌、痛点与危机</span>
-        <a target="_blank" href="https://www.d3ingo.com/article/show/123"></a>
+        <a target="_blank" href="https://saas.taihuoniao.com/article/show/123"></a>
       </p>
       <div class="liude-bg1"></div>
       <div class="liude-bg2"></div>
@@ -23,13 +23,13 @@
       <p class="clearfix">
         <span class="info">设计师要直面商业世界的残酷</span>
         <span class="title">一一铟果专访谷仓学院洪华实录</span>
-        <a target="_blank" href="https://www.d3ingo.com/article/show/136"></a>
+        <a target="_blank" href="https://saas.taihuoniao.com/article/show/136"></a>
       </p>
       <div class="honghua-bg1"></div>
       <div class="honghua-bg2"></div>
     </div>
-    <a target="_blank" href="https://www.d3ingo.com/article/show/123"><div v-if="isMob" class="banner-liude-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
-    <a target="_blank" href="https://www.d3ingo.com/article/show/136"><div v-if="isMob" class="banner-honghua-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
+    <a target="_blank" href="https://saas.taihuoniao.com/article/show/123"><div v-if="isMob" class="banner-liude-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
+    <a target="_blank" href="https://saas.taihuoniao.com/article/show/136"><div v-if="isMob" class="banner-honghua-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
     <div class="people">
       <p class="picture-cover-title">小米生态链企业家</p>
       <ul class="entrepreneur">
@@ -69,31 +69,31 @@ export default {
           id: 1,
           name: '郭晶晶',
           company: '柒小佰科技',
-          url: 'https://www.d3ingo.com/article/show/161'
+          url: 'https://saas.taihuoniao.com/article/show/161'
         },
         {
           id: 2,
           name: '傅健',
           company: '巽一科技',
-          url: 'https://www.d3ingo.com/article/show/128'
+          url: 'https://saas.taihuoniao.com/article/show/128'
         },
         {
           id: 3,
           name: '黄业桃',
           company: '疯景科技',
-          url: 'https://www.d3ingo.com/article/show/164'
+          url: 'https://saas.taihuoniao.com/article/show/164'
         },
         {
           id: 4,
           name: '章俊',
           company: '青禾小贝科技',
-          url: 'https://www.d3ingo.com/article/show/126'
+          url: 'https://saas.taihuoniao.com/article/show/126'
         },
         {
           id: 5,
           name: '梁于阳',
           company: '秒秒测科技',
-          url: 'https://www.d3ingo.com/article/show/127'
+          url: 'https://saas.taihuoniao.com/article/show/127'
         }
       ]
     }

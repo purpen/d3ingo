@@ -1318,7 +1318,7 @@ export default {
           companyLogo: require('@/assets/images/home/AMIRP_LUX@2x.png'),
           title: 'AMIRO LUX日光镜',
           sales: '俘获众网红芳心的科技生活爆品',
-          intro: '深圳市宗匠科技有限公司（以下简称宗匠）以智能照明为核心研发对象，发布了高科技智能化妆镜由。2015年，太火鸟参与宗匠天使轮投资，并开放自有电商平台供宗匠产品入驻销售。如今，宗匠已通过研发日光灯、自拍补光灯等产品获得“中国智能化妆镜第一品牌”的称号。',
+          intro: '深圳市宗匠科技有限公司（以下简称宗匠）以智能照明为核心研发对象，发布了高科技智能化妆镜由。2015年，太火鸟参与宗匠天使轮投资，并开放自有电商平台供宗匠产品入驻销售。',
           image: require ('@/assets/images/home/AMIRO_LUX.jpg')
         },
         {
@@ -3112,12 +3112,12 @@ p.sn-sub-title {
   }
   .design-company {
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward1@2x.png") no-repeat center/contain;
   }
   .design-award {
     /* height: 200px; */
     padding-top: 52.6%;
-    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat center/contain;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward3@2x.png") no-repeat center/contain;
     /* background-size: 100% 100%; */
   }
   .customer {
