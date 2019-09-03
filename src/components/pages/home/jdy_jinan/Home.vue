@@ -855,17 +855,14 @@ export default {
     },
     getDesignCompanyCase() {
       let row = {
-        // id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70, 11, 12, 14, 15, 16, 17, 19, 20, 26, 23, 24 ]
-        id: [ 425, 239, 227, 366, 141, 403, 416, 331, 389, 4, 14, 143, 490, 26, 372, 413, 282, 7, 419, 326 ]
+        id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70, 11, 12, 14, 15, 16, 17, 19, 20, 26, 23, 24 ]
       }
-      // if (conf.ENV === 'prod') {
-      //   row = {
-      //     id: [ 425, 239, 227, 366, 141, 403, 416, 331, 389, 4, 14, 143, 490, 26, 372, 413, 282, 7, 419, 326 ]
-      //   }
-      // }
-      console.log(conf.ENV)
-      let url = 'http://mc.taihuoniao.com/api/designCompanyCase/getDesignInfoCase'
-      this.$http.post(url, row).then(res => {
+      if (conf.ENV === 'prod') {
+        row = {
+          id: [ 425, 239, 227, 366, 141, 403, 416, 331, 389, 4, 14, 143, 490, 26, 372, 413, 282, 7, 419, 326 ]
+        }
+      }
+      this.$http.post(api.designCompanyCase, row).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
           const data = res.data.data
