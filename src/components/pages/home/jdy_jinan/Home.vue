@@ -105,6 +105,11 @@
                     <p>{{item.h2}}</p>
                     <p>{{item.h3}}</p>
                     <p>{{item.h4}}</p>
+                    <p>{{item.h5}}</p>
+                    <p>{{item.h6}}</p>
+                    <p class="add-services" v-if="item.h7">{{item.h7}}</p>
+                    <p class="add-services" v-if="item.h8">{{item.h8}}</p>
+                    <p class="add-services" v-if="item.h9">{{item.h9}}</p>
                   </div>
                 </div>
               </div>
@@ -795,7 +800,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize04@2x.png'),
           country: '台湾',
           name: '金点设计奖',
-          explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
+          explain: '台湾创意设计中心执行，在台湾拥有35年历史，“设计界的金马奖”'
         },
         {
           img: require('assets/images/promote_sn/awards/prize06@2x.png'),
@@ -1301,8 +1306,9 @@ p.sn-sub-title {
   width: 100px;
 }
 .server-list {
-  height: 280px;
+  /* height: 280px; */
   padding: 0 3px;
+  padding-bottom: 30px;
   margin-top: 30px;
 }
 .server-list > p {
@@ -1525,7 +1531,7 @@ p.sn-sub-title {
 }
 .awards-item {
   width: 180px;
-  height: 225px;
+  height: 240px;
   text-align: center;
   font-weight:400;
   color:#999;
