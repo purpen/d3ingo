@@ -1730,19 +1730,19 @@
   .new-img1 {
     width: 130px;
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/200@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/new/1000@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-img2 {
     width: 130px;
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/130@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/new/2000@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-img3 {
     width: 160px;
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/1200w.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/new/2000w@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .new-text {
