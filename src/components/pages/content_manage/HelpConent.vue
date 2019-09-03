@@ -265,7 +265,7 @@ export default {
       },
 
       jnImgOption1: {
-        img1: require('assets/images/promote_jdy_jn/help/demand/option1/01@2x.jpg'),
+        img1: require('assets/images/promote_jdy_jn/help/demand/option1/1.jpg'),
         img2: require('assets/images/promote_jdy_jn/help/demand/option1/02@2x.jpg'),
         img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
         img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
@@ -273,8 +273,8 @@ export default {
         img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
       },
       jnImgOption2: {
-        img1: require('assets/images/promote_jdy_jn/help/demand/option2/01@2x.jpg'),
-        img2: require('assets/images/promote_jdy_jn/help/demand/option2/02@2x.jpg'),
+        img1: require('assets/images/promote_jdy_jn/help/demand/option2/1.jpg'),
+        img2: require('assets/images/promote_jdy_jn/help/demand/option2/2.jpg'),
         img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
         img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
         img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),

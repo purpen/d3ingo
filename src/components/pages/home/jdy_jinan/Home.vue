@@ -4,7 +4,7 @@
         <swiper-slide>
           <div class="banner">
               <div class="container banner-box banner-box1">
-                  <div class="banner-title">京东云设计服务交易平台</div>
+                  <div class="banner-title">济南神农大脑设计平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
               </div>
@@ -13,7 +13,7 @@
         <swiper-slide>
           <div class="banner">
               <div class="container banner-box banner-box2">
-                  <div class="banner-title">京东云设计服务交易平台</div>
+                  <div class="banner-title">济南神农大脑设计平台</div>
                   <div class="banner-second-title">定制化产品创新造物平台</div>
                   <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
               </div>
