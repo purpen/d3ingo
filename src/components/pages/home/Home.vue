@@ -131,7 +131,7 @@
     </div>
     <div class="search">
       <div class="search-title">找到适合您的设计服务级别</div>
-      <div class="search-text pad-top-20">每个选项都包括大量顶级设计服务商。</div>
+      <div class="search-text pad-top-20">每个选项都包括大量设计服务商。</div>
       <div class="search-text">选择您需要的服务级别。</div>
       <div class="serve-level">
         <el-row :gutter="20">
@@ -207,7 +207,7 @@
         </div>
         <div class="pad-top-30">
           <div class="solve-datail" v-show="solveType === 1">
-            <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+顶尖设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
+            <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
             <div class="solve-img-round pad-top-60">
               <el-row class="row-width-100">
                 <el-col :xs="12" :sm="6">
@@ -383,7 +383,7 @@
             <div class="carry-img pad-top-10">
               <div class="carry-img1"></div>
               <div class="carry-img-title">发布项目需求</div>
-              <div class="carry-img-text">告诉我们您的项目需求。我们将您与全国各地或最近的顶尖设计服务商联系起来。</div>
+              <div class="carry-img-text">告诉我们您的项目需求。我们将您与全国各地或最近的设计服务商联系起来。</div>
             </div>
           </el-col>
           <el-col :xs="12" :sm="6">
@@ -516,19 +516,19 @@
         <el-row>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto">
-              <div class="new-img1"></div>
+              <img :src="require('assets/images/new_home/home/new/1000@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">专业设计服务商</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto phone-pad-20">
-              <div class="new-img2"></div>
+              <img :src="require('assets/images/new_home/home/new/2000@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">成交项目</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto phone-pad-20">
-              <div class="new-img3"></div>
+              <img :src="require('assets/images/new_home/home/new/2000w@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">成交金额</div>
             </div>
           </el-col>
@@ -704,7 +704,7 @@
             companyLogo: require('@/assets/images/home/AMIRP_LUX@2x.png'),
             title: 'AMIRO LUX日光镜',
             sales: '销售额：1000万元',
-            intro: '深圳市宗匠科技有限公司（以下简称宗匠）以智能照明为核心研发对象，发布了高科技智能化妆镜由。2015年，太火鸟参与宗匠天使轮投资，并开放自有电商平台供宗匠产品入驻销售。如今，宗匠已通过研发日光灯、自拍补光灯等产品获得“中国智能化妆镜第一品牌”的称号。',
+            intro: '深圳市宗匠科技有限公司（以下简称宗匠）以智能照明为核心研发对象，发布了高科技智能化妆镜由。2015年，太火鸟参与宗匠天使轮投资，并开放自有电商平台供宗匠产品入驻销售。',
             image: require ('@/assets/images/home/AMIROLUX4@2x.png')
           },
           {
@@ -1724,26 +1724,8 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
   }
-  .new-round {
-    max-width: 126px;
-  }
-  .new-img1 {
-    width: 130px;
+  .new-img {
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/200@2x.png") no-repeat center / contain;
-    margin: 0 auto;
-  }
-  .new-img2 {
-    width: 130px;
-    height: 60px;
-    background: url("../../../assets/images/new_home/home/new/130@2x.png") no-repeat center / contain;
-    margin: 0 auto;
-  }
-  .new-img3 {
-    width: 160px;
-    height: 60px;
-    background: url("../../../assets/images/new_home/home/new/1200w.png") no-repeat center / contain;
-    margin: 0 auto;
   }
   .new-text {
     font-size: 18px;

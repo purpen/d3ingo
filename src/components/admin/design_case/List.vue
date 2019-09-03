@@ -163,7 +163,7 @@ export default {
         page: 1,
         pageSize: 50,
         totalCount: 0,
-        open: 0,
+        status: '',
         sort: 1,
         type: 0,
         value: '',
@@ -183,7 +183,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.page = val
-      this.$router.push({name: this.$route.name, query: {page: val}})
+      this.$router.push({name: this.$route.name, query: this.query})
     },
     setOpen(index, item, evt) {
       var id = item.id
@@ -251,8 +251,23 @@ export default {
       if (self.query.type) {
         this.menuType = parseInt(self.query.type)
       }
+      // 待审核 0, 通过1
+      if (self.query.type === 0) {
+        self.query.status = ''
+      } else if (self.query.type === 2) {
+        self.query.status = 0
+      } else if (self.query.type === 3) {
+        self.query.status = 1
+      }
+      let row = {
+        page: self.query.page,
+        per_page: self.query.pageSize,
+        sort: self.query.sort,
+        type: self.query.type,
+        status: self.query.status
+      }
       self.isLoading = true
-      self.$http.get(api.adminDesignCaseLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, open: self.query.open}})
+      self.$http.get(api.adminDesignCaseLists, {params: row})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
@@ -345,7 +360,7 @@ export default {
         token: this.token,
         sort: this.query.sort,
         type: this.query.type,
-        open: this.query.open,
+        status: this.query.status,
         value: this.query.value
       }
       let form = document.createElement('form')
