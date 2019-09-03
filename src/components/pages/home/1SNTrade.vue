@@ -22,7 +22,7 @@
             <div class="safe-word-box">
               <p>保证原创</p>
               <!-- 神农大脑设计平台 -->
-              <span>{{custom.info}}担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
+              <span>{{custom.info}}平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
             </div>
             <div class="safe-box">
               <div class="img-box fr"></div>
@@ -39,7 +39,7 @@
             </div>
             <div class="safe-word-box">
               <p>版权保护</p>
-              <span>{{custom.info}}保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
+              <span>{{custom.info}}平台保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
         <div class="jn-safeguard2">
             <div class="safe-word-box">
               <p>保证原创</p>
-              <span>{{custom.info}}担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
+              <span>{{custom.info}}平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</span>
             </div>
             <div class="safe-box">
               <div class="img-box fr"></div>
@@ -82,7 +82,7 @@
             </div>
             <div class="safe-word-box">
               <p>版权保护</p>
-              <span>{{custom.info}}保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
+              <span>{{custom.info}}平台保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</span>
           </div>
         </div>
       </div>

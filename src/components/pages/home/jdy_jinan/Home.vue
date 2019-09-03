@@ -179,6 +179,7 @@
                     <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
                       <div class="img-box">
                         <img v-if="item.logo_image && item.logo_image.logo" :src="item.logo_image.logo" alt="">
+                        <img v-else src="../../../../assets/images/promote_jdy_jn/home/design_company/placeholder@2x.png" alt="">
                       </div>
                       <div class="design-name">{{item.company_name}}</div>
                       <div class="flex-center height20 margin-t-20 margin-b-20">
@@ -190,6 +191,7 @@
                       <div class="design-case-list">
                           <div v-for="(ele, i) in item.design_cases" :key="i" class="case-item">
                           <div v-if="ele.cover && ele.cover.middle" class="image-box" :style="{background: 'url('+ ele.cover.middle + ') no-repeat center / cover'}"></div>
+                          <div v-else class="image-box" :style="{background: 'url(../../../../assets/images/promote_jdy_jn/home/design_company/BG@2x.png) no-repeat center / cover'}"></div>
                           </div>
                       </div>
                       <div class="text-center"> 
@@ -881,7 +883,24 @@ export default {
       this.$http.post(api.designCompanyCase, row).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
-          const data = res.data.data
+          let obj = {
+            cover: { middle: require('assets/images/promote_jdy_jn/home/design_company/BG@2x.png') }
+          }
+          let data = res.data.data
+          data.forEach(item => {
+            if (item.design_cases.length < 2) {
+              if (item.design_cases.length === 0) {
+                item.design_cases = [
+                  obj,
+                  obj,
+                  obj
+                ]
+              } else if (item.design_cases.length === 1) {
+                item.design_cases.push(obj)
+                item.design_cases.push(obj)
+              }
+            }
+          })
           if (res.data.data.length) {
             this.snDesignCompany = [
               {company: data.slice(0, 4)},
