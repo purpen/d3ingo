@@ -857,7 +857,7 @@
       <div class="sn-offer padding-b-80" id="sn3">
         <div class="container">
           <p class="sn-sub-title padding-b-40">报价方案</p>
-          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
+          <div class="secondary-title">每个选项都包括大量设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
@@ -1173,7 +1173,7 @@ export default {
           img: require('assets/images/home/jd/7-yw.png'),
           title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性',
-          title0: '100+国内顶尖设计机构'
+          title0: '100+国内设计机构'
         },
         {
           img: require('assets/images/home/jd/8-yw.png'),
@@ -1559,7 +1559,7 @@ export default {
         {
           img: require('assets/images/promote_sn/More@2x.png'),
           title: '更多',
-          title2: '1000+家顶尖设计公司资源随时待命'
+          title2: '1000+家设计公司资源随时待命'
         },
         {
           img: require('assets/images/promote_sn/MoreAccurate@2x.png'),
@@ -1577,7 +1577,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize01@2x.png'),
           country: '德国',
           name: '红点设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize02@2x.png'),
@@ -1595,13 +1595,13 @@ export default {
           img: require('assets/images/promote_sn/awards/prize05@2x.png'),
           country: '美国',
           name: 'IDEA设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize04@2x.png'),
           country: '台湾',
           name: '金点设计奖',
-          explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
+          explain: '台湾创意设计中心执行，在台湾拥有35年历史，“设计界的金马奖”'
         },
         {
           img: require('assets/images/promote_sn/awards/prize06@2x.png'),
@@ -2868,7 +2868,7 @@ p.sn-sub-title {
 }
 .awards-item {
   width: 180px;
-  height: 225px;
+  height: 240px;
   text-align: center;
   font-weight:400;
   color:#999;
