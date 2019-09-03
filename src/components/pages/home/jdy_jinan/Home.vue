@@ -888,7 +888,7 @@ export default {
           }
           let data = res.data.data
           data.forEach(item => {
-            if (item.design_cases.length < 2) {
+            if (item.design_cases.length < 3) {
               if (item.design_cases.length === 0) {
                 item.design_cases = [
                   obj,
@@ -897,6 +897,8 @@ export default {
                 ]
               } else if (item.design_cases.length === 1) {
                 item.design_cases.push(obj)
+                item.design_cases.push(obj)
+              } else if (item.design_cases.length === 2) {
                 item.design_cases.push(obj)
               }
             }
@@ -1508,7 +1510,8 @@ p.sn-sub-title {
 .design-name {
   height:28px;
   font-size:20px;
-  line-height:28px;
+  padding: 0 10px;
+  line-height:20px;
   font-weight:400;
   color: #222222;
 }
