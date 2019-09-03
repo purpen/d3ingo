@@ -233,7 +233,7 @@
               <el-menu-item v-if="prodName === 'sn'" index="" class="fr">
                 <a :href="snUrl">授权登录</a>
               </el-menu-item>
-              <el-menu-item v-if="prodName === 'jdy_jn'" index="" class="fr">
+              <el-menu-item v-else-if="prodName === 'jdy_jn'" index="" class="fr">
                 <a :href="snUrl">授权登录</a>
               </el-menu-item>
               <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
