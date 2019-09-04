@@ -1,6 +1,6 @@
 module.exports = {
-  SOURCE_TYPE: 0, // source-type: 0.铟果; 1.京东云艺火; 2.义乌; 4.京东云神农大脑 5, 济南
-  CUSTOM: 'd3ingo', // 定制： 默认 d3ingo: 铟果: , jdc: 京东云, yw: 义乌, sn: 神农,  jdy_jn 济南
+  SOURCE_TYPE: 0, // source-type: 0.铟果; 1.京东云艺火; 2.义乌; 4.京东云神农大脑 5. 京东ai; 6.设计扶贫; 7.济南神农
+  CUSTOM: 'd3ingo', // 定制： 默认 d3ingo: 铟果: , jdc: 京东云, yw: 义乌, sn: 神农, jdy_jn: 济南
   ENV: 'dev', // dev 测试 / prod 正式
   VUE_ENV: '"server"',
   NODE_ENV: '"production"',
