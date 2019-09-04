@@ -1577,7 +1577,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize01@2x.png'),
           country: '德国',
           name: '红点设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize02@2x.png'),
@@ -1595,19 +1595,19 @@ export default {
           img: require('assets/images/promote_sn/awards/prize05@2x.png'),
           country: '美国',
           name: 'IDEA设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize04@2x.png'),
           country: '台湾',
           name: '金点设计奖',
-          explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
+          explain: '台湾创意设计中心执行，在台湾拥有35年历史，“设计界的金马奖”'
         },
         {
           img: require('assets/images/promote_sn/awards/prize06@2x.png'),
           country: '中国',
           name: '红星奖',
-          explain: '中国唯一具有国际影响力的设计奖，“中国设计界的奥斯卡”'
+          explain: '具有国际影响力的设计奖，“中国设计界的奥斯卡”'
         }
         // {
         //   img: require('assets/images/promote_sn/awards/prize07@2x.png'),
@@ -1888,6 +1888,10 @@ export default {
   },
   created() {
     let that = this
+    if (that.custom.id === 5) {
+      that.$router.push({name: 'jdy_jn'})
+      return
+    }
     if (that.$store.state.event.prod.id === 0) {
       that.$router.replace({name: 'home'})
       return
@@ -2864,7 +2868,7 @@ p.sn-sub-title {
 }
 .awards-item {
   width: 180px;
-  height: 225px;
+  height: 240px;
   text-align: center;
   font-weight:400;
   color:#999;

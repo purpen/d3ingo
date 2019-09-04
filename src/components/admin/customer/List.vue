@@ -478,6 +478,7 @@
                 <span v-if="scope.row.son_source === 'a'">京东云艺火</span>
                 <span v-else-if="scope.row.son_source === 'b'">优客工场</span>
                 <span v-else-if="scope.row.son_source === 'c'">京东云神农大脑</span>
+                <span v-else-if="scope.row.son_source === 'd'">济南神农大脑</span>
                 <span v-else>—</span>
               </div>
               <div v-if="scope.row.new_source === 4" class="fz-14 tc-3">
@@ -1056,6 +1057,10 @@ export default {
             {
               value: 'c',
               label: '京东云神农大脑'
+            },
+            {
+              value: 'd',
+              label: '济南神农大脑'
             }
           ]
         },
@@ -1226,6 +1231,10 @@ export default {
             {
               value: 'c',
               label: '京东云神农大脑'
+            },
+            {
+              value: 'd',
+              label: '济南神农大脑'
             }
           ]
         },

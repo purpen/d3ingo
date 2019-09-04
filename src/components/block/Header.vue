@@ -158,7 +158,11 @@
       <Message></Message>
     </div>
     <div v-else
-    :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn', 'sn-header': $store.state.event.prod.name === 'sn'}]">
+        :class="['header-layout', 'other', 'jdc', 
+        {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw', 
+        'black-header': $route.name === 'home' && $store.state.event.prod.name === 'sn', 
+        'sn-header': $store.state.event.prod.name === 'sn',
+        'sn-header': prodName === 'jdy_jn'}]">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
@@ -220,10 +224,16 @@
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item v-if="prodName === 'sn'" index="/home" :route="menu.home" >首页</el-menu-item>
+              <el-menu-item v-else-if="prodName === 'jdy_jn'" index="/home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item v-if="prodName === 'jdy_jn'" index="/sn_case" :route="menu.sn_case">案例</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
+              <el-menu-item v-else-if="prodName === 'jdy_jn'" index="/sn_about" :route="menu.sn_about">帮助</el-menu-item>
               <!-- <el-menu-item v-if="prodName === 'sn'" index="/sn_register" :route="menu.sn_register" class="sn-register fr">注册</el-menu-item> -->
-              <el-menu-item v-if="prodName !== 'sn'" index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
+              <el-menu-item v-if="!(prodName === 'sn' || prodName === 'jdy_jn')" index="/register" :route="menu.register" class="register fr">免费注册</el-menu-item>
               <el-menu-item v-if="prodName === 'sn'" index="" class="fr">
+                <a :href="snUrl">授权登录</a>
+              </el-menu-item>
+              <el-menu-item v-else-if="prodName === 'jdy_jn'" index="" class="fr">
                 <a :href="snUrl">授权登录</a>
               </el-menu-item>
               <el-menu-item v-else index="/login" :route="menu.login" class="fr">登录</el-menu-item>
@@ -331,7 +341,8 @@
           sn_login: {path: '/content_manage/SNlogin'},
           // sn_about: {path: '/content_manage/SNhelp'},
           sn_about: {path: '/content_manage/SNhelp'},
-          sn_register: {path: '/content_manage/1SNRegister'}
+          sn_register: {path: '/content_manage/1SNRegister'},
+          sn_case: {path: '/design_case/sn_list'}
         },
         menuHide: true,
         msgHide: true,

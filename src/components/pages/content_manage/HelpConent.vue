@@ -29,24 +29,24 @@
               <h4 class="title1">如何注册神农大脑设计平台客户账号？</h4>
               <p class="title2 margin-t-10">若您还没有神农大脑设计平台账号，请点击注册，详细操作步骤如下：</p>
               <p class="title2 margin-t-10">1.打开神农大脑设计平台首页，在右上方，点击“注册”按钮；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/101@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img1" alt="">
               <p class="title2">2.选择【需求方】，输入手机号，验证码，密码即可完成注册；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/demand1_02@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img2" alt="">
             </section>
             <section>
               <h4 class="title1">如何正式入驻神农大脑设计平台成为客户？</h4>
               <p class="title2 margin-t-10">登录成功后点击“编辑”或者“去认证” 按要求填写公司基本信息及提交公司实名认证所需资料。详细步骤操作如下：</p>
               <p class="title2 margin-t-10">1.点击“编辑”或者去认证；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/demand1_03@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img3" alt="">
               <p class="title2">2.点击图像上传公司logo，点击“编辑”完善公司基本信息，点击“去认证”，完善企业认证信息。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_04@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img4" alt="">
             </section>
             <section>
               <h4 class="title1">修改密码</h4>
               <p class="title2 margin-t-10">1.鼠标滑向头像，点击选择下拉菜单中的设置中心；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_05@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img5" alt="">
               <p class="title2">2.输入旧密码及需要需改的新密码，点击提交，即可完成修改密码操作。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option1_06@2x.png')" alt="">
+              <img class="img-box" :src="imgObj1.img6" alt="">
             </section>
           </div>
           <div class="help-content" v-if="option === 2">
@@ -54,23 +54,23 @@
               <h4 class="title1">如何发布需求? (方法一)</h4>
               <p class="title2 margin-t-10">快捷发布项目需求。具体步骤如下：</p>
               <p class="title2 margin-t-10">1.在首页，点击【发布需求】；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/01@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img1" alt="">
               <p class="title2">2.填写表单，等待平台客服联系您。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/02@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img2" alt="">
             </section>
             <section>
               <h4 class="title1">如何发布需求? (方法二)</h4>
               <p class="title2 margin-t-10">在个人中心（我的项目）中点击发布需求按钮，进入发布需页面，即可按步骤填写需求信息，完成自主发布，快速精准匹配设计合适的设计服务商。具体步骤如下：</p>
               <p class="title2 margin-t-10">1.进入个人中心，点击发布需求；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option2_03@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img3" alt="">
               <p class="title2">2.填写项目名称，并根据提示，按步骤完成需求信息的填写，点击发布，发布需求成功；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option2_04@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img4" alt="">
               <p class="title2">3.填写项目详细需求时，您可以上传与设计需求相关的图片或者产品示意图等，帮助设计服务商进一步了解您的项目需求。（请不要上传产品核心内容以及其他涉及商业机密的信息）；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option2_05@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img5" alt="">
               <p class="title2">4.完成用户信息填写；</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option2_06@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img6" alt="">
               <p class="title2">5.完成自主发布需求后，系统会通过您填写的项目信息精准快速为您筛选匹配4家合适的设计服务商，您可以通过匹配结果查看设计服务商详情及公司案例，平台客服会联系您与设计公司进行进一步沟通，确定有合作意向的设计公司后，平台会为您给相关设计公司发送项目邀约。</p>
-              <img class="img-box" :src="require('assets/images/promote_sn/help/demand/option2_07@2x.png')" alt="">
+              <img class="img-box" :src="imgObj2.img7" alt="">
             </section>
           </div>
           <div class="help-content" v-if="option === 3">
@@ -243,7 +243,43 @@ export default {
   data() {
     return {
       option: 1,
-      type: 1
+      type: 1,
+      imgObj1: {},
+      imgObj2: {},
+      snImgOption1: {
+        img1: require('assets/images/promote_sn/help/demand/101@2x.png'),
+        img2: require('assets/images/promote_sn/help/demand/demand1_02@2x.png'),
+        img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
+      },
+      snImgOption2: {
+        img1: require('assets/images/promote_sn/help/demand/01@2x.png'),
+        img2: require('assets/images/promote_sn/help/demand/02@2x.png'),
+        img3: require('assets/images/promote_sn/help/demand/option2_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option2_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option2_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option2_06@2x.png'),
+        img7: require('assets/images/promote_sn/help/demand/option2_07@2x.png')
+      },
+
+      jnImgOption1: {
+        img1: require('assets/images/promote_jdy_jn/help/demand/option1/1.jpg'),
+        img2: require('assets/images/promote_jdy_jn/help/demand/option1/02@2x.jpg'),
+        img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
+      },
+      jnImgOption2: {
+        img1: require('assets/images/promote_jdy_jn/help/demand/option2/1.jpg'),
+        img2: require('assets/images/promote_jdy_jn/help/demand/option2/2.jpg'),
+        img3: require('assets/images/promote_sn/help/demand/demand1_03@2x.png'),
+        img4: require('assets/images/promote_sn/help/demand/option1_04@2x.png'),
+        img5: require('assets/images/promote_sn/help/demand/option1_05@2x.png'),
+        img6: require('assets/images/promote_sn/help/demand/option1_06@2x.png')
+      }
     }
   },
   methods: {
@@ -267,6 +303,18 @@ export default {
   created() {
     this.option = this.formatNumber(this.$route.query.option) || 1
     this.type = this.formatNumber(this.$route.query.type) || 1
+    if (this.custom.id === 4) {
+      this.imgObj1 = this.snImgOption1
+      this.imgObj2 = this.snImgOption2
+    } else if (this.custom.id === 5) {
+      this.imgObj1 = this.jnImgOption1
+      this.imgObj2 = this.jnImgOption2
+    }
+  },
+  computed: {
+    custom() {
+      return this.$store.state.event.prod
+    }
   }
 }
 </script>
