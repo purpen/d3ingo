@@ -1607,7 +1607,7 @@ export default {
           img: require('assets/images/promote_sn/awards/prize06@2x.png'),
           country: '中国',
           name: '红星奖',
-          explain: '中国唯一具有国际影响力的设计奖，“中国设计界的奥斯卡”'
+          explain: '具有国际影响力的设计奖，“中国设计界的奥斯卡”'
         }
         // {
         //   img: require('assets/images/promote_sn/awards/prize07@2x.png'),
