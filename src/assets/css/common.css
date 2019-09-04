@@ -409,6 +409,9 @@
 .pointer {
   cursor: pointer
 }
+.relative {
+  position: relative;
+}
 .fullwidth .el-form-item__content {
   display: flex;
   flex-wrap: wrap

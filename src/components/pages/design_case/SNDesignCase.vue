@@ -1,14 +1,16 @@
 <template>
   <div class="container">
     <div v-if="custom.id === 5" class="banner-box">
-          <!-- <swiper :options="snSwiperOption" class="clearfix">
+          <swiper :options="snSwiperOption" class="clearfix">
             <swiper-slide v-for="(d, index) in bannerList" :key="index">
               <div class="container">
-                {{d}}
+                <img :src="d.img" alt="" class="banner-img">
               </div>
+              <div class="swiper-button-prev white-button-prev"></div>
+              <div class="swiper-button-next white-button-next"></div>
             </swiper-slide>
-            <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
-          </swiper> -->
+              <div class="sn-swiper-page1 swiper-pagination" slot="pagination"></div>
+          </swiper>
     </div>
     <ul class="case-header blank30">
       <li :class="{'active': isActive === 0}" @click="changeActive(0)">全部案例</li>
@@ -73,8 +75,16 @@ export default {
       itemList: [],
       isLoading: false,
 
-      bannerList: [1, 2, 3],
+      bannerList: [
+        {img: require('assets/images/promote_jdy_jn/case_banner/1.jpg')},
+        {img: require('assets/images/promote_jdy_jn/case_banner/2.jpg')},
+        {img: require('assets/images/promote_jdy_jn/case_banner/3.jpg')}
+      ],
       snSwiperOption: {
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
         pagination: {
           el: '.swiper-pagination',
           clickable: true
@@ -176,6 +186,18 @@ export default {
 }
 </script>
 <style scoped>
+.banner-box {
+  margin-top: 20px;
+}
+.banner-img {
+  width:1180px;
+  height:420px;
+}
+.banner-box .swiper-container {
+  padding-bottom: 0 !important;
+}
+
+
 .case-header {
   display: flex;
   padding: 30px 10px 0;
@@ -249,4 +271,34 @@ export default {
   height: 28px;
   margin: 4px 0 10px;
 }
+</style>
+<style>
+  /* swiper 样式重置  statrt*/
+.banner-box.swiper-container {
+  padding-bottom: 0;
+}
+
+.banner-box .sn-swiper-page1 {
+  bottom: 20px !important;
+}
+.banner-box  .sn-swiper-page1 .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  opacity:0.5;
+}
+.banner-box  .sn-swiper-page1 .swiper-pagination-bullet-active {
+  width: 30px;
+  opacity: 1;
+  background: #ffffff !important;
+  border-radius: 15px;
+}
+
+.white-button-prev.swiper-button-prev{
+background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E") no-repeat right !important;
+}
+ .white-button-next.swiper-button-next{
+background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E") no-repeat left !important;
+}
+/* swiper 样式重置  end*/
 </style>

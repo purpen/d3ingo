@@ -516,19 +516,19 @@
         <el-row>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto">
-              <div class="new-img1"></div>
+              <img :src="require('assets/images/new_home/home/new/1000@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">专业设计服务商</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto phone-pad-20">
-              <div class="new-img2"></div>
+              <img :src="require('assets/images/new_home/home/new/2000@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">成交项目</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto phone-pad-20">
-              <div class="new-img3"></div>
+              <img :src="require('assets/images/new_home/home/new/2000w@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">成交金额</div>
             </div>
           </el-col>
@@ -1724,26 +1724,8 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
   }
-  .new-round {
-    max-width: 126px;
-  }
-  .new-img1 {
-    width: 130px;
+  .new-img {
     height: 60px;
-    background: url("../../../assets/images/new_home/home/new/200@2x.png") no-repeat center / contain;
-    margin: 0 auto;
-  }
-  .new-img2 {
-    width: 130px;
-    height: 60px;
-    background: url("../../../assets/images/new_home/home/new/130@2x.png") no-repeat center / contain;
-    margin: 0 auto;
-  }
-  .new-img3 {
-    width: 160px;
-    height: 60px;
-    background: url("../../../assets/images/new_home/home/new/1200w.png") no-repeat center / contain;
-    margin: 0 auto;
   }
   .new-text {
     font-size: 18px;

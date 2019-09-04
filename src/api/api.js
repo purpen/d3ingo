@@ -138,6 +138,10 @@ export default {
   // sn 案例
   snDesignCaseList: '/designCase/assignOpenLists', // GET 神农指定公司设计案例推荐列表
   exportExcel: '/admin/designCase/exportExcel', // POST 设计案例导出
+
+  // 济南神农-案例
+  designCompanyCase: 'designCompanyCase/getDesignInfoCase', // POST 获取设计公司信息与设计案例
+
   // 添加作品
   work: 'works',
   workid: 'works/{0}',

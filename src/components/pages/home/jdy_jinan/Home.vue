@@ -1,12 +1,26 @@
 <template>
   <div>
-      <div class="banner">
-          <div class="container banner-box">
-              <div class="banner-title">京东云设计服务交易平台</div>
-              <div class="banner-second-title">定制化产品创新造物平台</div>
-              <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+      <swiper :options="snSwiperOption1" class="clearfix jn-banner">
+        <swiper-slide>
+          <div class="banner">
+              <div class="container banner-box banner-box1">
+                  <div class="banner-title">济南神农大脑设计平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+              </div>
           </div>
-      </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="banner">
+              <div class="container banner-box banner-box2">
+                  <div class="banner-title">济南神农大脑设计平台</div>
+                  <div class="banner-second-title">定制化产品创新造物平台</div>
+                  <span class="sn-release pointer" @click.stop="showDialog">发布需求</span>
+              </div>
+          </div>
+        </swiper-slide>
+            <div class="swiper-pagination sn-banner-page" slot="pagination"></div>
+      </swiper>
         <!-- 设计服务类型 -->
       <div class="sn-service-type padding-b-60" id="sn1">
         <div class="container">
@@ -36,8 +50,8 @@
                 <div @click="changeCaseType('vision')" :class="[{'active': currentCase === 'vision'}]">产品设计</div>
                 <div @click="changeCaseType('logo')" :class="[{'active': currentCase === 'logo'}]">视觉设计</div>
                 <div @click="changeCaseType('packing')" :class="[{'active': currentCase === 'packing'}]">交互设计</div>
-                <div @click="changeCaseType('product')" :class="[{'active': currentCase === 'product'}]">插画设计</div>
-                <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div>
+                <div @click="changeCaseType('Illustration')" :class="[{'active': currentCase === 'Illustration'}]">插画设计</div>
+                <!-- <div @click="changeCaseType('vidio')" :class="[{'active': currentCase === 'vidio'}]">视频制作</div> -->
               </div>
             </div>
             <div class="case-product">
@@ -67,7 +81,7 @@
       <div class="sn-offer padding-b-80" id="sn3">
         <div class="container">
           <p class="sn-sub-title padding-b-40">报价方案</p>
-          <div class="secondary-title">每个选项都包括大量顶级设计服务商，请选择您需要的服务级别。</div>
+          <div class="secondary-title">每个选项都包括大量设计服务商，请选择您需要的服务级别。</div>
           <div class="offer-title blank40">
             <div @click="changeOfferType('vision')" :class="[{'active': currentOffer === 'vision'}]">视觉设计</div>
             <div @click="changeOfferType('logo')" :class="[{'active': currentOffer === 'logo'}]">logo设计</div>
@@ -85,12 +99,17 @@
                   
                   <div class="price">
                     <p class="price-money">	&yen;<span>{{item.money}}</span><i class="fz-14">起</i></p>
-                    <el-button class="buy-btn" size="large">了解更多</el-button>
+                    <!-- <el-button class="buy-btn" size="large">了解更多</el-button> -->
                   </div>
                   <div class="server-list">
                     <p>{{item.h2}}</p>
                     <p>{{item.h3}}</p>
                     <p>{{item.h4}}</p>
+                    <p>{{item.h5}}</p>
+                    <p>{{item.h6}}</p>
+                    <p class="add-services" v-if="item.h7">{{item.h7}}</p>
+                    <p class="add-services" v-if="item.h8">{{item.h8}}</p>
+                    <p class="add-services" v-if="item.h9">{{item.h9}}</p>
                   </div>
                 </div>
               </div>
@@ -129,11 +148,11 @@
           <div class="ser-c-box margin-t-30">
             <div v-for="(item, i) in serviceCustomer" :key="i" class="service-item">
               <div class="top flex">
-                <img :src="item.avatar" alt="" class="user-avatar">
+                <img :src="item.avater" alt="" class="user-avatar">
                 <div>
                   <p class="product-name">{{item.product}}</p>
                   <div class="line-height32">
-                    <span class="tc-9 fz-16">{{item.user}}</span>
+                    <!-- <span class="tc-9 fz-16">{{item.user}}</span> -->
                     <span class="tc-9 fz-16">{{item.companyName}}</span>
                   </div>
                 </div>
@@ -152,27 +171,37 @@
           <div class="content-box">
             <p class="sn-sub-title">入驻设计公司</p>
             <div class="design-title2">甄选全国优质设计公司，一起做更好的设计</div>
-            <div class="blank50">
+            <div class="blank30">
             <swiper :options="snSwiperOption2" class="clearfix">
               <swiper-slide  v-for="(d, index) in snDesignCompany" :key="index">
                 <div class="container">
                   <div class="sn-design-list">
                     <div v-for="(item, i) in d.company" :key="i" class="sn-d-item">
                       <div class="img-box">
-                        <img :src="item.img" alt="">
+                        <img v-if="item.logo_image && item.logo_image.logo" :src="item.logo_image.logo" alt="">
+                        <img v-else src="../../../../assets/images/promote_jdy_jn/home/design_company/placeholder@2x.png" alt="">
                       </div>
-                      <div class="design-name">{{item.name}}</div>
+                      <div class="design-name">{{item.company_name}}</div>
                       <div class="flex-center height20 margin-t-20 margin-b-20">
-                        <span class="d-company-adress">杭州市</span>
+                        <span class="d-company-adress">{{item.city_value || item.province_value}}</span>
                         <span class="line"></span>
                         <span class="d-company-case">设计案例</span>
-                        <span class="case-num tc-red margin-l-8">199</span>
+                        <span class="case-num tc-red margin-l-8 fz-14">{{item.cases_count}}</span>
+                      </div>
+                      <div class="design-case-list">
+                          <div v-for="(ele, i) in item.design_cases" :key="i" class="case-item">
+                          <div v-if="ele.cover && ele.cover.middle" class="image-box" :style="{background: 'url('+ ele.cover.middle + ') no-repeat center / cover'}"></div>
+                          <div v-else class="image-box" :style="{background: 'url(../../../../assets/images/promote_jdy_jn/home/design_company/BG@2x.png) no-repeat center / cover'}"></div>
+                          </div>
+                      </div>
+                      <div class="text-center"> 
+                        <a class="case-btn pointer" @click.stop="showDialog">找他设计</a>
                       </div>
                     </div>
                   </div>
                 </div>
               </swiper-slide>
-              <div class="sn-swiper-page2 swiper-pagination" slot="pagination"></div>
+              <div class="sn-banner-page2 swiper-pagination" slot="pagination"></div>
             </swiper>
             </div>
           </div>
@@ -264,6 +293,7 @@
 </template>
 <script>
 // import { calcImgSize } from 'assets/js/common'
+import conf from 'conf/prod.env'
 import api from '@/api/api'
 export default {
   name: 'JDCloudJn',
@@ -353,6 +383,18 @@ export default {
       ],
       currentCase: 'vision',
       currentOffer: 'vision',
+      snSwiperOption1: { // sn-banner
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+          // disableOnInteraction: false // 如果设置为false，用户操作swiper之后自动切换不会停止
+        },
+        autoplay: {
+          delay: 5000
+        },
+        lazy: true,
+        loop: true
+      },
       snSwiperOption3: { // sn-案例
         lazy: true,
         loop: true,
@@ -371,7 +413,7 @@ export default {
             } else if (index === 2) {
               that.currentCase = 'packing'
             } else if (index === 3) {
-              that.currentCase = 'product'
+              that.currentCase = 'Illustration'
             }
           }
         }
@@ -391,16 +433,16 @@ export default {
         {
           data: [
             {
-              img: require('assets/images/promote_jdy_jn/home/case/product/1@2x.jpg'),
-              h1: '秘境-香薰加湿器'
+              img: require('assets/images/promote_jdy_jn/home/case/product/01@2x.jpg'),
+              h1: '秘境-智能水培种植箱'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/product/2@2x.jpg'),
               h1: '超声波电动牙刷'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/product/3@2x.jpg'),
-              h1: '智能老年人手杖'
+              img: require('assets/images/promote_jdy_jn/home/case/product/03@2x.jpg'),
+              h1: '柴油电锯'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/product/4@2x.jpg'),
@@ -411,12 +453,12 @@ export default {
               h1: '智能数控门禁'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/product/6@2x.jpg'),
-              h1: '象善-拍拍灯'
+              img: require('assets/images/promote_jdy_jn/home/case/product/06@2x.jpg'),
+              h1: '百润厨房工具系列化产品设计'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/product/7@2x.jpg'),
-              h1: '猫王收音机丨旅行者2号'
+              img: require('assets/images/promote_jdy_jn/home/case/product/07@2x.jpg'),
+              h1: '剥果分离设备'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/product/8@2x.jpg'),
@@ -431,8 +473,8 @@ export default {
               h1: '满姐饺子品牌设计'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/vision/2@2x.jpg'),
-              h1: 'AFU酒店洗护套装包装设计'
+              img: require('assets/images/promote_jdy_jn/home/case/vision/02@2x.jpg'),
+              h1: '膳博士 | 吃货届的博士'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/vision/3@2x.jpg'),
@@ -443,20 +485,20 @@ export default {
               h1: '大过中国节切糕包装设计'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/vision/5@2x.jpg'),
-              h1: 'Earth Mover品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/vision/05@2x.jpg'),
+              h1: '中粮桶装茶包装设计'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/vision/6@2x.jpg'),
-              h1: '365ONE品牌设计'
+              img: require('assets/images/promote_jdy_jn/home/case/vision/06@2x.jpg'),
+              h1: '忆江南 | 茶食作坊'
             },
             {
-              img: require('assets/images/promote_jdy_jn/home/case/vision/7@2x.jpg'),
-              h1: '御美丽包装设计'
-            },
-            {
-              img: require('assets/images/promote_jdy_jn/home/case/vision/8@2x.jpg'),
+              img: require('assets/images/promote_jdy_jn/home/case/vision/07@2x.jpg'),
               h1: '长寿乐大米包装设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/vision/08@2x.jpg'),
+              h1: '欣欣尚农品牌标志VI设计'
             }
           ]
         },
@@ -464,35 +506,71 @@ export default {
           data: [
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/1@2x.jpg'),
-              h1: '满姐饺子品牌设计'
+              h1: '汽车族网站设计'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/2@2x.jpg'),
-              h1: 'AFU酒店洗护套装包装设计'
+              h1: '职问学堂APP'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/3@2x.jpg'),
-              h1: '谜鹿庄园品牌设计'
+              h1: '韵见移动端APP'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/4@2x.jpg'),
-              h1: '大过中国节切糕包装设计'
+              h1: 'APEC 未来之声网站设计'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/5@2x.jpg'),
-              h1: 'Earth Mover品牌设计'
+              h1: '数字货币交易所BigOne'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/6@2x.jpg'),
-              h1: '365ONE品牌设计'
+              h1: '中国建设银行APP'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/7@2x.jpg'),
-              h1: '御美丽包装设计'
+              h1: '联合电动APP'
             },
             {
               img: require('assets/images/promote_jdy_jn/home/case/interactive/8@2x.jpg'),
-              h1: '长寿乐大米包装设计'
+              h1: '及第理财APP'
+            }
+          ]
+        },
+        {
+          data: [
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/1@2x.jpg'),
+              h1: '太火鸟春节插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/2@2x.jpg'),
+              h1: '24节气插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/3@2x.jpg'),
+              h1: '2.5D插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/4@2x.jpg'),
+              h1: '旅游插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/5@2x.jpg'),
+              h1: '万圣节插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/6@2x.jpg'),
+              h1: '元旦2.5D插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/7@2x.jpg'),
+              h1: '人物插画设计'
+            },
+            {
+              img: require('assets/images/promote_jdy_jn/home/case/Illustration/8@2x.jpg'),
+              h1: '中秋插画设计'
             }
           ]
         }
@@ -521,7 +599,7 @@ export default {
           money: '3万'
         },
         {
-          img: require('assets/images/promote_jdy_jn/home/offer/Almighty@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/comprehensive@2x.png'),
           h1: '综合版',
           h2: '1.推荐3名设计师服务',
           h3: '2.设计6款产品创意方案任选其一',
@@ -533,7 +611,7 @@ export default {
           money: '5万'
         },
         {
-          img: require('assets/images/promote_jdy_jn/home/offer/comprehensive@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Almighty@2x.png'),
           h1: '全能版',
           h2: '1.推荐4名设计师服务',
           h3: '2.设计8款产品创意方案任选其一',
@@ -547,7 +625,7 @@ export default {
       ],
       snOfferprintLogo: [
         {
-          img: require('assets/images/promote_sn/offer/BasicClass@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
           h1: '基础版',
           h2: '1.推荐1名设计师服务',
           h3: '2.设计3款logo方案任选其一',
@@ -557,7 +635,7 @@ export default {
           money: '2万'
         },
         {
-          img: require('assets/images/promote_sn/offer/AdvancedEdition@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Advanced@2x.png'),
           h1: '进阶版',
           h2: '1.推荐2名设计师服务',
           h3: '2.设计4款logo方案任选其一',
@@ -568,7 +646,7 @@ export default {
           money: '3万'
         },
         {
-          img: require('assets/images/promote_sn/offer/ComprehensiveEdition@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/comprehensive@2x.png'),
           h1: '综合版',
           h2: '1.推荐3名设计师服务',
           h3: '2.设计6款创意方案任选其一',
@@ -580,7 +658,7 @@ export default {
           money: '5万'
         },
         {
-          img: require('assets/images/promote_sn/offer/UniversalVersion@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Almighty@2x.png'),
           h1: '全能版',
           h2: '1.推荐4名设计师服务',
           h3: '2.设计10款创意方案任选其一',
@@ -596,20 +674,31 @@ export default {
         {
           img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
           h1: '基础版',
-          h2: '1.造型、结构设计二选一。',
-          h3: '2.项目时限为平均参考，不同项目设计有差异，以实际合同签约时限为准。',
+          h2: '1.推荐1名设计师服务',
+          h3: '2.设计2套方案任选其一',
+          h4: '3.选中设计方案支持2次免费修改',
+          h5: '4专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过10项',
+          h8: '7.出具vi标准应用手册1本',
           money: '2万'
         },
         {
-          img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Advanced@2x.png'),
           h1: '进阶版',
-          h2: '1.结构设计复杂程度若涉及行业壁垒、多套精密零配件等高端技术，则需根据实际评估价格额外付费。',
-          h3: '2.中型、大型设计二选一，默认中型、若选择大型则跳转至综合版。',
-          h4: '3.项目时限为平均参考，不同项目设计有差异，以实际合同签约时限为准。',
+          h2: '1.推荐2名设计师服务',
+          h3: '2.设计3套方案任选其一',
+          h4: '3.选中设计方案支持3次免费修改',
+          h5: '4.专业设计顾问全程服务',
+          h6: '5.签订合同，开具发票',
+          h7: '6.设计应用内容不超过15项',
+          h8: '7.出具vi标准应用手册2本',
+          h9: '8.半年内VI方案免费应用咨询',
           money: '3万'
         },
         {
-          img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
+
+          img: require('assets/images/promote_jdy_jn/home/offer/comprehensive@2x.png'),
           h1: '综合版',
           h2: '1.推荐3名设计师服务',
           h3: '2.设计4套方案任选其一',
@@ -622,7 +711,7 @@ export default {
           money: '5万'
         },
         {
-          img: require('assets/images/promote_jdy_jn/home/offer/Basics@2x.png'),
+          img: require('assets/images/promote_jdy_jn/home/offer/Almighty@2x.png'),
           h1: '全能版',
           h2: '1.推荐4名设计师服务',
           h3: '2.设计8套方案任选其一',
@@ -639,7 +728,7 @@ export default {
         {
           img: require('assets/images/promote_jdy_jn/home/advantage/More@2x.png'),
           title: '更多',
-          title2: '1000+家顶尖设计公司资源随时待命'
+          title2: '1000+家设计公司资源随时待命'
         },
         {
           img: require('assets/images/promote_jdy_jn/home/advantage/accurate@2x.png'),
@@ -654,123 +743,42 @@ export default {
       ],
       serviceCustomer: [
         {
-          product: '创意药贴',
-          avater: '',
+          product: '忆江南 | 茶食作坊',
+          avater: require('assets/images/promote_jdy_jn/home/service_client/01@2x.png'),
           user: '刘征',
-          companyName: '北京妥妥得生物科技',
-          explain: '任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢XXX平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。'
+          companyName: '杭州忆江南茶业有限公司',
+          explain: 'Feish品牌为茶食作坊品牌提供形象标志及首发系列产品形象设计。提炼“一茶一食，健康定制”为品牌核心，以食品原型作为元素，进行创意设计，赋予系列产品不同的个性特征。'
         },
         {
           product: '创意药贴',
-          avater: '',
+          avater: require('assets/images/promote_jdy_jn/home/service_client/02@2x.png'),
           user: '刘征',
-          companyName: '北京妥妥得生物科技',
-          explain: '任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢XXX平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。'
+          companyName: '中粮集团有限公司',
+          explain: '总鉴正道（北京）文化传媒有限公司为中粮桶装茶，产品包装策划设计。获得了消费者的一致好评。'
         },
         {
           product: '创意药贴',
-          avater: '',
+          avater: require('assets/images/promote_jdy_jn/home/service_client/03@2x.png'),
           user: '刘征',
-          companyName: '北京妥妥得生物科技',
-          explain: '任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢XXX平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。'
+          companyName: '浙江青莲食品',
+          explain: 'Feish旗鱼品牌对“膳博士”的线上产品体系进行了重新规划。以拟人化的卡通猪形象作为包装中心视觉元素。用明朗的色块、诙谐的广告语刺激人们想吃的神经，激活“膳博士”整个线上产品体系，精确吸引了爱吃、爱美的年轻消费群体。'
         },
         {
           product: '创意药贴',
-          avater: '',
+          avater: require('assets/images/promote_jdy_jn/home/service_client/04@2x.png'),
           user: '刘征',
-          companyName: '北京妥妥得生物科技',
-          explain: '任何一款医疗产品都需要对治愈患者的需求有清晰深刻的了解，感谢XXX平台，根据医疗产品的特点为我们对接了优秀的设计公司，保证了产品的品质，获得了用户的广泛认可。'
+          companyName: '云南极斛生物科技有限公司',
+          explain: 'Feish品牌本着对作品“品格”负责的态度，深入研究生态保健产品消费基点，围绕自然、极简的核心精神，通过选用原生材质、艺术植入、传统工艺等，使极斛包装具备温润素雅的禅味，深化极斛的品牌形象。'
         }
       ],
 
-      snDesignCompany: [
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/01.png'),
-              name: '苏州上品',
-              title: 'TOPDESIGN上品设计机构是一家专注于为客户提升产品竞争力的创新型设计公司，作为中国工业设计的著名品牌，北京上品设计成立于2009年，并迅速由一家工业设计公司发展成为一家实力雄厚的整合创新机构。旗下设立“北京上品设计机构”“北京上品卓越科技”“宠米（北京）科技”“上品创新学院””苏州上品设计机构”“杭州上品设计机构”“河北上品设计机构”“济南上品设计机构”“南通上品设计机构”“上品设计院”等分公司，拥有高端奢侈品牌X-SHOT。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/02.png'),
-              name: '北京品物堂',
-              title: '品物集团是中国首家秉承“以人为核心，重塑商业价值”的创新咨询与设计集团。在16年的进化历程中，品物不断迸发出最具前瞻性及生命力的思想与观点，创造出优秀的逻辑模型与创新工具，帮助数以百计的企业更深刻的理解他们的用户，改变企业与用户的关系圈，并以此为支点，成功塑造千余款产品与品牌的商业价值，完成了作为行业方法论缔造者与变革者的行业使命。 品物以商业价值创新为目标，以终端用户为原点，为企业提供从用户价值认知与情景体验创新，到商业价值传播的一站式全案创新咨询与落地执行服务。其中，囊括了产品策划与设计，品牌定位与包装，传播规划与传播物料执行三大服务板块。 现在，品物300余名核心团队成员携手，以北京集团总部为核心，以中国杭州、上海、深圳、南京，及英国曼彻斯特等子公司为触点，聚焦区位优势资源，携手媒体、制造、资本等多领域近百名重要合作伙伴，实现跨地域与跨行业的联动式商业创新，打造开放性商业创新资源平台，为我们的客户与合作伙伴赢得竞争先机，探索中国商业创新新航向。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/03.png'),
-              name: '杭州飞鱼',
-              title: '在对的时间 找对的方向 做对的设计 2002年，飞鱼整合设计机构创立于中国杭州。以“设计为人”的核心理念，从用户研究到产品创新再到用户体验，为企业提供产品创新设计、品牌策略、设计孵化等相关服务。 15年来，相继在上海、深圳、郑州、广州等地设立分公司，为客户提供更高效、零距离的优质创新服务。作品多次荣获reddot、IF、IDEA、G-mark、PIN-UP、红星奖、财富最佳设计等国内外奖项近50项，并被评为第一批中国十佳设计机构，中国品牌设计十佳品牌，省重点设计研究院，省工业设计中心，工业设计师范基地等多项荣誉。目前，设计专业级人员分别来自设计、金融、咨询、零售、研发、营销等不同专业领域，从研究、诊断、创新、设计到生产、推广、营销，为实现创新产品的真实落地和产生营销实效，全方位为客户提供一流的解决方案。 因为信赖，飞鱼与诸多品牌缔结战略合作伙伴关系，累计服务国内外400多家企业及品牌，包括GE、OLYMPUS、BOSCH、OTIS、施耐德、海尔、美的、公牛、松下、格力、九阳、苏泊尔、安吉尔、林内、德意、雀友等国内外领先品牌。'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/04.png'),
-              name: '上海木马',
-              title: '木马设计创立于2002年，中国十佳设计公司，致力于为客户提供从产品概念设计到市场导入的全面解决方案。理解人、品牌和技术的本质并在她们的驱动下不断创新，是木马设计的灵魂。木马客户遍及全球，从财富500强的Philips、GE、OTIS、National到国内知名的中兴通讯、海尔电器、欧琳厨电等。木马设计精英秉承严谨的科学精神和造型美学，严格遵循木马设计流程，为不同领域的企业提供富有创造性的和切实可行的产品设计解决方案。设计经验涵盖医疗器械、家用电器、信息产品、智慧城市等领域。'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/07.png'),
-              name: '北京智加问道'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/08.png'),
-              name: '顺德宏翼'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/09.png'),
-              name: '重庆纽森'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/10.png'),
-              name: '西安天酬'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/13.png'),
-              name: '杭州奥格'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/14.png'),
-              name: '北京锐变'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/15.png'),
-              name: '北京元物'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/16.png'),
-              name: '天津奈夫'
-            }
-          ]
-        },
-        {
-          company: [
-            {
-              img: require('assets/images/promote_sn/design_company/19.png'),
-              name: '广州零点壹'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/20.png'),
-              name: '顺德潜龙'
-            },
-            {
-              img: require('assets/images/promote_sn/design_company/more.png'),
-              more1: '更多公司'
-            }
-          ]
-        }
-      ],
+      snDesignCompany: [],
       snAwards: [
         {
           img: require('assets/images/promote_sn/awards/prize01@2x.png'),
           country: '德国',
           name: '红点设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize02@2x.png'),
@@ -788,13 +796,13 @@ export default {
           img: require('assets/images/promote_sn/awards/prize05@2x.png'),
           country: '美国',
           name: 'IDEA设计奖',
-          explain: '最具影响的全球知名设计竞赛之一，全球三大设计奖之一'
+          explain: '全球知名设计竞赛之一，全球三大设计奖之一'
         },
         {
           img: require('assets/images/promote_sn/awards/prize04@2x.png'),
           country: '台湾',
           name: '金点设计奖',
-          explain: '台湾省历史最悠久、最权威且最富知名度的专业设计竞赛'
+          explain: '台湾创意设计中心执行，在台湾拥有35年历史，“设计界的金马奖”'
         },
         {
           img: require('assets/images/promote_sn/awards/prize06@2x.png'),
@@ -844,14 +852,74 @@ export default {
         this.swiperObj.slideToLoop(1)
       } else if (e === 'packing') {
         this.swiperObj.slideToLoop(2)
-      } else if (e === 'product') {
+      } else if (e === 'Illustration') {
         this.swiperObj.slideToLoop(3)
       }
       // console.log(this.swiperObj)
     },
+    changeOfferType(e) {
+      this.currentOffer = e
+      if (e === 'vision') {
+        this.snOfferData = this.snOfferprintVision
+      } else if (e === 'logo') {
+        this.snOfferData = this.snOfferprintLogo
+      } else if (e === 'packing') {
+        this.snOfferData = this.snOfferprintPacking
+      }
+    },
     showDialog() {
       this.boolFindDesign = true
       this.form = {}
+    },
+    getDesignCompanyCase() {
+      let row = {
+        id: [ 63, 64, 78, 77, 72, 57, 43, 62, 70, 11, 12, 14, 15, 16, 17, 19, 20, 26, 23, 24 ]
+      }
+      if (conf.ENV === 'prod') {
+        row = {
+          id: [ 425, 239, 227, 366, 141, 403, 416, 331, 389, 4, 14, 143, 490, 26, 372, 413, 282, 7, 419, 326 ]
+        }
+      }
+      this.$http.post(api.designCompanyCase, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          let obj = {
+            cover: { middle: require('assets/images/promote_jdy_jn/home/design_company/BG@2x.png') }
+          }
+          let data = res.data.data
+          data.forEach(item => {
+            if (item.design_cases.length < 3) {
+              if (item.design_cases.length === 0) {
+                item.design_cases = [
+                  obj,
+                  obj,
+                  obj
+                ]
+              } else if (item.design_cases.length === 1) {
+                item.design_cases.push(obj)
+                item.design_cases.push(obj)
+              } else if (item.design_cases.length === 2) {
+                item.design_cases.push(obj)
+              }
+            }
+          })
+          if (res.data.data.length) {
+            this.snDesignCompany = [
+              {company: data.slice(0, 4)},
+              {company: data.slice(4, 8)},
+              {company: data.slice(8, 12)},
+              {company: data.slice(12, 16)},
+              {company: data.slice(16, 20)}
+            ]
+          }
+          console.log(this.snDesignCompany)
+        } else {
+          console.error(res.data.meta)
+        }
+      }).catch(error => {
+        this.$message(error.message)
+        console.error(error.message)
+      })
     },
     resetForm(form) {
       this.form = {}
@@ -930,6 +998,7 @@ export default {
   created() {
     this.formatQuery(this.$route.query)
     this.generalize(this.query)
+    this.getDesignCompanyCase()
     this.snOfferData = this.snOfferprintVision
   },
   computed: {
@@ -972,9 +1041,13 @@ export default {
   box-sizing: border-box;
   height: 500px;
   padding-top: 148px;
+}
+.banner-box1 {
   background: url('../../../../assets/images/promote_jdy_jn/home/banner@2x.png') no-repeat top 30px right 0 /620px;
 }
-
+.banner-box2 {
+  background: url('../../../../assets/images/promote_jdy_jn/home/banner2@2x.png') no-repeat top 30px right 0 /620px;
+}
 .banner-box .banner-title {
   height:70px;
   font-size:50px;
@@ -1003,13 +1076,11 @@ export default {
   border-radius:40px;
   font-size:20px;
   text-align: center;
+	transition: 268ms all ease;
 }
 .sn-release:hover,
 .sn-release:active {
-  /* background: #ffffff;
-  color: #3171fe; */
-  /* background: linear-gradient(270deg,#3171fe 0%,#a04faf 100%);
-  color: #fff; */
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
 }
 .sn-post-btn {
   width: 160px;
@@ -1070,7 +1141,7 @@ p.sn-sub-title {
   cursor: pointer;
 }
 .service-type-contant:hover {
-  /* box-shadow:0 0 10px 6px rgba(20,34,67,.1); */
+  box-shadow:0 0 10px 6px rgba(20,34,67,.1);
 }
 .service-type-contant .img-box {
   /* background: #F6F8FF; */
@@ -1101,7 +1172,7 @@ p.sn-sub-title {
   font-size: 14px;
 }
 
-.sn-list {
+.sn-list{
   font-size: 16px;
   display: inline-block;
   width: 180px;
@@ -1110,7 +1181,18 @@ p.sn-sub-title {
   border: 1px solid #e6e6e6;
   border-radius: 28px;
 }
-.sn-list:hover {
+.case-btn {
+  margin-top: 20px;
+  font-size: 14px;
+  display: inline-block;
+  width: 140px;
+  height: 40px;
+  line-height: 38px;
+  border: 1px solid #e6e6e6;
+  border-radius: 20px;
+}
+.sn-list:hover,
+.case-btn:hover {
   background:linear-gradient(270deg,#a04faf 0%,#3171fe 100%);
   border-color: rgba(0,0,0,0);
   color: #fff;
@@ -1245,8 +1327,9 @@ p.sn-sub-title {
   width: 100px;
 }
 .server-list {
-  height: 280px;
+  /* height: 280px; */
   padding: 0 3px;
+  padding-bottom: 30px;
   margin-top: 30px;
 }
 .server-list > p {
@@ -1363,7 +1446,7 @@ p.sn-sub-title {
 }
 /* sn-design start */
 .sn-design {
-  height: 586px;
+  height: 614px;
 }
 .sn-design-box {
   position: relative;
@@ -1385,19 +1468,21 @@ p.sn-sub-title {
 .sn-design-list {
   display: flex;
   justify-content: flex-start;
-  margin-top: 40px;
+  margin-top: 50px;
   margin-left: -10px;
   margin-right: -10px;
 }
 .sn-d-item {
   width: 280px;
-  height: 240px;
+  height: 260px;
   padding-top: 60px;
   position: relative;
   background: #ffffff;
   text-align: center;
   color:#999;
-  box-shadow:0px 0px 20px 0px rgba(0,0,0,0.1);
+  border-radius:8px;
+  border:1px solid #e6e6e6;
+  /* box-shadow:0px 0px 20px 0px rgba(0,0,0,0.1); */
   margin: 0 10px;
 }
 .sn-d-item .img-box {
@@ -1425,7 +1510,8 @@ p.sn-sub-title {
 .design-name {
   height:28px;
   font-size:20px;
-  line-height:28px;
+  padding: 0 10px;
+  line-height:20px;
   font-weight:400;
   color: #222222;
 }
@@ -1433,12 +1519,32 @@ p.sn-sub-title {
 .d-company-case {
   padding-left: 18px;
   color: #999;
+  font-size: 14px;
   background: url('../../../../assets/images/promote_jdy_jn/home/design_company/adress@2x.png') no-repeat left/contain;
 }
 .d-company-case {
   background: url('../../../../assets/images/promote_jdy_jn/home/design_company/case@2x.png') no-repeat left/contain;
 }
 .case-num {
+}
+.design-case-list {
+  display: flex;
+  height: 86px;
+  padding: 0 10px;
+}
+.design-case-list .case-item {
+  width: 86px;
+  height: 86px;
+  border:1px solid rgba(242,246,252,1);
+}
+.case-item .image-box {
+  width: 86px;
+  height: 86px;
+  background-size: 103% !important;
+	transition: all 0.1s ease-in-out;
+}
+.case-item .image-box:hover {
+  background-size: 108% !important;
 }
 /* sn-design end */
 .awards-box {
@@ -1447,11 +1553,12 @@ p.sn-sub-title {
 }
 .awards-item {
   width: 180px;
-  height: 225px;
+  height: 240px;
   text-align: center;
   font-weight:400;
   color:#999;
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.06);
+  background: #ffffff;
   transition: all .25s ease;
   -webkit-transition: all .25s ease;
 }
@@ -1582,12 +1689,17 @@ p.sn-sub-title {
   margin-top: 16px;
   border-radius: 50%;
   margin-right: 28px;
-  background: skyblue;
+  border: 1px solid #e6e6e6;
+  /* background: skyblue; */
 }
 .service-item .product-name {
   font-size:18px;
   line-height:32px;
   color: #222;
+}
+.service-down {
+  background: url('../../../../assets/images/promote_jdy_jn/home/service_client/marks@2x.png') no-repeat left 26px top 0/50px;
+  /* marks@2x.png */
 }
 .service-down .explain {
   margin-left: 128px;
@@ -1623,7 +1735,10 @@ p.sn-sub-title {
 .jdy-jn-design .el-dialog__header {
   padding-top: 20px;
   height: 150px;
-  background: url('../../../../assets/images/promote_jdy_jn/home/release-requirements@2x.png') no-repeat top/cover;
+  background: none;
+  }
+.jdy-jn-design .el-dialog {
+  background: url('../../../../assets/images/promote_jdy_jn/home/release-requirements@2x.png') no-repeat top/contain, #ffffff;
 }
 .jdy-jn .sn-fetch-btn:hover {
 	background: #f5f5f5;
@@ -1650,5 +1765,32 @@ p.sn-sub-title {
 .jdy-jn-design .sn-fetch-code .el-input {
   width: 305px;
   margin-right: 10px;
+}
+
+/* swiper 样式重置  statrt*/
+.jn-banner .swiper-container {
+  padding-bottom: 0;
+}
+.sn-banner-page .swiper-pagination-bullet,
+.sn-banner-page2 .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #BADBFF;
+  opacity:0.5;
+  margin: 0 10px;
+}
+.sn-banner-page .swiper-pagination-bullet-active,
+.sn-banner-page2 .swiper-pagination-bullet-active {
+  width: 30px;
+  opacity: 1;
+  background: #BADBFF !important;
+  border-radius: 15px;
+}
+.sn-banner-page {
+  bottom: 20px !important;
+}
+
+.sn-banner-page2 {
+  bottom: 0 !important;
 }
 </style>
