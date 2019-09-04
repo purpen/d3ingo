@@ -1745,6 +1745,10 @@ export default {
             {
               value: 'c',
               label: '京东云神农大脑'
+            },
+            {
+              value: 'd',
+              label: '济南神农大脑'
             }
           ]
         },
