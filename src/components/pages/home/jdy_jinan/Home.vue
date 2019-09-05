@@ -750,21 +750,21 @@ export default {
           explain: 'Feish品牌为茶食作坊品牌提供形象标志及首发系列产品形象设计。提炼“一茶一食，健康定制”为品牌核心，以食品原型作为元素，进行创意设计，赋予系列产品不同的个性特征。'
         },
         {
-          product: '创意药贴',
+          product: '中粮桶装茶包装设计',
           avater: require('assets/images/promote_jdy_jn/home/service_client/02@2x.png'),
           user: '刘征',
           companyName: '中粮集团有限公司',
           explain: '总鉴正道（北京）文化传媒有限公司为中粮桶装茶，产品包装策划设计。获得了消费者的一致好评。'
         },
         {
-          product: '创意药贴',
+          product: '膳博士 | 吃货届的博士',
           avater: require('assets/images/promote_jdy_jn/home/service_client/03@2x.png'),
           user: '刘征',
           companyName: '浙江青莲食品',
           explain: 'Feish旗鱼品牌对“膳博士”的线上产品体系进行了重新规划。以拟人化的卡通猪形象作为包装中心视觉元素。用明朗的色块、诙谐的广告语刺激人们想吃的神经，激活“膳博士”整个线上产品体系，精确吸引了爱吃、爱美的年轻消费群体。'
         },
         {
-          product: '创意药贴',
+          product: '元斛 | 高原铁皮石斛',
           avater: require('assets/images/promote_jdy_jn/home/service_client/04@2x.png'),
           user: '刘征',
           companyName: '云南极斛生物科技有限公司',
