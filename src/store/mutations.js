@@ -234,11 +234,12 @@ let IsMobile = function () {
 
 const mutations = {
   [USER_SIGNIN](state, token) {
-    localStorage.setItem('token', null)
+    localStorage.removeItem('token')
     localStorage.setItem('token', JSON.stringify(token))
     state.token = token
   },
   [WRITE_SNTOKEN](state, token) {
+    localStorage.removeItem('sntoken')
     localStorage.setItem('sntoken', JSON.stringify(token))
     state.sntoken = token
   },
@@ -251,7 +252,6 @@ const mutations = {
     localStorage.removeItem('token')
     localStorage.removeItem('ticket')
     localStorage.removeItem('user')
-    localStorage.removeItem('sntoken')
     localStorage.setItem('msgCount', JSON.stringify({ message: 0, notice: 0, quantity: 0 }))
     state.token = false
     state.user = {}
