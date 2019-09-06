@@ -190,7 +190,7 @@
                       </div>
                       <div class="design-case-list">
                           <div v-for="(ele, i) in item.design_cases" :key="i" class="case-item">
-                          <div v-if="ele.cover && ele.cover.middle" class="image-box" :style="{background: 'url('+ ele.cover.middle + ') no-repeat center / cover'}"></div>
+                          <div v-if="ele.cover && ele.cover.middle" class="image-box" :style="{background: 'url('+ ele.cover.logo + ') no-repeat center / cover'}"></div>
                           <div v-else class="image-box" :style="{background: 'url(../../../../assets/images/promote_jdy_jn/home/design_company/BG@2x.png) no-repeat center / cover'}"></div>
                           </div>
                       </div>
