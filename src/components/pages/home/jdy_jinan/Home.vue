@@ -181,7 +181,7 @@
                         <img v-if="item.logo_image && item.logo_image.logo" :src="item.logo_image.logo" alt="">
                         <img v-else src="../../../../assets/images/promote_jdy_jn/home/design_company/placeholder@2x.png" alt="">
                       </div>
-                      <div class="design-name">{{item.company_name}}</div>
+                      <div class="design-name text-overflow">{{item.company_name}}</div>
                       <div class="flex-center height20 margin-t-20 margin-b-20">
                         <span class="d-company-adress">{{item.city_value || item.province_value}}</span>
                         <span class="line"></span>
@@ -1510,10 +1510,10 @@ p.sn-sub-title {
 .design-name {
   height:28px;
   font-size:20px;
-  padding: 0 10px;
+  margin: 0 10px;
   line-height:20px;
-  font-weight:400;
   color: #222222;
+  max-width: 260px;
 }
 .d-company-adress,
 .d-company-case {
