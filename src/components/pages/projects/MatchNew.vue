@@ -4,7 +4,7 @@
     <div class="project-cover clearfix">
       <div class="project-item-box">
         <div class="item">
-          <span v-if="custom.name === 'sn'" class="pic pic-waiting"></span>
+          <span v-if="custom.name === 'sn' || custom.name === 'jdy_jn'" class="pic pic-waiting"></span>
           <span v-else :class="['pic', {
             'pic-done': matchComplete,
             'pic-done-code': matchComplete && (projectStatus === -2 || projectStatus === 2),
@@ -16,7 +16,7 @@
                 <p class="num">根据您的需求筛选出<i>{{IncNumber}}家</i>设计服务商</p>
               </div>
               <div v-else>
-                <div v-if="custom.name === 'sn'">
+                <div v-if="custom.name === 'sn' || custom.name === 'jdy_jn'">
                   <p class="num margin-b-10">京东云将对您发布的需求进行匹配，请耐心等待...</p>
                   <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
                     <button class="full-red-button small-button">返回项目列表</button>
@@ -34,7 +34,7 @@
             </section>
           </section>
           <section v-else>
-            <div v-if="custom.name === 'sn'">
+            <div v-if="custom.name === 'sn' || custom.name === 'jdy_jn'">
               <p class="num margin-b-10">京东云将对您发布的需求进行匹配，请耐心等待...</p>
               <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
                 <button class="full-red-button small-button">返回项目列表</button>

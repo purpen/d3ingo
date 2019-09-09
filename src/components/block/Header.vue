@@ -216,7 +216,7 @@
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
                 <el-menu-item index="/vcenter/company/base"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-                <el-menu-item index="/b_admin/item/list" v-if="isSysAdmin || (eventUser.source_admin === 1 && custom.name === 'jdc') || (eventUser.source_admin === 2 && custom.name === 'yw') || (eventUser.source_admin === 4 && custom.name === 'sn') || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item index="/b_admin/item/list" v-if="isSysAdmin || (eventUser.source_admin === 1 && custom.name === 'jdc') || (eventUser.source_admin === 2 && custom.name === 'yw') || (eventUser.source_admin === 4 && custom.name === 'sn') || (eventUser.source_admin === 7 && custom.name === 'jdy_jn') || eventUser.source_admin === 6"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <el-menu-item index="" @click="logout"><i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item></el-submenu>
             </el-menu>
           </div>

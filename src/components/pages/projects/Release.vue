@@ -387,7 +387,7 @@ export default {
               this.outerVisible = false
               this.isMatching = true
               this.showForm = false
-              if (this.custom.name === 'sn') {
+              if (this.custom.name === 'sn' || this.custom.name === 'jdy_jn') {
                 this.matchComplete = true
                 setTimeout(_ => {
                   this.showBackList = true

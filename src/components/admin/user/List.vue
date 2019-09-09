@@ -271,6 +271,10 @@ export default {
         {
           value: 6,
           label: '小程序管理员'
+        },
+        {
+          value: 7,
+          label: '京东云济南管理员'
         }
       ]
     }
