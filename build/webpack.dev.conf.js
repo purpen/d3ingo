@@ -7,10 +7,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === 'jdc' || costum.CUSTOM === 'sn') {
-  // favicon = 'https://p4.taihuoniao.com/asset/181116/5bee8b723ffca222638b681d-2-hu.jpg'
+if (costum.CUSTOM === 'sn' || costum.CUSTOM === 'jdy_jn') {
+  favicon = './static/jdc.ico'
+} else if (costum.CUSTOM === 'jdc') {
+  favicon = './static/yh.ico'
 } else if (costum.CUSTOM === 'yw') {
-  favicon = 'https://p4.taihuoniao.com/asset/181116/5bee8b723ffca222638b681d-1-hu.jpg'
+  favicon = './static/yw.png'
 } else {
   favicon = './static/favicon.ico'
 }
