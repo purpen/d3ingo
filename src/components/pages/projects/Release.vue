@@ -87,7 +87,7 @@
             <p class="num">根据您的需求筛选出<i>{{designList.length}}家</i>设计服务商</p>
         </section>
         <div v-if="matchComplete && !designList.length">
-          <div v-if="custom.name === 'sn'">
+          <div v-if="custom.name === 'sn' || custom.name === 'jdy_jn'">
             <h3 class="text-center">京东云将对您发布的需求进行匹配，请耐心等待...</h3>
             <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
               <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
