@@ -528,7 +528,7 @@
           </el-col>
           <el-col :xs="24" :sm="8">
             <div class="new-round mar-auto phone-pad-20">
-              <img :src="require('assets/images/new_home/home/new/2000w@2x.png')" alt="" class="new-img">
+              <img :src="require('assets/images/new_home/home/new/5000w@2x.png')" alt="" class="new-img">
               <div class="new-text pad-top-15">成交金额</div>
             </div>
           </el-col>
