@@ -160,7 +160,7 @@ export default {
           auth.write_token(res.data.data.token)
           this.getUser(res.data.data.token)
         } else {
-          this.$message.error(res.data.meta.message)
+          // this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
         auth.logout(true)
