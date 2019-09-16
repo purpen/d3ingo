@@ -921,7 +921,7 @@
   }
   .bot-right-img1 {
     height: 50px;
-    background: url("../../../assets/images/new_home/home/500/01@2x.png") no-repeat center / contain
+    background: url("../../../assets/images/new_home/home/500/jd.png") no-repeat center / contain
   }
   .bot-right-img2 {
     height: 50px;
@@ -937,11 +937,11 @@
   }
   .bot-right-img5 {
     height: 50px;
-    background: url("../../../assets/images/new_home/home/500/05@2x.png") no-repeat center / contain
+    background: url("../../../assets/images/new_home/home/500/xm.png") no-repeat center / contain
   }
   .bot-right-img6 {
     height: 50px;
-    background: url("../../../assets/images/new_home/home/500/06@2x.png") no-repeat center / contain
+    background: url("../../../assets/images/new_home/home/500/hw.png") no-repeat center / contain
   }
   .header-row {
     min-height: 120px;
