@@ -96,6 +96,9 @@
           <div v-else>
             <p class="num">智能匹配未筛选到合适的设计服务商</p>
             <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+            <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+              <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
+            </router-link>
           </div>
         </div>
       </div>
