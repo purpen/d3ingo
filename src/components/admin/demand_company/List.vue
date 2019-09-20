@@ -34,12 +34,9 @@
         </el-form-item>
         <el-form-item>
           <el-select v-model="query.source" placeholder="来源..." size="small">
-            <el-option label="全部" :value="0"></el-option>
-            <el-option label="铟果" :value="-1"></el-option>
-            <el-option label="艺火" :value="1"></el-option>
-            <el-option label="义乌" :value="2"></el-option>
-            <el-option label="神农" :value="3"></el-option>
-            <el-option label="--" :value="4"></el-option>
+            <el-option label="全部" :value="-1"></el-option>
+            <el-option v-for="(ele, index) in source" :key="index"
+            :label="ele.name" :value="ele.key">{{ele.name}}</el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -66,7 +63,7 @@
         width="60">
       </el-table-column>
       <el-table-column
-        label="Logo"
+        label="头像"
         width="80">
           <template slot-scope="scope">
             <p><img :src="scope.row.logo_url" width="50" /></p>
@@ -88,19 +85,17 @@
         label="创建人">
           <template slot-scope="scope">
             <p v-if="scope.row.user">
-              {{ scope.row.user.account }}[{{ scope.row.user_id }}]
+              {{ scope.row.user.account }}
+              <br>
+              [{{ scope.row.user_id }}]
             </p>
           </template>
       </el-table-column>
       <el-table-column
-        width="80"
+        width="150"
         label="来源">
           <template slot-scope="scope">
-            <p v-if="scope.row.source === 0">铟果</p>
-            <p v-else-if="scope.row.source === 1">艺火</p>
-            <p v-else-if="scope.row.source === 2">义乌</p>
-            <p v-else-if="scope.row.source === 4">神农</p>
-            <p v-else>--</p>
+              <p>{{scope.row.source | source}}</p>
           </template>
       </el-table-column>
       <el-table-column
@@ -171,6 +166,7 @@
 </template>
 
 <script>
+import { SOURCE } from '@/config'
 import api from '@/api/api'
 export default {
   name: 'admin_company_list',
@@ -203,7 +199,8 @@ export default {
         refuseRease: [
         {required: true, message: '请填写拒绝原因', trigger: 'blur'}
         ]
-      }
+      },
+      source: [...SOURCE]
     }
   },
   methods: {
@@ -298,11 +295,14 @@ export default {
       const self = this
       self.query.page = parseInt(self.$route.query.page || 1)
       self.query.sort = self.$route.query.sort
-      self.query.type = self.$route.query.type === undefined ? -1 : self.$route.query.type
+      self.query.type = self.$route.query.type === undefined ? 0 : self.$route.query.type
       self.menuType = parseInt(self.query.type)
-      self.query.source = parseInt(self.$route.query.source) || 0
-      self.query.evt = self.$route.query.evt || '2'
+      self.query.evt = parseInt(self.$route.query.evt) || 2
       self.query.val = self.$route.query.val
+      self.query.source = parseInt(this.$route.query.source)
+      if (typeof self.query.source !== 'number') {
+        self.query.source = -1
+      }
       self.isLoading = true
       self.$http.get(api.adminDemandCompanyList, {params: {
         page: self.query.page,

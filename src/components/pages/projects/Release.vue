@@ -87,7 +87,7 @@
             <p class="num">根据您的需求筛选出<i>{{designList.length}}家</i>设计服务商</p>
         </section>
         <div v-if="matchComplete && !designList.length">
-          <div v-if="custom.name === 'sn'">
+          <div v-if="custom.name === 'sn' || custom.name === 'jdy_jn'">
             <h3 class="text-center">京东云将对您发布的需求进行匹配，请耐心等待...</h3>
             <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
               <button class="full-red-button small-button" v-if="showBackList">返回项目列表</button>
@@ -96,6 +96,9 @@
           <div v-else>
             <p class="num">智能匹配未筛选到合适的设计服务商</p>
             <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
+            <router-link :to="{name: 'vcenterItemList', query: {type: 2}}">
+              <button class="full-red-button small-button">返回项目列表</button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -387,7 +390,7 @@ export default {
               this.outerVisible = false
               this.isMatching = true
               this.showForm = false
-              if (this.custom.name === 'sn') {
+              if (this.custom.name === 'sn' || this.custom.name === 'jdy_jn') {
                 this.matchComplete = true
                 setTimeout(_ => {
                   this.showBackList = true

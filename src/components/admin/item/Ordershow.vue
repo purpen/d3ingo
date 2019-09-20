@@ -85,13 +85,11 @@
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
-          prop="sourcecont"
           label="来源平台"
-          column-key="sourcecont"
-          :filters="sourcelist"
-          :filter-multiple="false"
-          filter-placement="bottom-end"
           show-overflow-tooltip>
+            <template slot-scope="scope">
+              <p>{{scope.row.source | source}}</p>
+            </template>
         </el-table-column>
         <el-table-column
           prop="time"
@@ -144,7 +142,6 @@
 
 <script>
   import api from '@/api/api'
-  import Vue from 'vue'
   export default {
     name: 'admin_item_list',
     data () {
@@ -211,13 +208,13 @@
           }
         ],
         opporId: 0,
-        sourcelist: [
-          { value: -1, text: '太火鸟' },
-          { value: 1, text: '京东云艺火' },
-          { value: 2, text: '义乌' },
-          { value: 3, text: '京东云神农大脑' },
-          { value: 4, text: '京东云神农大脑' }
-        ],
+        // sourcelist: [
+        //   { value: -1, text: '太火鸟' },
+        //   { value: 2, text: '义乌' },
+        //   { value: 1, text: '京东云艺火' },
+        //   { value: 4, text: '京东云神农大脑' },
+        //   { value: 7, text: '京东云济南神农大脑' }
+        // ],
         opporvalue: '全部项目',
         typeid: 0,
         companyChoose: [
@@ -255,344 +252,6 @@
           ids: []
         },
         tableData: [],
-        options: [
-          {
-            value: -1,
-            label: '全部渠道'
-          },
-          {
-            value: 1,
-            label: '网络广告',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '百度'
-              },
-              {
-                value: 'b',
-                label: '360'
-              },
-              {
-                value: 'c',
-                label: '知乎'
-              },
-              {
-                value: 'd',
-                label: '今日头条'
-              },
-              {
-                value: 'edm',
-                label: '邮件'
-              },
-              {
-                value: 'sms',
-                label: '短信'
-              }
-            ]
-          },
-          {
-            value: 2,
-            label: '官方',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: 'Pc/Wap官网'
-              },
-              {
-                value: 'b',
-                label: '小程序'
-              },
-              {
-                value: 'c',
-                label: 'App'
-              },
-              {
-                value: 'd',
-                label: 'SaaS'
-              },
-              {
-                value: 'topic_view_h',
-                label: '文章详情头部'
-              },
-              {
-                value: 'topic_view_f',
-                label: '文章详情底部'
-              },
-              {
-                value: 'topic_view_r',
-                label: '文章详情右侧'
-              }
-            ]
-          },
-          {
-            value: 3,
-            label: '合作伙伴',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '京东云艺火'
-              },
-              {
-                value: 'b',
-                label: '优客工场'
-              },
-              {
-                value: 'c',
-                label: '京东云神农大脑'
-              }]
-          },
-          {
-            value: 4,
-            label: '内部推荐',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '雷总/公司员工推荐的熟人客户'
-              }
-            ]
-          },
-          {
-            value: 5,
-            label: '外部推荐',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '朋友/其他公司推荐的客户'
-              }
-            ]
-          },
-          {
-            value: 6,
-            label: '新媒体',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '微信公众号'
-              },
-              {
-                value: 'b',
-                label: '头条号'
-              },
-              {
-                value: 'c',
-                label: '百家号'
-              },
-              {
-                value: 'toutiao_ad',
-                label: '头条文章广告位'
-              }
-            ]
-          },
-          {
-            value: 7,
-            label: '展销会',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '参展'
-              },
-              {
-                value: 'b',
-                label: '业界活动、论坛'
-              }
-            ]
-          },
-          {
-            value: 0,
-            label: '其他',
-            children: [
-              {
-                value: '0',
-                label: '全部子来源'
-              },
-              {
-                value: 'a',
-                label: '无法归类的小群体'
-              }
-            ]
-          }
-        ],
-        options2: [
-          {
-            value: 1,
-            label: '网络广告',
-            children: [
-              {
-                value: 'a',
-                label: '百度'
-              },
-              {
-                value: 'b',
-                label: '360'
-              },
-              {
-                value: 'c',
-                label: '知乎'
-              },
-              {
-                value: 'd',
-                label: '今日头条'
-              },
-              {
-                value: 'edm',
-                label: '邮件'
-              },
-              {
-                value: 'sms',
-                label: '短信'
-              }
-            ]
-          },
-          {
-            value: 2,
-            label: '官方',
-            children: [
-              {
-                value: 'a',
-                label: 'Pc/Wap官网'
-              },
-              {
-                value: 'b',
-                label: '小程序'
-              },
-              {
-                value: 'c',
-                label: 'App'
-              },
-              {
-                value: 'd',
-                label: 'SaaS'
-              },
-              {
-                value: 'topic_view_h',
-                label: '文章详情头部'
-              },
-              {
-                value: 'topic_view_f',
-                label: '文章详情底部'
-              },
-              {
-                value: 'topic_view_r',
-                label: '文章详情右侧'
-              }
-            ]
-          },
-          {
-            value: 3,
-            label: '合作伙伴',
-            children: [
-              {
-                value: 'a',
-                label: '京东云艺火'
-              },
-              {
-                value: 'b',
-                label: '优客工场'
-              },
-              {
-                value: 'c',
-                label: '京东云神农大脑'
-              },
-              {
-                value: 'd',
-                label: '济南神农大脑'
-              }]
-          },
-          {
-            value: 4,
-            label: '内部推荐',
-            children: [
-              {
-                value: 'a',
-                label: '雷总/公司员工推荐的熟人客户'
-              }
-            ]
-          },
-          {
-            value: 5,
-            label: '外部推荐',
-            children: [
-              {
-                value: 'a',
-                label: '朋友/其他公司推荐的客户'
-              }
-            ]
-          },
-          {
-            value: 6,
-            label: '新媒体',
-            children: [
-              {
-                value: 'a',
-                label: '微信公众号'
-              },
-              {
-                value: 'b',
-                label: '头条号'
-              },
-              {
-                value: 'c',
-                label: '百家号'
-              },
-              {
-                value: 'toutiao_ad',
-                label: '头条文章广告位'
-              }
-            ]
-          },
-          {
-            value: 7,
-            label: '展销会',
-            children: [
-              {
-                value: 'a',
-                label: '参展'
-              },
-              {
-                value: 'b',
-                label: '业界活动、论坛'
-              }
-            ]
-          },
-          {
-            value: 0,
-            label: '其他',
-            children: [
-              {
-                value: 'a',
-                label: '无法归类的小群体'
-              }
-            ]
-          }
-        ],
         optionsid: -1,
         optionsid2: -1,
         sourceid: 0
@@ -750,16 +409,7 @@
             this.tableData = res.data.data
             for (var i in this.tableData) {
               let time = this.tableData[i].created_at.date_format().format('yyyy-MM-dd')
-              Vue.set(this.tableData[i], 'time', time)
-              if (this.tableData[i].source === 1) {
-                Vue.set(this.tableData[i], 'sourcecont', '京东云艺火')
-              } else if (this.tableData[i].source === 2) {
-                Vue.set(this.tableData[i], 'sourcecont', '义乌')
-              } else if (this.tableData[i].source === 4 || this.tableData[i].source === 3) {
-                Vue.set(this.tableData[i], 'sourcecont', '京东云神农大脑')
-              } else if (this.tableData[i].source === 0) {
-                Vue.set(this.tableData[i], 'sourcecont', '太火鸟')
-              }
+              this.$set(this.tableData[i], 'time', time)
               if (this.tableData[i].clue_name === null) {
                 this.tableData[i].clue_name = '—'
               }
@@ -802,16 +452,7 @@
           that.tableData = res.data.data
           for (var i in that.tableData) {
             let time = that.tableData[i].created_at.date_format().format('yyyy-MM-dd')
-            Vue.set(that.tableData[i], 'time', time)
-            if (that.tableData[i].source === 1) {
-              Vue.set(that.tableData[i], 'sourcecont', '京东云艺火')
-            } else if (that.tableData[i].source === 2) {
-              Vue.set(that.tableData[i], 'sourcecont', '义乌')
-            } else if (that.tableData[i].source === 4 || that.tableData[i].source === 3) {
-              Vue.set(that.tableData[i], 'sourcecont', '京东云神农大脑')
-            } else if (that.tableData[i].source === 0) {
-              Vue.set(that.tableData[i], 'sourcecont', '太火鸟')
-            }
+            this.$set(that.tableData[i], 'time', time)
             if (that.tableData[i].clue_name === null) {
               that.tableData[i].clue_name = '—'
             }

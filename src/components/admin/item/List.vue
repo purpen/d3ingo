@@ -32,21 +32,18 @@
           </el-form-item>
           <el-form-item>
             <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-              <el-option label="项目ID" value="1"></el-option>
-              <el-option label="项目名称" value="4"></el-option>
-              <el-option label="公司名称" value="2"></el-option>
-              <el-option label="联系人电话" value="3"></el-option>
-              <el-option label="用户ID" value="8"></el-option>
+              <el-option label="项目ID" :value="1"></el-option>
+              <el-option label="项目名称" :value="4"></el-option>
+              <el-option label="公司名称" :value="2"></el-option>
+              <el-option label="联系人电话" :value="3"></el-option>
+              <el-option label="用户ID" :value="8"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select v-model="query.source" placeholder="来源..." size="small">
-              <el-option label="全部" value="0"></el-option>
-              <el-option label="铟果" value="-1"></el-option>
-              <el-option label="艺火" value="1"></el-option>
-              <el-option label="义乌" value="2"></el-option>
-              <el-option label="神农" value="3"></el-option>
-              <el-option label="--" value="4"></el-option>
+              <el-option label="全部" :value="-1"></el-option>
+              <el-option v-for="(ele, index) in source" :key="index"
+                :label="ele.name" :value="ele.key">{{ele.name}}</el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -89,7 +86,9 @@
           label="创建人">
           <template slot-scope="scope">
             <p>
-              {{ scope.row.item.user.account }}[{{ scope.row.item.user_id }}]
+              {{ scope.row.item.user.account }}
+              <br>
+              [{{ scope.row.item.user_id }}]
             </p>
           </template>
         </el-table-column>
@@ -98,14 +97,10 @@
           label="工作地点">
         </el-table-column>
         <el-table-column
-          width="80"
+          width="150"
           label="来源">
             <template slot-scope="scope">
-              <p v-if="scope.row.item.source === 0">铟果</p>
-              <p v-else-if="scope.row.item.source === 1">艺火</p>
-              <p v-else-if="scope.row.item.source === 2">义乌</p>
-              <p v-else-if="scope.row.source === 4">神农</p>
-              <p v-else>--</p>
+                <p>{{scope.row.item.source | source}}</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -184,6 +179,7 @@
 </template>
 
 <script>
+  import { SOURCE } from '@/config'
   import api from '@/api/api'
   export default {
     name: 'admin_item_list',
@@ -214,6 +210,7 @@
 
           test: null
         },
+        source: {...SOURCE},
         msg: ''
       }
     },
@@ -221,6 +218,7 @@
       // 查询
       onSearch() {
         this.query.page = 1
+        console.log(this.query)
         this.$router.push({name: this.$route.name, query: this.query})
       },
       // 多选
@@ -327,9 +325,12 @@
         self.query.page = parseInt(this.$route.query.page) || 1
         self.query.sort = this.$route.query.sort || 0
         self.query.type = this.$route.query.type || 0
-        self.query.source = this.$route.query.source || ''
-        self.query.evt = this.$route.query.evt || '4'
+        self.query.evt = parseInt(this.$route.query.evt) || '4'
         self.query.val = this.$route.query.val || ''
+        self.query.source = parseInt(this.$route.query.source)
+        if (typeof self.query.source !== 'number') {
+          self.query.source = -1
+        }
         this.menuType = 0
         if (self.query.type) {
           this.menuType = parseInt(self.query.type)
