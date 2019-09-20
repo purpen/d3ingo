@@ -60,7 +60,7 @@
           width="60">
         </el-table-column>
         <el-table-column
-          label="Logo"
+          label="头像"
           width="80">
             <template slot-scope="scope">
               <p><img :src="scope.row.logo_url" width="50" /></p>

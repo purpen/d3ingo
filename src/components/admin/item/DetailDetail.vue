@@ -62,7 +62,7 @@
     <div class="title">合同</div>
     <div class="flex pad-top-30">
       <div class="grey-title">来源平台</div>
-      <div class="grey-text">{{contract.source_value}}</div>
+      <div class="grey-text">{{contract.source | source}}</div>
     </div>
     <div class="flex pad-top-16">
       <div class="grey-title">客户</div>

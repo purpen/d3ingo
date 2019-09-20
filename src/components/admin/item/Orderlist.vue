@@ -18,7 +18,7 @@
                       来源平台
                     </div>
                     <div class="titlecont" v-if="contract">
-                      {{contract.source_value}}
+                      {{contract.source | source}}
                     </div>
                     <div class="titlecont" v-else>
                       —
@@ -1057,26 +1057,6 @@
             // }
             if (that.contract) {
               that.contract.item_stage = obj.item_stage
-            }
-            if (that.contract && (that.contract.source === 0 || that.contract.source)) {
-              switch (that.contract.source) {
-                case 0:
-                  that.contract.source_value = '太火鸟'
-                  break
-                case 1:
-                  that.contract.source_value = '京东云艺火'
-                  break
-                case 2:
-                  that.contract.source_value = '义乌'
-                  break
-                case 3:
-                  that.contract.source_value = '京东云神农大脑'
-                  break
-                case 4:
-                  // that.contract.source_value = '京东云神农大脑'
-                  that.contract.source_value = '神农大脑设计平台'
-                  break
-              }
             }
           } else {
             that.$message.error(res.data.meta.message)

@@ -19,7 +19,7 @@
     </div>
     <div class="flex-center-34">
       <div class="title">来源渠道</div>
-      <div class="text">{{oldItem.source_value || '—'}}</div>
+      <div class="text">{{oldItem.source | source}}</div>
     </div>
 
     <div class="line"></div>
@@ -65,32 +65,6 @@ export default {
   props: ['item', 'contract', 'oldItem'],
   data() {
     return {
-    }
-  },
-  created() {
-    let that = this
-    if (that.oldItem && (that.oldItem.source === 0 || that.oldItem.source)) {
-      switch (that.oldItem.source) {
-        case 1:
-          that.oldItem.source_value = '京东云艺火'
-          break
-        case 2:
-          that.oldItem.source_value = '义乌'
-          break
-        case 4:
-          // that.oldItem.source_value = '京东云神农大脑'
-          that.oldItem.source_value = '神农大脑设计平台'
-          break
-        default:
-          that.oldItem.source_value = '太火鸟'
-      }
-    }
-  },
-  filters: {
-    timeFormat(val) {
-      if (val) {
-        return val.date_format().format('yyyy-MM-dd hh:mm')
-      }
     }
   }
 }

@@ -86,9 +86,11 @@
               </template>
           </el-table-column>
           <el-table-column
-            prop="source_value"
             width="80"
             label="来源">
+            <template slot-scope="scope">
+                <p>{{scope.row.source | source}}</p>
+            </template>
           </el-table-column>
           <el-table-column
             prop="status_value"
@@ -466,17 +468,7 @@ export default {
             } else if (item.type === 4) {
               typeValue = '阶段款'
             }
-            var sourceVal = ''
-            if (item.source === 0) {
-              sourceVal = '铟果'
-            } else if (item.source === 1) {
-              sourceVal = '京东云艺火'
-            } else if (item.source === 4) {
-              // sourceVal = '京东云神农大脑'
-              sourceVal = '神农大脑设计平台'
-            }
             item['type_value'] = typeValue
-            item['source_value'] = sourceVal
             item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             var sureOutlineTransfer = false
             if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {

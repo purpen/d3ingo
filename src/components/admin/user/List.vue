@@ -16,36 +16,30 @@
           <el-form-item class="fl" style="margin-right: 10px">
             <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
               <el-option label="全部" value="0"></el-option>
-              <el-option label="用户" value="1"></el-option>
-              <el-option label="编辑" value="5"></el-option>
-              <el-option label="管理员" value="10"></el-option>
-              <el-option label="商务" value="12"></el-option>
-              <el-option label="管理员plus" value="15"></el-option>
+              <el-option v-for="(ele, index) in permission" :key="index"
+                :label="ele.name" :value="ele.key">{{ele.name}}</el-option>
             </el-select>
           </el-form-item>
           <el-form-item class="fl" style="margin-right: 10px">
             <el-select v-model="query.source" placeholder="来源..." size="small">
-              <el-option label="全部" value="0"></el-option>
-              <el-option label="铟果" value="-1"></el-option>
-              <el-option label="艺火" value="1"></el-option>
-              <el-option label="义乌" value="2"></el-option>
-              <el-option label="神农" value="3"></el-option>
-              <el-option label="--" value="4"></el-option>
+              <el-option label="全部" :value="-1"></el-option>
+              <el-option v-for="(ele, index) in source" :key="index"
+                :label="ele.name" :value="ele.key">{{ele.name}}</el-option>
             </el-select>
           </el-form-item>
           <el-form-item class="fl" style="margin-right: 10px">
             <el-select v-model="query.type" placeholder="目标人群..." size="small">
-              <el-option label="全部" value="0"></el-option>
-              <el-option label="需求方" value="1"></el-option>
-              <el-option label="设计服务商" value="2"></el-option>
+              <el-option label="全部" :value="0"></el-option>
+              <el-option label="需求方" :value="1"></el-option>
+              <el-option label="设计服务商" :value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item class="fl" style="margin-right: 10px">
             <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-              <el-option label="ID" value="1"></el-option>
-              <el-option label="手机号" value="2"></el-option>
-              <el-option label="昵称" value="3"></el-option>
-              <el-option label="邮箱" value="4"></el-option>
+              <el-option label="ID" :value="1"></el-option>
+              <el-option label="手机号" :value="2"></el-option>
+              <el-option label="昵称" :value="3"></el-option>
+              <el-option label="邮箱" :value="4"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item class="fl">
@@ -71,7 +65,7 @@
           width="60">
         </el-table-column>
         <el-table-column
-          label="Logo"
+          label="头像"
           width="80">
             <template slot-scope="scope">
               <p><img :src="scope.row.logo_url" width="50" /></p>
@@ -106,24 +100,14 @@
           width="80"
           label="来源">
             <template slot-scope="scope">
-              <p v-if="scope.row.source === 0">铟果</p>
-              <p v-else-if="scope.row.source === 1">艺火</p>
-              <p v-else-if="scope.row.source === 2">义乌</p>
-              <p v-else-if="scope.row.source === 4">神农</p>
-              <p v-else>--</p>
+              <p>{{scope.row.source | source}}</p>
             </template>
         </el-table-column>
         <el-table-column
           width="80"
           label="权限">
             <template slot-scope="scope">
-              <p v-if="scope.row.role_id === 0">用户</p>
-              <p v-else-if="scope.row.role_id === 5">编辑</p>
-              <p v-else-if="scope.row.role_id === 10">管理员</p>
-              <p v-else-if="scope.row.role_id === 12">商务</p>
-              <p v-else-if="scope.row.role_id === 15">管理员Plus</p>
-              <p v-else-if="scope.row.role_id === 20">超级管理员</p>
-              <p v-else>--</p>
+              <p>{{scope.row.role_id | permission}}</p>
             </template>
         </el-table-column>
         <el-table-column
@@ -181,11 +165,8 @@
         <el-col :span="18">
           <div>
             <el-radio-group v-model.number="roleId">
-              <el-radio :label="0">用户</el-radio>
-              <el-radio :label="5">编辑</el-radio>
-              <el-radio :label="10">管理员</el-radio>
-              <el-radio :label="12">商务</el-radio>
-              <el-radio class="margin-t-10" :label="15">管理员plus</el-radio>
+              <el-radio v-for="(ele, index) in permission" :key="index"
+                :label="ele.key">{{ele.name}}</el-radio>
             </el-radio-group>
           </div>
         </el-col>
@@ -206,10 +187,14 @@
           <!-- <el-checkbox v-model="checked">备选项</el-checkbox> -->
           <el-select v-model="jdRole" placeholder="请选择">
             <el-option
+              label="无"
+              :value="0">
+            </el-option>
+            <el-option
               v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.key"
+              :label="item.name"
+              :value="item.key">
             </el-option>
           </el-select>
         </el-col>
@@ -225,6 +210,7 @@
 </template>
 
 <script>
+import { SOURCE, PERMISSION, PERMISSION_TYPE } from '@/config'
 import api from '@/api/api'
 export default {
   name: 'admin_user_list',
@@ -251,28 +237,9 @@ export default {
         test: null
       },
       msg: '',
-      options: [
-        {
-          value: 0,
-          label: '无'
-        },
-        {
-          value: 1,
-          label: '京东管理员'
-        },
-        {
-          value: 2,
-          label: '义乌管理员'
-        },
-        {
-          value: 4,
-          label: '神农管理员'
-        },
-        {
-          value: 6,
-          label: '小程序管理员'
-        }
-      ]
+      options: {...PERMISSION_TYPE},
+      source: {...SOURCE},
+      permission: {...PERMISSION}
     }
   },
   methods: {
@@ -364,13 +331,16 @@ export default {
     },
     loadList() {
       const self = this
-      self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 0
-      self.query.type = this.$route.query.type || ''
-      self.query.source = this.$route.query.source || ''
-      self.query.evt = this.$route.query.evt || ''
+      self.query.page = parseInt(this.$route.query.page) || 1
+      self.query.sort = parseInt(this.$route.query.sort) || 0
+      self.query.type = parseInt(this.$route.query.type) || 0
+      self.query.evt = parseInt(this.$route.query.evt) || 2
       self.query.val = this.$route.query.val || ''
-      self.query.role_id = this.$route.query.role_id || ''
+      self.query.role_id = parseInt(this.$route.query.role_id) || 0
+      self.query.source = parseInt(this.$route.query.source)
+      if (typeof self.query.source !== 'number') {
+        self.query.source = -1
+      }
       this.menuType = 0
       if (self.query.type) {
         this.menuType = parseInt(self.query.type)

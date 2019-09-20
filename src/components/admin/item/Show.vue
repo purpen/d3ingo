@@ -377,9 +377,7 @@
               <p>来源</p>
             </el-col>
             <el-col :span="spanVal">
-              <p v-if="item.source === 0">铟果</p>
-              <p v-else-if="item.source === 1">京东云艺火</p>
-              <p v-else-if="item.source === 3">京东云神农大脑</p>
+              <p>{{item.source | source}}</p>
             </el-col>
           </el-row>
 

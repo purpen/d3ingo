@@ -8,6 +8,7 @@ import axios from './http'
 import ElementUI from 'element-ui'
 import phenix from '@/assets/js/base'
 import VueLazyload from 'vue-lazyload'
+import * as filter from './assets/js/filter'
 
 // 兼容 IE
 import 'babel-polyfill'
@@ -52,6 +53,11 @@ Vue.prototype.$http = axios
 
 // js自定义方法集
 Vue.prototype.$phenix = phenix
+
+// 公共filter
+Object.keys(filter).forEach(key => {
+  Vue.filter(key, filter[key])
+})
 
 /* eslint-disable no-new */
 new Vue({

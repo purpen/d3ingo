@@ -1830,7 +1830,7 @@ const ADMINMENU = {
     icon: require('assets/images/admin/menu/Customer@2x.png'),
     subRouter: 1,
     statement: {
-      params: {type: 1},
+      params: { type: 1 },
       query: {}
     },
     children: [
@@ -1839,7 +1839,7 @@ const ADMINMENU = {
         route: 'adminPotentialUserList',
         subRouter: 1,
         statement: {
-          params: {type: 1},
+          params: { type: 1 },
           query: {}
         }
       },
@@ -1848,7 +1848,7 @@ const ADMINMENU = {
         route: 'adminPotentialUserList',
         subRouter: 2,
         statement: {
-          params: {type: 2},
+          params: { type: 2 },
           query: {}
         }
       },
@@ -1857,7 +1857,7 @@ const ADMINMENU = {
         route: 'adminPotentialUserList',
         subRouter: 3,
         statement: {
-          params: {type: 3},
+          params: { type: 3 },
           query: {}
         }
       },
@@ -1866,7 +1866,7 @@ const ADMINMENU = {
         route: 'adminPotentialUserList',
         subRouter: 4,
         statement: {
-          params: {type: 4},
+          params: { type: 4 },
           query: {}
         }
       },
@@ -1876,7 +1876,7 @@ const ADMINMENU = {
         subRouter: 5,
         title: '回收站',
         statement: {
-          params: {type: 5},
+          params: { type: 5 },
           query: {}
         }
       },
@@ -2441,6 +2441,235 @@ const OTHERADMINMENU = {
     ]
   }
 }
+
+// 推广来源 PROMOTE_SOURCE
+const PROMOTE_SOURCE = [
+  {
+    value: 1,
+    label: '网络广告',
+    children: [
+      {
+        value: 'a',
+        label: '百度'
+      },
+      {
+        value: 'b',
+        label: '360'
+      },
+      {
+        value: 'c',
+        label: '知乎'
+      },
+      {
+        value: 'd',
+        label: '今日头条'
+      },
+      {
+        value: 'edm',
+        label: '邮件'
+      },
+      {
+        value: 'sms',
+        label: '短信'
+      }
+    ]
+  },
+  {
+    value: 2,
+    label: '官方',
+    children: [
+      {
+        value: 'a',
+        label: 'Pc/Wap官网'
+      },
+      {
+        value: 'b',
+        label: '小程序'
+      },
+      {
+        value: 'c',
+        label: 'App'
+      },
+      {
+        value: 'd',
+        label: 'SaaS'
+      },
+      {
+        value: 'topic_view_h',
+        label: '文章详情头部'
+      },
+      {
+        value: 'topic_view_f',
+        label: '文章详情底部'
+      },
+      {
+        value: 'topic_view_r',
+        label: '文章详情右侧'
+      }
+    ]
+  },
+  {
+    value: 3,
+    label: '合作伙伴',
+    children: [
+      {
+        value: 'a',
+        label: '京东云艺火'
+      },
+      {
+        value: 'b',
+        label: '优客工场'
+      },
+      {
+        value: 'c',
+        label: '京东云神农大脑'
+      },
+      {
+        value: 'd',
+        label: '京东云济南神农大脑'
+      }]
+  },
+  {
+    value: 4,
+    label: '内部推荐',
+    children: [
+      {
+        value: 'a',
+        label: '雷总/公司员工推荐的熟人客户'
+      }
+    ]
+  },
+  {
+    value: 5,
+    label: '外部推荐',
+    children: [
+      {
+        value: 'a',
+        label: '朋友/其他公司推荐的客户'
+      }
+    ]
+  },
+  {
+    value: 6,
+    label: '新媒体',
+    children: [
+      {
+        value: 'a',
+        label: '微信公众号'
+      },
+      {
+        value: 'b',
+        label: '头条号'
+      },
+      {
+        value: 'c',
+        label: '百家号'
+      },
+      {
+        value: 'toutiao_ad',
+        label: '头条文章广告位'
+      }
+    ]
+  },
+  {
+    value: 7,
+    label: '展销会',
+    children: [
+      {
+        value: 'a',
+        label: '参展'
+      },
+      {
+        value: 'b',
+        label: '业界活动、论坛'
+      }
+    ]
+  },
+  {
+    value: 0,
+    label: '其他',
+    children: [
+      {
+        value: 'a',
+        label: '无法归类的小群体'
+      }
+    ]
+  }
+]
+
+// 请求来源 SOURCE
+const SOURCE = [
+  {
+    name: '铟果',
+    key: 0
+  },
+  {
+    name: '艺火',
+    key: 1
+  },
+  {
+    name: '义乌',
+    key: 2
+  },
+  {
+    name: '潜在客户',
+    key: 3
+  },
+  {
+    name: '铜梁神农',
+    key: 4
+  },
+  {
+    name: '济南神农',
+    key: 7
+  }
+]
+// 后台权限
+const PERMISSION = [
+  {
+    name: '用户',
+    key: 0
+  },
+  {
+    name: '编辑',
+    key: 5
+  },
+  {
+    name: '管理员',
+    key: 10
+  },
+  {
+    name: '商务',
+    key: 12
+  },
+  {
+    name: '管理员plus',
+    key: 15
+  },
+  {
+    name: '超级管理员',
+    key: 20
+  }
+]
+const PERMISSION_TYPE = [
+  {
+    name: '京东管理员',
+    key: 1
+  },
+  {
+    name: '义乌管理员',
+    key: 2
+  },
+  {
+    name: '神农管理员',
+    key: 4
+  },
+  {
+    name: '小程序管理员',
+    key: 6
+  }
+]
+
 // test
 const TEST = {}
 
@@ -2483,5 +2712,9 @@ module.exports = {
   ADMINMENU,
   OTHERADMINMENU,
   ADMINDETAIL,
+  PROMOTE_SOURCE,
+  SOURCE,
+  PERMISSION,
+  PERMISSION_TYPE,
   TEST
 }

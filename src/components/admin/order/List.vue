@@ -15,12 +15,12 @@
           <el-form-item>
             <el-select v-model="query.pay_type" placeholder="支付方式..." size="small">
               <el-option label="--请选择--" value=""></el-option>
-              <el-option label="自平台" value="1"></el-option>
-              <el-option label="支付宝" value="2"></el-option>
-              <el-option label="微信" value="3"></el-option>
-              <el-option label="京东云(原)" value="4"></el-option>
-              <el-option label="银行转账" value="5"></el-option>
-              <el-option label="京东云市场" value="6"></el-option>
+              <el-option label="自平台" :value="1"></el-option>
+              <el-option label="支付宝" :value="2"></el-option>
+              <el-option label="微信" :value="3"></el-option>
+              <el-option label="京东云(原)" :value="4"></el-option>
+              <el-option label="银行转账" :value="5"></el-option>
+              <el-option label="京东云市场" :value="6"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -28,9 +28,9 @@
           </el-form-item>
           <el-form-item>
             <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-              <el-option label="订单号" value="1"></el-option>
-              <el-option label="项目ID" value="2"></el-option>
-              <el-option label="用户ID" value="3"></el-option>
+              <el-option label="订单号" :value="1"></el-option>
+              <el-option label="项目ID" :value="2"></el-option>
+              <el-option label="用户ID" :value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -53,7 +53,7 @@
         <el-table-column
           prop="uid"
           label="订单号"
-          width="150">
+          width="180">
         </el-table-column>
         <el-table-column
           label="项目信息"
@@ -86,9 +86,11 @@
             </template>
         </el-table-column>
         <el-table-column
-          prop="source_value"
-          width="80"
+          width="150"
           label="来源">
+            <template slot-scope="scope">
+                <p>{{scope.row.source | source}}</p>
+            </template>
         </el-table-column>
         <el-table-column
           prop="status_value"
@@ -97,7 +99,7 @@
         </el-table-column>
         <el-table-column
           prop="created_at"
-          width="100"
+          width="110"
           label="创建时间">
         </el-table-column>
         <el-table-column
@@ -327,17 +329,7 @@ export default {
             } else if (item.type === 4) {
               typeValue = '阶段款'
             }
-            var sourceVal = ''
-            if (item.source === 0) {
-              sourceVal = '铟果'
-            } else if (item.source === 1) {
-              sourceVal = '京东云艺火'
-            } else if (item.source === 4) {
-              // sourceVal = '京东云神农大脑'
-              sourceVal = '神农大脑设计平台'
-            }
             item['type_value'] = typeValue
-            item['source_value'] = sourceVal
             item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             var sureOutlineTransfer = false
             if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
