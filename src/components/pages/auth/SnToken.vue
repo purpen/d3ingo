@@ -15,8 +15,8 @@ export default {
   },
   created() {
     this.token = this.$route.query.token
-    auth.write_SnToken(this.token)
     this.unionLogin()
+    auth.write_SnToken(this.token)
   },
   methods: {
     unionLogin() {
