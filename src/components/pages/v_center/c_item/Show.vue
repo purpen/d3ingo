@@ -67,12 +67,82 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-          <div class="select-item-box">
+          <div class="select-item-box" v-if="quotation">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="报价管理" name="4" class="partnersDesign">
                 <div class="quotation-item">
+                  <div class="item-logo">
+                    <div class="fl flex-price">
+                      <div class="flex-center ">
+                        <span>
+                          <img class="avatar fl" v-if="item.logo_url"
+                              :src="item.logo_url" width="40"/>
+                          <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
+                        </span>
+                        <p class="p-title minititle fl">
+                          <span >
+                            {{ item.company_name }}
+                          </span>
+                        </p>
+                      </div>
+                      <span class="status-title">{{item.design_status_value}}</span>
+                      <!-- <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="!isMob">
+                        <p class="contact">联系人: {{ item.contact_name }}</p>
+                        <p class="contact">职位: {{ item.position }}</p>
+                        <p class="contact">电话: {{ item.phone }}</p>
+                        <p class="contact">邮箱: {{ item.email }}</p>
+                        <p slot="reference" class="fl name-wrapper contact-user">
+                          <span>联系我们</span>
+                        </p>
+                      </el-popover>
 
-                  <div class="item-logo clearfix">
+                      <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="isMob">
+                        <p class="contact">联系人: {{ item.contact_name }}</p>
+                        <p class="contact">职位: {{ item.position }}</p>
+                        <p class="contact">电话: {{ item.phone }}</p>
+                        <p class="contact">邮箱: {{ item.email }}</p>
+                        <p slot="reference" class="fl name-wrapper2 contact-user">
+                          和我联系
+                        </p>
+                      </el-popover> -->
+                    </div>
+                    <div class="fr item-stick-des">
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="item-bj"  v-if="quotation">
+                    <el-row>
+                      <el-col :span="12">
+                        <p>
+                          <span class="span-label">项目预算:</span>
+                          <span class="p-price span-cont">￥{{ Math.floor(quotation.price) }}</span>
+                        </p>
+                      </el-col>
+                    </el-row>
+                    <p>
+                      <span class="span-label">报价说明:</span>
+                      <span class="span-cont">{{ quotation.summary }}</span>
+                    </p>
+                  </div>
+                  <div class="flex-footer">
+                    <div class="btn-quo" v-if="quotation">
+                      <el-button class="more-btn btn-width" @click="showQuotaBtn(quotation)">查看详情</el-button>
+                    </div>
+                    <div class="btn-quo" v-if="waitTakePrice">
+                      <el-button @click="companyRefuseBtn">暂无兴趣</el-button>
+                      <el-button class="is-custom" @click="takingBtn" type="primary" v-if="!quotation">添加报价单</el-button>
+                    </div>
+                    <div class="btn-quo" v-if="quotation && quotation.status === 0">
+                      <el-button class="is-custom" @click="takingBtn" type="primary">修改报价单</el-button>
+                    </div>
+                    <div class="btn-quo" v-if="quotation && designData.item_recommend.status === 4 && (item.status !== 45 || item.status === 4)">
+                      <el-button class="is-custom" @click="sendOut(quotation.id)" type="primary" :loading="sendLoaind">发送报价单</el-button>
+                    </div>
+                  </div>
+
+
+                  <!-- 老板 -->
+                  <!-- <div class="item-logo clearfix">
                     <div class="fl">
                       <p class="p-title fl">
                         {{ item.company_name }}
@@ -119,7 +189,7 @@
                   </div>
                   <div class="btn-quo" v-if="quotation && quotation.status === 0">
                     <el-button class="is-custom" @click="takingBtn" type="primary">修改报价单</el-button>
-                  </div>
+                  </div> -->
 
                 </div>
 
@@ -167,7 +237,6 @@
                          <button class="look-button">修改</button>
                       </router-link>
                     </p>
-
                   </div>
 
                 </div>
@@ -376,6 +445,22 @@
             </el-collapse>
           </div>
 
+          <div class="item-box" v-if="designData.item_recommend.status === 3 && ( item.status === 4 || item.status === 45 )">
+            <div>
+              <p class="cor9 line-het">是否要承接此单？</p>
+              <el-button class="btn-left" @click="refuseItem">拒绝接单</el-button>
+              <el-button type="primary" @click="sendIntention(item.id)" :loading="sendintion">接单</el-button>
+            </div>
+          </div>
+
+          <div class="item-box"  v-if="designData.item_recommend.status === 4 && !quotation && ( item.status === 4 || item.status === 45 )">
+            <div class="text-center">
+              <p class="text-center"><i class="iconfont icon-check-mark-solid-l icon-color"></i></p>
+              <p class="cor9 line-hetl">已成功接单，编辑报价单</p>
+              <el-button type="primary" @click="takingBtn">编辑报价单</el-button>
+            </div>
+          </div>
+
         </div>
 
         <div class="select-item-box" v-if="statusLabel.evaluate">
@@ -562,7 +647,7 @@
         <input type="hidden" ref="confirmIndex"/>
       </span>
     </el-dialog>
-        <el-dialog
+     <el-dialog
       title="拒单说明"
       :visible.sync="noOfferDialog"
       width="380px">
@@ -651,10 +736,13 @@
         sendStageLoadingBtn: false,
         comfirmMessage: '确认执行此操作?',
         stickCompanyIds: [],
+        designData: {},
         stages: [],
         secondPayLoadingBtn: false,
         item: {},
         info: {},
+        sendintion: false,
+        sendLoaind: false,
         refuse_types: [], // 拒单选项
         summary: '', // 拒单原因
         noOfferDialog: false, // 拒单弹窗
@@ -746,6 +834,26 @@
         }
       },
       selectCompanyboxChange() {
+      },
+      // 确认接单
+      sendIntention(id) {
+        this.sendintion = true
+        this.$http.put(api.confirmationIntention, {item_id: id})
+          .then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              this.$message.success('接单成功')
+              this.sendintion = false
+              this.refech()
+            } else {
+              self.$message.error(response.data.meta.message)
+              this.sendintion = false
+            }
+          })
+          .catch(function (error) {
+            this.sendintion = false
+            self.$message.error(error.message)
+            return false
+          })
       },
       // 提交项目报价
       takingPriceSubmit(formName) {
@@ -862,6 +970,24 @@
           })
         }
       },
+      // 发送报价单
+      sendOut(id) {
+        this.sendLoaind = true
+        this.$http.put(api.sendQuotation, {id: id}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.$message.success('发送成功')
+            this.sendLoaind = false
+            this.refech()
+          } else {
+            this.sendLoaind = false
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.sendLoaind = false
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
       // 改拒单类型
       upType(type) {
         if (this.refuse_types.indexOf(type) === -1) {
@@ -892,6 +1018,7 @@
             if (response.data.meta.status_code === 200) {
               this.$message.success('提交成功！')
               this.$router.replace({name: 'vcenterCItemList'})
+              this.refech()
               return
             } else {
               this.noOfferDialog = false
@@ -943,6 +1070,10 @@
         this.noOfferDialog = true
         // this.comfirmMessage = '确认拒绝该项目？'
         // this.comfirmDialog = true
+      },
+      refuseItem() {
+        this.noOfferDialog = true
+        // this.itemId = id
       },
       // 确认拒绝项目
       sureRefuseItemSubmit() {
@@ -1269,6 +1400,370 @@
       },
       sliceImgName(params) {
         return sliceImgName(params)
+      },
+      refech() {
+        let id = this.$route.params.id
+        if (!id) {
+          this.$message.error('缺少请求参数!')
+          this.$router.push({name: 'home'})
+          return
+        }
+        const self = this
+        self.$http.get(api.designItemId.format(id), {})
+        .then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.item = response.data.data.item
+            self.designData = response.data.data
+            // self.info = response.data.data.info
+            if (response.data.data.evaluate) {
+              self.evaluate = response.data.data.evaluate
+              if (self.evaluate.user_score) {
+                self.evaluate.user_score = JSON.parse(self.evaluate.user_score)
+              } else {
+                self.evaluate.user_score = {
+                  'design_level': 5,
+                  'response_speed': 5,
+                  'service': 5
+                }
+              }
+              self.evaluate.design_level = self.evaluate.user_score.design_level ? self.evaluate.user_score.design_level : 5
+              self.evaluate.response_speed = self.evaluate.user_score.response_speed ? self.evaluate.user_score.response_speed : 5
+              self.evaluate.service = self.evaluate.user_score.service ? self.evaluate.user_score.service : 5
+            }
+            if (response.data.data.invoice && response.data.data.invoice.length > 0) {
+              self.invoice = response.data.data.invoice
+            }
+            self.contract = response.data.data.contract
+            if (self.contract) {
+              self.contract.created_at = self.contract.created_at.date_format().format('yyyy-MM-dd')
+            }
+            self.quotation = response.data.data.quotation
+            if (self.quotation) {
+              self.takingPriceForm.id = self.quotation.id
+              self.takingPriceForm.price = Math.floor(self.quotation.price)
+              self.takingPriceForm.o_price = Math.floor(self.quotation.price)
+              self.takingPriceForm.summary = self.quotation.summary
+            }
+            // 是否显示提交报价单按钮
+            if (self.quotation === null && (self.item.status === 3 || self.item.status === 4 || self.item.status === 45)) {
+              self.waitTakePrice = true
+            }
+            switch (self.item.status) {
+              case 4: // 查看已提交报价的设计服务商
+                self.progressButt = 2
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
+                break
+              case 45: // 已有设计服务商报价
+                self.progressButt = 3
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
+                break
+              case 5: // 等待提交合同
+                self.progressButt = 3
+                self.progressContract = 0
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_submit_ht.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                break
+              case 6: // 等待确认合同
+                self.progressButt = 3
+                self.progressContract = 1
+                self.progressItem = -1
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusIconUrl = require('@/assets/images/item/wait_sure_ht.png')
+                break
+              case 7: // 已确认合同
+                self.progressButt = 3
+                self.progressContract = 2
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/sure_ht.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                break
+              case 8: // 等待托管资金
+                self.progressButt = 3
+                self.progressContract = 2
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_pay.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                break
+              case 9: // 项目资金已托管
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/item_ing.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                break
+              case 11:  // 项目进行中
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = 0
+                self.statusIconUrl = require('@/assets/images/item/write_icon.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                break
+              case 15:  // 项目完成
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = 1
+                self.statusIconUrl = require('@/assets/images/item/item_finish.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                break
+              case 18:  // 已验收
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = 2
+                self.statusIconUrl = require('@/assets/images/item/item_yanshou.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                break
+              case 20:  // 无
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = 4
+                self.statusIconUrl = require('@/assets/images/item/item_success.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                self.statusLabel.evaluate = true
+                break
+              case 22:  // 已评价
+                self.progressButt = 3
+                self.progressContract = 3
+                self.progressItem = 4
+                self.statusIconUrl = require('@/assets/images/item/item_success.png')
+                self.statusLabel.cooperateCompany = true
+                self.statusLabel.contract = true
+                self.statusLabel.amount = true
+                self.statusLabel.isPay = true
+                self.statusLabel.manage = true
+                self.statusLabel.stage = true
+                self.statusLabel.evaluate = true
+                break
+              default:
+            }
+
+            // 合作的公司
+            if (self.statusLabel.cooperateCompany) {
+              self.$http.get(api.designCompanyId.format(self.item.design_company_id), {})
+                .then(function (response) {
+                  if (response.data.meta.status_code === 200) {
+                    self.company = response.data.data
+                    let logoUrl = null
+                    if (self.company.logo_image) {
+                      logoUrl = self.company.logo_image.logo
+                    }
+                    self.company.logo_url = logoUrl
+                    // console.log(self.company)
+                  }
+                })
+                .catch(function (error) {
+                  self.$message.error(error.message)
+                })
+            }
+            // 项目阶段列表
+            if (self.statusLabel.stage) {
+              self.$http.get(api.itemStageDesignCompanyLists, {params: {item_id: self.item.id}})
+                .then(function (response) {
+                  if (response.data.meta.status_code === 200) {
+                    let items = response.data.data
+                    let isAllPass = true
+                    for (let i = 0; i < items.length; i++) {
+                      let item = items[i]
+                      if (item.sort) {
+                        switch (item.sort) {
+                          case 1:
+                            items[i].no = '一'
+                            break
+                          case 2:
+                            items[i].no = '二'
+                            break
+                          case 3:
+                            items[i].no = '三'
+                            break
+                          case 4:
+                            items[i].no = '四'
+                            break
+                          case 5:
+                            items[i].no = '五'
+                            break
+                          default:
+                            items[i].no = ''
+                        }
+                      } else {
+                        items[i].no = ''
+                      }
+
+                      items[i].created_at = item.created_at.date_format().format('yyyy-MM-dd')
+                      if (item.confirm === 0) {
+                        isAllPass = false
+                      }
+                    } // endfor
+                    if (self.item.status === 11 && isAllPass) {
+                      self.sureFinishBtn = true
+                    }
+                    self.stages = items
+                    let numIndex = 0
+                    self.stages.forEach(ele => {
+                      if (ele.pay_status === 1) {
+                        numIndex += 1
+                      }
+                    })
+                    self.ispayStatus = numIndex
+                  }
+                })
+                .catch(function (error) {
+                  self.$message.error(error.message)
+                })
+            }
+
+            let tab = []
+            if (self.item.type === 1) {
+              tab = [
+                {
+                  name: '项目名称',
+                  title: self.item.name
+                },
+                {
+                  name: '设计类型',
+                  title: self.item.type_value
+                },
+                {
+                  name: '设计项目类型',
+                  title: self.item.design_types_value.join(', ')
+                },
+                {
+                  name: '产品功能描述',
+                  title: self.item.product_features
+                },
+                {
+                  name: '产品类别',
+                  title: self.item.field_value
+                },
+                {
+                  name: '行业领域',
+                  title: self.item.industry_value
+                }
+              ]
+            } else if (self.item.type === 2) {
+              tab = [
+                {
+                  name: '项目名称',
+                  title: self.item.name
+                },
+                {
+                  name: '设计类型',
+                  title: self.item.type_value
+                },
+                {
+                  name: '设计项目类型',
+                  title: self.item.design_types_value.join(', ')
+                },
+                {
+                  name: '产品功能描述',
+                  title: self.item.product_features
+                }
+              ]
+            }
+            let itemTab = [{
+              name: '项目预算',
+              title: self.item.design_cost_value
+            }, {
+              name: '交付时间',
+              title: self.item.cycle_value
+            }, {
+              name: '项目工作地点',
+              title: self.item.province_value + ', ' + self.item.city_value
+            }, {
+              name: '相关附件',
+              title: 'file',
+              image: self.item.image
+            }]
+
+            self.tableData = tab.concat(itemTab)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function (error) {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     computed: {
@@ -1313,7 +1808,7 @@
         let that = this
         var yscr = document.documentElement.scrollTop
         var interval = setInterval (() => {
-          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor && document.documentElement.scrollTo) {
+          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor && document.documentElement.scrollTop) {
             yscr += 50
             document.documentElement.scrollTo(0, yscr)
           } else {
@@ -1363,6 +1858,8 @@
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.item = response.data.data.item
+            self.designData = response.data.data
+            console.log('self.designData', self.designData)
             // self.info = response.data.data.info
             if (response.data.data.evaluate) {
               self.evaluate = response.data.data.evaluate
@@ -1732,9 +2229,9 @@
         })
     },
     mounted: function () {
-      this.$nextTick(() => {
-        this.$refs.anchor.offsetTop
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.anchor.offsetTop
+      // })
     },
     updated: function () {
       this.anchor
@@ -1769,6 +2266,28 @@
   }
   .alert-line-height {
     text-align: center
+  }
+  .line-het {
+    margin: 30px 0;
+    text-align: center;
+    color: #999;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .line-hetl {
+    margin:20px 0 30px 0;
+    text-align: center;
+    color: #999;
+  }
+  .btn-left {
+    margin-right: 20px
+  }
+  .item-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
   }
   .cause i {
   display: inline-block;
@@ -1894,7 +2413,11 @@
   .pub-btn {
     text-align: center;
   }
-
+  .icon-color {
+    text-align: center;
+    font-size: 56px;
+    color: #00AC84
+  }
   .quotation-item {
     position: relative;
     border: 1px solid #E6E6E6;
@@ -1906,22 +2429,48 @@
   }
 
   .item-logo .p-title {
-    line-height: 50px;
-    font-size: 1.4rem;
-    font-weight: 500;
+    margin-left: 16px;
+    line-height: 40px;
   }
-
+  .span-label {
+    color:#999999;
+    margin-right: 10px;
+  }
+  .p-price {
+    color: #FF5A5F;
+    font-weight: bold;
+    margin-bottom: -3px;
+  }
+.contact-user {
+  width:120px;
+  height:34px;
+  border-radius:4px;
+  border:1px solid #e6e6e6;
+  text-align: center;
+  line-height: 33px;
+}
+.contact-user span {
+  color: #999999
+}
+.item-logo p {
+  line-height: 2;
+  color: #222222;
+}
+  .flex-price {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 10px;
+  }
   .item-logo p {
     line-height: 2;
     color: #333;
   }
 
-  .item-logo img {
-    margin-bottom: 10px;
-  }
 
   .item-bj {
-    padding: 15px 10px 15px 10px;
+    padding: 20px;
     border-top: 1px solid #E6E6E6;
   }
 
@@ -1965,20 +2514,24 @@
 
   .btn-quo {
     text-align: right;
-    padding: 10px;
-    border-top: 1px solid #E6E6E6;
     font-size: 0;
+    margin-left: 20px;
   }
   .btn-quo button:nth-child(2) {
     margin-left: 15px;
   }
-
+  .status-title {
+    color: #FFA64B
+  }
   .contract-item {
     /*height: 60px;*/
     margin: 20px 0 10px 0;
-    padding: 10px 10px 5px;
-    border-top: 1px solid #E6E6E6;
+    padding: 10px 0px;
+    /* border-top: 1px solid #E6E6E6; */
     border-bottom: 1px solid #E6E6E6;
+  }
+  .contract-item:last-child{
+    border-bottom: none;
   }
 
   .contract-item.new {
@@ -2128,9 +2681,13 @@
 
   .contact-us p {
     margin-left: 20px;
-    line-height: 50px;
+    line-height: 34px;
   }
-
+  .flex-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px 20px 20px 20px;
+  }
   .contact-us .name-wrapper2 {
     position: absolute;
     top: 2px;

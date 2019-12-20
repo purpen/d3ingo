@@ -74,12 +74,15 @@
     <div v-if="isMatching" class="project-cover clearfix">
       <div class="project-item-box project-item-box-match">
         <div class="item">
-          <span :class="['pic', {
+          <span class="bg-white"><i class="iconfont icon-check-mark-solid-l success-icon"></i></span>
+          <p class="success-title">发布成功</p>
+          <p class="success-dirceh">项目发布成功，请等待商务人员与您联系</p>
+          <!-- <span :class="['pic', {
             'pic-done': matchComplete && designList.length,
             'pic-fail': matchComplete && !designList.length,
-            'pic-waiting': isMatching}]"></span>
+            'pic-waiting': isMatching}]"></span> -->
         </div>
-        <section v-if="isMatching && !matchComplete">
+        <!-- <section v-if="isMatching && !matchComplete">
           <p class="find">{{custom.info}} 正在从 1000+ 设计服务商为您寻找</p>
           <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计服务商</p>
         </section>
@@ -97,9 +100,16 @@
             <p class="num">智能匹配未筛选到合适的设计服务商</p>
             <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
           </div>
+        </div> -->
+      </div>
+      <div class="project-foot">
+        <div class="buttons clearfix flex-center" >
+          <el-button plain style="margin-right: 20px" @click="goHome">返回首页</el-button>
+          <button  class="middle-button full-red-button" @click="lookList">查看项目</button>
         </div>
       </div>
     </div>
+   
     <div v-if="showList" class="project-cover clearfix">
       <div>
         <div class="project-item-box project-item-box-company">
@@ -352,6 +362,14 @@ export default {
     }
   },
   methods: {
+    // 返回首页
+    goHome() {
+      this.$router.push({name: 'home'})
+    },
+    // 查看项目
+    lookList() {
+      this.$router.push({name: 'vcenterItemList'})
+    },
     submit3 (form) {
       if (this.isSubmiting) {
         return
@@ -387,26 +405,26 @@ export default {
               this.outerVisible = false
               this.isMatching = true
               this.showForm = false
-              if (this.custom.name === 'sn') {
-                this.matchComplete = true
-                setTimeout(_ => {
-                  this.showBackList = true
-                }, 1000)
-              } else {
-                let arr = this.formatList(res.data.data)
-                setTimeout(_ => {
-                  this.designList = arr || []
-                  this.matchComplete = true
-                  setTimeout(_ => {
-                    this.isMatching = false
-                    this.showList = true
-                    if (this.designList.length) {
-                      this.formatRadar(arr)
-                    }
-                  }, 1500)
-                }, 1000)
-                // this.$router.push({name: 'projectMatch', params: {id: this.id}})
-              }
+              // if (this.custom.name === 'sn') {
+              //   this.matchComplete = true
+              //   setTimeout(_ => {
+              //     this.showBackList = true
+              //   }, 1000)
+              // } else {
+              //   let arr = this.formatList(res.data.data)
+              //   setTimeout(_ => {
+              //     this.designList = arr || []
+              //     this.matchComplete = true
+              //     setTimeout(_ => {
+              //       this.isMatching = false
+              //       this.showList = true
+              //       if (this.designList.length) {
+              //         this.formatRadar(arr)
+              //       }
+              //     }, 1500)
+              //   }, 1000)
+              //   // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+              // }
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -917,6 +935,15 @@ export default {
     background: #fff;
     border-radius: 0 0 4px 4px ;
   }
+  .success-title {
+    color: #fff;
+    font-size:20px;
+    font-weight:400;
+    margin: 24px 0 10px 0;
+  }
+  .success-dirceh {
+    color: #fff;
+  }
   .case-content .title {
     max-height: 28px;
     overflow : hidden;
@@ -925,8 +952,18 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  .success-icon {
+    color:#00AC84;
+    font-size: 88px
+  }
   .project-foot-compare {
     height: 140px;
+  }
+  .bg-white {
+    display: inline-block;
+    background: #fff;
+    border-radius: 50%;
+    overflow: hidden;
   }
   .select-num {
     padding: 10px 20px;

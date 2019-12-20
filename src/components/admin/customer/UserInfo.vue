@@ -325,7 +325,7 @@
                     <span v-if="isHasPower" class="fr pointer tc-red like-btn" @click="addDesignCompany(item.item_id)"><i class="el-icon-circle-plus"></i>匹配设计服务商</span>
                     </p>
                   </div>
-                  <el-collapse-transition>
+                  <!-- <el-collapse-transition>
                     <ul v-if="boolDesigeList && sheetAllPush.length > 0 && cooperation === 0" class="design-parent show-margin">
                       <div class="count-push" v-if="allredoreState === 0">
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
@@ -349,7 +349,7 @@
                           <span class="padding-l10 white-no">{{d.company_name}}</span>
                           <div v-if="item.failure === null && isHasPower && cooperation === 1" class="edit-project fr">
                             <div class="edit-project-tag" v-if="isHasPower">
-                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
+                              <p @click="deleteDesignProject(d)">删除</p>
                               <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
                             </div>
                           </div>
@@ -459,55 +459,63 @@
                         </el-row>
                       </li>
                     </ul>
-                  </el-collapse-transition>
-                  <el-collapse-transition>
-                    <ul v-if="boolDesigeList && crmDesignCompanyList1.length > 0 && cooperation === 1" class="design-parent">
-                      <div class="count-push" v-if="sheetAllPush && sheetAllPush.length > 0">
+                  </el-collapse-transition> -->
+                  <el-collapse-transition v-if="boolDesigeList">
+                    <!-- v-if="boolDesigeList && cooperation === 1" -->
+                    <ul  class="design-parent">
+                      <!-- v-if="sheetAllPush && sheetAllPush.length > 0" -->
+                      <!-- <div class="count-push" >
                         <div class="count-text">已匹配{{sheetAllPush.length}}家设计服务商，</div>
                         <div class="count-text color-ffa64b">{{alreadyOrder}}家</div>
                         <div class="count-text">已接单，</div>
                         <div class="count-text color-ffa64b">{{resourceOrder}}家</div>
                         <div class="count-text">拒绝接单。</div>
                         <div class="count-text color-ff5a5f cur-point" @click="getGrabSheetAllPush()">查看全部</div>
+                      </div> -->
+                      <div class="count-box" v-if="crmDesignCompanyList.length > 0">
+                        <div class="count-box-text fl">已匹配 <span class="num-cor">{{crmDesignCompanyList.length}}家</span> 设计服务商</div>
+                        <div class="count-text color-ff5a5f cur-point fr" @click="showAllDesign()" v-if="crmDesignCompanyList.length > 3">查看全部 <i :class="['el-icon-arrow-down', 'look-more', boolallDesign ? 'route0' : 'route180']"></i></div>
                       </div>
+                      <div></div>
                       <li v-for="(d, i) in crmDesignCompanyList1" :key="i" class="design-li contant-border margin-t20">
                         <div class="margin-b-10">
-                          <img class="avatar"  v-if="d.logo_id" :src="d.logo_image.logo" alt="">
+                          <img class="avatar"  v-if="d.design_company.logo_image" :src="d.design_company.logo_image.logo" alt="">
                           <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" alt="">
-                          <span class="padding-l10 white-no">{{d.company_name}}</span>
-                          <div v-if="item.failure === null && isHasPower" class="edit-project fr">
+                          <span class="padding-l10 white-no">{{d.quotation.company_name}}</span>
+                          <div v-if="item.failure === null && isHasPower && d.quotation.id" class="edit-project fr">
                             <div class="edit-project-tag" v-if="isHasPower">
-                              <!-- <p @click="deleteDesignProject(d)">删除</p> -->
-                              <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p>
+                              <!-- <p @click="deleteDesignProject(d)">删除</p>
+                              <p @click="showEditDesignForm(d)" class="pointer edit">编辑</p> -->
+                              <span class="select-title" @click="lookprice(d.quotation)">查看报价详情</span>
                             </div>
                           </div>
                         </div>
-                        <el-row :gutter="10">
+                        <el-row :gutter="10" class="concet">
                           <el-col :span="6">
                             <div class="flex-column">
                               <span class="tc-9">联系人</span>
-                              <span v-if="d.contact_name" class="fz-14">{{d.contact_name}}</span>
+                              <span v-if="d.quotation.contact_name" class="fz-14">{{d.quotation.contact_name}}</span>
                               <span v-else>—</span>
                             </div>
                           </el-col>
                           <el-col :span="6">
                             <div class="flex-column">
                               <span class="tc-9">职务</span>
-                              <span v-if="d.position" class="fz-14">{{d.position}}</span>
+                              <span v-if="d.quotation.position" class="fz-14">{{d.quotation.position}}</span>
                               <span v-else>—</span>
                             </div>
                           </el-col>
                           <el-col :span="6">
                             <div class="flex-column">
                               <span class="tc-9">电话</span>
-                              <span v-if="d.phone" class="fz-14">{{d.phone}}</span>
+                              <span v-if="d.quotation.phone" class="fz-14">{{d.quotation.phone}}</span>
                               <span v-else>—</span>
                             </div>
                           </el-col>
                           <el-col :span="6">
                             <div class="flex-column">
                               <span class="tc-9">微信</span>
-                              <span v-if="d.wx" class="fz-14">{{d.wx}}</span>
+                              <span v-if="d.quotation.wx" class="fz-14">{{d.quotation.wx}}</span>
                               <span v-else>—</span>
                             </div>
                           </el-col>
@@ -515,29 +523,56 @@
 
 
                         <el-row class="design-li-footer">
-                          <el-col :span="6">
-                            <span :class="['progess-current', {'refuse': d.status > 6 }]">{{d.status_value}}</span>
+                          <el-col :span="8">
+                            <el-popover trigger="hover" placement="top-start" width="680">
+                              <span v-if="d.log">
+                                <span v-for="(item, index) in d.log" :key="index" >
+                                  <el-row>
+                                    <el-col :span="12">
+                                      <div class="log-flex">
+                                        <i class="iconfont icon-news-l" style="margin-right: 6px"></i>
+                                        <span>{{item.value}}</span>
+                                      </div>
+                                    </el-col>
+                                    <el-col :span="12">
+                                      <div class="log-flex">
+                                        <i class="fx fx-icon-time va-middle"></i>
+                                        <span>{{item.time | timeFormat}}</span>
+                                      </div>
+                                    </el-col>
+                                  </el-row>
+                                </span>
+                              </span>
+                              <span v-else>暂无历史记录~</span>
+                              <span slot="reference" class="cursor">
+                                <span :class="[{'refuse': d.status < 3 }]" v-if="d.status < 3">{{d.status_value}}</span>
+                                <span  v-else class="font-cor span-flex">
+                                  <i class="iconfont icon-check-mark-solid-l font-cor margin-right iocnsize"></i>
+                                  <i>{{d.status_value}}</i>
+                                </span>
+                              </span>
+                            </el-popover>
                           </el-col>
                           
                           <el-col :span="6">
-                          <span v-if="d.status < 5">
-                            <i class="fx fx-icon-time va-middle"></i>
-                            <span class="tc-red va-middle">{{d.status_time | getProgessTime}}</span>
-                          </span>
-                          <span v-else><i class="fx fx-icon-time va-middle"></i>
-                            <span class="va-middle">{{ d.status_time? d.status_time.date_format().format('yyyy-MM-dd') : ''}}</span>
-                          </span>
+                            <span v-if="d.status < 3">
+                              <i class="fx fx-icon-time va-middle"></i>
+                              <span class="tc-red va-middle">{{d.summary_value}}</span>
+                            </span>
+                            <span v-else><i class="fx fx-icon-time va-middle"></i>
+                              <span class="va-middle">{{ d.updated_at ? d.updated_at.date_format().format('yyyy-MM-dd') : ''}}</span>
+                            </span>
                           </el-col>
                           
                           <el-col :span="6">
                           <div class="progess-box">
-                            <el-popover
+                            <span class="price-color" v-if="d.quotation.total_price"><span class="price-label">报价：</span>¥{{d.quotation.total_price}}</span>
+                            <!-- <el-popover
                               placement="top-end"
                               width="680"
                               trigger="click">
                                 <div class="steps" v-if="boolStage && d.design_company_id === nowDesignId">
                                   <el-steps :active="stageActive" class="steps-item">
-                                    <!-- <el-step v-for="(item, k) in stageArr" :key="k" :title="item.message" :description="item.time"></el-step> -->
                                     <el-step :title="stageArr[0].message" :description="stageArr[0].time" icon="el-icon-success"></el-step>
                                     <el-step :title="stageArr[1].message" :description="stageArr[1].time"  icon="el-icon-success"></el-step>
                                     <el-step :title="stageArr[2].message" :description="stageArr[2].time"  icon="el-icon-success"></el-step>
@@ -551,28 +586,27 @@
                                     <p class="line-height30">服务商备注: &nbsp;&nbsp;<span>{{d.design_remarks}}</span></p>
                                   </div>
                                 </div>
-                                <!-- v-if="d.status !== 1" -->
                               <span  slot="reference" class="fr check-progess tc-9 tc-hover-red pointer" tabindex="-1" @click="showProgessDesign(d)">查看进度</span>
-                            </el-popover>
+                            </el-popover> -->
                           </div>
                           </el-col>
                         </el-row>
-                        <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress>
+                        <!-- <el-progress :percentage="d.status | getProgess" :status="d.status > 6 ? 'exception':'text'" :show-text="false" class="design-progress"></el-progress> -->
                       </li>
-                      <li>
+                      <!-- <li>
                         <p v-if="crmDesignCompanyList.length > 3 && boolallDesign" @click="showAllDesign" class="all-design-btn text-center line-height40 margin-t20 border-e6 pointer">查看全部设计服务商</p>
-                      </li>
+                      </li> -->
                     </ul>
                   </el-collapse-transition>
                 </li>
               </ul>
             </div>
             </el-collapse-transition>
-            <div class="no-project" v-if="projectList.length === 0">
+            <!-- <div class="no-project" v-if="projectList.length === 0">
               <img src="../../../assets/images/crm/Remarks@2x.png" alt="">
               <p class="text-center tc-2 margin-t20">客户备注</p>
               <p class="text-center tc-6 line-height20">{{clientList.summary}}</p>
-            </div>
+            </div> -->
           </div>
 
           <div v-if="option === 'user'" class="fz-14 padding-b-20">
@@ -1249,13 +1283,13 @@
 
     <!-- 添加服务商 -->
     <el-dialog
-      title="匹配设计服务商"
+      title="选择设计服务商"
       class="userinfo-dialog custom-userinfo-dialog"
       :visible.sync="boolDesignCompany"
       width="780px">
       <div class="dialog-body scroll-bar">
         <div class="title-round">
-          <div class="title-title">选择设计服务商</div>
+          <div class="title-title">选择确定合作的设计服务商</div>
           <el-tooltip effect="add-tooltop chose-use" content="选择的服务商接单后将自动对接给客户。最多可选择2家服务商。" placement="right">
             <div class="title-mark"></div>
           </el-tooltip>
@@ -1296,13 +1330,13 @@
           <div class="company-close" @click="deleteSelectCompany(item.id)"></div>
         </div>
 
-        <div class="title-round pad-top-30-bot-0" v-if="recommenLists.length > 0">
+        <!-- <div class="title-round pad-top-30-bot-0" v-if="recommenLists.length > 0">
           <div class="title-title">系统匹配的设计服务商</div>
           <el-tooltip effect="add-tooltop chose-use" content="系统自动匹配6家服务商。服务商接单后可选择合适的1-2家对接给客户。" placement="right">
             <div class="title-mark"></div>
           </el-tooltip>
-        </div>
-        <div class="bottom-company">
+        </div> -->
+        <!-- <div class="bottom-company">
           <div class="company-style" v-for="item in recommenLists" :key="item.company_name">
             <div class="company-info">
               <div class="company-logo">
@@ -1328,17 +1362,17 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <span slot="footer" class="dialog-footer design-btn fz-0">
         <div class="choose-golden-round">
           <div class="choose-golden-tan"></div>
-          <div class="choose-golden-text">确认匹配后，{{chooseCompany.length + recommenLists.length}}家设计公司将收到接单提醒</div>
+          <div class="choose-golden-text">确认选择合作的设计服务商后，该设计服务商将可直接编辑合同</div>
         </div>
         <div>
           <el-button @click="selectDialogClose">取 消</el-button>
           
-          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0 || recommenLists.length > 0">确认匹配</el-button>
+          <el-button type="primary" :loading="submitDesignLoading" @click="addGrabSheetPush()" v-if="chooseCompany.length > 0">确认匹配</el-button>
           <el-button type="info" class="e6-btn" v-else disabled>确认匹配</el-button>
         </div>
       </span>
@@ -1463,7 +1497,8 @@
         <!-- <el-button @click="showAllDesigns = false">取 消</el-button>
         <el-button type="primary" @click="showAllDesigns = false">确 定</el-button> -->
         <div class="footer-img"></div>
-        <div class="footer-img-text">系统已匹配{{sheetAllPush.length}}家设计服务商，{{waitOrder}}家等待接单</div>
+        <!-- ，{{waitOrder}}家等待接单 -->
+        <div class="footer-img-text">系统已匹配{{sheetAllPush.length}}家设计服务商</div>
       </span>
     </el-dialog>
 
@@ -1562,6 +1597,14 @@
         </div>
       </span>
     </el-dialog>
+    <!-- 报价单详情 -->
+    <el-dialog title="报价单详情" id="quote-dialog" :visible.sync="quotaDialog" style="width: 880px;margin: auto" width="580px" top="2%">
+      <v-quote-view :formProp="quota"></v-quote-view>
+
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
+    </el-dialog>
   </div>
 </template>
 
@@ -1573,11 +1616,13 @@ import {nameToAvatar} from '@/assets/js/common'
 // import Clipboard from 'clipboard'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
+const vQuoteView = () => import('@/components/block/QuoteView')
 // import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_potential_userinfo',
   components: {
-    RegionPicker
+    RegionPicker,
+    vQuoteView
   },
   data() {
     return {
@@ -1585,6 +1630,7 @@ export default {
       currentUser: '新建客户',
       currentId: '',
       timesObj: {},
+      quotaDialog: false,
       istoolp: false,
       noAllChoose: false,
       isAllChoose: false,
@@ -1636,6 +1682,7 @@ export default {
         son_source: '',
         city: ''
       },
+      quota: {},
       ruleClientForm: {
         name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
@@ -1942,6 +1989,11 @@ export default {
     }
   },
   methods: {
+    // 查看报价单详情
+    lookprice(obj) {
+      this.quota = obj
+      this.quotaDialog = true
+    },
     closeGrabSheetDesignatedOrder() {
       this.showSystemAllPush = false
       this.clickChooseDesignId = []
@@ -2028,82 +2080,84 @@ export default {
       })
     },
     // 所有推荐设计公司记录
-    getGrabSheetAllPush(type, add) {
-      let that = this
-      if (!type) {
-        that.showAllDesigns = true
-      }
-      if (that.timesObj) {
-        for (let index in that.timesObj) {
-          window.clearInterval(that.timesObj[index])
-        }
-      }
-      if (that.projectList[0]) {
-        let id = that.projectList[0].item_id
-        that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
-          if (res.data.meta.status_code === 200) {
-            that.cooperation = res.data.data.cooperation
-            if (res.data.data && res.data.data.data.length > 0) {
-              let data = res.data.data.data
-              that.allredoreState = res.data.data.status
-              let waitOrder = 0
-              let alreadyOrder = 0
-              let resourceOrder = 0
-              let times = []
-              for (let index in data) {
-                if (data[index].grab_sheet_status === 3 || data[index].grab_sheet_status === 5) {
-                  resourceOrder++
-                } else if (data[index].grab_sheet_status === 2 || data[index].grab_sheet_status === 4) {
-                  alreadyOrder++
-                } else if (data[index].grab_sheet_status === 1) {
-                  waitOrder++
-                }
-                if (res.data.data.status === 1) {
-                  that.sheetAllPush = data
-                } else {
-                  let newTime = Math.floor(((new Date()).getTime()) / 1000)
-                  if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
-                    let lasttime = data[index].grab_sheet_push_time
-                    times[index] = Math.floor((lasttime + 7200) - newTime)
-                    that.timesObj['time' + index] = setInterval(function () {
-                      if (times[index] > 0) {
-                        let day = 0
-                        let hour = 0
-                        let minute = 0
-                        let second = 0 // 时间默认值
-                        day = Math.floor(times[index] / (60 * 60 * 24))
-                        hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
-                        minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
-                        second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
-                        if (hour <= 9) hour = '0' + hour
-                        if (minute <= 9) minute = '0' + minute
-                        if (second <= 9) second = '0' + second
-                        data[index].setTime = hour + '：' + minute + '：' + second
-                        that.sheetAllPush = data
-                        times[index]--
-                      } else {
-                        data[index].setTime = ''
-                        data[index].grab_sheet_status = 3
-                        that.sheetAllPush = data
-                        if (that.timesObj['time' + index]) {
-                          clearInterval(that.timesObj['time' + index])
-                        }
-                      }
-                    }, 1000)
-                  }
-                }
-              }
-              that.waitOrder = waitOrder
-              that.alreadyOrder = alreadyOrder
-              that.resourceOrder = resourceOrder
-            }
-          }
-        }).catch(error => {
-          console.error(error.message)
-          // that.$message.error(error.message)
-        })
-      }
-    },
+    // getGrabSheetAllPush(type, add) {
+    //   let that = this
+    //   if (!type) {
+    //     that.showAllDesigns = true
+    //   }
+    //   if (that.timesObj) {
+    //     for (let index in that.timesObj) {
+    //       window.clearInterval(that.timesObj[index])
+    //     }
+    //   }
+    //   if (that.projectList[0]) {
+    //     let id = that.projectList[0].item_id
+    //     that.$http.get(api.adminGrabSheetAllPush, {params: {id: id}}).then(res => {
+    //       if (res.data.meta.status_code === 200) {
+    //         that.cooperation = res.data.data.cooperation
+    //         if (res.data.data && res.data.data.data.length > 0) {
+    //           let data = res.data.data.data
+    //           that.sheetAllPush = data
+    //           // 老版
+    //           // that.allredoreState = res.data.data.status
+    //           // let waitOrder = 0
+    //           // let alreadyOrder = 0
+    //           // let resourceOrder = 0
+    //           // let times = []
+    //           // for (let index in data) {
+    //           //   if (data[index].grab_sheet_status === 3 || data[index].grab_sheet_status === 5) {
+    //           //     resourceOrder++
+    //           //   } else if (data[index].grab_sheet_status === 2 || data[index].grab_sheet_status === 4) {
+    //           //     alreadyOrder++
+    //           //   } else if (data[index].grab_sheet_status === 1) {
+    //           //     waitOrder++
+    //           //   }
+    //           //   if (res.data.data.status === 1) {
+    //           //     that.sheetAllPush = data
+    //           //   } else {
+    //           //     let newTime = Math.floor(((new Date()).getTime()) / 1000)
+    //           //     if (data[index].grab_sheet_status === 1 && data[index].grab_sheet_push_time) {
+    //           //       let lasttime = data[index].grab_sheet_push_time
+    //           //       times[index] = Math.floor((lasttime + 7200) - newTime)
+    //           //       that.timesObj['time' + index] = setInterval(function () {
+    //           //         if (times[index] > 0) {
+    //           //           let day = 0
+    //           //           let hour = 0
+    //           //           let minute = 0
+    //           //           let second = 0 // 时间默认值
+    //           //           day = Math.floor(times[index] / (60 * 60 * 24))
+    //           //           hour = Math.floor(times[index] / (60 * 60)) - (day * 24)
+    //           //           minute = Math.floor(times[index] / 60) - (day * 24 * 60) - (hour * 60)
+    //           //           second = Math.floor(times[index]) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+    //           //           if (hour <= 9) hour = '0' + hour
+    //           //           if (minute <= 9) minute = '0' + minute
+    //           //           if (second <= 9) second = '0' + second
+    //           //           data[index].setTime = hour + '：' + minute + '：' + second
+    //           //           that.sheetAllPush = data
+    //           //           times[index]--
+    //           //         } else {
+    //           //           data[index].setTime = ''
+    //           //           data[index].grab_sheet_status = 3
+    //           //           that.sheetAllPush = data
+    //           //           if (that.timesObj['time' + index]) {
+    //           //             clearInterval(that.timesObj['time' + index])
+    //           //           }
+    //           //         }
+    //           //       }, 1000)
+    //           //     }
+    //           //   }
+    //           // }
+    //           // that.waitOrder = waitOrder
+    //           // that.alreadyOrder = alreadyOrder
+    //           // that.resourceOrder = resourceOrder
+    //         }
+    //       }
+    //     }).catch(error => {
+    //       console.error(error.message)
+    //       // that.$message.error(error.message)
+    //     })
+    //   }
+    // },
     // 所有系统推荐设计公司
     getSystemAllPush() {
       let that = this
@@ -2143,31 +2197,31 @@ export default {
           if (item.logo_image && item.logo_image.logo) {
             data.logo = item.logo_image.logo
           }
-          if (that.chooseCompany.length === 2) {
-            that.designCompanyForm.design_company_id = ''
-            that.$message.error('最多选择两家设计服务商')
-          }
           let ishas = false
-          if (that.chooseCompany.length < 2) {
-            for (let index in that.chooseCompany) {
-              if (that.chooseCompany[index].id === data.id) {
-                ishas = true
-                that.$message.error('不能选择同一家公司')
-              }
-            }
-            if (that.sheetAllPush && that.sheetAllPush.length > 0) {
-              that.sheetAllPush.forEach(item => {
-                if (item.id === val) {
-                  that.designCompanyForm.design_company_id = ''
-                  ishas = true
-                  that.$message.error('选择的服务商已添加')
-                }
-              })
-            }
-            if (!ishas) {
-              that.chooseCompany.push(data)
+          // if (that.chooseCompany.length === 2) {
+          //   that.designCompanyForm.design_company_id = ''
+          //   that.$message.error('最多选择两家设计服务商')
+          // }
+          // if (that.chooseCompany.length < 2) {
+          for (let index in that.chooseCompany) {
+            if (that.chooseCompany[index].id === data.id) {
+              ishas = true
+              that.$message.error('不能选择同一家公司')
             }
           }
+          if (that.projectList && that.projectList.length > 0) {
+            that.projectList[0].item_recommend.forEach(item => {
+              if (item.design_company.id === val) {
+                that.designCompanyForm.design_company_id = ''
+                ishas = true
+                that.$message.error('选择的服务商已添加')
+              }
+            })
+          }
+          if (!ishas) {
+            that.chooseCompany.push(data)
+          }
+          // }
         }
       })
     },
@@ -2184,25 +2238,25 @@ export default {
         }
       }
     },
-    recommenList(id) {
-      let that = this
-      that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
-        if (res.data && res.data.meta.status_code === 200) {
-          let data = res.data.data
-          for (let index in data) {
-            if (data[index].logo_image && data[index].logo_image.logo) {
-              data[index].logo = data[index].logo_image.logo
-            }
-          }
-          that.recommenLists = res.data.data
-        } else {
-          that.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        that.$message.error(error.message)
-        console.log(error.message)
-      })
-    },
+    // recommenList(id) {
+    //   let that = this
+    //   that.$http.get(api.adminGrabSheetPushList, {params: {id: id}}).then(res => {
+    //     if (res.data && res.data.meta.status_code === 200) {
+    //       let data = res.data.data
+    //       for (let index in data) {
+    //         if (data[index].logo_image && data[index].logo_image.logo) {
+    //           data[index].logo = data[index].logo_image.logo
+    //         }
+    //       }
+    //       that.recommenLists = res.data.data
+    //     } else {
+    //       that.$message.error(res.data.meta.message)
+    //     }
+    //   }).catch(error => {
+    //     that.$message.error(error.message)
+    //     console.log(error.message)
+    //   })
+    // },
     addGrabSheetPush() {
       let that = this
       that.submitDesignLoading = true
@@ -2214,7 +2268,29 @@ export default {
       for (let index in that.chooseCompany) {
         row.design.push(that.chooseCompany[index].id)
       }
-      that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
+      // 旧
+      // that.$http.post(api.adminGrabSheetPushRecord, row).then(res => {
+      //   if (res.data.meta.status_code === 200) {
+      //     that.submitDesignLoading = false
+      //     that.boolDesignCompany = false
+      //     that.chooseCompany = []
+      //     // if (that.timesObj) {
+      //     //   window.location.reload()
+      //     // }
+      //     that.getUserProject()
+      //     that.getUserInfo()
+      //   } else {
+      //     that.$message.error(res.data.meta.message)
+      //     that.submitDesignLoading = false
+      //     that.boolDesignCompany = false
+      //   }
+      // }).catch(error => {
+      //   that.$message.error(error.message)
+      //   that.submitDesignLoading = false
+      //   that.boolFollowLog = false
+      // })
+      // 新
+      that.$http.put(api.pushDesign, row).then(res => {
         if (res.data.meta.status_code === 200) {
           that.submitDesignLoading = false
           that.boolDesignCompany = false
@@ -2222,8 +2298,8 @@ export default {
           // if (that.timesObj) {
           //   window.location.reload()
           // }
-          that.getUserProject()
-          that.getUserInfo()
+          that.getUserProject() // 项目列表
+          that.getUserInfo() // 查看用户档案
         } else {
           that.$message.error(res.data.meta.message)
           that.submitDesignLoading = false
@@ -2509,13 +2585,13 @@ export default {
               this.userProjectLoading = false
               this.boolallDesign = true
               if (data[0]) {
-                const {crm_design_company: designList} = data[0]
-                if (designList.length > 3) {
-                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                // const {crm_design_company: designList} = data[0]
+                if (data[0].item_recommend.length > 3) {
+                  this.crmDesignCompanyList1 = data[0].item_recommend.slice(0, 3)
                 } else {
-                  this.crmDesignCompanyList1 = designList
+                  this.crmDesignCompanyList1 = data[0].item_recommend
                 }
-                this.crmDesignCompanyList = designList
+                this.crmDesignCompanyList = data[0].item_recommend
               }
             } else {
               this.$message.error(res2.data.meta.message)
@@ -2642,13 +2718,13 @@ export default {
               this.userProjectLoading = false
               this.boolallDesign = true
               if (data[0]) {
-                const {crm_design_company: designList} = data[0]
-                if (designList.length > 3) {
-                  this.crmDesignCompanyList1 = designList.slice(0, 3)
+                // const {crm_design_company: designList} = data[0]
+                if (data[0].item_recommend.length > 3) {
+                  this.crmDesignCompanyList1 = data[0].item_recommend.slice(0, 3)
                 } else {
-                  this.crmDesignCompanyList1 = designList
+                  this.crmDesignCompanyList1 = data[0].item_recommend
                 }
-                this.crmDesignCompanyList = designList
+                this.crmDesignCompanyList = data[0].item_recommend
               }
             } else {
               this.$message.error(res2.data.meta.message)
@@ -3072,36 +3148,44 @@ export default {
       })
     },
     getUserProject() { // 项目列表
-      this.userProjectLoading = true
-      this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          const data = res.data.data
-          this.projectList = data
-          let type = true
-          this.getGrabSheetAllPush(type)
-          this.userProjectLoading = false
-          this.boolallDesign = true
-          if (data[0]) {
-            const {crm_design_company: designList} = data[0]
-            if (designList.length > 3) {
-              this.crmDesignCompanyList1 = designList.slice(0, 3)
-            } else {
-              this.crmDesignCompanyList1 = designList
+      if (this.currentId) {
+        this.userProjectLoading = true
+        this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            const data = res.data.data
+            this.projectList = data
+            // let type = true
+            // this.getGrabSheetAllPush(type)
+            this.userProjectLoading = false
+            this.boolallDesign = true
+            if (data[0]) {
+              // const {crm_design_company: designList} = data[0]
+              console.log('data[0].item_recommend.length', data[0].item_recommend.length)
+              if (data[0].item_recommend.length > 3) {
+                this.crmDesignCompanyList1 = data[0].item_recommend.slice(0, 3)
+              } else {
+                this.crmDesignCompanyList1 = data[0].item_recommend
+              }
+              this.crmDesignCompanyList = data[0].item_recommend
+              console.log('crmDesignCompanyList1', this.crmDesignCompanyList1)
             }
-            this.crmDesignCompanyList = designList
+          } else {
+            this.$message.error(res.data.meta.message)
+            this.userProjectLoading = false
           }
-        } else {
-          this.$message.error(res.data.meta.message)
+        }).catch(error => {
+          this.$message.error(error.message)
           this.userProjectLoading = false
-        }
-      }).catch(error => {
-        this.$message.error(error.message)
-        this.userProjectLoading = false
-      })
+        })
+      }
     },
     showAllDesign() {
-      this.boolallDesign = false
-      this.crmDesignCompanyList1 = [...this.crmDesignCompanyList]
+      this.boolallDesign = !this.boolallDesign
+      if (this.boolallDesign) {
+        this.crmDesignCompanyList1 = this.crmDesignCompanyList1.slice(0, 3)
+      } else {
+        this.crmDesignCompanyList1 = [...this.crmDesignCompanyList]
+      }
     },
     addDesignCompany(id) {
       if (id) {
@@ -3111,7 +3195,6 @@ export default {
         wx: '',
         summary: ''
       }
-      this.recommenList(this.projectList[0].item_id)
       this.boolDesignCompany = true
       this.getDesignCompanyList()
     },
@@ -3535,7 +3618,9 @@ export default {
   watch: {
     option(val) {
       if (val === 'project') {
-        this.getUserProject()
+        if (this.currentId) {
+          this.getUserProject()
+        }
       }
     },
     sheetAllPush: {
@@ -3687,6 +3772,10 @@ export default {
 .padding-t8 {
   padding-top: 8px;
 }
+.log-flex {
+  display: flex;
+  align-items: center
+}
 .padding-t10 {
   padding-top: 10px;
 }
@@ -3726,6 +3815,16 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.look-more {
+  color: #FF5A5F;
+  transition: all .3s
+}
+.route0 {
+  transform: rotate(0deg)
+}
+.route180 {
+  transform: rotate(180deg)
+}
 .u-c-time {
   font-size: 12px;
   color: #666666;
@@ -3745,6 +3844,15 @@ export default {
 }
 .right-icon > i {
   color: #999;
+}
+.price-label {
+  color: #999999;
+  font-size: 14px;
+}
+.price-color {
+  color: #ff5a5f;
+  font-weight:500;
+  font-size: 18px;
 }
 .right-icon > i:hover {
   color: #000;
@@ -3967,10 +4075,13 @@ export default {
 .design-parent > .design-li:nth-last-of-type(2) {
 	margin-bottom: 20px;
 }
+.design-li:last-child {
+  margin-bottom: 20px;
+}
 .design-li {
   /* width: 680px; */
   /* height: 142px; */
-  padding: 10px 18px 4px 20px;
+  padding: 12px 18px 8px 20px;
 }
 .design-li  .flex-column > span {
   line-height: 1.2;
@@ -4031,6 +4142,21 @@ export default {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: rgba(255,166,75,1);
+}
+.font-cor {
+  color: #00AC84;
+}
+.margin-right {
+  margin-right: 4px;
+  position: relative;
+  top: 1px
+}
+.span-flex {
+  display: flex;
+  align-items: center
+}
+.iocnsize {
+  font-size: 18px;
 }
 .progess-current {
   padding-left: 20px;
@@ -4269,6 +4395,9 @@ export default {
   font-weight: 400;
   color: rgba(51,51,51,1);
 }
+.concet {
+  margin: 24px 0 16px 0;
+}
 .count-push {
   height: 44px;
   background: rgba(255,255,255,1);
@@ -4279,6 +4408,20 @@ export default {
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+}
+.num-cor {
+  color: #FF696E
+}
+.count-box-text {
+  font-size:14px;
+  font-weight:400;
+  color:rgba(102,102,102,1);
+}
+.count-box {
+  height: 40px;
+  border-bottom: 1px solid #E6E6E6;
+  line-height: 40px;
+  margin-top: 16px
 }
 .count-text {
   font-size: 12px;
@@ -4495,7 +4638,13 @@ export default {
   /* border-bottom: 1px solid #e6e6e6; */
   padding: 16px 30px 0px 30px;
 }
-
+.select-title {
+  color: #999999;
+  font-size: 14px;
+}
+.cursor {
+  cursor: pointer;
+}
 .edit-project {
   position: relative;
   width: 30px;
@@ -4514,12 +4663,14 @@ export default {
   display: none;
   position: absolute;
   top: 34px;
-  left: -66px;
+  right: 0px;
   width: 120px;
   z-index: 99;
-  border: 1px solid #e6e6e6;
-  background: #ffffff;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 24px 0px rgba(0,0,0,0.04);
+  border:1px solid rgba(240,240,240,1);
+  text-align: center;
+  border-radius: 6px;
 }
 .edit-project .edit-project-tag> p {
   height: 36px;

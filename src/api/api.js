@@ -91,7 +91,8 @@ export default {
 
   // 需求方公司管理
   demandCompany: '/demandCompany', // POST 保存需求方公司信息;  GET 获取信息
-
+  // 新版后台
+  pushDesign: '/admin/clue/pushDesign', // PUT crm项目推荐-匹配设计公司
   // 公司项目接口
   // 设计服务商获取项目订单
   designItemList: '/design/itemList', // 设计服务商获取项目列表
@@ -105,6 +106,8 @@ export default {
   designItemDoneId: '/design/itemDone/{0}', // POST 确认项目完成
   itemStageSend: '/itemStage/ok/status', // PUT 项目阶段发送
   confirmItemDelete: '/itemStage/delete/isOk', // GET 判断附件是否可以删除
+  sendQuotation: '/quotationPush', // PUT 发送报价单
+  confirmationIntention: '/design/confirmationIntention', // PUT 接单
 
   // 合同
   contract: '/contract', // POST 保存合同

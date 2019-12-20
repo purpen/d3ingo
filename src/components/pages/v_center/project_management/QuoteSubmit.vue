@@ -450,7 +450,6 @@ export default {
           return
         }
         this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
-
         let apiUrl
         let method
         this.isLoadingBtn = true

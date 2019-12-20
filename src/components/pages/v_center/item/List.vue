@@ -24,47 +24,58 @@
               </div>
               <div v-if="itemIngList.length">
                 <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
-                  <div class="banner" v-if="contentShowIndex === index">
+                  <!-- <div class="banner" v-if="contentShowIndex === index">
                     <p>
                       <span>进行中</span>
                     </p>
-                  </div>
+                  </div> -->
                   <div class="content">
                     <div class="pre"> 
-                      <p class="c-title-pro">
-                        <span v-if="d.item.name">{{ d.item.name }}</span>
-                        <span v-else>未命名项目</span>
-                      </p>
-                      <p class="progress-line">
-                        <el-progress
-                          :text-inside="true"
-                          :show-text="false"
-                          :stroke-width="6"
-                          :percentage="d.item.progress"
-                          status="exception">
-                        </el-progress>
-                      </p>
-                      <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
-
-                      <p v-if="d.item.status === -1">
-                        <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
-                          删除项目
-                        </el-button>
-                      </p>
-                      <p class="buttons" v-else>   
-                        <el-button class="is-custom"
-                        size="small"
-                        :progress="d.item.stage_status"
-                        :item_id="d.item.id"
-                        :item_type="d.item.type" @click="editItem(d.item.stage_status, d.item.id, d.item.type)" type="primary"> 
-                          <i class="el-icon-edit"></i> 完善项目
-                        </el-button>
-                        <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
-                          <el-button class="" @click="closeItemBtnOngo" :item_id="d.item.id" :index="index" size="small">
-                            关闭项目
+                      <div :class="[{
+                          'project-bg1': d.item.type === 1,
+                          'project-bg2': d.item.type === 2,
+                          'project-bg3': d.item.type === 3,
+                          'project-bg5': d.item.type === 5,
+                          'project-bg6': d.item.type === 6,
+                        }]"></div>
+                      <div class="widh">
+                        <p class="c-title-pro flex-between">
+                          <span v-if="d.item.name" class="pro-name">{{ d.item.name }}</span>
+                          <span v-else  class="pro-name">未命名项目</span>
+                          <span class="status-title">进行中</span>
+                        </p>
+                        <p class="time-cor"><i class="iconfont icon-time-s"></i>{{d.item.created_at | formatDate}}</p>
+                        <p class="progress-line">
+                          <el-progress
+                            :text-inside="true"
+                            :show-text="false"
+                            :stroke-width="6"
+                            :percentage="d.item.progress"
+                            status="exception">
+                          </el-progress>
+                        </p>
+                        <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
+                        <p v-if="d.item.status === -1">
+                          <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
+                            删除项目
                           </el-button>
-                        </el-tooltip>
-                      </p>
+                        </p>
+                        <p class="buttons" v-else>   
+                          <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
+                            <el-button  class="" @click="closeItemBtnOngo" :item_id="d.item.id" :index="index" size="small">
+                              关闭项目
+                            </el-button>
+                          </el-tooltip>
+                          <el-button class="is-custom"
+                          size="small"
+                          style="margin-right: 0"
+                          :progress="d.item.stage_status"
+                          :item_id="d.item.id"
+                          :item_type="d.item.type" @click="editItem(d.item.stage_status, d.item.id, d.item.type)" type="primary"> 
+                            <i class="el-icon-edit"></i> 完善项目
+                          </el-button>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -86,7 +97,8 @@
                 <div class="empty"></div>
                 <p class="prompt">暂时没有对接项目， 请发布需求～</p>
               </div>
-              <el-row class="item-title-box list-box" v-if="!isMob && itemList.length">
+              
+              <!-- <el-row class="item-title-box list-box" v-if="!isMob && itemList.length">
                 <el-col :span="10">
                   <p>项目名称</p>
                 </el-col>
@@ -99,22 +111,16 @@
                 <el-col :span="4">
                   <p>操作</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
 
-              <div class="item" v-for="(d, index) in itemList" :key="d + index" v-if="!isMob">
+              <!-- <div class="item" v-for="(d, index) in itemList" :key="index" v-if="!isMob">
                 <el-row class="banner list-box">
+                </div>
                   <el-col :span="24">
                     <p>{{ d.item.created_at }}</p>
                   </el-col>
-                </el-row>
-
-                <el-row class="item-content list-box">
-                  <el-col :span="10" class="item-title">
-                    <p class="c-title">
-                      <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
-                      </router-link>
-                    </p>
-                    <!-- <p v-if="d.item.type === 1">
+                </el-row> -->
+                  <!-- <p v-if="d.item.type === 1">
                       {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
                       }}{{d.item}}</p>
                     <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> 
@@ -122,6 +128,13 @@
                       {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
                     <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
                     -->
+                <!-- <el-row class="item-content list-box">
+                  <el-col :span="10" class="item-title">
+                    <p class="c-title">
+                      <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
+                      </router-link>
+                    </p>
+                  
                     <p>项目预算: <span class="tc-6">{{ d.item.design_cost_value }}</span></p>
                     <p>设计类型: <span class="tc-6">{{ d.item.type_value }}</span></p>
                     <p>设计类别: <span class="tc-6">{{ d.item.design_types_value | formatEnd }}</span></p>
@@ -228,11 +241,136 @@
                         </el-tooltip>
                     </div>
                   </el-col>
-                </el-row>
-              </div>
+                </el-row> -->
+              <!-- </div> -->
 
-              <div v-if="isMob" class="item" v-for="(d, index) in itemList" :key="d + index">
-                <div class="banner list-box">
+              <!-- <div class="item" v-for="(d, index) in itemList" :key="index"> -->
+                <div class="docking" v-for="(d, index) in itemList" :key="index" v-else>
+                    <div :class="['fl','project-bg1',{
+                      'project-bg1': d.item.type === 1,
+                      'project-bg2': d.item.type === 2,
+                      'project-bg3': d.item.type === 3,
+                      'project-bg5': d.item.type === 5,
+                      'project-bg6': d.item.type === 6,
+                    }]"></div>
+                    <div class="">
+                      <div class="flex-between">
+                        <div class="">
+                           <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">
+                            <span class="pro-name  margin-top-8">{{ d.item.name || '—'}}</span>
+                          </router-link>
+                          <p class="time-cor space-between"><i class="iconfont icon-time-s"></i>{{d.item.created_at | formatDate}}</p>
+                        </div>
+                        <div class="">
+                          <span class="statu-tit margin-top-8">{{d.item.status_value}}</span>
+                          <p class="deal-money space-between">¥{{d.item.price}}</p>
+                        </div>
+                      </div>
+                      <el-row class="cont">
+                        <el-col :span="12">
+                          <div class="box-label">
+                            <span class="label">项目预算:</span>
+                            <span class="label-val">{{d.item.design_cost_value || '—'}}</span>
+                          </div>
+                          <div class="box-label">
+                            <span class="label">项目类型:</span>
+                            <span class="label-val">{{d.item.type_value || '—'}}</span>
+                          </div>
+                        </el-col>
+                        <el-col :span="12">
+                          <div class="box-label">
+                            <span class="label">交付时间:</span>
+                            <span class="label-val">{{d.item.cycle_value || '—'}}</span>
+                          </div>
+                          <div class="box-label">
+                            <span class="label">项目类别:</span>
+                            <span class="label-val" v-if="d.item.design_types_value">{{d.item.design_types_value | formatEnd}}</span>
+                            <span class="label-val-none" v-else style="text-align: left">—</span>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <div class="box cont">
+                        <div class="label fl">产品功能:</div>
+                        <div class="label-val-last">{{d.item.product_features || '—'}}</div>
+                      </div>
+                      <div class="flex-end">
+                      <section class="btns">
+                      <div class="btn" v-show="d.item.is_close">
+                          <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
+                            <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
+                              关闭项目
+                            </el-button>
+                          </el-tooltip>
+                        </div>
+                      <div class="btn" v-show="d.item.status === -2">
+                        <p>
+                          <el-button class="is-custom margin-b-10" @click="restartBtn(d.item.id)" :item_id="d.item.id" size="small"
+                                      type="primary">重新编辑
+                          </el-button>
+                        </p>
+                      </div>
+                      <p class="btn" v-show="d.item.status === -1">
+                        <el-button class="is-custom" @click="delItemBtnPhase(d.item.id)" :item_id="d.item.id" size="small"
+                                    type="primary">
+                          删除项目
+                        </el-button>
+                      </p>
+
+                      <div class="btn" v-show="d.item.status === 3">
+                        <p class="margin-b-10">
+                          <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                            选择设计服务商
+                          </el-button>
+                        </p>
+                      </div>
+                     
+                      <p class="btn" v-show="d.item.status === 4 || d.item.status === 45">
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
+                                    v-if="d.item.show_offer">查看报价
+                        </el-button>
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
+                                    v-else>查看设计服务商
+                        </el-button>
+                      </p>
+
+                      <p class="btn" v-show="d.item.status === 6">
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                          查看合同
+                        </el-button>
+                      </p>
+                      <p class="btn" v-show="d.item.status === 7">
+                        <el-button class="is-custom" @click="secondPay" :item_id="d.item.id" size="small"
+                                    type="primary">
+                          支付项目款
+                        </el-button>
+                      </p>
+                      <p class="btn" v-show="d.item.status === 8">
+                        <el-button class="is-custom" @click="secondPay" :item_id="d.item.id" size="small"
+                                    type="primary">
+                          支付项目款
+                        </el-button>
+                      </p>
+                      <p class="btn" v-show="d.item.status === 15">
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                          验收项目
+                        </el-button>
+                      </p>
+                      <p class="btn" v-show="d.item.status === 18">
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                          评价
+                        </el-button>
+                      </p>
+                      <p class="btn" v-show="d.item.is_view_show">
+                        <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                          查看详情
+                        </el-button>
+                      </p>
+                    
+                    </section>
+                      </div>
+                  </div>
+                </div>
+                <!-- <div class="banner list-box">
                   <p>{{ d.item.created_at }}</p>
                 </div>
                 <div class="list-body">
@@ -328,8 +466,8 @@
                       </div>
                     </section>
                   </div>
-                </div>
-              </div>
+                </div> -->
+              <!-- </div> -->
               <el-pagination
                 v-if="query2.total > query2.pageSize"
                 class="pagination"
@@ -838,6 +976,13 @@
         } else {
           return ''
         }
+      },
+      formatDate(val) {
+        if (val) {
+          return val.date_format().format('yyyy-MM-dd')
+        } else {
+          return null
+        }
       }
     }
   }
@@ -860,7 +1005,74 @@
     justify-content: center;
     align-items: center;
   }
-
+  .project-bg1 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/product-design@2x.png") no-repeat center / contain;
+  }
+  .project-bg2 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/ui@2x.png") no-repeat center / contain;
+  }
+  .project-bg3 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/plane@2x.png") no-repeat center / contain;
+  }
+  .project-bg5 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/packing@2x.png") no-repeat center / contain;
+  }
+  .project-bg6 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/illustration@2x.png") no-repeat center / contain;
+  }
+  .deal-money{
+    color: #FF5A5F;
+    font-weight:500;
+    font-size: 24px;
+    text-align: right
+  }
+  .flex-end {
+    display: flex;
+    justify-content: flex-end
+  }
+  .label {
+    color: #BABABA;
+    font-size: 14px;
+  }
+  .box {
+    margin: 24px 0;
+  }
+  .label-val {
+    display: inline-block;
+    color:#222222;
+    margin-left: 32px;
+    font-size: 14px;
+  }
+  .label-val-last {
+    color:#222222;
+    margin-left: 95px;
+    font-size: 14px;
+    line-height: 20px
+  }
+  .box-label {
+    margin-top: 24px;
+  }
+  .statu-tit {
+    color:#999999;
+    font-size: 14px;
+  }
+  .docking {
+    padding: 24px;
+    border-radius:8px;
+    border:1px solid #E6E6E6;
+    margin-bottom: 20px
+  }
+ 
   /* .pub .pub-btn {
     padding: 10px 40px 10px 40px;
   } */
@@ -868,6 +1080,7 @@
   .content-item-box .item {
     border: 1px solid #e6e6e6;
     margin: 0 0 20px 0;
+    border-radius: 8px;
   }
 
   .banner {
@@ -892,20 +1105,52 @@
   /*}*/
 
   .pre {
-    padding: 0 10px;
+    padding: 24px;
+    display: flex;
   }
-
+  .time-cor {
+    color: #D9D9D9;
+    font-size: 12px;
+    margin: 6px 0 24px 0;
+    display: flex;
+    align-items: center
+  }
+  .time-cor i {
+    font-size: 14px;
+    margin-right: 4px;
+  }
   .item.ing p {
-    padding: 10px;
+    padding: 8px 0 0 16px;
   }
-
+  .flex-between {
+    display: flex;
+    justify-content: space-between
+  }
+  .pro-name {
+    font-size: 16px;
+    font-weight: 500
+  }
+  .space-between {
+    padding: 12px 0 0px 16px;
+  }
+  .margin-top-8 {
+    display: inline-block;
+    margin-top: 4px;
+    margin-left: 16px;
+  }
+  .status-title {
+    color: #FF5A5F;
+    font-size: 16px;
+  }
   p.c-title-pro {
     font-size: 1.4rem;
     color: #222;
-    margin-top: 20px;
     line-height: 1;
   }
-
+  .lable-val-none {
+    color:#222222;
+    font-size: 14px;
+  }
   .opt {
     height: 30px;
   }
@@ -918,7 +1163,8 @@
 
   section .btn {
     width: 40%;
-    margin: 10px auto 0;
+    float: left;
+    margin-left: 20px;
   }
 
   section .btn button {
@@ -948,9 +1194,9 @@
 
   .prefect {
     font-size: 1.4rem;
-    color: #666;
-    margin-top: 0;
-    margin-bottom: -10px;
+    color: #999999;
+    margin: 8px 0;
+    border-radius: 8px;
   }
 
   .item-title-box {
@@ -1028,9 +1274,17 @@
     line-height: 1.5;
     font-weight: 600;
   }
-  .buttons {
-    font-size: 0
+  .widh {
+    width: 100%;
   }
+  .buttons {
+    display: flex;
+    font-size: 0;
+    justify-content: flex-end
+  }
+  .cont {
+      margin-left: 74px
+    }
   .buttons button:first-child {
     margin-right: 20px;
   }
@@ -1076,6 +1330,7 @@
       margin: 10px 10px 0 0;
       height: 30px
     }
+    
     .btns {
       display: flex;
       justify-content: center

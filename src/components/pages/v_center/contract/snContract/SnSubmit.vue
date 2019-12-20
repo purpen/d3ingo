@@ -65,19 +65,36 @@
                 </el-col>
               </el-row>
 
+              <p class="title mar-t-40 font-size-18">合同金额</p>
+              <p class="tips">
+                <i class="iconfont icon-warning-solid-s icon-tips-size"></i>
+                <span>平台方将收取合同金额的 10% 作为佣金</span>
+              </p>
+              <el-form-item prop="total">
+                <el-input placeholder="请输入合同金额" @input="change($event)" v-model.number="form.total" :maxlength="8" class="input-width">
+                  <template slot="append">元</template>
+                </el-input>
+              </el-form-item>
+              <p class="title mar-t-40 font-size-18" ref="anchor" id="anchor">项目名称</p>
+              <el-form-item>
+                <el-col :span="12" style="padding: 0">
+                  <el-input :value="form.title" disabled></el-input>
+                </el-col>
+              </el-form-item>
               <!--
               <p class="title">项目内容</p>
               <el-form-item label="" prop="item_content">
                 <el-input v-model="form.item_content" placeholder="项目设计内容" size="small"></el-input>
               </el-form-item>
               -->
-              <p id="line-hei-30">依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：</p>
+
+              <!-- <p id="line-hei-30">依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：</p>
               <p id="line-hei-30">客户（以下简称“客户”）在“京东云”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；</p>
               <p id="line-hei-30">甲方作为平台官方授权的合作伙伴，将项目发包给乙方，并有权为履行本合同之目的，要求乙方履行本合同项下全部或部分权利义务；</p>
               <p id="line-hei-30">甲、乙双方一致同意按照本合同的约定，由乙方向客户提供项目所包含的设计服务成果交付等相应支持，为客户实现设计需求。</p>
-              <p id="line-hei-30">关于双方合作的相关细节约定如下：</p>
+              <p id="line-hei-30">关于双方合作的相关细节约定如下：</p> -->
 
-              <p class="title mar-t-40 font-size-18">一、项目名称和费用</p>
+              <!-- <p class="title mar-t-40 font-size-18">一、项目名称和费用</p>
               <p class="font-size-16">1、项目名称</p>
               <el-form-item>
                 <el-col :span="12" style="padding: 0">
@@ -86,9 +103,9 @@
               </el-form-item>
               <p class="font-size-16 mar-b-10">2、费用</p>
               <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，甲方收取全部项目设计费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
-              <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
+              <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p> -->
 
-              <div class="blank20"></div>
+              <!-- <div class="blank20"></div> -->
 
               <!--
               <p>项目总金额(¥):
@@ -102,8 +119,25 @@
                 (尾款占比总项目额度的10%)
               </p>
               -->
+                <p class="title mar-t-40 font-size-18">阶段信息</p>
+                <p class="tips">
+                  <i class="iconfont icon-warning-solid-s icon-tips-size"></i>
+                  <span>需求公司确认合同后，将支付合同金额的  40%  作为首付款。</span>
+                </p>
+                <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
+               <p class="title margin-t">交付阶段</p>
+                <template>
+                  <el-radio 
+                    v-model.number="form.sort" 
+                    @change="genStageInput"  
+                    v-for="item in stageOptions"
+                    :key="item.index"
+                    :label="item.label">
+                    <span :class="[item.label === form.sort ? 'activeRadio' : '']">{{item.label}}个阶段</span>
+                </el-radio>
+                </template>
 
-              <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
+              <!-- <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
               <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
@@ -119,7 +153,7 @@
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
 
               <div v-for="(d, index) in form.stages" :key="index">
 
@@ -189,9 +223,9 @@
 
                 <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle" aria-hidden="true"></i> 添加交付内容
                 </div>
-                <div class="blank20"></div>
+                <!-- <div class="blank20"></div> -->
               </div>
-
+<!-- 
               <p class="title mar-t-40 font-size-18">三、付款方式</p>
               <p>甲方按以下约定向乙方支付设计费，如果客户与乙合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
               <p>&nbsp;</p>
@@ -290,7 +324,7 @@
               <p>&nbsp;</p>
               <p>1、本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。</p>
               <p>&nbsp;</p>
-              <p>2、本合同一式两份，甲乙方各持一份，自签订双方在平台确认之日起生效，具同等法律效力。</p>
+              <p>2、本合同一式两份，甲乙方各持一份，自签订双方在平台确认之日起生效，具同等法律效力。</p> -->
 
               <div class="sept"></div>
 
@@ -334,6 +368,17 @@
             return callback(new Error('请填写内容'))
           }
           return callback()
+        }
+      }
+      let checkMoney = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写合同金额'))
+        } else {
+          if (!/^[1-9][0-9]*?$/.test(value)) {
+            return callback(new Error('金额必须是整数'))
+          } else {
+            return callback()
+          }
         }
       }
       let checkCount = (rule, value, callback) => {
@@ -428,8 +473,11 @@
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
           total: [
-            {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
+            {type: 'number', validator: checkMoney, trigger: 'blur'}
           ],
+          // total: [
+          //   {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
+          // ],
           content: [
             {validator: checkContent, trigger: 'blur'},
             {required: true, message: '请填写内容', trigger: 'blur'}
@@ -440,6 +488,23 @@
       }
     },
     methods: {
+      change() {
+        this.fetchMoney()
+      },
+      // 获取阶段金额
+      fetchMoney() {
+        let total = this.form.total - Math.floor(this.form.total * this.form.first_payment_proportion)
+        let money = 0
+        this.form.stages.forEach((item, index) => {
+          if (index + 1 === this.form.stages.length) {
+            this.$set(item, 'amount', total - money)
+          } else {
+            let num = Math.floor(total * (item.percentage.mul(0.01)))
+            this.$set(item, 'amount', num)
+            money += num
+          }
+        })
+      },
       isEmpty(value) {
         let bool = true
         value.split('').forEach(item => {
@@ -718,9 +783,12 @@
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone + ''
                 that.form.tax_price = item.item.tax ? Math.floor(item.item.tax) : 0
-                that.form.total = Math.floor(item.item.price)
+                // that.form.total = Math.floor(item.item.price)
+                that.form.total = Math.floor(item.quotation.price)
                 that.form.warranty_money = item.item.commission ? Math.floor(item.item.commission) : 0
-                that.form.first_payment = Math.floor(item.item.first_payment)
+                // that.form.first_payment = Math.floor(item.item.first_payment)
+                that.form.first_payment_proportion = item.item.first_payment_proportion
+                that.form.first_payment = Math.floor(item.quotation.price * item.item.first_payment_proportion)
                 that.form.stage_money = Math.floor(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = Math.floor(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
 
@@ -790,13 +858,37 @@
   }
 
   .content-box p.mar-t-40 {
-    margin: 40px 0 20px 0;
+    margin: 20px 0 20px 0;
   }
 
   .content-box p.font-size-18 {
     font-size: 18px;
   }
-
+  .activeRadio {
+    color: #FF5A5F
+  }
+  .margin-t {
+    margin: 10px 0 10px 0;
+    color: #666666 !important;
+  }
+  .tips {
+    display: flex;
+    align-items: center;
+    margin-top: -15px;
+    margin-bottom: 20px;
+  }
+  .tips span{
+    font-size: 12px;
+    color:#FFA64B
+  }
+  .icon-tips-size {
+    font-size: 12px;
+    color:#FFA64B;
+    margin-right: 6px;
+  }
+  .input-width {
+    max-width: 400px;
+  }
   .content-box p.font-size-16 {
     font-size: 16px;
     color: #222222;

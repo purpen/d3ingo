@@ -17,25 +17,105 @@
                   <p class="prompt">暂时没有待确认项目～</p>
                 </div>
               </div>
-              <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
-                <el-col :span="10">
-                  <p>项目名称</p>
-                </el-col>
-                <el-col :span="3">
-                  <p>交易金额</p>
-                </el-col>
-                <el-col :span="7">
-                  <p>状态</p>
-                </el-col>
-                <el-col :span="4">
-                  <p>操作</p>
-                </el-col>
-              </el-row>
               <div class="item" v-for="(d, index) in designItems" :key="index" v-show="designItems.length">
+                <div class="list-box">
+                  <div class="flex-between">
+                    <div  class="project-info">
+                      <div :class="[{
+                        'project-bg1': d.item.type === 1,
+                        'project-bg2': d.item.type === 2,
+                        'project-bg3': d.item.type === 3,
+                        'project-bg5': d.item.type === 5,
+                        'project-bg6': d.item.type === 6,
+                      }]"></div>
+                      <div>
+                        <p class="c-title">
+                          <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
+                          </router-link>
+                        </p>
+                        <div class="flex-centr">
+                          <el-popover class="contact-popover" trigger="hover" placement="top-start">
+                              <p class="contact">联系人: {{ d.item.contact_name }}</p>
+                              <p class="contact">职位: {{ d.item.position }}</p>
+                              <p class="contact">电话: {{ d.item.phone }}</p>
+                              <p class="contact">邮箱: {{ d.item.email }}</p>
+                              <p slot="reference" class="fl name-wrapper contact-user flex-p">
+                                <i class="iconfont icon-my-task-l icon-cor margin-right-6" ></i>
+                                <span class="cor9 user-size hove-cor">{{ d.item.company_name }}</span></p>
+                          </el-popover>
+                          <div class="flex-p">
+                            <i class="iconfont icon-time-s margin-right-6  icon-cor" ></i>
+                            <span class="cor9 user-size-time">{{ d.item.created_at }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p class="status-title">{{ d.design_company_status_value  || '—'}}</p>
+                      <p class="total-money">￥{{ d.item.price  || '—'}}</p>
+                    </div>
+                  </div>
+                  <el-row>
+                    <el-col :span="8">
+                      <span class="span-label">项目预算:</span>
+                      <span class="span-val">￥{{ d.item.price  || '—'}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <span class="span-label">交付时间:</span>
+                      <span class="span-val">{{ d.item.cycle_value  || '—'}}</span>
+                    </el-col>
+                    <!-- <el-col :span="8">
+                      <span class="span-label">距离结束还剩:</span>
+                      <span class="span-val">
 
-                <el-row class="banner list-box">
+                      </span>
+                    </el-col> -->
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <span class="span-label">设计类型:</span>
+                      <span class="span-val">{{ d.item.type_value  || '—'}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <span class="span-label">设计类别:</span>
+                      <span class="span-val" v-if="d.item.design_types_value.length > 0">{{ d.item.design_types_value | formatEnd}}</span>
+                      <span class="span-val" v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <div class="flex-end">
+                    <p class="margin-l-20">
+                       <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">
+                        <el-button class="is-customs" size="small"
+                            :index="index" :item_id="d.item.id" >
+                              查看详情
+                        </el-button>
+                       </router-link>
+                    </p>
+                    <p class="margin-l-20"  v-if="d.status === 3 && d.item.status === 4">
+                      <el-button class="is-custom" size="small"
+                                :index="index" :item_id="d.item.id" @click="refuseItem(d.item.id)">拒绝接单
+                      </el-button>
+                    </p>
+                    <p class="margin-l-20"  v-if="d.status === 3 && d.item.status === 4">
+                      <el-button type="primary" class="is-custom" @click="sendIntention(d.item.id)" size="small"
+                           :index="index" :item_id="d.item.id" :loading="sendintion">接单
+                      </el-button>
+                    </p>
+                    <p class="margin-l-20" v-if="d.status === 4 &&  d.item.status === 4">
+                      <el-button class="is-custom" type="primary"  @click="showView" size="small"
+                                :index="index" :item_id="d.item.id">提交报价单
+                      </el-button>
+                    </p>
+                    <!-- <p>
+                      <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
+                                :index="index" :item_id="d.item.id">查看报价
+                      </el-button>
+                    </p> -->
+                  </div>
+                </div>
+                <!-- <el-row class="banner list-box">
                   <el-col :span="12">
-                    <p>{{ d.item.created_at }}</p>
+                    <p></p>
                   </el-col>
                   <el-col :span="12">
                     <el-popover class="contact-popover" trigger="hover" placement="top-start">
@@ -45,18 +125,14 @@
                       <p class="contact">邮箱: {{ d.item.email }}</p>
                       <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
                         {{ d.item.company_name }}</p>
-                      <!-- <p>产品功能：{{d.item.product_features}}</p> -->
                     </el-popover>
                   </el-col>
-                </el-row>
+                </el-row> -->
 
-                <el-row :class="['item-content','list-box', isMob ? 'item-content-m' : '']">
+                <!-- <el-row :class="['item-content','list-box', isMob ? 'item-content-m' : '']">
                   <el-col :span="isMob ? 24 : 10" class="item-title">
-                    <p class="c-title">
-                      <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
-                      </router-link>
-                    </p>
-                    <p>项目预算: <span class="tc-6">{{ d.item.design_cost_value }}</span></p>
+                    
+                    <p>项目预算: <span class="tc-6"></span></p>
                     <p>设计类型: <span class="tc-6">{{ d.item.type_value }}</span></p>
                     <p>设计类别: <span class="tc-6">{{ d.item.design_types_value | formatEnd }}</span></p>
                     <p>交付时间: <span class="tc-6">{{ d.item.cycle_value }}</span></p>
@@ -72,21 +148,6 @@
                   </el-col>
                   <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
 
-                    <!--
-                    <div class="btn" v-if="d.design_company_status === 0">
-                      <p>
-                        <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
-                                  :cost="d.item.design_cost_value" type="primary">提交报价单
-                        </el-button>
-                      </p>
-                      <p>
-                        <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
-                                  :item_id="d.item.id">暂无兴趣
-                        </el-button>
-                      </p>
-
-                    </div>
-                    -->
                     <p>
                       <el-button class="is-custom" v-if="d.design_company_status === 0" @click="showView" size="small"
                                 :index="index" :item_id="d.item.id">提交报价单
@@ -98,7 +159,7 @@
                       </el-button>
                     </p>
                   </el-col>
-                </el-row>
+                </el-row> -->
               </div>
               <el-pagination
                   v-if="query.total > query.pageSize"
@@ -117,22 +178,110 @@
                   <p class="prompt">暂时没有已合作项目～</p>
                 </div>
               </div>
-              <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
-                <el-col :span="10">
-                  <p>项目名称</p>
-                </el-col>
-                <el-col :span="3">
-                  <p>交易金额</p>
-                </el-col>
-                <el-col :span="7">
-                  <p>状态</p>
-                </el-col>
-                <el-col :span="4">
-                  <p>操作</p>
-                </el-col>
-              </el-row>
+               <div class="item" v-for="(d, index) in designItems2" :key="index" v-show="designItems2.length">
+                <div class="list-box">
+                  <div class="flex-between">
+                    <div  class="project-info">
+                      <div :class="[{
+                        'project-bg1': d.item.type === 1,
+                        'project-bg2': d.item.type === 2,
+                        'project-bg3': d.item.type === 3,
+                        'project-bg5': d.item.type === 5,
+                        'project-bg6': d.item.type === 6,
+                      }]"></div>
+                      <div>
+                        <p class="c-title">
+                          <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
+                          </router-link>
+                        </p>
+                        <div class="flex-centr">
+                          <el-popover class="contact-popover" trigger="hover" placement="top-start">
+                              <p class="contact">联系人: {{ d.item.contact_name }}</p>
+                              <p class="contact">职位: {{ d.item.position }}</p>
+                              <p class="contact">电话: {{ d.item.phone }}</p>
+                              <p class="contact">邮箱: {{ d.item.email }}</p>
+                              <p slot="reference" class="fl name-wrapper contact-user flex-p">
+                                <i class="iconfont icon-my-task-l icon-cor margin-right-6" ></i>
+                                <span class="cor9 user-size hove-cor">{{ d.item.company_name }}</span></p>
+                          </el-popover>
+                          <div class="flex-p">
+                            <i class="iconfont icon-time-s margin-right-6  icon-cor" ></i>
+                            <span class="cor9 user-size-time">{{ d.item.created_at }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p class="status-title">{{ d.item.design_status_value }}</p>
+                      <p class="total-money">￥{{ d.item.price }}</p>
+                    </div>
+                  </div>
+                  <el-row>
+                    <el-col :span="8">
+                      <span class="span-label">项目预算:</span>
+                      <span class="span-val">￥{{ d.item.price || '—'}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <span class="span-label">交付时间:</span>
+                      <span class="span-val">{{ d.item.cycle_value  || '—'}}</span>
+                    </el-col>
+                    <!-- <el-col :span="8">
+                      <span class="span-label">距离结束还剩:</span>
+                      <span class="span-val">
 
-              <div class="item" v-for="(d, index) in designItems2" :key="index">
+                      </span>
+                    </el-col> -->
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <span class="span-label">设计类型:</span>
+                      <span class="span-val">{{ d.item.type_value  || '—'}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                      <span class="span-label">设计类别:</span>
+                      <span class="span-val" v-if="d.item.design_types_value.length > 0">{{ d.item.design_types_value | formatEnd}}</span>
+                      <span class="span-val" v-else>—</span>
+                    </el-col>
+                  </el-row>
+                  <div >
+                    <div v-if="d.is_contract === 0" class="clearfix flex-end">
+                      <p>
+                        <el-button class="is-custom" @click="contractBtn" :index="index" size="small" :item_id="d.item.id"
+                                  type="primary">编辑在线合同
+                        </el-button>
+                      </p>
+                    </div>
+                    <div v-else class="clearfix flex-end">
+                      <div v-if="d.item.status === 5" class="clearfix flex-end">
+                        <p>
+                          <el-button class="is-custom" size="small" @click="contractSendBtn" :index="index"
+                                    :item_id="d.item.id" type="primary" style="margin-right: 20px">发送合同
+                          </el-button>
+                        </p>
+                        <p>
+                          <el-button class="is-custom" size="small" @click="contractBtn" :index="index"
+                                    :item_id="d.item.id" type="primary">修改合同
+                          </el-button>
+                        </p>
+                      </div>
+                      <div v-if="d.item.status === 6" class="clearfix flex-end">
+                        <p>
+                          <el-button class="is-custom" size="small" @click="contractBtn" :index="index"
+                                    :item_id="d.item.id" type="primary">修改合同
+                          </el-button>
+                        </p>
+                      </div>
+                      <p v-if="d.item.is_show_view">
+                        <el-button class="is-custom" size="small" @click="showView2" :index="index" :item_id="d.item.id"
+                                  type="primary">查看详情
+                        </el-button>
+                      </p>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="item" v-for="(d, index) in designItems2" :key="index">
                 <el-row class="banner list-box">
                   <el-col :span="12">
                     <p>{{ d.item.created_at }}</p>
@@ -207,7 +356,7 @@
                     </div>
                   </el-col>
                 </el-row>
-              </div>
+              </div> -->
 
               <el-pagination
                 v-if="query2.total > query2.pageSize"
@@ -269,6 +418,60 @@
           <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
         </span>
       </el-dialog>
+
+        <el-dialog
+      title="拒单说明"
+      :visible.sync="noOfferDialog"
+      width="380px">
+      <p class="alert-line-height">您确定要拒绝此单么?</p>
+      <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
+      <el-row class="cause">
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf('不擅长') !== -1
+        }]">
+          <div @click="upType('不擅长')">
+            <i></i>
+            <span>不擅长</span>
+          </div>
+        </el-col>
+        <el-col :span="8" 
+          :class="[{
+            'iscause': refuse_types.indexOf('排期紧张') !== -1
+          }]"
+        >
+          <div @click="upType('排期紧张')">
+            <i></i>
+            <span>排期紧张</span>
+          </div>
+        </el-col>
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf('') !== -1
+        }]">
+          <div @click="upType('')">
+            <i></i>
+            <span>其他</span>
+          </div>
+        </el-col>
+      </el-row>
+      <div>
+        <el-input
+          type="textarea"
+          :rows="4"
+          :maxlength="80"
+          placeholder="请输入内容"
+          v-model="summary"
+        >
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="is-custom" @click="noOfferDialog = false">取 消</el-button>
+        <el-button class="is-custom" type="primary" :loading="comfirmLoadingBtn" @click="commitExplain">确 定</el-button>
+        <input type="hidden" ref="companyId"/>
+        <input type="hidden" ref="confirmTargetId"/>
+        <input type="hidden" ref="comfirmType" value="1"/>
+        <input type="hidden" ref="currentIndex"/>
+      </span>
+    </el-dialog>
     </div>
     <!-- <div class="vcenter clearfix">
       <div :class="{'vcenter-right-plus': leftWidth === 4,
@@ -401,8 +604,12 @@
         isLoading: false,
         takingPriceDialog: false,
         isTakingLoadingBtn: false,
+        comfirmLoadingBtn: false,
+        refuse_types: [], // 拒单选项
+        noOfferDialog: false,
         sureRefuseItemDialog: false,
         refuseItemLoadingBtn: false,
+        summary: '',
         currentIndex: '',
         value: 1,
         currentCost: '',
@@ -439,10 +646,28 @@
           total: 0,
           totalPages: 0,
           pageSize: 10
-        }
+        },
+        sendintion: false,
+        itemId: ''
       }
     },
     methods: {
+      // 查看详情
+      lookDetail(id) {
+        this.$router.push({name: 'vcenterCItemShow', params: {id: id}})
+      },
+      // 改拒单类型
+      upType(type) {
+        if (this.refuse_types.indexOf(type) === -1) {
+          this.refuse_types.push(type)
+        } else {
+          for (var i = 0; i < this.refuse_types.length; i++) {
+            if (this.refuse_types[i] === type) {
+              this.refuse_types.splice(i, 1)
+            }
+          }
+        }
+      },
       // 进入详情
       showView(event) {
         let itemId = parseInt(event.currentTarget.getAttribute('item_id'))
@@ -514,6 +739,65 @@
         this.currentIndex = parseInt(event.currentTarget.getAttribute('index'))
         this.$refs.refuseItemId.value = itemId
         this.sureRefuseItemDialog = true
+      },
+      // 确认接单
+      sendIntention(id) {
+        let that = this
+        that.sendintion = true
+        this.$http.put(api.confirmationIntention, {item_id: id})
+          .then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              that.$message.success('接单成功')
+              that.sendintion = false
+              that.getVcenterItemList()
+            } else {
+              that.$message.error(response.data.meta.message)
+              that.sendintion = false
+            }
+          })
+          .catch(function (error) {
+            that.sendintion = false
+            that.$message.error(error.message)
+            return false
+          })
+      },
+      refuseItem(id) {
+        this.noOfferDialog = true
+        this.itemId = id
+      },
+      // 确认拒绝接单
+      commitExplain() {
+        // let currentIndex = this.$refs.currentIndex.value
+        let form = {
+          'summary': this.summary,
+          'refuse_types': this.refuse_types
+        }
+        if (!this.refuse_types || this.refuse_types.length === 0) {
+          this.$message.error('请至少选择一个原因')
+          return
+        } else if (!this.summary) {
+          this.$message.error('请填写拒绝原因')
+          return
+        }
+        this.comfirmLoadingBtn = true
+        this.$http.get(api.companyRefuseItemId.format(this.itemId), {params: form}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.$message.success('提交成功！')
+              // this.$router.replace({name: 'vcenterCItemList'})
+              this.noOfferDialog = false
+              this.getVcenterItemList()
+              return
+            } else {
+              this.noOfferDialog = false
+              this.comfirmLoadingBtn = false
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.comfirmLoadingBtn = false
+            this.$message.error(error.message)
+          })
       },
       // 确认拒绝项目
       sureRefuseItemSubmit() {
@@ -796,7 +1080,6 @@
   }
 
   .content-item-box .item {
-    border: 1px solid #D2D2D2;
     margin: -1px 0 20px 0;
   }
 
@@ -819,9 +1102,36 @@
     width: 100%;
     font-size: 1.4rem;
     color: #333;
-    padding: 15px 10px 15px 10px;
+    padding: 8px 20px 10px 20px;
   }
-
+  .icon-cor {
+    color: #999;
+  }
+  .user-size-time {
+    margin-top: 0px;
+  }
+  .flex-centr {
+    display: flex;
+    align-items: center
+  }
+  .margin-right-6 {
+    margin-right: 6px;
+  }
+  .hove-cor:hover {
+    color: #FC6B6F;
+    cursor: pointer;
+  }
+  .cor9 {
+    color: #999;
+  }
+  .flex-p {
+    display: flex;
+    align-items: center;
+    margin-left: 20px
+  }
+  .user-size {
+    font-size: 12px;
+  }
   .opt {
     height: 30px;
   }
@@ -829,16 +1139,60 @@
   .money-str {
     font-size: 1.4rem;
   }
-
+  .list-box{
+    background:rgba(255,255,255,1);
+    border-radius:8px;
+    border:1px solid rgba(230,230,230,1);
+    padding: 24px;
+  }
   .btnGroup {
     display: flex;
     margin: 10px 0;
     align-items: center;
     justify-content: center;
   }
+  .project-info {
+    display: flex;
+  }
 
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .total-money {
+    color: #FF5A5F;
+    font-size: 24px;
+    text-align: right;
+  }
   .btnGroup p, .btnGroup .btn {
     width: 40%;
+  }
+  .status-title {
+    color: #65A6FF;
+    padding: 8px 00px 10px 20px;
+    text-align: right;
+  }
+  .span-label {
+    font-size: 14px;
+    color: #B7B7B7;
+    margin-right: 16px;
+  }
+  .is-customs {
+    border: 1px solid #D2D2D2
+  }
+  .margin-l-20 {
+    margin-left: 20px;
+  }
+  .flex-end {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+  .span-val {
+    color: #222222;
+    font-size: 14px;
   }
 
   .btnGroup p button {
@@ -875,7 +1229,44 @@
     font-size: 1.3rem;
     color: #666;
   }
+   .cause i {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e6e6e6;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
 
+  .cause>.el-col>div {
+    line-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .iscause {
+    color: #FF5A5F;
+  }
+  .iscause i {
+    background: #FF9494;
+    border: 1px solid #FF2929;
+    position: relative;
+  }
+
+  .iscause i:after {
+    transform: rotate(45deg) scaleY(1);
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height:10px;
+    border-bottom:2px solid #fff;
+    border-right: 2px solid #fff;
+  }
   .taking-price-btn {
     float: right;
     margin-bottom: 20px;
@@ -887,7 +1278,7 @@
   }
 
   .list-box .el-col {
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px 10px 76px;
   }
 
   .status-str {
@@ -925,7 +1316,31 @@
     padding: 0 5px 10px 0;
     line-height: 18px;
   }
-
+   .project-bg1 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/product-design@2x.png") no-repeat center / contain;
+  }
+  .project-bg2 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/ui@2x.png") no-repeat center / contain;
+  }
+  .project-bg3 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/plane@2x.png") no-repeat center / contain;
+  }
+  .project-bg5 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/packing@2x.png") no-repeat center / contain;
+  }
+  .project-bg6 {
+    width: 56px;
+    height: 56px;
+    background: url("../../../../assets/images/icon/illustration@2x.png") no-repeat center / contain;
+  }
   .item-content {
     padding: 10px 0 10px 0;
   }

@@ -8,8 +8,8 @@
         label-position="top"
         :rules="ruleForm"
         ref="ruleForm">
-        <el-form-item label="项目目标" prop="summary">
-          <el-input  type="textarea" :rows="5" v-model="form.summary"
+        <el-form-item label="项目目标" prop="summarys">
+          <el-input  type="textarea" :rows="5" v-model="form.summarys"
             placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
         <el-form-item>
@@ -441,7 +441,7 @@ export default {
         design_city: [{ required: true, type: 'number', message: '请选择城市', trigger: 'change' }],
         design_area: [{ required: true, message: '请选择地区', trigger: 'change' }],
         design_address: [{ required: true, message: '请填写详细地址', trigger: 'blur' }],
-        summary: [
+        summarys: [
           {validator: checkContent, trigger: 'blur'},
           { required: true, message: '请填写项目目标', trigger: 'blur' },
           {min: 20, max: 500, message: '长度在 20 到 500 个字符之间', trigger: 'blur'}
@@ -530,6 +530,7 @@ export default {
             this.$message.error('请填写项目工作计划及费用')
             return
           }
+          this.$set(this.form, 'summary', this.form.summarys)
           this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))
 
           let apiUrl
