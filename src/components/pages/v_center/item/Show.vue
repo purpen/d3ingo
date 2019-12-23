@@ -287,6 +287,89 @@
                   </div>
                   <div class="flex-footer">
                     <el-button class="btn-width" @click="showQuotaBtn(list.quotation)">查看详情</el-button>
+                    <el-button type="primary" class="btn-width " style="margin-right: 0;margin-left: 20px" @click="isInfo(list.design_company.id)" v-if="item.status === 4 || item.status === 45">确认合作</el-button>
+                  </div>
+
+                </div>
+
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+
+          <!-- 确认合作 -->
+           <!-- 报价单 -->
+          <!--  -->
+          <div class="select-item-box clearfix" v-if="isCooperation">
+            <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
+              <el-collapse-item title="已确认合作的设计服务商" name="13" class="partnersDesign">
+                <!-- cooperateCompany.quotation -->
+                <div class="offer-company-item clearfix" v-for="(list, index) in CompanyData" :key="index" v-if="list.status === 5">
+
+                  <div class="item-logo">
+                    <div class="fl flex-price">
+                      <div class="flex-center ">
+                        <router-link tag="a" :to="{ name: 'companyShow', params: { id : list.design_company.id }}">
+                          <img class="avatar fl" v-if="list.design_company.logo_url"
+                              :src="list.design_company.logo_url" width="40"/>
+                          <img class="avatar fl" v-else :src="require('assets/images/avatar_100.png')" width="40"/>
+                        </router-link>
+                        <p class="p-title minititle fl">
+                          <router-link tag="a" :to="{ name: 'companyShow', params: { id : list.design_company.id }}">
+                            {{ list.design_company.company_name }}
+                          </router-link>
+                        </p>
+                        <div class="flex-center margin-left-32">
+                          <i class="iconfont icon-time-s cor9  margin-r-6"></i>
+                          <span class="cor9">{{list.design_company.updated_at | formatDate}}发送报价单</span>
+                        </div>
+                      </div>
+                      <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="!isMob">
+                        <p class="contact">联系人: {{ list.design_company.contact_name }}</p>
+                        <p class="contact">职位: {{ list.design_company.position }}</p>
+                        <p class="contact">电话: {{ list.design_company.phone }}</p>
+                        <p class="contact">邮箱: {{ list.design_company.email }}</p>
+                        <p slot="reference" class="fl name-wrapper contact-user">
+                          <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
+                          <span>联系我们</span>
+                        </p>
+                      </el-popover>
+
+                      <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="isMob">
+                        <p class="contact">联系人: {{ list.design_company.contact_name }}</p>
+                        <p class="contact">职位: {{ list.design_company.position }}</p>
+                        <p class="contact">电话: {{ list.design_company.phone }}</p>
+                        <p class="contact">邮箱: {{ list.design_company.email }}</p>
+                        <p slot="reference" class="fl name-wrapper2 contact-user">
+                          和我联系
+                        </p>
+                      </el-popover>
+                    </div>
+                    <div class="fr item-stick-des">
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="item-bj">
+                    <el-row>
+                      <el-col :span="12">
+                        <p>
+                          <span class="span-label">项目预算:</span>
+                          <span class="p-price span-cont">￥{{ Math.floor(list.quotation.price) }}</span>
+                        </p>
+                      </el-col>
+                       <!-- <el-col :span="12">
+                        <p>
+                          <span class="span-label">项目周期:</span>
+                          <span class="span-cont">{{ item.quotation.summary }}</span>
+                        </p>
+                      </el-col> -->
+                    </el-row>
+                    <p>
+                      <span class="span-label">报价说明:</span>
+                      <span class="span-cont">{{ list.quotation.summary }}</span>
+                    </p>
+                  </div>
+                  <div class="flex-footer">
+                    <el-button class="btn-width" @click="showQuotaBtn(list.quotation)">查看详情</el-button>
                     <el-button type="primary" class="btn-width " style="margin-right: 0;margin-left: 20px" @click="agreeCompanySubmit(list.design_company.id)" v-if="item.status === 4 || item.status === 45">确认合作</el-button>
                   </div>
 
@@ -316,15 +399,15 @@
                     <p v-show="contract.status === 1">
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
                                    target="_blank">
-                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
-                                   <el-button type="primary" class="contract-right-preview" style="margin-right: 0">下载</el-button>
+                                   <i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   <!-- <el-button type="primary" class="contract-right-preview" style="margin-right: 0">下载</el-button> -->
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
                                    target="_blank">
-                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
-                                   <el-button type="primary" class="contract-right-preview">预览</el-button>
+                                   <i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   <!-- <el-button type="primary" class="contract-right-preview">预览</el-button> -->
                       </router-link>
                     </p>
                   </div>
@@ -650,6 +733,38 @@
         <el-button type="primary" class="is-custom" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="确认公司信息"
+      :visible.sync="perfectInfo"
+      width="480px"
+      class="company-form"
+      >
+      <p class="compony-title">甲方 (需求设计方)</p>
+      <el-form label-position="top" label-width="80px" :rules="companyRules" ref="companyInfo" :model="companyInfo">
+        <el-form-item label="公司名称" prop="company_name">
+          <el-input v-model="companyInfo.company_name" placeholder="请输入公司名称"></el-input>
+        </el-form-item>
+        <el-form-item label="联系人" prop="contact_name">
+          <el-input v-model="companyInfo.contact_name"  placeholder="请输入联系人"></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式" prop="phone">
+          <el-input v-model="companyInfo.phone" maxlength="11"  placeholder="请输入联系方式"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="companyInfo.address" placeholder="请输入地址"></el-input>
+        </el-form-item>
+        <p class="tips">
+          <i class="iconfont icon-warning-solid-s icon-tips-size"></i>
+          <span>填写完成后，将根据您填写的信息生成合同，请您认真填写。</span>
+        </p>
+        <el-form-item>
+          <el-button :loading="sureDialogLoadingBtn" @click="perfectInfo = false" style="margin-right: 20px">取消</el-button>
+          <el-button type="primary" :loading="sureDialogLoadingBtn" @click="confirmInfo('companyInfo')">确认</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+   
   </div>
 </template>
 
@@ -666,8 +781,45 @@ export default {
     vQuoteView
   },
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^1\d{10}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
+      companyInfo: {},
+      companyRules: {
+        company_name: [
+          { required: true, message: '请输入公司名称', trigger: 'blur' }
+        ],
+        contact_name: [
+          { required: true, message: '请输入联系人', trigger: 'blur' }
+        ],
+        phone: [
+          {validator: checkNumber, trigger: 'blur', required: true}
+        ],
+        address: [
+          { required: true, message: '请输入地址', trigger: 'blur' }
+        ]
+      },
       surveyDemandCompany: false,
+      perfectInfo: false,
+      isCooperation: false,
       origin: location.origin,
       CompanyData: [],
       showStickCompanyBtn: true,
@@ -744,6 +896,32 @@ export default {
     }
   },
   methods: {
+    // 确认完善信息
+    confirmInfo(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let that = this
+          let form = that.companyInfo
+          that.sureDialogLoadingBtn = true
+          that.$http({method: 'put', url: api.demandCompany, data: form})
+          .then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              that.sureDialogLoadingBtn = false
+              that.perfectInfo = false
+            } else {
+              that.$message.error(response.data.meta.message)
+            }
+          })
+          .catch(function (error) {
+            that.sureDialogLoadingBtn = false
+            that.$message.error(error.message)
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
     // 同意合同
     agreeBtn() {
       this.sureDialogMessage = '本合同具有法律效力，确认合同后将按照合同内容付款并开始项目，请确保熟知合同内容。'
@@ -926,6 +1104,28 @@ export default {
     //       self.comfirmLoadingBtn = false
     //     })
     // },
+    // 是否需要完善信息
+    isInfo(id) {
+      let self = this
+      self.$http
+        .get(api.isBaseInfo)
+        .then(function(response) {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data.is_base_info) {
+              self.agreeCompanySubmit(id)
+            } else {
+              self.perfectInfo = true
+            }
+          } else {
+            self.comfirmLoadingBtn = false
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+          self.comfirmLoadingBtn = false
+        })
+    },
     // 同意设计服务商报价, 开始合作
     agreeCompanySubmit(id) {
       let companyId = id
@@ -1020,6 +1220,9 @@ export default {
             for (let i = 0; i < offerCompany.length; i++) {
               if (offerCompany[i].quotation && offerCompany[i].quotation.id) {
                 self.isShowquotation = true
+              }
+              if (offerCompany[i].status === 5) {
+                self.isCooperation = true
               }
               let item = offerCompany[i]
               // 是否存在已提交报价的公司
@@ -1178,6 +1381,9 @@ export default {
                   let item = offerCompany[i]
                   if (offerCompany[i].quotation && offerCompany[i].quotation.id) {
                     self.isShowquotation = true
+                  }
+                  if (offerCompany[i].status === 5) {
+                    self.isCooperation = true
                   }
                   if (
                     item.design_company.logo_image &&
@@ -1666,7 +1872,12 @@ export default {
   border: 1px solid #FF2929;
   position: relative;
 }
-
+.compony-title {
+  font-size: 18px;
+  color: #222;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
 .iscause i:after {
   transform: rotate(45deg) scaleY(1);
   position: absolute;
@@ -1739,6 +1950,21 @@ export default {
 .company-title {
   margin: 10px;
 }
+  .tips {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .tips span{
+    font-size: 12px;
+    color:#FFA64B
+  }
+  .icon-tips-size {
+    font-size: 12px;
+    color:#FFA64B;
+    margin-right: 6px;
+  }
 
 .select-company-item .case-box {
   margin: 10px;
@@ -2255,3 +2481,20 @@ section ul li a {
     background: url('../../../../assets/images/item/wait@2x.png') no-repeat center left / contain
   }
 </style>
+<style>
+.company-form .el-form-item{
+  margin-bottom: 16px !important;
+}
+.company-form .el-form--label-top .el-form-item__label {
+  padding: 0 !important;
+}
+.company-form  .el-form-item__content {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.company-form .el-dialog__body {
+  padding: 20px 20px 4px 20px;
+}
+</style>
+

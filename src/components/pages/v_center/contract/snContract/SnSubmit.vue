@@ -223,8 +223,13 @@
 
                 <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle" aria-hidden="true"></i> 添加交付内容
                 </div>
-                <!-- <div class="blank20"></div> -->
+               
+                <div class="blank20"></div>
               </div>
+              <p class="tips"  style="margin-left: 5px">
+                <i class="iconfont icon-warning-solid-s icon-tips-size"></i>
+                <span>填写完成后，将根据您填写的信息生成合同</span>
+              </p>
 <!-- 
               <p class="title mar-t-40 font-size-18">三、付款方式</p>
               <p>甲方按以下约定向乙方支付设计费，如果客户与乙合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>

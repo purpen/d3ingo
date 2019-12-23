@@ -214,27 +214,27 @@
                         class="fa fa-share-square-o" aria-hidden="true"></i> 发送
                       </el-button>
                     </p>
-                    <p>
-                      <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank">
-                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
-                                    <el-button type="primary" class="contract-right-preview">下载</el-button>
-                      </router-link>
-                    </p>
-                    <p>
-                      <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                        target="_blank">
-                        <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
-                        <!-- <el-button type="danger" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button> -->
-                        <button class="look-button">
-                          预览
-                        </button>
-                      </router-link>
-                    </p>
-                    <p v-if="item.status < 7">
+                     <p v-if="item.status < 7">
                       <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
                         <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
-                         <button class="look-button">修改</button>
+                         <button class="look-button">编辑</button>
+                      </router-link>
+                    </p>
+                    <p class="margin-r-16">
+                      <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
+                                   target="_blank">
+                                   <i class="fa fa-download" aria-hidden="true"></i> 下载
+                                    <!-- <el-button type="primary" class="contract-right-preview">下载</el-button> -->
+                      </router-link>
+                    </p>
+                    <p  class="margin-r-16">
+                      <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
+                        target="_blank">
+                        <i class="fa fa-eye" aria-hidden="true"></i> 预览
+                        <!-- <el-button type="danger" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button> -->
+                        <!-- <button class="look-button">
+                          预览
+                        </button> -->
                       </router-link>
                     </p>
                   </div>
@@ -837,20 +837,21 @@
       },
       // 确认接单
       sendIntention(id) {
-        this.sendintion = true
-        this.$http.put(api.confirmationIntention, {item_id: id})
+        let that = this
+        that.sendintion = true
+        that.$http.put(api.confirmationIntention, {item_id: id})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              this.$message.success('接单成功')
-              this.sendintion = false
-              this.refech()
+              that.$message.success('接单成功')
+              that.sendintion = false
+              that.refech()
             } else {
               self.$message.error(response.data.meta.message)
-              this.sendintion = false
+              that.sendintion = false
             }
           })
           .catch(function (error) {
-            this.sendintion = false
+            that.sendintion = false
             self.$message.error(error.message)
             return false
           })
@@ -1018,7 +1019,7 @@
             if (response.data.meta.status_code === 200) {
               this.$message.success('提交成功！')
               this.$router.replace({name: 'vcenterCItemList'})
-              this.refech()
+              // this.refech()
               return
             } else {
               this.noOfferDialog = false
@@ -2334,7 +2335,9 @@
     border: 1px solid #E6E6E6;
     display: block;
   }
-
+  .margin-r-16 {
+    margin-right: 16px;
+  }
   .banner img {
     margin-top: 20px;
   }
@@ -2574,7 +2577,7 @@
 
   .contract-right p {
     float: right;
-    margin: 5px 0 5px 10px;
+    margin: 5px 0 5px 20px;
     line-height: 30px;
   }
 

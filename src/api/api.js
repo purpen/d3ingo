@@ -91,6 +91,7 @@ export default {
 
   // 需求方公司管理
   demandCompany: '/demandCompany', // POST 保存需求方公司信息;  GET 获取信息
+  isBaseInfo: 'demandCompany/isBaseInfo', // GET 是否填写合同需要的基本信息
   // 新版后台
   pushDesign: '/admin/clue/pushDesign', // PUT crm项目推荐-匹配设计公司
   // 公司项目接口

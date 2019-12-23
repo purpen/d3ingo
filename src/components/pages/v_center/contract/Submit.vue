@@ -282,7 +282,12 @@
                   添加交付内容
                 </div>
                 <div class="blank20"></div>
+               
               </div>
+               <p class="tips"  style="margin-left: 5px">
+                  <i class="iconfont icon-warning-solid-s icon-tips-size"></i>
+                  <span>填写完成后，将根据您填写的信息生成合同</span>
+                </p>
               
               <!-- 三、付款方式 -->
               <p class="title mar-t-40 font-size-18" ref="anchor2" id="anchor2"></p>
